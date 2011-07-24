@@ -2,8 +2,8 @@
 
 <table>
   <tr>
-    <th>Url</th>
     <th>User</th>
+    <th>Page</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,8 +11,8 @@
 
 <% @posts.each do |post| %>
   <tr>
-    <td><%= post.url %></td>
-    <td><%= post.user %></td>
+    <td><%= post.user.username %></td>
+    <td><%= link_to post.title, post.url %></td>
     <td><%= link_to 'Show', post %></td>
     <td><%= link_to 'Edit', edit_post_path(post) %></td>
     <td><%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %></td>

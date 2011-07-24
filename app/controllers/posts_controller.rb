@@ -2,7 +2,14 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.all
+    if params[:username]
+      @user = User.find_by_username(params[:username])
+      @posts = @user.posts
+    elsif logged_in?
+      @posts = current_user.posts
+    else
+      @posts = Post.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,6 +48,7 @@ class PostsController < ApplicationController
   # POST /posts.xml
   def create
     @post = Post.new(params[:post])
+    @post.user = current_user
 
     respond_to do |format|
       if @post.save

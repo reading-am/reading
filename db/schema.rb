@@ -10,13 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110724214546) do
+ActiveRecord::Schema.define(:version => 20110724231532) do
 
   create_table "posts", :force => true do |t|
     t.string   "url"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
   end
 
   create_table "users", :force => true do |t|

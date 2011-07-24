@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  validates_uniqueness_of :invitation_id, :on => :create, :message => 'has already been used'
+
   def self.create_with_omniauth(auth)
     create! do |user|
       user.provider = auth["provider"]

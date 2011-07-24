@@ -1,17 +1,8 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>Reading</h1>
+<p>Yay for reading!</p>
 <% if current_user %>
   <% if !current_user.username %>
-    <%= form_for current_user do |f| %>
-      <%= f.error_messages %>
-      <div class="field">
-        <%= f.label :username %>
-        <%= f.text_field :username %>
-      </div>
-      <div class="actions">
-        <%= f.submit %>
-      </div>
-    <% end %>
+    <%= render :partial => 'users/username_form', :locals => { :user => current_user } %>
   <% end %>
   Welcome <%= current_user.name %>
   <%= link_to "Sign Out", signout_path %>

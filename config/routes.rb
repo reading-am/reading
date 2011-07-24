@@ -1,15 +1,19 @@
 Reading::Application.routes.draw do
-  resources :users
   resources :posts
-
-  get "home/index"
   
   root :to => "home#index"
 
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
 
+  match "/users" => redirect("/")
+  resources :users do
+    resources :posts
+  end
   match '/:username' => 'users#show'
+  match '/:username/edit' => 'users#edit'
+  match '/:username/posts' => 'posts#index'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

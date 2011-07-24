@@ -9,6 +9,8 @@ Reading::Application.routes.draw do
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
 
+  match '/:username' => 'users#show'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

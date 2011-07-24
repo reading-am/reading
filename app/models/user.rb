@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :posts, :dependent => :destroy
 
-  validates_uniqueness_of :invitation_id, :on => :create, :message => 'has already been used'
+  validates_uniqueness_of :username, :message => 'is taken'
 
   def self.create_with_omniauth(auth)
     create! do |user|

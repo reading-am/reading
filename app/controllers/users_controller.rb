@@ -38,7 +38,11 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    if params[:username]
+      @user = User.find_by_username(params[:username])
+    else
+      @user = User.find(params[:id])
+    end
   end
 
   # POST /users

@@ -8,7 +8,7 @@ var $ = jQuery,
         dataType: 'jsonp',
         data: {token: token, url: window.location.href, title: window.document.title},
         success: function(data, textStatus, jqXHR){
-          if(data.status == 400){
+          if(data.meta.status == 400){
             alert('Error');
           } else {
             alert('succes');

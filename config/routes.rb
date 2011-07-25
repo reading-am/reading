@@ -10,7 +10,8 @@ Reading::Application.routes.draw do
   resources :users do
     resources :posts
   end
-  match '/:username' => 'users#show'
+  # match '/:username' => 'users#show'
+  match '/:username' => 'posts#index'
   match '/:username/edit' => 'users#edit'
   match '/:username/posts' => 'posts#index'
 

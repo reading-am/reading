@@ -57,10 +57,11 @@ class PostsController < ApplicationController
       if @post.save
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
-        format.json { render :json => 'success', :callback => params[:callback] }
+        format.json { render :json => {:meta => {:status => 200, :msg => 'OK'}}, :callback => params[:callback] }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
+        format.json { render :json => {:meta => {:status => 400, :msg => 'Bad Request'}}, :callback => params[:callback] }
       end
     end
   end

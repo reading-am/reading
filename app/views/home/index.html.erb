@@ -1,9 +1,6 @@
 <h1>Reading</h1>
 <p>Yay for reading!</p>
 <% if current_user %>
-  <% if !current_user.username %>
-    <%= render :partial => 'users/username_form', :locals => { :user => current_user } %>
-  <% end %>
   Welcome <%= current_user.name %>
   <%= link_to "Sign Out", signout_path %>
 <% else %>

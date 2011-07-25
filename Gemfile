@@ -31,3 +31,4 @@ gem 'pg'
 # end
 
 gem 'omniauth'
+gem 'jquery-rails'

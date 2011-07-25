@@ -47,13 +47,17 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
-    @post = Post.new(params[:post])
-    @post.user = current_user
+    @user = User.find_by_token(params[:token])
+    @post = Post.new
+    @post.user = @user
+    @post.url = params[:url]
+    @post.title = params[:title]
 
     respond_to do |format|
       if @post.save
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
+        format.json { render :json => 'success', :callback => params[:callback] }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }

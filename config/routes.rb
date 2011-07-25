@@ -6,6 +6,8 @@ Reading::Application.routes.draw do
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
 
+  match '/post' => 'posts#create'
+
   match "/users" => redirect("/")
   resources :users do
     resources :posts

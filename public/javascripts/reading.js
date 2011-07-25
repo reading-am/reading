@@ -8,14 +8,10 @@ var $ = jQuery,
         dataType: 'jsonp',
         data: {token: token, url: window.location.href, title: window.document.title},
         success: function(data, textStatus, jqXHR){
-          if(data.error){
-            if(data.error == 'missing cookie' || data.error == 'missing name'){
-              alert('Go to http://leppert.me/code/reeeding to set your name');
-            } else {
-              alert(data.error);
-            }
+          if(data.status == 400){
+            alert('Error');
           } else {
-            alert('Posted to HipChat');
+            alert('succes');
           }
         }
       });

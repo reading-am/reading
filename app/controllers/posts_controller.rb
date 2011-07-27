@@ -58,7 +58,7 @@ class PostsController < ApplicationController
         api_token = '***REMOVED***'
         client = HipChat::Client.new(api_token)
         notify_users = true
-        message = render_to_string :partial => 'posts/hipchat_message'
+        message = render_to_string :partial => 'posts/hipchat_message.html.erb'
         client['Test'].send('Reading.am', message, notify_users)
 
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

@@ -9,14 +9,8 @@
 <% end %>
 </div>
 <div id="rightnow">
-  Some people are reading this stuff:
-
+  <h4>Some people are reading this stuff</h4>
   <table>
-  <tr>
-    <th>User</th>
-    <th>Page</th>
-  </tr>
-
 <% @posts.each do |post| %>
   <tr>
     <td><%= post.user.name %></td>

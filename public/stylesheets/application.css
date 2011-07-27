@@ -1,6 +1,8 @@
 html {
+  -webkit-font-smoothing: antialiased;
   font-family: Helvetica, Arial, sans-serif;
-  color:#222;
+  color:#111;
+  background:#FCFCFC;
 }
 
 a {
@@ -16,10 +18,21 @@ a {
 h1 {
   font-weight:bold;
   font-size:36px;
-  margin:36px 0 0;
+  margin:60px 0 0;
 }
 h3 {
   margin:10px 0 0;
+}
+h4 {
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+table {
+  margin:5px 0 0 15px;
+}
+td {
+  padding:2px 5px;
 }
 
 #wrapper {
@@ -27,10 +40,6 @@ h3 {
   margin:0 auto;
 }
 
-#welcome {
+#welcome, #rightnow {
   margin:20px 0 0;
-}
-
-#rightnow {
-  margin:50px 0 0;
 }

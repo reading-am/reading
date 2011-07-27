@@ -12,4 +12,9 @@ class User < ActiveRecord::Base
       user.token = Digest::MD5.hexdigest(Time.new.to_s + user.uid)
     end
   end
+
+  def first_name
+    self.name.split(' ')[0]
+  end
+
 end

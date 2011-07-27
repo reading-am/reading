@@ -2,13 +2,15 @@
 <html>
 <head>
   <title>Reading</title>
+  <%= stylesheet_link_tag 'http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css' %>
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag 'jquery.min', 'application' %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
+  <div id="wrapper">
+  <%= yield %>
+  </div>
 
 </body>
 </html>

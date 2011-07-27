@@ -32,3 +32,4 @@ gem 'pg'
 
 gem 'omniauth'
 gem 'jquery-rails'
+gem 'hipchat'

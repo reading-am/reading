@@ -55,6 +55,12 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+        api_token = '***REMOVED***'
+        client = HipChat::Client.new(api_token)
+        notify_users = true
+        message = render_to_string :partial => 'posts/hipchat_message'
+        client['Test'].send('Reading.am', message, notify_users)
+
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render :json => {:meta => {:status => 200, :msg => 'OK'}}, :callback => params[:callback] }

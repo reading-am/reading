@@ -1,0 +1,36 @@
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  color:#222;
+}
+
+a {
+  color:#000;
+  background:#FFFABA;
+  text-decoration:none;
+}
+  a:hover {
+    text-decoration:underline;
+    background:#FFF461;
+  }
+
+h1 {
+  font-weight:bold;
+  font-size:36px;
+  margin:36px 0 0;
+}
+h3 {
+  margin:10px 0 0;
+}
+
+#wrapper {
+  width:960px;
+  margin:0 auto;
+}
+
+#welcome {
+  margin:20px 0 0;
+}
+
+#rightnow {
+  margin:50px 0 0;
+}

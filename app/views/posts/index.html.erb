@@ -10,12 +10,21 @@
 <h4><%= @user.first_name %> has been reading</h4>
 
 <table>
+<% time = '' %>
 <% @posts.each do |post| %>
   <tr>
-    <td><%= link_to post.title, post.url %></td>
-    <td><%# link_to 'Show', post %></td>
-    <td><%# link_to 'Edit', edit_post_path(post) %></td>
-    <td><%# link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="date">
+    <%=
+      if time != post.created_at.strftime("%m/%d")
+        time = post.created_at.strftime("%m/%d")
+      end
+    %>
+    </td>
+    <td><%= link_to post.title, post.url, :class => 'external' %></td>
+    <% if post.user.id == current_user.id %>
+      <td><%= link_to 'Edit', edit_post_path(post), :class => 'admin action' %></td>
+      <td><%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

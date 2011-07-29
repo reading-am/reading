@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :username, :message => 'is taken'
 
+  def to_param
+    username
+  end
+
   def self.create_with_omniauth(auth)
     create! do |user|
       require "digest"

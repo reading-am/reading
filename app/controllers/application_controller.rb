@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
   def check_login
     if current_user
-      redirect_to :controller => :posts, :action => index
+      redirect_to "/#{current_user.username}/posts"
     end
   end
 end

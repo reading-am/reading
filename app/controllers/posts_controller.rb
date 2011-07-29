@@ -4,11 +4,11 @@ class PostsController < ApplicationController
   def index
     if params[:username]
       @user = User.find_by_username(params[:username])
-      @posts = @user.posts
+      @posts = @user.posts.order('created_at DESC')
     elsif logged_in?
-      @posts = current_user.posts
+      @posts = current_user.posts.order('created_at DESC')
     else
-      @posts = Post.all
+      @posts = Post.order('created_at DESC')
     end
 
     respond_to do |format|

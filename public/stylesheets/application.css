@@ -6,18 +6,12 @@ html {
 
 a {
   color:#000;
-  background:#FFFABA;
-  text-decoration:none;
 }
-  a:hover {
-    text-decoration:underline;
-    background:#FFF461;
-  }
 
 h1 {
   font-weight:bold;
   font-size:36px;
-  margin:60px 0 0;
+  margin:0;
 }
 h3 {
   margin:10px 0 0;
@@ -28,7 +22,7 @@ h4 {
 }
 
 table {
-  margin:5px 0 0 15px;
+  margin:5px 0 0;
 }
 td {
   padding:2px 5px;
@@ -36,9 +30,31 @@ td {
 
 #wrapper {
   width:960px;
-  margin:0 auto;
+  margin:60px auto;
 }
 
 #welcome, #content {
   margin:20px 0 0;
+}
+
+a.external {
+  background:#FFFABA;
+  text-decoration:none;
+}
+  a.external:hover {
+    background:#FFF461;
+    text-decoration:underline;
+  }
+
+.date, .admin.action {
+  padding:0 5px 0 0;
+  font-size: 12px
+}
+
+.admin.action {
+  visibility:hidden;
+}
+
+tr:hover .admin.action {
+  visibility:visible;
 }

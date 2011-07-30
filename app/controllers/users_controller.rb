@@ -43,6 +43,9 @@ class UsersController < ApplicationController
     else
       @user = User.find(params[:id])
     end
+    if @user != current_user
+      redirect_to "/#{@user.username}"
+    end
   end
 
   # POST /users

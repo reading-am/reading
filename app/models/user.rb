@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
   has_many :domains, :through => :posts
+  has_many :hooks
 
   validates_uniqueness_of :username, :message => 'is taken'
 

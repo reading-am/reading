@@ -1,11 +1,10 @@
 Reading::Application.routes.draw do
-  resources :posts
-  
   root :to => "home#index"
 
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
 
+  resources :posts
   match '/post' => 'posts#create'
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
@@ -14,6 +13,8 @@ Reading::Application.routes.draw do
     resources :posts
   end
 
+
+  match '/pick_a_username' => 'users#pick_a_username'
   match "/users" => redirect("/")
   resources :users do
     resources :posts

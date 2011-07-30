@@ -10,10 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110730170158) do
+ActiveRecord::Schema.define(:version => 20110730205011) do
 
   create_table "domains", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "hooks", :force => true do |t|
+    t.string   "provider"
+    t.string   "token"
+    t.string   "action"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

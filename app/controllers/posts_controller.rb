@@ -59,13 +59,9 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        # move this to a config file
-        api_token = '4acf4be53765ca92e1aca994811761'
-        client = HipChat::Client.new(api_token)
-        notify_users = true
-        message = render_to_string :partial => 'posts/hipchat_message.html.erb'
-        client['Test'].send('Reading.am', "#{message}", notify_users)
-
+        @post.user.hooks do |hook|
+          hook.execute
+        end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render :json => {:meta => {:status => 200, :msg => 'OK'}}, :callback => params[:callback] }

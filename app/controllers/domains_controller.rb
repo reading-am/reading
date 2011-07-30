@@ -13,7 +13,7 @@ class DomainsController < ApplicationController
   # GET /domains/1
   # GET /domains/1.xml
   def show
-    @domain = Domain.find(params[:id])
+    @domain = Domain.find_by_name(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +34,7 @@ class DomainsController < ApplicationController
 
   # GET /domains/1/edit
   def edit
-    @domain = Domain.find(params[:id])
+    @domain = Domain.find_by_name(params[:id])
   end
 
   # POST /domains
@@ -56,7 +56,7 @@ class DomainsController < ApplicationController
   # PUT /domains/1
   # PUT /domains/1.xml
   def update
-    @domain = Domain.find(params[:id])
+    @domain = Domain.find_by_name(params[:id])
 
     respond_to do |format|
       if @domain.update_attributes(params[:domain])
@@ -72,7 +72,7 @@ class DomainsController < ApplicationController
   # DELETE /domains/1
   # DELETE /domains/1.xml
   def destroy
-    @domain = Domain.find(params[:id])
+    @domain = Domain.find_by_name(params[:id])
     @domain.destroy
 
     respond_to do |format|

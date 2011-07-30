@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     if user.username
       redirect_to "/#{user.username}/posts", :notice => "Signed in!"
     else
-      redirect_to '/pick_a_username'
+      redirect_to '/pick_a_url'
     end
   end
 

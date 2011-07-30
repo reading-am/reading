@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       if current_user.username
         redirect_to "/#{current_user.username}/posts"
       else
-        redirect_to '/pick_a_username'
+        redirect_to '/pick_a_url'
       end
     end
   end

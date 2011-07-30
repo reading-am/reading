@@ -92,8 +92,8 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /pick_a_username
-  def pick_a_username
+  # GET /pick_a_url
+  def pick_a_url
     if !current_user
       redirect_to root_url
     elsif current_user.username

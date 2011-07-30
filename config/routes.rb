@@ -16,7 +16,7 @@ Reading::Application.routes.draw do
   end
 
 
-  match '/pick_a_username' => 'users#pick_a_username'
+  match '/pick_a_url' => 'users#pick_a_url'
   match "/users" => redirect("/")
   resources :users do
     resources :posts

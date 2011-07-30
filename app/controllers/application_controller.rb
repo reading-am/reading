@@ -15,7 +15,11 @@ class ApplicationController < ActionController::Base
 
   def check_login
     if current_user
-      redirect_to "/#{current_user.username}/posts"
+      if current_user.username
+        redirect_to "/#{current_user.username}/posts"
+      else
+        redirect_to '/pick_a_username'
+      end
     end
   end
 end

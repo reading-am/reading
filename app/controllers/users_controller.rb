@@ -88,5 +88,18 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  # GET /pick_a_username
+  def pick_a_username
+    if !current_user
+      redirect_to root_url
+    elsif current_user.username
+      redirect_to "/#{current_user.username}/edit"
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+    end
+  end
 end
 

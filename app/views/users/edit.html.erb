@@ -2,20 +2,4 @@
 
 <%= render 'form' %>
 
-<h4>Hooks</h4>
-<h5>Hooks are run every time you post</h5>
-<table>
-  <tr>
-    <th>Provider</th>
-    <th>Access Token</th>
-    <th>Action</th>
-  </tr>
-<% @user.hooks.each do |hook| %>
-  <tr>
-    <td><%= hook.provider %></td>
-    <td><%= hook.token %></td>
-    <td><%= hook.action %></td>
-  </tr>
-<% end %>
-</table>
-<%= link_to 'Add a hook', @user %>
+<%= render 'hooks/index' %>

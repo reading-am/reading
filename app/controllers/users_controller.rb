@@ -98,7 +98,11 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # show.html.erb
+      if params[:user] and current_user.update_attributes(params[:user])
+        format.html { redirect_to("/#{current_user.username}/posts", :notice => 'User was successfully updated.') }
+      else
+        format.html
+      end
     end
   end
 end

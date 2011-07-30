@@ -1,0 +1,6 @@
+<% if current_user && @user == current_user %>
+  You haven't posted anything that you're reading yet. To get started, drag this bookmarklet to your bookmarks bar:
+  <%= link_to 'Reading', bookmarklet_url(current_user), :class => 'bookmarklet' %>
+<% else %>
+  <%= @user.name %> hasn't posted anything yet
+<% end %>

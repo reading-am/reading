@@ -49,9 +49,10 @@ class PostsController < ApplicationController
   def create
     @user = User.find_by_token(params[:token])
     @post = Post.new
-    @post.user = @user
-    @post.url = params[:url]
-    @post.title = params[:title]
+    @post.user    = @user
+    @post.url     = params[:url]
+    @post.domain  = Domain.find_or_create_by_name(:name => URI.parse(@post.url).host)
+    @post.title   = params[:title]
 
     respond_to do |format|
       if @post.save

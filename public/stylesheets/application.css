@@ -1,6 +1,8 @@
 html {
   -webkit-font-smoothing: antialiased;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
   color:#111;
 }
 

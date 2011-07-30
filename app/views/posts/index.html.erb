@@ -7,7 +7,13 @@
 <% end %>
 
 <div id="content">
-<h4><%= @user.first_name %> has been reading</h4>
+<h4>
+<% if @domain %>
+  People have been reading on <%= @domain.name %>
+<% else %>
+  <%= @user.first_name %> has been reading
+<% end %>
+</h4>
 
 <table>
 <% time = '' %>

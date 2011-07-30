@@ -11,6 +11,10 @@
     <td><%= hook.provider %></td>
     <td><%= hook.token %></td>
     <td><%= hook.action %></td>
+    <% if hook.user.id == current_user.id %>
+    <td><%= link_to 'Edit', edit_hook_path(hook), :class => 'admin action' %></td>
+    <td><%= link_to 'Delete', hook, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

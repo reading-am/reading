@@ -7,6 +7,8 @@ Reading::Application.routes.draw do
   resources :posts
   match '/post' => 'posts#create'
 
+  resources :hooks
+
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
   match '/domains/:domain_name' => 'posts#index', :constraints => { :domain_name => /[0-9A-Za-z\-\.]+/ }
   resources :domains, :constraints => { :id => /[0-9A-Za-z\-\.]+/ } do

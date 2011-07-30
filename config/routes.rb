@@ -1,4 +1,6 @@
 Reading::Application.routes.draw do
+  resources :domains
+
   resources :posts
   
   root :to => "home#index"

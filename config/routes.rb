@@ -1,6 +1,4 @@
 Reading::Application.routes.draw do
-  resources :domains
-
   resources :posts
   
   root :to => "home#index"
@@ -9,6 +7,11 @@ Reading::Application.routes.draw do
   match "/signout" => "sessions#destroy", :as => :signout
 
   match '/post' => 'posts#create'
+
+  # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
+  resources :domains, :constraints => { :id => /[0-9A-Za-z\-\.]+/ } do
+    resources :posts
+  end
 
   match "/users" => redirect("/")
   resources :users do

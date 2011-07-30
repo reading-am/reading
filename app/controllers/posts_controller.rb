@@ -50,17 +50,22 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
-    @user = User.find_by_token(params[:token])
-    @post = Post.new
-    @post.user    = @user
+    @post         = Post.new
+    @post.user    = User.find_by_token(params[:token])
     @post.url     = params[:url]
     @post.domain  = Domain.find_or_create_by_name(:name => URI.parse(@post.url).host)
     @post.title   = params[:title]
 
     respond_to do |format|
       if @post.save
-        @post.user.hooks do |hook|
-          hook.execute
+        @post.user.hooks.each do |hook|
+          # TODO I'd like to make this a helper of some sort
+          if hook.provider == 'hipchat'
+            client = HipChat::Client.new(hook.token)
+            notify_users = true
+            message = render_to_string :partial => 'posts/hipchat_message.html.erb'
+            client[hook.action].send('Reading.am', "#{message}", notify_users)
+          end
         end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }

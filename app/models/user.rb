@@ -23,4 +23,7 @@ class User < ActiveRecord::Base
     self.name.split(' ')[0]
   end
 
+  def display_name
+    self.name || self.username
+  end
 end

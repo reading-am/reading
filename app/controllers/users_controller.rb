@@ -46,6 +46,10 @@ class UsersController < ApplicationController
     if @user != current_user
       redirect_to "/#{@user.username}"
     end
+    
+    if params[:user] and @user.update_attributes(params[:user])
+      flash[:notice] = 'User was successfully updated.'
+    end
   end
 
   # POST /users

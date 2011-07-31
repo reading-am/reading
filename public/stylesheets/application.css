@@ -64,6 +64,17 @@ tr:hover .admin.action {
   visibility:visible;
 }
 
-#username {
+#username, #username_actions {
   font-size:32px;
+  float:left;
 }
+  #username label {
+    font-size:14px;
+  }
+#username_actions {
+  font-size:56px;
+}
+  #username_actions input {
+    width:100px;
+    margin:36px;
+  }

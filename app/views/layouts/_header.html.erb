@@ -11,8 +11,10 @@
 <h3>What <%= youre %> reading. Not what <%= you %> like<%= 's' if @user %>. Not what <%= you %> find<%= 's' if @user %> interesting. Just what <%= youre %> reading.</h3>
 <div id="welcome">
 <% if current_user %>
-  Hey there <%= link_to current_user.name, "/#{current_user.username}/posts" %>
-  <%= link_to "Settings", "/#{current_user.username}/edit" %> | <%= link_to "Log Out", signout_path %>
+  <% if current_user.username %>
+    Hey there <%= link_to current_user.name, "/#{current_user.username}/posts" %>
+    <%= link_to "Settings", "/#{current_user.username}/edit" %> | <%= link_to "Log Out", signout_path %>
+  <% end %>
 <% else %>
   Sign up or in with <%= link_to "Twitter", "/auth/twitter" %> or <%= link_to "Facebook", "/auth/facebook" %>.
 <% end %>

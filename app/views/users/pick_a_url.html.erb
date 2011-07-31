@@ -12,9 +12,9 @@
   <% end %>
   <div class="field" id="username">
     <%= f.label :username, 'Choose a url:' %><br>
-    <b>reading.am/</b><%= f.text_field :username, :placeholder => 'i_live_here' %>
+    <b>reading.am/ </b><%= f.text_field :username, :placeholder => 'i_live_here', :size => 20 %>
   </div>
-  <div class="actions">
+  <div class="actions" id="username_actions">
     <%= f.submit 'Finish' %>
   </div>
 <% end %>

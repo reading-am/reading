@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def create
     auth = request.env["omniauth.auth"]
-    user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
+    user = User.find_or_create_by_provider_and_uid(auth["provider"], auth["uid"])
     session[:user_id] = user.id
     if user.username
       redirect_to "/#{user.username}/posts", :notice => "Signed in!"

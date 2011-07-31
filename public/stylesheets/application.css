@@ -63,3 +63,7 @@ a.external {
 tr:hover .admin.action {
   visibility:visible;
 }
+
+#username {
+  font-size:32px;
+}

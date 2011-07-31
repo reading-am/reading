@@ -10,11 +10,11 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <%= f.label :username %>
-    <%= f.text_field :username %>
+  <div class="field" id="username">
+    <%= f.label :username, 'Choose a url:' %><br>
+    <b>reading.am/</b><%= f.text_field :username, :placeholder => 'i_live_here' %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Finish' %>
   </div>
 <% end %>

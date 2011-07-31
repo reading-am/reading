@@ -12,8 +12,8 @@
 <div id="welcome">
 <% if current_user %>
   <% if current_user.username %>
-    Hey there <%= link_to current_user.name, "/#{current_user.username}/posts" %>
-    <%= link_to "Settings", "/#{current_user.username}/edit" %> | <%= link_to "Log Out", signout_path %>
+    Hey there <%= link_to current_user.display_name, "/#{current_user.username}/posts" %>
+    <%= link_to "Settings", "/#{current_user.username}/edit" %> | <%= link_to "Sign Out", signout_path %>
   <% end %>
 <% else %>
   Sign up or in with <%= link_to "Twitter", "/auth/twitter" %> or <%= link_to "Facebook", "/auth/facebook" %>.

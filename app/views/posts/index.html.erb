@@ -7,7 +7,7 @@
 <% if @domain %>
   People have been reading on <%= @domain.name %>
 <% else %>
-  What <%= if @user == current_user then "you've" else "#{@user.first_name} has" end %> been reading
+  What <%= if @user == current_user then "you've" else "#{@user.display_name} has" end %> been reading
 <% end %>
 </h4>
 

@@ -61,6 +61,7 @@ tr:hover .admin.action {
 #username, #username_actions {
   font-size:32px;
   float:left;
+  margin:18px 0 0;
 }
   #username label {
     font-size:14px;

@@ -7,12 +7,12 @@
     youre = "#{you} is"
   end
 %>
-<h1><a href="/">&#9996; Reading</a></h1>
-<h3>What <%= youre %> reading. Not what <%= you %> like<%= 's' if @user %>. Not what <%= you %> find<%= 's' if @user %> interesting. Just what <%= youre %> reading.</h3>
+<h1>&#9996; Reading</a></h1>
+<h3>What <%= youre %> reading. Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
 <div id="welcome">
 <% if current_user %>
   <% if current_user.username %>
-    Hey there <%= link_to current_user.display_name, "/#{current_user.username}/posts", :class => 'user' %>
+    Hey there <%= link_to current_user.first_name || current_user.username, "/#{current_user.username}/posts", :class => 'user' %>. 
     <%= link_to "Settings", "/#{current_user.username}/edit" %> | <%= link_to "Sign Out", signout_path %>
   <% end %>
 <% else %>

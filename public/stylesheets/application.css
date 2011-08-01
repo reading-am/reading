@@ -29,7 +29,7 @@ h4 {
 }
 
 table {
-  margin:5px 0 0;
+  margin:5px 0 20px;
 }
 td {
   padding:2px 5px;
@@ -79,6 +79,3 @@ h1 a, a.user {
   h1 a:hover, a.user:hover {
     background:none
   }
-a.user {
-  text-decoration:underline;
-}

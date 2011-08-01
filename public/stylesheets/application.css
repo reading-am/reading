@@ -7,17 +7,19 @@ html {
 }
 
 a {
+  background:#FFFABA;
+  text-decoration:none;
   color:#000;
 }
-
+  a:hover {
+    background:#FFF461;
+    text-decoration:underline;
+  }
 h1 {
   font-weight:bold;
   font-size:36px;
   margin:0;
 }
-  a {
-    text-decoration:none;
-  }
 h3 {
   margin:10px 0 0;
 }
@@ -42,15 +44,6 @@ td {
   margin:20px 0 0;
 }
 
-a.external {
-  background:#FFFABA;
-  text-decoration:none;
-}
-  a.external:hover {
-    background:#FFF461;
-    text-decoration:underline;
-  }
-
 .date, .admin.action {
   padding:0 5px 0 0;
   font-size: 12px
@@ -58,6 +51,7 @@ a.external {
 
 .admin.action {
   visibility:hidden;
+  background:none;
 }
 
 tr:hover .admin.action {
@@ -78,3 +72,13 @@ tr:hover .admin.action {
     width:100px;
     margin:36px;
   }
+
+h1 a, a.user {
+  background:none;
+}
+  h1 a:hover, a.user:hover {
+    background:none
+  }
+a.user {
+  text-decoration:underline;
+}

@@ -4,7 +4,7 @@
   <% @posts.each do |post| %>
     <tr>
       <td><%= post.user.display_name %></td>
-      <td><%= link_to post.title, post.url %></td>
+      <td><%= link_to post.title, post.url, :class => 'external' %></td>
     </tr>
   <% end %>
   </table>

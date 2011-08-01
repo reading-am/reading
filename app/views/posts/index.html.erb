@@ -2,7 +2,6 @@
   <%= render :partial => 'blank_slate' %>
 <% else %>
 
-<%= link_to 'Reading', bookmarklet_url(current_user), :class => 'bookmarklet' %>
 <div id="content">
 <h4>
 <% if @domain %>
@@ -33,4 +32,7 @@
 </table>
 
 </div>
+
 <% end %>
+
+<%= link_to 'Reading', bookmarklet_url(current_user), :class => 'bookmarklet' if current_user and current_user == @user %>

@@ -18,7 +18,7 @@ a {
 h1 {
   font-weight:bold;
   font-size:36px;
-  margin:0;
+  line-height:36px;
 }
 h3 {
   margin:10px 0 0;
@@ -37,15 +37,30 @@ td {
 
 #wrapper {
   width:960px;
-  margin:60px auto;
+  margin:50px auto;
+}
+
+.bookmarklet {
+  text-align:center;
+  display:inline-block;
+  margin:60px 0 0;
+  width:275px;
 }
 
 #welcome, #content, #blank_slate {
   margin:20px 0 0;
 }
+  #blank_slate .bookmarklet {
+    font-size: 36px;
+    font-weight:bold;
+    line-height: 56px;
+    width: 615px;
+    margin:15px 0;
+  }
   #blank_slate li {
     list-style-type: circle;
-    margin-left: 20px;
+    margin-left: 30px;
+    padding-left: 3px;
   }
 
 .date, .admin.action {
@@ -85,12 +100,15 @@ h1 a, a.user {
     background:none
   }
 
-.bookmarklet {
-  font-size: 36px;
+.user {
   font-weight:bold;
-  line-height: 56px;
-  width: 600px;
-  text-align:center;
+}
+
+.edit_user .field {
+  margin:5px 0;
+}
+
+.edit_user label {
   display:inline-block;
-  margin:15px 0;
+  width:100px;
 }

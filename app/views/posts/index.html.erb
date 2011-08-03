@@ -1,8 +1,9 @@
+<div id="content">
+
 <% if @user.posts.size == 0 %>
   <%= render :partial => 'blank_slate' %>
 <% else %>
 
-<div id="content">
 <h4>
 <% if @domain %>
   People have been reading on <%= @domain.name %>
@@ -31,8 +32,9 @@
 <% end %>
 </table>
 
-</div>
-
 <% end %>
 
-<%= link_to 'Reading', bookmarklet_url(current_user), :class => 'bookmarklet' if current_user and current_user == @user %>
+<%= link_to '✌ Reading', bookmarklet_url(current_user), :alt => 'Drag me to your bookmarks bar', :class => 'bookmarklet' if current_user and current_user == @user %>
+
+</div>
+

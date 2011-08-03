@@ -1,5 +1,6 @@
 <% if current_user && @user == current_user %>
-  You haven't posted anything that you're reading yet. To get started, drag this bookmarklet to your bookmarks bar:
+  You haven't posted anything that you're reading yet.<br>
+  To get started, drag this bookmarklet to your bookmarks bar:<br>
 <% else %>
   <%= @user.display_name %> hasn't posted anything yet
 <% end %>

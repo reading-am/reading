@@ -1,6 +1,15 @@
+<div id="blank_slate">
 <% if current_user && @user == current_user %>
-  You haven't posted anything that you're reading yet.<br>
-  To get started, drag this bookmarklet to your bookmarks bar:<br>
+  You haven't posted anything that you're reading yet. If you had, you'd see it here.<br>
+  To get started, drag this link to your bookmarks bar:<br>
+  <%= link_to '✌ Reading', bookmarklet_url(current_user), :alt => 'Drag me to your bookmarks bar', :class => 'bookmarklet' if current_user and current_user == @user %><br>
+  When you visit a webpage you're about to start reading, press that bookmark. That's it. Also:
+  <ul>
+    <li>Don't wait until after you've read it.</li>
+    <li>Don't think too much about it.</li>
+    <li>Don't worry about whether the content is good or bad or boring or interesting,<br> everyone else will figure that out for themselves.</li>
+  </ul>
 <% else %>
   <%= @user.display_name %> hasn't posted anything yet
 <% end %>
+</div>

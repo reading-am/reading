@@ -98,10 +98,12 @@ class PostsController < ApplicationController
   # DELETE /posts/1.xml
   def destroy
     @post = Post.find(params[:id])
-    @post.destroy
+    if @post.user == current_user
+      @post.destroy
+    end
 
     respond_to do |format|
-      format.html { redirect_to(posts_url) }
+      format.html { redirect_to("/#{current_user.username}") }
       format.xml  { head :ok }
     end
   end

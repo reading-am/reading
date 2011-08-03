@@ -24,7 +24,7 @@
     </td>
     <td><%= link_to post.title, post.url, :class => 'external' %></td>
     <% if post.user.id == current_user.id %>
-      <td><%= link_to 'Edit', edit_post_path(post), :class => 'admin action' %></td>
+      <%# <td><%= link_to 'Edit', edit_post_path(post), :class => 'admin action' </td>%>
       <td><%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>

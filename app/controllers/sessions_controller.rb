@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     user = User.find_or_create_by_provider_and_uid(auth["provider"], auth["uid"])
     session[:user_id] = user.id
     if user.username
-      redirect_to "/#{user.username}/posts", :notice => "Signed in!"
+      redirect_to "/#{user.username}", :notice => "Signed in!"
     else
       redirect_to '/pick_a_url'
     end

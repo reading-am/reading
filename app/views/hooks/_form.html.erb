@@ -22,7 +22,7 @@
   <div class="field" style="display:none;">
     <%= f.label :action %>
     <%= f.text_field :action %>
-    <%= f.select(:action, [:post, :get]) %>
+    <select id="action_select"><option>get</option><option>post</option></select>
   </div>
 
   <div class="actions">

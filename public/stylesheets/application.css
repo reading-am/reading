@@ -105,11 +105,11 @@ h1 a, a.user {
   font-weight:bold;
 }
 
-.edit_user .field {
+.edit_user .field, .new_hook .field {
   margin:5px 0;
 }
 
-.edit_user label {
+.edit_user label, .new_hook label {
   display:inline-block;
   width:100px;
 }

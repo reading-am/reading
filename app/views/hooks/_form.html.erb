@@ -12,16 +12,17 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :method %>
-    <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a method'}) %>
+    <%= f.label :type %>
+    <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a hook type'}) %>
   </div>
-  <div class="field">
-    <%= f.label :token %><br>
+  <div class="field" style="display:none;">
+    <%= f.label :token %>
     <%= f.text_field :token %>
   </div>
-  <div class="field">
-    <%= f.label :action %><br>
+  <div class="field" style="display:none;">
+    <%= f.label :action %>
     <%= f.text_field :action %>
+    <%= f.select(:action, [:post, :get]) %>
   </div>
 
   <div class="actions">

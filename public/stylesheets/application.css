@@ -47,7 +47,7 @@ td {
   width:275px;
 }
 
-#welcome, #content, #blank_slate {
+#welcome, #content, #blank_slate, #hooks {
   margin:20px 0 0;
 }
   #blank_slate .bookmarklet {

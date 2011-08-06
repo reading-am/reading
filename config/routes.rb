@@ -23,7 +23,7 @@ Reading::Application.routes.draw do
   end
   # match '/:username' => 'users#show'
   match '/:username' => 'posts#index'
-  match '/:username/edit' => 'users#edit'
+  match '/:username/settings' => 'users#edit'
   match '/:username/posts' => 'posts#index'
 
 

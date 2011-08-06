@@ -14,6 +14,11 @@ class HooksController < ApplicationController
   # GET /hooks/1.xml
   def show
     @hook = Hook.find(params[:id])
+    if !logged_in?
+      redirect_to "/"
+    elsif @hook.user != current_user
+      redirect_to "/#{current_user.username}/settings"
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,6 +29,9 @@ class HooksController < ApplicationController
   # GET /hooks/new
   # GET /hooks/new.xml
   def new
+    if !logged_in?
+      redirect_to "/"
+    end
     @hook = Hook.new
 
     respond_to do |format|
@@ -35,12 +43,21 @@ class HooksController < ApplicationController
   # GET /hooks/1/edit
   def edit
     @hook = Hook.find(params[:id])
+    if !logged_in?
+      redirect_to "/"
+    elsif @hook.user != current_user
+      redirect_to "/#{current_user.username}/settings"
+    end
   end
 
   # POST /hooks
   # POST /hooks.xml
   def create
+    if !logged_in?
+      redirect_to '/'
+    end
     @hook = Hook.new(params[:hook])
+    @hook.user = current_user
 
     respond_to do |format|
       if @hook.save
@@ -57,6 +74,11 @@ class HooksController < ApplicationController
   # PUT /hooks/1.xml
   def update
     @hook = Hook.find(params[:id])
+    if !logged_in?
+      redirect_to "/"
+    elsif @hook.user != current_user
+      redirect_to "/#{current_user.username}/settings"
+    end
 
     respond_to do |format|
       if @hook.update_attributes(params[:hook])
@@ -73,6 +95,11 @@ class HooksController < ApplicationController
   # DELETE /hooks/1.xml
   def destroy
     @hook = Hook.find(params[:id])
+    if !logged_in?
+      redirect_to "/"
+    elsif @hook.user != current_user
+      redirect_to "/#{current_user.username}"
+    end
     @hook.destroy
 
     respond_to do |format|

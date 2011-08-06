@@ -101,7 +101,7 @@ class UsersController < ApplicationController
     if !current_user
       redirect_to root_url
     elsif current_user.username
-      redirect_to "/#{current_user.username}/edit"
+      redirect_to "/#{current_user.username}/settings"
     end
 
     respond_to do |format|

@@ -30,16 +30,20 @@ $(function() {
       case 'hipchat':
         $('label[for="hook_token"]').text('Token');
         $('label[for="hook_action"]').text('Room');
-        $('input#hook_action').show();
-        $('select#hook_action').hide();
+        $('#hook_action').show().val('');
+        $('#action_select').hide();
         break;
       case 'url':
         $('label[for="hook_token"]').text('URL');
         $('label[for="hook_action"]').text('Method');
-        $('input#hook_action').hide();
-        $('select#hook_action').show();
+        $('#hook_action').hide().val($('#action_select').val());
+        $('#action_select').show();
         break;
     }
+  });
+
+  $('#action_select').change(function(){
+    $('#hook_action').val($(this).val());
   });
 
 });

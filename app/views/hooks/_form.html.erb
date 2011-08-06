@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :provider %><br />
-    <%= f.text_field :provider %>
+    <%= f.label :method %><br />
+    <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a method'}) %>
   </div>
   <div class="field">
     <%= f.label :token %><br />

@@ -140,6 +140,7 @@ DEPENDENCIES
   curb
   hipchat
   jquery-rails
+  nokogiri
   omniauth
   pg
   rails (= 3.0.9)

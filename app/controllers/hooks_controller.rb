@@ -61,7 +61,7 @@ class HooksController < ApplicationController
 
     respond_to do |format|
       if @hook.save
-        format.html { redirect_to(@hook, :notice => 'Hook was successfully created.') }
+        format.html { redirect_to("/#{current_user.username}/settings", :notice => 'Hook was successfully created.') }
         format.xml  { render :xml => @hook, :status => :created, :location => @hook }
       else
         format.html { render :action => "new" }
@@ -82,7 +82,7 @@ class HooksController < ApplicationController
 
     respond_to do |format|
       if @hook.update_attributes(params[:hook])
-        format.html { redirect_to(@hook, :notice => 'Hook was successfully updated.') }
+        format.html { redirect_to("/#{current_user.username}/settings", :notice => 'Hook was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -103,7 +103,7 @@ class HooksController < ApplicationController
     @hook.destroy
 
     respond_to do |format|
-      format.html { redirect_to(hooks_url) }
+      format.html { redirect_to("/#{current_user.username}/settings") }
       format.xml  { head :ok }
     end
   end

@@ -1,5 +1,7 @@
-<h1>New hook</h1>
+<div id="content">
+<h4>New hook</h4>
 
 <%= render 'form' %>
 
-<%= link_to 'Back', "/#{current_user.username}/settings" %>
+<%= link_to 'Back', "/#{current_user.username}/settings", :class => 'back' %>
+</div>

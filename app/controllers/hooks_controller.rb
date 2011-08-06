@@ -59,8 +59,17 @@ class HooksController < ApplicationController
     @hook = Hook.new(params[:hook])
     @hook.user = current_user
 
+    # check ownership of a url
+    if @hook.provider == 'url'
+      c = Curl::Easy.perform @hook.token
+      doc = Nokogiri::HTML(c.body_str)
+      if current_user.token != doc.search('meta[property="rd:token"]').first['content']
+        @hook.errors.add 'token', 'Not owned'
+      end
+    end
+
     respond_to do |format|
-      if @hook.save
+      if @hook.errors.size == 0 and @hook.save
         format.html { redirect_to("/#{current_user.username}/settings", :notice => 'Hook was successfully created.') }
         format.xml  { render :xml => @hook, :status => :created, :location => @hook }
       else

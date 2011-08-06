@@ -65,6 +65,8 @@ class PostsController < ApplicationController
             notify_users = true
             message = render_to_string :partial => 'posts/hipchat_message.html.erb'
             client[hook.action].send('Reading.am', "#{message}", notify_users)
+          elsif hook.provider == 'url'
+            Curl::Easy.perform hook.token
           end
         end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

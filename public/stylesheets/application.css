@@ -118,3 +118,8 @@ a.back, .actions {
   display:inline-block;
   margin:10px 0 0;
 }
+
+th {
+  font-weight:bold;
+  font-size: 12px;
+}

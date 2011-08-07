@@ -26,6 +26,8 @@ $(function() {
   $("#hook_provider").change(function(){
     $this = $(this);
     $('.field').show();
+    $('.hook_message').hide();
+    $('#'+$this.val()+'_message').show();
     switch($this.val()){
       case 'hipchat':
         $('label[for="hook_token"]').text('Token');

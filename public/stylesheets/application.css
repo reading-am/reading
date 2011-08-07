@@ -129,3 +129,6 @@ th {
   margin:15px 0;
   font-size:12px;
 }
+  h5.hook_message {
+    display:inline;
+  }

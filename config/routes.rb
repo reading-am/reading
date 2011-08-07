@@ -8,7 +8,7 @@ Reading::Application.routes.draw do
   match '/post' => 'posts#create'
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
-  match '/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/)*[0-9A-Z\-]*(?:\.[A-Z]+)+.*/i}
+  match '/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?:\.[A-Z]+)+.*/i}
 
   resources :hooks
 

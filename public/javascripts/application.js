@@ -7,7 +7,7 @@ $(function() {
     document_host = document.location.href.split("/")[2];
 
     if (link_host != document_host) {
-      window.open(this.href);
+      window.open('http://0.0.0.0:3000/'+this.href);
       return false;
     }
   });

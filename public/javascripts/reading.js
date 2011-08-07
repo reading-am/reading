@@ -1,6 +1,6 @@
 (function($, token){
 
-var on_reading = (window.location.host.indexOf('reading.am') >= 0),
+var on_reading = (window.location.host.indexOf('reading.am') >= 0 || window.location.host.indexOf('0.0.0.0') >= 0),
     url   = on_reading ? window.location.href.split(window.location.origin)[1].substring(1) : window.location.href,
     title = on_reading ? '' : window.document.title;
 

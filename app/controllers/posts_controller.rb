@@ -120,4 +120,7 @@ class PostsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def visit
+  end
 end

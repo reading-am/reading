@@ -4,6 +4,9 @@ Reading::Application.routes.draw do
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
 
+  # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
+  match '/:url' => 'posts#visit', :constraints => {:url => /(http|https|ftp|ftps|sftp|ssh).*/}
+
   resources :posts
   match '/post' => 'posts#create'
 

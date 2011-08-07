@@ -5,7 +5,7 @@ Reading::Application.routes.draw do
   match "/signout" => "sessions#destroy", :as => :signout
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
-  match '/:url' => 'posts#visit', :constraints => {:url => /(http|https|ftp|ftps|sftp|ssh).*/}
+  match '/:url' => 'posts#visit', :constraints => {:url => /^(?:(?:http|https|ftp):\/\/)*[0-9A-Z\-]*(?:\.[A-Z]+)+.*$/i}
 
   resources :posts
   match '/post' => 'posts#create'
@@ -13,7 +13,7 @@ Reading::Application.routes.draw do
   resources :hooks
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
-  match '/domains/:domain_name' => 'posts#index', :constraints => { :domain_name => /[0-9A-Za-z\-\.]+/ }
+  match '/domains/:domain_name' => 'posts#index', :constraints => { :domain_name => /[0-9A-Z\-\.]+/i }
   resources :domains, :constraints => { :id => /[0-9A-Za-z\-\.]+/ } do
     resources :posts
   end

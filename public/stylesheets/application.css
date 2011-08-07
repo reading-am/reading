@@ -123,3 +123,9 @@ th {
   font-weight:bold;
   font-size: 12px;
 }
+
+.hook_message {
+  display:none;
+  margin:15px 0;
+  font-size:12px;
+}

@@ -15,6 +15,22 @@
     <%= f.label :type %>
     <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a hook type'}) %>
   </div>
+  <div id="hipchat_message" class="hook_message">
+    Messages will be posted to <a href="https://www.hipchat.com">HipChat</a> in the following format.
+    You'll need an <a href="https://hipchat.com/group_admin/api">API Token</a>.
+    <pre>
+    <%= link_to current_user.display_name, "/#{current_user.username}" %> is reading <%= link_to "Page Title Here", "http://example.com" %></pre>
+  </div>
+  <div id="url_message" class="hook_message">
+    The following data will be sent via POST or GET to a URL of your choosing each time you add a post:
+    <pre>
+    post[url]
+    post[title]</pre>
+    In order to add a URL hook, you'll need to verify ownership of the URL by adding this meta tag anywhere in the &lt;head&gt; of your HTML:
+    <pre>
+    <%= "<meta property=\"rd:token\" content=\"#{current_user.token}\">".gsub(/</,"<").gsub(/>/,">") %></pre>
+    Once the hook has been added, this meta tag can be removed.
+  </div>
   <div class="field" style="display:none;">
     <%= f.label :token %>
     <%= f.text_field :token %>

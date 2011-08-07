@@ -50,14 +50,18 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
-    @post         = Post.new
-    @post.user    = User.find_by_token(params[:token])
-    @post.url     = params[:url]
-    @post.domain  = Domain.find_or_create_by_name(:name => URI.parse(@post.url).host)
-    @post.title   = params[:title]
+    @post       = Post.new
+    @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    if !@post.user
+      @post.errors.add 'user', 'Invalid'
+    else
+      @post.url     = params[:url]
+      @post.domain  = Domain.find_or_create_by_name(:name => URI.parse(@post.url).host)
+      @post.title   = params[:title]
+    end
 
     respond_to do |format|
-      if @post.save
+      if @post.errors.size == 0 and @post.save
         @post.user.hooks.each do |hook|
           # TODO I'd like to make this a helper of some sort
           if hook.provider == 'hipchat'

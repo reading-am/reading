@@ -19,11 +19,6 @@ var show_success = function(){
   $loaded_div.fadeIn().delay(1000).fadeOut(400, function(){ $(this).remove(); });
 }
 
-if(window.location.host.indexOf('reading.am') >= 0){
-  var url = window.location.href,
-      token = cookie.token;
-}
-
 $.ajax({
   url: 'http://0.0.0.0:3000/post.json',
   dataType: 'jsonp',
@@ -37,4 +32,4 @@ $.ajax({
   }
 });
 
-})(jQuery, reading.token);
+})(jQuery, (typeof reading != 'undefined' && typeof reading.token != 'undefined') ? reading.token : '');

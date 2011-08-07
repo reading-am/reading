@@ -90,7 +90,7 @@ class PostsController < ApplicationController
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        format.json { render :json => {:meta => {:status => 400, :msg => 'Bad Request'}}, :callback => params[:callback] }
+        format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@post.errors.to_yaml}"}}, :callback => params[:callback] }
       end
     end
   end

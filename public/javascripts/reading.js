@@ -32,4 +32,4 @@ $.ajax({
   }
 });
 
-})(jQuery, (typeof reading != 'undefined' && typeof reading.token != 'undefined') ? reading.token : '');
+})(jQuery, reading.token);

@@ -69,9 +69,15 @@ class PostsController < ApplicationController
             url = Addressable::URI.parse(hook.token)
             if hook.action == 'get'
               query_values = url.query_values || {}
-              url.query_values = query_values.update({:url => @post.url, :title => @post.title})
+              url.query_values = query_values.update({'post[url]' => @post.url, 'post[title]' => @post.title})
+              Curl::Easy.perform url.to_s
+            else
+              Curl::Easy.http_post(
+                url.to_s,
+                Curl::PostField.content('post[url]', @post.url),
+                Curl::PostField.content('post[title]', @post.title)
+              )
             end
-            Curl::Easy.perform url.to_s
           end
         end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

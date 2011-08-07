@@ -8,6 +8,7 @@ Reading::Application.routes.draw do
   match '/post' => 'posts#create'
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
+  # Rails or Mongrel for some reason will turn http:// into http:/ so the second / has a ? to make it optional
   match '/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?:\.[A-Z]+)+.*/i}
 
   resources :hooks

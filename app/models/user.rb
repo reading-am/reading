@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   has_many :hooks, :dependent => :destroy
 
   validates_uniqueness_of :username, :message => 'is taken'
+  
+  before_create { generate_token(:token) }
+  before_create { generate_token(:auth_token) }
 
   def to_param
     username
@@ -15,8 +18,13 @@ class User < ActiveRecord::Base
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.name = auth["user_info"]["name"]
-      user.token = Digest::MD5.hexdigest(Time.new.to_s + user.uid)
     end
+  end
+
+  def generate_token(column)
+    begin
+      self[column] = SecureRandom.urlsafe_base64
+    end while User.exists?(column => self[column])
   end
 
   def first_name

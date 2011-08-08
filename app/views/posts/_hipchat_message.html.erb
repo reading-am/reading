@@ -1,1 +1,1 @@
-<%= link_to @post.user.display_name, "http://reading.am/#{@post.user.username}" %> is reading <%= link_to @post.page.title, @post.page.url %>
+<%= link_to @post.user.display_name, "http://reading.am/#{@post.user.username}" %> is reading <%= link_to @post.page.title, "http://0.0.0.0:3000/#{@post.page.url}" %>

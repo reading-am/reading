@@ -1,6 +1,6 @@
 <script>
   reading = {
-    token: "<%= current_user.token %>"
+    token: "<%= current_user.token if logged_in? %>"
   };
 </script>
 <%= javascript_include_tag 'reading' %>

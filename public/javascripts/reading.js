@@ -4,6 +4,8 @@ var on_reading = (window.location.host.indexOf('reading.am') >= 0 || window.loca
     url   = on_reading ? window.location.href.split(window.location.origin)[1].substring(1) : window.location.href,
     title = on_reading ? '' : window.document.title;
 
+if(on_reading && !token) return window.location = url;
+
 var show_overlay = function(){
   var $hand = $('<span>&#9996;</span>').css({'font-size':'56px'}),
       $subtext = $('<span><br>Reading</span>'),

@@ -71,13 +71,18 @@ class PostsController < ApplicationController
             url = Addressable::URI.parse(hook.token)
             if hook.action == 'get'
               query_values = url.query_values || {}
-              url.query_values = query_values.update({'post[url]' => @post.page.url, 'post[title]' => @post.page.title})
+              url.query_values = query_values.update({
+                'post[title]' => @post.page.title,
+                'post[url]' => @post.page.url,
+                'post[wrapped_url]' => @post.page.wrapped_url
+              })
               Curl::Easy.perform url.to_s
             else
               Curl::Easy.http_post(
                 url.to_s,
+                Curl::PostField.content('post[title]', @post.page.title),
                 Curl::PostField.content('post[url]', @post.page.url),
-                Curl::PostField.content('post[title]', @post.page.title)
+                Curl::PostField.content('post[wrapped_url]', @post.page.wrapped_url)
               )
             end
           end

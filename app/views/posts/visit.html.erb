@@ -4,5 +4,9 @@
     referrer_id: <%= @referrer_id %>
   };
 </script>
+
 <%= javascript_include_tag 'reading' %>
-You're going to visit this shit!
+
+<div id="visit">
+  <h2>Loading <span><%= params[:url] %></span> and adding it to your reading list.</h2>
+</div>

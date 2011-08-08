@@ -6,10 +6,11 @@ Reading::Application.routes.draw do
 
   resources :posts
   match '/post' => 'posts#create'
-
+  match "/p/:id" => redirect {|params| "/flows/#{Base58.decode(params[:id])}" }
+  
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional
-  match '/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?:\.[A-Z]+)+.*/i}
+  match '(/p/:id)/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?:\.[A-Z]+)+.*/i}
 
   resources :hooks
 

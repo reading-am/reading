@@ -3,11 +3,16 @@
 
 $(function() {
   $("a").click(function(){
-    link_host = this.href.split("/")[2];
-    document_host = document.location.href.split("/")[2];
+    var $this = $(this),
+        link_host = this.href.split("/")[2],
+        document_host = document.location.href.split("/")[2];
 
-    if (link_host != document_host) {
-      window.open('http://0.0.0.0:3000/'+this.href);
+    if (link_host != document_host){
+      var pre = 'http://0.0.0.0:3000/';
+      if(typeof $this.data('base58_id')){
+        pre += 'p/'+$this.data('base58_id')+'/';
+      }
+      window.open(pre+this.href);
       return false;
     }
   });

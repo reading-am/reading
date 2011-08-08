@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   has_many :domains, :through => :posts
   has_many :hooks, :dependent => :destroy
 
-  validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i
-  validates_uniqueness_of :username, :message => 'is taken'
+  validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
+  validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true
   
   before_create { generate_token(:token) }
   before_create { generate_token(:auth_token) }

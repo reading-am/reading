@@ -10,10 +10,10 @@
 <h1><a href="/">✌ Reading</a></h1>
 <h3>What <%= youre %> reading. Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
 <div id="welcome">
-<% if current_user %>
+<% if logged_in? %>
   <% if current_user.username %>
-    Hey there <%= link_to current_user.first_name || current_user.username, "/#{current_user.username}", :class => 'user' %>. 
-    <%= link_to "Settings", "/#{current_user.username}/settings" %> | <%= link_to "Sign Out", signout_path %>
+    Hey there <%= link_to current_user.first_name || current_user.username, "/#{current_user.username}", :class => 'user' %>.<br>
+    <%= link_to "Home", "/#{current_user.username}" %> - <%= link_to "Settings", "/#{current_user.username}/settings" %> - <%= link_to "Sign Out", signout_path %>
   <% end %>
 <% else %>
   Sign up or in with <%= link_to "Twitter", "/auth/twitter", :class => 'external' %> or <%= link_to "Facebook", "/auth/facebook", :class => 'external' %>.

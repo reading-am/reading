@@ -51,6 +51,9 @@ td {
 #welcome, #content, #blank_slate, #hooks {
   margin:20px 0 0;
 }
+  #welcome {
+    line-height:22px;
+  }
   #blank_slate .bookmarklet {
     font-size: 36px;
     font-weight:bold;

@@ -8,6 +8,7 @@ var show_overlay = function(){
   var $hand = $('<span>&#9996;</span>').css({'font-size':'56px'}),
       $subtext = $('<span><br>Reading</span>'),
       $loaded_div = $('<div></div>').css({
+        'z-index':    '999',
         padding:      '20px 10px 5px',
         background:   'yellow',
         position:     'fixed',

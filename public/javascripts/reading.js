@@ -38,7 +38,7 @@ var show_overlay = function(){
 };
 
 $.ajax({
-  url: 'http://0.0.0.0:3000/post.json',
+  url: 'http://reading.am/post.json',
   dataType: 'jsonp',
   data: {token: params.token, referrer_id: params.referrer_id, url: url, title: window.document.title},
   success: function(data, textStatus, jqXHR){

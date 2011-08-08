@@ -10,6 +10,6 @@ class Post < ActiveRecord::Base
 
   #TODO consider moving this to a view helper
   def wrapped_url
-    "http://0.0.0.0:3000/p/#{Base58.encode(self.id)}/#{self.page.url}"
+    "http://reading.am/p/#{Base58.encode(self.id)}/#{self.page.url}"
   end
 end

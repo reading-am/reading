@@ -71,7 +71,7 @@ class PostsController < ApplicationController
               url.query_values = query_values.update({
                 'post[title]' => @post.page.title,
                 'post[url]' => @post.page.url,
-                'post[wrapped_url]' => @post.page.wrapped_url
+                'post[wrapped_url]' => @post.wrapped_url
               })
               Curl::Easy.perform url.to_s
             else
@@ -79,7 +79,7 @@ class PostsController < ApplicationController
                 url.to_s,
                 Curl::PostField.content('post[title]', @post.page.title),
                 Curl::PostField.content('post[url]', @post.page.url),
-                Curl::PostField.content('post[wrapped_url]', @post.page.wrapped_url)
+                Curl::PostField.content('post[wrapped_url]', @post.wrapped_url)
               )
             end
           end

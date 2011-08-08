@@ -30,6 +30,7 @@ GEM
     activesupport (3.0.9)
     addressable (2.2.4)
     arel (2.0.10)
+    base58 (0.1.0)
     builder (2.1.2)
     crack (0.1.8)
     curb (0.7.15)
@@ -138,6 +139,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
+  base58
   curb
   hipchat
   jquery-rails

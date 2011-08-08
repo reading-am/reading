@@ -6,4 +6,8 @@ class Post < ActiveRecord::Base
   # has_one     :reference_post
 
   validates_presence_of :user, :page
+
+  def wrapped_url
+    "http://0.0.0.0:3000/p/#{Base58.encode(self.id)}/#{self.page.url}"
+  end
 end

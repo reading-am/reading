@@ -1,4 +1,4 @@
-<% if @user.posts.size == 0 %>
+<% if @user and @user.posts.size == 0 %>
   <%= render :partial => 'blank_slate' %>
 <% else %>
 

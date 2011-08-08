@@ -23,7 +23,7 @@
     if (typeof jQuery == 'undefined') {
       alert('There was an error loading jquery');
     } else {
-      jQuery.getScript('http://0.0.0.0:3000/reading.js');
+      jQuery.getScript('http://reading.am/reading.js');
     }
   });
 })();

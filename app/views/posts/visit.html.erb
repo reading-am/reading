@@ -1,6 +1,7 @@
 <script>
   reading = {
-    token: "<%= current_user.token if logged_in? %>"
+    token: "<%= current_user.token if logged_in? %>",
+    referrer_id: <%= @referrer_id %>
   };
 </script>
 <%= javascript_include_tag 'reading' %>

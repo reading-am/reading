@@ -129,5 +129,6 @@ class PostsController < ApplicationController
   end
 
   def visit
+    @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0;
   end
 end

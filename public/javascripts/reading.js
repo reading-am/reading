@@ -1,10 +1,21 @@
-(function($, token){
+(function($, params){
+if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
-var on_reading = (window.location.host.indexOf('reading.am') >= 0 || window.location.host.indexOf('0.0.0.0') >= 0),
-    url   = on_reading ? window.location.href.split(window.location.origin)[1].substring(1) : window.location.href,
+var on_reading = (window.location.host.indexOf('reading.am') >= 0 || window.location.host.indexOf('0.0.0.0') >= 0);
+
+var parse_url = function(){
+  var url = window.location.href.split(window.location.origin)[1].substring(1);
+  if(url.substring(0,2) == 'p/'){
+    url = url.substring(url.indexOf('/',2)+1);
+  }
+  if(url.indexOf('://') == -1) url = 'http://'+url;
+  return url;
+};
+
+var url   = on_reading ? parse_url() : window.location.href,
     title = on_reading ? '' : window.document.title;
 
-if(on_reading && !token) return window.location = url;
+if(on_reading && !params.token) return window.location = url;
 
 var show_overlay = function(){
   var $hand = $('<span>&#9996;</span>').css({'font-size':'56px'}),
@@ -18,7 +29,7 @@ var show_overlay = function(){
         right:        '15px',
         color:        '#000',
         'font-size':  '12px',
-        'line-height': '15px',
+        'line-height':'15px',
         'text-align': 'center',
         'display':    'none'
       }).append($hand).append($subtext);
@@ -29,7 +40,7 @@ var show_overlay = function(){
 $.ajax({
   url: 'http://0.0.0.0:3000/post.json',
   dataType: 'jsonp',
-  data: {token: token, url: url, title: window.document.title},
+  data: {token: params.token, referrer_id: params.referrer_id, url: url, title: window.document.title},
   success: function(data, textStatus, jqXHR){
     if(data.meta.status == 400){
       alert('Error');
@@ -43,4 +54,4 @@ $.ajax({
   }
 });
 
-})(jQuery, reading.token);
+})(jQuery, reading);

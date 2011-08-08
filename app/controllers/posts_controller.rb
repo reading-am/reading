@@ -52,14 +52,11 @@ class PostsController < ApplicationController
   def create
     @post       = Post.new
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    if !@post.user
-      @post.errors.add 'user', 'Invalid'
-    else
-      @post.page = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
-    end
+    @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
+    @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
 
     respond_to do |format|
-      if @post.errors.size == 0 and @post.save
+      if @post.save
         @post.user.hooks.each do |hook|
           # TODO I'd like to make this a helper of some sort
           if hook.provider == 'hipchat'

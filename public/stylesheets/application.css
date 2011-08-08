@@ -141,3 +141,13 @@ th {
   h5.hook_message {
     display:inline;
   }
+
+#visit {
+  margin:150px 0 0;
+}
+#visit h2 {
+  font-size:16px;
+}
+#visit span {
+  text-decoration:underline;
+}

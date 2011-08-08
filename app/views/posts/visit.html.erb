@@ -8,5 +8,5 @@
 <%= javascript_include_tag 'reading' %>
 
 <div id="visit">
-  <h2>Loading <span><%= params[:url] %></span> and adding it to your reading list.</h2>
+  <h2>Loading <span><%= params[:url] %></span><% if logged_in? %> and adding it to your reading list<% end %>.</h2>
 </div>

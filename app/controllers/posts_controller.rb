@@ -61,7 +61,7 @@ class PostsController < ApplicationController
           # TODO I'd like to make this a helper of some sort
           if hook.provider == 'hipchat'
             client = HipChat::Client.new(hook.token)
-            notify_users = false
+            notify_users = true
             message = render_to_string :partial => 'posts/hipchat_message.html.erb'
             client[hook.action].send('Reading.am', "#{message}", notify_users)
           elsif hook.provider == 'url'

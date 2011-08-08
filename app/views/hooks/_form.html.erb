@@ -24,8 +24,9 @@
   <div id="url_message" class="hook_message">
     The following data will be sent via POST or GET to a URL of your choosing each time you add a post:
     <pre>
-    post[url]
-    post[title]</pre>
+    post[title] - The page title of the post
+    post[url] - The url of the post
+    post[wrapped_url] - The url of the post routed through Reading for automatic list updates</pre>
     In order to add a URL hook, you'll need to verify ownership of the URL by adding this meta tag anywhere in the &lt;head&gt; of your HTML:
     <pre>
     <%= "<meta property=\"rd:token\" content=\"#{current_user.token}\">".gsub(/</,"<").gsub(/>/,">") %></pre>

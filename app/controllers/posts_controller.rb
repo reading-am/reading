@@ -55,9 +55,7 @@ class PostsController < ApplicationController
     if !@post.user
       @post.errors.add 'user', 'Invalid'
     else
-      @post.url     = params[:url]
-      @post.domain  = Domain.find_or_create_by_name(:name => URI.parse(@post.url).host)
-      @post.title   = params[:title]
+      @post.page = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
     end
 
     respond_to do |format|

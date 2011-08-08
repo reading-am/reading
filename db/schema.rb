@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110807190554) do
+ActiveRecord::Schema.define(:version => 20110808002004) do
 
   create_table "domains", :force => true do |t|
     t.string   "name"
@@ -36,13 +36,11 @@ ActiveRecord::Schema.define(:version => 20110807190554) do
   end
 
   create_table "posts", :force => true do |t|
-    t.string   "url"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
-    t.integer  "domain_id"
     t.integer  "referrer_post_id"
+    t.integer  "page_id"
   end
 
   create_table "users", :force => true do |t|

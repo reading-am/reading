@@ -17,16 +17,16 @@ $(function() {
     }
   });
 
-  var bookmarklet_hover = function(){
-    var $this = $('a.bookmarklet'),
-        alt = $this.attr('alt');
-    $this
-      .attr('alt', $this.text())
-      .text(alt);
-  };
-  bookmarklet_hover(); // call this on load so that the browser bookmark bar shows the right text
-
-  $("a.bookmarklet").hover(bookmarklet_hover, bookmarklet_hover);
+  $('.bookmarklet').hover(function(){
+    var $this = $(this);
+    $this.find('span').hide();
+    $this.find('a').css('display', 'block');
+  }, function(){
+    // safari won't let you drag with this in place
+    // var $this = $(this);
+    // $this.find('span').show();
+    // $this.find('a').hide();
+  });
 
   $("#hook_provider").change(function(){
     $this = $(this);

@@ -2,7 +2,10 @@
 <% if current_user && @user == current_user %>
   You haven't posted anything that you're reading yet. If you had, you'd see it here.<br>
   To get started, drag this link to your bookmarks bar:<br>
-  <%= link_to '✌ Reading', bookmarklet_url(current_user), :alt => 'Drag me to your bookmarks bar', :class => 'bookmarklet' if logged_in? and current_user == @user %><br>
+  <div class="bookmarklet">
+    <span>Drag me to your bookmarks bar</span>
+    <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
+  </div>
   When you visit a webpage, press that bookmark before you start reading so your friends can come read with you.<br>
   That's it, but also:
   <ul>

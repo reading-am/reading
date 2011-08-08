@@ -33,6 +33,9 @@
 
 </div>
 
-<%= link_to '✌ Reading', bookmarklet_url(current_user), :alt => 'Drag me to your bookmarks bar', :class => 'bookmarklet' if logged_in? and current_user == @user %>
+<div class="bookmarklet">
+  <span>Drag me to your bookmarks bar</span>
+  <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
+</div>
 
 <% end %>

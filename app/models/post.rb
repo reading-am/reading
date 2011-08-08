@@ -8,6 +8,7 @@ class Post < ActiveRecord::Base
 
   validates_presence_of :user, :page
 
+  #TODO consider moving this to a view helper
   def wrapped_url
     "http://0.0.0.0:3000/p/#{Base58.encode(self.id)}/#{self.page.url}"
   end

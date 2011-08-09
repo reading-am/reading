@@ -2,17 +2,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    if params[:domain_name]
-      @domain = Domain.find_by_name(params[:domain_name])
-      @posts = @domain.posts.order('created_at DESC')
-    elsif params[:username]
-      @user = User.find_by_username(params[:username])
-      @posts = @user.posts.order('created_at DESC')
-    elsif logged_in?
-      @posts = current_user.posts.order('created_at DESC')
-    else
-      @posts = Post.order('created_at DESC')
-    end
+    @posts = Post.order('created_at DESC')
 
     respond_to do |format|
       format.html # index.html.erb

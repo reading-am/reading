@@ -13,11 +13,12 @@ class DomainsController < ApplicationController
   # GET /domains/1
   # GET /domains/1.xml
   def show
-    @domain = Domain.find_by_name(params[:id])
+    @domain = Domain.find_by_name(params[:domain_name])
+    @posts = @domain.posts
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @domain }
+      format.html { render 'posts/index' }
+      format.xml  { render 'posts/index', :xml => @posts }
     end
   end
 

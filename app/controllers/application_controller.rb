@@ -20,6 +20,14 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
 
+  def authenticate
+    # This should probably be throwing some sort of error
+    # instead of simply redirecting, especially for AJAX requests
+    if !logged_in?
+      redirect_to root_path
+    end
+  end
+
   def check_login
     if current_user
       if current_user.username

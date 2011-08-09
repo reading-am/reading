@@ -1,9 +1,16 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  
+
+  before_filter :set_time_zone
+
   helper_method :current_user, :logged_in?
 
   private
+
+  def set_time_zone
+    min = cookies[:timezone].to_i
+    Time.zone = ActiveSupport::TimeZone[-min.minutes]
+  end
 
   def current_user
     @current_user ||= User.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]

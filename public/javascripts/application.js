@@ -1,5 +1,8 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
+// write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
+if(!($.cookie('timezone'))) {
+  current_time = new Date();
+  $.cookie('timezone', current_time.getTimezoneOffset(), { path: '/', expires: 10 } );
+}
 
 $(function() {
   $("a").click(function(){

@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   end
 
   def first_name
-    self.name.split(' ')[0]
+    self.name.split(' ')[0] if self.name
   end
 
   def display_name

@@ -151,3 +151,10 @@ th {
 #visit span {
   text-decoration:underline;
 }
+
+a.follow_button {
+  background-color:#B3FEFF;
+}
+a.follow_button:hover {
+  background-color:#00FBFF;
+}

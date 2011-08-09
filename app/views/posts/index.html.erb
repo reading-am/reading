@@ -11,6 +11,10 @@
 <% end %>
 </h4>
 
+<% if logged_in? and @user != current_user %>
+  <a href="#" class="follow_button"><%= current_user.following?(@user) ? 'Unf' : 'F' %>ollow <%= @user.first_name %></a>
+<% end %>
+
 <table>
 <% time = '' %>
 <% @posts.each do |post| %>

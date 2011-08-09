@@ -1,9 +1,9 @@
 <%
-  if @user.nil? or (current_user && current_user.id == @user.id)
+  if @user.nil? or (logged_in? && current_user.id == @user.id)
     you = "you"
     youre = "you're"
   else
-    you = @user.first_name
+    you = @user.first_name || @user.username
     youre = "#{you} is"
   end
 %>

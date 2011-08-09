@@ -3,6 +3,16 @@ class User < ActiveRecord::Base
   has_many :domains, :through => :posts
   has_many :hooks, :dependent => :destroy
 
+  # from: http://ruby.railstutorial.org/chapters/following-users
+  has_many :relationships, :foreign_key => "follower_id",
+                           :dependent => :destroy
+  has_many :following, :through => :relationships, :source => :followed
+
+  has_many :reverse_relationships, :foreign_key => "followed_id",
+                                   :class_name => "Relationship",
+                                   :dependent => :destroy
+  has_many :followers, :through => :reverse_relationships, :source => :follower
+
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true
   
@@ -34,5 +44,17 @@ class User < ActiveRecord::Base
 
   def display_name
     self.name || self.username
+  end
+
+  def following?(followed)
+    relationships.find_by_followed_id(followed)
+  end
+
+  def follow!(followed)
+    relationships.create!(:followed_id => followed.id)
+  end
+
+  def unfollow!(followed)
+    relationships.find_by_followed_id(followed).destroy
   end
 end

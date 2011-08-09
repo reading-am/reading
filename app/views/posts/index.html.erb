@@ -11,9 +11,13 @@
 <% end %>
 </h4>
 
+<nav id="subnav">
+<a href="#" class="active">Reading List</a>
+- <a href="#">Feed</a>
 <% if logged_in? and @user != current_user %>
-  <a href="#" class="follow_button"><%= current_user.following?(@user) ? 'Unf' : 'F' %>ollow <%= @user.first_name %></a>
+  - <a href="#" class="follow_button"><%= current_user.following?(@user) ? 'Unf' : 'F' %>ollow <%= @user.first_name %></a>
 <% end %>
+</nav>
 
 <table>
 <% time = '' %>

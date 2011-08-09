@@ -152,9 +152,14 @@ th {
   text-decoration:underline;
 }
 
-a.follow_button {
+#subnav a {
   background-color:#B3FEFF;
 }
-a.follow_button:hover {
-  background-color:#00FBFF;
+  #subnav a:hover {
+    background-color:#00FBFF;
+  }
+#subnav a.active, #subnav a.active:hover {
+  background:none;
+  text-decoration:underline;
+  cursor:default;
 }

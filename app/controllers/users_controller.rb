@@ -19,9 +19,11 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
+    @posts = params[:type] == 'feed' ? @user.feed : @user.posts
+
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
+      format.html { render 'posts/index' }
+      format.xml  { render 'posts/index', :xml => @posts }
     end
   end
 

@@ -11,6 +11,17 @@
 <% end %>
 </h4>
 
+<% if @user %>
+<nav id="subnav">
+<a href="/<%= @user.username %>"<% if params[:type] == 'feed' %> class="active"<% end %>>Reading List</a>
+- <a href="/<%= @user.username %>/posts"<% if params[:type] == 'posts' %> class="active"<% end %>>Posts</a>
+<% if logged_in? and @user != current_user %>
+  <% follow_text = current_user.following?(@user) ? 'unfollow' : 'follow' %>
+  - <a href="<%= "/#{@user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= @user.first_name %></a>
+<% end %>
+</nav>
+<% end %>
+
 <table>
 <% time = '' %>
 <% @posts.each do |post| %>
@@ -33,9 +44,11 @@
 
 </div>
 
+<% if @user and @user == current_user %>
 <div class="bookmarklet">
   <span>Drag me to your bookmarks bar</span>
   <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
 </div>
+<% end %>
 
 <% end %>

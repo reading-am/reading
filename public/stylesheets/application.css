@@ -151,3 +151,20 @@ th {
 #visit span {
   text-decoration:underline;
 }
+
+#subnav a {
+  background-color:#B3FEFF;
+}
+  #subnav a:hover {
+    background-color:#00FBFF;
+    text-decoration:none;
+  }
+#subnav a.active, #subnav a.active:hover {
+  background:none;
+  text-decoration:underline;
+  cursor:default;
+}
+
+.disabled {
+  opacity: 0.5;
+}

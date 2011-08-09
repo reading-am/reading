@@ -22,7 +22,7 @@
       end
     %>
     </td>
-    <td><%= link_to post.page.title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %></td>
+    <td><%= link_to post.page.title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %><% if post.referrer_post and post.user != post.referrer_post.user %> because of <%= link_to post.referrer_post.user.display_name, "/#{post.referrer_post.user.username}" %><% end %></td>
     <% if logged_in? and post.user.id == current_user.id %>
       <%# <td><%= link_to 'Edit', edit_post_path(post), :class => 'admin action' </td>%>
       <td><%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>

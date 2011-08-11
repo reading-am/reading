@@ -4,7 +4,7 @@ if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 var on_reading = (window.location.host.indexOf('reading.am') >= 0 || window.location.host.indexOf('0.0.0.0') >= 0);
 
 var parse_url = function(){
-  var url = window.location.href.split(window.location.origin)[1].substring(1);
+  var url = window.location.href.split(window.location.host)[1].substring(1);
   if(url.substring(0,2) == 'p/'){
     url = url.substring(url.indexOf('/',2)+1);
   }

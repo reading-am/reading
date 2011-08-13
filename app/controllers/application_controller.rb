@@ -20,6 +20,12 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
 
+  def authenticate
+    if !logged_in?
+      false
+    end
+  end
+
   def check_login
     if current_user
       if current_user.username

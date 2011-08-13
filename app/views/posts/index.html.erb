@@ -16,7 +16,7 @@
 - <a href="#">Feed</a>
 <% if logged_in? and @user != current_user %>
   <% follow_text = current_user.following?(@user) ? 'unfollow' : 'follow' %>
-  - <a href="<%= "/#{@user.username}/#{follow_text}" %>" class="follow"><%= "#{follow_text.capitalize} #{@user.first_name}" %></a>
+  - <a href="<%= "/#{@user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= @user.first_name %></a>
 <% end %>
 </nav>
 

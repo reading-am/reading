@@ -26,9 +26,11 @@ Reading::Application.routes.draw do
     resources :posts
   end
   # match '/:username' => 'users#show'
-  match '/:username' => 'posts#index'
+  match '/:username'          => 'posts#index'
   match '/:username/settings' => 'users#edit'
-  match '/:username/posts' => 'posts#index'
+  match '/:username/posts'    => 'posts#index'
+  match '/:username/follow'   => 'relationships#create'
+  match '/:username/unfollow' => 'relationships#destroy'
 
 
   # The priority is based upon order of creation:

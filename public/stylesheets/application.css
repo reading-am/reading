@@ -163,3 +163,7 @@ th {
   text-decoration:underline;
   cursor:default;
 }
+
+.disabled {
+  opacity: 0.5;
+}

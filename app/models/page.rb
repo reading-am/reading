@@ -1,6 +1,6 @@
 class Page < ActiveRecord::Base
   belongs_to :domain
-  has_many :posts
+  has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
 
   validates_presence_of :url

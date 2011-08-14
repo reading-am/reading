@@ -5,7 +5,7 @@ if(!($.cookie('timezone'))) {
 }
 
 $(function() {
-  $("a").click(function(){
+  $("a.external").click(function(){
     var $this = $(this),
         link_host = this.href.split("/")[2],
         document_host = document.location.href.split("/")[2];

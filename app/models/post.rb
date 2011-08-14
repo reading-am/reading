@@ -8,9 +8,10 @@ class Post < ActiveRecord::Base
 
   validates_presence_of :user, :page
 
- default_scope :order => 'posts.created_at DESC'
+  # Feed logic from: http://ruby.railstutorial.org/chapters/following-users#sec:the_status_feed
+  default_scope :order => 'posts.created_at DESC'
 
-  # Return microposts from the users being followed by the given user.
+  # Return posts from the users being followed by the given user.
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
   private

@@ -43,6 +43,17 @@ class PostsController < ApplicationController
     @post       = Post.new
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
+    if @post.page.new_record?
+      if !params[:title].nil?
+        @post.page.title = params[:title]
+      else
+        c = Curl::Easy.perform @post.page.url
+        doc = Nokogiri::HTML(c.body_str)
+        title = doc.search('title').first
+        @post.page.title = title.nil? ? '' : doc.search('title').first.text
+      end
+    end
+
     @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
 
     respond_to do |format|

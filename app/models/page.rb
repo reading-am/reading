@@ -3,7 +3,7 @@ class Page < ActiveRecord::Base
   has_many :posts
   has_many :users, :through => :posts
 
-  validates_presence_of :url, :title
+  validates_presence_of :url
 
   before_create { parse_domain }
 

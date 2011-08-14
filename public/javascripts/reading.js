@@ -37,10 +37,13 @@ var show_overlay = function(){
   $loaded_div.fadeIn().delay(1000).fadeOut(400, function(){ $(this).remove(); });
 };
 
+var params = {token: params.token, referrer_id: params.referrer_id, url: url};
+if(!on_reading) params.title = window.document.title;
+
 $.ajax({
   url: 'http://reading.am/post.json',
   dataType: 'jsonp',
-  data: {token: params.token, referrer_id: params.referrer_id, url: url, title: window.document.title},
+  data: params,
   success: function(data, textStatus, jqXHR){
     if(data.meta.status == 400){
       alert('Error');

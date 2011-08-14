@@ -1,12 +1,10 @@
-# SQLite version 3.x
-#   gem install sqlite3
 development:
   adapter: postgresql
   encoding: unicode
   database: reading_development
   pool: 5
   username: myuser
-  password: 'i?e&@vShWh_VTa0U*?[8(=PyexZgur)i'
+  password: '***REMOVED***'
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,7 +15,7 @@ test:
   database: reading_test
   pool: 5
   username: myuser
-  password: 'i?e&@vShWh_VTa0U*?[8(=PyexZgur)i'
+  password: '***REMOVED***'
 
 production:
   adapter: postgresql
@@ -25,4 +23,4 @@ production:
   database: reading_production
   pool: 5
   username: myuser
-  password: 'i?e&@vShWh_VTa0U*?[8(=PyexZgur)i'
+  password: '***REMOVED***'

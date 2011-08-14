@@ -47,6 +47,8 @@ class PostsController < ApplicationController
       if !params[:title].nil?
         @post.page.title = params[:title]
       else
+        # If you've submitted a new page but you didn't submit a title,
+        # curl the title from the page.
         c = Curl::Easy.perform @post.page.url
         doc = Nokogiri::HTML(c.body_str)
         title = doc.search('title').first

@@ -26,9 +26,9 @@ Reading::Application.routes.draw do
     resources :posts
   end
   # match '/:username' => 'users#show'
-  match '/:username'          => 'users#show'
+  match '/:username'          => 'users#show', :defaults => { :type => 'feed' }
   match '/:username/settings' => 'users#edit'
-  match '/:username/posts'    => 'users#posts'
+  match '/:username/posts'    => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/follow'   => 'relationships#create'
   match '/:username/unfollow' => 'relationships#destroy'
 

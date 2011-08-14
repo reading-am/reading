@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     if !logged_in?
-      false
+      redirect_to root_path
     end
   end
 

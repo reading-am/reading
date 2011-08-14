@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
-    @posts = params[:type] == 'feed' ? @user.feed : @user.posts
+    @posts = params[:type] == 'feed' ? @user.feed.paginate(:page => 1) : @user.posts
 
     respond_to do |format|
       format.html { render 'posts/index' }

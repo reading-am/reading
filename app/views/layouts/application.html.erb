@@ -11,7 +11,7 @@
   <div id="wrapper">
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
   <%= yield %>
+  <%= render :partial => 'layouts/footer' if params[:action] != 'visit' %>
   </div>
-
 </body>
 </html>

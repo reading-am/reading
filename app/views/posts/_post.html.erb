@@ -1,1 +1,2 @@
-<%= link_to post.page.title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %><% if post.referrer_post and post.user != post.referrer_post.user %> because of <%= link_to post.referrer_post.user.display_name, "/#{post.referrer_post.user.username}" %><% end %>
+<% # TODO spin user links out into a helper %>
+<%= link_to post.user.display_name, "http://reading.am/#{post.user.username}", :class => 'user' %> is reading <%= link_to post.page.title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %><% if post.referrer_post and post.user != post.referrer_post.user %> because of <%= link_to post.referrer_post.user.display_name, "/#{post.referrer_post.user.username}", :class => 'user' %><% end %>

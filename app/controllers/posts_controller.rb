@@ -7,9 +7,9 @@ class PostsController < ApplicationController
       @posts = @domain.posts.order('created_at DESC')
     elsif params[:username]
       @user = User.find_by_username(params[:username])
-      @posts = @user.posts.order('created_at DESC')
+      @posts = @user.feed
     elsif logged_in?
-      @posts = current_user.posts.order('created_at DESC')
+      @posts = current_user.feed
     else
       @posts = Post.order('created_at DESC')
     end

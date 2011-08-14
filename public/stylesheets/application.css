@@ -157,6 +157,7 @@ th {
 }
   #subnav a:hover {
     background-color:#00FBFF;
+    text-decoration:none;
   }
 #subnav a.active, #subnav a.active:hover {
   background:none;

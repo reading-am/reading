@@ -2,12 +2,8 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.order('created_at DESC')
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @posts }
-    end
+    @posts = Post.order("created_at DESC").limit(75)
+    render 'home/index'
   end
 
   # GET /posts/1

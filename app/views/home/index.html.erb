@@ -1,8 +1,16 @@
 <div id="content">
   <h4>Some people are reading this stuff</h4>
   <table>
+  <% time = '' %>
   <% @posts.each do |post| %>
     <tr>
+      <td class="date">
+      <%=
+        if time != post.created_at.strftime("%m/%d")
+          time = post.created_at.strftime("%m/%d")
+        end
+      %>
+      </td>
       <td><%= render :partial => 'posts/post', :locals => { :post => post } %></td>
     </tr>
   <% end %>

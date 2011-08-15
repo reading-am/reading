@@ -5,22 +5,13 @@
 <div id="content">
 <h4>
 <% if @domain %>
-  People have been reading on <%= @domain.name %>
+  What people have been reading on <%= @domain.name %>
 <% else %>
   What <%= if @user == current_user then "you've" else "#{@user.display_name} has" end %> been reading
 <% end %>
 </h4>
 
-<% if @user %>
-<nav id="subnav">
-<a href="/<%= @user.username %>"<% if params[:type] == 'feed' %> class="active"<% end %>>Reading List</a>
-- <a href="/<%= @user.username %>/posts"<% if params[:type] == 'posts' %> class="active"<% end %>>Posts</a>
-<% if logged_in? and @user != current_user %>
-  <% follow_text = current_user.following?(@user) ? 'unfollow' : 'follow' %>
-  - <a href="<%= "/#{@user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= @user.first_name %></a>
-<% end %>
-</nav>
-<% end %>
+<%= render :partial => 'users/subnav' if @user %>
 
 <table>
 <% time = '' %>
@@ -51,4 +42,4 @@
 </div>
 <% end %>
 
-<% end %> 
+<% end %>

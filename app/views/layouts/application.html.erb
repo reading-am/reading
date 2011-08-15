@@ -6,8 +6,8 @@
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag 'jquery.min', 'jquery_ujs', 'jquery.cookies', 'application', 'user' %>
   <%= csrf_meta_tag %>
+  <%= render :partial => 'layouts/ga_embed' %>
 </head>
-<%= render :partial => 'layouts/ga_embed' %>
 <body>
   <div id="wrapper">
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>

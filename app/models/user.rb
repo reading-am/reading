@@ -43,7 +43,11 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self.name || self.username
+    if !self.name.nil? and self.name != ''
+      self.name
+    else
+      self.username
+    end
   end
 
   def following?(followed)

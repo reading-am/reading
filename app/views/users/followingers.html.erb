@@ -1,0 +1,20 @@
+<div id="content">
+<h4>
+  What <%= if @user == current_user then "you've" else "#{@user.display_name} has" end %> been reading
+</h4>
+
+<%= render :partial => 'users/subnav' %>
+
+<table>
+<% if @users.empty? %>
+  <tr><td>Nobody here yet.</td></tr>
+<% else %>
+<% @users.each do |user| %>
+  <tr>
+    <td><%= render :partial => 'users/user', :locals => { :user => user } %></td>
+  </tr>
+<% end %>
+<% end %>
+</table>
+
+</div>

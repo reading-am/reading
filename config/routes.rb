@@ -26,9 +26,12 @@ Reading::Application.routes.draw do
     resources :posts
   end
   # match '/:username' => 'users#show'
+  # These routes should be cleaned up
   match '/:username'          => 'users#show', :defaults => { :type => 'feed' }
   match '/:username/settings' => 'users#edit'
   match '/:username/posts'    => 'users#show', :defaults => { :type => 'posts' }
+  match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }
+  match '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
   match '/:username/follow'   => 'relationships#create'
   match '/:username/unfollow' => 'relationships#destroy'
 

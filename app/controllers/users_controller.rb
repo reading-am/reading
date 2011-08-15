@@ -98,6 +98,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def followingers
+    @user = User.find_by_username(params[:username])
+    @users = (params[:type] == 'followers') ? @user.followers : @user.following
+  end
+
   # GET /pick_a_url
   def pick_a_url
     if !logged_in?

@@ -40,7 +40,7 @@ class PostsController < ApplicationController
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
     # A post is a duplicate if it's the exact same page and within 30secs of the last post
-    is_duplicate = (@post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 30))
+    is_duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 30))
     # TODO - clean up these conditionals for duplicates and the same in the respond_to
     if !is_duplicate
       if @post.page.new_record?

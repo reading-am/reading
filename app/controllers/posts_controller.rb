@@ -39,47 +39,53 @@ class PostsController < ApplicationController
     @post       = Post.new
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
-    if @post.page.new_record?
-      if !params[:title].nil?
-        @post.page.title = params[:title]
-      else
-        # If you've submitted a new page but you didn't submit a title,
-        # curl the title from the page.
-        c = Curl::Easy.perform @post.page.url
-        doc = Nokogiri::HTML(c.body_str)
-        title = doc.search('title').first
-        @post.page.title = title.nil? ? '' : doc.search('title').first.text
+    # A post is a duplicate if it's the exact same page and within 30secs of the last post
+    is_duplicate = (@post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 30))
+    # TODO - clean up these conditionals for duplicates and the same in the respond_to
+    if !is_duplicate
+      if @post.page.new_record?
+        if !params[:title].nil?
+          @post.page.title = params[:title]
+        else
+          # If you've submitted a new page but you didn't submit a title,
+          # curl the title from the page.
+          c = Curl::Easy.perform @post.page.url
+          doc = Nokogiri::HTML(c.body_str)
+          title = doc.search('title').first
+          @post.page.title = title.nil? ? '' : doc.search('title').first.text
+        end
       end
+      @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
     end
 
-    @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
-
     respond_to do |format|
-      if @post.save
-        @post.user.hooks.each do |hook|
-          # TODO I'd like to make this a helper of some sort
-          if hook.provider == 'hipchat'
-            client = HipChat::Client.new(hook.token)
-            notify_users = true
-            message = render_to_string :partial => 'posts/hipchat_message.html.erb'
-            client[hook.action].send('Reading.am', "#{message}", notify_users)
-          elsif hook.provider == 'url'
-            url = Addressable::URI.parse(hook.token)
-            if hook.action == 'get'
-              query_values = url.query_values || {}
-              url.query_values = query_values.update({
-                'post[title]' => @post.page.title,
-                'post[url]' => @post.page.url,
-                'post[wrapped_url]' => @post.wrapped_url
-              })
-              Curl::Easy.perform url.to_s
-            else
-              Curl::Easy.http_post(
-                url.to_s,
-                Curl::PostField.content('post[title]', @post.page.title),
-                Curl::PostField.content('post[url]', @post.page.url),
-                Curl::PostField.content('post[wrapped_url]', @post.wrapped_url)
-              )
+      if is_duplicate or @post.save
+        if !is_duplicate
+          @post.user.hooks.each do |hook|
+            # TODO I'd like to make this a helper of some sort
+            if hook.provider == 'hipchat'
+              client = HipChat::Client.new(hook.token)
+              notify_users = true
+              message = render_to_string :partial => 'posts/hipchat_message.html.erb'
+              client[hook.action].send('Reading.am', "#{message}", notify_users)
+            elsif hook.provider == 'url'
+              url = Addressable::URI.parse(hook.token)
+              if hook.action == 'get'
+                query_values = url.query_values || {}
+                url.query_values = query_values.update({
+                  'post[title]' => @post.page.title,
+                  'post[url]' => @post.page.url,
+                  'post[wrapped_url]' => @post.wrapped_url
+                })
+                Curl::Easy.perform url.to_s
+              else
+                Curl::Easy.http_post(
+                  url.to_s,
+                  Curl::PostField.content('post[title]', @post.page.title),
+                  Curl::PostField.content('post[url]', @post.page.url),
+                  Curl::PostField.content('post[wrapped_url]', @post.wrapped_url)
+                )
+              end
             end
           end
         end

@@ -106,7 +106,7 @@ class UsersController < ApplicationController
   # GET /pick_a_url
   def pick_a_url
     if !logged_in?
-      redirect_to root_url
+      redirect_to root_url and return
     elsif current_user.username
       redirect_to "/#{current_user.username}/settings" and return
     end

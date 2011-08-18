@@ -45,8 +45,10 @@ class User < ActiveRecord::Base
   def display_name
     if !self.name.nil? and self.name != ''
       self.name
-    else
+    elsif !self.username.nil?
       self.username
+    else
+      'Anonymous'
     end
   end
 

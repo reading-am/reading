@@ -5,7 +5,13 @@ class Domain < ActiveRecord::Base
 
   validates_presence_of :name
 
+  after_initialize :init
+
   def to_param
     name
+  end
+
+  def init
+    self.verb ||= 'reading'
   end
 end

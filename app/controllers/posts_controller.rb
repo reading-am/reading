@@ -60,10 +60,15 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if is_duplicate or @post.save
+
+        campfire = Tinder::Campfire.new 'reading', :token => '***REMOVED***'
+        room = campfire.rooms.first
+        room.speak render_to_string :partial => 'posts/campfire_message.txt.erb'
+
         if !is_duplicate
           @post.user.hooks.each do |hook|
             # TODO I'd like to make this a helper of some sort
-            if hook.provider == 'hipchat'
+            if hook.provider == 'hipchat' and false
               client = HipChat::Client.new(hook.token)
               notify_users = true
               message = render_to_string :partial => 'posts/hipchat_message.html.erb'

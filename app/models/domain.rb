@@ -5,14 +5,12 @@ class Domain < ActiveRecord::Base
 
   validates_presence_of :name
 
-  # via: http://stackoverflow.com/questions/328525/what-is-the-best-way-to-set-default-values-in-activerecord
-  after_initialize :init
-
   def to_param
     name
   end
 
-  def init
-    self.verb ||= 'reading'
+  def verb
+    # from: http://stackoverflow.com/questions/373731/override-activerecord-attribute-methods
+    read_attribute(:verb) || 'reading'
   end
 end

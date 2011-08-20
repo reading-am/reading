@@ -10,12 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110809043853) do
+ActiveRecord::Schema.define(:version => 20110820192710) do
 
   create_table "domains", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "verb"
   end
 
   create_table "hooks", :force => true do |t|

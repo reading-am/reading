@@ -11,7 +11,7 @@ $(function() {
         document_host = document.location.href.split("/")[2];
 
     if (link_host != document_host){
-      var pre = 'http://reading.am/';
+      var pre = 'http://0.0.0.0:3000/';
       if(typeof $this.data('base58_id')){
         pre += 'p/'+$this.data('base58_id')+'/';
       }
@@ -38,6 +38,7 @@ $(function() {
     $('#'+$this.val()+'_message').show();
     switch($this.val()){
       case 'hipchat':
+      case 'campfire':
         $('label[for="hook_token"]').text('Token');
         $('label[for="hook_action"]').text('Room');
         $('#hook_action').show().val('');

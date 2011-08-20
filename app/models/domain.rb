@@ -5,6 +5,7 @@ class Domain < ActiveRecord::Base
 
   validates_presence_of :name
 
+  # via: http://stackoverflow.com/questions/328525/what-is-the-best-way-to-set-default-values-in-activerecord
   after_initialize :init
 
   def to_param

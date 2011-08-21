@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110820192710) do
+ActiveRecord::Schema.define(:version => 20110820232838) do
 
   create_table "domains", :force => true do |t|
     t.string   "name"
@@ -20,12 +20,11 @@ ActiveRecord::Schema.define(:version => 20110820192710) do
   end
 
   create_table "hooks", :force => true do |t|
-    t.string   "provider"
-    t.string   "token"
-    t.string   "action"
+    t.string   "service"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "params"
   end
 
   create_table "pages", :force => true do |t|

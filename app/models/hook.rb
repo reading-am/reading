@@ -3,4 +3,8 @@ class Hook < ActiveRecord::Base
 
   PROVIDERS = [:hipchat, :campfire, :url]
   validates_presence_of :provider, :token, :action
+
+  def params
+    ActiveSupport::JSON.decode(read_attribute(:params))
+  end
 end

@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20110820232838) do
   end
 
   create_table "hooks", :force => true do |t|
-    t.string   "service"
+    t.string   "provider"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

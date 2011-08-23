@@ -1,0 +1,10 @@
+<td>• 
+<%=
+  case hook.provider
+  when 'url'
+    "Send #{hook.params['method']} data to #{hook.params['url']}"
+  when 'hipchat', 'campfire'
+    "Post to the #{hook.provider.capitalize} room \"#{hook.params['room']}\""
+  end
+%>
+</td>

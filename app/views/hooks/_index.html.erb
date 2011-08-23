@@ -2,18 +2,10 @@
 <h4>Hooks</h4>
 <h5 class="hook_message">Hooks perform an action each time you post</h5>
 <table>
-  <tr>
-    <th>Type</th>
-    <th>Token / URL</th>
-    <th>Room / Method</th>
-  </tr>
 <% @user.hooks.each do |hook| %>
   <tr>
-    <td><%= hook.provider %></td>
-    <td><%= hook.token %></td>
-    <td><%= hook.action %></td>
+    <%= render :partial => 'hooks/hook', :locals => {:hook => hook} %>
     <% if hook.user.id == current_user.id %>
-    <%# <td><%= link_to 'Edit', edit_hook_path(hook), :class => 'admin action'</td>  %>
     <td><%= link_to 'Delete', hook, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>

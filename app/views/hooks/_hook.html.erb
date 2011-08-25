@@ -1,10 +1,12 @@
-<td>• 
+<td class="hook">• 
 <%=
   case hook.provider
   when 'url'
     "Send #{hook.params['method']} data to #{hook.params['url']}"
-  when 'hipchat', 'campfire'
-    "Post to the #{hook.provider.capitalize} room \"#{hook.params['room']}\""
+  when 'hipchat'
+    "Post to the <a href=\"http://hipchat.com\">Hipchat</a> room \"#{hook.params['room']}\"".html_safe
+  when 'campfire'
+    "Post to the <a href=\"http://campfirenow.com\">Campfire</a> room \"#{hook.params['room']}\"".html_safe
   end
 %>
 </td>

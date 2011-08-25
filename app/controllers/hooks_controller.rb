@@ -56,6 +56,7 @@ class HooksController < ApplicationController
     if !logged_in?
       redirect_to '/'
     end
+    params[:hook][:params] = params[:hook][:params].to_json
     @hook = Hook.new(params[:hook])
     @hook.user = current_user
 

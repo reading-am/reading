@@ -41,7 +41,7 @@ var params = {token: params.token, referrer_id: params.referrer_id, url: url};
 if(!on_reading) params.title = window.document.title;
 
 $.ajax({
-  url: 'http://0.0.0.0:3000/post.json',
+  url: 'http://reading.am/post.json',
   dataType: 'jsonp',
   data: params,
   success: function(data, textStatus, jqXHR){

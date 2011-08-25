@@ -26,7 +26,7 @@ $(function(){
         $actions.before(text_field('Token'), text_field('Room'));
         break;
       case 'campfire':
-        $actions.before(text_field('Token'), text_field('SubDomain'), text_field('Room'));
+        $actions.before(text_field('Token'), text_field('Subdomain'), text_field('Room'));
         break;
       case 'url':
         $actions.before(text_field('URL'), select_field('Method', ['GET', 'POST']));

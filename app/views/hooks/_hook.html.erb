@@ -2,7 +2,7 @@
 <%=
   case hook.provider
   when 'url'
-    "Send #{hook.params['method']} data to #{hook.params['url']}"
+    "Send <b>#{hook.params['method'].upcase}</b> data to #{link_to hook.params['url']}".html_safe
   when 'hipchat'
     "Post to the <a href=\"http://hipchat.com\">Hipchat</a> room \"#{hook.params['room']}\"".html_safe
   when 'campfire'

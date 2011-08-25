@@ -179,3 +179,7 @@ a.external {
 .referred_post a.external {
   background:#EEE;
 }
+
+#error_explanation {
+  color:red;
+}

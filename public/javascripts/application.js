@@ -31,30 +31,4 @@ $(function() {
     // $this.find('a').hide();
   });
 
-  $("#hook_provider").change(function(){
-    $this = $(this);
-    $('.field').show();
-    $('.hook_message').hide();
-    $('#'+$this.val()+'_message').show();
-    switch($this.val()){
-      case 'hipchat':
-      case 'campfire':
-        $('label[for="hook_token"]').text('Token');
-        $('label[for="hook_action"]').text('Room');
-        $('#hook_action').show().val('');
-        $('#action_select').hide();
-        break;
-      case 'url':
-        $('label[for="hook_token"]').text('URL');
-        $('label[for="hook_action"]').text('Method');
-        $('#hook_action').hide().val($('#action_select').val());
-        $('#action_select').show();
-        break;
-    }
-  });
-
-  $('#action_select').change(function(){
-    $('#hook_action').val($(this).val());
-  });
-
 });

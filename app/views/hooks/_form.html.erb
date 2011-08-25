@@ -38,16 +38,6 @@
     <%= "<meta property=\"rd:token\" content=\"#{current_user.token}\">".gsub(/</,"<").gsub(/>/,">") %></pre>
     Once the hook has been added, this meta tag can be removed.
   </div>
-  <div class="field" style="display:none;">
-    <%= f.label :token %>
-    <%= f.text_field :token %>
-  </div>
-  <div class="field" style="display:none;">
-    <%= f.label :action %>
-    <%= f.text_field :action %>
-    <select id="action_select"><option>get</option><option>post</option></select>
-  </div>
-
   <div class="actions">
     <%= f.submit %>
   </div>

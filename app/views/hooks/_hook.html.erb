@@ -4,9 +4,9 @@
   when 'url'
     "Send <b>#{hook.params['method'].upcase}</b> data to #{link_to hook.params['url']}".html_safe
   when 'hipchat'
-    "Post to the <a href=\"http://hipchat.com\">Hipchat</a> room \"#{hook.params['room']}\"".html_safe
+    "Post to the <a href=\"http://hipchat.com\">Hipchat</a> room <b>\"#{hook.params['room']}\"</b>".html_safe
   when 'campfire'
-    "Post to the <a href=\"http://campfirenow.com\">Campfire</a> room \"#{hook.params['room']}\"".html_safe
+    "Post to the <a href=\"http://campfirenow.com\">Campfire</a> room <b>\"#{hook.params['room']}\"</b>".html_safe
   end
 %>
 </td>

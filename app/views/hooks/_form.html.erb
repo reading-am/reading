@@ -32,7 +32,13 @@
     <pre>
     post[title] - The page title of the post
     post[url] - The url of the post
-    post[wrapped_url] - The url of the post routed through Reading for automatic list updates</pre>
+    post[wrapped_url] - The url of the post routed through Reading for automatic list updates
+    post[user][username] - The username of the user who created the post
+    post[user][display_name] - The full name (if available) or username of the user who created the post
+    post[referrer_post][id] - The id of the post that led the post user to visit the link
+    post[referrer_post][user][username] - The username of the user who led the post user to visit the link ('because of')
+    post[referrer_post][user][display_name] - The display_name of the user who led the post user to visit the link
+    </pre>
     In order to add a URL hook, you'll need to verify ownership of the URL by adding this meta tag anywhere in the &lt;head&gt; of your HTML:
     <pre>
     <%= "<meta property=\"rd:token\" content=\"#{current_user.token}\">".gsub(/</,"<").gsub(/>/,">") %></pre>

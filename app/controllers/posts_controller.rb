@@ -76,21 +76,34 @@ class PostsController < ApplicationController
                 room.speak render_to_string :partial => 'posts/campfire_message.txt.erb'
               end
             when 'url'
-              url = Addressable::URI.parse(hook.params['token'])
+              url = Addressable::URI.parse(hook.params['url'])
               if hook.params['method'] == 'get'
                 query_values = url.query_values || {}
+                # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
                 url.query_values = query_values.update({
-                  'post[title]' => @post.page.title,
-                  'post[url]' => @post.page.url,
-                  'post[wrapped_url]' => @post.wrapped_url
+                  'post[id]'                  => "#{@post.id}",
+                  'post[title]'               => @post.page.title,
+                  'post[url]'                 => @post.page.url,
+                  'post[wrapped_url]'         => @post.wrapped_url,
+                  'post[user][username]'      => @post.user.username,
+                  'post[user][display_name]'  => @post.user.display_name,
+                  'post[referrer_post][id]'                 => !@post.referrer_post.nil? ? "#{@post.referrer_post.id}" : '',
+                  'post[referrer_post][user][username]'     => !@post.referrer_post.nil? ? @post.referrer_post.user.username : '',
+                  'post[referrer_post][user][display_name]' => !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : ''
                 })
                 Curl::Easy.perform url.to_s
               else
                 Curl::Easy.http_post(
                   url.to_s,
+                  Curl::PostField.content('post[id]', @post.id),
                   Curl::PostField.content('post[title]', @post.page.title),
                   Curl::PostField.content('post[url]', @post.page.url),
-                  Curl::PostField.content('post[wrapped_url]', @post.wrapped_url)
+                  Curl::PostField.content('post[wrapped_url]', @post.wrapped_url),
+                  Curl::PostField.content('post[user][username]', @post.user.username),
+                  Curl::PostField.content('post[user][display_name]', @post.user.display_name),
+                  Curl::PostField.content('post[referrer_post][id]', !@post.referrer_post.nil? ? @post.referrer_post.id : ''),
+                  Curl::PostField.content('post[referrer_post][user][username]', !@post.referrer_post.nil? ? @post.referrer_post.user.username : ''),
+                  Curl::PostField.content('post[referrer_post][user][display_name]', !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : '')
                 )
               end
             end

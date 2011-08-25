@@ -62,9 +62,10 @@ class HooksController < ApplicationController
 
     # check ownership of a url
     if @hook.provider == 'url'
-      c = Curl::Easy.perform @hook.token
+      c = Curl::Easy.perform @hook.params['url']
       doc = Nokogiri::HTML(c.body_str)
-      if current_user.token != doc.search('meta[property="rd:token"]').first['content']
+      token_dom = doc.search('meta[property="rd:token"]')
+      if token_dom.first.nil? or current_user.token != token_dom.first['content']
         @hook.errors.add 'token', 'Not owned'
       end
     end

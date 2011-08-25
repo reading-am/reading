@@ -65,19 +65,19 @@ class PostsController < ApplicationController
             # TODO I'd like to make this a helper of some sort
             case hook.provider
             when 'hipchat'
-              client = HipChat::Client.new(hook.token)
+              client = HipChat::Client.new(hook.params['token'])
               notify_users = true
               message = render_to_string :partial => 'posts/hipchat_message.html.erb'
-              client[hook.action].send('Reading.am', "#{message}", notify_users)
+              client[hook.params['room']].send('Reading.am', "#{message}", notify_users)
             when 'campfire'
-              campfire = Tinder::Campfire.new 'reading', :token => hook.token
-              room = campfire.find_or_create_room_by_name(hook.action)
+              campfire = Tinder::Campfire.new hook.params['subdomain'], :token => hook.params['token']
+              room = campfire.find_or_create_room_by_name(hook.params['room'])
               if !room.nil?
                 room.speak render_to_string :partial => 'posts/campfire_message.txt.erb'
               end
             when 'url'
-              url = Addressable::URI.parse(hook.token)
-              if hook.action == 'get'
+              url = Addressable::URI.parse(hook.params['token'])
+              if hook.params['method'] == 'get'
                 query_values = url.query_values || {}
                 url.query_values = query_values.update({
                   'post[title]' => @post.page.title,

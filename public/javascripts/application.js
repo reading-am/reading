@@ -11,7 +11,7 @@ $(function() {
         document_host = document.location.href.split("/")[2];
 
     if (link_host != document_host){
-      var pre = 'http://reading.am/';
+      var pre = 'http://'+document_host+'/';
       if(typeof $this.data('base58_id')){
         pre += 'p/'+$this.data('base58_id')+'/';
       }

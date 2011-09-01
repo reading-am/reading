@@ -70,7 +70,7 @@ class PostsController < ApplicationController
             when 'hipchat'
               client = HipChat::Client.new(hook.params['token'])
               notify_users = true
-              message = render_to_string :partial => 'posts/hipchat_message.html.erb'
+              message = render_to_string :partial => 'posts/hipchat_message.html.erb', :locals => {:post => @post}
               client[hook.params['room']].send('Reading.am', "#{message}", notify_users)
             when 'campfire'
               campfire = Tinder::Campfire.new hook.params['subdomain'], :token => hook.params['token']

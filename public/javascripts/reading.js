@@ -1,7 +1,8 @@
 (function($, params){
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
-var on_reading = (window.location.host.indexOf('reading.am') >= 0 || window.location.host.indexOf('0.0.0.0') >= 0);
+var domain      = (window.location.host.indexOf('0.0.0.0') == 0) ? '0.0.0.0:3000' : 'reading.am',
+    on_reading  = (window.location.host.indexOf('reading.am') == 0 || window.location.host.indexOf('0.0.0.0') == 0);
 
 var parse_url = function(){
   var url = window.location.href.split(window.location.host)[1].substring(1);
@@ -41,7 +42,7 @@ var params = {token: params.token, referrer_id: params.referrer_id, url: url};
 if(!on_reading) params.title = window.document.title;
 
 $.ajax({
-  url: 'http://reading.am/post.json',
+  url: 'http://'+domain+'/post.json',
   dataType: 'jsonp',
   data: params,
   success: function(data, textStatus, jqXHR){

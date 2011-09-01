@@ -20,7 +20,7 @@ Reading::Application.routes.draw do
     resources :posts
   end
 
-  match '/everybody' => 'posts#index'
+  match '/everybody' => 'posts#index', :defaults => { :type => 'posts' }
 
   match '/pick_a_url' => 'users#pick_a_url'
   match "/users" => redirect("/")
@@ -29,7 +29,7 @@ Reading::Application.routes.draw do
   end
   # match '/:username' => 'users#show'
   # These routes should be cleaned up
-  match '/:username'          => 'users#show', :defaults => { :type => 'feed' }
+  match '/:username(/list)'   => 'users#show', :defaults => { :type => 'list' }
   match '/:username/settings' => 'users#edit'
   match '/:username/posts'    => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }

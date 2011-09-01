@@ -1,5 +1,5 @@
 <nav id="subnav">
-<a href="/<%= @user.username %>"<% if params[:type] == 'feed' %> class="active"<% end %>>Reading List</a>
+<a href="/<%= @user.username %>"<% if params[:type] == 'list' %> class="active"<% end %>>Reading List</a>
 - <a href="/<%= @user.username %>/posts"<% if params[:type] == 'posts' %> class="active"<% end %>>Posts</a>
 - <a href="/<%= @user.username %>/following"<% if params[:type] == 'following' %> class="active"<% end %>>Following</a>
 - <a href="/<%= @user.username %>/followers"<% if params[:type] == 'followers' %> class="active"<% end %>>Followers</a>

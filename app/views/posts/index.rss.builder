@@ -1,8 +1,10 @@
+display_name = @user.nil? ? 'Everybody' : @user.display_name
+
 xml.instruct! :xml, :version => "1.0"
 xml.rss :version => "2.0" do
   xml.channel do
-    xml.title "#{@user.display_name}'s Reading #{params[:type] == 'feed' ? 'List' : 'Posts'}"
-    xml.description "All of the great stuff that #{@user.display_name} #{params[:type] == 'feed' ? "and the people it's following are" : 'is'} reading!"
+    xml.title "#{display_name}'s Reading #{params[:type] == 'list' ? 'List' : 'Posts'}"
+    xml.description "All of the great stuff that #{display_name} #{params[:type] == 'list' ? "and the people it's following are" : 'is'} reading!"
     xml.link request.url[0...-4] # lob off .rss
 
     for post in @posts

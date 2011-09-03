@@ -154,6 +154,8 @@ class PostsController < ApplicationController
   end
 
   def visit
-    @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0;
+    @token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
+    @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0
   end
+
 end

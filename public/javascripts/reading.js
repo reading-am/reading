@@ -2,11 +2,15 @@
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var domain      = (window.location.host.indexOf('0.0.0.0') == 0) ? '0.0.0.0:3000' : 'reading.am',
-    on_reading  = (window.location.host.indexOf('reading.am') == 0 || window.location.host.indexOf('0.0.0.0') == 0);
+    on_reading  = (window.location.host.indexOf('reading.am') == 0 || window.location.host.indexOf('0.0.0.0') == 0),
+    pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
+    has_token   = false;
 
 var parse_url = function(){
   var url = window.location.href.split(window.location.host)[1].substring(1);
-  if(url.substring(0,2) == 'p/'){
+  // remove token and post id from url
+  while(on_reading && (url.substring(0,2) == 't/' || url.substring(0,2) == 'p/')){
+    if(url.substring(0,2) == 't/') has_token = true;
     url = url.substring(url.indexOf('/',2)+1);
   }
   if(url.indexOf('://') == -1) url = 'http://'+url;
@@ -16,7 +20,7 @@ var parse_url = function(){
 var url   = on_reading ? parse_url() : window.location.href,
     title = on_reading ? '' : window.document.title;
 
-if(on_reading && !params.token) return window.location = url;
+if(pass_thru) return window.location = url;
 
 var show_overlay = function(){
   var $hand = $('<span>&#9996;</span>').css({'font-size':'56px'}),
@@ -50,7 +54,13 @@ $.ajax({
       alert('Error');
     } else {
       if(on_reading){
-        window.location = url;
+        if(has_token){
+          // forward back through to Reading so that the user's
+          // token doesn't show up in the referrer
+          window.location = 'http://'+domain+'/t/-/'+url;
+        } else {
+          window.location = url;
+        }
       } else {
         show_overlay();
       }

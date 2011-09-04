@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   def set_headers
     if request.format == 'rss'
       # settings borrowed from Twitter's RSS headers: https://twitter.com/statuses/user_timeline/27260086.rss
-      response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0"
+      response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
       response.headers["Pragma"] = "no-cache"
       response.headers["Keep-Alive"] = "timeout=15, max=100"
     end

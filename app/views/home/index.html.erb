@@ -15,4 +15,5 @@
     </tr>
   <% end %>
   </table>
+<%= link_to('RSS', "#{request.request_uri << (params[:type] == 'list' ? '/list' : '')}.rss?t=#{current_user.token}", {:class => 'rss'}) if !params[:type].nil? and logged_in? %>
 </div>

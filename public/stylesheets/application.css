@@ -152,10 +152,10 @@ th {
   text-decoration:underline;
 }
 
-#subnav a, footer a, a.user.you {
+#subnav a, footer a, a.user.you, .rss {
   background-color:#B3FEFF;
 }
-  #subnav a:hover, footer a:hover, a.user.you:hover {
+  #subnav a:hover, footer a:hover, a.user.you:hover, .rss:hover {
     background-color:#00FBFF;
   }
 a.active, a.active:hover, #subnav a.active, #subnav a.active:hover {

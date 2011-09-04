@@ -15,7 +15,7 @@ xml.rss :version => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
     if User.find_by_token(params[:t])
       for post in @posts
         xml.item do
-          xml.title "#{post.user.display_name} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} \"#{post.page.title}\"" << (post.referrer_post ? " because of #{post.referrer_post.user.display_name}" : '')
+          xml.title "#{post.user.display_name} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} \"#{post.page.title}\"" + (post.referrer_post ? " because of #{post.referrer_post.user.display_name}" : '')
           xml.link post.wrapped_url params[:t]
           xml.guid post.wrapped_url params[:t]
           xml.description { xml.cdata! render :partial => 'posts/hipchat_message.html.erb', :locals => {:post => post, :token => params[:t]} }

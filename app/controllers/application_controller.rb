@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :set_time_zone, :set_headers
+  before_filter :set_time_zone, :set_user_device, :set_headers
 
-  helper_method :current_user, :logged_in?
+  helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
   private
 
@@ -46,4 +46,30 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  def is_mobile_safari_request? # from: http://www.ibm.com/developerworks/opensource/library/os-eclipse-iphoneruby1/
+    request.user_agent =~ /(Mobile\/.+Safari)/
+  end
+  
+  def is_iphone_or_ipod_request?
+    ua = request.env['HTTP_USER_AGENT'].downcase
+    ua.index('iphone') || ua.index('ipod')
+  end
+  
+  def set_user_device
+    if is_iphone_or_ipod_request?
+      @user_device = :mobile
+    else
+      @user_device = :desktop
+    end
+  end
+  
+  def mobile_device?
+    @user_device == :mobile
+  end
+  
+  def deskotp_device?
+    @user_device == :desktop
+  end
+
 end

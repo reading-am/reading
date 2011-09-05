@@ -1,0 +1,15 @@
+body {
+	-webkit-text-size-adjust: none;
+}
+#wrapper {
+  width:100%;
+  margin:0;
+  padding:15px;
+}
+table, td {
+  padding:0;
+  margin:0;
+}
+table {
+  width:100%;
+}

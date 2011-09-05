@@ -34,6 +34,7 @@ table {
 }
 td {
   padding:2px 5px;
+  vertical-align:top;
 }
 
 #wrapper {
@@ -74,7 +75,7 @@ td {
   }
 
 .date, .admin.action {
-  padding:0 5px 0 0;
+  padding:2px 5px 0 0;
   font-size: 12px
 }
 

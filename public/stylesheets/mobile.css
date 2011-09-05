@@ -1,6 +1,7 @@
 body {
 	-webkit-text-size-adjust: none;
   font-size:14px;
+  line-height: 19px;
 }
 
 #wrapper {
@@ -16,4 +17,8 @@ h3 {
 }
 #lead_in {
   display:none;
+}
+
+td {
+  padding:5px;
 }

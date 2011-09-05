@@ -8,7 +8,7 @@
   end
 %>
 <h1><a href="/">✌ Reading</a></h1>
-<h3>What <%= youre %> reading. Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
+<h3><span id="lead_in">What <%= youre %> reading. </span>Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
 <div id="welcome">
 <% if logged_in? %>
   <% if current_user.username %>

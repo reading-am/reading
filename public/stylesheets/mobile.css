@@ -1,8 +1,19 @@
 body {
 	-webkit-text-size-adjust: none;
+  font-size:14px;
 }
 
 #wrapper {
   width:auto;
   margin:15px;
+}
+
+h1 {
+  font-size:24px;
+}
+h3 {
+  margin:0;
+}
+#lead_in {
+  display:none;
 }

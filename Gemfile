@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.9'
 
 gem 'pg' # PostgresSQL
+gem 'dalli' # Memcache
 gem 'omniauth'
 gem 'jquery-rails'
 gem 'hipchat'

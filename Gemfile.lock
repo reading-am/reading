@@ -34,6 +34,7 @@ GEM
     builder (2.1.2)
     crack (0.1.8)
     curb (0.7.15)
+    dalli (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
@@ -164,6 +165,7 @@ DEPENDENCIES
   addressable
   base58
   curb
+  dalli
   hipchat
   jquery-rails
   nokogiri

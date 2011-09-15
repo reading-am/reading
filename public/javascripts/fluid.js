@@ -21,5 +21,5 @@ fluid.showGrowlNotification({
 })(window.fluid); }
 
 // prism
-window.platform.icon().badgeText = "33";
-window.platform.showNotification('Hey I work!', 'I work so freaking good');
+// window.platform.icon().badgeText = "33";
+// window.platform.showNotification('Hey I work!', 'I work so freaking good');

@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   end
   
   def is_iphone_or_ipod_request?
-    ua = request.env['HTTP_USER_AGENT'].downcase
+    ua = request.user_agent.downcase
     ua.index('iphone') || ua.index('ipod')
   end
   

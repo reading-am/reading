@@ -52,10 +52,11 @@ class ApplicationController < ActionController::Base
   end
   
   def is_iphone_or_ipod_request?
+    if !request.user_agent then return false end
     ua = request.user_agent.downcase
     ua.index('iphone') || ua.index('ipod')
   end
-  
+
   def set_user_device
     if is_iphone_or_ipod_request?
       @user_device = :mobile
@@ -63,11 +64,11 @@ class ApplicationController < ActionController::Base
       @user_device = :desktop
     end
   end
-  
+
   def mobile_device?
     @user_device == :mobile
   end
-  
+
   def deskotp_device?
     @user_device == :desktop
   end

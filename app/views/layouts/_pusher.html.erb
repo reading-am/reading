@@ -1,0 +1,9 @@
+<script>
+  var _pusher = {
+    key: '<%= Pusher.key %>',
+    channels: [
+    '<%= @user.following.map { |user| user.username }.join("','") %>'
+    ]
+  };
+</script>
+<%= javascript_include_tag 'http://js.pusherapp.com/1.9/pusher.min.js', 'pusher' %>

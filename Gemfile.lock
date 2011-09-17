@@ -104,6 +104,11 @@ GEM
       oa-openid (= 0.2.6)
     pg (0.11.0)
     polyglot (0.3.1)
+    pusher (0.8.2)
+      crack (~> 0.1.0)
+      multi_json (~> 1.0)
+      ruby-hmac (~> 0.4.0)
+      signature (~> 0.1.2)
     pyu-ruby-sasl (0.0.3.3)
     rack (1.2.3)
     rack-mount (0.6.14)
@@ -131,12 +136,15 @@ GEM
     rdoc (3.8)
     rest-client (1.6.3)
       mime-types (>= 1.16)
+    ruby-hmac (0.4.0)
     ruby-openid (2.1.8)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
     rubyntlm (0.1.1)
     rufus-scheduler (2.0.10)
       tzinfo (>= 0.3.23)
+    signature (0.1.2)
+      ruby-hmac
     simple_oauth (0.1.5)
     thor (0.14.6)
     tinder (1.5.0)
@@ -171,6 +179,7 @@ DEPENDENCIES
   nokogiri
   omniauth
   pg
+  pusher
   rails (= 3.0.9)
   rufus-scheduler
   tinder

@@ -22,5 +22,9 @@ Reading::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  Pusher.app_id = '8486'
+  Pusher.key = 'bacacd0d515e6362d388'
+  Pusher.secret = '5fead544495a03837295'
 end
 

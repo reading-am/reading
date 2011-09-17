@@ -16,7 +16,9 @@
   <%= stylesheet_link_tag 'application' %>
   <% if mobile_device? %><meta name="viewport" content="width=device-width; initial-scale = 1.0; maximum-scale=1.0; user-scalable=no"><% end %>
   <%= stylesheet_link_tag 'mobile', :media => 'only screen and (max-device-width: 480px)' %>
-  <%= javascript_include_tag 'jquery.min', 'jquery_ujs', 'jquery.cookies', 'application', 'user', 'hook', 'fluid' %>
+  <%= javascript_include_tag 'http://js.pusherapp.com/1.9/pusher.min.js' %>
+  <script> var pusher_key = "<%= Pusher.key %>" ; </script>
+  <%= javascript_include_tag 'jquery.min', 'jquery_ujs', 'jquery.cookies', 'application', 'user', 'hook', 'fluid', 'pusher' %>
   <!--[if IE]><%= javascript_include_tag 'ie/html5' %><![endif]-->
   <%= csrf_meta_tag %>
   <%= render :partial => 'layouts/ga_embed' %>

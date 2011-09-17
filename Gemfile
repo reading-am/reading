@@ -15,3 +15,4 @@ gem 'rufus-scheduler'
 gem 'will_paginate'
 gem 'tinder'
 gem 'pusher'
+gem 'em-http-request' # needed for async pusher calls

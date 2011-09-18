@@ -3,6 +3,7 @@ class PostsController < ApplicationController
   # GET /posts.xml
   def index
     @posts = Post.order("created_at DESC").limit(75)
+    @channels = 'everybody'
     respond_to do |format|
       format.html { render 'home/index' }
       format.rss  { render 'posts/index' }

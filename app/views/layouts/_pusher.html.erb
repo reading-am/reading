@@ -2,7 +2,7 @@
   var _pusher = {
     key: '<%= Pusher.key %>',
     channels: [
-    '<%= @user.following.map { |user| user.username }.join("','") %>'
+    '<%= if @channels.kind_of?(Array) then @channels.join("','") else @channels end %>'
     ]
   };
 </script>

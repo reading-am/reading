@@ -19,7 +19,13 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
-    @posts = params[:type] == 'list' ? @user.feed.paginate(:page => 1, :per_page => 50) : @user.posts
+    if params[:type] == 'list'
+      @posts = @user.feed.paginate(:page => 1, :per_page => 50)
+      @channels = @user.following.map { |user| user.username }
+    else
+      @posts = @user.posts
+      @channels = @user.username
+    end
 
     respond_to do |format|
       format.html { render 'posts/index' }
@@ -49,7 +55,7 @@ class UsersController < ApplicationController
     if @user != current_user
       redirect_to "/#{@user.username}"
     end
-    
+ 
     if params[:user] and @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
     end

@@ -28,6 +28,6 @@
   <%= yield %>
   <%= render :partial => 'layouts/footer' if params[:action] != 'visit' %>
   </div>
-  <%= render :partial => 'layouts/pusher' if logged_in? and @user %>
+  <%= render :partial => 'layouts/pusher' if logged_in? and @channels %>
 </body>
 </html>

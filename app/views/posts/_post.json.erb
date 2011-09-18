@@ -1,0 +1,17 @@
+{
+  "id": <%= post.id %>,
+  "title": "<%= post.page.title %>",
+  "url": "<%= post.page.url %>",
+  "wrapped_url": "<%= post.wrapped_url %>",
+  "user": {
+    "username": "<%= post.user.username %>",
+    "display_name": "<%= post.user.display_name %>"
+  },
+  "referrer_post": {
+    "id": <%= !post.referrer_post.nil? ? post.referrer_post.id : '' %>,
+    "user": {
+      "username": "<%= !post.referrer_post.nil? ? post.referrer_post.user.username : '' %>",
+      "display_name": "<%= !post.referrer_post.nil? ? post.referrer_post.user.display_name : '' %>"
+    }
+  }
+}

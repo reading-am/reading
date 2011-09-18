@@ -65,6 +65,11 @@ class PostsController < ApplicationController
     respond_to do |format|
       if is_duplicate or @post.save
         if !is_duplicate
+          # Websockets
+          json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
+          Pusher['everybody'].trigger_async('new_post', json)
+          Pusher[@post.user.username].trigger_async('new_post', json)
+          # Hooks. I should make these async
           @post.user.hooks.each do |hook|
             # TODO I'd like to make this a helper of some sort
             case hook.provider

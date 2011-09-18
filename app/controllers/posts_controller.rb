@@ -94,9 +94,11 @@ class PostsController < ApplicationController
                   'post[title]'               => @post.page.title,
                   'post[url]'                 => @post.page.url,
                   'post[wrapped_url]'         => @post.wrapped_url,
+                  'post[user][id]'            => "#{@post.user.id}",
                   'post[user][username]'      => @post.user.username,
                   'post[user][display_name]'  => @post.user.display_name,
                   'post[referrer_post][id]'                 => !@post.referrer_post.nil? ? "#{@post.referrer_post.id}" : '',
+                  'post[referrer_post][user][id]'           => !@post.referrer_post.nil? ? "#{@post.referrer_post.user.id}" : '',
                   'post[referrer_post][user][username]'     => !@post.referrer_post.nil? ? @post.referrer_post.user.username : '',
                   'post[referrer_post][user][display_name]' => !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : ''
                 })
@@ -108,9 +110,11 @@ class PostsController < ApplicationController
                   Curl::PostField.content('post[title]', @post.page.title),
                   Curl::PostField.content('post[url]', @post.page.url),
                   Curl::PostField.content('post[wrapped_url]', @post.wrapped_url),
+                  Curl::PostField.content('post[user][id]', @post.user.id),
                   Curl::PostField.content('post[user][username]', @post.user.username),
                   Curl::PostField.content('post[user][display_name]', @post.user.display_name),
                   Curl::PostField.content('post[referrer_post][id]', !@post.referrer_post.nil? ? @post.referrer_post.id : ''),
+                  Curl::PostField.content('post[referrer_post][user][id]', !@post.referrer_post.nil? ? @post.referrer_post.user.id : ''),
                   Curl::PostField.content('post[referrer_post][user][username]', !@post.referrer_post.nil? ? @post.referrer_post.user.username : ''),
                   Curl::PostField.content('post[referrer_post][user][display_name]', !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : '')
                 )

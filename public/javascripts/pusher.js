@@ -13,6 +13,7 @@ for(i = 0; i < _pusher.channels.length; i++){
   var channel = pusher.subscribe(_pusher.channels[i]);
   channel.bind('new_post', function(data) {
     alert(data);
+    console.log(data);
   });
 }
 

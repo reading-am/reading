@@ -3,19 +3,27 @@ var native = {is: (typeof window.fluid != 'undefined' ? 'fluid' : typeof window.
 switch(native.is){
   case 'fluid':
     native.badge = function(text){
-      window.fluid.dockBadge = text;
-    }
+      if(typeof text == 'undefined'){
+        return window.fluid.dockBadge;
+      } else {
+        window.fluid.dockBadge = text;
+      }
+    };
     native.notify = function(input){
       window.fluid.showGrowlNotification(input);
-    }
+    };
     break;
   case 'prism':
     native.badge = function(text){
-      window.platform.icon().badgeText = text;
-    }
+      if(typeof text == 'undefined'){
+        return window.platform.icon().dockText;
+      } else {
+        window.platform.icon().badgeText = text;
+      }
+    };
     native.notify = function(input){
       window.platform.showNotification(input.title, input.description, input.icon);
-    }
+    };
     break;
   default:
     native.badge = native.notify = function(){};

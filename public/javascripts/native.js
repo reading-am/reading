@@ -1,4 +1,4 @@
-var native = {is: (typeof window.fluid != 'undefined' ? 'fluid' : typeof window.platform != 'undefined' ? 'prism' : false)};
+var native = {is: ('fluid' in window ? 'fluid' : 'platform' in window ? 'prism' : false)};
 
 switch(native.is){
   case 'fluid':
@@ -14,6 +14,8 @@ switch(native.is){
     };
     break;
   case 'prism':
+    // clear the cache first
+    // window.platform.clearPrivateData();
     native.badge = function(text){
       if(typeof text == 'undefined'){
         return window.platform.icon().dockText;

@@ -11,8 +11,11 @@ var pusher = new Pusher(_pusher.key);
 
 for(i = 0; i < _pusher.channels.length; i++){
   var channel = pusher.subscribe(_pusher.channels[i]);
-  channel.bind('new_post', function(post) {
-    native.notify({title: post.user.display_name+' is reading', description: post.title});
+  channel.bind('new_post', function(post){
+    native.notify({
+      title: post.user.display_name + ' is reading',
+      description: post.title + (post.referrer_post.id ? ' because of ' + post.referrer_post.user.display_name : '')
+    });
   });
 }
 

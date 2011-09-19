@@ -4,6 +4,15 @@ if(!($.cookie('timezone'))) {
   $.cookie('timezone', current_time.getTimezoneOffset(), { path: '/', expires: 10 } );
 }
 
+window.hasfocus = true;
+window.onfocus = function(){
+  native.badge('');
+  this.hasfocus = true;
+}
+window.onblur = function(){
+   this.hasfocus = false;
+}
+
 $(function() {
   $("a.external").click(function(){
     var $this = $(this),

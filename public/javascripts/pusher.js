@@ -16,6 +16,7 @@ for(i = 0; i < _pusher.channels.length; i++){
       title: post.user.display_name + ' is reading',
       description: post.title + (post.referrer_post.id ? ' because of ' + post.referrer_post.user.display_name : '')
     });
+    if(!window.hasfocus) native.badge('★');
   });
 }
 

@@ -1,0 +1,11 @@
+var current_user = {
+<% if logged_in? %>
+  id: <%= current_user.id %>,
+  username: '<%= current_user.username %>',
+  display_name: '<%= current_user.display_name %>'
+<% else %>
+  id: '',
+  username: '',
+  display_name: ''
+<% end %>
+};

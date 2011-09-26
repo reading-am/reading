@@ -17,7 +17,7 @@
   <%= stylesheet_link_tag 'application' %>
   <% if mobile_device? %><meta name="viewport" content="width=device-width; initial-scale = 1.0; maximum-scale=1.0; user-scalable=no"><% end %>
   <%= stylesheet_link_tag 'mobile', :media => 'only screen and (max-device-width: 480px)' %>
-  <%= javascript_include_tag 'jquery.min', 'jquery_ujs', 'jquery.cookies', 'jquery.tmpl.min', 'application', 'user', 'hook', 'native' %>
+  <%= javascript_include_tag 'jquery.min', 'jquery_ujs', 'jquery.cookies', 'jquery.tmpl.min', 'base58', 'application', 'user', 'hook', 'native' %>
   <!--[if IE]><%= javascript_include_tag 'ie/html5' %><![endif]-->
   <%= csrf_meta_tag %>
   <%= render :partial => 'layouts/ga_embed' %>

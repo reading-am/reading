@@ -36,4 +36,9 @@ if(native.is){
 window.document.title = '✌ Reading';
 $(function(){ $('head').append('<link rel="stylesheet" href="stylesheets/native.css" type="text/css">'); });
 
+$(window).focus(function(){
+  native.badge('');
+  $('tr.new').fadeTo('medium', 1).removeClass('new');
+});
+
 }

@@ -22,10 +22,8 @@ class UsersController < ApplicationController
     if params[:type] == 'list'
       @posts = @user.feed.paginate(:page => 1, :per_page => 50)
       @channels = @user.following.map { |user| user.username }
-      if @user == current_user
-        # add the current user to the channels since it's not in .following()
-        @channels.push @user.username
-      end
+      # add the user to the channels since it's not in .following()
+      @channels.push @user.username
     else
       @posts = @user.posts
       @channels = @user.username

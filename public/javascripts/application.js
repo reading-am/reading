@@ -5,13 +5,11 @@ if(!($.cookie('timezone'))) {
 }
 
 window.hasfocus = true;
-window.onfocus = function(){
-  native.badge('');
-  this.hasfocus = true;
-}
-window.onblur = function(){
-   this.hasfocus = false;
-}
+$(window).focus(function(){
+  window.hasfocus = true;
+}).blur(function(){
+  window.hasfocus = false;
+});
 
 $(function() {
   $("a.external").click(function(){

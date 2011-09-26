@@ -11,8 +11,10 @@ $(window).focus(function(){
   window.hasfocus = false;
 });
 
+window.base58 = encdec();
+
 $(function() {
-  $("a.external").click(function(){
+  $("a.external").live('click', function(){
     var $this = $(this),
         link_host = this.href.split("/")[2],
         document_host = document.location.href.split("/")[2];

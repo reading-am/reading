@@ -7,6 +7,9 @@ if(ENVIRONMENT === 'development'){
   WEB_SOCKET_DEBUG = true;
 }
 
+// Only enable sockets for native apps
+if(native.is){
+
 var pusher = new Pusher(_pusher.key);
 
 for(i = 0; i < _pusher.channels.length; i++){
@@ -20,4 +23,6 @@ for(i = 0; i < _pusher.channels.length; i++){
     if(!window.hasfocus) native.badge('★');
     else $post.fadeTo('medium', 1).removeClass('new');
   });
+}
+
 }

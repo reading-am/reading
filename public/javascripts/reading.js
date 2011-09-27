@@ -1,8 +1,9 @@
 (function($, params){
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
-var domain      = (window.location.host.indexOf('0.0.0.0') == 0) ? '0.0.0.0:3000' : 'reading.am',
-    on_reading  = (window.location.host.indexOf('reading.am') == 0 || window.location.host.indexOf('0.0.0.0') == 0),
+var host        = window.location.host,
+    domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging' : 'reading.am',
+    on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false;
 

@@ -14,7 +14,7 @@
   <% if current_user.username %>
     <% # TODO this is a complete mess. Clean it up %>
     Hey there <%= link_to current_user.display_name, "/#{current_user.username}", :class => 'user' %>.<br>
-    <%= link_to "You", "/#{current_user.username}", :class => (request.request_uri.split('/')[1] == current_user.username and params[:action] != 'edit' ? 'active' : '') %>
+    <%= link_to "You", "/#{current_user.username}", :class => (request.url.split('/')[1] == current_user.username and params[:action] != 'edit' ? 'active' : '') %>
     - <%= link_to "Everybody", '/everybody', :class => (params[:controller] == 'posts' ? 'active' : '') %>
     - <%= link_to "Settings", "/#{current_user.username}/settings", :class => (params[:controller] == 'users' and params[:action] == 'edit' ? 'active' : '') %>
     - <%= link_to "Sign Out", signout_path %>

@@ -11,7 +11,6 @@ gem 'jquery-rails'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
 gem 'omniauth'
-gem 'jquery-rails'
 gem 'hipchat'
 gem 'curb'
 gem 'nokogiri'

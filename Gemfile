@@ -23,3 +23,4 @@ gem 'will_paginate'
 gem 'tinder'
 gem 'pusher'
 gem 'em-http-request' # needed for async pusher calls
+gem 'httparty' # not sure what depends on this - probably the pusher gem

@@ -225,6 +225,7 @@ DEPENDENCIES
   dalli
   em-http-request
   hipchat
+  httparty
   jquery-rails
   nokogiri
   omniauth

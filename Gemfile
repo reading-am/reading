@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'thin'
+gem 'thin' # server
 
 gem 'rails', '3.1.0'
 group :assets do

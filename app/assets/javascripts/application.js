@@ -17,14 +17,26 @@ $(function() {
   $("a.external").live('click', function(){
     var $this = $(this),
         link_host = this.href.split("/")[2],
-        document_host = document.location.href.split("/")[2];
+        document_host = document.location.href.split("/")[2],
+        base58_id = (typeof $this.data('base58_id') != 'undefined' ? $this.data('base58_id') : '');
 
     if (link_host != document_host){
-      var pre = 'http://'+document_host+'/';
-      if(typeof $this.data('base58_id')){
-        pre += 'p/'+$this.data('base58_id')+'/';
+      // old redirect method through reading url
+      // var pre = 'http://'+document_host+'/'+(base58_id ? 'p/'+base58_id+'/' : '');
+      // window.open(pre+this.href);
+
+      // new AJAX method
+      // only log it if they're logged in
+      if(current_user.logged_in()){
+        $.ajax({
+          url: '/post.json',
+          data: {
+            url: this.href,
+            referrer_id: (base58_id ? base58.decode(base58_id) : '')
+          }
+        });
       }
-      window.open(pre+this.href);
+      window.open(this.href);
       return false;
     }
   });

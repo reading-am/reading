@@ -8,5 +8,5 @@ var current_user = {
   username: '',
   display_name: '',
 <% end %>
-  logged_in: function(){ return this.id == true; }
+  logged_in: function(){ return Boolean(this.id); }
 };

@@ -1,0 +1,9 @@
+.post.referred_post a.external {
+  background:#EEE;
+}
+.post.yep:before {
+  content:'✓';
+}
+.post.nope {
+  text-decoration:line-through;
+}

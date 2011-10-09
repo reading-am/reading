@@ -177,8 +177,14 @@ a.external {
   font-style:italic;
 }
 
-.referred_post a.external {
+.post.referred_post a.external {
   background:#EEE;
+}
+.post.yep:before {
+  content:'✓';
+}
+.post.nope {
+  text-decoration:line-through;
 }
 
 #error_explanation {

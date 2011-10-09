@@ -1,0 +1,182 @@
+html {
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+  color:#111;
+}
+
+a {
+  background:#FFFBCC;
+  text-decoration:none;
+  color:#000;
+}
+  a:hover {
+    background:#FFF461;
+    text-decoration:underline;
+  }
+h1 {
+  font-weight:bold;
+  font-size:36px;
+  line-height:36px;
+}
+h3 {
+  margin:10px 0 0;
+}
+h4 {
+  font-weight:bold;
+  letter-spacing:1px;
+  margin:0 0 10px;
+}
+
+table {
+  margin:5px 0 20px;
+}
+td {
+  padding:2px 5px;
+  vertical-align:top;
+}
+
+#wrapper {
+  width:960px;
+  margin:50px auto;
+}
+
+.bookmarklet {
+  background:#FFFBCC;
+  text-align:center;
+  margin:60px 0 0;
+  width:275px;
+}
+  .bookmarklet span, .bookmarklet a {
+    width:100%;
+  }
+  .bookmarklet a {
+    display:none;
+  }
+
+#welcome, #content, #blank_slate, #hooks {
+  margin:20px 0 0;
+}
+  #welcome {
+    line-height:22px;
+  }
+  #blank_slate .bookmarklet {
+    font-size: 36px;
+    font-weight:bold;
+    line-height: 56px;
+    width: 615px;
+    margin:15px 0;
+  }
+  #blank_slate li {
+    list-style-type: circle;
+    margin-left: 30px;
+    padding-left: 3px;
+  }
+
+.date, .admin.action {
+  padding:2px 5px 0 0;
+  font-size: 12px
+}
+
+.admin.action {
+  visibility:hidden;
+  background:none;
+}
+
+tr:hover .admin.action {
+  visibility:visible;
+}
+
+#username, #username_actions {
+  font-size:32px;
+  float:left;
+  margin:18px 0 0;
+}
+  #username label {
+    font-size:14px;
+  }
+#username_actions {
+  font-size:56px;
+}
+  #username_actions input {
+    width:100px;
+    margin:36px;
+  }
+
+h1 a, a.user, .hook a {
+  background:none;
+}
+  h1 a:hover, a.user:hover {
+    background:none
+  }
+
+.user, .hook a {
+  font-weight:bold;
+}
+
+.edit_user .field, .new_hook .field {
+  margin:5px 0;
+}
+
+.edit_user label, .new_hook label {
+  display:inline-block;
+  width:100px;
+}
+
+a.back, .actions {
+  display:inline-block;
+  margin:10px 0 0;
+}
+
+th {
+  font-weight:bold;
+  font-size: 12px;
+}
+
+.hook_message {
+  display:none;
+  margin:15px 0;
+  font-size:12px;
+}
+  h5.hook_message {
+    display:inline;
+  }
+
+#visit {
+  margin:150px 0 0;
+}
+#visit h2 {
+  font-size:16px;
+}
+#visit span {
+  text-decoration:underline;
+}
+
+#subnav a, footer a, a.user.you, .rss {
+  background-color:#B3FEFF;
+}
+  #subnav a:hover, footer a:hover, a.user.you:hover, .rss:hover {
+    background-color:#00FBFF;
+  }
+a.active, a.active:hover, #subnav a.active, #subnav a.active:hover {
+  background:none;
+  text-decoration:underline;
+  cursor:default;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+footer {
+  margin:30px 0;
+}
+
+a.external {
+  font-style:italic;
+}
+
+#error_explanation {
+  color:red;
+}

@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem 'thin' # server
 
 gem 'rails', '3.1.1'
-gem 'rack', '1.3.3' # needed to supress this error http://stackoverflow.com/questions/7624661/rake-already-initialized-constant-warning
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'

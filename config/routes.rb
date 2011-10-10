@@ -10,6 +10,8 @@ Reading::Application.routes.draw do
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional
   # Notice the .rss negative lookahead that allows user RSS feeds to pass through
+  # We're not currently supporting (/yn/:yn) "yep . nope" because it should be a user initiated action
+  # rather than a trickster potentially formatting a link with yn already in there and promoting a link
   match '(/t/:token)(/p/:id)/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
   resources :hooks

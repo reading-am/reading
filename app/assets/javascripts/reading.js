@@ -24,23 +24,57 @@ var url   = on_reading ? parse_url() : window.location.href,
 if(pass_thru) return window.location = url;
 
 var show_overlay = function(){
-  var $hand = $('<span>&#9996;</span>').css({'font-size':'56px'}),
-      $subtext = $('<span><br>Reading</span>'),
-      $loaded_div = $('<div></div>').css({
-        'z-index':    '99999999',
-        padding:      '20px 10px 5px',
-        background:   'yellow',
-        position:     'fixed',
-        top:          '15px',
-        right:        '15px',
-        color:        '#000',
-        'font-size':  '12px',
-        'line-height':'15px',
-        'text-align': 'center',
-        'display':    'none'
-      }).append($hand).append($subtext);
-  $('body').prepend($loaded_div);
-  $loaded_div.fadeIn().delay(1000).fadeOut(400, function(){ $(this).remove(); });
+  var $css = $('<style type="text/css">'+
+        '#r_am, #r_am * {'+
+          'color:#000;'+
+          'font-family:"Helvetica Neue", helvetica, arial, sans-serif;'+
+          'font-weight:normal;'+
+          'font-size:12px;'+
+          'line-height:normal;'+
+          'text-align:center;'+
+          'text-decoration:none;'+
+        '}'+
+        '#r_am {'+
+          'display:none;'+
+          'z-index:99999999;'+
+          'padding:10px 10px 5px;'+
+          'margin:0;'+
+          'background:yellow;'+
+          'position:fixed;'+
+          'top:15px;'+
+          'right:15px;'+
+          'overflow:hidden;'+
+          'height:60px;'+
+          'width:50px;'+
+        '}'+
+        '#r_icon {'+
+          'font-size:56px;'+
+          'line-height:0;'+
+          'margin:18px 0 25px;'+
+        '}'+
+        '#r_actions {'+
+          'margin:10px 0 0;'+
+        '}'+
+        '#r_actions a:hover {'+
+          'background:#FFF;'+
+        '}'+
+        '#r_close {'+
+          'font-size:9px;'+
+        '}'+
+      '</style>').appendTo('head');
+      $icon = $('<div id="r_icon">&#9996;</div>'),
+      $subtext = $('<div>Reading</div>'),
+      $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> | <a href="#" id="r_nope">Nope</a> | <a href="#" id="r_close">&#10005;</a></div>'),
+      $wrapper = $('<div id="r_am"></div>').append($icon).append($subtext).append($actions);
+  $('body').prepend($wrapper);
+  $wrapper.fadeIn(500, function(){
+    $wrapper.delay(1000).animate({height:'14px', width:'77px'});
+    $icon.delay(1000).animate({'margin-top':'-52px'});
+  });
+  $('#r_close').click(function(){
+    $wrapper.fadeOut(400, function(){ $wrapper.remove(); });
+    return false;
+  });
 };
 
 var params = {token: params.token, referrer_id: params.referrer_id, url: url};

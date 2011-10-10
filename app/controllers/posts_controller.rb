@@ -43,10 +43,11 @@ class PostsController < ApplicationController
     @post       = Post.new
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
+    @post.yn    = params[:yn]
     # A post is a duplicate if it's the exact same page and within 1hr of the last post
-    is_duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60))
+    duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first.page : false;
     # TODO - clean up these conditionals for duplicates and the same in the respond_to
-    if !is_duplicate
+    if !duplicate
       if @post.page.new_record?
         if !params[:title].nil?
           @post.page.title = params[:title]
@@ -63,8 +64,8 @@ class PostsController < ApplicationController
     end
 
     respond_to do |format|
-      if is_duplicate or @post.save
-        if !is_duplicate
+      if duplicate or @post.save
+        if !duplicate
           # Websockets
           json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
           Pusher['everybody'].trigger_async('new_post', json)

@@ -76,31 +76,43 @@ var show_overlay = function(){
     $wrapper.fadeOut(400, function(){ $wrapper.remove(); });
     return false;
   });
+  $('#r_yep, #r_nope').click(function(){
+    params.yn = $(this).is('#r_yep');
+    submit_post(params, function(){ alert('hit '+params.yn); });
+    return false;
+  });
 };
 
 var params = {token: params.token, referrer_id: params.referrer_id, url: url};
 if(!on_reading) params.title = window.document.title;
 
-$.ajax({
-  url: 'http://'+domain+'/post.json',
-  dataType: 'jsonp',
-  data: params,
-  success: function(data, textStatus, jqXHR){
-    if(data.meta.status == 400){
-      alert('Error');
-    } else {
-      if(on_reading){
-        if(has_token){
-          // forward back through to Reading so that the user's
-          // token doesn't show up in the referrer
-          window.location = 'http://'+domain+'/t/-/'+url;
-        } else {
-          window.location = url;
-        }
+var submit_post = function(data, success){
+  $.ajax({
+    url: 'http://'+domain+'/post.json',
+    dataType: 'jsonp',
+    data: data,
+    success: function(data, textStatus, jqXHR){
+      if(data.meta.status == 400){
+        alert('Error');
       } else {
-        show_overlay();
+        success();
       }
     }
+  });
+};
+
+// submit the inital post on script load
+submit_post(params, function(){
+  if(on_reading){
+    if(has_token){
+      // forward back through to Reading so that the user's
+      // token doesn't show up in the referrer
+      window.location = 'http://'+domain+'/t/-/'+url;
+    } else {
+      window.location = url;
+    }
+  } else {
+    show_overlay();
   }
 });
 

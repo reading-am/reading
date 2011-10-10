@@ -54,6 +54,7 @@ var show_overlay = function(){
         '}'+
         '#r_actions {'+
           'margin:10px 0 0;'+
+          'width:77px;'+
         '}'+
         '#r_actions a:hover {'+
           'background:#FFF;'+
@@ -64,7 +65,7 @@ var show_overlay = function(){
       '</style>').appendTo('head');
       $icon = $('<div id="r_icon">&#9996;</div>'),
       $subtext = $('<div>Reading</div>'),
-      $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> | <a href="#" id="r_nope">Nope</a> | <a href="#" id="r_close">&#10005;</a></div>'),
+      $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> | <a href="#" id="r_close">&#10005;</a></div>'),
       $wrapper = $('<div id="r_am"></div>').append($icon).append($subtext).append($actions);
   $('body').prepend($wrapper);
   $wrapper.fadeIn(500, function(){

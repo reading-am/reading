@@ -56,8 +56,11 @@ var show_overlay = function(){
           'margin:10px 0 0;'+
           'width:77px;'+
         '}'+
-        '#r_actions a:hover {'+
+        '#r_actions a:hover, .r_active {'+
           'background:#FFF;'+
+        '}'+
+        '#r_actions .r_inactive {'+
+          'text-decoration:line-through;'+
         '}'+
         '#r_close {'+
           'font-size:9px;'+
@@ -77,8 +80,27 @@ var show_overlay = function(){
     return false;
   });
   $('#r_yep, #r_nope').click(function(){
-    params.yn = $(this).is('#r_yep');
-    submit_post(params, function(){ alert('hit '+params.yn); });
+    var $this = $(this),
+        $close= $('#r_close'),
+        i = 0,
+        shapes = ['✻','✼','✽','✾'],
+        loading = setInterval(function(){
+          $close
+            .text(shapes[i]);
+          i = i < shapes.length-1 ? i+1 : 0;
+        }, 250);
+    params.yn = $this.is('#r_yep');
+    $other = params.yn ? $('#r_nope') : $('#r_yep');
+    $other
+      .removeClass('r_active')
+      .addClass('r_inactive');
+    $this
+      .removeClass('r_inactive')
+      .addClass('r_active');
+    submit_post(params, function(){
+      clearInterval(loading);
+      $close.text('✕');
+    });
     return false;
   });
 };

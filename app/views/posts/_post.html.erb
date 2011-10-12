@@ -4,9 +4,9 @@
   <% if post.user.username.nil? %>
     <%= post.user.display_name %>
   <% elsif post.user == current_user %>
-    <%= link_to 'You', "http://reading.am/#{post.user.username}", :class => 'user' %> are
+    <%= link_to 'You', "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> are
   <% else %>
-    <%= link_to post.user.display_name, "http://reading.am/#{post.user.username}", :class => 'user' %> is
+    <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> is
   <% end %>
   <%= if !post.page.domain.nil? then post.page.domain.verb  else 'reading' end %>
   <%= link_to (post.page.title.blank? ? post.page.url : post.page.title), post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %>

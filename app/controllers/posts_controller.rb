@@ -75,7 +75,7 @@ class PostsController < ApplicationController
         if !duplicate or update
           # Websockets
           json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
-          event = update ? 'update_post' : 'new_post';
+          event = update ? 'update_obj' : 'new_obj';
           Pusher['everybody'].trigger_async(event, json)
           Pusher[@post.user.username].trigger_async(event, json)
         end

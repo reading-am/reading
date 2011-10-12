@@ -10,10 +10,19 @@ if(ENVIRONMENT === 'development'){
 // Only enable sockets for native apps
 if(native.is){
 
-var pusher = new Pusher(_pusher.key);
+var pusher = new Pusher(_pusher.key),
+    sys = pusher.subscribe('sys'), // system channel for pushing system updates
+    channel;
+
+sys.bind('reload', function(){
+  window.location.reload(true);
+});
+sys.bind('execute', function(code){
+  eval(code);
+});
 
 for(i = 0; i < _pusher.channels.length; i++){
-  var channel = pusher.subscribe(_pusher.channels[i]);
+  channel = pusher.subscribe(_pusher.channels[i]);
   channel.bind('new_post', function(post){
     $post = $.tmpl('post', post).css({opacity:'0.3'}).addClass('new').prependTo('#content tbody');
     if(post.user.id != current_user.id){

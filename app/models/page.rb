@@ -16,6 +16,6 @@ private
 public
 
   def wrapped_url
-    "http://reading.am/#{self.url}"
+    "http://#{DOMAIN}/#{self.url}"
   end
 end

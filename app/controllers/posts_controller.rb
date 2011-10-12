@@ -66,16 +66,20 @@ class PostsController < ApplicationController
       if !params[:yn].nil?
         @post.yn = params[:yn]
       end
+      update = @post.changed?
     end
 
     respond_to do |format|
       # if it's a duplicate and we changed something, it'll be aliased to @post and saved in the second part of the conditional
       if (duplicate && !duplicate.changed?) or @post.save
-        if !duplicate
+        if !duplicate or update
           # Websockets
           json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
-          Pusher['everybody'].trigger_async('new_post', json)
-          Pusher[@post.user.username].trigger_async('new_post', json)
+          event = update ? 'update_post' : 'new_post';
+          Pusher['everybody'].trigger_async(event, json)
+          Pusher[@post.user.username].trigger_async(event, json)
+        end
+        if !duplicate
           # Hooks. I should make these async
           @post.user.hooks.each do |hook|
             # TODO I'd like to make this a helper of some sort

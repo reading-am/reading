@@ -1,6 +1,6 @@
 <% # TODO spin user links out into a helper %>
 <% because_of_you = (logged_in? and !post.referrer_post.nil? and post.referrer_post.user == current_user) %>
-<div class="post <%= 'referred_post' if post.referrer_post %> <%= if post.yn === true then 'yep' elsif post.yn === false then 'nope' end %>">
+<div data-class="Post" data-id="<%= post.id %>" class="post <%= 'referred_post' if post.referrer_post %> <%= if post.yn === true then 'yep' elsif post.yn === false then 'nope' end %>">
   <% if post.user.username.nil? %>
     <%= post.user.display_name %>
   <% elsif post.user == current_user %>

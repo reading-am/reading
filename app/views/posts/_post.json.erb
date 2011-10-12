@@ -1,4 +1,5 @@
 {
+  "type": "Post",
   "id": <%= post.id %>,
   "title": "<%= post.page.title %>",
   "url": "<%= post.page.url %>",
@@ -11,6 +12,7 @@
   "referrer_post": {
     "id": <%= !post.referrer_post.nil? ? post.referrer_post.id : '""'.html_safe %>,
     "user": {
+
       "id": <%= !post.referrer_post.nil? ? post.referrer_post.user.id : '""'.html_safe %>,
       "username": "<%= !post.referrer_post.nil? ? post.referrer_post.user.username : '' %>",
       "display_name": "<%= !post.referrer_post.nil? ? post.referrer_post.user.display_name : '' %>"

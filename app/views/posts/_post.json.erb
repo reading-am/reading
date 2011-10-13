@@ -3,6 +3,7 @@
   "id": <%= post.id %>,
   "title": "<%= post.page.title %>",
   "url": "<%= post.page.url %>",
+  "yn": <%= post.yn.nil? ? 'null' : post.yn %>,
   "wrapped_url": "<%= post.wrapped_url %>",
   "user": {
     "id": <%= post.user.id %>,

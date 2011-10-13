@@ -11,7 +11,7 @@ if(ENVIRONMENT === 'development'){
 if(native.is){
 
   var pusher = new Pusher(_pusher.key),
-      sys = pusher.subscribe('sys'), // system channel for pushing system updates
+      sys = pusher.subscribe('sys'), // channel for pushing system updates
       channel;
 
   sys.bind('reload', function(){

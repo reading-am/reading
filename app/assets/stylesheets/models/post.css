@@ -7,3 +7,6 @@
 .post.nope {
   text-decoration:line-through;
 }
+.post.new {
+  opacity:0.3;
+}

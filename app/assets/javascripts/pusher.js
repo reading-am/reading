@@ -9,6 +9,7 @@ var notify_tmpl = function(obj){
     break;
   }
 },
+// insert an object into the DOM
 insert_obj = function(obj){
   var $obj = $.tmpl(obj.type, obj), $wrapper;
   switch(obj.type){
@@ -25,7 +26,7 @@ new_obj = function(obj){
     native.notify(notify_tmpl(obj));
     if(!window.hasfocus) native.badge('★');
   }
-  var $obj = insert_obj(obj).css({opacity:'0.3'}).addClass('new');
+  var $obj = insert_obj(obj).addClass('new');
   if(window.hasfocus) $obj.fadeTo('medium', 1).removeClass('new');
 },
 // an update to an existing obj ex: yep & nope on a post
@@ -33,6 +34,7 @@ update_obj = function(obj){
   var $existing = $('[data-class="'+obj.type+'"][data-id="'+obj.id+'"]');
   if($existing.length){
     var $obj = $.tmpl(obj.type, obj);
+    if($existing.hasClass('new')) $obj.addClass('new');
     $existing.replaceWith($obj);
   } else {
     new_obj(obj);

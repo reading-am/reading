@@ -30,6 +30,8 @@
   <div id="url_message" class="hook_message">
     The following data will be sent via POST or GET to a URL of your choosing each time you add a post:
     <pre>
+    post[id] - The id of the post
+    post[yn] - Whether the user marked the post with "yep" (true) or "nope" (false). Empty means unmarked.
     post[title] - The page title of the post
     post[url] - The url of the post
     post[wrapped_url] - The url of the post routed through Reading for automatic list updates

@@ -8,9 +8,9 @@ $.template('Post',
   '{{/if}} reading <a href="${url}" class="external" data-base58_id="${base58.encode(id)}">${title}</a>'+
   '{{if referrer_post.id}}'+
     ' because of <a href="http://<%= DOMAIN %>/${referrer_post.user.username}" class="user'+
-<%#    '{{if user.id == current_user.id}}'+
+    '{{if user.id == current_user.id}}'+
       ' you">you'+
-      '{{else}}'+ %>
+    '{{else}}'+
       '">${referrer_post.user.display_name}'+
     '{{/if}}</a>'+
   '{{/if}}'+

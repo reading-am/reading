@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'thin' # server
 
+require 'uri/common'; ::URI.send :remove_const, :WFKV_ # tempfix per: http://stackoverflow.com/questions/7624661/rake-already-initialized-constant-warning
 gem 'rails', '3.1.1'
 group :assets do
   gem 'sass-rails'

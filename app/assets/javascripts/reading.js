@@ -104,6 +104,13 @@ var show_overlay = function(){
     });
     return false;
   });
+
+  $(window).scroll(function(){
+    if($actions.find('.r_active').length){
+      $('#r_close').click();
+    }
+  });
+
 };
 
 var params = {token: params.token, referrer_id: params.referrer_id, url: url};

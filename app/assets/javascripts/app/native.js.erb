@@ -34,7 +34,8 @@ switch(native.is){
 if(native.is){
 
 window.document.title = '✌ Reading';
-$(function(){ $('head').append('<link rel="stylesheet" href="/assets/native.css<%= #asset_path 'native.css' %>" type="text/css">'); });
+$(function(){ $('head').append('<link rel="stylesheet" href="/assets/native.css" type="text/css">'); });
+<% #asset_path 'native.css' %>
 
 $(window).focus(function(){
   native.badge('');

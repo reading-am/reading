@@ -78,22 +78,21 @@ class PostsController < ApplicationController
           event = update ? 'update_obj' : 'new_obj';
           Pusher['everybody'].trigger_async(event, json)
           Pusher[@post.user.username].trigger_async(event, json)
-        end
-        if !duplicate
+
           # Hooks. I should make these async
           @post.user.hooks.each do |hook|
             # TODO I'd like to make this a helper of some sort
             case hook.provider
             when 'hipchat'
               client = HipChat::Client.new(hook.params['token'])
-              notify_users = true
-              message = render_to_string :partial => 'posts/hipchat_message.html.erb', :locals => {:post => @post}
+              notify_users = !update # only notify if this is not a post update
+              message = render_to_string :partial => "posts/hipchat_#{update ? 'update' : 'new'}.html.erb", :locals => {:post => @post}
               client[hook.params['room']].send('Reading.am', "#{message}", notify_users)
             when 'campfire'
               campfire = Tinder::Campfire.new hook.params['subdomain'], :token => hook.params['token']
               room = campfire.find_or_create_room_by_name(hook.params['room'])
               if !room.nil?
-                room.speak render_to_string :partial => 'posts/campfire_message.txt.erb'
+                room.speak render_to_string :partial => "posts/campfire_#{update ? 'update' : 'new'}.txt.erb"
               end
             when 'url'
               url = Addressable::URI.parse(hook.params['url'])
@@ -102,6 +101,7 @@ class PostsController < ApplicationController
                 # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
                 url.query_values = query_values.update({
                   'post[id]'                  => "#{@post.id}",
+                  'post[yn]'                  => @post.yn,
                   'post[title]'               => @post.page.title,
                   'post[url]'                 => @post.page.url,
                   'post[wrapped_url]'         => @post.wrapped_url,
@@ -118,6 +118,7 @@ class PostsController < ApplicationController
                 Curl::Easy.http_post(
                   url.to_s,
                   Curl::PostField.content('post[id]', @post.id),
+                  Curl::PostField.content('post[yn]', @post.yn),
                   Curl::PostField.content('post[title]', @post.page.title),
                   Curl::PostField.content('post[url]', @post.page.url),
                   Curl::PostField.content('post[wrapped_url]', @post.wrapped_url),

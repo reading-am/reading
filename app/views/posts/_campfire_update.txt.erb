@@ -1,0 +1,1 @@
+<%= ("✌ I say #{@post.yn ? 'yep' : 'nope'} to #{' "' + @post.page.title + '"' if !@post.page.title.blank?} #{@post.wrapped_url}").html_safe %>

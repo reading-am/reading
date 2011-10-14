@@ -1,0 +1,2 @@
+<% token = false if token.nil? %>
+✌ <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}" %> said "<%= post.yn ? 'yep' : 'nope' %>" to <%= link_to (post.page.title.blank? ? post.page.url : post.page.title), post.wrapped_url(token) %>

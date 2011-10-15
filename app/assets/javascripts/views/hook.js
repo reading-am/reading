@@ -2,16 +2,16 @@ $(function(){
 
   var text_field = function(name){
     return $('<div class="field">')
-              .append('<label for="hook[params]['+name.toLowerCase()+']">'+name+'</label>')
-              .append('<input name="hook[params]['+name.toLowerCase()+']">');
+              .append('<label for="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">'+name+'</label>')
+              .append('<input name="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">');
   };
   var select_field = function(name, options){
-    var $select = $('<select name="hook[params]['+name.toLowerCase()+']">');
+    var $select = $('<select name="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">');
     for(var i = 0; i < options.length; i++){
-      $select.append('<option value="'+options[i].toLowerCase()+'">'+options[i]+'</option>');
+      $select.append('<option value="'+options[i].toLowerCase().replace(/ /g,'_')+'">'+options[i]+'</option>');
     }
     return $('<div class="field">')
-              .append('<label for="hook[params]['+name.toLowerCase()+']">'+name+'</label>')
+              .append('<label for="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">'+name+'</label>')
               .append($select);
   };
 
@@ -27,6 +27,9 @@ $(function(){
         break;
       case 'campfire':
         $actions.before(text_field('Token'), text_field('Subdomain'), text_field('Room'));
+        break;
+      case 'opengraph':
+        $actions.before(text_field('Access Token'));
         break;
       case 'url':
         $actions.before(text_field('URL'), select_field('Method', ['GET', 'POST']));

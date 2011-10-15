@@ -102,13 +102,13 @@ class PostsController < ApplicationController
               }
             when 'url'
               data = { :post => {
-                :id             => @post.id,
+                :id             => "#{@post.id}",
                 :yn             => @post.yn,
                 :title          => @post.page.title,
                 :url            => @post.page.url,
                 :wrapped_url    => @post.wrapped_url,
                 :user => {
-                  :id           => @post.user.id,
+                  :id           => "#{@post.user.id}",
                   :username     => @post.user.username,
                   :display_name => @post.user.display_name
                 },
@@ -121,11 +121,15 @@ class PostsController < ApplicationController
                   }
                 }
               }}
+
               url = hook.params['url']
               if url[0, 4] != "http" then url = "http://#{url}" end
               http = EventMachine::HttpRequest.new(url)
+
               if hook.params['method'] == 'get'
-                http.get :query => data
+                addr = Addressable::URI.new 
+                addr.query_values = data # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
+                http.get :query => addr.query
               else
                 http.post :body => data
               end

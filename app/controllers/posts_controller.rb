@@ -94,7 +94,7 @@ class PostsController < ApplicationController
                 room.speak render_to_string :partial => "posts/campfire_#{update ? 'update' : 'new'}.txt.erb"
               end
             when 'opengraph'
-              url = 'https://graph.facebook.com/me/reading-am:read'
+              url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
               EventMachine::HttpRequest.new(url).post :body => {
                 :access_token => hook.params['access_token'],
                 #gsub for testing since Facebook doesn't like my localhost
@@ -180,6 +180,13 @@ class PostsController < ApplicationController
   def visit
     @token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
     @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0
+    if @ref = Post.find(@referrer_id)
+      @og_props = {
+        :title => "&#9996; #{@ref.page.title}",
+        :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",
+        :description => false
+      }
+    end
   end
 
 end

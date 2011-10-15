@@ -13,4 +13,8 @@ class Domain < ActiveRecord::Base
     # from: http://stackoverflow.com/questions/373731/override-activerecord-attribute-methods
     read_attribute(:verb) || 'reading'
   end
+
+  def imperative
+    self.verb.split(' ')[0][0..-4]
+  end
 end

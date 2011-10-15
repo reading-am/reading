@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
+  rescue_from ActiveRecord::RecordNotFound, :with => :show_404
+
   private
 
   def set_time_zone
@@ -71,6 +73,18 @@ class ApplicationController < ActionController::Base
 
   def deskotp_device?
     @user_device == :desktop
+  end
+
+  def not_found
+    raise  ActiveRecord::RecordNotFound.new
+  end
+
+  def show_404
+    respond_to do |format|
+      format.html { render :file => "#{Rails.root}/public/404.html", :status => :not_found }
+      format.xml { head :not_found }
+      format.any { head :not_found }
+    end
   end
 
 end

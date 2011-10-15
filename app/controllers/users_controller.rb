@@ -13,11 +13,10 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    if params[:username]
-      @user = User.find_by_username(params[:username])
-    else
-      @user = User.find(params[:id])
-    end
+    @user = params[:username] ?
+      User.find_by_username(params[:username]) :
+      User.find(params[:id])
+    if !@user then not_found end
 
     if params[:type] == 'list'
       @posts = @user.feed.paginate(:page => 1, :per_page => 50)

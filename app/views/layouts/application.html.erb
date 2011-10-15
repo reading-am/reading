@@ -20,7 +20,7 @@
   <%= javascript_include_tag 'application' %>
   <!--[if IE]><%= javascript_include_tag 'ie/html5' %><![endif]-->
   <%= csrf_meta_tag %>
-  <%= render :partial => 'layouts/ga_embed' %>
+  <%= render :partial => 'layouts/ga_embed' if Rails.env == 'production' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
 </head>
 <body>

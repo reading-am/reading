@@ -79,7 +79,6 @@ class PostsController < ApplicationController
           Pusher['everybody'].trigger_async(event, json)
           Pusher[@post.user.username].trigger_async(event, json)
 
-          # Hooks. I should make these async
           @post.user.hooks.each do |hook|
             # TODO I'd like to make this a helper of some sort
             case hook.provider
@@ -94,42 +93,38 @@ class PostsController < ApplicationController
               if !room.nil?
                 room.speak render_to_string :partial => "posts/campfire_#{update ? 'update' : 'new'}.txt.erb"
               end
+            when 'opengraph'
+              url = 'https://graph.facebook.com/me/reading-am:read'
+              EventMachine::HttpRequest.new(url).post :body => {
+                :access_token => hook.params['access_token'],
+                #gsub for testing since Facebook doesn't like my localhost
+                :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
+              }
             when 'url'
-              url = Addressable::URI.parse(hook.params['url'])
+              data = { :post => {
+                :id             => @post.id,
+                :yn             => @post.yn,
+                :title          => @post.page.title,
+                :url            => @post.page.url,
+                :wrapped_url    => @post.wrapped_url,
+                :user => {
+                  :id           => @post.user.id,
+                  :username     => @post.user.username,
+                  :display_name => @post.user.display_name
+                },
+                :referrer_post => {
+                  :id           => !@post.referrer_post.nil? ? "#{@post.referrer_post.id}" : '',
+                  :user => {
+                    :id         => !@post.referrer_post.nil? ? "#{@post.referrer_post.user.id}" : '',
+                    :username   => !@post.referrer_post.nil? ? @post.referrer_post.user.username : '',
+                    :display_name => !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : ''
+                  }
+                }
+              }}
               if hook.params['method'] == 'get'
-                query_values = url.query_values || {}
-                # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
-                url.query_values = query_values.update({
-                  'post[id]'                  => "#{@post.id}",
-                  'post[yn]'                  => @post.yn,
-                  'post[title]'               => @post.page.title,
-                  'post[url]'                 => @post.page.url,
-                  'post[wrapped_url]'         => @post.wrapped_url,
-                  'post[user][id]'            => "#{@post.user.id}",
-                  'post[user][username]'      => @post.user.username,
-                  'post[user][display_name]'  => @post.user.display_name,
-                  'post[referrer_post][id]'                 => !@post.referrer_post.nil? ? "#{@post.referrer_post.id}" : '',
-                  'post[referrer_post][user][id]'           => !@post.referrer_post.nil? ? "#{@post.referrer_post.user.id}" : '',
-                  'post[referrer_post][user][username]'     => !@post.referrer_post.nil? ? @post.referrer_post.user.username : '',
-                  'post[referrer_post][user][display_name]' => !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : ''
-                })
-                Curl::Easy.perform url.to_s
+                EventMachine::HttpRequest.new(hook.params['url']).get :query => data
               else
-                Curl::Easy.http_post(
-                  url.to_s,
-                  Curl::PostField.content('post[id]', @post.id),
-                  Curl::PostField.content('post[yn]', @post.yn),
-                  Curl::PostField.content('post[title]', @post.page.title),
-                  Curl::PostField.content('post[url]', @post.page.url),
-                  Curl::PostField.content('post[wrapped_url]', @post.wrapped_url),
-                  Curl::PostField.content('post[user][id]', @post.user.id),
-                  Curl::PostField.content('post[user][username]', @post.user.username),
-                  Curl::PostField.content('post[user][display_name]', @post.user.display_name),
-                  Curl::PostField.content('post[referrer_post][id]', !@post.referrer_post.nil? ? @post.referrer_post.id : ''),
-                  Curl::PostField.content('post[referrer_post][user][id]', !@post.referrer_post.nil? ? @post.referrer_post.user.id : ''),
-                  Curl::PostField.content('post[referrer_post][user][username]', !@post.referrer_post.nil? ? @post.referrer_post.user.username : ''),
-                  Curl::PostField.content('post[referrer_post][user][display_name]', !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : '')
-                )
+                EventMachine::HttpRequest.new(hook.params['url']).post :body => data
               end
             end
           end

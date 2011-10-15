@@ -121,10 +121,13 @@ class PostsController < ApplicationController
                   }
                 }
               }}
+              url = hook.params['url']
+              if url[0, 4] != "http" then url = "http://#{url}" end
+              http = EventMachine::HttpRequest.new(url)
               if hook.params['method'] == 'get'
-                EventMachine::HttpRequest.new(hook.params['url']).get :query => data
+                http.get :query => data
               else
-                EventMachine::HttpRequest.new(hook.params['url']).post :body => data
+                http.post :body => data
               end
             end
           end

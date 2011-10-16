@@ -185,7 +185,7 @@ class PostsController < ApplicationController
     @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0
     if @ref = Post.find(@referrer_id)
       @og_props = {
-        :title => "✌ #{@ref.page.title}",
+        :title => "✌ #{@ref.page.title || @ref.page.url}",
         :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",
         :description => false
       }

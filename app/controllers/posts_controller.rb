@@ -96,12 +96,15 @@ class PostsController < ApplicationController
               end
             when 'opengraph'
               if !update
-                url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
-                http = EventMachine::HttpRequest.new(url).post :body => {
-                  :access_token => hook.params['access_token'],
-                  #gsub for testing since Facebook doesn't like my localhost
-                  :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-                }
+                auth = Authorization.find_by_user_id_and_provider(current_user.id, 'facebook')
+                if auth and auth.token
+                  url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
+                  http = EventMachine::HttpRequest.new(url).post :body => {
+                    :access_token => auth.token,
+                    #gsub for testing since Facebook doesn't like my localhost
+                    :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
+                  }
+                end
               end
             when 'url'
               data = { :post => {

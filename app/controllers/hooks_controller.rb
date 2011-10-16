@@ -33,6 +33,7 @@ class HooksController < ApplicationController
       redirect_to "/"
     end
     @hook = Hook.new
+    @has_facebook = (auth = Authorization.find_by_user_id_and_provider(current_user.id, 'facebook') and auth.token)
 
     respond_to do |format|
       format.html # new.html.erb

@@ -4,8 +4,8 @@ $(function(){
     return $('<div class="field">')
               .append('<label for="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">'+name+'</label>')
               .append('<input name="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">');
-  };
-  var select_field = function(name, options){
+  },
+  select_field = function(name, options){
     var $select = $('<select name="hook[params]['+name.toLowerCase().replace(/ /g,'_')+']">');
     for(var i = 0; i < options.length; i++){
       $select.append('<option value="'+options[i].toLowerCase().replace(/ /g,'_')+'">'+options[i]+'</option>');
@@ -29,7 +29,11 @@ $(function(){
         $actions.before(text_field('Token'), text_field('Subdomain'), text_field('Room'));
         break;
       case 'opengraph':
-        $actions.before(text_field('Access Token'));
+        $actions.before(
+          $('<div class="field">')
+              .append('<label for="hook[params][when]">Press Create!</label>')
+              .append('<input name="hook[params][when]" val="on_post" type="hidden">')
+        );
         break;
       case 'url':
         $actions.before(text_field('URL'), select_field('Method', ['GET', 'POST']));

@@ -55,7 +55,7 @@ td {
     display:none;
   }
 
-#welcome, #content, #blank_slate, #hooks {
+#welcome, #content, #blank_slate, #hooks, #authorizations {
   margin:20px 0 0;
 }
   #welcome {
@@ -73,6 +73,10 @@ td {
     margin-left: 30px;
     padding-left: 3px;
   }
+
+#hooks h4, #authorizations h4 {
+  margin:0;
+}
 
 .date, .admin.action {
   padding:2px 5px 0 0;

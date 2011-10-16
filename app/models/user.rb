@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :authorizations, :dependent => :destroy
   has_many :posts, :dependent => :destroy
   has_many :domains, :through => :posts
   has_many :hooks, :dependent => :destroy

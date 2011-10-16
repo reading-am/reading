@@ -11,8 +11,8 @@ class SessionsController < ApplicationController
       auth = Authorization.find_or_create(auth_hash)
       cookies.permanent[:auth_token] = auth.user.auth_token
       # Create the session
-      if user.username
-        redirect_to "/#{user.username}", :notice => "Signed in!"
+      if auth.user.username
+        redirect_to "/#{auth.user.username}", :notice => "Signed in!"
       else
         redirect_to '/pick_a_url'
       end

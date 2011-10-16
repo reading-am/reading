@@ -29,11 +29,15 @@ $(function(){
         $actions.before(text_field('Token'), text_field('Subdomain'), text_field('Room'));
         break;
       case 'opengraph':
-        $actions.before(
-          $('<div class="field">')
-              .append('<label for="hook[params][when]">Press Create!</label>')
-              .append('<input name="hook[params][when]" val="on_post" type="hidden">')
-        );
+        if(has_facebook){
+          $actions.before(
+            $('<div class="field">')
+                .append('<label for="hook[params][when]">Press Create!</label>')
+                .append('<input name="hook[params][when]" val="on_post" type="hidden">')
+          );
+        } else {
+          $actions.before('<div class="field"><a href="/auth/facebook">First, click here to connect your Facebook account</a></div>');
+        }
         break;
       case 'url':
         $actions.before(text_field('URL'), select_field('Method', ['GET', 'POST']));

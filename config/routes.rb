@@ -16,6 +16,7 @@ Reading::Application.routes.draw do
   match '(/t/:token)(/p/:id)/:url' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
   resources :hooks
+  resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
   match '/domains/:domain_name' => 'domains#show', :constraints => { :domain_name => /[0-9A-Z\-\.]+/i }

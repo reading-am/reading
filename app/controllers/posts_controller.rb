@@ -1,3 +1,4 @@
+# encoding: utf-8
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
@@ -182,7 +183,7 @@ class PostsController < ApplicationController
     @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0
     if @ref = Post.find(@referrer_id)
       @og_props = {
-        :title => "&#9996; #{@ref.page.title}",
+        :title => "✌ #{@ref.page.title}",
         :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",
         :description => false
       }

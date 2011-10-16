@@ -1,8 +1,9 @@
+# encoding: utf-8
 module ApplicationHelper
   def og_tags hash={}
     og = {
       :type   => "website",
-      :title  => "something",
+      :title  => "✌ Reading",
       :description => "What you're reading. Not what you like. Not what you find interesting. Just what you're reading.",
       :image  => "apple-touch-icon.png"
     }

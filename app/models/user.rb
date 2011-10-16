@@ -24,12 +24,10 @@ class User < ActiveRecord::Base
     username
   end
 
-  def self.create_with_omniauth(auth)
-    create! do |user|
-      require "digest"
-      user.provider = auth["provider"]
-      user.uid = auth["uid"]
-      user.name = auth["user_info"]["name"]
+  def add_provider(auth_hash)
+    # Check if the provider already exists, so we don't add it twice
+    unless authorizations.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+      Authorization.create :user => self, :provider => auth_hash["provider"], :uid => auth_hash["uid"]
     end
   end
 

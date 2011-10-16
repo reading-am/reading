@@ -95,12 +95,14 @@ class PostsController < ApplicationController
                 room.speak render_to_string :partial => "posts/campfire_#{update ? 'update' : 'new'}.txt.erb"
               end
             when 'opengraph'
-              url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
-              EventMachine::HttpRequest.new(url).post :body => {
-                :access_token => hook.params['access_token'],
-                #gsub for testing since Facebook doesn't like my localhost
-                :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-              }
+              if !update
+                url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
+                http = EventMachine::HttpRequest.new(url).post :body => {
+                  :access_token => hook.params['access_token'],
+                  #gsub for testing since Facebook doesn't like my localhost
+                  :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
+                }
+              end
             when 'url'
               data = { :post => {
                 :id             => "#{@post.id}",

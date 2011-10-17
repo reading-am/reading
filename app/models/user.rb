@@ -35,14 +35,16 @@ class User < ActiveRecord::Base
         auth.secret ||= auth_hash["credentials"]["secret"]
         auth.save
 
-       self.first_name ||= auth_hash["user_info"]["first_name"]
-       self.last_name  ||= auth_hash["user_info"]["last_name"]
-       self.location   ||= auth_hash["user_info"]["location"]
-       self.description||= auth_hash["user_info"]["description"]
-       self.image      ||= auth_hash["user_info"]["image"]
-       self.phone      ||= auth_hash["user_info"]["phone"]
-       self.urls       ||= auth_hash["user_info"]["urls"]
-       self.save
+        self.name       ||= auth_hash["user_info"]["name"]
+        self.email      ||= auth_hash["user_info"]["email"]
+        self.first_name ||= auth_hash["user_info"]["first_name"]
+        self.last_name  ||= auth_hash["user_info"]["last_name"]
+        self.location   ||= auth_hash["user_info"]["location"]
+        self.description||= auth_hash["user_info"]["description"]
+        self.image      ||= auth_hash["user_info"]["image"]
+        self.phone      ||= auth_hash["user_info"]["phone"]
+        self.urls       ||= auth_hash["user_info"]["urls"]
+        self.save
       end
     else
       Authorization.create(

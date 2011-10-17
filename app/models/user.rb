@@ -26,7 +26,25 @@ class User < ActiveRecord::Base
 
   def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
-    unless Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+    if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+      if auth.user_id == self.id
+        # if grab whatever info that came down from the credentials this time
+        # and save it if we're missing it
+        # TODO - there has to be a cleaner, more concise way to do this
+        auth.token  ||= auth_hash["credentials"]["token"]
+        auth.secret ||= auth_hash["credentials"]["secret"]
+        auth.save
+
+       self.first_name ||= auth_hash["user_info"]["first_name"]
+       self.last_name  ||= auth_hash["user_info"]["last_name"]
+       self.location   ||= auth_hash["user_info"]["location"]
+       self.description||= auth_hash["user_info"]["description"]
+       self.image      ||= auth_hash["user_info"]["image"]
+       self.phone      ||= auth_hash["user_info"]["phone"]
+       self.urls       ||= auth_hash["user_info"]["urls"]
+       self.save
+      end
+    else
       Authorization.create(
         :user       => self,
         :provider   => auth_hash["provider"],

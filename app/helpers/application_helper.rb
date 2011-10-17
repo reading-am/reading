@@ -8,6 +8,6 @@ module ApplicationHelper
       :image  => "apple-touch-icon.png"
     }
     og = og.merge(hash)
-    og.collect {|k,v| "<meta property=\"og:#{k}\" content=\"#{v}\" />\n" if v }.join.html_safe
+    og.collect {|k,v| "<meta property=\"og:#{h(k)}\" content=\"#{h(v)}\" />\n" if v }.join.html_safe
   end
 end

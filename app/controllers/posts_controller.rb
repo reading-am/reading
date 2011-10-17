@@ -96,7 +96,7 @@ class PostsController < ApplicationController
               end
             when 'opengraph'
               if !update
-                auth = Authorization.find_by_user_id_and_provider(current_user.id, 'facebook')
+                auth = Authorization.find_by_user_id_and_provider(@post.user_id, 'facebook')
                 if auth and auth.token
                   url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
                   http = EventMachine::HttpRequest.new(url).post :body => {

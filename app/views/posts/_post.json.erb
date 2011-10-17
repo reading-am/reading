@@ -1,22 +1,22 @@
-{
-  "type": "Post",
-  "id": <%= post.id %>,
-  "title": "<%= post.page.title %>",
-  "url": "<%= post.page.url %>",
-  "yn": <%= post.yn.nil? ? 'null' : post.yn %>,
-  "wrapped_url": "<%= post.wrapped_url %>",
-  "user": {
-    "id": <%= post.user.id %>,
-    "username": "<%= post.user.username %>",
-    "display_name": "<%= post.user.display_name %>"
+<% has_ref = !post.referrer_post.nil? %>
+<%= {
+  :type   => "Post",
+  :id     => post.id,
+  :title  => post.page.title,
+  :url    => post.page.url,
+  :yn     => post.yn,
+  :wrapped_url => post.wrapped_url,
+  :user => {
+    :id => post.user.id,
+    :username => post.user.username,
+    :display_name => post.user.display_name
   },
-  "referrer_post": {
-    "id": <%= !post.referrer_post.nil? ? post.referrer_post.id : '""'.html_safe %>,
-    "user": {
-
-      "id": <%= !post.referrer_post.nil? ? post.referrer_post.user.id : '""'.html_safe %>,
-      "username": "<%= !post.referrer_post.nil? ? post.referrer_post.user.username : '' %>",
-      "display_name": "<%= !post.referrer_post.nil? ? post.referrer_post.user.display_name : '' %>"
+  :referrer_post => {
+    :id => has_ref ? post.referrer_post.id : '',
+    :user => {
+      :id => has_ref ? post.referrer_post.user.id : '',
+      :username => has_ref ? post.referrer_post.user.username : '',
+      :display_name => has_ref ? post.referrer_post.user.display_name : ''
     }
   }
-}
+}.to_json.html_safe %>

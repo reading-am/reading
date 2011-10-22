@@ -36,6 +36,7 @@ var show_overlay = function(){
           'text-decoration:none;'+
           'font-variant:normal;'+
           'letter-spacing:normal;'+
+          'text-shadow:none;'+
           'border:none;'+
         '}'+
         '#r_am {'+

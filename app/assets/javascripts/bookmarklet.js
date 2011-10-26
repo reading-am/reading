@@ -21,7 +21,7 @@
   }
   getScript('http://code.jquery.com/jquery-latest.min.js', function() {
     if (typeof jQuery == 'undefined') {
-      alert('There was an error loading jquery');
+      alert('There was an error loading Reading');
     } else {
       jQuery.getScript('http://reading.am/reading.js');
     }

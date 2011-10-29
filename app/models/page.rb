@@ -18,4 +18,11 @@ public
   def wrapped_url
     "http://#{DOMAIN}/#{self.url}"
   end
+
+  def remote_title
+    c = Curl::Easy.perform self.url
+    doc = Nokogiri::HTML(c.body_str)
+    title = doc.search('title').first
+    title.nil? ? '' : title.text
+  end
 end

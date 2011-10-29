@@ -33,4 +33,29 @@ class Post < ActiveRecord::Base
     url += "/t/#{token}" if token
     url += "/p/#{Base58.encode(self.id)}/#{self.page.url}"
   end
+
+  def simple_obj to_s=false
+    has_ref = !self.referrer_post.nil?
+    {
+      :type   => "Post",
+      :id     => to_s ? self.id.to_s : self.id,
+      :title  => self.page.title,
+      :url    => self.page.url,
+      :yn     => self.yn,
+      :wrapped_url => self.wrapped_url,
+      :user => {
+        :id           => to_s ? self.user.id.to_s : self.user.id,
+        :username     => self.user.username,
+        :display_name => self.user.display_name
+      },
+      :referrer_post => {
+        :id => has_ref ? (to_s ? self.referrer_post.id.to_s : self.referrer_post.id) : '',
+        :user => {
+          :id           => has_ref ? (to_s ? self.referrer_post.user.id.to_s : self.referrer_post.user.id) : '',
+          :username     => has_ref ? self.referrer_post.user.username : '',
+          :display_name => has_ref ? self.referrer_post.user.display_name : ''
+        }
+      }
+    }
+  end
 end

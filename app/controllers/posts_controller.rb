@@ -63,10 +63,8 @@ class PostsController < ApplicationController
       end
       @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
     else
-      @post = duplicate
-      if !params[:yn].nil?
-        @post.yn = params[:yn]
-      end
+      @post     = duplicate
+      @post.yn  = params[:yn] if !params[:yn].nil?
       is_update = @post.changed?
     end
 
@@ -75,6 +73,9 @@ class PostsController < ApplicationController
       if (duplicate && !duplicate.changed?) or @post.save
         if !duplicate or is_update
           event = is_update ? :update : :new
+          # We treat Pusher just like any other hook except that we don't store it
+          # with the user so we go ahead and construct one here
+          Hook.new({:provider => 'pusher'}).run(@post, event)
           @post.user.hooks.each do |hook| hook.run(@post, event) end
         end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

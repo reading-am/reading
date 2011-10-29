@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :set_time_zone, :set_user_device, :set_headers
+  before_filter :check_domain, :set_time_zone, :set_user_device, :set_headers
 
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
@@ -36,6 +36,13 @@ class ApplicationController < ActionController::Base
     # instead of simply redirecting, especially for AJAX requests
     if !logged_in?
       redirect_to root_path
+    end
+  end
+
+  def check_domain
+    # redirect our url shorten to the root domain if it's not hitting the posts path
+    if ['ing.am','ing.dev'].include? request.domain and request.path[0,3] != '/p/'
+      redirect_to request.url.sub(/ing/,'reading')
     end
   end
 

@@ -50,16 +50,7 @@ class PostsController < ApplicationController
     # TODO - clean up these conditionals for duplicates and the same in the respond_to
     if !duplicate
       if @post.page.new_record?
-        if !params[:title].nil?
-          @post.page.title = params[:title]
-        else
-          # If you've submitted a new page but you didn't submit a title,
-          # curl the title from the page.
-          c = Curl::Easy.perform @post.page.url
-          doc = Nokogiri::HTML(c.body_str)
-          title = doc.search('title').first
-          @post.page.title = title.nil? ? '' : doc.search('title').first.text
-        end
+        @post.page.title = !params[:title].nil? ? params[:title] : @post.page.remote_title
       end
       @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
     else

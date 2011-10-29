@@ -74,13 +74,8 @@ class PostsController < ApplicationController
       # if it's a duplicate and we changed something, it'll be aliased to @post and saved in the second part of the conditional
       if (duplicate && !duplicate.changed?) or @post.save
         if !duplicate or is_update
-          # Websockets
-          json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
-          event = is_update ? 'update_obj' : 'new_obj';
-          Pusher['everybody'].trigger_async(event, json)
-          Pusher[@post.user.username].trigger_async(event, json)
-
-          @post.user.hooks.each do |hook| hook.run(@post) end
+          event = is_update ? :update : :new
+          @post.user.hooks.each do |hook| hook.run(@post, event) end
         end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }

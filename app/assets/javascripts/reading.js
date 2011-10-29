@@ -34,9 +34,10 @@ var show_overlay = function(){
           'line-height:normal;'+
           'text-align:center;'+
           'text-decoration:none;'+
+          'text-shadow:none;'+
+          'text-transform:none;'+
           'font-variant:normal;'+
           'letter-spacing:normal;'+
-          'text-shadow:none;'+
           'border:none;'+
         '}'+
         '#r_am {'+

@@ -45,12 +45,11 @@ class Hook < ActiveRecord::Base
   end
 
   def url post, event
-    data = { :post => post.simple_obj(true) }
-
     url = self.params['url']
     url = "http://#{url}" if url[0, 4] != "http"
     http = EventMachine::HttpRequest.new(url)
 
+    data = { :post => post.simple_obj(true) }
     if self.params['method'] == 'get'
       addr = Addressable::URI.new
       addr.query_values = data # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate

@@ -49,99 +49,28 @@ class PostsController < ApplicationController
     duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first : false;
     # TODO - clean up these conditionals for duplicates and the same in the respond_to
     if !duplicate
+      event = :new
       if @post.page.new_record?
-        if !params[:title].nil?
-          @post.page.title = params[:title]
-        else
-          # If you've submitted a new page but you didn't submit a title,
-          # curl the title from the page.
-          c = Curl::Easy.perform @post.page.url
-          doc = Nokogiri::HTML(c.body_str)
-          title = doc.search('title').first
-          @post.page.title = title.nil? ? '' : doc.search('title').first.text
-        end
+        @post.page.title = !params[:title].nil? ? params[:title] : @post.page.remote_title
       end
       @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
     else
       @post = duplicate
-      if !params[:yn].nil?
-        @post.yn = params[:yn]
+      @post.yn = params[:yn] if !params[:yn].nil?
+      if !@post.changed?
+        event = :duplicate
+      else
+        event = @post.yn ? :yep : :nope
       end
-      update = @post.changed?
     end
 
     respond_to do |format|
-      # if it's a duplicate and we changed something, it'll be aliased to @post and saved in the second part of the conditional
-      if (duplicate && !duplicate.changed?) or @post.save
-        if !duplicate or update
-          # Websockets
-          json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
-          event = update ? 'update_obj' : 'new_obj';
-          Pusher['everybody'].trigger_async(event, json)
-          Pusher[@post.user.username].trigger_async(event, json)
+      if !@post.changed? or @post.save
+        # We treat Pusher just like any other hook except that we don't store it
+        # with the user so we go ahead and construct one here
+        Hook.new({:provider => 'pusher'}).run(@post, event)
+        @post.user.hooks.each do |hook| hook.run(@post, event) end
 
-          @post.user.hooks.each do |hook|
-            # TODO I'd like to make this a helper of some sort
-            case hook.provider
-            when 'hipchat'
-              client = HipChat::Client.new(hook.params['token'])
-              notify_users = !update # only notify if this is not a post update
-              message = render_to_string :partial => "posts/hipchat_#{update ? 'update' : 'new'}.html.erb", :locals => {:post => @post}
-              client[hook.params['room']].send('Reading.am', "#{message}", notify_users)
-            when 'campfire'
-              campfire = Tinder::Campfire.new hook.params['subdomain'], :token => hook.params['token']
-              room = campfire.find_or_create_room_by_name(hook.params['room'])
-              if !room.nil?
-                room.speak render_to_string :partial => "posts/campfire_#{update ? 'update' : 'new'}.txt.erb"
-              end
-            when 'opengraph'
-              if !update
-                auth = Authorization.find_by_user_id_and_provider(@post.user_id, 'facebook')
-                if auth and auth.token
-                  url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
-                  http = EventMachine::HttpRequest.new(url).post :body => {
-                    :access_token => auth.token,
-                    #gsub for testing since Facebook doesn't like my localhost
-                    :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-                  }
-                end
-              end
-            when 'url'
-              data = { :post => {
-                :id             => "#{@post.id}",
-                :yn             => @post.yn,
-                :title          => @post.page.title,
-                :url            => @post.page.url,
-                :wrapped_url    => @post.wrapped_url,
-                :user => {
-                  :id           => "#{@post.user.id}",
-                  :username     => @post.user.username,
-                  :display_name => @post.user.display_name
-                },
-                :referrer_post => {
-                  :id           => !@post.referrer_post.nil? ? "#{@post.referrer_post.id}" : '',
-                  :user => {
-                    :id         => !@post.referrer_post.nil? ? "#{@post.referrer_post.user.id}" : '',
-                    :username   => !@post.referrer_post.nil? ? @post.referrer_post.user.username : '',
-                    :display_name => !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : ''
-                  }
-                }
-              }}
-
-              url = hook.params['url']
-              if url[0, 4] != "http" then url = "http://#{url}" end
-              http = EventMachine::HttpRequest.new(url)
-
-              if hook.params['method'] == 'get'
-                addr = Addressable::URI.new 
-                addr.query_values = data # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
-                http.get :query => addr.query
-              else
-                http.post :body => data
-              end
-            end
-          end
-        end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render :json => {:meta => {:status => 200, :msg => 'OK'}}, :callback => params[:callback] }
@@ -183,14 +112,36 @@ class PostsController < ApplicationController
     end
   end
 
+  # A note about schema
+  # The original idea was that the referrer_id didn't
+  # have to dictate the :url param - that way we could
+  # eventually mix and match 'because of' with different
+  # end results. Otherwise we could just forward straight
+  # without the intermediate page.
+  # I've considered doing this with the URL shortener,
+  # but Rails make sharing code between controller methods
+  # a pain in the ass
   def visit
     @token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
-    @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0
-    @ref = Post.find(@referrer_id)
-    if @ref
-      if !params[:url] # shortener uses this
-        redirect_to @ref.page.url
+    @referrer_id = 0 # default
+
+    if !params[:id]
+      # Pass through and post any domain, even
+      # if it's not already in the system
+      # schema: reading.am/http://example.com
+    else
+      @referrer_id = Base58.decode(params[:id])
+      @ref = Post.find(@referrer_id)
+
+      if !params[:url]
+        # Post from a referrer id only
+        # Currently only used for the shortener
+        # schema: ing.am/p/xHjsl
+        redirect_to @ref.wrapped_url
       else
+        # Post through the classic JS method
+        # Facebook hits this page to grab info
+        # for the timeline
         @og_props = {
           :title => "✌ #{@ref.page.title || @ref.page.url}",
           :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",

@@ -67,80 +67,20 @@ class PostsController < ApplicationController
       if !params[:yn].nil?
         @post.yn = params[:yn]
       end
-      update = @post.changed?
+      is_update = @post.changed?
     end
 
     respond_to do |format|
       # if it's a duplicate and we changed something, it'll be aliased to @post and saved in the second part of the conditional
       if (duplicate && !duplicate.changed?) or @post.save
-        if !duplicate or update
+        if !duplicate or is_update
           # Websockets
           json = render_to_string :partial => 'posts/post.json.erb', :locals => {:post => @post}
-          event = update ? 'update_obj' : 'new_obj';
+          event = is_update ? 'update_obj' : 'new_obj';
           Pusher['everybody'].trigger_async(event, json)
           Pusher[@post.user.username].trigger_async(event, json)
 
-          @post.user.hooks.each do |hook|
-            # TODO I'd like to make this a helper of some sort
-            case hook.provider
-            when 'hipchat'
-              client = HipChat::Client.new(hook.params['token'])
-              notify_users = !update # only notify if this is not a post update
-              message = render_to_string :partial => "posts/hipchat_#{update ? 'update' : 'new'}.html.erb", :locals => {:post => @post}
-              client[hook.params['room']].send('Reading.am', "#{message}", notify_users)
-            when 'campfire'
-              campfire = Tinder::Campfire.new hook.params['subdomain'], :token => hook.params['token']
-              room = campfire.find_or_create_room_by_name(hook.params['room'])
-              if !room.nil?
-                room.speak render_to_string :partial => "posts/campfire_#{update ? 'update' : 'new'}.txt.erb"
-              end
-            when 'opengraph'
-              if !update
-                auth = Authorization.find_by_user_id_and_provider(@post.user_id, 'facebook')
-                if auth and auth.token
-                  url = "https://graph.facebook.com/me/reading-am:#{@post.domain.imperative}"
-                  http = EventMachine::HttpRequest.new(url).post :body => {
-                    :access_token => auth.token,
-                    #gsub for testing since Facebook doesn't like my localhost
-                    :website => @post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-                  }
-                end
-              end
-            when 'url'
-              data = { :post => {
-                :id             => "#{@post.id}",
-                :yn             => @post.yn,
-                :title          => @post.page.title,
-                :url            => @post.page.url,
-                :wrapped_url    => @post.wrapped_url,
-                :user => {
-                  :id           => "#{@post.user.id}",
-                  :username     => @post.user.username,
-                  :display_name => @post.user.display_name
-                },
-                :referrer_post => {
-                  :id           => !@post.referrer_post.nil? ? "#{@post.referrer_post.id}" : '',
-                  :user => {
-                    :id         => !@post.referrer_post.nil? ? "#{@post.referrer_post.user.id}" : '',
-                    :username   => !@post.referrer_post.nil? ? @post.referrer_post.user.username : '',
-                    :display_name => !@post.referrer_post.nil? ? @post.referrer_post.user.display_name : ''
-                  }
-                }
-              }}
-
-              url = hook.params['url']
-              if url[0, 4] != "http" then url = "http://#{url}" end
-              http = EventMachine::HttpRequest.new(url)
-
-              if hook.params['method'] == 'get'
-                addr = Addressable::URI.new 
-                addr.query_values = data # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
-                http.get :query => addr.query
-              else
-                http.post :body => data
-              end
-            end
-          end
+          @post.user.hooks.each do |hook| hook.run(@post) end
         end
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }

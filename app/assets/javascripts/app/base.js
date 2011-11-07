@@ -11,6 +11,10 @@ $(window).focus(function(){
   window.hasfocus = false;
 });
 
+$(window).focus(function(){
+  $('.post.new').fadeTo('medium', 1).removeClass('new');
+});
+
 window.base58 = encdec();
 
 $(function() {

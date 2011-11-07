@@ -28,5 +28,5 @@ Reading::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  Pusher.url = 'http://gJtJ67gTX72364N:4H4m03JYqk3lofn@rmsn.reading.am/apps/dev'
+  Pusher.url = 'http://HS4SU61eh0372s770206eR5Go7b634:78q9l18qvX00Z7O47fPQM718328p8P@rmsn.reading.am/apps/dev'
 end

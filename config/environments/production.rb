@@ -59,4 +59,6 @@ Reading::Application.configure do
   config.active_support.deprecation = :notify
 
   config.cache_store = :dalli_store
+
+  Pusher.url = 'http://gLvPgBYEHYh4xSQrk66r9WdjGsWhhl:xdNo2IMy9bnsHiDiqOyac2DErQY1Fn@rmsn.reading.am/apps/prod'
 end

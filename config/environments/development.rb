@@ -28,7 +28,5 @@ Reading::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  Pusher.app_id = '8486'
-  Pusher.key = 'bacacd0d515e6362d388'
-  Pusher.secret = '5fead544495a03837295'
+  Pusher.url = 'http://gJtJ67gTX72364N:4H4m03JYqk3lofn@rmsn.reading.am/apps/dev'
 end

@@ -6,4 +6,11 @@
     ]
   };
 </script>
-<%= javascript_include_tag 'http://js.pusherapp.com/1.9/pusher.min.js', 'pusher' %>
+<%=
+  javascript_include_tag(
+    'http://rmsn.reading.am/nowjs/now.js',
+    'http://js.pusherapp.com/1.9/pusher.min.js',
+    'http://rmsn.reading.am/rmsn.js',
+    'pusher'
+  )
+%>

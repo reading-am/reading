@@ -51,8 +51,7 @@ if(ENVIRONMENT === 'development'){
   WEB_SOCKET_DEBUG = true;
 }
 
-// Only enable sockets for native apps
-if(native.is){
+now.ready(function(){
 
   var pusher = new Pusher(_pusher.key),
       sys = pusher.subscribe('sys'), // channel for pushing system updates
@@ -71,4 +70,4 @@ if(native.is){
     channel.bind('update_obj', update_obj);
   }
 
-}
+});

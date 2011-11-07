@@ -34,6 +34,6 @@
   <script>
     <%= render :partial => 'posts/post.js.tmpl' %>
   </script>
-  <%= render :partial => 'layouts/pusher' if logged_in? and @channels %>
+  <%= render :partial => 'layouts/pusher' if @channels %>
 </body>
 </html>

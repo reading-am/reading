@@ -16,6 +16,7 @@ class Hook < ActiveRecord::Base
 
   def pusher post, event
     json = post.to_json.html_safe
+    event = :update if [:yep,:nope].include? event
     Pusher['everybody'].trigger_async("#{event}_obj", json)
     Pusher[post.user.username].trigger_async("#{event}_obj", json)
   end

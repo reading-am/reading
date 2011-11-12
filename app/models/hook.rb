@@ -15,10 +15,9 @@ class Hook < ActiveRecord::Base
   end
 
   def pusher post, event
-    json = post.to_json.html_safe
     event = :update if [:yep,:nope].include? event
-    Pusher['everybody'].trigger_async("#{event}_obj", json)
-    Pusher[post.user.username].trigger_async("#{event}_obj", json)
+    Pusher['everybody'].trigger_async("#{event}_obj", post.simple_obj)
+    Pusher[post.user.username].trigger_async("#{event}_obj", post.simple_obj)
   end
 
   def hipchat post, event

@@ -20,29 +20,33 @@ class Hook < ActiveRecord::Base
   end
 
   def hipchat post, event
-    client = HipChat::Client.new(self.params['token'])
+    user_link = "<a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a>"
+    post_link = "<a href='#{post.wrapped_url}'>#{post.page.title.blank? ? post.page.url : post.page.title}</a>"
     case event
     when :new
-      output = "✌ <a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a> is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} <a href='#{post.wrapped_url}'>#{post.page.title.blank? ? post.page.url : post.page.title}</a>"
+      output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
       output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
     when :update
-      output = "#{post.yn ? '✓' : '×'} <a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a> said \"#{post.yn ? 'yep' : 'nope'}\" to <a href='#{post.wrapped_url}'>#{post.page.title.blank? ? post.page.url : post.page.title}</a>"
+      output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
     end
+
+    client = HipChat::Client.new(self.params['token'])
     client[self.params['room']].send('Reading.am', output, (event == :new)) # only notify if this is not a post update
   end
 
   def campfire post, event
-    campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
-    room = campfire.find_or_create_room_by_name(self.params['room'])
-    if room.nil? then return false end
+    post_link = "#{'"' + post.page.title + '" ' if !post.page.title.blank?}#{post.wrapped_url}"
     case event
     when :new
-      output = "✌ #{post.page.domain.verb.capitalize}#{' "' + post.page.title + '"' if !post.page.title.blank?} #{post.wrapped_url}"
+      output = "✌ #{post.page.domain.verb.capitalize} #{post_link}"
       output += " because of #{post.referrer_post.user.display_name} (http://#{DOMAIN}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
     when :update
-      output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{' "' + post.page.title + '"' if !post.page.title.blank?} #{post.wrapped_url}"
+      output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
-    room.speak output
+
+    campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
+    room = campfire.find_or_create_room_by_name(self.params['room'])
+    room.speak output if !room.nil?
   end
 
   def opengraph post, event

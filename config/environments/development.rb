@@ -28,7 +28,7 @@ Reading::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  Pusher.app_id = '8486'
-  Pusher.key = 'bacacd0d515e6362d388'
-  Pusher.secret = '5fead544495a03837295'
+  Pusher.app_id = '10842'
+  Pusher.key = '2fc1c5a4912b19b862e8'
+  Pusher.secret = '4c575471553a97d9b5c4'
 end

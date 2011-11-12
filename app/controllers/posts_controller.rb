@@ -49,26 +49,28 @@ class PostsController < ApplicationController
     duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first : false;
     # TODO - clean up these conditionals for duplicates and the same in the respond_to
     if !duplicate
+      event = :new
       if @post.page.new_record?
         @post.page.title = !params[:title].nil? ? params[:title] : @post.page.remote_title
       end
       @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
     else
-      @post     = duplicate
-      @post.yn  = params[:yn] if !params[:yn].nil?
-      is_update = @post.changed?
+      @post = duplicate
+      @post.yn = params[:yn] if !params[:yn].nil?
+      if !@post.changed?
+        event = :duplicate
+      else
+        event = @post.yn ? :yep : :nope
+      end
     end
 
     respond_to do |format|
-      # if it's a duplicate and we changed something, it'll be aliased to @post and saved in the second part of the conditional
-      if (duplicate && !duplicate.changed?) or @post.save
-        if !duplicate or is_update
-          event = is_update ? :update : :new
-          # We treat Pusher just like any other hook except that we don't store it
-          # with the user so we go ahead and construct one here
-          Hook.new({:provider => 'pusher'}).run(@post, event)
-          @post.user.hooks.each do |hook| hook.run(@post, event) end
-        end
+      if !@post.changed? or @post.save
+        # We treat Pusher just like any other hook except that we don't store it
+        # with the user so we go ahead and construct one here
+        Hook.new({:provider => 'pusher'}).run(@post, event)
+        @post.user.hooks.each do |hook| hook.run(@post, event) end
+
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render :json => {:meta => {:status => 200, :msg => 'OK'}}, :callback => params[:callback] }

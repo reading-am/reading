@@ -10,7 +10,8 @@ class Hook < ActiveRecord::Base
   end
 
   def run post, event
-    self.send(self.provider, post, event)
+    # right now, no hooks should run on duplicate
+    self.send(self.provider, post, event) if event != :duplicate
   end
 
   def pusher post, event

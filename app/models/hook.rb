@@ -27,7 +27,7 @@ class Hook < ActiveRecord::Base
     when :new
       output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
       output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
-    when :update
+    when :yep, :nope
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
     end
 
@@ -41,7 +41,7 @@ class Hook < ActiveRecord::Base
     when :new
       output = "✌ #{post.page.domain.verb.capitalize} #{post_link}"
       output += " because of #{post.referrer_post.user.display_name} (http://#{DOMAIN}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
-    when :update
+    when :yep, :nope
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 

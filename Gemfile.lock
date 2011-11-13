@@ -32,6 +32,7 @@ GEM
     activesupport (3.1.1)
       multi_json (~> 1.0)
     addressable (2.2.6)
+    archive-tar-minitar (0.5.2)
     arel (2.2.1)
     base58 (0.1.0)
     builder (3.0.0)
@@ -42,6 +43,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.1.2)
+    columnize (0.3.4)
     crack (0.1.8)
     curb (0.7.15)
     daemons (1.1.4)
@@ -76,6 +78,8 @@ GEM
     koala (1.2.1)
       faraday (~> 0.7.0)
       multi_json (~> 1.0)
+    linecache19 (0.5.12)
+      ruby_core_source (>= 0.1.4)
     log4r (1.1.9)
     macaddr (1.4.0)
       systemu (~> 2.2.0)
@@ -168,10 +172,20 @@ GEM
       json (~> 1.4)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    ruby-debug-base19 (0.11.25)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
     ruby-hmac (0.4.0)
     ruby-openid (2.1.8)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
+    ruby_core_source (0.1.5)
+      archive-tar-minitar (>= 0.5.2)
     rubyntlm (0.1.1)
     rufus-scheduler (2.0.11)
       tzinfo (>= 0.3.23)
@@ -247,6 +261,7 @@ DEPENDENCIES
   pg
   pusher (~> 0.8.3)
   rails (= 3.1.1)
+  ruby-debug19
   rufus-scheduler
   sass-rails
   thin

@@ -28,3 +28,7 @@ gem 'yajl-ruby' # JSON parser recommended by twitter gem
 gem 'twitter', '>= 2.0.0.rc.2'
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
+
+group :development do
+  gem 'ruby-debug19'
+end

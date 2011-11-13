@@ -10,6 +10,14 @@ class SessionsController < ApplicationController
       # Log him in or sign him up
       auth = Authorization.find_or_create(auth_hash)
       cookies.permanent[:auth_token] = auth.user.auth_token
+
+      # fill in any missing info
+      # There was a point where we weren't collecting
+      # tokens and secrets. This backfills them
+      auth.token  ||= auth_hash["credentials"]["token"]
+      auth.secret ||= auth_hash["credentials"]["secret"]
+      auth.save if auth.changed?
+
       # Create the session
       if auth.user.username
         redirect_to "/#{auth.user.username}", :notice => "Signed in!"

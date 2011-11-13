@@ -3,6 +3,11 @@ var current_user = {
   id: <%= current_user.id %>,
   username: '<%= current_user.username %>',
   display_name: '<%= current_user.display_name %>',
+  authorizations: {
+  <% current_user.authorizations.each_with_index do |auth, index| %>
+    <%= auth.provider %>:<%= auth.permissions.to_json.html_safe %><% if index != current_user.authorizations.length-1 %>,<% end %>
+  <% end %>
+  },
 <% else %>
   id: '',
   username: '',

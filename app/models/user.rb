@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
       if auth.user_id == self.id
-        # if grab whatever info that came down from the credentials this time
+        # grab whatever info that came down from the credentials this time
         # and save it if we're missing it
         # TODO - there has to be a cleaner, more concise way to do this
         auth.token  ||= auth_hash["credentials"]["token"]

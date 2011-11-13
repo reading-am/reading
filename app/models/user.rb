@@ -24,6 +24,19 @@ class User < ActiveRecord::Base
     username
   end
 
+  #via: http://blog.assimov.net/post/2358661274/twitter-integration-with-omniauth-and-devise-on-rails-3
+  def facebook
+    # @fb_user ||= FbGraph::User.me(self.authorizations.find_by_provider('facebook').token)
+  end
+
+  def twitter
+    unless @twitter_user
+      auth = self.authorizations.find_by_provider('twitter')
+      @twitter_user = Twitter::Client.new(:oauth_token => auth.token, :oauth_token_secret => auth.secret) rescue nil
+    end
+    @twitter_user
+  end
+
   def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])

@@ -34,6 +34,10 @@ class Post < ActiveRecord::Base
     url += "/p/#{Base58.encode(self.id)}/#{self.page.url}"
   end
 
+  def short_url
+    "#{SHORT_DOMAIN}/p/#{Base58.encode(self.id)}"
+  end
+
   def simple_obj to_s=false
     has_ref = !self.referrer_post.nil?
     {

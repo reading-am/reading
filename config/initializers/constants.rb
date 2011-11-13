@@ -1,3 +1,5 @@
+SHORT_DOMAIN = 'ing.am'
+
 if Rails.env == 'production'
   DOMAIN = 'reading.am'
 

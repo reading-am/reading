@@ -113,13 +113,14 @@ class PostsController < ApplicationController
   end
 
   # A note about schema
-  # The original id was that the referrer_id didn't
+  # The original idea was that the referrer_id didn't
   # have to dictate the :url param - that way we could
   # eventually mix and match 'because of' with different
   # end results. Otherwise we could just forward straight
-  # without the intermediate page. The URL shortener,
-  # however, posts straight through so I'm not sure about
-  # continuing with that now
+  # without the intermediate page.
+  # I've considered doing this with the URL shortener,
+  # but Rails make sharing code between controller methods
+  # a pain in the ass
   def visit
     @token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
     @referrer_id = 0 # default
@@ -136,7 +137,7 @@ class PostsController < ApplicationController
         # Post from a referrer id only
         # Currently only used for the shortener
         # schema: ing.am/p/xHjsl
-        redirect_to @ref.page.url
+        redirect_to @ref.wrapped_url
       else
         # Post through the classic JS method
         # Facebook hits this page to grab info

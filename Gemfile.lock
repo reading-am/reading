@@ -73,6 +73,9 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.6.1)
+    koala (1.2.1)
+      faraday (~> 0.7.0)
+      multi_json (~> 1.0)
     log4r (1.1.9)
     macaddr (1.4.0)
       systemu (~> 2.2.0)
@@ -202,10 +205,20 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    twitter (2.0.0.rc.2)
+      activesupport (~> 3.0)
+      faraday (~> 0.7)
+      multi_json (~> 1.0)
+      simple_oauth (~> 0.1)
+      twitter-text (~> 1.4)
     twitter-stream (0.1.14)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
       simple_oauth (~> 0.1.4)
+    twitter-text (1.4.13)
+      activesupport
+    typhoeus (0.3.2)
+      mime-types
     tzinfo (0.3.30)
     uglifier (1.0.3)
       execjs (>= 0.3.0)
@@ -213,6 +226,7 @@ GEM
     uuid (2.3.4)
       macaddr (~> 1.0)
     will_paginate (3.0.2)
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
@@ -227,6 +241,7 @@ DEPENDENCIES
   em-http-request
   hipchat
   jquery-rails
+  koala
   nokogiri
   omniauth
   pg
@@ -236,5 +251,8 @@ DEPENDENCIES
   sass-rails
   thin
   tinder
+  twitter (>= 2.0.0.rc.2)
+  typhoeus
   uglifier
   will_paginate
+  yajl-ruby

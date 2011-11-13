@@ -20,7 +20,11 @@ gem 'addressable'
 gem 'base58'
 gem 'rufus-scheduler'
 gem 'will_paginate'
-gem 'tinder'
+gem 'tinder' # campfire
 gem 'pusher', "~> 0.8.3"
 gem 'em-http-request' # needed for async pusher calls
 gem 'crack' # required by the hipchat gem
+gem 'yajl-ruby' # JSON parser recommended by twitter gem
+gem 'twitter', '>= 2.0.0.rc.2'
+gem 'typhoeus' # HTTP request gem recommended by koala
+gem 'koala' # facebook

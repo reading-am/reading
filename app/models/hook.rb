@@ -2,7 +2,7 @@
 class Hook < ActiveRecord::Base
   belongs_to :user
 
-  PROVIDERS = [:hipchat, :campfire, :url, :opengraph]
+  PROVIDERS = [:twitter, :hipchat, :campfire, :url, :opengraph]
   validates_presence_of :provider, :params
 
   def params
@@ -18,6 +18,14 @@ class Hook < ActiveRecord::Base
     event = :update if [:yep,:nope].include? event
     Pusher['everybody'].trigger_async("#{event}_obj", post.simple_obj)
     Pusher[post.user.username].trigger_async("#{event}_obj", post.simple_obj)
+  end
+
+  def facebook post, event
+
+  end
+
+  def twitter post, event
+    user.twitter.update "✌ Read #{post.short_url}" if user.twitter
   end
 
   def hipchat post, event

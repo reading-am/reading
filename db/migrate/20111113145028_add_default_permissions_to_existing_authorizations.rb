@@ -5,8 +5,10 @@ class AddDefaultPermissionsToExistingAuthorizations < ActiveRecord::Migration
       auth.save
     end
     Authorization.find_all_by_provider('twitter').each do |auth|
-      auth.permissions = '["read"]'
-      auth.save
+      if !auth.permissions.include? 'write'
+        auth.permissions = '["read"]'
+        auth.save
+      end
     end
   end
 

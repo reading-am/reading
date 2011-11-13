@@ -17,7 +17,7 @@ class Authorization < ActiveRecord::Base
   end
 
   def permissions
-    ActiveSupport::JSON.decode(read_attribute(:permissions))
+    ActiveSupport::JSON.decode(read_attribute(:permissions)) if !read_attribute(:permissions).nil?
   end
 
   def self.find_or_create(auth_hash)

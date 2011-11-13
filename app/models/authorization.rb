@@ -2,6 +2,13 @@
 class Authorization < ActiveRecord::Base
   belongs_to :user
   validates :provider, :uid, :presence => true
+  before_create :set_default_perms
+
+  def set_default_perms
+    if self.permissions.nil? and self.provider == 'twitter'
+      self.permissions = '["read","write"]'
+    end
+  end
 
   def self.find_or_create(auth_hash)
     unless auth = find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])

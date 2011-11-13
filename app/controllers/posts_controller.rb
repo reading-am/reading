@@ -112,14 +112,35 @@ class PostsController < ApplicationController
     end
   end
 
+  # A note about schema
+  # The original id was that the referrer_id didn't
+  # have to dictate the :url param - that way we could
+  # eventually mix and match 'because of' with different
+  # end results. Otherwise we could just forward straight
+  # without the intermediate page. The URL shortener,
+  # however, posts straight through so I'm not sure about
+  # continuing with that now
   def visit
     @token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
-    @referrer_id = params[:id] ? Base58.decode(params[:id]) : 0
-    @ref = Post.find(@referrer_id)
-    if @ref
-      if !params[:url] # shortener uses this
+    @referrer_id = 0 # default
+
+    if !params[:id]
+      # Pass through and post any domain, even
+      # if it's not already in the system
+      # schema: reading.am/http://example.com
+    else
+      @referrer_id = Base58.decode(params[:id])
+      @ref = Post.find(@referrer_id)
+
+      if !params[:url]
+        # Post from a referrer id only
+        # Currently only used for the shortener
+        # schema: ing.am/p/xHjsl
         redirect_to @ref.page.url
       else
+        # Post through the classic JS method
+        # Facebook hits this page to grab info
+        # for the timeline
         @og_props = {
           :title => "✌ #{@ref.page.title || @ref.page.url}",
           :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",

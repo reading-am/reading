@@ -5,8 +5,14 @@ class Authorization < ActiveRecord::Base
   before_create :set_default_perms
 
   def set_default_perms
-    if self.permissions.nil? and self.provider == 'twitter'
-      self.permissions = '["read","write"]'
+    if self.permissions.nil?
+      # these should mirror what's in config/initializers/omniauth.rb
+      case self.provider
+      when 'twitter'
+        self.permissions = '["read","write"]'
+      when 'facebook'
+        self.permissions = '["email","offline_access"]'
+      end
     end
   end
 

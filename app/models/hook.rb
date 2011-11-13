@@ -25,7 +25,8 @@ class Hook < ActiveRecord::Base
   end
 
   def twitter post, event
-    user.twitter.update "✌ Read #{post.short_url}" if user.twitter
+    # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
+    user.twitter.update "✌ #{post.page.domain.imperative}​#{post.short_url}" if user.twitter
   end
 
   def hipchat post, event

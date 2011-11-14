@@ -25,9 +25,9 @@ class Hook < ActiveRecord::Base
   end
 
   def twitter post, event
-    return nil if user.twitter.nil?
+    return nil if !self.params['events'].include?(event.to_s) or user.twitter.nil?
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
-    tweet = "✌ #{post.page.domain.imperative}​#{post.short_url} \"#{post.page.title}\""
+    tweet = "✌ #{post.page.domain.imperative.capitalize}​#{post.short_url} \"#{post.page.title}\""
     if tweet.unpack('c*').length > 140
       # after trying to count characters the twitter way: https://dev.twitter.com/docs/counting-characters#Ruby_Specific_Information
       # I finally gave up and just used the actual byte length

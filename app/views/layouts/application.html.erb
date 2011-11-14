@@ -26,6 +26,7 @@
   <script><%= render :partial => 'layouts/current_user_js' %></script>
 </head>
 <body>
+<%= render :partial => 'layouts/fb_api' %>
   <div id="wrapper">
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
   <%= yield %>

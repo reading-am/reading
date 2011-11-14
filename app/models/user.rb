@@ -26,7 +26,9 @@ class User < ActiveRecord::Base
 
   #via: http://blog.assimov.net/post/2358661274/twitter-integration-with-omniauth-and-devise-on-rails-3
   def facebook
-    # @fb_user ||= FbGraph::User.me(self.authorizations.find_by_provider('facebook').token)
+    if token = self.authorizations.find_by_provider('facebook').token
+      @fb_user ||= Koala::Facebook::API.new(token)
+    end
   end
 
   def twitter

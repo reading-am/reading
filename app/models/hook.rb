@@ -11,6 +11,7 @@ class Hook < ActiveRecord::Base
 
   def run post, event
     # right now, no hooks should run on duplicate
+    # I should really handle all event checking here
     self.send(self.provider, post, event) if event != :duplicate
   end
 
@@ -21,11 +22,12 @@ class Hook < ActiveRecord::Base
   end
 
   def facebook post, event
-
+    return nil if !params['events'].include?(event.to_s) or user.facebook.nil?
+    user.facebook.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} http://#{post.short_url} \"#{post.page.title}\"")
   end
 
   def twitter post, event
-    return nil if !self.params['events'].include?(event.to_s) or user.twitter.nil?
+    return nil if !params['events'].include?(event.to_s) or user.twitter.nil?
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
     tweet = "✌ #{post.page.domain.imperative.capitalize}​#{post.short_url} \"#{post.page.title}\""
     if tweet.unpack('c*').length > 140

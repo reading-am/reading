@@ -5,13 +5,24 @@ var current_user = {
   display_name: '<%= current_user.display_name %>',
   authorizations: {
   <% current_user.authorizations.each_with_index do |auth, index| %>
-    <%= auth.provider %>:<%= auth.permissions.to_json.html_safe %><% if index != current_user.authorizations.length-1 %>,<% end %>
+    <%= auth.provider %>: { permissions: <%= auth.permissions.to_json.html_safe %>}<% if index != current_user.authorizations.length-1 %>,<% end %>
   <% end %>
   },
 <% else %>
   id: '',
   username: '',
   display_name: '',
+  authorizations: {},
 <% end %>
   logged_in: function(){ return Boolean(this.id); }
 };
+
+if(current_user.authorizations.facebook){
+  current_user.authorizations.facebook.add_permission = function(perm, success, failure){
+    if(this.authorizations.facebook.permissions[perm]) return success();
+    FB.login(function(response){
+      if(response.authResponse) success();
+      else failure();
+    }, {scope: perm});
+  }
+}

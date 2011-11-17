@@ -127,5 +127,10 @@ class UsersController < ApplicationController
       end
     end
   end
+
+  def delete_cookies
+    cookies.each do |k, v| cookies.delete k end
+    redirect_to '/'
+  end
 end
 

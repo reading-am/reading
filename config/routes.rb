@@ -4,6 +4,7 @@ Reading::Application.routes.draw do
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"
   match "/signout" => "sessions#destroy", :as => :signout
+  match "/support/delete_cookies" => "users#delete_cookies"
 
   resources :posts
   match '/post' => 'posts#create'

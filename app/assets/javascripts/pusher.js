@@ -23,8 +23,8 @@ insert_obj = function(obj){
 // a brand new obj!
 new_obj = function(obj){
   if(obj.user.id != current_user.id){
-    native.notify(notify_tmpl(obj));
-    if(!window.hasfocus) native.badge('★');
+    indian.notify(notify_tmpl(obj));
+    if(!window.hasfocus) indian.badge('★');
   }
   var $obj = insert_obj(obj).addClass('new');
   if(window.hasfocus) $obj.fadeTo('medium', 1).removeClass('new');
@@ -51,8 +51,8 @@ if(ENVIRONMENT === 'development'){
   WEB_SOCKET_DEBUG = true;
 }
 
-// Only enable sockets for native apps
-if(native.is){
+// Only enable sockets for indian apps
+if(indian.is){
 
   var pusher = new Pusher(_pusher.key),
       sys = pusher.subscribe('sys'), // channel for pushing system updates

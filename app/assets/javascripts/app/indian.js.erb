@@ -1,44 +1,44 @@
-var native = {is: ('fluid' in window ? 'fluid' : 'platform' in window ? 'prism' : false)};
+var indian = {is: ('fluid' in window ? 'fluid' : 'platform' in window ? 'prism' : false)};
 
-switch(native.is){
+switch(indian.is){
   case 'fluid':
-    native.badge = function(text){
+    indian.badge = function(text){
       if(typeof text == 'undefined'){
         return window.fluid.dockBadge;
       } else {
         window.fluid.dockBadge = text;
       }
     };
-    native.notify = function(input){
+    indian.notify = function(input){
       window.fluid.showGrowlNotification(input);
     };
     break;
   case 'prism':
     // clear the cache first
     // window.platform.clearPrivateData();
-    native.badge = function(text){
+    indian.badge = function(text){
       if(typeof text == 'undefined'){
         return window.platform.icon().dockText;
       } else {
         window.platform.icon().badgeText = text;
       }
     };
-    native.notify = function(input){
+    indian.notify = function(input){
       window.platform.showNotification(input.title, input.description, input.icon);
     };
     break;
   default:
-    native.badge = native.notify = function(){};
+    indian.badge = indian.notify = function(){};
 }
 
-if(native.is){
+if(indian.is){
 
 window.document.title = '✌ Reading';
-$(function(){ $('head').append('<link rel="stylesheet" href="/assets/native.css" type="text/css">'); });
-<% #asset_path 'native.css' %>
+$(function(){ $('head').append('<link rel="stylesheet" href="/assets/indian.css" type="text/css">'); });
+<% #asset_path 'indian.css' %>
 
 $(window).focus(function(){
-  native.badge('');
+  indian.badge('');
   $('.post.new').fadeTo('medium', 1).removeClass('new');
 });
 

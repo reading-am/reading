@@ -111,6 +111,25 @@ class UsersController < ApplicationController
     @users = (params[:type] == 'followers') ? @user.followers : @user.following
   end
 
+  def hooks
+    if params[:username]
+      @user = User.find_by_username(params[:username])
+    else
+      @user = User.find(params[:id])
+    end
+    if @user != current_user
+      redirect_to "/#{@user.username}"
+    end
+
+    @hooks = @user.hooks
+
+    respond_to do |format|
+      format.html { render 'hooks/index' }
+      format.xml  { render 'hooks/index', :xml => @hooks }
+      format.rss  { render 'hooks/index' }
+    end
+  end
+
   # GET /pick_a_url
   def pick_a_url
     if !logged_in?

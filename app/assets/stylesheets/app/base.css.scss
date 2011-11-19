@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'WebSymbolsRegular';
+    src: font-url('websymbols-regular-webfont.eot');
+    src: font-url('websymbols-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         font-url('websymbols-regular-webfont.woff') format('woff'),
+         font-url('websymbols-regular-webfont.ttf') format('truetype'),
+         font-url('websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
@@ -36,6 +47,20 @@ td {
   padding:2px 5px;
   vertical-align:top;
 }
+
+abbr, .glyph {
+  font-family:'WebSymbolsRegular';
+  font-style:normal;
+  background:white;
+}
+  abbr.t {
+    color:#429cc4;
+    font-size:1.25em;
+  }
+
+  abbr.f {
+    color:#557b9f;
+  }
 
 #wrapper {
   width:960px;
@@ -180,6 +205,21 @@ footer {
 a.external {
   font-style:italic;
 }
+  a.twitter {
+    background-color:#d7f3ff;
+    &:hover {
+      background-color:#e6f7ff;
+    }
+  }
+  a.facebook {
+    background-color:#d2eaff;
+    &:hover {
+      background-color:#def0ff;
+    }
+  }
+  a.twitter:hover, a.facebook:hover {
+    text-decoration:none;
+  }
 
 #error_explanation {
   color:red;

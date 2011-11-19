@@ -140,7 +140,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if params[:user] and current_user.update_attributes(params[:user])
-        format.html { redirect_to("/#{current_user.username}", :notice => 'User was successfully updated.') }
+        format.html { redirect_to("/#{current_user.username}/list", :notice => 'User was successfully updated.') }
       else
         format.html
       end

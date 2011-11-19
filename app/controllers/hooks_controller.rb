@@ -100,7 +100,7 @@ class HooksController < ApplicationController
     if !logged_in?
       redirect_to "/"
     elsif @hook.user != current_user
-      redirect_to "/#{current_user.username}"
+      redirect_to "/#{current_user.username}/list"
     end
     @hook.destroy
 

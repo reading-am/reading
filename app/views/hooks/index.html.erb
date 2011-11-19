@@ -1,3 +1,6 @@
+<div id="content">
+<%= render :partial => 'users/settings_subnav' if @user == current_user %>
+
 <div id="hooks">
 <h4>Hooks</h4>
 <h5 class="hook_message">Hooks perform an action each time you post</h5>
@@ -12,4 +15,5 @@
 <% end %>
 </table>
 <%= link_to 'Add a hook', new_hook_path %>
+</div>
 </div>

@@ -220,6 +220,10 @@ a.external {
   a.twitter:hover, a.facebook:hover {
     text-decoration:none;
   }
+  a.rss abbr {
+    font-size:0.75em;
+    vertical-align:top;
+  }
 
 #error_explanation {
   color:red;

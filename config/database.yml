@@ -20,7 +20,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: reading_production
+  database: reading_development #reading_production
   pool: 5
   username: myuser
   password: 'jq6UT6U9164dS6PC491ozVv1Ad'

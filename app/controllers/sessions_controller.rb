@@ -4,8 +4,13 @@ class SessionsController < ApplicationController
     auth_hash = request.env['omniauth.auth']
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
-      current_user.add_provider(auth_hash)
-      redirect_to "/#{current_user.username}/info", :notice => "You can now login using #{auth_hash["provider"].capitalize} too!"
+      begin
+        current_user.add_provider(auth_hash)
+        notice = "You can now login using #{auth_hash["provider"].capitalize} too!"
+      rescue
+        notice = "Someone is already using that #{auth_hash["provider"]} account"
+      end
+      redirect_to "/#{current_user.username}/info", :notice => notice
     else
       # Log him in or sign him up
       auth = Authorization.find_or_create(auth_hash)

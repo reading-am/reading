@@ -10,9 +10,10 @@
     <% end %>
   </tr>
 <% end %>
-<% if @user == current_user and @user.authorizations.length == 1 %>
-  <% needs = @user.authorizations.first.provider == 'twitter' ? 'facebook' : 'twitter' %>
-  <tr><td><a href="/auth/<%= needs %>">Connect your <%= needs.capitalize %> account</a></td></tr>
+<% if @user == current_user %>
+  <% (Authorization::PROVIDERS - @user.authorizations.collect {|auth| auth.provider.to_sym }).each do |provider| %>
+    <tr><td><a href="/auth/<%= provider %>">Connect your <%= provider.to_s.capitalize %> account</a></td></tr>
+  <% end %>
 <% end %>
 </table>
 <% #link_to 'Add a network', new_authorization_path %>

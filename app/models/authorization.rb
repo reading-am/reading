@@ -1,6 +1,8 @@
 # from: http://net.tutsplus.com/tutorials/ruby/how-to-use-omniauth-to-authenticate-your-users/
 class Authorization < ActiveRecord::Base
   belongs_to :user
+
+  PROVIDERS = [:twitter, :facebook]
   validates :provider, :uid, :presence => true
   before_create :set_default_perms
 

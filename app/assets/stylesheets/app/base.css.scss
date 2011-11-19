@@ -50,16 +50,15 @@ td {
 
 abbr, .glyph {
   font-family:'WebSymbolsRegular';
-  font-style:normal;
-  background:white;
 }
-  abbr.t {
-    color:#429cc4;
+  .twitter abbr {
+    color:#2493c4;
     font-size:1.25em;
   }
 
-  abbr.f {
+  .facebook abbr {
     color:#557b9f;
+    background:white;
   }
 
 #wrapper {
@@ -205,26 +204,31 @@ footer {
 a.external {
   font-style:italic;
 }
-  a.twitter {
-    background-color:#d7f3ff;
-    &:hover {
-      background-color:#e6f7ff;
-    }
-  }
-  a.facebook {
-    background-color:#d2eaff;
-    &:hover {
-      background-color:#def0ff;
-    }
-  }
-  a.twitter:hover, a.facebook:hover {
-    text-decoration:none;
-  }
-  a.rss abbr {
-    font-size:0.75em;
-    vertical-align:top;
-  }
 
 #error_explanation {
   color:red;
+}
+
+/* provider spans */
+.provider {
+  font-style:normal;
+}
+.provider, a:hover .provider {
+  text-decoration:none;
+}
+.provider.twitter {
+  background-color:#d7f3ff;
+}
+a:hover .provider.twitter {
+  background-color:#e6f7ff;
+}
+.provider.facebook {
+  background-color:#d2eaff;
+}
+a:hover .provider.facebook {
+  background-color:#def0ff;
+}
+a.rss abbr {
+  font-size:0.75em;
+  vertical-align:top;
 }

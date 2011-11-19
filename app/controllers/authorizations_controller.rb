@@ -6,7 +6,7 @@ class AuthorizationsController < ApplicationController
     if !logged_in?
       redirect_to "/"
     elsif @authorization.user != current_user
-      redirect_to "/#{current_user.username}"
+      redirect_to "/#{current_user.username}/list"
     end
     @authorization.destroy
 

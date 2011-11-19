@@ -10,4 +10,11 @@ module ApplicationHelper
     og = og.merge(hash)
     og.collect {|k,v| "<meta property=\"og:#{h(k)}\" content=\"#{h(v)}\" />\n" if v }.join.html_safe
   end
+
+  def provider_span name
+    name = name.to_s
+    content_tag :span, :class => ['provider',name] do
+      content_tag(:abbr, name[0]) << ' ' << name.capitalize
+    end
+  end
 end

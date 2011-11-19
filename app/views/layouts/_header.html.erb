@@ -21,7 +21,7 @@
   <% end %>
 <% else %>
   Sign up or in with
-  <%= link_to "/auth/twitter", :class => 'external twitter' do %><abbr class='t'><span>t</abbr>Twitter<% end %> or
-  <%= link_to "/auth/facebook", :class => 'external facebook' do %><abbr class='f'>f </abbr>Facebook<% end %>.
+  <%= link_to provider_span(:twitter), "/auth/twitter" %> or
+  <%= link_to provider_span(:facebook), "/auth/facebook" %>.
 <% end %>
 </div>

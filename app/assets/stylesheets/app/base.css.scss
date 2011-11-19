@@ -101,6 +101,9 @@ abbr, .glyph {
 #hooks h4, #authorizations h4 {
   margin:0;
 }
+#authorizations a {
+  background:none;
+}
 
 .date, .admin.action {
   padding:2px 5px 0 0;
@@ -231,4 +234,17 @@ a:hover .provider.facebook {
 a.rss abbr {
   font-size:0.75em;
   vertical-align:top;
+}
+
+.disconnected, .disconnected a, .disconnected .provider {
+  color:#555;
+}
+.disconnected .admin {
+  font-size:12px;
+}
+.disconnected .provider, .disconnected a:hover .provider {
+  background:#EEE;
+}
+.disconnected abbr {
+  color:#999;
 }

@@ -12,7 +12,7 @@
 <% end %>
 <% if @user == current_user %>
   <% (Authorization::PROVIDERS - @user.authorizations.collect {|auth| auth.provider.to_sym }).each do |provider| %>
-    <tr><td><a href="/auth/<%= provider %>">Connect your <%= provider.to_s.capitalize %> account</a></td></tr>
+    <tr><td class="disconnected"><%= link_to provider_span(provider) << content_tag(:span, " click to connect", :class=>'admin'), "/auth/"<<provider.to_s %></td></tr>
   <% end %>
 <% end %>
 </table>

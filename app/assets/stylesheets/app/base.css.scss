@@ -79,7 +79,10 @@ abbr, .glyph {
     display:none;
   }
 
-#welcome, #content, #blank_slate, #hooks, #authorizations {
+#content {
+  min-height:250px;
+}
+#welcome, #content, #blank_slate, #hooks, #authorizations, #user_info {
   margin:20px 0 0;
 }
   #welcome {

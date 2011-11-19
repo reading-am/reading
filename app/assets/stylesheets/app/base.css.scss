@@ -237,6 +237,7 @@ a:hover .provider.facebook {
 a.rss abbr {
   font-size:0.75em;
   vertical-align:top;
+  background-color:#FFF;
 }
 
 .disconnected, .disconnected a, .disconnected .provider {
@@ -261,4 +262,7 @@ a.rss abbr {
 
 .follow, #subnav .follow {
   background-color:#38FF7E;
+  &:hover {
+    background-color:#79ff30;
+  }
 }

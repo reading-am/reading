@@ -1,5 +1,7 @@
 <div id="content">
+
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
+<% if notice %><p id="notice">➥  <%= notice %></p><% end %>
 
 <h4>Your info</h4>
 

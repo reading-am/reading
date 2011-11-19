@@ -30,17 +30,17 @@ class Authorization < ActiveRecord::Base
       auth.save if auth.changed?
     else
       user = User.create(
-        :name       => auth_hash["user_info"]["name"],
-        :email      => auth_hash["user_info"]["email"],
+        :name       => auth_hash["info"]["name"],
+        :email      => auth_hash["info"]["email"],
         # check to make sure a user doesn't already have that nickname
-        :username   => !User.find_by_username(auth_hash["user_info"]["nickname"]) ? auth_hash["user_info"]["nickname"] : nil,
-        :first_name => auth_hash["user_info"]["first_name"],
-        :last_name  => auth_hash["user_info"]["last_name"],
-        :location   => auth_hash["user_info"]["location"],
-        :description=> auth_hash["user_info"]["description"],
-        :image      => auth_hash["user_info"]["image"],
-        :phone      => auth_hash["user_info"]["phone"],
-        :urls       => auth_hash["user_info"]["urls"]
+        :username   => !User.find_by_username(auth_hash["info"]["nickname"]) ? auth_hash["info"]["nickname"] : nil,
+        :first_name => auth_hash["info"]["first_name"],
+        :last_name  => auth_hash["info"]["last_name"],
+        :location   => auth_hash["info"]["location"],
+        :description=> auth_hash["info"]["description"],
+        :image      => auth_hash["info"]["image"],
+        :phone      => auth_hash["info"]["phone"],
+        :urls       => auth_hash["info"]["urls"]
       )
       auth = create(
         :user       => user,

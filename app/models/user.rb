@@ -50,15 +50,15 @@ class User < ActiveRecord::Base
         auth.secret ||= auth_hash["credentials"]["secret"]
         auth.save
 
-        self.name       ||= auth_hash["user_info"]["name"]
-        self.email      ||= auth_hash["user_info"]["email"]
-        self.first_name ||= auth_hash["user_info"]["first_name"]
-        self.last_name  ||= auth_hash["user_info"]["last_name"]
-        self.location   ||= auth_hash["user_info"]["location"]
-        self.description||= auth_hash["user_info"]["description"]
-        self.image      ||= auth_hash["user_info"]["image"]
-        self.phone      ||= auth_hash["user_info"]["phone"]
-        self.urls       ||= auth_hash["user_info"]["urls"]
+        self.name       ||= auth_hash["info"]["name"]
+        self.email      ||= auth_hash["info"]["email"]
+        self.first_name ||= auth_hash["info"]["first_name"]
+        self.last_name  ||= auth_hash["info"]["last_name"]
+        self.location   ||= auth_hash["info"]["location"]
+        self.description||= auth_hash["info"]["description"]
+        self.image      ||= auth_hash["info"]["image"]
+        self.phone      ||= auth_hash["info"]["phone"]
+        self.urls       ||= auth_hash["info"]["urls"]
         self.save
       end
     else

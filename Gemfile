@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'thin' # server
 
-gem 'rails', '3.1.1'
+gem 'rails', '3.1.2'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
@@ -12,9 +12,10 @@ gem 'jquery-rails'
 
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
-gem 'omniauth'
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 gem 'hipchat'
-gem 'curb'
+gem 'curb', :git => 'git://github.com/taf2/curb.git' # only pulling from git because of warnings in main
 gem 'nokogiri'
 gem 'addressable'
 gem 'base58'

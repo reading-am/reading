@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
       current_user.add_provider(auth_hash)
-      redirect_to "/#{current_user.username}/settings", :notice => "You can now login using #{auth_hash["provider"].capitalize} too!"
+      redirect_to "/#{current_user.username}/info", :notice => "You can now login using #{auth_hash["provider"].capitalize} too!"
     else
       # Log him in or sign him up
       auth = Authorization.find_or_create(auth_hash)

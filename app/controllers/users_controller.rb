@@ -135,7 +135,7 @@ class UsersController < ApplicationController
     if !logged_in?
       redirect_to root_url and return
     elsif current_user.username
-      redirect_to "/#{current_user.username}/settings" and return
+      redirect_to "/#{current_user.username}/info" and return
     end
 
     respond_to do |format|

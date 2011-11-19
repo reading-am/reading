@@ -1,0 +1,4 @@
+<nav id="subnav">
+<a href="/<%= @user.username %>/hooks"<% if params[:action] == 'hooks' %> class="active"<% end %>>Hooks</a>
+- <a href="/<%= @user.username %>/info"<% if params[:action] == 'edit' %> class="active"<% end %>>Information</a>
+</nav>

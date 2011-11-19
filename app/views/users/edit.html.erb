@@ -1,4 +1,6 @@
 <div id="content">
+<%= render :partial => 'users/settings_subnav' if @user == current_user %>
+
 <h4>Your info</h4>
 
 <%= render 'form' %>

@@ -2,6 +2,8 @@
 <%= render :partial => 'users/settings_header' %>
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
+<%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
+
 <div id="hooks">
 <h5 class="hook_message">Hooks perform an action each time you post</h5>
 <table>
@@ -14,6 +16,5 @@
   </tr>
 <% end %>
 </table>
-<%= link_to 'Add a hook', new_hook_path %>
 </div>
 </div>

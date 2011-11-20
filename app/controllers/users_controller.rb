@@ -121,6 +121,7 @@ class UsersController < ApplicationController
       redirect_to "/#{@user.username}"
     end
 
+    @new_hook = Hook.new
     @hooks = @user.hooks
 
     respond_to do |format|

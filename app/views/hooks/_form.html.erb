@@ -12,6 +12,12 @@
   <% end %>
 
   <div class="field">
+    When I
+    <%= f.select(:action, Hook::ACTIONS) %>
+    <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a hook type'}) %>
+  </div>
+
+  <div class="field" style="display:none;">
     <%= f.label :type %>
     <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a hook type'}) %>
   </div>

@@ -2,8 +2,9 @@
 class Hook < ActiveRecord::Base
   belongs_to :user
 
+  ACTIONS = [:new, :yep, :nope]
   PROVIDERS = [:hipchat, :campfire, :url, :opengraph]
-  validates_presence_of :provider, :params
+  validates_presence_of :action, :provider, :params
 
   def params
     ActiveSupport::JSON.decode(read_attribute(:params))

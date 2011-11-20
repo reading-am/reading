@@ -1,3 +1,6 @@
+/*
+ * Fonts and Mixins
+ */
 @font-face {
     font-family: 'WebSymbolsRegular';
     src: font-url('websymbols-regular-webfont.eot');
@@ -9,6 +12,31 @@
     font-style: normal;
 }
 
+@mixin gradient($first, $second) {
+  background: $second; /* Old browsers */
+  background: -moz-linear-gradient(top, $first 0%, $second 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$first), color-stop(100%,$second)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, $first 0%,$second 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, $first 0%,$second 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, $first 0%,$second 100%); /* IE10+ */
+  background: linear-gradient(top, $first 0%,$second 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$first', endColorstr='$second',GradientType=0 ); /* IE6-9 */
+}
+
+/*
+ * Variables
+ */
+$yellow: #FFFBCC;
+$dark_yellow: #FFF461;
+$blue: #B3FEFF;
+$dark_blue: #00FBFF;
+$green: #38ff7E;
+$dark_green: #79ff30;
+$grey: #EEE;
+
+/*
+ * Basic HTML elements
+ */
 html {
   -webkit-font-smoothing: antialiased;
   font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
@@ -18,12 +46,12 @@ html {
 }
 
 a {
-  background:#FFFBCC;
+  background:$yellow;
   text-decoration:none;
   color:#000;
 }
   a:hover {
-    background:#FFF461;
+    background:$dark_yellow;
     text-decoration:underline;
   }
 h1 {
@@ -47,6 +75,9 @@ td {
   padding:2px 5px;
   vertical-align:top;
 }
+strong {
+  font-weight:bold;
+}
 
 abbr, .glyph {
   font-family:'WebSymbolsRegular';
@@ -67,7 +98,7 @@ abbr, .glyph {
 }
 
 .bookmarklet {
-  background:#FFFBCC;
+  background:$yellow;
   text-align:center;
   margin:60px 0 0;
   width:275px;
@@ -188,10 +219,10 @@ th {
 }
 
 #subnav a, footer a, a.user.you, .rss {
-  background-color:#B3FEFF;
+  background-color:$blue;
 }
   #subnav a:hover, footer a:hover, a.user.you:hover, .rss:hover {
-    background-color:#00FBFF;
+    background-color:$dark_blue;
   }
 a.active, a.active:hover, #subnav a.active, #subnav a.active:hover {
   background:none;
@@ -247,7 +278,7 @@ a.rss abbr {
   font-size:12px;
 }
 .disconnected .provider, .disconnected a:hover .provider {
-  background:#EEE;
+  background:$grey;
 }
 .disconnected abbr {
   color:#999;
@@ -261,8 +292,23 @@ a.rss abbr {
 }
 
 .follow, #subnav .follow {
-  background-color:#38FF7E;
+  background-color:$green;
   &:hover {
-    background-color:#79ff30;
+    background-color:$dark_green;
   }
 }
+
+#constructor {
+  font-size:22px;
+  margin:20px 0 0;
+  padding:10px;
+  background:$grey;
+}
+#constructor_submit {
+  font-size:22px;
+  display:inline-block;
+  padding:5px;
+  background:$green;
+//  @include gradient($grey, $green);
+}
+

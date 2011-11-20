@@ -11,21 +11,17 @@
     </div>
   <% end %>
 
-  <div class="field">
-    When I
-    <%= f.select(:action, Hook::ACTIONS) %>
-    <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a hook type'}) %>
-  </div>
+  <blockquote id="constructor" class="field">
+    When I click <%= f.select(:action, Hook::ACTIONS) %>,
+    please post to <%= f.select(:provider, Hook::PROVIDERS) %>
+    using this token <input type="text" placeholder="token">
+  </blockquote>
+  <div id="constructor_submit"><%= f.submit "Do it, thanks" %></div>
 
-  <div class="field" style="display:none;">
-    <%= f.label :type %>
-    <%= f.select(:provider, Hook::PROVIDERS, {:include_blank => 'Select a hook type'}) %>
-  </div>
   <div id="hipchat_message" class="hook_message">
     Messages will be posted to <a href="https://www.hipchat.com">HipChat</a> in the following format.
     Note: you'll need an <a href="https://hipchat.com/group_admin/api">API Token</a>.
-    <pre>
-    <%= link_to current_user.display_name, "/#{current_user.username}" %> is reading <%= link_to "Page Title Here", "http://example.com" %></pre>
+    <pre><%= link_to current_user.display_name, "/#{current_user.username}" %> is reading <%= link_to "Page Title Here", "http://example.com" %></pre>
   </div>
   <div id="campfire_message" class="hook_message">
     Messages will be posted to <a href="http://campfirenow.com">Campfire</a> in the following format.
@@ -51,8 +47,5 @@
     post[referrer_post][user][id] - The id of the user who led the post user to visit the link ('because of')
     post[referrer_post][user][username] - The username of the user who led the post user to visit the link ('because of')
     post[referrer_post][user][display_name] - The display_name of the user who led the post user to visit the link
-  </div>
-  <div class="actions">
-    <%= f.submit %>
   </div>
 <% end %>

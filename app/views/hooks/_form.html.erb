@@ -12,24 +12,26 @@
   <% end %>
 
   <div id="constructor" class="hook section">
-    <strong>++</strong> When I
-    <select>
-      <option>read, "yep" or "nope"</option>
-      <option>read a page</option>
-      <option>say "yep"</option>
-      <option>say "nope"</option>
-    </select>
-    please post to
-    <select id="hook_provider">
-      <option value="campfire">Campfire</option>
-      <option value="email">email</option>
-      <option value="facebook">Facebook</option>
-      <option value="hipchat">HipChat</option>
-      <option value="twitter">Twitter</option>
-      <option value="url">a URL</option>
-    </select>
-    using this token <input type="text" placeholder="token">.
+    <span class="wrapper">
+      <strong>++</strong> When I
+      <select>
+        <option>read, "yep" or "nope"</option>
+        <option>read a page</option>
+        <option>say "yep"</option>
+        <option>say "nope"</option>
+      </select>
+      please post to
+      <select id="hook_provider">
+        <option value="campfire">Campfire</option>
+        <option value="email">email</option>
+        <option value="facebook">Facebook</option>
+        <option value="hipchat">HipChat</option>
+        <option value="twitter">Twitter</option>
+        <option value="url">a URL</option>
+      </select>
+      using this token <input type="text" placeholder="token">.
+    </span>
     <div id="constructor_submit"><%= f.submit "Thanks!" %></div>
   </div>
-  <br><a href="#" class="footnote" data-url="/footnotes/campfire">*A note about your hook</a>
+  <a href="#" class="footnote" data-url="/footnotes/campfire">*How this hook works</a>
 <% end %>

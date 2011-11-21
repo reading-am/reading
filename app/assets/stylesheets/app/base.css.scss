@@ -297,9 +297,9 @@ a.rss abbr {
   }
 }
 
-#constructor {
-  display:inline-block;
+#constructor .wrapper {
   background:$grey;
+  padding:8px 0;
 }
 #constructor_submit {
   display:inline-block;

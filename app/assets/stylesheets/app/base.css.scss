@@ -297,6 +297,10 @@ a.rss abbr {
   }
 }
 
+#constructor {
+  display:inline-block;
+  background:$grey;
+}
 #constructor_submit {
   display:inline-block;
   background:$green;

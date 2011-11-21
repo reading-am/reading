@@ -6,16 +6,14 @@
   Hooks perform an action each time you do something, like posting to
   <%= link_to "Twitter", "http://twitter.com" %> when you <strong>read a page</strong>
   or sending an <strong>email</strong> when you <strong>say "yep"</strong>.
-  <% if @hooks.length == 0 %>
-    You don't have any hooks yet, why don't you add one below?
-  <% else %>
-    Have an idea for a hook? Don't just sit there, <%= mail_to "hello@#{DOMAIN}", 'tell us', :subject => 'I\'m hooked on Reading', :encode => 'javascript', :class => 'email' %>.
-  <% end %>
+  Have an idea for a new hook? Don't just sit there, <%= mail_to "hello@#{DOMAIN}", 'tell us', :subject => 'I\'m hooked on Reading', :encode => 'javascript', :class => 'email' %>.
 </div>
 
 <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
 
+<% if @hooks.length > 0 %>
 <div id="hooks" class="section">
+<h4>These are your hooks</h4>
 <table>
 <% @hooks.each do |hook| %>
   <tr>
@@ -27,4 +25,5 @@
 <% end %>
 </table>
 </div>
+<% end %>
 </div>

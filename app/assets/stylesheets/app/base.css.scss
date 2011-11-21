@@ -113,7 +113,7 @@ abbr, .glyph {
 #content {
   min-height:250px;
 }
-#welcome, #content, #blank_slate, #hooks, #authorizations, #user_info {
+.section, #notice, #content {
   margin:20px 0 0;
 }
   #welcome {
@@ -179,6 +179,9 @@ h1 a, a.user, .hook a {
 .user, .hook a {
   font-weight:bold;
 }
+.hook {
+  font-size:16px;
+}
 
 .edit_user .field, .new_hook .field {
   margin:5px 0;
@@ -204,9 +207,6 @@ th {
   margin:15px 0;
   font-size:12px;
 }
-  h5.hook_message {
-    display:inline;
-  }
 
 #visit {
   margin:150px 0 0;
@@ -286,7 +286,6 @@ a.rss abbr {
 
 #notice {
   display:inline-block;
-  margin:20px;
   font-weight:bold;
   border-bottom:1px solid #000;
 }
@@ -299,16 +298,13 @@ a.rss abbr {
 }
 
 #constructor {
-  font-size:22px;
-  margin:20px 0 0;
-  padding:10px;
-  background:$grey;
+  font-size:16px;
+  border-bottom:1px dashed #999;
+  padding:0 0 10px;
+  display:inline-block;
 }
 #constructor_submit {
-  font-size:22px;
   display:inline-block;
-  padding:5px;
   background:$green;
-//  @include gradient($grey, $green);
+  padding:5px;
 }
-

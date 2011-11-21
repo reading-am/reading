@@ -11,12 +11,26 @@
     </div>
   <% end %>
 
-  <blockquote id="constructor" class="field">
-    When I click <%= f.select(:action, Hook::ACTIONS) %>,
-    please post to <%= f.select(:provider, Hook::PROVIDERS) %>
-    using this token <input type="text" placeholder="token">
-  </blockquote>
-  <div id="constructor_submit"><%= f.submit "Do it, thanks" %></div>
+  <div id="constructor" class="hook section">
+    <strong>++</strong> When I
+    <select>
+      <option>read, "yep" or "nope"</option>
+      <option>read a page</option>
+      <option>say "yep"</option>
+      <option>say "nope"</option>
+    </select>
+    please post to
+    <select>
+      <option>Campfire</option>
+      <option>email</option>
+      <option>Facebook</option>
+      <option>HipChat</option>
+      <option>Twitter</option>
+      <option>URL</option>
+    </select>
+    using this token <input type="text" placeholder="token">.
+    <div id="constructor_submit"><%= f.submit "Thanks!" %></div>
+  </div>
 
   <div id="hipchat_message" class="hook_message">
     Messages will be posted to <a href="https://www.hipchat.com">HipChat</a> in the following format.

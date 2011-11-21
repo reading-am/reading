@@ -2,11 +2,18 @@
 <%= render :partial => 'users/settings_header' %>
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
-<h5 class="hook_message">Hooks perform an action each time you post</h5>
+<% if @hooks.length == 0 %>
+<div class="section">
+  Hooks perform an action each time you do something, like posting to
+  <%= link_to "Twitter", "http://twitter.com" %> when you <strong>read a page</strong>
+  or sending an <strong>email</strong> when you <strong>say "yep"</strong>.
+  You don't have any hooks yet, why don't you add one below?
+</div>
+<% end %>
 
 <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
 
-<div id="hooks">
+<div id="hooks" class="section">
 <table>
 <% @hooks.each do |hook| %>
   <tr>

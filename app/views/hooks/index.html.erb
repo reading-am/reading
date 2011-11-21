@@ -2,14 +2,16 @@
 <%= render :partial => 'users/settings_header' %>
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
-<% if @hooks.length == 0 %>
-<div class="section">
+<div id="hooks_blank" class="section">
   Hooks perform an action each time you do something, like posting to
   <%= link_to "Twitter", "http://twitter.com" %> when you <strong>read a page</strong>
   or sending an <strong>email</strong> when you <strong>say "yep"</strong>.
-  You don't have any hooks yet, why don't you add one below?
+  <% if @hooks.length == 0 %>
+    You don't have any hooks yet, why don't you add one below?
+  <% else %>
+    Have an idea for a hook? Don't just sit there, <%= mail_to "hello@#{DOMAIN}", 'tell us', :subject => 'I\'m hooked on Reading', :encode => 'javascript', :class => 'email' %>.
+  <% end %>
 </div>
-<% end %>
 
 <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
 

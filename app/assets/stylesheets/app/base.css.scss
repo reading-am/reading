@@ -297,14 +297,13 @@ a.rss abbr {
   }
 }
 
-#constructor {
-  font-size:16px;
-  border-bottom:1px dashed #999;
-  padding:0 0 10px;
-  display:inline-block;
-}
 #constructor_submit {
   display:inline-block;
   background:$green;
   padding:5px;
+}
+
+#hooks_blank a {
+  background:none;
+  font-weight:bold;
 }

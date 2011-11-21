@@ -14,7 +14,7 @@ $(window).focus(function(){
 window.base58 = encdec();
 
 $(function() {
-  $("a.external").live('click', function(){
+  $("a.external").on('click', function(){
     var $this = $(this),
         link_host = this.href.split("/")[2],
         document_host = document.location.href.split("/")[2],
@@ -41,7 +41,7 @@ $(function() {
     }
   });
 
-  $('.bookmarklet').hover(function(){
+  $('.bookmarklet').on('hover', function(){
     var $this = $(this);
     $this.find('span').hide();
     $this.find('a').css('display', 'block');
@@ -52,4 +52,8 @@ $(function() {
     // $this.find('a').hide();
   });
 
+  $('.footnote').on('click', function(){
+    window.open($(this).data('url'), 'footnote', 'location=0,status=0,scrollbars=0,width=300,height=400');
+    return false;
+  });
 });

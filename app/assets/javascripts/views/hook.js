@@ -19,8 +19,7 @@ $(function(){
     var $this = $(this),
         $actions = $('.actions');
     $('.field:not(:first)').remove();
-    $('.hook_message').hide();
-    $('#'+$this.val()+'_message').show();
+    $('.footnote').data('url', '/footnotes/'+$this.val());
     switch($this.val()){
       case 'hipchat':
         $actions.before(text_field('Token'), text_field('Room'));

@@ -20,47 +20,16 @@
       <option>say "nope"</option>
     </select>
     please post to
-    <select>
-      <option>Campfire</option>
-      <option>email</option>
-      <option>Facebook</option>
-      <option>HipChat</option>
-      <option>Twitter</option>
-      <option>a URL</option>
+    <select id="hook_provider">
+      <option value="campfire">Campfire</option>
+      <option value="email">email</option>
+      <option value="facebook">Facebook</option>
+      <option value="hipchat">HipChat</option>
+      <option value="twitter">Twitter</option>
+      <option value="url">a URL</option>
     </select>
     using this token <input type="text" placeholder="token">.
     <div id="constructor_submit"><%= f.submit "Thanks!" %></div>
   </div>
-  <br><a href="#" class="footnote">*A note about your hook</a>
-
-  <div id="hipchat_message" class="hook_message">
-    Messages will be posted to <a href="https://www.hipchat.com">HipChat</a> in the following format.
-    Note: you'll need an <a href="https://hipchat.com/group_admin/api">API Token</a>.
-    <pre><%= link_to current_user.display_name, "/#{current_user.username}" %> is reading <%= link_to "Page Title Here", "http://example.com" %></pre>
-  </div>
-  <div id="campfire_message" class="hook_message">
-    Messages will be posted to <a href="http://campfirenow.com">Campfire</a> in the following format.
-    Note: you'll need your API Token from the "My info" screen within Campfire.
-    <pre>
-    I'm reading "Page Title Here" <a href="http://example.com">http://example.com</a></pre>
-  </div>
-  <div id="opengraph_message" class="hook_message">
-    Messages will be posted to your Facebook timeline.<br>This is an ALPHA FEATURE and you'll need to <%= mail_to "hello@#{DOMAIN}", 'contact us', :subject => 'I want to use OpenGraph', :encode => 'javascript', :class => 'email' %> to be added as a tester before this will work. You've been warned.
-  </div>
-  <div id="url_message" class="hook_message">
-    The following data will be sent via POST or GET to a URL of your choosing each time you add a post:
-    <pre>
-    post[id] - The id of the post
-    post[yn] - Whether the user marked the post with "yep" (true) or "nope" (false). Empty means unmarked.
-    post[title] - The page title of the post
-    post[url] - The url of the post
-    post[wrapped_url] - The url of the post routed through Reading for automatic list updates
-    post[user][id] - The id of the user who created the post
-    post[user][username] - The username of the user who created the post
-    post[user][display_name] - The full name (if available) or username of the user who created the post
-    post[referrer_post][id] - The id of the post that led the post user to visit the link
-    post[referrer_post][user][id] - The id of the user who led the post user to visit the link ('because of')
-    post[referrer_post][user][username] - The username of the user who led the post user to visit the link ('because of')
-    post[referrer_post][user][display_name] - The display_name of the user who led the post user to visit the link
-  </div>
+  <br><a href="#" class="footnote" data-url="/footnotes/campfire">*A note about your hook</a>
 <% end %>

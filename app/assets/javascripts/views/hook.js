@@ -1,61 +1,61 @@
 var hook_properties = {
   "actions":[
-    {"name":"any", "text":"read, \"yep\" or \"nope\""},
+    {"name":"any",  "text":"read, \"yep\" or \"nope\""},
     {"name":"read", "text":"read a page"},
     {"name":"yep",  "text":"say \"yep\""},
     {"name":"nope", "text":"say \"nope\""}
   ],
   "providers":[
-    {"name":"Campfire", "params":[
-      {"name":"room", "placeholder": "My Room Name"},
-      {"name":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"}
+    {"text":"Campfire", "params":[
+      {"text":"room", "placeholder": "My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"}
     ]},
-    {"name":"email", "params":[
-      {"name":"address", "placeholder":"me@example.com"}
+    {"text":"email", "params":[
+      {"text":"address", "placeholder":"me@example.com"}
     ]},
-    {"name":"Facebook", "params":[
-      {"name":"account"}
+    {"text":"Facebook", "params":[
+      {"text":"account", "options":["New account"]}
     ]},
-    {"name":"HipChat", "params":[
-      {"name":"room", "placeholder":"My Room Name"},
-      {"name":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
+    {"text":"HipChat", "params":[
+      {"text":"room", "placeholder":"My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
     ]},
-    {"name":"Twitter", "params":[
-      {"name":"account"}
+    {"text":"Twitter", "params":[
+      {"text":"account", "options":["New account"]}
     ]},
-    {"name":"URL", "params":[
-      {"name":"address", "placeholder":"http://example.com"},
-      {
-        "name":"method",
-        "options":["POST","GET"]
-      }
+    {"text":"URL", "params":[
+      {"text":"address", "placeholder":"http://example.com"},
+      {"text":"method", "options":["POST","GET"]}
     ]}
   ]
 };
 
-var select_field = function(param, scope){
-  var name = param.name.toLowerCase().replace(/ /g,'_');
-  if(scope) name = scope+'['+name+']';
-  var $select = $('<select name="'+name+'">');
+var field = function(param, scope, add_label){
+  if(!param.name) param.name = param.text.toLowerCase().replace(/ /g,'_');
+  if(scope) param.name = scope+'['+param.name+']';
+  var func = (param.options ? select_field : text_field),
+      $field = $('<span class="field">');
+  if(add_label || typeof add_label == 'undefined'){
+    $field.append(' <label for="'+param.name+'">'+param.text+'</label> ');
+  }
+  return $field.append(func(param));
+},
+select_field = function(param){
+  var $select = $('<select name="'+param.name+'">');
   for(var i = 0; i < param.options.length; i++){
-    var op = (typeof param.options[i] == 'string' ? {"name":param.options[i]} : param.options[i]);
-    $select.append($('<option>').val(op.name.toLowerCase()).text(op.text ? op.text : op.name));
+    var op = (typeof param.options[i] == 'string' ? {"text":param.options[i]} : param.options[i]);
+    $select.append($('<option>').val(op.text.toLowerCase()).text(op.text ? op.text : op.name));
   }
   return $select;
 },
-text_field = function(param, scope){
-  var name = param.name.toLowerCase().replace(/ /g,'_');
-  if(scope) name = scope+'['+name+']';
-  return $('<span class="field">')
-            .append(' <label for="'+name+'">'+param.name+'</label> ')
-            .append(' <input type="text" name="'+name+'" placeholder="'+(param.placeholder ? param.placeholder : param.name)+'"> ');
+text_field = function(param){
+  return $('<span class="field">').append(' <input type="text" name="'+param.name+'" placeholder="'+(param.placeholder ? param.placeholder : param.name)+'"> ');
 },
 build_provider_params = function(params){
   var $prov = $('<span>').attr('id','provider_params');
   for(var i = 0; i < params.length; i++){
     if(i === 1) $prov.append(' using ');
-    var func = (params[i].options ? select_field : text_field);
-    $prov.append(func(params[i], 'hook[params]'));
+    $prov.append(field(params[i], 'hook[params]'));
   }
   return $prov;
 };
@@ -64,9 +64,9 @@ $(function(){
 
   $('#constructor .wrapper')
     .append('When I ')
-    .append(select_field({"name":"action", "options":hook_properties.actions}, 'hook'))
+    .append(field({"text":"action", "options":hook_properties.actions}, 'hook', false))
     .append(' please post to ')
-    .append(select_field({"name":"provider", "options":hook_properties.providers}, 'hook'))
+    .append(field({"text":"provider", "options":hook_properties.providers}, 'hook', false))
     .append(build_provider_params(hook_properties.providers[0].params));
 
   var $provider = $("#constructor select[name='hook[provider]']").change(function(){

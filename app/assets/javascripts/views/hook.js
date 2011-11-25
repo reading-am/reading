@@ -14,14 +14,14 @@ var hook_properties = {
       {"text":"address", "placeholder":"me@example.com"}
     ]},
     {"text":"Facebook", "params":[
-      {"text":"account", "options":["New account"]}
+      {"text":"account", "options":current_user.accounts('facebook'), "datatype":"provider"}
     ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
     ]},
     {"text":"Twitter", "params":[
-      {"text":"account", "options":["New account"]}
+      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"provider"}
     ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},
@@ -46,6 +46,7 @@ select_field = function(param){
     var op = (typeof param.options[i] == 'string' ? {"text":param.options[i]} : param.options[i]);
     $select.append($('<option>').val(op.text.toLowerCase()).text(op.text ? op.text : op.name));
   }
+  if(param.datatype == 'provider') $select.append($('<option>').val('new').text('connect a new '+param.text));
   return $select;
 },
 text_field = function(param){

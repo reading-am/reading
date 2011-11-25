@@ -311,6 +311,9 @@ a.rss abbr {
   background:none;
   font-weight:bold;
 }
+  #hooks_blank a.email {
+    text-decoration:underline;
+  }
 a.footnote {
   font-weight:normal;
   font-size:12px;

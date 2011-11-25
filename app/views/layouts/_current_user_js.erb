@@ -1,20 +1,30 @@
+<%
+  auths = {'twitter' => [], 'facebook' => []}
+  if logged_in?
+    current_user.authorizations.each do |auth|
+      auths[auth.provider] << {:uid => auth.uid, :permissions => auth.permissions}
+    end
+  end
+%>
+
 var current_user = {
-<% if logged_in? %>
-  id: <%= current_user.id %>,
-  username: '<%= current_user.username %>',
-  display_name: '<%= current_user.display_name %>',
-  authorizations: {
-  <% current_user.authorizations.each_with_index do |auth, index| %>
-    <%= auth.provider %>: { permissions: <%= auth.permissions.to_json.html_safe %>}<% if index != current_user.authorizations.length-1 %>,<% end %>
-  <% end %>
-  },
-<% else %>
-  id: '',
-  username: '',
-  display_name: '',
-  authorizations: {},
-<% end %>
-  logged_in: function(){ return Boolean(this.id); }
+  id: '<%= current_user.id if logged_in? %>',
+  username: '<%= current_user.username if logged_in? %>',
+  display_name: '<%= current_user.display_name if logged_in? %>',
+  authorizations: <%= auths.to_json.html_safe %>,
+  logged_in: function(){ return Boolean(this.id); },
+  accounts: function(provider){
+    var provider = this.authorizations[provider];
+    if(!provider){
+      return [];
+    } else {
+      var uids = [];
+      for(var i = 0; i < provider.length; i++){
+        uids.push(provider[i].uid);
+      }
+      return uids;
+    }
+  }
 };
 
 if(current_user.authorizations.facebook){

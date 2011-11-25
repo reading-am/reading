@@ -11,10 +11,16 @@ module ApplicationHelper
     og.collect {|k,v| "<meta property=\"og:#{h(k)}\" content=\"#{h(v)}\" />\n" if v }.join.html_safe
   end
 
-  def provider_span name
-    name = name.to_s
-    content_tag :span, :class => ['provider',name] do
-      content_tag(:abbr, name[0]) << ' ' << name.capitalize
+  def provider_span input
+    if input.class == Authorization
+      provider = input.provider
+      text = content_tag(:span, input.uid, :class => 'account')
+    else
+      provider = input
+      text = input.to_s.capitalize
+    end
+    content_tag :span, :class => ['provider',provider] do
+      content_tag(:abbr, provider[0]) << ' ' << text
     end
   end
 end

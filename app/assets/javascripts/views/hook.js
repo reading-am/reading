@@ -68,14 +68,20 @@ build_provider = function(params){
     $prov.append(field(params[i], 'hook[params]'));
   }
 
-  $('[data-type="account"] option[value!="new"]', $prov).each(function(){
-    var $this = $(this),
-        provider = $('#hook_provider').val();
+  populate_accounts(
+    $('#hook_provider').val(),
+    $('[data-type="account"] option[value!="new"]', $prov)
+  );
+
+  return $prov;
+},
+populate_accounts = function(provider, selection){
+  selection.each(function(){
+    var $this = $(this);
     $.ajax({
-      url:      api_urls[provider]+$this.val(),
+      url:      api_urls[provider]+$this.text(),
       dataType: 'jsonp',
       success:  function(r){
-        console.log(r);
         if(r.screen_name){
           $this.text(
             (provider == 'twitter' ? '@' : '') + r.screen_name
@@ -88,8 +94,6 @@ build_provider = function(params){
       }
     });
   });
-
-  return $prov;
 };
 
 $(function(){
@@ -105,5 +109,8 @@ $(function(){
     $('.footnote').data('url', '/footnotes/'+$provider.val());
     $('#provider_params').replaceWith(build_provider(hook_properties.providers[$provider.prop('selectedIndex')].params));
   });
+
+  populate_accounts('twitter', $('.provider.twitter .account'));
+  populate_accounts('facebook', $('.provider.facebook .account'));
 
 });

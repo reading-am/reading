@@ -54,11 +54,18 @@ class HooksController < ApplicationController
   # POST /hooks
   # POST /hooks.xml
   def create
-    if !logged_in?
-      redirect_to '/'
+    redirect_to '/' if !logged_in?
+
+    if ['twitter','facebook'].include? params[:hook][:provider]
+      auth = Authorization.find_by_provider_and_uid(params[:hook][:provider], params[:hook][:params][:account])
+      params[:hook][:params].delete(:account)
+      params[:hook][:params] = params[:hook][:params].to_json
+      @hook = Hook.new(params[:hook])
+      @hook.authorization = auth
+    else
+      params[:hook][:params] = params[:hook][:params].to_json
+      @hook = Hook.new(params[:hook])
     end
-    params[:hook][:params] = params[:hook][:params].to_json
-    @hook = Hook.new(params[:hook])
     @hook.user = current_user
 
     respond_to do |format|

@@ -1,10 +1,11 @@
 # encoding: UTF-8
 class Hook < ActiveRecord::Base
   belongs_to :user
+  belongs_to :authorization
 
   ACTIONS = [:new, :yep, :nope]
   PROVIDERS = [:hipchat, :campfire, :url, :opengraph]
-  validates_presence_of :action, :provider, :params
+  validates_presence_of :action, :provider
 
   def params
     ActiveSupport::JSON.decode(read_attribute(:params))

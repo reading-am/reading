@@ -1,9 +1,9 @@
 var hook_properties = {
   "actions":[
-    {"name":"any",  "text":"read, \"yep\" or \"nope\"", "perms":["write"]},
-    {"name":"read", "text":"read a page", "perms":["write"]},
-    {"name":"yep",  "text":"say \"yep\"", "perms":["write"]},
-    {"name":"nope", "text":"say \"nope\"", "perms":["write"]}
+    {"value":"any",  "text":"read, \"yep\" or \"nope\"", "perms":["write"]},
+    {"value":"read", "text":"read a page", "perms":["write"]},
+    {"value":"yep",  "text":"say \"yep\"", "perms":["write"]},
+    {"value":"nope", "text":"say \"nope\"", "perms":["write"]}
   ],
   "providers":[
     {"text":"Campfire", "params":[
@@ -51,7 +51,8 @@ select_field = function(param){
   if(param.datatype) $select.attr('data-type', param.datatype);
   for(var i = 0; i < param.options.length; i++){
     var op = (typeof param.options[i] == 'string' ? {"text":param.options[i]} : param.options[i]);
-    $select.append($('<option>').val(op.text.toLowerCase()).text(op.text ? op.text : op.name));
+    if(!op.value) op.value = op.text.toLowerCase();
+    $select.append($('<option>').val(op.value).text(op.text ? op.text : op.value));
   }
   if(param.datatype == 'account') $select.append($('<option>').val('new').text('connect a new '+param.datatype));
   return $select;

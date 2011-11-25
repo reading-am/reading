@@ -1,9 +1,9 @@
 var hook_properties = {
   "actions":[
-    {"name":"any",  "text":"read, \"yep\" or \"nope\""},
-    {"name":"read", "text":"read a page"},
-    {"name":"yep",  "text":"say \"yep\""},
-    {"name":"nope", "text":"say \"nope\""}
+    {"name":"any",  "text":"read, \"yep\" or \"nope\"", "perms":["write"]},
+    {"name":"read", "text":"read a page", "perms":["write"]},
+    {"name":"yep",  "text":"say \"yep\"", "perms":["write"]},
+    {"name":"nope", "text":"say \"nope\"", "perms":["write"]}
   ],
   "providers":[
     {"text":"Campfire", "params":[
@@ -32,16 +32,17 @@ var hook_properties = {
 
 var field = function(param, scope, add_label){
   if(!param.name) param.name = param.text.toLowerCase().replace(/ /g,'_');
-  if(scope) param.name = scope+'['+param.name+']';
+  if(scope) param.scoped_name = scope+'['+param.name+']';
+  if(!param.id) param.id = param.scoped_name.toLowerCase().replace(/\[/g,'_').replace(/\]/g,'');
   var func = (param.options ? select_field : text_field),
       $field = $('<span class="field">');
   if(add_label || typeof add_label == 'undefined'){
-    $field.append(' <label for="'+param.name+'">'+param.text+'</label> ');
+    $field.append(' <label for="'+param.id+'">'+param.text+'</label> ');
   }
   return $field.append(func(param));
 },
 select_field = function(param){
-  var $select = $('<select name="'+param.name+'">');
+  var $select = $('<select>').attr('name',param.scoped_name).attr('id',param.id);
   for(var i = 0; i < param.options.length; i++){
     var op = (typeof param.options[i] == 'string' ? {"text":param.options[i]} : param.options[i]);
     $select.append($('<option>').val(op.text.toLowerCase()).text(op.text ? op.text : op.name));
@@ -50,7 +51,7 @@ select_field = function(param){
   return $select;
 },
 text_field = function(param){
-  return $('<span class="field">').append(' <input type="text" name="'+param.name+'" placeholder="'+(param.placeholder ? param.placeholder : param.name)+'"> ');
+  return $('<span class="field">').append(' <input type="text" name="'+param.scoped_name+'" id="'+param.id+'" placeholder="'+(param.placeholder ? param.placeholder : param.name)+'"> ');
 },
 build_provider_params = function(params){
   var $prov = $('<span>').attr('id','provider_params');

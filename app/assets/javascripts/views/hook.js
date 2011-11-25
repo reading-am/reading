@@ -14,20 +14,25 @@ var hook_properties = {
       {"text":"address", "placeholder":"me@example.com"}
     ]},
     {"text":"Facebook", "params":[
-      {"text":"account", "options":current_user.accounts('facebook'), "datatype":"provider"}
+      {"text":"account", "options":current_user.accounts('facebook'), "datatype":"account"}
     ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
     ]},
     {"text":"Twitter", "params":[
-      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"provider"}
+      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"account"}
     ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},
       {"text":"method", "options":["POST","GET"]}
     ]}
   ]
+};
+
+var api_urls = {
+  twitter:'https://api.twitter.com/1/users/show.json?id=',
+  facebook:'https://graph.facebook.com/'
 };
 
 var field = function(param, scope, add_label){
@@ -43,22 +48,47 @@ var field = function(param, scope, add_label){
 },
 select_field = function(param){
   var $select = $('<select>').attr('name',param.scoped_name).attr('id',param.id);
+  if(param.datatype) $select.attr('data-type', param.datatype);
   for(var i = 0; i < param.options.length; i++){
     var op = (typeof param.options[i] == 'string' ? {"text":param.options[i]} : param.options[i]);
     $select.append($('<option>').val(op.text.toLowerCase()).text(op.text ? op.text : op.name));
   }
-  if(param.datatype == 'provider') $select.append($('<option>').val('new').text('connect a new '+param.text));
+  if(param.datatype == 'account') $select.append($('<option>').val('new').text('connect a new '+param.datatype));
   return $select;
 },
 text_field = function(param){
-  return $('<span class="field">').append(' <input type="text" name="'+param.scoped_name+'" id="'+param.id+'" placeholder="'+(param.placeholder ? param.placeholder : param.name)+'"> ');
+  var $input = (' <input type="text" name="'+param.scoped_name+'" id="'+param.id+'" placeholder="'+(param.placeholder ? param.placeholder : param.name)+'"> ');
+  if(param.datatype) $input.attr('data-type', param.datatype);
+  return $('<span class="field">').append($input);
 },
-build_provider_params = function(params){
+build_provider = function(params){
   var $prov = $('<span>').attr('id','provider_params');
   for(var i = 0; i < params.length; i++){
     if(i === 1) $prov.append(' using ');
     $prov.append(field(params[i], 'hook[params]'));
   }
+
+  $('[data-type="account"] option[value!="new"]', $prov).each(function(){
+    var $this = $(this),
+        provider = $('#hook_provider').val();
+    $.ajax({
+      url:      api_urls[provider]+$this.val(),
+      dataType: 'jsonp',
+      success:  function(r){
+        console.log(r);
+        if(r.screen_name){
+          $this.text(
+            (provider == 'twitter' ? '@' : '') + r.screen_name
+          );
+        } else if(r.username){
+          $this.text(r.username);
+        } else if(r.name){
+          $this.text(r.name);
+        }
+      }
+    });
+  });
+
   return $prov;
 };
 
@@ -69,11 +99,11 @@ $(function(){
     .append(field({"text":"action", "options":hook_properties.actions}, 'hook', false))
     .append(' please post to ')
     .append(field({"text":"provider", "options":hook_properties.providers}, 'hook', false))
-    .append(build_provider_params(hook_properties.providers[0].params));
+    .append(build_provider(hook_properties.providers[0].params));
 
   var $provider = $("#constructor select[name='hook[provider]']").change(function(){
     $('.footnote').data('url', '/footnotes/'+$provider.val());
-    $('#provider_params').replaceWith(build_provider_params(hook_properties.providers[$provider.prop('selectedIndex')].params));
+    $('#provider_params').replaceWith(build_provider(hook_properties.providers[$provider.prop('selectedIndex')].params));
   });
 
 });

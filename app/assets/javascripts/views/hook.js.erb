@@ -1,10 +1,12 @@
+<%
+  actions = []
+  Hook::ACTIONS.each do |action, params|
+    params[:value] = action
+    actions << params
+  end
+%>
 var hook_properties = {
-  "actions":[
-    {"value":"any",  "text":"read, \"yep\" or \"nope\"", "perms":["write"]},
-    {"value":"read", "text":"read a page", "perms":["write"]},
-    {"value":"yep",  "text":"say \"yep\"", "perms":["write"]},
-    {"value":"nope", "text":"say \"nope\"", "perms":["write"]}
-  ],
+  "actions":<%= actions.to_json %>,
   "providers":[
     {"text":"Campfire", "params":[
       {"text":"room", "placeholder": "My Room Name"},
@@ -102,7 +104,7 @@ $(function(){
   $('#constructor .wrapper')
     .append('When I ')
     .append(field({"text":"action", "options":hook_properties.actions}, 'hook', false))
-    .append(' please post to ')
+    .append(' please post to the ')
     .append(field({"text":"provider", "options":hook_properties.providers}, 'hook', false))
     .append(build_provider(hook_properties.providers[0].params));
 

@@ -2,10 +2,15 @@
 class Hook < ActiveRecord::Base
   belongs_to :user
   belongs_to :authorization
-
-  ACTIONS = [:new, :yep, :nope]
-  PROVIDERS = [:hipchat, :campfire, :url, :opengraph]
   validates_presence_of :action, :provider
+
+  ACTIONS = {
+    :all  => {:perms => [:write], :text => 'read, "yep" or "nope"'},
+    :new  => {:perms => [:write], :text => 'read a page'},
+    :yep  => {:perms => [:write], :text => 'say "yep"'},
+    :nope => {:perms => [:write], :text => 'say "nope"'}
+  }
+  PROVIDERS = [:hipchat, :campfire, :url, :opengraph]
 
   def params
     ActiveSupport::JSON.decode(read_attribute(:params))

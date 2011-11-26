@@ -9,5 +9,7 @@
   <% end %>
 <% elsif hook.params['room'] %>
   room <strong><%= hook.params['room'] %></strong>
+<% elsif hook.params['address'] %>
+  address <strong><%= hook.params['address'] %></strong>
 <% end %>
 </td>

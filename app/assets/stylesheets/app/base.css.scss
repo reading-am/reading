@@ -179,9 +179,6 @@ h1 a, a.user, .hook a {
 .user, .hook a {
   font-weight:bold;
 }
-.hook {
-  font-size:16px;
-}
 
 .edit_user .field {
   margin:5px 0;
@@ -320,6 +317,9 @@ a.footnote {
   background:$grey;
 }
 #constructor input[type='text'] {
-  font-size:14px;
+  font-size:13px;
   width:110px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  #constructor select { font-size:16px; }
 }

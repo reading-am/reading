@@ -1,15 +1,13 @@
+<% # TODO - rework this logic to either be built out with or conslidated with the JS logic %>
 <td class="hook">
   ↪ When I <strong><%= Hook::ACTIONS[hook.action.to_sym][:text] %></strong> please post to the <strong><%= hook.provider.capitalize %></strong>
-<%=
-  case hook.provider
-  when 'url'
-    "send <b>#{hook.params['method'].upcase}</b> data to #{link_to hook.params['url']}".html_safe
-  when 'hipchat'
-    "room <b>\"#{hook.params['room']}\"</b>".html_safe
-  when 'campfire'
-    "room <b>\"#{hook.params['room']}\"</b>".html_safe
-  when 'opengraph'
-    "Timeline".html_safe
-  end
-%>
+<% if !hook.authorization.nil? %>
+  account <%= provider_span(hook.authorization) %>
+<% elsif hook.params.length == 1 %>
+  <% hook.params.each do |k,v| %>
+    <%= k %> <strong><%= v %></strong>
+  <% end %>
+<% elsif hook.params['room'] %>
+  room <strong><%= hook.params['room'] %></strong>
+<% end %>
 </td>

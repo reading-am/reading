@@ -100,6 +100,10 @@ GEM
     omniauth (1.0.0)
       hashie (~> 1.2)
       rack
+    omniauth-37signals (1.0.0)
+      multi_json (~> 1.0.3)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-facebook (1.0.0)
       omniauth-oauth2 (~> 1.0.0)
     omniauth-oauth (1.0.0)
@@ -221,6 +225,7 @@ DEPENDENCIES
   jquery-rails
   koala
   nokogiri
+  omniauth-37signals
   omniauth-facebook
   omniauth-twitter
   pg

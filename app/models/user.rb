@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
   def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
-      if auth.user_id != self.id then raise :taken end
+      if auth.user_id != self.id
+        raise "Another user is already connected to that #{auth.provider.capitalize} account"
+      end
       # grab whatever info that came down from the credentials this time
       # and save it if we're missing it
       # TODO - there has to be a cleaner, more concise way to do this
@@ -45,6 +47,7 @@ class User < ActiveRecord::Base
       self.phone      ||= auth_hash["info"]["phone"]
       self.urls       ||= auth_hash["info"]["urls"]
       self.save
+      raise "You're already connected to that #{auth.provider.capitalize} account"
     else
       Authorization.create(
         :user       => self,

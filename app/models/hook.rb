@@ -4,7 +4,7 @@ class Hook < ActiveRecord::Base
   belongs_to :authorization
   validates_presence_of :action, :provider
 
-  ACTIONS = {
+  EVENTS = {
     :all  => {:perms => [:write], :text => 'read, "yep" or "nope"'},
     :new  => {:perms => [:write], :text => 'read a page'},
     :yep  => {:perms => [:write], :text => 'say "yep"'},
@@ -21,25 +21,27 @@ class Hook < ActiveRecord::Base
     ActiveSupport::JSON.decode(read_attribute(:params))
   end
 
-  def run post, event
+  def action
+    read_attribute(:action).to_sym
+  end
+
+  def run post, event_fired
     # right now, no hooks should run on duplicate
-    # I should really handle all event checking here
-    self.send(self.provider, post, event) if event != :duplicate
+    # I should really handle all event_fired checking here
+    self.send(self.provider, post, event_fired) if event_fired != :duplicate and event == :all or event == event_fired
   end
 
-  def pusher post, event
-    event = :update if [:yep,:nope].include? event
-    Pusher['everybody'].trigger_async("#{event}_obj", post.simple_obj)
-    Pusher[post.user.username].trigger_async("#{event}_obj", post.simple_obj)
+  def pusher post, event_fired
+    event_fired = :update if [:yep,:nope].include? event_fired
+    Pusher['everybody'].trigger_async("#{event_fired}_obj", post.simple_obj)
+    Pusher[post.user.username].trigger_async("#{event_fired}_obj", post.simple_obj)
   end
 
-  def facebook post, event
-    return nil if !params['events'].include?(event.to_s) or user.facebook.nil?
-    user.facebook.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} http://#{post.short_url} \"#{post.page.title}\"")
+  def facebook post, event_fired
+    authorization.api.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} http://#{post.short_url} \"#{post.page.title}\"")
   end
 
-  def twitter post, event
-    return nil if !params['events'].include?(event.to_s) or user.twitter.nil?
+  def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
     tweet = "✌ #{post.page.domain.imperative.capitalize}​#{post.short_url} \"#{post.page.title}\""
     if tweet.unpack('c*').length > 140
@@ -48,13 +50,13 @@ class Hook < ActiveRecord::Base
       cutto = tweet.length - ("#{tweet}…\"".unpack('c*').length - 140) - 5 # -5 for good measure and because twitter drove me batty
       tweet = "#{tweet[0..cutto]}…\""
     end
-    user.twitter.update tweet
+    authorization.api.update tweet
   end
 
-  def hipchat post, event
+  def hipchat post, event_fired
     user_link = "<a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a>"
     post_link = "<a href='#{post.wrapped_url}'>#{post.page.title.blank? ? post.page.url : post.page.title}</a>"
-    case event
+    case event_fired
     when :new
       output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
       output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
@@ -63,12 +65,12 @@ class Hook < ActiveRecord::Base
     end
 
     client = HipChat::Client.new(self.params['token'])
-    client[self.params['room']].send('Reading.am', output, (event == :new)) # only notify if this is not a post update
+    client[self.params['room']].send('Reading.am', output, (event_fired == :new)) # only notify if this is not a post update
   end
 
-  def campfire post, event
+  def campfire post, event_fired
     post_link = "#{'"' + post.page.title + '" ' if !post.page.title.blank?}#{post.wrapped_url}"
-    case event
+    case event_fired
     when :new
       output = "✌ #{post.page.domain.verb.capitalize} #{post_link}"
       output += " because of #{post.referrer_post.user.display_name} (http://#{DOMAIN}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
@@ -81,8 +83,8 @@ class Hook < ActiveRecord::Base
     room.speak output if !room.nil?
   end
 
-  def opengraph post, event
-    if event == :new
+  def opengraph post, event_fired
+    if event_fired == :new
       auth = Authorization.find_by_user_id_and_provider(post.user_id, 'facebook')
       if auth and auth.token
         url = "https://graph.facebook.com/me/reading-am:#{post.domain.imperative}"
@@ -95,7 +97,7 @@ class Hook < ActiveRecord::Base
     end
   end
 
-  def url post, event
+  def url post, event_fired
     url = self.params['url']
     url = "http://#{url}" if url[0, 4] != "http"
     http = EventMachine::HttpRequest.new(url)

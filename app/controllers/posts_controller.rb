@@ -68,7 +68,7 @@ class PostsController < ApplicationController
       if !@post.changed? or @post.save
         # We treat Pusher just like any other hook except that we don't store it
         # with the user so we go ahead and construct one here
-        Hook.new({:provider => 'pusher'}).run(@post, event)
+        Hook.new({:provider => 'pusher', :event => :all}).run(@post, event)
         @post.user.hooks.each do |hook| hook.run(@post, event) end
 
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

@@ -9,8 +9,8 @@ if Rails.env == 'production'
   SIGNALS37_KEY = '***REMOVED***'
   SIGNALS37_SECRET = '***REMOVED***'
 else
-  # DOMAIN = '0.0.0.0:3000'
-  DOMAIN = 'reading.dev'
+  DOMAIN = '0.0.0.0:3000'
+  # DOMAIN = 'reading.dev'
   FACEBOOK_KEY = '115933145182597'
   FACEBOOK_SECRET = '***REMOVED***'
 

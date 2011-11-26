@@ -116,4 +116,11 @@ $(function(){
   populate_accounts('twitter', $('.provider.twitter .account'));
   populate_accounts('facebook', $('.provider.facebook .account'));
 
+  $('#new_hook').on('submit', function(){
+    if($('#hook_params_account').val() == 'new'){
+      window.location = '/auth/'+$('#hook_provider').val();
+      return false;
+    }
+  });
+
 });

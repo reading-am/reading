@@ -10,7 +10,12 @@ class SessionsController < ApplicationController
       rescue Exception => e
         notice = e.message
       end
-      redirect_to "/#{current_user.username}/info", :notice => notice
+      if path = cookies[:session_create_redirect]
+        cookies.delete :session_create_redirect
+      else
+        path = "/#{current_user.username}/info"
+      end
+      redirect_to path, :notice => notice
     else
       # Log him in or sign him up
       auth = Authorization.find_or_create(auth_hash)

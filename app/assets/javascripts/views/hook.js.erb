@@ -118,6 +118,7 @@ $(function(){
 
   $('#new_hook').on('submit', function(){
     if($('#hook_params_account').val() == 'new'){
+      $.cookie('session_create_redirect', window.location.href, {path: '/'});
       window.location = '/auth/'+$('#hook_provider').val();
       return false;
     }

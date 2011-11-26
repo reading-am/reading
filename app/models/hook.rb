@@ -10,7 +10,12 @@ class Hook < ActiveRecord::Base
     :yep  => {:perms => [:write], :text => 'say "yep"'},
     :nope => {:perms => [:write], :text => 'say "nope"'}
   }
-  PROVIDERS = [:hipchat, :campfire, :url, :opengraph]
+  PROVIDERS = [
+    :hipchat,
+    :campfire,
+    :url,
+    :opengraph
+  ]
 
   def params
     ActiveSupport::JSON.decode(read_attribute(:params))

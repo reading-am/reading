@@ -41,7 +41,7 @@ $(function() {
     }
   });
 
-  $('.bookmarklet').on('hover', function(){
+  $('.bookmarklet').hover(function(){
     var $this = $(this);
     $this.find('span').hide();
     $this.find('a').css('display', 'block');

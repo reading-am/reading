@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
       # Means our user is signed in. Add the authorization to the user
       begin
         current_user.add_provider(auth_hash)
-        notice = "You can now login using this #{auth_hash["provider"].capitalize} account!"
+        notice = "You can now login using this #{auth_hash["provider"].capitalize} account"
       rescue Exception => e
         notice = e.message
       end

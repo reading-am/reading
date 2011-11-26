@@ -5,13 +5,17 @@ class SessionsController < ApplicationController
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
       begin
-        current_user.add_provider(auth_hash)
+        auth = current_user.add_provider(auth_hash)
         notice = "You can now login using this #{auth_hash["provider"].capitalize} account"
       rescue Exception => e
         notice = e.message
       end
+
       if path = cookies[:session_create_redirect]
         cookies.delete :session_create_redirect
+        if cookies[:submit_after_session_create]
+          cookies[:submit_after_session_create] = cookies[:submit_after_session_create].sub(/(\[?account\]?":")new"/,'\1'+auth.uid+'"')
+        end
       else
         path = "/#{current_user.username}/info"
       end

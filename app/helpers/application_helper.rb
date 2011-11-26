@@ -20,7 +20,13 @@ module ApplicationHelper
       text = input.to_s.capitalize
     end
     content_tag :span, :class => ['provider',provider] do
-      content_tag(:abbr, provider[0]) << ' ' << text
+      case provider.to_s
+      when 'twitter', 'facebook'
+        output = content_tag(:abbr, provider[0])
+      when '37signals'
+        output = content_tag(:span, '✣')
+      end
+      output << ' ' << text
     end
   end
 end

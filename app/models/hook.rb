@@ -11,10 +11,10 @@ class Hook < ActiveRecord::Base
     :nope => {:perms => [:write], :text => 'say "nope"'}
   }
   PROVIDERS = [
-    :hipchat,
-    :campfire,
-    :url,
-    :opengraph
+    'hipchat',
+    'campfire',
+    'url',
+    'opengraph'
   ]
 
   def params

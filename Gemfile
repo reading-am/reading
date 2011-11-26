@@ -14,6 +14,7 @@ gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'omniauth-37signals'
 gem 'hipchat'
 gem 'curb', :git => 'git://github.com/taf2/curb.git' # only pulling from git because of warnings in main
 gem 'nokogiri'

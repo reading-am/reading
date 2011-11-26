@@ -23,6 +23,16 @@ class Authorization < ActiveRecord::Base
     ActiveSupport::JSON.decode(read_attribute(:permissions)) if !read_attribute(:permissions).nil?
   end
 
+  def api
+    #via: http://blog.assimov.net/post/2358661274/twitter-integration-with-omniauth-and-devise-on-rails-3
+    case provider
+    when 'facebook'
+      @api_user ||= Koala::Facebook::API.new(token)
+    when 'twitter'
+      @api_user ||= Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
+    end
+  end
+
   def self.find_or_create(auth_hash)
     if auth = find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
       # fill in any missing info

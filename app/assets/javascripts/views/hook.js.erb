@@ -99,15 +99,29 @@ populate_accounts = function(provider, selection){
   });
 },
 form_to_json = function(form){
-  var json = "{";
-  $(form).find(':input').each(function(i,el){
+  var $form= $(form),
+      json = '{"method":"'+$form.attr('method')
+              +'","action":"'+$form.attr('action')+'",'
+              +'"inputs":{';
+  $form.find(':input').each(function(i,el){
     json += '"'+$(el).attr('name')+'":"'+$(el).val()+'",';
   });
-  return json.substring(0, json.length-1)+'}';
+  return json.substring(0, json.length-1)+'}}';
+},
+json_to_form = function(json){
+  json = $.parseJSON(json);
+  var $form = $('<form>')
+                .attr('method', json.method)
+                .attr('action', json.action);
+  for(var name in json.inputs){
+    $form.append($('<input>').attr('name', name).val(json.inputs[name]));
+  }
+  return $form;
 };
 
 $(function(){
 
+  // build the constructor with the initial selection
   $('#constructor .wrapper')
     .append('When I ')
     .append(field({"text":"event", "options":hook_properties.events}, 'hook', false))
@@ -115,14 +129,17 @@ $(function(){
     .append(field({"text":"provider", "options":hook_properties.providers}, 'hook', false))
     .append(build_provider(hook_properties.providers[0].params));
 
+  // switch out and link the footnotes explaining a hook
   var $provider = $("#constructor select[name='hook[provider]']").change(function(){
     $('.footnote').data('url', '/footnotes/'+$provider.val());
     $('#provider_params').replaceWith(build_provider(hook_properties.providers[$provider.prop('selectedIndex')].params));
   });
 
+  // populate the auth spans with real usernames
   populate_accounts('twitter', $('.provider.twitter .account'));
   populate_accounts('facebook', $('.provider.facebook .account'));
 
+  // set cookies for submitting the form after authing a new account
   $('#new_hook').on('submit', function(){
     if($('#hook_params_account').val() == 'new'){
       $.cookie('session_create_redirect', window.location.href, {path: '/'});
@@ -131,5 +148,12 @@ $(function(){
       return false;
     }
   });
+
+  // submit the form now that we're on the other side of authing
+  if($.cookie('submit_after_session_create')){
+    var $form = json_to_form($.cookie('submit_after_session_create'));
+    $.cookie('submit_after_session_create', null, {path: '/'});
+    $form.submit();
+  }
 
 });

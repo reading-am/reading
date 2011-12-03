@@ -10,7 +10,8 @@ var hook_properties = {
   "providers":[
     {"text":"Campfire", "params":[
       {"text":"room", "placeholder": "My Room Name"},
-      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"}
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"},
+      {"text":"subdomain", "placeholder": "example.campfirenow.com"}
     ]},
     {"text":"email", "params":[
       {"text":"address", "placeholder":"me@example.com"}
@@ -68,6 +69,7 @@ build_provider = function(params){
   var $prov = $('<span>').attr('id','provider_params');
   for(var i = 0; i < params.length; i++){
     if(i === 1) $prov.append(' using ');
+    else if(i > 1) $prov.append(' and ');
     $prov.append(field(params[i], 'hook[params]'));
   }
 

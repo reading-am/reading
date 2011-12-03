@@ -21,10 +21,6 @@ class Hook < ActiveRecord::Base
     ActiveSupport::JSON.decode(read_attribute(:params))
   end
 
-  def event
-    read_attribute(:event).to_sym
-  end
-
   def run post, event_fired
     # right now, no hooks should run on duplicate
     # I should really handle all event_fired checking here

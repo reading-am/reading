@@ -30,8 +30,8 @@ var current_user = {
       if(this.authorizations[provider][i].uid == uid && $.inArray(perm, this.authorizations[provider][i].permissions) > -1){
         return true;
       }
-      return false;
     }
+    return false;
   }
 };
 

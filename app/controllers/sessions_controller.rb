@@ -42,6 +42,8 @@ class SessionsController < ApplicationController
   end
 
   def failure
+    cookies.delete :session_create_redirect
+    cookies.delete :submit_after_session_create
     render :text => "Sorry, but you didn't allow access to our app!"
   end
 

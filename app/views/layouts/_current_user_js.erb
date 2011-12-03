@@ -35,12 +35,12 @@ var current_user = {
   }
 };
 
-if(current_user.authorizations.facebook){
-  current_user.authorizations.facebook.add_permission = function(perm, success, failure){
-    if(this.authorizations.facebook.permissions[perm]) return success();
-    FB.login(function(response){
-      if(response.authResponse) success();
-      else failure();
-    }, {scope: perm});
-  }
-}
+<%# if(current_user.authorizations.facebook){%>
+<%#   current_user.authorizations.facebook.add_permission = function(perm, success, failure){%>
+<%#     if(this.authorizations.facebook.permissions[perm]) return success();%>
+<%#     FB.login(function(response){%>
+<%#       if(response.authResponse) success();%>
+<%#       else failure();%>
+<%#     }, {scope: perm});%>
+<%#   }%>
+<%# }%>

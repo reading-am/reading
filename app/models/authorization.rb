@@ -23,6 +23,22 @@ class Authorization < ActiveRecord::Base
     ActiveSupport::JSON.decode(read_attribute(:permissions)) if !read_attribute(:permissions).nil?
   end
 
+  def can perm
+    permissions.include? perm.to_s
+  end
+
+  def add_perm perm
+    unless can perm
+      self.permissions = (permissions << perm).to_json
+    end
+  end
+
+  def remove_perm perm
+    if can perm
+      self.permissions = (permissions.delete_if { |v| v == perm.to_s }).to_json
+    end
+  end
+
   def api
     #via: http://blog.assimov.net/post/2358661274/twitter-integration-with-omniauth-and-devise-on-rails-3
     case provider

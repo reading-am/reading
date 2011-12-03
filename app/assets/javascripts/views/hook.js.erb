@@ -144,7 +144,9 @@ $(function(){
 
   // set cookies for submitting the form after authing a new account
   $('#new_hook').on('submit', function(){
-    if($('#hook_params_account').val() == 'new'){
+    if($('#hook_params_account').val() == 'new' ||
+       ($('#hook_params_account').val() && !current_user.can('write', $('#hook_provider').val(), $('#hook_params_account').val()))
+      ){
       $.cookie('session_create_redirect', window.location.href, {path: '/'});
       $.cookie('submit_after_session_create', form_to_json('#new_hook'), {path: '/'});
       window.location = '/auth/'+$('#hook_provider').val();

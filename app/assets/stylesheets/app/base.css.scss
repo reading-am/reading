@@ -293,6 +293,9 @@ a.rss abbr {
   }
 }
 
+#constructor {
+  line-height:35px;
+}
 #constructor .wrapper {
   background:$grey;
   padding:8px 0;
@@ -300,7 +303,8 @@ a.rss abbr {
 #constructor_submit {
   display:inline-block;
   background:$green;
-  padding:5px;
+  padding:0 5px;
+  line-height:32px;
 }
 
 #hooks_blank a {

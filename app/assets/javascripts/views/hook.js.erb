@@ -8,24 +8,24 @@
 var hook_properties = {
   "events":<%= events.to_json %>,
   "providers":[
+    {"text":"Twitter", "params":[
+      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"account"}
+    ]},
+    <%# {"text":"Facebook", "params":[%>
+      <%# {"text":"account", "options":current_user.accounts('facebook'), "datatype":"account"}%>
+    <%# ]},%>
+    {"text":"HipChat", "params":[
+      {"text":"room", "placeholder":"My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
+    ]},
     {"text":"Campfire", "params":[
       {"text":"room", "placeholder": "My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"},
       {"text":"subdomain", "placeholder": "example.campfirenow.com"}
     ]},
-    {"text":"email", "params":[
-      {"text":"address", "placeholder":"me@example.com"}
-    ]},
-    {"text":"Facebook", "params":[
-      {"text":"account", "options":current_user.accounts('facebook'), "datatype":"account"}
-    ]},
-    {"text":"HipChat", "params":[
-      {"text":"room", "placeholder":"My Room Name"},
-      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
-    ]},
-    {"text":"Twitter", "params":[
-      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"account"}
-    ]},
+    <%# {"text":"email", "params":[%>
+      <%# {"text":"address", "placeholder":"me@example.com"}%>
+    <%# ]},%>
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},
       {"text":"method", "options":["POST","GET"]}
@@ -69,7 +69,8 @@ build_provider = function(params){
   var $prov = $('<span>').attr('id','provider_params');
   for(var i = 0; i < params.length; i++){
     if(i === 1) $prov.append(' using ');
-    else if(i > 1) $prov.append(' and ');
+    if(i === 2) $prov.append('<br>');
+    if(i > 1) $prov.append(' and ');
     $prov.append(field(params[i], 'hook[params]'));
   }
 

@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
         # TODO - clean this up. This is to migrate over twitter users who had the previous read-only permissions
         if auth_hash["provider"] == 'twitter'
           auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
-          if !auth.can :write
+          unless auth.can :write
             auth.add_perm :write
             auth.save
           end

@@ -7,7 +7,10 @@ class SessionsController < ApplicationController
       begin
         auth = current_user.add_provider(auth_hash)
         notice = "You can now login using this #{auth_hash["provider"].capitalize} account"
-      rescue Exception => e
+      rescue AuthTaken => e
+        notice = e.message
+        cookies.delete :submit_after_session_create
+      rescue AuthPreexisting => e
         notice = e.message
         # TODO - clean this up. This is to migrate over twitter users who had the previous read-only permissions
         if auth_hash["provider"] == 'twitter'

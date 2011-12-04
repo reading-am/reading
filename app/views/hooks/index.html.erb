@@ -2,6 +2,8 @@
 <%= render :partial => 'users/settings_header' %>
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
+<% if notice %><p id="notice">➥  <%= notice %></p><% end %>
+
 <div id="hooks_blank" class="section">
   Hooks perform an action each time you do something, like posting to
   <%= link_to "Twitter", "http://twitter.com" %> when you <strong>read a page</strong>

@@ -21,13 +21,17 @@ class Hook < ActiveRecord::Base
   end
 
   def events
-    ActiveSupport::JSON.decode(read_attribute(:events))
+    ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
+  end
+
+  def responds_to event
+    events.include? event.to_s
   end
 
   def run post, event_fired
     # right now, no hooks should run on duplicate
     # I should really handle all event_fired checking here
-    self.send(self.provider, post, event_fired) if event_fired != :duplicate and event == :all or event == event_fired
+    self.send(self.provider, post, event_fired) if responds_to event_fired
   end
 
   def pusher post, event_fired

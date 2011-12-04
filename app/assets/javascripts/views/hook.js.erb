@@ -130,13 +130,14 @@ $(function(){
     .append(field({"text":"events", "options":hook_properties.events}, 'hook', false))
     .append(' please post to the ')
     .append(field({"text":"provider", "options":hook_properties.providers}, 'hook', false))
-    .append(build_provider(hook_properties.providers[0].params));
+    .append('<span id="provider_params">');
 
   // switch out and link the footnotes explaining a hook
-  var $provider = $("#constructor select[name='hook[provider]']").change(function(){
-    $('.footnote').data('url', '/footnotes/'+$provider.val());
-    $('#provider_params').replaceWith(build_provider(hook_properties.providers[$provider.prop('selectedIndex')].params));
-  });
+  $("#constructor select[name='hook[provider]']").change(function(){
+    var $this = $(this);
+    $('.footnote').data('url', '/footnotes/'+$this.val());
+    $('#provider_params').replaceWith(build_provider(hook_properties.providers[$this.prop('selectedIndex')].params));
+  }).change(); // immediately trigger to populate footnote
 
   // populate the auth spans with real usernames
   populate_accounts('twitter', $('.provider.twitter .account'));

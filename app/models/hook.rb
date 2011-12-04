@@ -94,14 +94,12 @@ class Hook < ActiveRecord::Base
   end
 
   def opengraph post, event_fired
-    if event_fired == :new
-      url = "https://graph.facebook.com/me/reading-am:#{post.domain.imperative}"
-      http = EventMachine::HttpRequest.new(url).post :body => {
-        :access_token => authorization.token,
-        #gsub for testing since Facebook doesn't like my localhost
-        :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-      }
-    end
+    url = "https://graph.facebook.com/me/reading-am:#{post.domain.imperative}"
+    http = EventMachine::HttpRequest.new(url).post :body => {
+      :access_token => authorization.token,
+      #gsub for testing since Facebook doesn't like my localhost
+      :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
+    }
   end
 
   def url post, event_fired

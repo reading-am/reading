@@ -31,6 +31,6 @@ module ApplicationHelper
   end
 
   def rss_path
-    "#{request.path + (request.path[params[:type].length..-1] != "/#{params[:type]}" ? "/#{params[:type]}" : '')}.rss?t=#{current_user.token}"
+    "#{request.path + (request.path[params[:type].length+1..-1] != "/#{params[:type]}" ? "/#{params[:type]}" : '')}.rss?t=#{current_user.token}"
   end
 end

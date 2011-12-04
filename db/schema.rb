@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111203234600) do
+ActiveRecord::Schema.define(:version => 20111204013118) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"

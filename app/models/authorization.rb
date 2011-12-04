@@ -58,11 +58,13 @@ class Authorization < ActiveRecord::Base
       auth.secret ||= auth_hash["credentials"]["secret"]
       auth.save if auth.changed?
     else
+      username = auth_hash["info"]["nickname"]
+      username = (username.nil? or username == '') ? nil : username.gsub(/[^A-Z0-9_]/i, '')
       user = User.create(
         :name       => auth_hash["info"]["name"],
         :email      => auth_hash["info"]["email"],
         # check to make sure a user doesn't already have that nickname
-        :username   => !User.find_by_username(auth_hash["info"]["nickname"]) ? auth_hash["info"]["nickname"] : nil,
+        :username   => (username.nil? or User.find_by_username(username) ? nil : username),
         :first_name => auth_hash["info"]["first_name"],
         :last_name  => auth_hash["info"]["last_name"],
         :location   => auth_hash["info"]["location"],
@@ -71,6 +73,11 @@ class Authorization < ActiveRecord::Base
         :phone      => auth_hash["info"]["phone"],
         :urls       => auth_hash["info"]["urls"]
       )
+      # account for facebook usernames with periods and the like
+      unless user.errors.messages[:username].nil?
+        user.username = nil
+        user.save
+      end
       auth = create(
         :user       => user,
         :provider   => auth_hash["provider"],

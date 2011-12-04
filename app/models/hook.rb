@@ -21,11 +21,15 @@ class Hook < ActiveRecord::Base
   end
 
   def events
-    ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
+    if read_attribute(:events).class == Array
+      read_attribute(:events)
+    else
+      ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
+    end
   end
 
   def responds_to event
-    events.include? event.to_s
+    events.include? event
   end
 
   def run post, event_fired

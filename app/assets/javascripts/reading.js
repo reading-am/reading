@@ -137,7 +137,7 @@ var show_overlay = function(){
 
   // STUFF!
   var $stuff = $('<ul id="r_stuff_menu">'),
-      providers = ['twitter','facebook'],
+      providers = ['twitter','facebook','instapaper'],
   popup = function(url, width, height){
     window.open(url, 'r_win', 'location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width='+width+',height='+height);
   },
@@ -150,6 +150,8 @@ var show_overlay = function(){
         return 'https://twitter.com/share?url='+url+'&text='+text;
       case 'facebook':
         return 'https://www.facebook.com/sharer.php?u='+url+'&t='+title;
+      case 'instapaper':
+        return 'http://www.instapaper.com/hello2?url='+encodeURIComponent(window.location.href)+'&title='+title;
     }
   },
   show_stuff = function(){

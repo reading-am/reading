@@ -2,8 +2,8 @@
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var host        = window.location.host,
-    // domain = '0.0.0.0:3000', // for dev
-    domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
+    domain = '0.0.0.0:3000', // for dev
+    // domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
     on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false;
@@ -43,15 +43,19 @@ var show_overlay = function(){
         '#r_am {'+
           'display:none;'+
           'z-index:99999999;'+
-          'padding:10px 10px 5px;'+
           'margin:0;'+
-          'background:yellow;'+
           'position:fixed;'+
           'top:15px;'+
           'right:15px;'+
+        '}'+
+        '#r_wrp {'+
           'overflow:hidden;'+
           'height:60px;'+
           'width:50px;'+
+          'padding:10px 10px 5px;'+
+        '}'+
+        '#r_wrp, #r_stuff_menu li {'+
+          'background:yellow;'+
         '}'+
         '#r_icon {'+
           'font-size:56px;'+
@@ -62,11 +66,25 @@ var show_overlay = function(){
           'margin:10px 0 0;'+
           'width:130px;'+
         '}'+
-        '#r_actions a:hover, .r_active {'+
+        '#r_am a:hover, .r_active {'+
           'background:#FFF;'+
         '}'+
         '#r_actions .r_inactive {'+
           'text-decoration:line-through;'+
+        '}'+
+        '#r_stuff_menu {'+
+          'display:none;'+
+          'list-style:none;'+
+          'margin:3px 0 0 0;'+
+          'padding:0'+
+        '}'+
+        '#r_stuff_menu li {'+
+          'text-align:right;'+
+          'padding:3px 5px;'+
+        '}'+
+        '#r_stuff_menu a {'+
+          'border-right:2px solid #000;'+
+          'padding:0 5px;'+
         '}'+
         '#r_nope {'+
           'margin:0 3px 0 0;'+
@@ -81,14 +99,15 @@ var show_overlay = function(){
       $icon = $('<div id="r_icon">&#9996;</div>'),
       $subtext = $('<div>Reading</div>'),
       $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>'),
-      $wrapper = $('<div id="r_am"></div>').append($icon).append($subtext).append($actions);
-  $('body').prepend($wrapper);
-  $wrapper.fadeIn(500, function(){
+      $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
+      $reading = $('<div id="r_am">').append($wrapper).append($stuff);
+  $('body').prepend($reading);
+  $reading.fadeIn(500, function(){
     $wrapper.delay(1000).animate({height:'14px', width:$actions.width()});
     $icon.delay(1000).animate({'margin-top':'-52px'});
   });
   $('#r_close').click(function(){
-    $wrapper.fadeOut(400, function(){ $wrapper.remove(); });
+    $reading.fadeOut(400, function(){ $reading.remove(); });
     return false;
   });
   $('#r_yep, #r_nope').click(function(){
@@ -115,14 +134,40 @@ var show_overlay = function(){
     });
     return false;
   });
-  var popup = function(url, width, height){
-    window.open(url, 'reading_share', 'location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width='+width+',height='+height);
+
+  // STUFF!
+  var $stuff = $('<ul id="r_stuff_menu">'),
+      providers = ['twitter','facebook'],
+  popup = function(url, width, height){
+    window.open(url, 'r_win', 'location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width='+width+',height='+height);
+  },
+  share_url = function(provider, url, title){
+    var url = encodeURIComponent(url),
+        title = encodeURIComponent(title);
+    switch(provider.toLowerCase()){
+      case 'twitter':
+        return 'https://twitter.com/share?url='+url;
+      case 'facebook':
+        return 'https://www.facebook.com/sharer.php?u='+url+'&t='+title;
+    }
+  },
+  show_stuff = function(){
+    $stuff.show();
+    $('#r_stuff').addClass('r_active');
+  }
+  hide_stuff = function(){
+    $stuff.hide();
+    $('#r_stuff').removeClass('r_active');
   };
-  $('#r_stuff').click(function(){
-    var e_url = encodeURIComponent(window.location.href),
-        e_title = encodeURIComponent(document.title);
-    popup('https://twitter.com/share?url='+e_url, 490, 275);
-    // popup('https://www.facebook.com/sharer.php?u='+e_url+'&t='+e_title, 520, 370);
+  for(var i = 0; i < providers.length; i++){
+    $stuff.append('<li id="r_'+providers[i]+'"><a href="#" class="r_share">'+providers[i][0].toUpperCase() + providers[i].slice(1)+'</a></li>');
+  }
+  $reading.append($stuff);
+  $('#r_stuff').mouseenter(function(){ show_stuff(); });
+  $reading.mouseleave(function(){ hide_stuff(); });
+  $('a:not(#r_stuff)', $actions).mouseenter(function(){ hide_stuff(); });
+  $('.r_share', $reading).click(function(){
+    popup(share_url($(this).text(), window.location.href, document.title), 520, 370);
   });
   $(window).scroll(function(){
     if($actions.find('.r_active').length){

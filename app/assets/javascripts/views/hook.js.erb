@@ -127,7 +127,7 @@ $(function(){
   // build the constructor with the initial selection
   $('#constructor .wrapper')
     .append('When I ')
-    .append(field({"text":"event", "options":hook_properties.events}, 'hook', false))
+    .append(field({"text":"events", "options":hook_properties.events}, 'hook', false))
     .append(' please post to the ')
     .append(field({"text":"provider", "options":hook_properties.providers}, 'hook', false))
     .append(build_provider(hook_properties.providers[0].params));

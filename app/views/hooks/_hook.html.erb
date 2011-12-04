@@ -1,6 +1,6 @@
 <% # TODO - rework this logic to either be built out with or conslidated with the JS logic %>
 <td class="hook">
-  ↪ When I <strong><%= Hook::EVENTS[hook.event][:text] %></strong> please post to the <strong><%= hook.provider.capitalize %></strong>
+  ↪ When I <strong><%= Hook::EVENTS[hook.events][:text] %></strong> please post to the <strong><%= hook.provider.capitalize %></strong>
 <% if !hook.authorization.nil? %>
   account <%= provider_span(hook.authorization) %>
 <% elsif hook.params.length == 1 %>

@@ -2,10 +2,9 @@
 class Hook < ActiveRecord::Base
   belongs_to :user
   belongs_to :authorization
-  validates_presence_of :event, :provider
+  validates_presence_of :events, :provider
 
   EVENTS = {
-    :all  => {:perms => [:write], :text => 'read, "yep" or "nope"'},
     :new  => {:perms => [:write], :text => 'read a page'},
     :yep  => {:perms => [:write], :text => 'say "yep"'},
     :nope => {:perms => [:write], :text => 'say "nope"'}
@@ -19,6 +18,10 @@ class Hook < ActiveRecord::Base
 
   def params
     ActiveSupport::JSON.decode(read_attribute(:params))
+  end
+
+  def events
+    ActiveSupport::JSON.decode(read_attribute(:events))
   end
 
   def run post, event_fired

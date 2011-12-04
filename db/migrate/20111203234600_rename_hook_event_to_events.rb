@@ -2,7 +2,7 @@ class RenameHookEventToEvents < ActiveRecord::Migration
   def up
     Hook.all.each do |hook|
       if hook.event == 'all'
-        hook.event = '["read","yep","nope"]'
+        hook.event = '["new","yep","nope"]'
         hook.save
       end
     end
@@ -11,7 +11,7 @@ class RenameHookEventToEvents < ActiveRecord::Migration
 
   def down
     Hook.all.each do |hook|
-      if hook.events == '["read","yep","nope"]'
+      if hook.events == '["new","yep","nope"]'
         hook.events = 'all'
         hook.save
       end

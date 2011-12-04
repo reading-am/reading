@@ -24,7 +24,14 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]
+    if cookies[:auth_token]
+      begin
+        @current_user ||= User.find_by_auth_token!(cookies[:auth_token])
+      rescue
+        cookies.delete(:auth_token)
+        nil
+      end
+    end
   end
 
   def logged_in?
@@ -47,7 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if current_user
+    if logged_in?
       if current_user.username
         redirect_to "/#{current_user.username}/list"
       else

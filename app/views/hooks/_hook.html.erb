@@ -9,13 +9,15 @@ end
   ↪ When I <strong><%= events_text.join(', ') %></strong> please post to the <strong><%= hook.provider.capitalize %></strong>
 <% if !hook.authorization.nil? %>
   account <%= provider_span(hook.authorization) %>
-<% elsif hook.params.length == 1 %>
-  <% hook.params.each do |k,v| %>
-    <%= k %> <strong><%= v %></strong>
+<% elsif !hook.params.nil? %>
+  <% if hook.params.length == 1 %>
+    <% hook.params.each do |k,v| %>
+      <%= k %> <strong><%= v %></strong>
+    <% end %>
+  <% elsif hook.params['room'] %>
+    room <strong><%= hook.params['room'] %></strong>
+  <% elsif hook.params['address'] %>
+    address <strong><%= hook.params['address'] %></strong>
   <% end %>
-<% elsif hook.params['room'] %>
-  room <strong><%= hook.params['room'] %></strong>
-<% elsif hook.params['address'] %>
-  address <strong><%= hook.params['address'] %></strong>
 <% end %>
 </td>

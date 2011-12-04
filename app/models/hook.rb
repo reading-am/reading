@@ -17,7 +17,9 @@ class Hook < ActiveRecord::Base
   ]
 
   def params
-    ActiveSupport::JSON.decode(read_attribute(:params))
+    unless read_attribute(:params).nil?
+      ActiveSupport::JSON.decode(read_attribute(:params))
+    end
   end
 
   def events
@@ -93,15 +95,12 @@ class Hook < ActiveRecord::Base
 
   def opengraph post, event_fired
     if event_fired == :new
-      auth = Authorization.find_by_user_id_and_provider(post.user_id, 'facebook')
-      if auth and auth.token
-        url = "https://graph.facebook.com/me/reading-am:#{post.domain.imperative}"
-        http = EventMachine::HttpRequest.new(url).post :body => {
-          :access_token => auth.token,
-          #gsub for testing since Facebook doesn't like my localhost
-          :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-        }
-      end
+      url = "https://graph.facebook.com/me/reading-am:#{post.domain.imperative}"
+      http = EventMachine::HttpRequest.new(url).post :body => {
+        :access_token => authorization.token,
+        #gsub for testing since Facebook doesn't like my localhost
+        :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
+      }
     end
   end
 

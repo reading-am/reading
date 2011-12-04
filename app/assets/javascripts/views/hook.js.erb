@@ -103,16 +103,18 @@ populate_accounts = function(provider, selection){
 },
 form_to_json = function(form){
   var $form= $(form),
-      json = '{"method":"'+$form.attr('method')
-              +'","action":"'+$form.attr('action')+'",'
-              +'"inputs":{';
+      json = {
+        method: $form.attr('method'),
+        action: $form.attr('action'),
+        inputs: {}
+      };
   $form.find(':input').each(function(i,el){
-    json += '"'+$(el).attr('name')+'":"'+$(el).val()+'",';
+    json.inputs[$(el).attr('name')] = $(el).val();
   });
-  return json.substring(0, json.length-1)+'}}';
+  return JSON.stringify(json);
 },
 json_to_form = function(json){
-  json = $.parseJSON(json);
+  json = JSON.parse(json);
   var $form = $('<form>')
                 .attr('method', json.method)
                 .attr('action', json.action);

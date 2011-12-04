@@ -64,7 +64,7 @@ class Authorization < ActiveRecord::Base
         :name       => auth_hash["info"]["name"],
         :email      => auth_hash["info"]["email"],
         # check to make sure a user doesn't already have that nickname
-        :username   => (username.nil? or User.find_by_username(username) ? nil : username),
+        :username   => (username.nil? or User.find_by_username(username)) ? nil : username,
         :first_name => auth_hash["info"]["first_name"],
         :last_name  => auth_hash["info"]["last_name"],
         :location   => auth_hash["info"]["location"],

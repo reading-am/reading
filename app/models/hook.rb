@@ -57,7 +57,8 @@ class Hook < ActiveRecord::Base
       cutto = tweet.length - ("#{tweet}…\"".unpack('c*').length - 140) - 5 # -5 for good measure and because twitter drove me batty
       tweet = "#{tweet[0..cutto]}…\""
     end
-    authorization.api.update tweet
+    # we rescue with nil because twitter will error out on duplicate tweets
+    authorization.api.update tweet rescue nil
   end
 
   def hipchat post, event_fired

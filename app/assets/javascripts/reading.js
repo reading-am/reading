@@ -6,7 +6,8 @@ var host        = window.location.host,
     // domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
     on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
-    has_token   = false;
+    has_token   = false,
+    post        = {};
 
 var parse_url = function(){
   var url = window.location.href.split(window.location.host)[1].substring(1);
@@ -117,7 +118,6 @@ var show_overlay = function(){
         shapes = ['&#10043;','&#10044;','&#10045;','&#10046;'],
         loading = setInterval(function(){
           $close.html(shapes[i]);
-          console.log(shapes[i], $close);
           i = i < shapes.length-1 ? i+1 : 0;
         }, 250);
     params.yn = $this.is('#r_yep');
@@ -141,12 +141,13 @@ var show_overlay = function(){
   popup = function(url, width, height){
     window.open(url, 'r_win', 'location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width='+width+',height='+height);
   },
-  share_url = function(provider, url, title){
+  share_url = function(provider, url, title, text){
     var url = encodeURIComponent(url),
-        title = encodeURIComponent(title);
+        title = encodeURIComponent(title),
+        text = '✌ '+encodeURIComponent(text);
     switch(provider.toLowerCase()){
       case 'twitter':
-        return 'https://twitter.com/share?url='+url;
+        return 'https://twitter.com/share?url='+url+'&text='+text;
       case 'facebook':
         return 'https://www.facebook.com/sharer.php?u='+url+'&t='+title;
     }
@@ -167,7 +168,7 @@ var show_overlay = function(){
   $reading.mouseleave(function(){ hide_stuff(); });
   $('a:not(#r_stuff)', $actions).mouseenter(function(){ hide_stuff(); });
   $('.r_share', $reading).click(function(){
-    popup(share_url($(this).text(), window.location.href, document.title), 520, 370);
+    popup(share_url($(this).text(), 'http://'+post.short_url, document.title, 'Reading "'+document.title+'"'), 520, 370);
   });
   $(window).scroll(function(){
     if($actions.find('.r_active').length){
@@ -187,16 +188,16 @@ var submit_post = function(data, success){
     data: data,
     success: function(data, textStatus, jqXHR){
       if(data.meta.status == 400){
-        alert('Error');
+        alert('Sorry, an error prevented this page from being posted to Reading');
       } else {
-        success();
+        success(data.response);
       }
     }
   });
 };
 
 // submit the inital post on script load
-submit_post(params, function(){
+submit_post(params, function(data){
   if(on_reading){
     if(has_token){
       // forward back through to Reading so that the user's
@@ -206,6 +207,7 @@ submit_post(params, function(){
       window.location = url;
     }
   } else {
+    post = data;
     show_overlay();
   }
 });

@@ -89,10 +89,10 @@ var show_overlay = function(){
     var $this = $(this),
         $close= $('#r_close'),
         i = 0,
-        shapes = ['✻','✼','✽','✾'],
+        shapes = ['&#10043;','&#10044;','&#10045;','&#10046;'],
         loading = setInterval(function(){
-          $close
-            .text(shapes[i]);
+          $close.html(shapes[i]);
+          console.log(shapes[i], $close);
           i = i < shapes.length-1 ? i+1 : 0;
         }, 250);
     params.yn = $this.is('#r_yep');
@@ -105,7 +105,7 @@ var show_overlay = function(){
       .addClass('r_active');
     submit_post(params, function(){
       clearInterval(loading);
-      $close.text('✕');
+      $close.html('&#10005;');
     });
     return false;
   });

@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       # add the user to the channels since it's not in .following()
       @channels.push @user.username
     else
-      @posts = @user.posts
+      @posts = @user.posts.paginate(:page => 1, :per_page => 300)
       @channels = @user.username
     end
 
@@ -151,6 +151,17 @@ class UsersController < ApplicationController
   def delete_cookies
     cookies.each do |k, v| cookies.delete k end
     redirect_to '/'
+  end
+
+  def export
+    user = User.find_by_username(params[:username])
+    if user == current_user
+      respond_to do |format|
+        format.csv { render 'pages/export', :layout => false, :locals => {:pages => user.pages} }
+      end
+    else
+      show_404
+    end
   end
 end
 

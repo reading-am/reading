@@ -7,4 +7,10 @@
 <div id="user_info" class="section"><%= render 'form' %></div>
 
 <%= render 'authorizations/index' %>
+
+<div class="section">
+  <h4>Export</h4>
+  <%= link_to 'Click here', "/#{current_user.username}/export.csv" %> to export the pages you've read as a tab delineated CSV
+</div>
+
 </div>

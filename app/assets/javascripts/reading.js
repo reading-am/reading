@@ -40,11 +40,13 @@ var show_overlay = function(){
           'font-variant:normal;'+
           'letter-spacing:normal;'+
           'border:none;'+
+          'padding:0;'+
+          'margin:0;'+
+          'list-style:none;'+
         '}'+
         '#r_am {'+
           'display:none;'+
           'z-index:99999999;'+
-          'margin:0;'+
           'position:fixed;'+
           'top:15px;'+
           'right:15px;'+
@@ -75,9 +77,7 @@ var show_overlay = function(){
         '}'+
         '#r_stuff_menu {'+
           'display:none;'+
-          'list-style:none;'+
           'margin:3px 0 0 0;'+
-          'padding:0'+
         '}'+
         '#r_stuff_menu li {'+
           'text-align:right;'+

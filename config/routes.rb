@@ -39,6 +39,7 @@ Reading::Application.routes.draw do
   match '/:username/list'     => 'users#show', :defaults => { :type => 'list' }
   match '/:username/info'     => 'users#edit'
   match '/:username/hooks'    => 'users#hooks'
+  match '/:username/export'   => 'users#export'
   match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }
   match '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
   match '/:username/follow'   => 'relationships#create'

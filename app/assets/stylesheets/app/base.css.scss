@@ -215,16 +215,20 @@ th {
   text-decoration:underline;
 }
 
-#subnav a, footer a, a.user.you, .rss {
+#subnav a, footer a, a.user.you, #foot_nav a {
   background-color:$blue;
 }
-  #subnav a:hover, footer a:hover, a.user.you:hover, .rss:hover {
+  #subnav a:hover, footer a:hover, a.user.you:hover, #foot_nav a:hover {
     background-color:$dark_blue;
   }
 a.active, a.active:hover, #subnav a.active, #subnav a.active:hover {
   background:none;
   text-decoration:underline;
   cursor:default;
+}
+
+#foot_nav a {
+  margin:0 5px 0 0;
 }
 
 .disabled {

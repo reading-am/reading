@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
   has_many :domains, :through => :posts
   has_many :hooks, :dependent => :destroy
+  has_many :pages, :through => :posts
 
   # from: http://ruby.railstutorial.org/chapters/following-users
   has_many :relationships, :foreign_key => "follower_id",

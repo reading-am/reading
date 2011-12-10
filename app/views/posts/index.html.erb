@@ -34,7 +34,11 @@
 <% end %>
 </table>
 
-<%= will_paginate @posts %>
+<% unless request.path_info == '/' %>
+  <%= will_paginate @posts %>
+<% else %>
+  <div class="pagination"><a class="next_page" rel="next" href="/everybody/posts/page/2">Even More More More Reading →</a></div>
+<% end %>
 
 <% if !params[:type].nil? and logged_in? %>
 <div id="foot_nav">

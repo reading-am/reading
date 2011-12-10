@@ -26,14 +26,12 @@ Reading::Application.routes.draw do
     resources :posts
   end
 
-  match '/everybody(/page/:page)' => 'posts#index', :defaults => { :type => 'posts' }
-
   match '/pick_a_url' => 'users#pick_a_url'
   match "/users" => redirect("/")
   resources :users do
     resources :posts
   end
-  # match '/:username' => 'users#show'
+
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }

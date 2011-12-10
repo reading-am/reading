@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       User.find(params[:id])
     if !@user then not_found end
 
-    limit = 50
+    limit = 100
 
     if params[:type] == 'list'
       @posts = @user.feed.paginate(:page => params[:page], :per_page => limit)

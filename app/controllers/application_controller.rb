@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if logged_in?
+    if logged_in? and request.path_info == '/'
       if current_user.username
         redirect_to "/#{current_user.username}/list"
       else

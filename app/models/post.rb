@@ -14,6 +14,9 @@ class Post < ActiveRecord::Base
   # Return posts from the users being followed by the given user.
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
+  # for will_paginate
+  self.per_page = 100
+
   private
 
   # Return an SQL condition for users followed by the given user.

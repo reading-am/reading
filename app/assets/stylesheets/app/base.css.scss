@@ -334,3 +334,11 @@ a.footnote {
 .pagination {
   margin:0 0 20px;
 }
+.pagination a, .pagination em {
+  padding:0 2px;
+}
+.pagination em {
+  font-weight:bold;
+  text-decoration:underline;
+  margin:0 2px;
+}

@@ -1,14 +1,12 @@
 # encoding: utf-8
 class PostsController < ApplicationController
+  before_filter :check_login
+
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.order("created_at DESC").limit(75)
+    @posts = Post.order("created_at DESC").paginate(:page => params[:page])
     @channels = 'everybody'
-    respond_to do |format|
-      format.html { render 'home/index' }
-      format.rss  { render 'posts/index' }
-    end
   end
 
   # GET /posts/1

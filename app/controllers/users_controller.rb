@@ -18,15 +18,13 @@ class UsersController < ApplicationController
       User.find(params[:id])
     if !@user then not_found end
 
-    limit = 100
-
     if params[:type] == 'list'
-      @posts = @user.feed.paginate(:page => params[:page], :per_page => limit)
+      @posts = @user.feed.paginate(:page => params[:page])
       @channels = @user.following.map { |user| user.username }
       # add the user to the channels since it's not in .following()
       @channels.push @user.username
     else
-      @posts = @user.posts.paginate(:page => params[:page], :per_page => limit)
+      @posts = @user.posts.paginate(:page => params[:page])
       @channels = @user.username
     end
 

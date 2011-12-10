@@ -35,8 +35,8 @@ Reading::Application.routes.draw do
   end
   # match '/:username' => 'users#show'
   # These routes should be cleaned up
-  match '/:username(/posts)'  => 'users#show', :defaults => { :type => 'posts' }
-  match '/:username/list'     => 'users#show', :defaults => { :type => 'list' }
+  match '/:username(/posts)(/page/:page)'  => 'users#show', :defaults => { :type => 'posts', :page => 1 }
+  match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list', :page => 1 }
   match '/:username/info'     => 'users#edit'
   match '/:username/hooks'    => 'users#hooks'
   match '/:username/export'   => 'users#export'

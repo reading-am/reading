@@ -2,12 +2,13 @@
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var host        = window.location.host,
-    // domain = '0.0.0.0:3000', // for dev
-    domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
+    domain = '0.0.0.0:3000', // for dev
+    // domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
     on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false,
-    post        = {};
+    post        = {},
+    following   = [];
 
 var parse_url = function(){
   var url = window.location.href.split(window.location.host)[1].substring(1);
@@ -57,7 +58,7 @@ var show_overlay = function(){
           'width:50px;'+
           'padding:10px 10px 5px;'+
         '}'+
-        '#r_wrp, #r_stuff_menu li {'+
+        '#r_wrp, #r_am li {'+
           'background:yellow;'+
         '}'+
         '#r_icon {'+
@@ -75,17 +76,19 @@ var show_overlay = function(){
         '#r_actions .r_inactive {'+
           'text-decoration:line-through;'+
         '}'+
-        '#r_stuff_menu {'+
-          'display:none;'+
+        '#r_am ul'+
           'margin:3px 0 0 0;'+
         '}'+
-        '#r_stuff_menu li {'+
+        '#r_am li {'+
           'text-align:right;'+
           'padding:3px 5px;'+
         '}'+
-        '#r_stuff_menu a {'+
+        '#r_am ul a {'+
           'border-right:2px solid #000;'+
           'padding:0 5px;'+
+        '}'+
+        '#r_stuff_menu {'+
+          'display:none;'+
         '}'+
         '#r_nope {'+
           'margin:0 3px 0 0;'+
@@ -102,6 +105,13 @@ var show_overlay = function(){
       $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>'),
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
+  if(following.length){
+    var $following = $('<ul id="r_following">').append('<li>Other Readers:</li>');
+    $.each(following, function(i, username){
+      $following.append('<li><a href="'+domain+'/'+username+'">'+username+'</a></li>');
+    });
+    $reading.append($following);
+  }
   $('body').prepend($reading);
   $reading.fadeIn(500, function(){
     $wrapper.delay(1000).animate({height:'14px', width:$actions.width()});
@@ -212,6 +222,7 @@ submit_post(params, function(data){
     }
   } else {
     post = data.post;
+    following = data.following;
     show_overlay();
   }
 });

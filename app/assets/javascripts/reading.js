@@ -8,7 +8,7 @@ var host        = window.location.host,
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false,
     post        = {},
-    following   = [];
+    readers     = [];
 
 var parse_url = function(){
   var url = window.location.href.split(window.location.host)[1].substring(1);
@@ -105,10 +105,10 @@ var show_overlay = function(){
       $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>'),
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
-  if(following.length){
+  if(readers.length){
     var $following = $('<ul id="r_following">').append('<li>Other readers:</li>');
-    $.each(following, function(i, username){
-      $following.append('<li><a href="http://'+domain+'/'+username+'">'+username+'</a></li>');
+    $.each(readers, function(i, user){
+      $following.append('<li><a href="http://'+domain+'/'+user.username+'">'+user.display_name+'</a></li>');
     });
     $reading.append($following);
   }
@@ -223,7 +223,7 @@ submit_post(params, function(data){
     }
   } else {
     post = data.post;
-    following = data.following;
+    readers = data.readers;
     show_overlay();
   }
 });

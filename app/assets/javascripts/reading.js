@@ -87,7 +87,7 @@ var show_overlay = function(){
           'border-right:2px solid #000;'+
           'padding:0 5px;'+
         '}'+
-        '#r_stuff_menu {'+
+        '#r_stuff_menu, #r_following {'+
           'display:none;'+
         '}'+
         '#r_nope {'+
@@ -106,9 +106,9 @@ var show_overlay = function(){
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
   if(following.length){
-    var $following = $('<ul id="r_following">').append('<li>Other Readers:</li>');
+    var $following = $('<ul id="r_following">').append('<li>Other readers:</li>');
     $.each(following, function(i, username){
-      $following.append('<li><a href="'+domain+'/'+username+'">'+username+'</a></li>');
+      $following.append('<li><a href="http://'+domain+'/'+username+'">'+username+'</a></li>');
     });
     $reading.append($following);
   }
@@ -116,6 +116,7 @@ var show_overlay = function(){
   $reading.fadeIn(500, function(){
     $wrapper.delay(1000).animate({height:'14px', width:$actions.width()});
     $icon.delay(1000).animate({'margin-top':'-52px'});
+    $following.delay(1500).slideDown();
   });
   $('#r_close').click(function(){
     $reading.fadeOut(400, function(){ $reading.remove(); });

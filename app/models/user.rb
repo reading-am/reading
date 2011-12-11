@@ -115,6 +115,15 @@ class User < ActiveRecord::Base
   def following_who_posted_to page
     User.who_posted_to(page).only_follows(self)
   end
+
+  def simple_obj to_s=false
+    {
+      :type       => 'User',
+      :id         => to_s ? id.to_s : id,
+      :username   => username,
+      :display_name => display_name
+    }
+  end
 end
 
 class AuthTaken < StandardError

@@ -2,13 +2,13 @@
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var host        = window.location.host,
-    domain = '0.0.0.0:3000', // for dev
-    // domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
+    // domain = '0.0.0.0:3000', // for dev
+    domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
     on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false,
     post        = {},
-    readers     = [];
+    readers     = false;
 
 var parse_url = function(){
   var url = window.location.href.split(window.location.host)[1].substring(1);
@@ -80,12 +80,10 @@ var show_overlay = function(){
           'margin:3px 0 0 0;'+
         '}'+
         '#r_am li {'+
-          'text-align:right;'+
+          'float:right;'+
+          'clear:both;'+
           'padding:3px 5px;'+
-        '}'+
-        '#r_am ul a {'+
-          'border-right:2px solid #000;'+
-          'padding:0 5px;'+
+          'margin:3px 0;'+
         '}'+
         '#r_stuff_menu, #r_readers {'+
           'display:none;'+
@@ -105,7 +103,7 @@ var show_overlay = function(){
       $actions = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>'),
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
-  if(readers.length){
+  if(readers){
     var $readers = $('<ul id="r_readers">').append('<li>Other readers:</li>');
     $.each(readers, function(i, user){
       $readers.append('<li><a href="http://'+domain+'/'+user.username+'">'+user.display_name+'</a></li>');
@@ -116,7 +114,7 @@ var show_overlay = function(){
   $reading.fadeIn(500, function(){
     $wrapper.delay(1000).animate({height:'14px', width:$actions.width()});
     $icon.delay(1000).animate({'margin-top':'-52px'});
-    $readers.delay(1500).slideDown();
+    if(readers) $readers.delay(1100).slideDown();
   });
   $('#r_close').click(function(){
     $reading.fadeOut(400, function(){ $reading.remove(); });
@@ -169,10 +167,12 @@ var show_overlay = function(){
   },
   show_stuff = function(){
     $stuff.show();
+    $readers.hide();
     $('#r_stuff').addClass('r_active');
   }
   hide_stuff = function(){
     $stuff.hide();
+    $readers.show();
     $('#r_stuff').removeClass('r_active');
   };
   for(var i = 0; i < providers.length; i++){
@@ -223,7 +223,7 @@ submit_post(params, function(data){
     }
   } else {
     post = data.post;
-    readers = data.readers;
+    readers = (data.readers.length ? data.readers : false);
     show_overlay();
   }
 });

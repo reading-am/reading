@@ -104,7 +104,7 @@ var show_overlay = function(){
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
   if(readers){
-    var $readers = $('<ul id="r_readers">').append('<li> - Other readers - </li>');
+    var $readers = $('<ul id="r_readers">').append('<li>&#8258; Other Readers</li>');
     $.each(readers, function(i, user){
       $readers.append('<li><a href="http://'+domain+'/'+user.username+'">'+user.display_name+'</a></li>');
     });
@@ -114,7 +114,7 @@ var show_overlay = function(){
   $reading.fadeIn(500, function(){
     $wrapper.delay(1000).animate({height:'14px', width:$actions.width()});
     $icon.delay(1000).animate({'margin-top':'-52px'});
-    if(readers) $readers.delay(1100).slideDown();
+    if(readers) $readers.delay(1200).slideDown();
   });
   $('#r_close').click(function(){
     $reading.fadeOut(400, function(){ $reading.remove(); });

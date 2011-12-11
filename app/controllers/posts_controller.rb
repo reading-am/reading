@@ -81,7 +81,9 @@ class PostsController < ApplicationController
               :id => @post.id,
               :short_url => @post.short_url
             },
-            :following => @post.user.following_who_posted_to(@post.page).collect {|user| user.username if user.username }
+            :following => @post.user.following_who_posted_to(@post.page).collect {|user|
+              user.to_json
+            }
           }
         }, :callback => params[:callback] }
       else

@@ -42,25 +42,25 @@ class Post < ActiveRecord::Base
   end
 
   def simple_obj to_s=false
-    has_ref = !self.referrer_post.nil?
+    has_ref = !referrer_post.nil?
     {
       :type   => "Post",
-      :id     => to_s ? self.id.to_s : self.id,
-      :title  => self.page.title,
-      :url    => self.page.url,
-      :yn     => self.yn,
-      :wrapped_url => self.wrapped_url,
+      :id     => to_s ? id.to_s : id,
+      :title  => page.title,
+      :url    => page.url,
+      :yn     => yn,
+      :wrapped_url => wrapped_url,
       :user => {
-        :id           => to_s ? self.user.id.to_s : self.user.id,
-        :username     => self.user.username,
-        :display_name => self.user.display_name
+        :id           => to_s ? user.id.to_s : user.id,
+        :username     => user.username,
+        :display_name => user.display_name
       },
       :referrer_post => {
-        :id => has_ref ? (to_s ? self.referrer_post.id.to_s : self.referrer_post.id) : '',
+        :id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
         :user => {
-          :id           => has_ref ? (to_s ? self.referrer_post.user.id.to_s : self.referrer_post.user.id) : '',
-          :username     => has_ref ? self.referrer_post.user.username : '',
-          :display_name => has_ref ? self.referrer_post.user.display_name : ''
+          :id           => has_ref ? (to_s ? referrer_post.user.id.to_s : referrer_post.user.id) : '',
+          :username     => has_ref ? referrer_post.user.username : '',
+          :display_name => has_ref ? referrer_post.user.display_name : ''
         }
       }
     }

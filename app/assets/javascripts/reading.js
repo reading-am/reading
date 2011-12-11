@@ -87,7 +87,7 @@ var show_overlay = function(){
           'border-right:2px solid #000;'+
           'padding:0 5px;'+
         '}'+
-        '#r_stuff_menu, #r_following {'+
+        '#r_stuff_menu, #r_readers {'+
           'display:none;'+
         '}'+
         '#r_nope {'+
@@ -106,17 +106,17 @@ var show_overlay = function(){
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
   if(readers.length){
-    var $following = $('<ul id="r_following">').append('<li>Other readers:</li>');
+    var $readers = $('<ul id="r_readers">').append('<li>Other readers:</li>');
     $.each(readers, function(i, user){
-      $following.append('<li><a href="http://'+domain+'/'+user.username+'">'+user.display_name+'</a></li>');
+      $readers.append('<li><a href="http://'+domain+'/'+user.username+'">'+user.display_name+'</a></li>');
     });
-    $reading.append($following);
+    $reading.append($readers);
   }
   $('body').prepend($reading);
   $reading.fadeIn(500, function(){
     $wrapper.delay(1000).animate({height:'14px', width:$actions.width()});
     $icon.delay(1000).animate({'margin-top':'-52px'});
-    $following.delay(1500).slideDown();
+    $readers.delay(1500).slideDown();
   });
   $('#r_close').click(function(){
     $reading.fadeOut(400, function(){ $reading.remove(); });

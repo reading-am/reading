@@ -71,7 +71,19 @@ class PostsController < ApplicationController
 
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
-        format.json { render :json => {:meta => {:status => 200, :msg => 'OK'}, :response => {:id => @post.id, :short_url => @post.short_url}}, :callback => params[:callback] }
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {
+            :post => {
+              :id => @post.id,
+              :short_url => @post.short_url
+            },
+            :following => @post.user.following_who_posted_to(@post.page).collect {|user| user.username if user.username }
+          }
+        }, :callback => params[:callback] }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }

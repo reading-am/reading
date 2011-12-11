@@ -82,7 +82,7 @@ class PostsController < ApplicationController
               :short_url => @post.short_url
             },
             :readers => User.who_posted_to(@post.page).collect { |user|
-              user.simple_obj if user != current_user
+              user.simple_obj if user != @post.user # don't show the person posting
             }.compact
             # this is disabled until we get more users on the site
             # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }

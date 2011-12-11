@@ -76,7 +76,7 @@ var show_overlay = function(){
         '#r_actions .r_inactive {'+
           'text-decoration:line-through;'+
         '}'+
-        '#r_am ul'+
+        '#r_am ul {'+
           'margin:3px 0 0 0;'+
         '}'+
         '#r_am li {'+

@@ -104,7 +104,7 @@ var show_overlay = function(){
       $wrapper = $('<div id="r_wrp">').append($icon).append($subtext).append($actions),
       $reading = $('<div id="r_am">').append($wrapper).append($stuff);
   if(readers){
-    var $readers = $('<ul id="r_readers">').append('<li>Other readers:</li>');
+    var $readers = $('<ul id="r_readers">').append('<li> - Other readers - </li>');
     $.each(readers, function(i, user){
       $readers.append('<li><a href="http://'+domain+'/'+user.username+'">'+user.display_name+'</a></li>');
     });

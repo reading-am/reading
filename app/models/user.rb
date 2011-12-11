@@ -21,6 +21,22 @@ class User < ActiveRecord::Base
   before_create { generate_token(:token) }
   before_create { generate_token(:auth_token) }
 
+  scope :only_follows, lambda { |user| follows(user) }
+  scope :who_posted_to, lambda { |page| posted_to(page) }
+
+  private
+
+  def self.posted_to page
+    where("id IN (SELECT user_id FROM posts WHERE posts.page_id = :page_id)", { :page_id => page })
+  end
+
+  def self.follows user
+    where("id IN (SELECT followed_id FROM relationships WHERE follower_id = :user_id)",
+          { :user_id => user})
+  end
+
+  public
+
   def to_param
     username
   end
@@ -94,6 +110,10 @@ class User < ActiveRecord::Base
 
   def feed
     Post.from_users_followed_by(self)
+  end
+
+  def following_who_posted_to page
+    User.who_posted_to(page).only_follows(self)
   end
 end
 

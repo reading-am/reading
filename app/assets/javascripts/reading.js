@@ -211,7 +211,7 @@ submit_post(params, function(data){
       window.location = url;
     }
   } else {
-    post = data;
+    post = data.post;
     show_overlay();
   }
 });

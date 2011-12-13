@@ -32,6 +32,7 @@ var show_overlay = function(){
           'color:#000;'+
           'font-family:"Helvetica Neue", helvetica, arial, sans-serif;'+
           'font-weight:normal;'+
+          'font-style:normal;'+
           'font-size:12px;'+
           'line-height:normal;'+
           'text-align:center;'+

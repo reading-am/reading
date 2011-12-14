@@ -14,7 +14,9 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     if params[:username] == 'everybody'
-      @posts = Post.order("created_at DESC").paginate(:page => params[:page])
+      @posts  = Post.order("created_at DESC")
+                    .includes([:user, :page, :domain, {:referrer_post => :user}])
+                    .paginate(:page => params[:page])
       @channels = 'everybody'
     else
       @user = params[:username] ?

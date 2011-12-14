@@ -5,7 +5,9 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.order("created_at DESC").paginate(:page => params[:page])
+    @posts =  Post.order("created_at DESC")
+                  .includes([:user, :page, :domain, {:referrer_post => :user}])
+                  .paginate(:page => params[:page])
     @channels = 'everybody'
   end
 

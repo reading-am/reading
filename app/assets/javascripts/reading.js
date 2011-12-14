@@ -147,24 +147,45 @@ var show_overlay = function(){
 
   // STUFF!
   var $stuff = $('<ul id="r_stuff_menu">'),
-      providers = ['twitter','facebook','instapaper','readability'],
+      providers = [
+        {
+          name: 'Twitter',
+          url: 'https://twitter.com/share?url={shorturl}&text=✌%20Reading%20%22{title}%22',
+          action: function(url){ popup(url, 475, 275); }
+        },
+        {
+          name: 'Facebook',
+          url: 'https://www.facebook.com/sharer.php?u={shorturl}&t={title}',
+          action: function(url){ popup(url, 520, 370); }
+        },
+        {
+          name: 'Instapaper',
+          url: 'http://www.instapaper.com/hello2?url={url}&title={title}',
+          action: function(url){ window.location = url; }
+        },
+        {
+          name: 'Readability',
+          url: 'http://www.readability.com/save?url={url}',
+          action: function(url){ window.location = url; }
+        },
+        {
+          name: 'Read It Later',
+          url: 'https://readitlaterlist.com/save?url={url}&title={title}',
+          action: function(url){ popup(url, 490, 400); }
+        }
+      ],
   popup = function(url, width, height){
     window.open(url, 'r_win', 'location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width='+width+',height='+height);
   },
-  share_url = function(provider, url, title, text){
-    var url = encodeURIComponent(url),
-        title = encodeURIComponent(title),
-        text = '✌ '+encodeURIComponent(text);
-    switch(provider.toLowerCase()){
-      case 'twitter':
-        return 'https://twitter.com/share?url='+url+'&text='+text;
-      case 'facebook':
-        return 'https://www.facebook.com/sharer.php?u='+url+'&t='+title;
-      case 'instapaper':
-        return 'http://www.instapaper.com/hello2?url='+encodeURIComponent(window.location.href)+'&title='+title;
-      case 'readability':
-        return 'http://www.readability.com/save?url='+encodeURIComponent(window.location.href);
-    }
+  share_url = function(provider, post){
+    var params = {
+      url:      window.location.href,
+      shorturl: 'http://'+post.short_url,
+      title:    document.title
+    },
+    url = provider.url;
+    for(param in params) url = url.replace('{'+param+'}', encodeURIComponent(params[param]));
+    return url;
   },
   show_stuff = function(){
     $stuff.show();
@@ -177,14 +198,17 @@ var show_overlay = function(){
     $('#r_stuff').removeClass('r_active');
   };
   for(var i = 0; i < providers.length; i++){
-    $stuff.append('<li id="r_'+providers[i]+'"><a href="#" class="r_share">'+providers[i][0].toUpperCase() + providers[i].slice(1)+'</a></li>');
+    $stuff.append('<li><a href="#" class="r_share" data-provider_id="'+i+'">'+providers[i].name+'</a></li>');
   }
   $reading.append($stuff);
-  $('#r_stuff').mouseenter(function(){ show_stuff(); });
+  $('#r_stuff')
+    .mouseenter(function(){ show_stuff(); })
+    .click(function(){ return false; });
   $reading.mouseleave(function(){ hide_stuff(); });
   $('a:not(#r_stuff)', $actions).mouseenter(function(){ hide_stuff(); });
   $('.r_share', $reading).click(function(){
-    popup(share_url($(this).text(), 'http://'+post.short_url, document.title, 'Reading "'+document.title+'"'), 520, 370);
+    var prov = providers[$(this).attr('data-provider_id')];
+    prov.action(share_url(prov, post));
   });
   $(window).scroll(function(){
     if($actions.find('.r_active').length){

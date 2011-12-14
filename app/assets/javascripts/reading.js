@@ -29,7 +29,11 @@ if(pass_thru) return window.location = url;
 var show_overlay = function(){
   var $css = $('<style type="text/css">'+
         '#r_am, #r_am * {'+
+          'padding:0;'+
+          'margin:0;'+
           'color:#000;'+
+          'background:none;'+
+          'border:none;'+
           'font-family:"Helvetica Neue", helvetica, arial, sans-serif;'+
           'font-weight:normal;'+
           'font-style:normal;'+
@@ -41,9 +45,6 @@ var show_overlay = function(){
           'text-transform:none;'+
           'font-variant:normal;'+
           'letter-spacing:normal;'+
-          'border:none;'+
-          'padding:0;'+
-          'margin:0;'+
           'list-style:none;'+
         '}'+
         '#r_am {'+

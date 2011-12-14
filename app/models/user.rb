@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   has_many :authorizations, :dependent => :destroy
-  has_many :posts, :dependent => :destroy
+  has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
   has_many :domains, :through => :posts
   has_many :hooks, :dependent => :destroy
   has_many :pages, :through => :posts
@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
   end
 
   def feed
-    Post.from_users_followed_by(self)
+    Post.from_users_followed_by(self).includes([:user, :page, :domain, {:referrer_post => :user}])
   end
 
   def following_who_posted_to page

@@ -152,7 +152,7 @@ var show_overlay = function(){
         {
           name: 'Twitter',
           url: 'https://twitter.com/share?url={shorturl}&text=✌%20Reading%20%22{title}%22',
-          action: function(url){ popup(url, 475, 275); }
+          action: function(url){ popup(url, 475, 345); }
         },
         {
           name: 'Facebook',

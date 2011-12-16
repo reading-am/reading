@@ -1,7 +1,7 @@
 <div id="content">
 
   <h4>
-    <%= @pages.total_entries %> <%= render :partial => 'search_form' %> pages found
+    <%= pluralize @pages.total_entries, 'page' %> found
   </h4>
 
 <table>

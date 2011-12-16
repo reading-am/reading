@@ -7,6 +7,9 @@ class Page < ActiveRecord::Base
 
   before_create { parse_domain }
 
+  # search
+  acts_as_indexed :fields => [:title, :url]
+
 private
 
   def parse_domain

@@ -1,5 +1,5 @@
 <div id="content">
-<h4>Found: <%= @pages.length %></h4>
+<h4><%= pluralize @pages.total_entries, 'page' %> found</h4>
 
 <table>
 <% @pages.each do |page| %>
@@ -8,4 +8,7 @@
   </tr>
 <% end %>
 </table>
+
+<%= will_paginate @pages %>
+
 </div>

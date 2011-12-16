@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
   def search
-    @pages = Page.find_with_index(params[:q])
+    @pages = Page.with_query(params[:q]).paginate(:page => params[:page])
   end
 end

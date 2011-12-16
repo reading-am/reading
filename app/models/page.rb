@@ -8,7 +8,10 @@ class Page < ActiveRecord::Base
   before_create { parse_domain }
 
   # search
-  acts_as_indexed :fields => [:title, :url]
+  searchable do
+    text :title, :url
+  end
+  handle_asynchronously :solr_index
 
 private
 

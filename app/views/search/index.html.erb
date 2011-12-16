@@ -1,0 +1,36 @@
+<div id="content">
+
+<h4><%= @posts.total_entries %> of your own posts matched</h4>
+<table>
+<% time = '' %>
+<% @posts.each do |post| %>
+  <tr>
+    <td class="date">
+    <%=
+      if time != post.created_at.strftime("%m/%d")
+        time = post.created_at.strftime("%m/%d")
+      end
+    %>
+    </td>
+    <td><%= render :partial => 'posts/post', :locals => { :post => post } %></td>
+    <% if logged_in? and post.user.id == current_user.id %>
+      <td><%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<% if @pages %>
+<h4><%= pluralize @pages.total_entries, 'page' %> from the community matched</h4>
+<table>
+<% @pages.each do |page| %>
+  <tr>
+    <td><%= render :partial => 'pages/page', :locals => { :page => page } %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @pages %>
+<% end %>
+
+
+</div>

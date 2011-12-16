@@ -33,7 +33,7 @@ Reading::Application.routes.draw do
   end
 
   # Search
-  match '/search' => 'pages#search'
+  match '/search' => 'search#index'
 
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }

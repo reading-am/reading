@@ -35,7 +35,6 @@ GEM
       activesupport (= 3.1.3)
     activesupport (3.1.3)
       multi_json (~> 1.0)
-    acts_as_indexed (0.7.7)
     addressable (2.2.6)
     archive-tar-minitar (0.5.2)
     arel (2.2.1)
@@ -52,6 +51,9 @@ GEM
     crack (0.1.8)
     daemons (1.1.4)
     dalli (1.1.3)
+    delayed_job (2.1.4)
+      activesupport (~> 3.0)
+      daemons
     em-http-request (1.0.0)
       addressable (>= 2.2.3)
       em-socksify
@@ -60,6 +62,7 @@ GEM
     em-socksify (0.1.0)
       eventmachine
     erubis (2.7.0)
+    escape (0.0.4)
     eventmachine (1.0.0.beta.4)
     execjs (1.2.9)
       multi_json (~> 1.0)
@@ -67,7 +70,9 @@ GEM
       addressable (~> 2.2.6)
       multipart-post (~> 1.1.3)
       rack (< 2, >= 1.1.0)
+    fattr (2.2.0)
     hashie (1.2.0)
+    highline (1.6.8)
     hike (1.2.1)
     hipchat (0.4.1)
       httparty
@@ -115,8 +120,14 @@ GEM
       omniauth (~> 1.0)
     omniauth-twitter (0.0.6)
       omniauth-oauth (~> 1.0)
+    options (2.3.0)
+      fattr
     pg (0.11.0)
     polyglot (0.3.3)
+    pr_geohash (1.0.0)
+    progress_bar (0.4.0)
+      highline (~> 1.6.1)
+      options (~> 2.3.0)
     pusher (0.8.4)
       crack (~> 0.1.0)
       multi_json (~> 1.0)
@@ -149,6 +160,8 @@ GEM
     rake (0.9.2.2)
     rdoc (3.11)
       json (~> 1.4)
+    rsolr (1.0.6)
+      builder (>= 2.1.2)
     ruby-debug-base19 (0.11.25)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -175,6 +188,15 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    sunspot (1.3.0)
+      escape (~> 0.0.4)
+      pr_geohash (~> 1.0)
+      rsolr (~> 1.0.6)
+    sunspot_rails (1.3.0)
+      nokogiri
+      sunspot (= 1.3.0)
+    sunspot_solr (1.3.0)
+      escape (~> 0.0.4)
     thin (1.3.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -215,13 +237,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts_as_indexed
   addressable
   base58
   coffee-rails
   crack
   curb!
   dalli
+  delayed_job
   em-http-request
   hipchat
   jquery-rails
@@ -231,11 +253,14 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-twitter
   pg
+  progress_bar
   pusher (~> 0.8.3)
   rails (= 3.1.3)
   ruby-debug19
   rufus-scheduler
   sass-rails
+  sunspot_rails
+  sunspot_solr
   thin
   tinder
   twitter (>= 2.0.0.rc.2)

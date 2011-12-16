@@ -30,8 +30,11 @@ gem 'yajl-ruby' # JSON parser recommended by twitter gem
 gem 'twitter', '>= 2.0.0.rc.2'
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
-gem 'acts_as_indexed' # search
+gem 'sunspot_rails'
+gem 'delayed_job'
 
 group :development do
   gem 'ruby-debug19'
+  gem 'sunspot_solr'
+  gem 'progress_bar'
 end

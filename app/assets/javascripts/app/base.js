@@ -56,4 +56,5 @@ $(function() {
     window.open($(this).data('url'), 'footnote', 'location=0,status=0,scrollbars=0,width=900,height=400');
     return false;
   });
+
 });

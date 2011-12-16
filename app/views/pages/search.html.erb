@@ -1,0 +1,11 @@
+<div id="content">
+<h4>Found: <%= @pages.length %></h4>
+
+<table>
+<% @pages.each do |page| %>
+  <tr>
+    <td><%= render :partial => 'pages/page', :locals => { :page => page } %></td>
+  </tr>
+<% end %>
+</table>
+</div>

@@ -32,6 +32,9 @@ Reading::Application.routes.draw do
     resources :posts
   end
 
+  # Search
+  match '/search' => 'pages#search'
+
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }

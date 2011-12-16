@@ -1,7 +1,8 @@
 .bundle
 db/*.sqlite3
-log/*.log
+log/
 tmp/
+solr/
 .DS_Store
 .sass-cache/
 public/assets/

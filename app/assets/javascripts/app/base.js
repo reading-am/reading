@@ -57,4 +57,7 @@ $(function() {
     return false;
   });
 
+  // select search on page load
+  $("#search input").focus();
+
 });

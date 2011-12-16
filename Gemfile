@@ -32,9 +32,9 @@ gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
 gem 'sunspot_rails'
 gem 'delayed_job'
+gem 'progress_bar'
 
 group :development do
   gem 'ruby-debug19'
   gem 'sunspot_solr'
-  gem 'progress_bar'
 end

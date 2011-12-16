@@ -58,6 +58,7 @@ $(function() {
   });
 
   // select search on page load
-  $("#search input").focus();
+  $search = $("#search input");
+  if($search.val()) $search.focus();
 
 });

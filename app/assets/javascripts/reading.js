@@ -190,12 +190,12 @@ var show_overlay = function(){
   },
   show_stuff = function(){
     $stuff.show();
-    $readers.hide();
+    if(readers) $readers.hide();
     $('#r_stuff').addClass('r_active');
   }
   hide_stuff = function(){
     $stuff.hide();
-    $readers.show();
+    if(readers) $readers.show();
     $('#r_stuff').removeClass('r_active');
   };
   for(var i = 0; i < providers.length; i++){

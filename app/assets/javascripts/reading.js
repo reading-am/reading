@@ -72,7 +72,7 @@ var show_overlay = function(){
           'margin:10px 0 0;'+
           'width:130px;'+
         '}'+
-        '#r_am a:hover, .r_active {'+
+        '#r_am a:hover, #r_am .r_active {'+
           'background:#FFF;'+
         '}'+
         '#r_actions .r_inactive {'+

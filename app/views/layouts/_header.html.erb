@@ -15,7 +15,7 @@
     <% # TODO this is a complete mess. Clean it up %>
     Hey there <%= link_to current_user.display_name, "/#{current_user.username}/list", :class => 'user' %>.<br>
     <%= link_to "You", "/#{current_user.username}/list", :class => (request.path.split('/')[1] == current_user.username and params[:action] != 'edit' and params[:action] != 'hooks' ? 'active' : '') %>
-    - <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'pages' && params[:username] != current_user.username ? 'active' : '') %>
+    - <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'search' && params[:username] != current_user.username ? 'active' : '') %>
     - <%= render :partial => 'search/form' %>
     - <%= link_to "Settings", "/#{current_user.username}/hooks", :class => (params[:controller] == 'users' and params[:action] == 'edit' ||  params[:action] == 'hooks' ? 'active' : '') %>
     - <%= link_to "Sign Out", signout_path %>

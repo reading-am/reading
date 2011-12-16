@@ -12,7 +12,9 @@ class SearchController < ApplicationController
 
     if search.total == 0
       search = Page.search do
-        fulltext params[:q]
+        fulltext params[:q] do
+          boost_fields :title => 2.0
+        end
         paginate :page => params[:page], :per_page => 100
       end
       @pages = search.results

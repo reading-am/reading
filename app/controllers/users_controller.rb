@@ -170,5 +170,13 @@ class UsersController < ApplicationController
       show_404
     end
   end
+
+  def settings
+    if logged_in?
+      redirect_to "/#{current_user.username}/info"
+    else
+      redirect_to "/"
+    end
+  end
 end
 

@@ -184,7 +184,7 @@ h1 a, a.user, .hook a {
   margin:5px 0;
 }
 
-.edit_user label {
+#user_info .edit_user label {
   display:inline-block;
   width:100px;
 }
@@ -236,6 +236,7 @@ a.active, a.active:hover, #subnav a.active, #subnav a.active:hover {
 }
 
 footer {
+  clear:both;
   margin:30px 0;
 }
 

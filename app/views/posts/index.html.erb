@@ -3,15 +3,6 @@
 <% else %>
 
 <div id="content">
-<h4>
-<% if @domain %>
-  What people have been reading on <%= @domain.name %>
-<% elsif @user %>
-  What <%= if @user == current_user then "you've" else "#{@user.display_name} has" end %> been reading
-<% else %>
-  Some people are reading this stuff
-<% end %>
-</h4>
 
 <%= render :partial => 'users/you_subnav' if @user %>
 

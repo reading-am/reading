@@ -6,7 +6,7 @@ class RelationshipsController < ApplicationController
     # double bang converts to boolean http://rubyquicktips.com/post/583755021/convert-anything-to-boolean
     result = !!current_user.follow!(@user)
 
-    if result && @user.email
+    if result && @user.wants_mail && @user.email
       Pony.mail(
         :to       => deliver_to(@user.email),
         :subject  => "#{current_user.display_name} is now following you on Reading.am",

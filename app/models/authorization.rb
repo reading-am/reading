@@ -78,6 +78,11 @@ class Authorization < ActiveRecord::Base
         user.username = nil
         user.save
       end
+      # account for bad email addresses coming from provider
+      unless user.errors.messages[:email].nil?
+        user.email = nil
+        user.save
+      end
       auth = create(
         :user       => user,
         :provider   => auth_hash["provider"],

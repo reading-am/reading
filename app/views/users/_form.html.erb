@@ -21,6 +21,16 @@
     <%= f.text_field :username %>
   </div>
 
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :wants_mail %>
+    <%= f.check_box :wants_mail %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Update Me" %>
   </div>

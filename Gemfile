@@ -34,6 +34,7 @@ gem 'sunspot_rails'
 gem 'delayed_job'
 gem 'progress_bar'
 gem 'pony'
+gem 'validate_email'
 
 group :development do
   gem 'ruby-debug19'

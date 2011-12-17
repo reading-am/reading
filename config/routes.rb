@@ -34,6 +34,7 @@ Reading::Application.routes.draw do
 
   # Search
   match '/search' => 'search#index'
+  match '/settings' => 'users#settings'
 
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }

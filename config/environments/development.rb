@@ -31,4 +31,6 @@ Reading::Application.configure do
   Pusher.app_id = '10842'
   Pusher.key = '2fc1c5a4912b19b862e8'
   Pusher.secret = '4c575471553a97d9b5c4'
+
+  Pony.options = { :from => 'Reading <mailman@reading.dev>' }
 end

@@ -33,6 +33,7 @@ gem 'koala' # facebook
 gem 'sunspot_rails'
 gem 'delayed_job'
 gem 'progress_bar'
+gem 'pony'
 
 group :development do
   gem 'ruby-debug19'

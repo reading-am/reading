@@ -124,6 +124,8 @@ GEM
       fattr
     pg (0.11.0)
     polyglot (0.3.3)
+    pony (1.4)
+      mail (> 2.0)
     pr_geohash (1.0.0)
     progress_bar (0.4.0)
       highline (~> 1.6.1)
@@ -253,6 +255,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-twitter
   pg
+  pony
   progress_bar
   pusher (~> 0.8.3)
   rails (= 3.1.3)

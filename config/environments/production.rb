@@ -61,7 +61,7 @@ Reading::Application.configure do
   config.cache_store = :dalli_store
 
   Pony.options = {
-    :from => 'Reading <mailman@reading.am',
+    :from => 'Reading <mailman@reading.am>',
     :via => :smtp,
     :via_options => {
       :port           => ENV['MAILGUN_SMTP_PORT'],

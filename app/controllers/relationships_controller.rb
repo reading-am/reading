@@ -8,9 +8,9 @@ class RelationshipsController < ApplicationController
 
     if result && @user.email
       Pony.mail(
-        :to => deliver_to(@user.email),
-        :subject => "#{current_user.display_name} is now following you on Reading.am",
-        :body => "Check out your new admirer: http://#{DOMAIN}/#{current_user.username}\n\nI love you,\nReading"
+        :to       => deliver_to(@user.email),
+        :subject  => "#{current_user.display_name} is now following you on Reading.am",
+        :body     => "Check out your new admirer: http://#{DOMAIN}/#{current_user.username}\n\nI love you,\nReading"
       )
     end
 

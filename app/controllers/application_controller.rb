@@ -101,4 +101,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def deliver_to email
+    if Rails.env != 'production'
+      'greg@reading.am'
+    else
+      email
+    end
+  end
+
 end

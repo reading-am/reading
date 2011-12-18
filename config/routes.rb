@@ -6,8 +6,9 @@ Reading::Application.routes.draw do
   match "/signout" => "sessions#destroy", :as => :signout
   match "/support/delete_cookies" => "users#delete_cookies"
 
+  match '/posts/create' => 'posts#create'
+  match '/posts/:id/update' => 'posts#update'
   resources :posts
-  match '/post' => 'posts#create'
   
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional

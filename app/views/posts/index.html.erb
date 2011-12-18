@@ -4,7 +4,11 @@
 
 <div id="content">
 
-<%= render :partial => 'users/you_subnav' if @user %>
+<% if @user %>
+  <%= render :partial => 'users/you_subnav' %>
+<% else %>
+  <h4>Some people are reading this stuff</h4>
+<% end %>
 
 <table>
 <% time = '' %>

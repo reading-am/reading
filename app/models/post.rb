@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
+  attr_protected :id # this is so that we can safely use post.attributes = in post#update without worrying about overwriting the id
+
   belongs_to  :user
   belongs_to  :page
   has_one     :domain, :through => :page

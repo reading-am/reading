@@ -2,12 +2,11 @@
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var host        = window.location.host,
-    // domain = '0.0.0.0:3000', // for dev
-    domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
+    domain = '0.0.0.0:3000', // for dev
+    // domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
     on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false,
-    post        = {},
     readers     = false;
 
 var parse_url = function(){
@@ -131,15 +130,15 @@ var show_overlay = function(){
           $close.html(shapes[i]);
           i = i < shapes.length-1 ? i+1 : 0;
         }, 250);
-    params.yn = $this.is('#r_yep');
-    $other = params.yn ? $('#r_nope') : $('#r_yep');
+    params.post.yn = $this.is('#r_yep');
+    $other = params.post.yn ? $('#r_nope') : $('#r_yep');
     $other
       .removeClass('r_active')
       .addClass('r_inactive');
     $this
       .removeClass('r_inactive')
       .addClass('r_active');
-    submit_post(params, function(){
+    post_update(params, function(){
       clearInterval(loading);
       $close.html('&#10005;');
     });
@@ -209,7 +208,7 @@ var show_overlay = function(){
   $('a:not(#r_stuff)', $actions).mouseenter(function(){ hide_stuff(); });
   $('.r_share', $reading).click(function(){
     var prov = providers[$(this).attr('data-provider_id')];
-    prov.action(share_url(prov, post));
+    prov.action(share_url(prov, params.post));
   });
   $(window).scroll(function(){
     if($actions.find('.r_active').length){
@@ -222,15 +221,27 @@ var show_overlay = function(){
 var params = {token: params.token, referrer_id: params.referrer_id, url: url};
 if(!on_reading) params.title = window.document.title;
 
-var submit_post = function(data, success){
+var post_create = function(data, success){
   $.ajax({
-    url: 'http://'+domain+'/post.json',
+    url: 'http://'+domain+'/posts/create.json',
     dataType: 'jsonp',
     data: data,
     success: function(data, textStatus, jqXHR){
       if(data.meta.status == 400){
         alert('Sorry, an error prevented this page from being posted to Reading');
-      } else {
+      } else if(success) {
+        success(data.response);
+      }
+    }
+  });
+},
+post_update = function(data, success){
+  $.ajax({
+    url: 'http://'+domain+'/posts/'+data.post.id+'/update.json',
+    dataType: 'jsonp',
+    data: data,
+    success: function(data, textStatus, jqXHR){
+      if(data.meta.status != 400 && success){
         success(data.response);
       }
     }
@@ -238,7 +249,7 @@ var submit_post = function(data, success){
 };
 
 // submit the inital post on script load
-submit_post(params, function(data){
+post_create(params, function(data){
   if(on_reading){
     if(has_token){
       // forward back through to Reading so that the user's
@@ -248,9 +259,13 @@ submit_post(params, function(data){
       window.location = url;
     }
   } else {
-    post = data.post;
+    params.post = data.post;
     readers = (data.readers.length ? data.readers : false);
     show_overlay();
+    setInterval(function(){
+      console.log('hit');
+      post_update(params); // update the date_created every 5 seconds
+    }, 5000);
   }
 });
 

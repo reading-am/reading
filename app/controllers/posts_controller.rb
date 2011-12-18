@@ -59,6 +59,7 @@ class PostsController < ApplicationController
       @post.yn = params[:yn] if !params[:yn].nil?
       if !@post.changed?
         event = :duplicate
+        @post.touch
       else
         event = @post.yn ? :yep : :nope
       end
@@ -102,14 +103,36 @@ class PostsController < ApplicationController
   # PUT /posts/1.xml
   def update
     @post = Post.find(params[:id])
+    user = params[:token] ? User.find_by_token(params[:token]) : current_user
+
+    if allowed = (user == @post.user)
+      params[:post].delete(:short_url) # don't save the short url
+      @post.attributes = params[:post]
+    end
 
     respond_to do |format|
-      if @post.update_attributes(params[:post])
+      if allowed and ((changed = @post.changed? and @post.save) or @post.touch)
+        if changed
+          # We treat Pusher just like any other hook except that we don't store it
+          # with the user so we go ahead and construct one here
+          event = @post.yn ? :yep : :nope
+          Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@post, event)
+          @post.user.hooks.each do |hook| hook.run(@post, event) end
+        end
+
         format.html { redirect_to(@post, :notice => 'Post was successfully updated.') }
         format.xml  { head :ok }
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {}
+        }, :callback => params[:callback] }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
+        format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@post.errors.to_yaml}"}}, :callback => params[:callback] }
       end
     end
   end

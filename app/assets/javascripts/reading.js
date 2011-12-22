@@ -2,8 +2,8 @@
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var host        = window.location.host,
-    domain = '0.0.0.0:3000', // for dev
-    // domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
+    // domain = '0.0.0.0:3000', // for dev
+    domain      = host.indexOf('0.0.0.0') == 0 ? '0.0.0.0:3000' : host.indexOf('staging.reading.am') == 0 ? 'staging.reading.am' : 'reading.am',
     on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
     pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
     has_token   = false,
@@ -262,10 +262,14 @@ post_create(params, function(data){
     params.post = data.post;
     readers = (data.readers.length ? data.readers : false);
     show_overlay();
+    var updating = false;
+    // update the date_created every 15 seconds ala chartbeat
     setInterval(function(){
-      console.log('hit');
-      post_update(params); // update the date_created every 5 seconds
-    }, 5000);
+      if(!updating){
+        updating = true;
+        post_update(params, function(){ updating = false; });
+      }
+    }, 15000);
   }
 });
 

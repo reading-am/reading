@@ -29,7 +29,7 @@ $(function() {
       // only log it if they're logged in
       if(current_user.logged_in()){
         $.ajax({
-          url: '/post.json',
+          url: '/posts/create.json',
           data: {
             url: this.href,
             referrer_id: (base58_id ? base58.decode(base58_id) : '')

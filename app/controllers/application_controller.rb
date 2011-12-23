@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  http_basic_authentication_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
+  http_basic_authenticate_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
 
   before_filter :check_domain, :set_time_zone, :set_user_device, :set_headers
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?

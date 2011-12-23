@@ -10,24 +10,22 @@ xml.rss :version => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
       :href => request.url,
       :rel => 'self', :type => 'application/rss+xml'
     }
+
     # validate that this is a real user
     # TODO this should really happen in the controller
     if User.find_by_token(params[:t])
-      for post in @posts
-        xml.item do
-          xml.title "#{post.user.display_name} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} \"#{post.page.title}\"" + (post.referrer_post ? " because of #{post.referrer_post.user.display_name}" : '')
-          xml.link post.wrapped_url params[:t]
-          xml.guid post.wrapped_url params[:t]
-          xml.description { xml.cdata! render :partial => 'posts/rss.html.erb', :locals => {:post => post, :token => params[:t]} }
-          xml.pubDate post.created_at.to_s(:rfc822)
-        end
-      end
+      token = params[:t]
     else
+      token = false
+    end
+
+    for post in @posts
       xml.item do
-        xml.title "RSS feeds are for registered Reading users only"
-        xml.link "http://reading.am"
-        xml.guid "http://reading.am"
-        xml.description "RSS feeds are for registered Reading users only. Please log in or register and grab a new RSS link."
+        xml.title "#{post.user.display_name} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} \"#{post.page.title}\"" + (post.referrer_post ? " because of #{post.referrer_post.user.display_name}" : '')
+        xml.link post.wrapped_url token
+        xml.guid post.wrapped_url token
+        xml.description { xml.cdata! render :partial => 'posts/rss.html.erb', :locals => {:post => post, :token => token} }
+        xml.pubDate post.created_at.to_s(:rfc822)
       end
     end
   end

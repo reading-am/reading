@@ -37,7 +37,8 @@
         on_reading  = (host.indexOf('reading.am') == 0 || host.indexOf('staging.reading.am') == 0 || host.indexOf('0.0.0.0') == 0),
         pass_thru   = (params.token == '-' || (on_reading && !params.token)), //don't post anything, just forward on
         has_token   = false,
-        readers     = false;
+        readers     = false,
+        debug       = <%= Rails.env != 'production' %>;
 
     var parse_url = function(){
       var url = window.location.href.split(window.location.host)[1].substring(1);
@@ -279,7 +280,7 @@
     };
 
     // submit the inital post on script load
-    console.log(params);
+    if(debug) console.log(params);
     post_create(params, function(data){
       if(on_reading){
         if(has_token){

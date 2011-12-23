@@ -9,7 +9,7 @@ if Rails.env == 'production'
   SIGNALS37_KEY = '870ff838037a62a7058c0fc93f4cb14632626b0f'
   SIGNALS37_SECRET = '6a2741bc2e998b3e07de412ac8504437dd3ea430'
 else
-  DOMAIN = '0.0.0.0:3000'
+  DOMAIN = Rails.env == 'staging' ? 'staging.reading.am' : '0.0.0.0:3000'
   # DOMAIN = 'reading.dev'
   FACEBOOK_KEY = '115933145182597'
   FACEBOOK_SECRET = 'da0fac5ca6afbe272f51e297d3380dce'

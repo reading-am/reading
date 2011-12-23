@@ -181,7 +181,7 @@ var show_overlay = function(){
     var params = {
       url:      window.location.href,
       shorturl: 'http://'+post.short_url,
-      title:    document.title
+      title:    window.document.title
     },
     url = provider.url;
     for(param in params) url = url.replace('{'+param+'}', encodeURIComponent(params[param]));

@@ -211,7 +211,7 @@
         var params = {
           url:      window.location.href,
           shorturl: 'http://'+post.short_url,
-          title:    document.title
+          title:    window.document.title
         },
         url = provider.url;
         for(param in params) url = url.replace('{'+param+'}', encodeURIComponent(params[param]));
@@ -279,6 +279,7 @@
     };
 
     // submit the inital post on script load
+    console.log(params);
     post_create(params, function(data){
       if(on_reading){
         if(has_token){

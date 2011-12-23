@@ -1,4 +1,5 @@
 (function($, params){
+if(typeof params.platform == 'undefined') params.platform = 'bookmarklet';
 if(typeof params.referrer_id == 'undefined') params.referrer_id = 0;
 
 var host        = window.location.host,

@@ -1,0 +1,233 @@
+<% dbug = Rails.env != 'production' %>
+  
+#-----------------------------------------
+# jQuery Loader
+  
+getScript = (url, success) ->
+  script = document.createElement('script')
+  script.src = url
+  head = document.getElementsByTagName('head')[0]
+  done = false
+  script.onload = script.onreadystatechange = =>
+    if not done and (not @readyState or @readyState is 'loaded' or @readyState is 'complete')
+      done = true
+      success()
+      script.onload = script.onreadystatechange = null
+      head.removeChild script
+  head.appendChild script
+otherlib = (typeof jQuery is 'undefined' and typeof $ is 'function')
+getScript 'http://code.jquery.com/jquery-latest.min.js', ->
+  if typeof jQuery is 'undefined'
+    alert 'There was an error loading Reading'
+  else
+    init jQuery, window.reading ? {}
+
+#-----------------------------------------
+# Config Vars
+
+domain  = "<%= DOMAIN %>"
+whost   = window.location.host
+whref   = window.location.href
+wtitle  = window.document.title
+on_reading = (whost.indexOf('reading.am') is 0 or whost.indexOf('staging.reading.am') is 0 or whost.indexOf('0.0.0.0') is 0)
+
+#-----------------------------------------
+# Helpers
+
+popup = (url, width, height) ->
+  window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
+
+parse_url = ->
+  url = whref.split(whost)[1].substring(1)
+  while on_reading and (url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/')
+    # need to fix this has_token assignment
+    has_token = true if url.substring(0, 2) is 't/'
+    url = url.substring(url.indexOf('/', 2) + 1)
+  url = "http://#{url}" if url.indexOf('://') is -1
+  url
+
+#-----------------------------------------
+# Classes
+
+class Post
+
+Post::create = (data, success) ->
+  $.ajax
+    url: "http://#{domain}/posts/create.json"
+    dataType: "jsonp"
+    data: data
+    success: (data, textStatus, jqXHR) ->
+      if data.meta.status is 400
+        alert "Sorry, an error prevented this page from being posted to Reading"
+      else success data.response if success
+
+Post::update = (data, success) ->
+  $.ajax
+    url: "http://#{domain}/posts/#{data.post.id}/update.json"
+    dataType: "jsonp"
+    data: data
+    success: (data, textStatus, jqXHR) ->
+      success data.response if data.meta.status isnt 400 and success
+
+class Provider
+  constructor: (params) ->
+    @name = params.name
+    @url_scheme = params.url_scheme
+    @action = params.action
+  url: (post) ->
+    params =
+      url: whref
+      shorturl: "http://#{post.short_url}"
+      title: wtitle
+    parsed_url = @url_scheme
+    for param of params
+      parsed_url = parsed_url.replace("{#{param}}", encodeURIComponent(params[param]))
+    parsed_url
+  run: (post) ->
+    @action @url post
+
+#-----------------------------------------
+# Vars
+
+providers = [
+  new Provider
+    name: "Twitter"
+    url_scheme: "https://twitter.com/share?url={shorturl}&text=✌%20Reading%20%22{title}%22"
+    action: (url) ->
+      popup url, 475, 345
+,
+  new Provider
+    name: "Facebook"
+    url_scheme: "https://www.facebook.com/sharer.php?u={shorturl}&t={title}"
+    action: (url) ->
+      popup url, 520, 370
+,
+  new Provider
+    name: "Instapaper"
+    url_scheme: "http://www.instapaper.com/hello2?url={url}&title={title}"
+    action: (url) ->
+      window.location = url
+,
+  new Provider
+    name: "Readability"
+    url_scheme: "http://www.readability.com/save?url={url}"
+    action: (url) ->
+      window.location = url
+,
+  new Provider
+    name: "Read It Later"
+    url_scheme: "https://readitlaterlist.com/save?url={url}&title={title}"
+    action: (url) ->
+      popup url, 490, 400
+]
+
+# Initialize!
+init = ($, params) ->
+  pass_thru = (params.token is "-" or (on_reading and not params.token))
+  has_token = false
+  readers   = false
+
+  url = (if on_reading then parse_url() else whref)
+  title = (if on_reading then "" else wtitle)
+  params.platform ||= "bookmarklet"
+  params.referrer_id ||= 0
+  params.url = url
+  params.title = title
+
+  return window.location = url if pass_thru
+
+  show_overlay = =>
+    $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/loader.css").gsub(/\n/,"") %>').appendTo('head')
+    $icon     = $('<div id="r_icon">&#9996;</div>')
+    $subtext  = $('<div>Reading</div>')
+    $actions  = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>')
+    $wrapper  = $('<div id="r_wrp">').append($icon).append($subtext).append($actions)
+    $stuff    = $('<ul id="r_stuff_menu">')
+    $reading  = $('<div id="r_am">').append($wrapper).append($stuff)
+
+    if readers
+      $readers = $('<ul id="r_readers">').append('<li>&#8258; Other Readers</li>')
+      $.each readers, (i, user) ->
+        $readers.append "<li><a href=\"http://#{domain}/#{user.username}\">#{user.display_name}</a></li>"
+      $reading.append $readers
+
+    $('body').prepend $reading
+    $reading.fadeIn 500, ->
+      $wrapper.delay(1000).animate
+        height: "14px"
+        width: $actions.width()
+
+      $icon.delay(1000).animate 'margin-top': '-52px'
+      $readers.delay(1200).slideDown()  if readers
+
+    $('#r_close').click ->
+      $reading.fadeOut 400, ->
+        $reading.remove()
+      false
+
+    $('#r_yep, #r_nope').click ->
+      $this = $(this)
+      $close = $('#r_close')
+      i = 0
+      shapes = ['&#10043;', '&#10044;', '&#10045;', '&#10046;']
+      loading = setInterval(->
+        $close.html shapes[i]
+        i = (if i < shapes.length - 1 then i + 1 else 0)
+      , 250)
+      params.post.yn = $this.is('#r_yep')
+      $other = (if params.post.yn then $('#r_nope') else $('#r_yep'))
+      $other.removeClass('r_active').addClass 'r_inactive'
+      $this.removeClass('r_inactive').addClass 'r_active'
+      Post::update params, ->
+        clearInterval loading
+        $close.html '&#10005;'
+      false
+
+    show_stuff = ->
+      $stuff.show()
+      $readers.hide() if readers
+      $('#r_stuff').addClass "r_active"
+
+    hide_stuff = ->
+      $stuff.hide()
+      $readers.show() if readers
+      $('#r_stuff').removeClass "r_active"
+    i = 0
+
+    while i < providers.length
+      $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{providers[i].name}</a></li>"
+      i++
+    $reading.append $stuff
+    $('#r_stuff').mouseenter(->
+      show_stuff()
+    ).click ->
+      false
+
+    $reading.mouseleave ->
+      hide_stuff()
+
+    $('a:not(#r_stuff)', $actions).mouseenter ->
+      hide_stuff()
+
+    $('.r_share', $reading).click ->
+      prov = providers[$(this).attr('data-provider_id')]
+      prov.run params.post
+
+    $(window).scroll ->
+      $('#r_close').click() if $actions.find('.r_active').length
+
+  <% if dbug %>console.log params<% end %>
+  Post::create params, (data) ->
+    if on_reading
+      window.location = (if has_token then "http://#{domain}/t/-/#{url}" else url)
+    else
+      params.post = data.post
+      readers = (if data.readers.length then data.readers else false)
+      show_overlay()
+      updating = false
+      setInterval (->
+        unless updating
+          updating = true
+          Post::update params, ->
+            updating = false
+      ), 15000

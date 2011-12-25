@@ -81,8 +81,7 @@ class PostsController < ApplicationController
           },
           :response => {
             :post => {
-              :id => @post.id,
-              :short_url => @post.short_url
+              :id => @post.id
             },
             :readers => User.who_posted_to(@post.page).collect { |user|
               user.simple_obj if user != @post.user # don't show the person posting
@@ -106,7 +105,6 @@ class PostsController < ApplicationController
     user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
     if allowed = (user == @post.user)
-      params[:post].delete(:short_url) # don't save the short url
       @post.attributes = params[:post]
     end
 

@@ -32,7 +32,7 @@ popup = (url, width, height) ->
 # var params comes in from the outside world as var reading
 
 url         = if on_reading then parse_url() else window.location.href
-title       = if on_reading then "" else window.document.title
+title       = if on_reading then null else window.document.title
 token       = reading.token ? 0
 platform    = reading.platform ? "bookmarklet"
 referrer_id = reading.referrer_id ? 0
@@ -67,6 +67,8 @@ class Post
 
 Post::find_or_create = (data, success) ->
   data.token = token
+  # don't send the null title or else it'll get posted
+  delete data.title if title is null
   $.ajax
     url: "http://#{domain}/posts/create.json"
     dataType: "jsonp"

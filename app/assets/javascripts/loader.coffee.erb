@@ -1,4 +1,9 @@
 #-----------------------------------------
+# Declare $ in top script scope
+
+$ = jQuery
+
+#-----------------------------------------
 # Libs
 libs = {}
 
@@ -143,12 +148,6 @@ render = (post, readers = false) ->
   $stuff    = $('<ul id="r_stuff_menu">')
   $reading  = $('<div id="r_am">').append($wrapper).append($stuff)
 
-  $(window).focus(->
-    win_focus = true
-  ).blur(->
-    win_focus = false
-  )
-
   if readers
     $readers = $('<ul id="r_readers">').append('<li>&#8258; Other Readers</li>')
     $.each readers, (i, user) ->
@@ -236,7 +235,9 @@ getScript = (url, success) ->
       script.onload = script.onreadystatechange = null
       head.removeChild script
   head.appendChild script
+
 otherlib = (typeof jQuery is 'undefined' and typeof $ is 'function')
+
 getScript 'http://code.jquery.com/jquery-latest.min.js', =>
   if typeof jQuery is 'undefined'
     alert 'There was an error loading Reading'
@@ -264,6 +265,13 @@ init = ->
       ), 2500
       # show yellow box
       render post, readers
+
+      $(window).focus(->
+        win_focus = true
+      ).blur(->
+        win_focus = false
+      )
+
 
 # TODO
 # - test on page without jQuery

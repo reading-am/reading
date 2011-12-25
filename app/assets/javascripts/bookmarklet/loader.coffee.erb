@@ -145,7 +145,7 @@ providers = [
 
 render = (post, readers = false) ->
   readers   = false if readers.length is 0
-  $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/loader.css").gsub(/\n/,"") %>').appendTo('head')
+  $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo('head')
   $icon     = $('<div id="r_icon">&#9996;</div>')
   $subtext  = $('<div>Reading</div>')
   $actions  = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>')

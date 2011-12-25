@@ -10,10 +10,10 @@ base58 = libs.encdec()
 
 domain = "<%= DOMAIN %>"
 short_domain = "<%= SHORT_DOMAIN %>"
+win_focus = true
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
-win_focus = true
 
 #-----------------------------------------
 # Helpers

@@ -216,7 +216,7 @@ getScript 'http://code.jquery.com/jquery-latest.min.js', =>
 init = ->
   return window.location = url if (token is "-" or (on_reading and not token))
 
-  Post::find_or_create {token: token, url: url, token: token, referrer_id: referrer_id}, (data) ->
+  Post::find_or_create {token: token, url: url, title: title, referrer_id: referrer_id}, (data) ->
     if on_reading
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer

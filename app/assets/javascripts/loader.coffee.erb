@@ -1,5 +1,3 @@
-<% dbug = Rails.env != 'production' %>
-
 #-----------------------------------------
 # Config Vars
 
@@ -35,7 +33,7 @@ referrer_id = reading.referrer_id ? 0
 
 class Post
 
-Post::create = (data, success) ->
+Post::find_or_create = (data, success) ->
   $.ajax
     url: "http://#{domain}/posts/create.json"
     dataType: "jsonp"
@@ -218,7 +216,7 @@ getScript 'http://code.jquery.com/jquery-latest.min.js', =>
 init = ->
   return window.location = url if (token is "-" or (on_reading and not token))
 
-  Post::create {token: token, url: url, token: token, referrer_id: referrer_id}, (data) ->
+  Post::find_or_create {token: token, url: url, token: token, referrer_id: referrer_id}, (data) ->
     if on_reading
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
@@ -226,13 +224,23 @@ init = ->
     else
       post = data.post
       readers = (if data.readers.length then data.readers else false)
+
+      # show the yellow box
       render(post, readers)
-      # FIXME scope on updating
-      updating = false
+
       # update the date_created every 15 seconds ala chartbeat
-      setInterval (->
+      # use fat arrows for proper scope of var updating
+      updating = false
+      setInterval (=>
         unless updating
           updating = true
-          Post::update params, ->
+          Post::update {token: token, post: post}, =>
             updating = false
       ), 15000
+
+# TODO
+# - test on page without jQuery
+# - test on page with readers
+# - test on page without /t/ and /p/
+# - test on wrapped link logged out
+# - check for window focus in update loop

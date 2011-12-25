@@ -13,6 +13,7 @@ short_domain = "<%= SHORT_DOMAIN %>"
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
+win_focus = true
 
 #-----------------------------------------
 # Helpers
@@ -142,6 +143,12 @@ render = (post, readers = false) ->
   $stuff    = $('<ul id="r_stuff_menu">')
   $reading  = $('<div id="r_am">').append($wrapper).append($stuff)
 
+  $(window).focus(->
+    win_focus = true
+  ).blur(->
+    win_focus = false
+  )
+
   if readers
     $readers = $('<ul id="r_readers">').append('<li>&#8258; Other Readers</li>')
     $.each readers, (i, user) ->
@@ -253,7 +260,7 @@ init = ->
       readers = data.readers
       # update the date_created every 15 seconds ala chartbeat
       setInterval (->
-        post.touch() if not post.loading and new Date - post.updated_at >= 15000
+        post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
       # show yellow box
       render post, readers
@@ -263,5 +270,4 @@ init = ->
 # - test on page with readers
 # - test on page without /t/ and /p/
 # - test on wrapped link logged out
-# - check for window focus in update loop
 # - check for empty title in window vs empty param

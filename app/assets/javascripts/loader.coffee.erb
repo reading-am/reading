@@ -146,11 +146,11 @@ render = (post, readers = false) ->
       $close.html shapes[i]
       i = (if i < shapes.length - 1 then i + 1 else 0)
     , 250)
-    params.post.yn = $this.is('#r_yep')
-    $other = (if params.post.yn then $('#r_nope') else $('#r_yep'))
+    post.yn = $this.is('#r_yep')
+    $other = (if post.yn then $('#r_nope') else $('#r_yep'))
     $other.removeClass('r_active').addClass 'r_inactive'
     $this.removeClass('r_inactive').addClass 'r_active'
-    Post::update params, ->
+    Post::update {token: token, post: post}, ->
       clearInterval loading
       $close.html '&#10005;'
     false

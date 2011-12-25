@@ -59,6 +59,7 @@ class Post
     @save success
 
 Post::find_or_create = (data, success) ->
+  data.token = token
   $.ajax
     url: "http://#{domain}/posts/create.json"
     dataType: "jsonp"
@@ -237,7 +238,7 @@ getScript 'http://code.jquery.com/jquery-latest.min.js', =>
 init = ->
   return window.location = url if (token is "-" or (on_reading and not token))
 
-  Post::find_or_create {token: token, url: url, title: title, referrer_id: referrer_id}, (data) ->
+  Post::find_or_create {url: url, title: title, referrer_id: referrer_id}, (data) ->
     if on_reading
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer

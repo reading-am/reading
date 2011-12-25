@@ -44,9 +44,11 @@ class Post
     @id = p.id
     @yn = p.yn
     @updated_at = new Date
+    @loading = false
   short_url: ->
     "#{short_domain}/p/#{base58.encode(@id)}"
   save: (success) ->
+    @loading = new Date
     $.ajax
       url: "http://#{domain}/posts/#{@id}/update.json"
       dataType: "jsonp"
@@ -54,7 +56,8 @@ class Post
         token: token
         post:
           yn: @yn
-      success: (data, textStatus, jqXHR) ->
+      success: (data, textStatus, jqXHR) =>
+        @loading = false
         if data.meta.status isnt 400
           @updated_at = new Date
           success data.response if success
@@ -250,8 +253,8 @@ init = ->
       readers = data.readers
       # update the date_created every 15 seconds ala chartbeat
       setInterval (->
-        post.touch() if new Date - post.updated_at > 15000
-      ), 5000
+        post.touch() if not post.loading and new Date - post.updated_at >= 15000
+      ), 2500
       # show yellow box
       render post, readers
 

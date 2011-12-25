@@ -1,7 +1,7 @@
 # From: https://github.com/ianoxley/encdec
 # translated at: http://js2coffee.org
 
-encdec = (alphabet) ->
+libs.encdec = (alphabet) ->
   BASE_58 = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
   alphabet = alphabet or BASE_58
   baseCount = alphabet.length

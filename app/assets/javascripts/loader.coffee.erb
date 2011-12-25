@@ -1,7 +1,14 @@
 #-----------------------------------------
+# Libs
+
+<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
+base58 = encdec()
+
+#-----------------------------------------
 # Config Vars
 
 domain = "<%= DOMAIN %>"
+short_domain = "<%= SHORT_DOMAIN %>"
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
@@ -32,6 +39,23 @@ referrer_id = reading.referrer_id ? 0
 # Classes
 
 class Post
+  constructor: (p) ->
+    @id = p.id
+    @yn = p.yn
+  short_url: ->
+    "#{short_domain}/p/#{base58.encode(@id)}"
+  save: (success) ->
+    $.ajax
+      url: "http://#{domain}/posts/#{@id}/update.json"
+      dataType: "jsonp"
+      data:
+        token: token
+        post:
+          yn: @yn
+      success: (data, textStatus, jqXHR) ->
+        success data.response if data.meta.status isnt 400 and success
+  touch: (success) ->
+    @save success
 
 Post::find_or_create = (data, success) ->
   $.ajax
@@ -41,15 +65,11 @@ Post::find_or_create = (data, success) ->
     success: (data, textStatus, jqXHR) ->
       if data.meta.status is 400
         alert "Sorry, an error prevented this page from being posted to Reading"
-      else success data.response if success
+      else if success
+        data.response.post = new Post data.response.post
+        success data.response
 
-Post::update = (data, success) ->
-  $.ajax
-    url: "http://#{domain}/posts/#{data.post.id}/update.json"
-    dataType: "jsonp"
-    data: data
-    success: (data, textStatus, jqXHR) ->
-      success data.response if data.meta.status isnt 400 and success
+Post::
 
 class Provider
   constructor: (p) ->
@@ -59,7 +79,7 @@ class Provider
   url: (post) ->
     vals =
       url: url
-      shorturl: "http://#{post.short_url}"
+      short_url: "http://#{post.short_url()}"
       title: title
     parsed_url = @url_scheme
     for val of vals
@@ -74,13 +94,13 @@ class Provider
 providers = [
   new Provider
     name: "Twitter"
-    url_scheme: "https://twitter.com/share?url={shorturl}&text=✌%20Reading%20%22{title}%22"
+    url_scheme: "https://twitter.com/share?url={short_url}&text=✌%20Reading%20%22{title}%22"
     action: (url) ->
       popup url, 475, 345
 ,
   new Provider
     name: "Facebook"
-    url_scheme: "https://www.facebook.com/sharer.php?u={shorturl}&t={title}"
+    url_scheme: "https://www.facebook.com/sharer.php?u={short_url}&t={title}"
     action: (url) ->
       popup url, 520, 370
 ,
@@ -148,7 +168,7 @@ render = (post, readers = false) ->
     $other = (if post.yn then $('#r_nope') else $('#r_yep'))
     $other.removeClass('r_active').addClass 'r_inactive'
     $this.removeClass('r_inactive').addClass 'r_active'
-    Post::update {token: token, post: post}, ->
+    post.save ->
       clearInterval loading
       $close.html '&#10005;'
     false
@@ -234,7 +254,7 @@ init = ->
       setInterval (=>
         unless updating
           updating = true
-          Post::update {token: token, post: post}, =>
+          post.touch =>
             updating = false
       ), 15000
 

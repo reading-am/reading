@@ -43,6 +43,7 @@ class Post
   constructor: (p) ->
     @id = p.id
     @yn = p.yn
+    @updated_at = new Date
   short_url: ->
     "#{short_domain}/p/#{base58.encode(@id)}"
   save: (success) ->
@@ -54,7 +55,9 @@ class Post
         post:
           yn: @yn
       success: (data, textStatus, jqXHR) ->
-        success data.response if data.meta.status isnt 400 and success
+        if data.meta.status isnt 400
+          @updated_at = new Date
+          success data.response if success
   touch: (success) ->
     @save success
 
@@ -70,8 +73,6 @@ Post::find_or_create = (data, success) ->
       else if success
         data.response.post = new Post data.response.post
         success data.response
-
-Post::
 
 class Provider
   constructor: (p) ->
@@ -129,6 +130,7 @@ providers = [
 # Renderer for yellow popover
 
 render = (post, readers = false) ->
+  readers   = false if readers.length is 0
   $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/loader.css").gsub(/\n/,"") %>').appendTo('head')
   $icon     = $('<div id="r_icon">&#9996;</div>')
   $subtext  = $('<div>Reading</div>')
@@ -245,20 +247,13 @@ init = ->
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{domain}/t/-/#{url}" else url
     else
       post = data.post
-      readers = (if data.readers.length then data.readers else false)
-
-      # show the yellow box
-      render(post, readers)
-
+      readers = data.readers
       # update the date_created every 15 seconds ala chartbeat
-      # use fat arrows for proper scope of var updating
-      updating = false
-      setInterval (=>
-        unless updating
-          updating = true
-          post.touch =>
-            updating = false
-      ), 15000
+      setInterval (->
+        post.touch() if new Date - post.updated_at > 15000
+      ), 5000
+      # show yellow box
+      render post, readers
 
 # TODO
 # - test on page without jQuery

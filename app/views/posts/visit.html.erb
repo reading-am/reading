@@ -5,7 +5,7 @@ reading = {
 };
 </script>
 
-<%= javascript_include_tag (Rails.env == 'production' ? 'reading' : 'loader') %>
+<%= javascript_include_tag 'bookmarklet/loader' %>
 
 <div id="visit">
   <h2>Loading <span><%= params[:url] %></span><% if logged_in? %> and adding it to your reading list<% end %>.</h2>

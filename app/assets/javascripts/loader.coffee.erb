@@ -24,8 +24,8 @@ parse_url = ->
 #-----------------------------------------
 # var params comes in from the outside world as var reading
 
-url         = parse_url()
-title       = if !on_reading then window.document.title else ""
+url         = if on_reading then parse_url() else window.location.href
+title       = if on_reading then "" else window.document.title
 token       = reading.token ? 0
 platform    = reading.platform ? "bookmarklet"
 referrer_id = reading.referrer_id ? 0
@@ -108,7 +108,7 @@ providers = [
 #-----------------------------------------
 # Renderer for yellow popover
 
-render = =>
+render = ->
   $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/loader.css").gsub(/\n/,"") %>').appendTo('head')
   $icon     = $('<div id="r_icon">&#9996;</div>')
   $subtext  = $('<div>Reading</div>')
@@ -220,12 +220,16 @@ init = ->
 
   Post::create {token: token, url: url, token: token, referrer_id: referrer_id}, (data) ->
     if on_reading
+      # forward back through to Reading so that the user's
+      # token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{domain}/t/-/#{url}" else url
     else
-      params.post = data.post
+      post = data.post
       readers = (if data.readers.length then data.readers else false)
       render()
+      # FIXME scope on updating
       updating = false
+      # update the date_created every 15 seconds ala chartbeat
       setInterval (->
         unless updating
           updating = true

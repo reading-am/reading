@@ -9,15 +9,15 @@ on_reading = window.location.host.indexOf("reading.am") is 0 or
 #-----------------------------------------
 # Helpers
 
-popup = (url, width, height) ->
-  window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
-
 parse_url = ->
   url = window.location.href.split(window.location.host)[1].substring(1)
   while url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/'
     url = url.substring(url.indexOf('/', 2) + 1)
   url = "http://#{url}" if url.indexOf('://') is -1
   url
+
+popup = (url, width, height) ->
+  window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
 #-----------------------------------------
 # var params comes in from the outside world as var reading
@@ -244,3 +244,4 @@ init = ->
 # - test on page without /t/ and /p/
 # - test on wrapped link logged out
 # - check for window focus in update loop
+# - check for empty title in window vs empty param

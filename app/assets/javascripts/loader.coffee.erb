@@ -1,8 +1,9 @@
 #-----------------------------------------
 # Libs
+libs = {}
 
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
-base58 = encdec()
+base58 = libs.encdec()
 
 #-----------------------------------------
 # Config Vars

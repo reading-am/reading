@@ -11,7 +11,7 @@ $(window).focus(function(){
   window.hasfocus = false;
 });
 
-window.base58 = encdec();
+window.base58 = libs.encdec();
 
 $(function() {
   $("a.external").on('click', function(){

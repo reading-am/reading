@@ -108,7 +108,7 @@ providers = [
 #-----------------------------------------
 # Renderer for yellow popover
 
-render = ->
+render = (post, readers = false) ->
   $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/loader.css").gsub(/\n/,"") %>').appendTo('head')
   $icon     = $('<div id="r_icon">&#9996;</div>')
   $subtext  = $('<div>Reading</div>')
@@ -183,7 +183,7 @@ render = ->
 
   $('.r_share', $reading).click ->
     provider = providers[$(this).attr('data-provider_id')]
-    provider.run params.post
+    provider.run post
 
   $(window).scroll ->
     $('#r_close').click() if $actions.find('#r_yep.r_active, #r_nope.r_active').length
@@ -226,7 +226,7 @@ init = ->
     else
       post = data.post
       readers = (if data.readers.length then data.readers else false)
-      render()
+      render(post, readers)
       # FIXME scope on updating
       updating = false
       # update the date_created every 15 seconds ala chartbeat

@@ -1,4 +1,4 @@
-#r_am, #r_am *, #r_preloader {
+#r_am, #r_am * {
   padding:0;
   margin:0;
   color:#000;
@@ -17,18 +17,12 @@
   letter-spacing:normal;
   list-style:none;
 }
-#r_am, #r_preloader {
+#r_am {
   display:none;
   z-index:99999999;
   position:fixed;
   top:15px;
   right:15px;
-}
-#r_preloader {
-  z-index:99999998;
-  color:#000;
-  background:#FFF;
-  padding:3px 5px;
 }
 #r_wrp {
   overflow:hidden;

@@ -45,23 +45,26 @@ class PostsController < ApplicationController
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
     @post.yn    = params[:yn]
-    # A post is a duplicate if it's the exact same page and within 1hr of the last post
-    duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first : false;
-    # TODO - clean up these conditionals for duplicates and the same in the respond_to
-    if !duplicate
-      event = :new
-      if @post.page.new_record?
-        @post.page.title = !params[:title].nil? ? params[:title] : @post.page.remote_title
-      end
-      @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
-    else
-      @post = duplicate
-      @post.yn = params[:yn] if !params[:yn].nil?
-      if !@post.changed?
-        event = :duplicate
-        @post.touch
+
+    unless @post.user.nil?
+      # A post is a duplicate if it's the exact same page and within 1hr of the last post
+      duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first : false;
+      # TODO - clean up these conditionals for duplicates and the same in the respond_to
+      if !duplicate
+        event = :new
+        if @post.page.new_record?
+          @post.page.title = !params[:title].nil? ? params[:title] : @post.page.remote_title
+        end
+        @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
       else
-        event = @post.yn ? :yep : :nope
+        @post = duplicate
+        @post.yn = params[:yn] if !params[:yn].nil?
+        if !@post.changed?
+          event = :duplicate
+          @post.touch
+        else
+          event = @post.yn ? :yep : :nope
+        end
       end
     end
 

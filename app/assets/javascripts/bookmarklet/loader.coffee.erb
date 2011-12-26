@@ -195,13 +195,15 @@ render = (post, readers = false) ->
     $stuff.show()
     $readers.hide() if readers
     $('#r_stuff').addClass "r_active"
+    false
 
   hide_stuff = ->
     $stuff.hide()
     $readers.show() if readers
     $('#r_stuff').removeClass "r_active"
-  i = 0
+    false
 
+  i = 0
   while i < providers.length
     $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{providers[i].name}</a></li>"
     i++
@@ -220,6 +222,7 @@ render = (post, readers = false) ->
   $('.r_share', $reading).click ->
     provider = providers[$(this).attr('data-provider_id')]
     provider.run post
+    false
 
   $(window).scroll ->
     $('#r_close').click() if $actions.find('#r_yep.r_active, #r_nope.r_active').length

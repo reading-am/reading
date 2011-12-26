@@ -143,7 +143,7 @@ providers = [
 render = (post, readers = false) ->
   readers   = false if readers.length is 0
 
-  $reading  = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>')
+  $reading  = $("#r_am")
   $icon     = $("#r_icon", $reading)
   $actions  = $("#r_actions", $reading)
   $wrapper  = $("#r_wrp", $reading)
@@ -154,15 +154,12 @@ render = (post, readers = false) ->
     $.each readers, (i, user) ->
       $readers.append "<li><a href=\"http://#{domain}/#{user.username}\">#{user.display_name}</a></li>"
 
-  $('body').prepend $reading
-  $('#r_preloader').fadeOut(500, -> $(this).remove())
-  $reading.fadeIn 500, ->
-    $wrapper.delay(1000).animate
-      height: "14px"
-      width: $actions.width()
+  $wrapper.delay(500).animate
+    height: "14px"
+    width: $actions.width()
 
-    $icon.delay(1000).animate 'margin-top': '-52px'
-    $readers.delay(1200).slideDown()  if readers
+  $icon.delay(500).animate 'margin-top': '-52px'
+  $readers.delay(700).slideDown()  if readers
 
   $('#r_close').click ->
     $reading.fadeOut 400, ->
@@ -229,11 +226,6 @@ render = (post, readers = false) ->
     provider.run post
     false
 
-  # if they've selected yep or nope, hide reading on scroll
-  # consider removing this behavior
-  $(window).scroll ->
-    $('#r_close').click() if $actions.find('#r_yep.r_active, #r_nope.r_active').length
-
   # sync up the UI with the model that was returned on find_or_create
   yep_nope(post.yn) if post.yn?
 
@@ -260,8 +252,9 @@ load_script = (url, success) ->
 init = ->
   return window.location = url if (token is "-" or (on_reading and not token))
 
-  $css = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo('head')
-  $("<div id=\"r_preloader\">&#9996; Loading</div>").appendTo('body').fadeIn(200)
+  $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
+  $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
+  $html.fadeIn 500
 
   Post::find_or_create {url: url, title: title, referrer_id: referrer_id}, (data) ->
     if on_reading

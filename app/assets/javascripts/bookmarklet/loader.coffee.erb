@@ -116,25 +116,21 @@ providers = [
     url_scheme: "https://twitter.com/share?url={short_url}&text=✌%20Reading%20%22{title}%22"
     action: (url) ->
       popup url, 475, 345
-,
   new Provider
     name: "Facebook"
     url_scheme: "https://www.facebook.com/sharer.php?u={short_url}&t={title}"
     action: (url) ->
       popup url, 520, 370
-,
   new Provider
     name: "Instapaper"
     url_scheme: "http://www.instapaper.com/hello2?url={url}&title={title}"
     action: (url) ->
       window.location = url
-,
   new Provider
     name: "Readability"
     url_scheme: "http://www.readability.com/save?url={url}"
     action: (url) ->
       window.location = url
-,
   new Provider
     name: "Read It Later"
     url_scheme: "https://readitlaterlist.com/save?url={url}&title={title}"

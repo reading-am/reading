@@ -145,7 +145,6 @@ providers = [
 
 render = (post, readers = false) ->
   readers   = false if readers.length is 0
-  $css      = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo('head')
   $icon     = $('<div id="r_icon">&#9996;</div>')
   $subtext  = $('<div>Reading</div>')
   $actions  = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>')
@@ -160,6 +159,7 @@ render = (post, readers = false) ->
     $reading.append $readers
 
   $('body').prepend $reading
+  $('#r_preloader').fadeOut(500, -> $(this).remove())
   $reading.fadeIn 500, ->
     $wrapper.delay(1000).animate
       height: "14px"
@@ -249,6 +249,9 @@ load_script = (url, success) ->
 
 init = ->
   return window.location = url if (token is "-" or (on_reading and not token))
+
+  $css = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo('head')
+  $("<div id=\"r_preloader\">&#9996; Loading</div>").appendTo('body').fadeIn(200)
 
   Post::find_or_create {url: url, title: title, referrer_id: referrer_id}, (data) ->
     if on_reading

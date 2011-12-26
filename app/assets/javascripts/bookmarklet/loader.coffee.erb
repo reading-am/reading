@@ -1,11 +1,10 @@
 #-----------------------------------------
-# TODO tests
+# TODO
 # + test on page without jQuery
 # + test on page with readers
 # + test on page without /t/ and /p/
 # + test on wrapped link logged out
 # - check for empty title in window vs empty param
-# - populate yep nope on create_find
 
 #-----------------------------------------
 # Libs
@@ -170,23 +169,32 @@ render = (post, readers = false) ->
       $reading.remove()
     false
 
-  $('#r_yep, #r_nope').click ->
-    $this = $(this)
-    $close = $('#r_close')
-    i = 0
-    shapes = ['&#10043;', '&#10044;', '&#10045;', '&#10046;']
-    loading = setInterval(->
-      $close.html shapes[i]
-      i = (if i < shapes.length - 1 then i + 1 else 0)
-    , 250)
-    post.yn = $this.is('#r_yep')
-    $other = (if post.yn then $('#r_nope') else $('#r_yep'))
-    $other.removeClass('r_active').addClass 'r_inactive'
+  yep_nope = (state) ->
+    # set the UI
+    $this   = (if state then $('#r_yep') else $('#r_nope'))
+    $other  = (if state then $('#r_nope') else $('#r_yep'))
     $this.removeClass('r_inactive').addClass 'r_active'
-    post.save ->
-      clearInterval loading
-      $close.html '&#10005;'
+    $other.removeClass('r_active').addClass 'r_inactive'
+
+    if post.yn isnt state
+      # show the loader
+      $close = $('#r_close')
+      i = 0
+      shapes = ['&#10043;', '&#10044;', '&#10045;', '&#10046;']
+      loading = setInterval(->
+        $close.html shapes[i]
+        i = (if i < shapes.length - 1 then i + 1 else 0)
+      , 250)
+      # save the post state
+      post.yn = state
+      post.save ->
+        clearInterval loading
+        $close.html '&#10005;'
+    #return
     false
+
+  $('#r_yep, #r_nope').click ->
+    yep_nope $(this).is('#r_yep')
 
   show_stuff = ->
     $stuff.show()
@@ -221,8 +229,13 @@ render = (post, readers = false) ->
     provider.run post
     false
 
+  # if they've selected yep or nope, hide reading on scroll
+  # consider removing this behavior
   $(window).scroll ->
     $('#r_close').click() if $actions.find('#r_yep.r_active, #r_nope.r_active').length
+
+  # sync up the UI with the model that was returned on find_or_create
+  yep_nope(post.yn) if post.yn?
 
 
 #-----------------------------------------

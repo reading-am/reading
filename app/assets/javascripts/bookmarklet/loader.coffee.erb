@@ -59,7 +59,7 @@ class Post
     "#{short_domain}/p/#{base58.encode(@id)}"
   save: (success) ->
     @loading = new Date
-    data
+    data =
       post: # the id is passed in the url
         yn: @yn
     data.token = token if token
@@ -143,18 +143,17 @@ providers = [
 
 render = (post, readers = false) ->
   readers   = false if readers.length is 0
-  $icon     = $('<div id="r_icon">&#9996;</div>')
-  $subtext  = $('<div>Reading</div>')
-  $actions  = $('<div id="r_actions"><a href="#" id="r_yep">Yep</a> . <a href="#" id="r_nope">Nope</a> &#8942; <a href="#" id="r_stuff">Stuff</a> &#8942; <a href="#" id="r_close">&#10005;</a></div>')
-  $wrapper  = $('<div id="r_wrp">').append($icon).append($subtext).append($actions)
-  $stuff    = $('<ul id="r_stuff_menu">')
-  $reading  = $('<div id="r_am">').append($wrapper).append($stuff)
+
+  $reading  = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>')
+  $icon     = $("#r_icon", $reading)
+  $actions  = $("#r_actions", $reading)
+  $wrapper  = $("#r_wrp", $reading)
+  $stuff    = $("#r_stuff_menu", $reading)
+  $readers  = $("#r_readers", $reading)
 
   if readers
-    $readers = $('<ul id="r_readers">').append('<li>&#8258; Other Readers</li>')
     $.each readers, (i, user) ->
       $readers.append "<li><a href=\"http://#{domain}/#{user.username}\">#{user.display_name}</a></li>"
-    $reading.append $readers
 
   $('body').prepend $reading
   $('#r_preloader').fadeOut(500, -> $(this).remove())

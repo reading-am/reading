@@ -42,7 +42,7 @@ popup = (url, width, height) ->
 
 url         = if on_reading then parse_url() else window.location.href
 title       = if on_reading then null else window.document.title
-token       = reading.token ? 0
+token       = reading.token ? null
 platform    = reading.platform ? "bookmarklet"
 referrer_id = reading.referrer_id ? 0
 
@@ -59,13 +59,14 @@ class Post
     "#{short_domain}/p/#{base58.encode(@id)}"
   save: (success) ->
     @loading = new Date
+    data
+      post: # the id is passed in the url
+        yn: @yn
+    data.token = token if token
     $.ajax
       url: "http://#{domain}/posts/#{@id}/update.json"
       dataType: "jsonp"
-      data:
-        token: token
-        post:
-          yn: @yn
+      data: data
       success: (data, textStatus, jqXHR) =>
         @loading = false
         if data.meta.status isnt 400
@@ -75,7 +76,7 @@ class Post
     @save success
 
 Post::find_or_create = (data, success) ->
-  data.token = token
+  data.token = token if token
   # don't send the null title or else it'll get posted
   delete data.title if title is null
   $.ajax

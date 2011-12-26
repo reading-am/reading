@@ -94,7 +94,7 @@ var $css = $('<style type="text/css">'+
     $subtext = $('<div>'+
                   '<div id="r_head">&#9996; It\'s time to upgrade your bookmarklet. Fantastic.</div>'+
                   '<div id="r_upgrade"><a href="'+bookmarklet+'" class="r_active">Drag me to your bookmark bar</a></div>'+
-                  '<div id="r_details">Don\'t forget to delete your old bookmarklet. Find <a href="http://writing.reading.am/post/14787029326/all-i-want-for-christmas-is-a-new-bookmarklet-that">details here</a> or <a href="mailto:hello@reading.am">help here</a>.</div>'+
+                  '<div id="r_details">Don\'t forget to delete your old bookmarklet. Find <a href="http://writing.reading.am/post/14787029326/all-i-want-for-christmas-is-a-new-bookmarklet-that" target=_blank>details here</a> or <a href="mailto:hello@reading.am">help here</a>.</div>'+
                 '</div>'),
     $wrapper = $('<div id="r_wrp">').append($subtext),
     $reading = $('<div id="r_am">').append($wrapper);

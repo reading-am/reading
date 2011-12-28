@@ -1,3 +1,6 @@
+$blue: #B3FEFF;
+$dark_blue: #00FBFF;
+
 .post.referred_post a.external {
   background:#EEE;
 }
@@ -10,3 +13,20 @@
 .post.new {
   opacity:0.3;
 }
+.info {
+  background:none;
+  border:1px dotted #999;
+  color:#999;
+  display:inline-block;
+  width:13px; height: 13px;
+  line-height:9px;
+  margin:0 5px;
+  text-align:center;
+  border-radius:2px;
+}
+  .info:hover {
+    background:$blue;
+    text-decoration:none;
+    color:#000;
+    border-color:#000;
+  }

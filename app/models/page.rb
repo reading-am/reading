@@ -25,6 +25,10 @@ public
     "http://#{DOMAIN}/#{self.url}"
   end
 
+  def display_title
+    !title.blank? ? title : url
+  end
+
   def remote_title
     c = Curl::Easy.perform self.url
     doc = Nokogiri::HTML(c.body_str)

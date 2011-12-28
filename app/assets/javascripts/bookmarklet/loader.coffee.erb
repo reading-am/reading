@@ -22,6 +22,8 @@ win_focus = true
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
+active = "r_active"
+inactive = "r_inactive"
 
 #-----------------------------------------
 # Helpers
@@ -167,11 +169,17 @@ render = (post, readers = false) ->
     false
 
   yep_nope = (state) ->
-    # set the UI
     $this   = (if state then $('#r_yep') else $('#r_nope'))
     $other  = (if state then $('#r_nope') else $('#r_yep'))
-    $this.removeClass('r_inactive').addClass 'r_active'
-    $other.removeClass('r_active').addClass 'r_inactive'
+
+    # set the UI
+    if $this.hasClass(active)
+      $this.removeClass active
+      $other.removeClass inactive
+      state = null
+    else
+      $this.removeClass(inactive).addClass active
+      $other.removeClass(active).addClass inactive
 
     if post.yn isnt state
       # show the loader
@@ -252,9 +260,10 @@ load_script = (url, success) ->
 init = ->
   return window.location = url if (token is "-" or (on_reading and not token))
 
-  $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
-  $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
-  $html.fadeIn 500
+  if not on_reading
+    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
+    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
+    $html.fadeIn 500
 
   Post::find_or_create {url: url, title: title, referrer_id: referrer_id}, (data) ->
     if on_reading

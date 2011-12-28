@@ -108,7 +108,8 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
-    if allowed = (user == @post.user)
+    if allowed = (user == @post.user) and !params[:post].nil?
+      params[:post][:yn] = nil if !params[:post][:yn].nil? and params[:post][:yn] == 'null'
       @post.attributes = params[:post]
     end
 

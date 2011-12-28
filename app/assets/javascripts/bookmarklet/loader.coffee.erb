@@ -51,7 +51,7 @@ referrer_id = reading.referrer_id ? 0
 class Post
   constructor: (p) ->
     @id = p.id
-    @yn = p.yn
+    @yn = p.yn if p.yn?
     @updated_at = new Date
     @loading = false
   short_url: ->

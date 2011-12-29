@@ -22,8 +22,13 @@ win_focus = true
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
+
+#-----------------------------------------
+# Content Vars
 active = "r_active"
 inactive = "r_inactive"
+errors =
+  general: "Sorry, something went wrong. If you keep getting this error, would you mind letting us know at hello@reading.am?"
 
 #-----------------------------------------
 # Helpers
@@ -77,6 +82,9 @@ class Post
     @save success
 
 Post::find_or_create = (data, success) ->
+  # validations
+  return alert errors.general if !data.url or data.url is "about:blank"
+
   data.token = token if token
   # don't send the null title or else it'll get posted
   delete data.title if title is null
@@ -86,7 +94,7 @@ Post::find_or_create = (data, success) ->
     data: data
     success: (data, textStatus, jqXHR) ->
       if data.meta.status is 400
-        alert "Sorry, an error prevented this page from being posted to Reading"
+        alert errors.general
       else if success
         data.response.post = new Post data.response.post
         success data.response

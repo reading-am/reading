@@ -286,12 +286,12 @@ load_script = (url, success) ->
 
 self = this
 reading.submit = submit = (params) ->
-  render_loading()
+  render_loading() if platform isnt "redirect"
   Post::find_or_create params, (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
-      window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{domain}/t/-/#{url}" else url
+      window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{domain}/t/-/#{params.url}" else params.url
     else
       post = data.post
       readers = data.readers

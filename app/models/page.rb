@@ -30,7 +30,10 @@ public
   end
 
   def remote_title
-    c = Curl::Easy.perform self.url
+    c = Curl::Easy.new
+    c.follow_location = true
+    c.url = self.url
+    c.perform
     doc = Nokogiri::HTML(c.body_str)
     title = doc.search('title').first
     title.nil? ? '' : title.text

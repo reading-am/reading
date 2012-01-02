@@ -19,6 +19,7 @@ base58 = libs.encdec()
 domain = "<%= DOMAIN %>"
 short_domain = "<%= SHORT_DOMAIN %>"
 win_focus = true
+reading.ready = false
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
@@ -260,8 +261,8 @@ load_script = (url, success) ->
 #-----------------------------------------
 # Submit the post
 
-reading.submit = submit = (url, title, referrer_id) ->
-  Post::find_or_create {url: url, title: title, referrer_id: referrer_id}, (data) ->
+reading.submit = submit = (params) ->
+  Post::find_or_create params, (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
@@ -270,26 +271,36 @@ reading.submit = submit = (url, title, referrer_id) ->
       post = data.post
       readers = data.readers
       # update the date_created every 15 seconds ala chartbeat
+      # consider not doing this for context-menu posts
+      # TODO kill this when a new post happens
       setInterval (->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 
       render post, readers
 
-      $(window).focus(->
-        win_focus = true
-      ).blur(->
-        win_focus = false
-      )
-
 #-----------------------------------------
 # Initialize!
 
 init = ->
+  # fire an event to let people know reading is ready
+  # can't seem to use jquery.trigger for events attached
+  # without jquery
+  e = document.createEvent 'Event'
+  e.initEvent 'reading.ready', true, true
+  document.dispatchEvent e
+  reading.ready = true
+
   unless platform is "redirect"
     $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
     $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
     $html.fadeIn 500
+
+    $(window).focus(->
+      win_focus = true
+    ).blur(->
+      win_focus = false
+    )
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"
@@ -300,7 +311,7 @@ init = ->
       url = window.location.href
       title = window.document.title
 
-    submit url, title, reading.referrer_id ? 0
+    submit {url: url, title: title, referrer_id: reading.referrer_id ? 0}
 
 #-----------------------------------------
 # Check for jQuery and initialize

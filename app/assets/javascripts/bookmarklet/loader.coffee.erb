@@ -281,6 +281,7 @@ load_script = (url, success) ->
 #-----------------------------------------
 # Submit the post
 
+self = this
 reading.submit = submit = (params) ->
   render_loading()
   Post::find_or_create params, (data) ->
@@ -293,8 +294,8 @@ reading.submit = submit = (params) ->
       readers = data.readers
       # update the date_created every 15 seconds ala chartbeat
       # consider not doing this for context-menu posts
-      # TODO kill this when a new post happens
-      setInterval (->
+      clearInterval self.interval if self.interval?
+      self.interval = setInterval (->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 

@@ -144,9 +144,21 @@ providers = [
 ]
 
 #-----------------------------------------
+# Renderer peace sign loader
+
+render_loading = ->
+  $reading = $("#r_am")
+  if(!$reading.length)
+    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
+    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
+    $html.fadeIn 500
+  else
+    $("#r_icon", $reading).animate "margin-top": "-27px"
+
+#-----------------------------------------
 # Renderer for yellow popover
 
-render = (post, readers = false) ->
+render_menu = (post, readers = false) ->
   readers   = false if readers.length is 0
 
   $reading  = $("#r_am")
@@ -156,6 +168,9 @@ render = (post, readers = false) ->
   $stuff    = $("#r_stuff_menu", $reading)
   $readers  = $("#r_readers", $reading)
 
+  first_post= !$reading.hasClass('r_submitted')
+
+  $readers.slideUp().html '<li>&#8258; Other Readers</li>' # clear previous readers
   if readers
     $.each readers, (i, user) ->
       $readers.append "<li><a href=\"http://#{domain}/#{user.username}\">#{user.display_name}</a></li>"
@@ -164,83 +179,88 @@ render = (post, readers = false) ->
     height: "14px"
     width: $actions.width()
 
-  $icon.delay(500).animate 'margin-top': '-52px'
-  $readers.delay(700).slideDown()  if readers
+  $icon.delay(500).animate "margin-top": "-52px", ->
+    $reading.addClass('r_submitted')
+  $readers.delay(700).slideDown() if readers
 
-  $('#r_close').click ->
-    $reading.fadeOut 400, ->
-      $reading.remove()
-    false
+  if first_post
+    $('#r_close').click ->
+      $reading.fadeOut 400, ->
+        $reading.remove()
+      false
 
-  yep_nope = (state) ->
-    $this   = (if state then $('#r_yep') else $('#r_nope'))
-    $other  = (if state then $('#r_nope') else $('#r_yep'))
+    show_stuff = ->
+      $stuff.show()
+      $readers.hide() if readers
+      $('#r_stuff').addClass "r_active"
+      false
 
-    # set the UI
-    if $this.hasClass(active)
-      $this.removeClass active
-      $other.removeClass inactive
-      state = null
-    else
-      $this.removeClass(inactive).addClass active
-      $other.removeClass(active).addClass inactive
+    hide_stuff = ->
+      $stuff.hide()
+      $readers.show() if readers
+      $('#r_stuff').removeClass "r_active"
+      false
 
-    if post.yn isnt state
-      # show the loader
-      $close = $('#r_close')
-      i = 0
-      shapes = ['&#10043;', '&#10044;', '&#10045;', '&#10046;']
-      loading = setInterval(->
-        $close.html shapes[i]
-        i = (if i < shapes.length - 1 then i + 1 else 0)
-      , 250)
-      # save the post state
-      post.yn = state
-      post.save ->
-        clearInterval loading
-        $close.html '&#10005;'
-    #return
-    false
+    i = 0
+    while i < providers.length
+      $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{providers[i].name}</a></li>"
+      i++
+    $reading.append $stuff
+    $('#r_stuff').mouseenter(->
+      show_stuff()
+    ).click ->
+      false
 
-  $('#r_yep, #r_nope').click ->
-    yep_nope $(this).is('#r_yep')
+    $reading.mouseleave ->
+      hide_stuff()
 
-  show_stuff = ->
-    $stuff.show()
-    $readers.hide() if readers
-    $('#r_stuff').addClass "r_active"
-    false
+    $('a:not(#r_stuff)', $actions).mouseenter ->
+      hide_stuff()
 
-  hide_stuff = ->
-    $stuff.hide()
-    $readers.show() if readers
-    $('#r_stuff').removeClass "r_active"
-    false
+  $('#r_yep, #r_nope').removeClass("#{active} #{inactive}").unbind().click ->
+    yep_nope post, $(this).is('#r_yep')
 
-  i = 0
-  while i < providers.length
-    $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{providers[i].name}</a></li>"
-    i++
-  $reading.append $stuff
-  $('#r_stuff').mouseenter(->
-    show_stuff()
-  ).click ->
-    false
-
-  $reading.mouseleave ->
-    hide_stuff()
-
-  $('a:not(#r_stuff)', $actions).mouseenter ->
-    hide_stuff()
-
-  $('.r_share', $reading).click ->
+  $('.r_share', $reading).unbind().click ->
     provider = providers[$(this).attr('data-provider_id')]
     provider.run post
     false
 
   # sync up the UI with the model that was returned on find_or_create
-  yep_nope(post.yn) if post.yn?
+  yep_nope(post, post.yn) if post.yn?
 
+
+#-----------------------------------------
+# Post and render the yep nope state
+
+yep_nope = (post, state) ->
+  $this   = (if state then $('#r_yep') else $('#r_nope'))
+  $other  = (if state then $('#r_nope') else $('#r_yep'))
+
+  # set the UI
+  if $this.hasClass(active)
+    $this.removeClass active
+    $other.removeClass inactive
+    state = null
+  else
+    $this.removeClass(inactive).addClass active
+    $other.removeClass(active).addClass inactive
+
+  if post.yn isnt state
+    # show the loader
+    $close = $('#r_close')
+    i = 0
+    shapes = ['&#10043;', '&#10044;', '&#10045;', '&#10046;']
+    loading = setInterval(->
+      $close.html shapes[i]
+      i = (if i < shapes.length - 1 then i + 1 else 0)
+    , 250)
+    # save the post state
+    post.yn = state
+    post.save ->
+      clearInterval loading
+      $close.html '&#10005;'
+  #return
+  false
 
 #-----------------------------------------
 # Script Loader
@@ -262,6 +282,7 @@ load_script = (url, success) ->
 # Submit the post
 
 reading.submit = submit = (params) ->
+  render_loading()
   Post::find_or_create params, (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's
@@ -277,7 +298,7 @@ reading.submit = submit = (params) ->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 
-      render post, readers
+      render_menu post, readers
 
 #-----------------------------------------
 # Initialize!
@@ -291,16 +312,11 @@ init = ->
   document.dispatchEvent e
   reading.ready = true
 
-  unless platform is "redirect"
-    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
-    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
-    $html.fadeIn 500
-
-    $(window).focus(->
-      win_focus = true
-    ).blur(->
-      win_focus = false
-    )
+  $(window).focus(->
+    win_focus = true
+  ).blur(->
+    win_focus = false
+  )
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"

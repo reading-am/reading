@@ -85,7 +85,11 @@ class PostsController < ApplicationController
           :response => {
             :post => {
               :id => @post.id,
-              :yn => @post.yn
+              :yn => @post.yn,
+              :page => {
+                :url => @post.page.url,
+                :title => @post.page.title
+              }
             },
             :readers => User.who_posted_to(@post.page).collect { |user|
               user.simple_obj if user != @post.user # don't show the person posting

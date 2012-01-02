@@ -22,9 +22,12 @@ win_focus = true
 on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("staging.reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
+token = reading.token ? null
+platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
 
 #-----------------------------------------
 # Content Vars
+
 active = "r_active"
 inactive = "r_inactive"
 errors =
@@ -44,21 +47,13 @@ popup = (url, width, height) ->
   window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
 #-----------------------------------------
-# var params comes in from the outside world as var reading
-
-url         = if on_reading then parse_url() else window.location.href
-title       = if on_reading then null else window.document.title
-token       = reading.token ? null
-platform    = reading.platform ? "bookmarklet"
-referrer_id = reading.referrer_id ? 0
-
-#-----------------------------------------
 # Classes
 
 class Post
   constructor: (p) ->
     @id = p.id
     @yn = p.yn if p.yn?
+    @page = p.page if p.page?
     @updated_at = new Date
     @loading = false
   short_url: ->
@@ -87,7 +82,7 @@ Post::find_or_create = (data, success) ->
 
   data.token = token if token
   # don't send the null title or else it'll get posted
-  delete data.title if title is null
+  delete data.title if data.title is null
   $.ajax
     url: "http://#{domain}/posts/create.json"
     dataType: "jsonp"
@@ -106,9 +101,9 @@ class Provider
     @action = p.action
   url: (post) ->
     vals =
-      url: url
+      url: post.page.url
       short_url: "http://#{post.short_url()}"
-      title: title
+      title: post.page.title
     parsed_url = @url_scheme
     for val of vals
       parsed_url = parsed_url.replace("{#{val}}", encodeURIComponent(vals[val]))
@@ -263,18 +258,11 @@ load_script = (url, success) ->
   head.appendChild script
 
 #-----------------------------------------
-# Initialize!
+# Submit the post
 
-init = ->
-  return window.location = url if (token is "-" or (on_reading and not token))
-
-  if not on_reading
-    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
-    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
-    $html.fadeIn 500
-
+reading.submit = submit = (url, title, referrer_id) ->
   Post::find_or_create {url: url, title: title, referrer_id: referrer_id}, (data) ->
-    if on_reading
+    if platform is "redirect"
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{domain}/t/-/#{url}" else url
@@ -285,7 +273,7 @@ init = ->
       setInterval (->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
-      # show yellow box
+
       render post, readers
 
       $(window).focus(->
@@ -293,6 +281,26 @@ init = ->
       ).blur(->
         win_focus = false
       )
+
+#-----------------------------------------
+# Initialize!
+
+init = ->
+  unless platform is "redirect"
+    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
+    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
+    $html.fadeIn 500
+
+  if platform is "redirect" or platform is "bookmarklet"
+    if platform is "redirect"
+      url = parse_url()
+      title = null
+      return window.location = url if token is "-" or !token
+    else
+      url = window.location.href
+      title = window.document.title
+
+    submit url, title, reading.referrer_id ? 0
 
 #-----------------------------------------
 # Check for jQuery and initialize

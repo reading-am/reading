@@ -63,11 +63,18 @@ h3 {
   margin:10px 0 0;
 }
 h4 {
-  font-weight:bold;
-  letter-spacing:1px;
   margin:0 0 10px;
 }
-
+h4, h5 {
+  font-weight:bold;
+  letter-spacing:1px;
+}
+  h4 a {
+    background:none;
+  }
+h5 {
+  margin:10px 0 5px;
+}
 table {
   margin:5px 0 20px;
 }

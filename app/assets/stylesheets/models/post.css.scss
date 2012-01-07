@@ -13,11 +13,15 @@ $dark_blue: #00FBFF;
 .post.new {
   opacity:0.3;
 }
+
+.post .nav a {
+  padding:0 5px;
+}
 .info {
   background:none;
   font-weight:bold;
 }
   .info:hover {
-    background:$dark_blue;
+    background:$blue;
     text-decoration:none;
   }

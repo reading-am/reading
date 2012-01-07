@@ -16,6 +16,6 @@
     <% end %>
   </span>
   <span class="nav">
-    | <%= link_to "+", "http://#{DOMAIN}/pages/page", :class => 'info' %>
+    |<%= link_to "+", "http://#{DOMAIN}/domains/#{post.page.domain.name}/pages/#{post.page.id}", :class => 'info' %>
   </span>
 </div>

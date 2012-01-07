@@ -25,6 +25,7 @@ Reading::Application.routes.draw do
   match '/domains/:domain_name' => 'domains#show', :constraints => { :domain_name => /[0-9A-Z\-\.]+/i }
   resources :domains, :constraints => { :id => /[0-9A-Za-z\-\.]+/ } do
     resources :posts
+    resources :pages
   end
 
   match '/pick_a_url' => 'users#pick_a_url'

@@ -2,4 +2,13 @@
   <h4><%= link_to @page.domain.name, "http://#{DOMAIN}/domains/#{@page.domain.name}" %></h4>
   <%= @page.display_title %><br>
   <%= link_to @page.url, @page.wrapped_url %>
+
+  <h5><%= pluralize @page.users.count, 'Reader' %></h5>
+  <table>
+  <% @page.users.each do |user| %>
+    <tr>
+      <td><%= render :partial => 'users/user', :locals => { :user => user } %></td>
+    </tr>
+  <% end %>
+  </table>
 </div>

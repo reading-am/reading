@@ -4,10 +4,10 @@ $dark_blue: #00FBFF;
 .post.referred_post a.external {
   background:#EEE;
 }
-.post.yep:before {
+.post.yep .body:before {
   content:'✓';
 }
-.post.nope {
+.post.nope .body {
   text-decoration:line-through;
 }
 .post.new {
@@ -15,18 +15,9 @@ $dark_blue: #00FBFF;
 }
 .info {
   background:none;
-  border:1px dotted #999;
-  color:#999;
-  display:inline-block;
-  width:13px; height: 13px;
-  line-height:9px;
-  margin:0 5px;
-  text-align:center;
-  border-radius:2px;
+  font-weight:bold;
 }
   .info:hover {
-    background:$blue;
+    background:$dark_blue;
     text-decoration:none;
-    color:#000;
-    border-color:#000;
   }

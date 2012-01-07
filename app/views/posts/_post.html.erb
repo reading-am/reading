@@ -1,17 +1,21 @@
 <% # TODO spin user links out into a helper %>
 <% because_of_you = (logged_in? and !post.referrer_post.nil? and post.referrer_post.user == current_user) %>
 <div data-class="Post" data-id="<%= post.id %>" class="post <%= 'referred_post' if post.referrer_post %> <%= if post.yn === true then 'yep' elsif post.yn === false then 'nope' end %> <%= 'active' if (Time.now - post.updated_at) < 30 %>">
-  <% if post.user.username.nil? %>
-    <%= post.user.display_name %>
-  <% elsif post.user == current_user %>
-    <%= link_to 'You', "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> are
-  <% else %>
-    <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> is
-  <% end %>
-  <%= if !post.page.domain.nil? then post.page.domain.verb  else 'reading' end %>
-  <%= link_to post.page.display_title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %>
-  <%# link_to "+", "http://#{DOMAIN}/pages/page", :class => 'info' %>
-  <% if post.referrer_post and post.user != post.referrer_post.user %>
-    because of <%= if post.user.username.nil? then post.user.display_name else link_to (because_of_you ? 'you' : post.referrer_post.user.display_name), "/#{post.referrer_post.user.username}", :class => "user#{because_of_you ? ' you' : ''}" end %>
-  <% end %>
+  <span class="body">
+    <% if post.user.username.nil? %>
+      <%= post.user.display_name %>
+    <% elsif post.user == current_user %>
+      <%= link_to 'You', "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> are
+    <% else %>
+      <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> is
+    <% end %>
+    <%= if !post.page.domain.nil? then post.page.domain.verb  else 'reading' end %>
+    <%= link_to post.page.display_title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %>
+    <% if post.referrer_post and post.user != post.referrer_post.user %>
+      because of <%= if post.user.username.nil? then post.user.display_name else link_to (because_of_you ? 'you' : post.referrer_post.user.display_name), "/#{post.referrer_post.user.username}", :class => "user#{because_of_you ? ' you' : ''}" end %>
+    <% end %>
+  </span>
+  <span class="nav">
+    | <%= link_to "+", "http://#{DOMAIN}/pages/page", :class => 'info' %>
+  </span>
 </div>

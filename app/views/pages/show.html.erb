@@ -1,9 +1,9 @@
 <div id="content">
-  <h4>Domains » <%= link_to @page.domain.name, "http://#{DOMAIN}/domains/#{@page.domain.name}" %> » <%= @page.display_title %></h4>
+  <h4><%= link_to @page.domain.name, "http://#{DOMAIN}/domains/#{@page.domain.name}" %> » <span class="active"><%= @page.display_title %></span></h4>
   <%= link_to @page.url, @page.url, :class => 'external' %>
 
   <h5><%= pluralize @page.users.uniq.count, 'Reader' %></h5>
-  <table>
+  <table id="readers">
   <% @page.users.uniq.each do |user| %>
     <tr>
       <td><%= render :partial => 'users/user', :locals => { :user => user } %></td>

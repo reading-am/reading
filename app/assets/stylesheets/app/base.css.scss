@@ -73,7 +73,7 @@ h4, h5 {
     background:none;
   }
 h5 {
-  margin:10px 0 5px;
+  margin:25px 0 5px;
 }
 table {
   margin:5px 0 20px;
@@ -236,10 +236,11 @@ th {
   #subnav a:hover, footer a:hover, a.user.you:hover, #foot_nav a:hover {
     background-color:$dark_blue;
   }
-a.active, a.active:hover, #subnav a.active, #subnav a.active:hover {
+a.active, a.active:hover, #subnav a.active, #subnav a.active:hover, h4 .active {
   background:none;
   text-decoration:underline;
   cursor:default;
+  font-weight:normal;
 }
 
 #foot_nav a {
@@ -364,4 +365,8 @@ a.footnote {
 }
 #search input {
   width:70px;
+}
+
+#readers a {
+  font-weight:normal;
 }

@@ -367,6 +367,13 @@ a.footnote {
   width:70px;
 }
 
+.breadcrumb a {
+  background:$blue;
+}
+.breadcrumb a:hover {
+  background:$dark_blue;
+}
+
 #readers a {
   font-weight:normal;
 }

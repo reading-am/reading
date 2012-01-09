@@ -1,11 +1,10 @@
 <div id="content">
-  <h4><%= link_to @page.domain.name, "http://#{DOMAIN}/domains/#{@page.domain.name}" %></h4>
-  <%= @page.display_title %><br>
-  <%= link_to @page.url, @page.wrapped_url %>
+  <h4>Domains » <%= link_to @page.domain.name, "http://#{DOMAIN}/domains/#{@page.domain.name}" %> » <%= @page.display_title %></h4>
+  <%= link_to @page.url, @page.url, :class => 'external' %>
 
-  <h5><%= pluralize @page.users.count, 'Reader' %></h5>
+  <h5><%= pluralize @page.users.uniq.count, 'Reader' %></h5>
   <table>
-  <% @page.users.each do |user| %>
+  <% @page.users.uniq.each do |user| %>
     <tr>
       <td><%= render :partial => 'users/user', :locals => { :user => user } %></td>
     </tr>

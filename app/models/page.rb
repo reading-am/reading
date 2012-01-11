@@ -3,9 +3,9 @@ class Page < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
 
-  validates_presence_of :url
+  validates_presence_of :url, :domain
 
-  before_create { parse_domain }
+  before_validation { parse_domain }
 
   # search
   searchable do

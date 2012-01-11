@@ -1,0 +1,142 @@
+<%
+  events = [{:text => 'read, say "yep" or "nope"', :value => '["new","yep","nope"]', :perms => [:write]}]
+  Hook::EVENTS.each do |event, params|
+    params[:value] = "[\"#{event}\"]"
+    events << params
+  end
+%>
+hook_properties =
+  "events":<%= events.to_json %>,
+  "providers":[
+    {"text":"Twitter", "params":[
+      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"account"}
+    ]},
+    <%# {"text":"Facebook", "params":[%>
+      <%# {"text":"account", "options":current_user.accounts('facebook'), "datatype":"account"}%>
+    <%# ]},%>
+    {"text":"HipChat", "params":[
+      {"text":"room", "placeholder":"My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
+    ]},
+    {"text":"Campfire", "params":[
+      {"text":"room", "placeholder": "My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"},
+      {"text":"subdomain", "placeholder": "example"}
+    ]},
+    <%# {"text":"email", "params":[%>
+      <%# {"text":"address", "placeholder":"me@example.com"}%>
+    <%# ]},%>
+    {"text":"URL", "params":[
+      {"text":"address", "placeholder":"http://example.com"},
+      {"text":"method", "options":["POST","GET"]}
+    ]}
+  ]
+
+api_urls =
+  twitter: "https://api.twitter.com/1/users/show.json?id="
+  facebook: "https://graph.facebook.com/"
+
+field = (param, scope, add_label) ->
+  param.name = param.text.toLowerCase().replace(RegExp(" ", "g"), "_")  unless param.name
+  param.scoped_name = scope + "[" + param.name + "]"  if scope
+  param.id = param.scoped_name.toLowerCase().replace(/\[/g, "_").replace(/\]/g, "")  unless param.id
+  func = (if param.options then select_field else text_field)
+  $field = $("<span class=\"field\">")
+  $field.append " <label for=\"" + param.id + "\">" + param.text + "</label> "  if add_label or typeof add_label is "undefined"
+  $field.append func(param)
+
+select_field = (param) ->
+  $select = $("<select>").attr("name", param.scoped_name).attr("id", param.id)
+  $select.attr "data-type", param.datatype  if param.datatype
+  i = 0
+
+  while i < param.options.length
+    op = (if typeof param.options[i] is "string" then text: param.options[i] else param.options[i])
+    op.value = op.text.toLowerCase()  unless op.value
+    $select.append $("<option>").val(op.value).text((if op.text then op.text else op.value))
+    i++
+  $select.append $("<option>").val("new").text("connect a new " + param.datatype)  if param.datatype is "account"
+  $select
+
+text_field = (param) ->
+  $input = (" <input type=\"text\" name=\"" + param.scoped_name + "\" id=\"" + param.id + "\" placeholder=\"" + (if param.placeholder then param.placeholder else param.name) + "\"> ")
+  $input.attr "data-type", param.datatype  if param.datatype
+  $("<span class=\"field\">").append $input
+
+build_provider = (params) ->
+  $prov = $("<span>").attr("id", "provider_params")
+  i = 0
+
+  while i < params.length
+    $prov.append " using "  if i is 1
+    $prov.append "<br>"  if i is 2
+    $prov.append " and "  if i > 1
+    $prov.append field(params[i], "hook[params]")
+    i++
+  populate_accounts $("#hook_provider").val(), $("[data-type=\"account\"] option[value!=\"new\"]", $prov)
+  $prov
+
+populate_accounts = (provider, selection) ->
+  selection.each ->
+    $this = $(this)
+    $.ajax
+      url: api_urls[provider] + $this.text()
+      dataType: "jsonp"
+      success: (r) ->
+        if r.screen_name
+          $this.text (if provider is "twitter" then "@" else "") + r.screen_name
+        else if r.username
+          $this.text r.username
+        else $this.text r.name  if r.name
+
+form_to_json = (form) ->
+  $form = $(form)
+  json =
+    method: $form.attr("method")
+    action: $form.attr("action")
+    inputs: {}
+
+  $form.find(":input").each (i, el) ->
+    json.inputs[$(el).attr("name")] = $(el).val()
+
+  JSON.stringify json
+
+json_to_form = (json) ->
+  json = JSON.parse(json)
+  $form = $("<form>").attr("method", json.method).attr("action", json.action)
+  for name of json.inputs
+    $form.append $("<input>").attr("name", name).val(json.inputs[name])
+  $form
+
+$ ->
+  $("#constructor .wrapper").append("When I ").append(field(
+    text: "events"
+    options: hook_properties.events
+  , "hook", false)).append(" please post to the ").append(field(
+    text: "provider"
+    options: hook_properties.providers
+  , "hook", false)).append "<span id=\"provider_params\">"
+  $("#constructor select[name='hook[provider]']").change(->
+    $this = $(this)
+    $(".footnote").data "url", "/footnotes/" + $this.val()
+    $("#provider_params").replaceWith build_provider(hook_properties.providers[$this.prop("selectedIndex")].params)
+  ).change()
+  populate_accounts "twitter", $(".provider.twitter .account")
+  populate_accounts "facebook", $(".provider.facebook .account")
+  $("#new_hook").on "submit", ->
+    if $("#hook_params_account").val() is "new" or ($("#hook_params_account").val() and not current_user.can("write", $("#hook_provider").val(), $("#hook_params_account").val()))
+      $.cookie "session_create_redirect", window.location.href,
+        path: "/"
+
+      $.cookie "submit_after_session_create", form_to_json("#new_hook"),
+        path: "/"
+
+      window.location = "/auth/" + $("#hook_provider").val()
+      false
+
+  if $.cookie("submit_after_session_create")
+    $form = json_to_form($.cookie("submit_after_session_create"))
+    $.cookie "submit_after_session_create", null,
+      path: "/"
+
+    $form.submit()

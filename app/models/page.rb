@@ -16,7 +16,7 @@ class Page < ActiveRecord::Base
 private
 
   def parse_domain
-    self.domain  = Domain.find_or_create_by_name(Addressable::URI.parse(self.url).host)
+    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(self.url).host)
   end
 
 public

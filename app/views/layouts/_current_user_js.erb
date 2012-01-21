@@ -1,8 +1,8 @@
 <%
-  auths = {'twitter' => [], 'facebook' => []}
+  auths = []
   if logged_in?
     current_user.authorizations.each do |auth|
-      auths[auth.provider] << {:uid => auth.uid, :permissions => auth.permissions}
+      auths << {provider: auth.provider, :uid => auth.uid, :permissions => auth.permissions}
     end
   end
 %>
@@ -10,16 +10,7 @@
 var current_user = {
   id: '<%= current_user.id if logged_in? %>',
   username: '<%= current_user.username if logged_in? %>',
-  display_name: '<%= current_user.display_name if logged_in? %>',
-  authorizations: <%= auths.to_json.html_safe %>
+  display_name: '<%= current_user.display_name if logged_in? %>'
 };
 
-<%# if(current_user.authorizations.facebook){%>
-<%#   current_user.authorizations.facebook.add_permission = function(perm, success, failure){%>
-<%#     if(this.authorizations.facebook.permissions[perm]) return success();%>
-<%#     FB.login(function(response){%>
-<%#       if(response.authResponse) success();%>
-<%#       else failure();%>
-<%#     }, {scope: perm});%>
-<%#   }%>
-<%# }%>
+var authorizations = <%= auths.to_json.html_safe %>;

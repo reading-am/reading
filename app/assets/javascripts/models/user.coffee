@@ -9,6 +9,7 @@ class User
   accounts: (provider) ->
     auth.uid for auth in @authorizations[provider]
   can: (perm, provider, uid) ->
+    uid = String uid
     i = 0
     while i < @authorizations[provider].length
       return true if @authorizations[provider][i].uid is uid and $.inArray(perm, @authorizations[provider][i].permissions) > -1

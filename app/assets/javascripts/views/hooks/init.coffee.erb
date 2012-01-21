@@ -25,13 +25,10 @@ populate_accounts = (provider, selection) ->
 $ ->
   # build the constructor with the initial selection
   $con = $('#constructor')
-  $(".wrapper", $con).append("When I ").append(field(
-    text: "events"
-    options: hook_properties.events
-  , "hook", false)).append(" please post to the ").append(field(
-    text: "provider"
-    options: hook_properties.providers
-  , "hook", false)).append "<span id=\"provider_params\">"
+  $(".wrapper", $con)
+    .append("When I ").append(field({text: "events", options: hook_properties.events}, "hook", false))
+    .append(" please post to the ").append(field({text: "provider", options: hook_properties.providers}, "hook", false))
+    .append "<span id=\"provider_params\">"
 
   # switch out and link the footnotes explaining a hook
   $("select[name='hook[provider]']", $con).change(->

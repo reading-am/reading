@@ -1,0 +1,34 @@
+<%
+  events = [{:text => 'read, say "yep" or "nope"', :value => '["new","yep","nope"]', :perms => [:write]}]
+  Hook::EVENTS.each do |event, params|
+    params[:value] = "[\"#{event}\"]"
+    events << params
+  end
+%>
+
+hook_properties =
+  "events":<%= events.to_json %>,
+  "providers":[
+    {"text":"Twitter", "params":[
+      {"text":"account", "options":current_user.accounts('twitter'), "datatype":"account"}
+    ]},
+    <%# {"text":"Facebook", "params":[%>
+      <%# {"text":"account", "options":current_user.accounts('facebook'), "datatype":"account"}%>
+    <%# ]},%>
+    {"text":"HipChat", "params":[
+      {"text":"room", "placeholder":"My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
+    ]},
+    {"text":"Campfire", "params":[
+      {"text":"room", "placeholder": "My Room Name"},
+      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"},
+      {"text":"subdomain", "placeholder": "example"}
+    ]},
+    <%# {"text":"email", "params":[%>
+      <%# {"text":"address", "placeholder":"me@example.com"}%>
+    <%# ]},%>
+    {"text":"URL", "params":[
+      {"text":"address", "placeholder":"http://example.com"},
+      {"text":"method", "options":["POST","GET"]}
+    ]}
+  ]

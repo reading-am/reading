@@ -5,5 +5,4 @@ auths =
   facebook:[]
 
 auths[auth.provider].push(Authorization::factory auth) for auth in window.authorizations
-
 window.current_user.authorizations = auths

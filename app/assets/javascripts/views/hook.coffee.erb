@@ -5,6 +5,7 @@
     events << params
   end
 %>
+
 hook_properties =
   "events":<%= events.to_json %>,
   "providers":[
@@ -109,34 +110,42 @@ json_to_form = (json) ->
   $form
 
 $ ->
-  $("#constructor .wrapper").append("When I ").append(field(
+  # build the constructor with the initial selection
+  $con = $('#constructor')
+  $(".wrapper", $con).append("When I ").append(field(
     text: "events"
     options: hook_properties.events
   , "hook", false)).append(" please post to the ").append(field(
     text: "provider"
     options: hook_properties.providers
   , "hook", false)).append "<span id=\"provider_params\">"
-  $("#constructor select[name='hook[provider]']").change(->
+
+  # switch out and link the footnotes explaining a hook
+  $("select[name='hook[provider]']", $con).change(->
     $this = $(this)
     $(".footnote").data "url", "/footnotes/" + $this.val()
     $("#provider_params").replaceWith build_provider(hook_properties.providers[$this.prop("selectedIndex")].params)
   ).change()
+
+  # populate the auth spans with real usernames
   populate_accounts "twitter", $(".provider.twitter .account")
   populate_accounts "facebook", $(".provider.facebook .account")
+
+  cpath = {path: "/"}
+
+  # set cookies for submitting the form after authing a new account
   $("#new_hook").on "submit", ->
-    if $("#hook_params_account").val() is "new" or ($("#hook_params_account").val() and not current_user.can("write", $("#hook_provider").val(), $("#hook_params_account").val()))
-      $.cookie "session_create_redirect", window.location.href,
-        path: "/"
-
-      $.cookie "submit_after_session_create", form_to_json("#new_hook"),
-        path: "/"
-
-      window.location = "/auth/" + $("#hook_provider").val()
+    provider = $("#hook_provider").val()
+    account  = $("#hook_params_account").val()
+    if account is "new" or (account and not current_user.can("write", provider, account))
+      $.cookie "session_create_redirect", window.location.href, cpath
+      $.cookie "submit_after_session_create", form_to_json("#new_hook"), cpath
+      window.location = "/auth/" + provider
       false
 
+# submit the form now that we're on the other side of authing
   if $.cookie("submit_after_session_create")
     $form = json_to_form($.cookie("submit_after_session_create"))
-    $.cookie "submit_after_session_create", null,
-      path: "/"
+    $.cookie "submit_after_session_create", null, cpath
 
     $form.submit()

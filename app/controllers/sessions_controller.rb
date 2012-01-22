@@ -41,7 +41,7 @@ class SessionsController < ApplicationController
       else
         @redirect_to = '/pick_a_url'
       end
-      render "redirect"
+      render "redirect", :layout => false
     end
   end
 

@@ -2,6 +2,7 @@ class Provider
   accounts: ->
     attr for own attr, value of this
 
+# from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
 Provider::login = (url, width, height) ->
     screenX = window.screenX ? window.screenLeft
     screenY = window.screenY ? window.screenTop

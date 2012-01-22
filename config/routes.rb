@@ -20,7 +20,7 @@ Reading::Application.routes.draw do
   resources :hooks
   resources :footnotes
   
-  match '/authorizations/:provider/:id/update' => 'authorizations#update'
+  match '/authorizations/:provider/:uid/update' => 'authorizations#update'
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id

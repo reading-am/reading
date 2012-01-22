@@ -2,11 +2,7 @@
   <head><title>Reading Redirect</title></head>
 <body>
 <script type="text/javascript">
-  <% if method == "success" %>
-    window.opener.Provider.prototype.login.success("<%= message %>", <%= auth_hash.to_json.html_safe %>);
-  <% else %>
-    window.opener.Provider.prototype.login.failure();
-  <% end %>
+  window.opener.Provider.prototype.login.response({"status":"<%= status %>"<% if defined? authResponse %>, "authResponse":<%= authResponse.to_json.html_safe %><% end %>});
   window.close();
 </script>
 </body>

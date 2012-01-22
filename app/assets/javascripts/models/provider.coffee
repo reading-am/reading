@@ -3,9 +3,8 @@ class Provider
     attr for own attr, value of this
 
 # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
-Provider::login = (params, success, failure) ->
-    Provider::login.success = success ? ->
-    Provider::login.failure = failure ? ->
+Provider::login = (params, response) ->
+    Provider::login.response = response ? ->
 
     screenX = window.screenX ? window.screenLeft
     screenY = window.screenY ? window.screenTop
@@ -19,23 +18,21 @@ Provider::login = (params, success, failure) ->
 
 class TwitterProv extends Provider
 
-TwitterProv::login = (success, failure) ->
+TwitterProv::login = (response) ->
     super
       url: '/auth/twitter'
       width: 700
       height: 700,
-      success,
-      failure
+      response
 
 class FacebookProv extends Provider
 
-FacebookProv::login = (success, failure) ->
+FacebookProv::login = (response) ->
     super
       url: '/auth/facebook'
       width: 981
       height: 600,
-      success,
-      failure
+      response
 
 window.Provider = Provider
 window.TwitterProv = TwitterProv

@@ -56,10 +56,7 @@ $ ->
   $("a[data-provider]").on "click", ->
     $this = $(this)
     Prov = window["#{$this.data("provider")}Prov"]
-    switch $this.data "method"
-      when "login" then Prov::login (info, message) ->
-        alert 'success'
-      , ->
-        alert 'failure'
+    Prov::[$this.data("method")] (response) ->
+      console.log('hit', response)
 
     false

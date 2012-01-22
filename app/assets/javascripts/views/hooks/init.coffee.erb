@@ -52,7 +52,7 @@ $ ->
     else if account 
       auth = current_user.authorizations[provider][account]
       unless auth.can("write")
-        auth.add_permission("write")
+        auth.ask_permission("write")
         <%# $.cookie "session_create_redirect", window.location.href, cpath%>
         <%# $.cookie "submit_after_session_create", form_to_json("#new_hook"), cpath%>
         <%# window.location = "/auth/" + provider%>

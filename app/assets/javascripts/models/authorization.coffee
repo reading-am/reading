@@ -1,27 +1,25 @@
 class Authorization
-  constructor: (@provider, @uid, @permissions) ->
+  constructor: (@uid, @permissions) ->
 
   can: (perm) ->
     perm in @permissions
 
 Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
-  new window[type](params.provider, params.uid, params.permissions)
-
-class AuthCollection
-  accounts: ->
-    attr for own attr, value of this
-
+  new window[type](params.uid, params.permissions)
 
 class TwitterAuth extends Authorization
-  add_permission: (perm, success, failure) ->
-    return alert 'twitter add'
+  ask_permission: (perm, success, failure) ->
+    # already has access
+    if @can(perm)
+      success()
+    else
 
 class FacebookAuth extends Authorization
-  add_permission: (perm, success, failure) ->
+  ask_permission: (perm, success, failure) ->
     return alert 'fb add'
     # already has access
-    if perm in @permissions
+    if @can(perm)
       success()
     else
       FB.getLoginStatus (response) ->
@@ -43,6 +41,5 @@ class FacebookAuth extends Authorization
 
 
 window.Authorization = Authorization
-window.AuthCollection = AuthCollection
 window.TwitterAuth = TwitterAuth
 window.FacebookAuth = FacebookAuth

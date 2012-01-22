@@ -49,18 +49,8 @@ $ ->
     account  = $("#hook_params_account").val()
     if account is "new"
       alert 'add a new account'
-    else if account 
+    else if account
       auth = current_user.authorizations[provider][account]
       unless auth.can("write")
         auth.ask_permission("write")
-        <%# $.cookie "session_create_redirect", window.location.href, cpath%>
-        <%# $.cookie "submit_after_session_create", form_to_json("#new_hook"), cpath%>
-        <%# window.location = "/auth/" + provider%>
         false
-
-# submit the form now that we're on the other side of authing
-  if $.cookie("submit_after_session_create")
-    $form = json_to_form($.cookie("submit_after_session_create"))
-    $.cookie "submit_after_session_create", null, cpath
-
-    $form.submit()

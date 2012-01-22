@@ -57,6 +57,7 @@ $ ->
     $this = $(this)
     Prov = window["#{$this.data("provider")}Prov"]
     Prov::[$this.data("method")] (response) ->
-      console.log('hit', response)
+      if response.authResponse
+        window.location.reload true
 
     false

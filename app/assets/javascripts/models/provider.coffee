@@ -4,8 +4,8 @@ class Provider
 
 # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
 Provider::login = (params, response) ->
-  # this scope is screwy
-  this.response = response ? ->
+  # I don't like that this is scope to Provider
+  Provider::login.response = response ? ->
 
   screenX = window.screenX ? window.screenLeft
   screenY = window.screenY ? window.screenTop

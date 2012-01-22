@@ -5,12 +5,19 @@ Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
   new window[type](params.provider, params.uid, params.permissions)
 
+class AuthCollection
+  accounts: ->
+    attr for own attr, value of this
+
+
 class TwitterAuth extends Authorization
+  add_permission: (perm, success, failure) ->
+    alert 'hit'
 
 class FacebookAuth extends Authorization
   add_permission: (perm, success, failure) ->
     # already has access
-    if $.inArray perm, @permissions is -1
+    if perm in @permissions
       success()
     else
       FB.getLoginStatus (response) ->
@@ -23,7 +30,7 @@ class FacebookAuth extends Authorization
               # authorized and good to go
               success()
             else
-              # not authorized
+              # the user denied authorized!
               failure()
           ), {scope: perm}
         else
@@ -32,5 +39,6 @@ class FacebookAuth extends Authorization
 
 
 window.Authorization = Authorization
+window.AuthCollection = AuthCollection
 window.TwitterAuth = TwitterAuth
 window.FacebookAuth = FacebookAuth

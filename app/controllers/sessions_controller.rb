@@ -28,13 +28,11 @@ class SessionsController < ApplicationController
       message = "AuthLoginCreate"
     end
 
-    render "redirect", :locals => {:auth_hash => auth_hash, :message => message}, :layout => false
+    render "redirect", :locals => {:method => "success", :message => message, :auth_hash => auth_hash}, :layout => false
   end
 
   def failure
-    cookies.delete :session_create_redirect
-    cookies.delete :submit_after_session_create
-    render :text => "Sorry, but you didn't allow access to our app!"
+    render "redirect", :locals => {:method => "failure"}, :layout => false
   end
 
   def destroy

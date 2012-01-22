@@ -4,6 +4,7 @@ unless $.cookie "timezone"
   $.cookie "timezone", current_time.getTimezoneOffset(),
     path: "/"
     expires: 10
+
 window.hasfocus = true
 $(window).focus(->
   window.hasfocus = true
@@ -11,6 +12,7 @@ $(window).focus(->
   window.hasfocus = false
 
 window.base58 = libs.encdec()
+
 $ ->
   $("a.external").on "click", ->
     $this = $(this)
@@ -22,8 +24,7 @@ $ ->
       # pre = "http://#{document_host}/"+(base58_id ? "p/#{base58_id}/" : "")
       # window.open pre+this.href
 
-      # new AJAX method
-      # only log it if they're logged in
+      # new AJAX method - only log it if they're logged in
       if current_user.logged_in()
         $.ajax
           url: "/posts/create.json"

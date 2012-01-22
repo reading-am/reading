@@ -2,7 +2,7 @@
   <head><title>Reading Redirect</title></head>
 <body>
 <script type="text/javascript">
-  window.opener.Provider.prototype.login.success();
+  window.opener.Provider.prototype.login.success("<%= message %>", <%= auth_hash.to_json.html_safe %>);
   window.close();
 </script>
 </body>

@@ -57,7 +57,7 @@ $ ->
     $this = $(this)
     Prov = window["#{$this.data("provider")}Prov"]
     switch $this.data "method"
-      when "login" then Prov::login ->
+      when "login" then Prov::login (info, message) ->
         alert 'success'
       , ->
         alert 'failure'

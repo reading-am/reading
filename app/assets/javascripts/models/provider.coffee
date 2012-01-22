@@ -9,8 +9,8 @@ Provider::login = (url, width, height) ->
     outerHeight = window.outerHeight ? (document.body.clientHeight - 22)
     left = parseInt(screenX + ((outerWidth - width) / 2), 10)
     top = parseInt(screenY + ((outerHeight - height) / 2.5), 10)
-    newwindow = window.open url, "Login", "width=#{width},height=#{height},left=#{left},top=#{top}"
-    newwindow.focus() if window.focus
+    popup = window.open url, "Login", "width=#{width},height=#{height},left=#{left},top=#{top}"
+    popup.focus() if window.focus
     false
 
 class TwitterProv extends Provider
@@ -21,7 +21,7 @@ TwitterProv::login = ->
 class FacebookProv extends Provider
 
 FacebookProv::login = ->
-    super '/auth/facebook', 980, 600
+    super '/auth/facebook', 981, 600
 
 window.Provider = Provider
 window.TwitterProv = TwitterProv

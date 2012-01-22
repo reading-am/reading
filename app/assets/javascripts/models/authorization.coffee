@@ -14,7 +14,9 @@ class TwitterAuth extends Authorization
     if @can(perm)
       success()
     else
-      # do something
+      TwitterProv::ask_permission ->
+        @permissions.push perm
+        console "write to disk here"
 
 class FacebookAuth extends Authorization
   ask_permission: (perm, success, failure) ->

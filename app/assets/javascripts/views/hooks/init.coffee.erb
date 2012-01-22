@@ -43,13 +43,27 @@ $ ->
 
   cpath = {path: "/"}
 
-  # set cookies for submitting the form after authing a new account
+  #########################
+  # Procees New Hook Form #
+  #########################
   $("#new_hook").on "submit", ->
+    # setup
     $this = $(this)
     provider = $("#hook_provider").val()
     account  = $("#hook_params_account").val()
+
+    # User is trying to add a new account
     if account is "new"
-      alert 'add a new account'
+      prov = window["#{provider[0].toUpperCase()}#{provider[1..]}Prov"]
+      prov::login (response) ->
+        if response.authResponse
+          if current_user.authorizations[provider][response.authResponse.uid]?
+            alert "You'll have to log out to connect a new account"
+          else
+            console.log "Save the new account data here"
+        else
+          alert "There was an error"
+    # User is adding a hook to an existing account
     else if account
       auth = current_user.authorizations[provider][account]
       unless auth.can "write"

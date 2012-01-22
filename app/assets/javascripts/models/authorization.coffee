@@ -24,18 +24,21 @@ Authorization::factory = (params) ->
 
 class TwitterAuth extends Authorization
   provider: "twitter"
-  ask_permission: (perm, success, failure) ->
+  ask_permission: (perm, success, error) ->
     # already has access
     if @can(perm)
       success()
     else
-      TwitterProv::ask_permission ->
-        @permissions.push perm
-        console "write to disk here"
+      TwitterProv::ask_permission =>
+        if response.authResponse
+          @permissions.push perm
+          @save success, error
+        else
+          error()
 
 class FacebookAuth extends Authorization
   provider: "facebook"
-  ask_permission: (perm, success, failure) ->
+  ask_permission: (perm, success, error) ->
     return alert 'fb add'
     # already has access
     if @can(perm)
@@ -52,7 +55,7 @@ class FacebookAuth extends Authorization
               success()
             else
               # the user denied authorized!
-              failure()
+              error()
           ), {scope: perm}
         else
           # the user is logged into the wrong FB account

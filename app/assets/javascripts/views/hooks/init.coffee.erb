@@ -45,12 +45,17 @@ $ ->
 
   # set cookies for submitting the form after authing a new account
   $("#new_hook").on "submit", ->
+    $this = $(this)
     provider = $("#hook_provider").val()
     account  = $("#hook_params_account").val()
     if account is "new"
       alert 'add a new account'
     else if account
       auth = current_user.authorizations[provider][account]
-      unless auth.can("write")
-        auth.ask_permission("write")
+      unless auth.can "write"
+        auth.ask_permission "write", ->
+          $this.submit()
+        , ->
+          alert 'There was an error getting permission to post to that account'
+
         false

@@ -2,7 +2,7 @@
   <head><title>Reading Redirect</title></head>
 <body>
 <script type="text/javascript">
+  window.opener.Provider.prototype.login.success();
   window.close();
-  window.opener.location = '<%= @redirect_to %>';
 </script>
 </body>

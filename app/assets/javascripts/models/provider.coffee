@@ -2,7 +2,7 @@ class Provider
   accounts: ->
     attr for own attr, value of this
 
-  login: (url, width, height) ->
+Provider::login = (url, width, height) ->
     screenX = window.screenX ? window.screenLeft
     screenY = window.screenY ? window.screenTop
     outerWidth = window.outerWidth ? document.body.clientWidth
@@ -14,12 +14,14 @@ class Provider
     false
 
 class TwitterProv extends Provider
-  login: ->
-    super '/auth/twitter', 400, 400
+
+TwitterProv::login = ->
+    super '/auth/twitter', 700, 700
 
 class FacebookProv extends Provider
-  login: ->
-    super '/auth/facebook', 400, 400
+
+FacebookProv::login = ->
+    super '/auth/facebook', 980, 600
 
 window.Provider = Provider
 window.TwitterProv = TwitterProv

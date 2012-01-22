@@ -19,7 +19,7 @@ module ApplicationHelper
       provider = input
       text = input.to_s.capitalize
     end
-    content_tag :span, :class => ['provider',provider] do
+    content_tag :span, :class => ['provider', provider] do
       case provider.to_s
       when 'twitter', 'facebook'
         output = content_tag(:abbr, provider[0])

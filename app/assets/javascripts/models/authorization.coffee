@@ -4,11 +4,26 @@ class Authorization
   can: (perm) ->
     perm in @permissions
 
+  save: (success, error) ->
+    data =
+      authorization: # the id is passed in the url
+        permissions: "[\"#{@permissions.join('","')}\"]"
+    $.ajax
+      url: "/authorizations/#{@provider}/#{@uid}/update.json"
+      type: 'POST'
+      data: data
+      success: (data, textStatus, jqXHR) =>
+        success() if success?
+      error: (jqXHR, textStatus, errorThrown) =>
+        error() if error?
+
+
 Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
   new window[type](params.uid, params.permissions)
 
 class TwitterAuth extends Authorization
+  provider: "twitter"
   ask_permission: (perm, success, failure) ->
     # already has access
     if @can(perm)
@@ -19,6 +34,7 @@ class TwitterAuth extends Authorization
         console "write to disk here"
 
 class FacebookAuth extends Authorization
+  provider: "facebook"
   ask_permission: (perm, success, failure) ->
     return alert 'fb add'
     # already has access

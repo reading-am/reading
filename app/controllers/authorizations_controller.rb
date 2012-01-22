@@ -1,4 +1,36 @@
 class AuthorizationsController < ApplicationController
+  # PUT /authorizations/1
+  # PUT /authorizations/1.xml
+  def update
+    @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
+
+    if allowed = @auth.user == current_user and !params[:authorization].nil?
+      @auth.attributes = params[:authorization]
+    end
+
+    respond_to do |format|
+      if allowed and @auth.save
+        format.html { redirect_to(@auth, :notice => 'Authorization was successfully updated.') }
+        format.xml  { head :ok }
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {}
+        }, :callback => params[:callback] }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @auth.errors, :status => :unprocessable_entity }
+        if !allowed # TODO clean up this auth hack. Ugh.
+          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
+        else
+          format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@auth.errors.to_yaml}"}}, :callback => params[:callback] }
+        end
+      end
+    end
+  end
+
   # DELETE /authorizations/1
   # DELETE /authorizations/1.xml
   def destroy

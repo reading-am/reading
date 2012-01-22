@@ -4,7 +4,8 @@ class Provider
 
 # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
 Provider::login = (params, response) ->
-  # I don't like that this is scope to Provider
+  # TODO I don't like that this is scope to Provider
+  # but it works as a shared space for the redirect.html.erb response
   Provider::login.response = response ? ->
 
   screenX = window.screenX ? window.screenLeft

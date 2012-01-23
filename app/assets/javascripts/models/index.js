@@ -1,3 +1,4 @@
+//= require ./array
 //= require ./provider
 //= require ./authorization
 //= require ./user

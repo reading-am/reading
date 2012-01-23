@@ -23,7 +23,7 @@ Provider::ask_permission = (response) ->
 
 class TwitterProv extends Provider
 
-TwitterProv::login = (response) ->
+TwitterProv::login = (response, perms) ->
   super
     url: '/auth/twitter'
     width: 700
@@ -32,7 +32,7 @@ TwitterProv::login = (response) ->
 
 class FacebookProv extends Provider
 
-FacebookProv::login = (response) ->
+FacebookProv::login = (response, perms) ->
   super
     url: '/auth/facebook'
     width: 981

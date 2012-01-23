@@ -4,7 +4,7 @@ class Authorization
   can: (perm) ->
     perm in @permissions
 
-  save: (success, error) ->
+  save: (params) ->
     data =
       authorization: # the id is passed in the url
         permissions: "[\"#{@permissions.join('","')}\"]"
@@ -13,9 +13,9 @@ class Authorization
       type: 'POST'
       data: data
       success: (data, textStatus, jqXHR) =>
-        success() if success?
+        params.success() if params.success?
       error: (jqXHR, textStatus, errorThrown) =>
-        error() if error?
+        params.error() if params.error?
 
 
 Authorization::factory = (params) ->
@@ -24,6 +24,60 @@ Authorization::factory = (params) ->
 
 class TwitterAuth extends Authorization
   provider: "twitter"
+  constructor: (@permissions, @uid) ->
+    @permissions ?= TwitterAuth::default_perms
+  login: (params) ->
+    # if permissions have been submitted,
+    # check to see if there are new ones
+    # and add them. There is no subtracting
+    # permissions. That happens on the Provider side
+    if params.perms
+      perms = @perms.concat(params.perms).unique()
+      changed = perms.length > @perms.length
+    else
+      perms = @perms
+      changed = false
+
+    success = params.success ? ->
+    error = params.error ? ->
+
+    TwitterProv::login (response) =>
+      # the user cancelled the request
+      # or there was an error
+      unless response.authResponse
+        error response.status
+      else
+        # another user has the account
+        if response.status == "AuthTaken"
+          error response.status
+        # the user isn't logged into the right
+        # account on the provider's site
+        else if @uid and response.authResponse.uid != @uid
+          error 'AuthWrong'
+        # new account
+        else if !@uid
+          @uid = response.authResponse.uid
+          @perms = perms
+        # existing account successfully authed
+        else
+          # if nothing has changed, go ahead
+          # and execute the callback
+          unless changed
+            success response
+          else
+            # perms have change. Save them and
+            # execute the callback
+            @perms = perms
+            success response
+            # right now to auth is saved in the omniauth
+            # callback else we'd need to save it here
+            # @save
+              # success: ->
+                # success response
+              # error: ->
+                # error "AuthSaveFail"
+    , perms
+
   ask_permission: (perm, success, error) ->
     # already has access
     if @can(perm)
@@ -32,9 +86,13 @@ class TwitterAuth extends Authorization
       TwitterProv::ask_permission =>
         if response.authResponse
           @permissions.push perm
-          @save success, error
+          @save
+            success: success
+            error: error
         else
           error()
+
+TwitterAuth::default_perms = ["read","write"]
 
 class FacebookAuth extends Authorization
   provider: "facebook"

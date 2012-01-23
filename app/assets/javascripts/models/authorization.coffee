@@ -45,11 +45,11 @@ class TwitterAuth extends Authorization
       # the user cancelled the request
       # or there was an error
       unless response.authResponse
-        error response.status
+        error response
       else
         # another user has the account
         if response.status is "AuthTaken" or @uid is "new" and response.status is "AuthPreexisting"
-          error response.status
+          error response
         # the user isn't logged into the right
         # account on the provider's site
         else if @uid and @uid is not "new" and response.authResponse.uid != @uid

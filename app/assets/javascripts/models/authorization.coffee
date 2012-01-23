@@ -24,7 +24,7 @@ Authorization::factory = (params) ->
 
 class TwitterAuth extends Authorization
   provider: "twitter"
-  constructor: (@permissions, @uid) ->
+  constructor: (@uid, @permissions) ->
     @permissions ?= TwitterAuth::default_perms
   login: (params={}) ->
     # if permissions have been submitted,
@@ -48,10 +48,11 @@ class TwitterAuth extends Authorization
         # the user isn't logged into the right account on the provider's site
         error {status: 'AuthWrongAccount'}
       else
-        if !@uid
+        if !@uid or @uid is "new"
           # new account
           @uid = response.authResponse.uid
           @permissions = perms
+          current_user.authorizations[@provider][@uid] = this
           success response
         else
           # existing account successfully authed

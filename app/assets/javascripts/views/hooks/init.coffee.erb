@@ -55,21 +55,17 @@ $ ->
     provider = $("#hook_provider").val()
     account  = $("#hook_params_account").val()
 
-    # User is trying to add a new account
     if account is "new"
-      prov = window["#{provider[0].toUpperCase()}#{provider[1..]}Prov"]
-      prov::login (response) ->
-        if response.authResponse
-          if current_user.authorizations[provider][response.authResponse.uid]?
-            alert "You'll have to log out to connect a new account"
-            false
-          else
-            console.log "Save the new account data here"
-        else
-          alert "There was an error"
-          false
-    # User is adding a hook to an existing account
+      # User is trying to add a new account
+      auth = new window["#{provider[0].toUpperCase()}#{provider[1..]}Auth"]("new", ["read","write"])
+      auth.login
+        success: (response) ->
+          $this.submit()
+        error: (response) ->
+          alert response.status
+      false # stop submit
     else if account
+      # User is adding a hook to an existing account
       auth = current_user.authorizations[provider][account]
       unless auth.can "write"
         auth.ask_permission "write", ->
@@ -77,4 +73,4 @@ $ ->
         , ->
           alert 'There was an error getting permission to post to that account'
 
-        false
+        false # stop submit

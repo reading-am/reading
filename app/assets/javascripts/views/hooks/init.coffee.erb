@@ -4,7 +4,10 @@
 <%= ERB.new(IO.read "#{include_path}/serializers.coffee.erb").result %>
 
 errors =
-  WrongAuth: "You'll have to log out to connect a new account"
+  AuthFailure: "You chose not to give us access to your details"
+  AuthWrongAccount: "To modify that account, you'll need to log into it first"
+  AuthPreexisting: "You tried to connect a new account but you're logged in to one of your other accounts"
+  AuthTaken: "That account is connected to a different Reading account"
 
 # endpoints to get user data from each provider
 api_urls =
@@ -62,7 +65,7 @@ $ ->
         success: (response) ->
           $this.submit()
         error: (response) ->
-          alert response.status
+          alert errors[response.status]
       false # stop submit
     else if account
       # User is adding a hook to an existing account

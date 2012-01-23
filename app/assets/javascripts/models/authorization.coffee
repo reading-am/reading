@@ -90,6 +90,39 @@ TwitterAuth::default_perms = ["read","write"]
 
 class FacebookAuth extends Authorization
   provider: "facebook"
+  login: (params={}) ->
+    success = params.success ? ->
+    error = params.error ? ->
+
+    FB.getLoginStatus (response) =>
+      if response.status is "connected" and @uid
+        if @uid is "new" and current_user.authorizations[@provider][response.authResponse.userID]
+          error_status = "AuthPreexisting"
+        else if String(response.authResponse.userID) isnt @uid
+          error_status = "AuthWrongAccount"
+
+      if error_status?
+        response.status = error_status
+        error response
+      else
+       if params.permissions
+          perms = @permissions.concat(params.permissions).unique()
+          changed = perms.length > @permissions.length
+        else
+          perms = @permsissions
+          changed = false
+
+        # either the user is logged into the right account or
+        # they're not connected at all so we can go ahead and
+        # log them in with the requested scope
+        FB.login ((response) =>
+          if response.authResponse
+            # authorized and good to go
+            success()
+          else
+            # the user denied authorized!
+            error()
+        ), {scope: perms}
   ask_permission: (perm, success, error) ->
     return alert 'fb add'
     # already has access

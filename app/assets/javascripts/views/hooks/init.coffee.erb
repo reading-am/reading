@@ -72,8 +72,7 @@ $ ->
       auth = current_user.authorizations[provider][account]
       unless auth.can "write"
         auth.ask_permission "write", ->
-          #$this.submit()
-          console.log 'hit'
+          $this.submit()
         , ->
           alert 'There was an error getting permission to post to that account'
 

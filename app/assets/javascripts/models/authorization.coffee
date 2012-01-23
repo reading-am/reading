@@ -114,11 +114,11 @@ class FacebookAuth extends Authorization
         response.status = error_status
         error response
       else
-       if params.permissions
+        if params.permissions
           perms = @permissions.concat(params.permissions).unique()
           changed = perms.length > @permissions.length
         else
-          perms = @permsissions
+          perms = @permissions
           changed = false
 
         FB.login (response) =>

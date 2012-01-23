@@ -26,16 +26,16 @@ class TwitterAuth extends Authorization
   provider: "twitter"
   constructor: (@permissions, @uid) ->
     @permissions ?= TwitterAuth::default_perms
-  login: (params) ->
+  login: (params={}) ->
     # if permissions have been submitted,
     # check to see if there are new ones
     # and add them. There is no subtracting
     # permissions. That happens on the Provider side
-    if params.perms
-      perms = @perms.concat(params.perms).unique()
-      changed = perms.length > @perms.length
+    if params.permissions
+      perms = @permissions.concat(params.permissions).unique()
+      changed = perms.length > @permissions.length
     else
-      perms = @perms
+      perms = @permsissions
       changed = false
 
     success = params.success ? ->
@@ -57,7 +57,8 @@ class TwitterAuth extends Authorization
         # new account
         else if !@uid
           @uid = response.authResponse.uid
-          @perms = perms
+          @permissions = perms
+          success response
         # existing account successfully authed
         else
           # if nothing has changed, go ahead
@@ -67,7 +68,7 @@ class TwitterAuth extends Authorization
           else
             # perms have change. Save them and
             # execute the callback
-            @perms = perms
+            @permissions = perms
             success response
             # right now to auth is saved in the omniauth
             # callback else we'd need to save it here

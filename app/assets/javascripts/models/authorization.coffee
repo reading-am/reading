@@ -42,36 +42,28 @@ class TwitterAuth extends Authorization
     error = params.error ? ->
 
     TwitterProv::login (response) =>
-      # the user cancelled the request
-      # or there was an error
-      unless response.authResponse
+      if (!response.authResponse) or (response.status is "AuthTaken") or (@uid is "new" and response.status is "AuthPreexisting")
         error response
+      else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
+        # the user isn't logged into the right account on the provider's site
+        error {status: 'AuthWrongAccount'}
       else
-        # another user has the account
-        if response.status is "AuthTaken" or @uid is "new" and response.status is "AuthPreexisting"
-          error response
-        # the user isn't logged into the right
-        # account on the provider's site
-        else if @uid and @uid is not "new" and response.authResponse.uid != @uid
-          error {status: 'AuthWrong'}
-        # new account
-        else if !@uid
+        if !@uid
+          # new account
           @uid = response.authResponse.uid
           @permissions = perms
           success response
-        # existing account successfully authed
         else
-          # if nothing has changed, go ahead
-          # and execute the callback
+          # existing account successfully authed
           unless changed
+            # if nothing has changed, go ahead and execute the callback
             success response
           else
-            # perms have change. Save them and
-            # execute the callback
+            # perms have changed so save them and execute the callback
             @permissions = perms
             success response
-            # right now to auth is saved in the omniauth
-            # callback else we'd need to save it here
+
+            # right now to auth is saved in the omniauth callback else we'd need to save it here
             # @save
               # success: ->
                 # success response

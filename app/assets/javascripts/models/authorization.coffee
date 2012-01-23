@@ -24,8 +24,10 @@ Authorization::factory = (params) ->
 
 class TwitterAuth extends Authorization
   provider: "twitter"
+
   constructor: (@uid, @permissions) ->
     @permissions ?= TwitterAuth::default_perms
+
   login: (params={}) ->
     # if permissions have been submitted,
     # check to see if there are new ones
@@ -90,6 +92,13 @@ TwitterAuth::default_perms = ["read","write"]
 
 class FacebookAuth extends Authorization
   provider: "facebook"
+
+  constructor: (@uid, @permissions) ->
+    @permissions ?= FacebookAuth::default_perms
+
+  can: (perm) ->
+    super FacebookAuth::denormalize_perm perm
+
   login: (params={}) ->
     success = params.success ? ->
     error = params.error ? ->
@@ -112,39 +121,39 @@ class FacebookAuth extends Authorization
           perms = @permsissions
           changed = false
 
-        # either the user is logged into the right account or
-        # they're not connected at all so we can go ahead and
-        # log them in with the requested scope
-        FB.login ((response) =>
+        FB.login (response) =>
           if response.authResponse
             # authorized and good to go
-            success()
+            success response
+             # @save
+              # success: ->
+                # success response
+              # error: ->
+                # error "AuthSaveFail"
           else
-            # the user denied authorized!
-            error()
-        ), {scope: perms}
+            # the user denied authorization!
+            error response
+        , {scope: perms}
   ask_permission: (perm, success, error) ->
-    return alert 'fb add'
+    perm = FacebookAuth::denormalize_perm perm
     # already has access
     if @can(perm)
       success()
     else
-      FB.getLoginStatus (response) ->
-        if response.status isnt "connected" or (response.status is "connected" and String(response.authResponse.userID) is @uid)
-          # either the user is logged into the right account or
-          # they're not connected at all so we can go ahead and
-          # log them in with the requested scope
-          FB.login ((response) ->
-            if response.authResponse
-              # authorized and good to go
-              success()
-            else
-              # the user denied authorized!
-              error()
-          ), {scope: perm}
-        else
-          # the user is logged into the wrong FB account
-          failure()
+      perms = @permissions.slice 0 # copy the array
+      perms.push perm
+      @login
+        permissions: perms,
+        success: success
+        error: error
+
+FacebookAuth::default_perms = ["email","offline_access"]
+
+FacebookAuth::denormalize_perm = (perm) ->
+  perm = "offline_access" if perm is "read"
+  perm = "publish_stream" if perm is "write"
+  perm
+
 
 
 window.Authorization = Authorization

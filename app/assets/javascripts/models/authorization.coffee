@@ -48,12 +48,12 @@ class TwitterAuth extends Authorization
         error response.status
       else
         # another user has the account
-        if response.status == "AuthTaken"
+        if response.status is "AuthTaken" or @uid is "new" and response.status is "AuthPreexisting"
           error response.status
         # the user isn't logged into the right
         # account on the provider's site
-        else if @uid and response.authResponse.uid != @uid
-          error 'AuthWrong'
+        else if @uid and @uid is not "new" and response.authResponse.uid != @uid
+          error {status: 'AuthWrong'}
         # new account
         else if !@uid
           @uid = response.authResponse.uid

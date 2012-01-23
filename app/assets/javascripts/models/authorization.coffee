@@ -124,16 +124,19 @@ class FacebookAuth extends Authorization
         FB.login (response) =>
           if response.authResponse
             # authorized and good to go
-            success response
-             # @save
-              # success: ->
-                # success response
-              # error: ->
-                # error "AuthSaveFail"
+            unless changed
+              success response
+            else
+              @permissions = perms
+              @save
+                success: ->
+                  success response
+                error: ->
+                  error "AuthSaveFail"
           else
             # the user denied authorization!
             error response
-        , {scope: perms}
+        , {scope: perms.join ','}
   ask_permission: (perm, success, error) ->
     perm = FacebookAuth::denormalize_perm perm
     # already has access

@@ -94,7 +94,13 @@ class FacebookAuth extends Authorization
   provider: "facebook"
 
   constructor: (@uid, @permissions) ->
-    @permissions ?= FacebookAuth::default_perms
+    if @permissions?
+      # TODO uggg this is compensating for the lack of email in the denorm
+      # we need to get that in some how
+      @permissions.push "email" if "read" in @permissions
+      @permissions = (FacebookAuth::denormalize_perm perm for perm in @permissions)
+    else
+      @permissions = FacebookAuth::default_perms
 
   can: (perm) ->
     super FacebookAuth::denormalize_perm perm
@@ -156,7 +162,6 @@ FacebookAuth::denormalize_perm = (perm) ->
   perm = "offline_access" if perm is "read"
   perm = "publish_stream" if perm is "write"
   perm
-
 
 
 window.Authorization = Authorization

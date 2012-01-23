@@ -66,7 +66,7 @@ $ ->
           $this.submit()
         error: (response) ->
           alert errors[response.status]
-      false # stop submit
+      return false # stop submit
     else if account
       # User is adding a hook to an existing account
       auth = current_user.authorizations[provider][account]

@@ -51,7 +51,7 @@ class TwitterAuth extends Authorization
         error {status: 'AuthWrongAccount'}
       else
         if !@uid or @uid is "new"
-          # new account
+          # new account already saved by omniauth
           @uid = response.authResponse.uid
           @permissions = perms
           current_user.authorizations[@provider][@uid] = this
@@ -113,7 +113,7 @@ class FacebookAuth extends Authorization
       if response.status is "connected" and @uid
         if @uid is "new" and current_user.authorizations[@provider][response.authResponse.userID]
           error_status = "AuthPreexisting"
-        else if String(response.authResponse.userID) isnt @uid
+        else if @uid isnt "new" and String(response.authResponse.userID) isnt @uid
           error_status = "AuthWrongAccount"
 
       if error_status?
@@ -130,15 +130,20 @@ class FacebookAuth extends Authorization
         FB.login (response) =>
           if response.authResponse
             # authorized and good to go
-            unless changed
+            unless changed or @uid is "new"
               success response
             else
               @permissions = perms
-              @save
-                success: ->
-                  success response
-                error: ->
-                  error "AuthSaveFail"
+              if @uid is "new"
+                @uid = response.authResponse.userID
+                current_user.authorizations[@provider][@uid] = this
+                console.log "create new here"
+              else
+                @save
+                  success: ->
+                    success response
+                  error: ->
+                    error "AuthSaveFail"
           else
             # the user denied authorization!
             error response

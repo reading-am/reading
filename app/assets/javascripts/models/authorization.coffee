@@ -148,6 +148,7 @@ class FacebookAuth extends Authorization
                 @omni_create =>
                   @uid = response.authResponse.userID
                   current_user.authorizations[@provider][@uid] = this
+                  success response
                 , =>
                   response.status = "AuthSaveFail"
                   error response

@@ -8,6 +8,7 @@ errors =
   AuthWrongAccount: "To modify that account, you'll need to log into it first"
   AuthPreexisting: "You tried to connect a new account but you're logged in to one of your other accounts"
   AuthTaken: "That account is connected to a different Reading account"
+  AuthSaveFail: "There was an error saving your account. Please try again."
 
 # endpoints to get user data from each provider
 api_urls =
@@ -63,10 +64,11 @@ $ ->
       auth = new window["#{provider[0].toUpperCase()}#{provider[1..]}Auth"]("new", ["read","write"])
       auth.login
         success: (response) ->
+          $("#hook_params_account option[value='new']").val auth.uid
           $this.submit()
         error: (response) ->
           alert errors[response.status]
-      return false # stop submit
+      false # stop submit
     else if account
       # User is adding a hook to an existing account
       auth = current_user.authorizations[provider][account]

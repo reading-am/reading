@@ -27,11 +27,21 @@ class SessionsController < ApplicationController
       status = "AuthLoginCreate"
     end
 
-    render "redirect", :locals => {:status => status, :authResponse => auth_hash}, :layout => false
+    data = {:status => status, :authResponse => auth_hash}
+    if !params[:return_type].nil? and params[:return_type] == 'json'
+      render :text => data.to_json
+    else
+      render "redirect", :locals => data, :layout => false
+    end
   end
 
   def failure
-    render "redirect", :locals => {:status => "AuthFailure"}, :layout => false
+    data = {:status => "AuthFailure", :authResponse => nil}
+    if !params[:return_type].nil? and params[:return_type] == 'json'
+      render :text => data.to_json
+    else
+      render "redirect", :locals => data, :layout => false
+    end
   end
 
   def destroy

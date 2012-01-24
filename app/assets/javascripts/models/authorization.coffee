@@ -107,10 +107,18 @@ class FacebookAuth extends Authorization
     # github instructions
     $.ajax
       url: "/auth/#{@provider}/callback"
+      dataType: "json"
       data:
+        return_type: "json",
         permissions: "[\"#{@permissions.join('","')}\"]"
-      success: success
-      error: error
+      success: (response) ->
+        if response.status is "AuthTaken"
+          error response
+        else
+          success response
+      error: ->
+        error {status: "AuthSaveFail"}
+      # need to field AuthTaken error here
 
   can: (perm) ->
     super FacebookAuth::denormalize_perm perm
@@ -145,13 +153,11 @@ class FacebookAuth extends Authorization
             else
               @permissions = perms
               if @uid is "new"
-                @omni_create =>
-                  @uid = response.authResponse.userID
+                @omni_create (response) =>
+                  @uid = response.authResponse.uid
                   current_user.authorizations[@provider][@uid] = this
                   success response
-                , =>
-                  response.status = "AuthSaveFail"
-                  error response
+                , error
               else
                 @save
                   success: =>

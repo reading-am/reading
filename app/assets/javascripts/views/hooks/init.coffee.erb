@@ -4,6 +4,7 @@
 <%= ERB.new(IO.read "#{include_path}/serializers.coffee.erb").result %>
 
 errors =
+  generic: "There was an error processing your request. Sorry."
   AuthFailure: "You chose not to give us access to your details"
   AuthWrongAccount: "To modify that account, you'll need to log into it first"
   AuthPreexisting: "You tried to connect a new account but you're logged in to one of your other accounts"
@@ -67,15 +68,16 @@ $ ->
           $("#hook_params_account option[value='new']").val auth.uid
           $this.submit()
         error: (response) ->
-          alert errors[response.status]
+          alert errors[response.status] ? errors.generic
       false # stop submit
     else if account
       # User is adding a hook to an existing account
       auth = current_user.authorizations[provider][account]
       unless auth.can "write"
-        auth.ask_permission "write", ->
+        auth.ask_permission "write", (response) ->
           $this.submit()
-        , ->
+        , (response) ->
+          console.log response
           alert 'There was an error getting permission to post to that account'
 
         false # stop submit

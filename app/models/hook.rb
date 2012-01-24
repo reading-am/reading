@@ -55,10 +55,11 @@ class Hook < ActiveRecord::Base
     tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\""
     tweet_len = tweet.unpack('c*').length
     full_len = tweet_len + post.short_url.unpack('c*').length + 1 # plus one is the space
-    if full_len > 140
+    buffer = 10 # 10 for good measure and because twitter drove me batty about being over the character limit
+    if full_len + buffer > 140
       # after trying to count characters the twitter way: https://dev.twitter.com/docs/counting-characters#Ruby_Specific_Information
       # I finally gave up and just used the actual byte length
-      cutto = tweet_len - (full_len + "…".unpack('c*').length - 140) - 7 # -7 for good measure and because twitter drove me batty
+      cutto = tweet_len - (full_len + "…".unpack('c*').length - 140) - buffer
       tweet = "#{tweet[0..cutto]}…\""
     end
     tweet << " #{post.short_url}"

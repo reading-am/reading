@@ -102,6 +102,16 @@ class FacebookAuth extends Authorization
     else
       @permissions = FacebookAuth::default_perms
 
+  omni_create: (success, error) ->
+    # hit the omniauth endpoint perm the omniauth-facebook
+    # github instructions
+    $.ajax
+      url: "/auth/#{@provider}/callback"
+      data:
+        permissions: "[\"#{@permissions.join('","')}\"]"
+      success: success
+      error: error
+
   can: (perm) ->
     super FacebookAuth::denormalize_perm perm
 
@@ -135,15 +145,19 @@ class FacebookAuth extends Authorization
             else
               @permissions = perms
               if @uid is "new"
-                @uid = response.authResponse.userID
-                current_user.authorizations[@provider][@uid] = this
-                $.get '/auth/facebook/callback'
+                @omni_create =>
+                  @uid = response.authResponse.userID
+                  current_user.authorizations[@provider][@uid] = this
+                , =>
+                  response.status = "AuthSaveFail"
+                  error response
               else
                 @save
-                  success: ->
+                  success: =>
                     success response
-                  error: ->
-                    error "AuthSaveFail"
+                  error: =>
+                    response.status = "AuthSaveFail"
+                    error response
           else
             # the user denied authorization!
             error response

@@ -2,11 +2,10 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env['omniauth.auth']
-
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
       begin
-        auth = current_user.add_provider(auth_hash)
+        auth = current_user.add_provider(auth_hash, params[:permissions])
         status = "AuthAdded"
       rescue AuthTaken => e
         status = "AuthTaken"

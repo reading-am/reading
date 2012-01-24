@@ -161,6 +161,7 @@ class FacebookAuth extends Authorization
                     error response
           else
             # the user denied authorization!
+            response.status = "AuthFailure"
             error response
         , {scope: perms.join ','}
   ask_permission: (perm, success, error) ->

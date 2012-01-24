@@ -137,7 +137,7 @@ class FacebookAuth extends Authorization
               if @uid is "new"
                 @uid = response.authResponse.userID
                 current_user.authorizations[@provider][@uid] = this
-                console.log "create new here"
+                $.get '/auth/facebook/callback'
               else
                 @save
                   success: ->

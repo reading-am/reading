@@ -49,6 +49,9 @@ GEM
     dalli (1.1.4)
     delayed_job (3.0.0)
       activesupport (~> 3.0)
+    delayed_job_active_record (0.3.1)
+      activerecord (> 2.1.0)
+      delayed_job (~> 3.0.0)
     em-http-request (1.0.1)
       addressable (>= 2.2.3)
       cookiejar
@@ -241,6 +244,7 @@ DEPENDENCIES
   curb (~> 0.8.0)
   dalli
   delayed_job
+  delayed_job_active_record
   em-http-request
   hipchat
   jquery-rails

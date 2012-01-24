@@ -48,7 +48,8 @@ class TwitterAuth extends Authorization
         error response
       else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
         # the user isn't logged into the right account on the provider's site
-        error {status: 'AuthWrongAccount'}
+        response.status = "AuthWrongAccount"
+        error response
       else
         if !@uid or @uid is "new"
           # new account already saved by omniauth
@@ -79,7 +80,7 @@ class TwitterAuth extends Authorization
     if @can(perm)
       success()
     else
-      TwitterProv::ask_permission =>
+      TwitterProv::ask_permission (response) =>
         if response.authResponse
           @permissions.push perm
           @save

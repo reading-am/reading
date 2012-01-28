@@ -5,20 +5,26 @@ class Authorization < ActiveRecord::Base
 
   PROVIDERS = ['twitter', 'facebook']
   validates :provider, :uid, :presence => true
-  before_create :set_perms
+  before_create :set_initial_perms
 
-  def set_perms
-    if self.permissions.nil?
-      # these should mirror what's in config/initializers/omniauth.rb
-      case self.provider
-      when 'twitter'
-        self.permissions = '["read","write"]'
-      when 'facebook'
-        # TODO - add error checking here
-        perms = api.get_object('/me/permissions').first
-        perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
-        self.permissions = perms.empty? ? "[]" : "[\"#{perms}\"]"
-      end
+private
+
+  def set_initial_perms
+    self.sync_perms if self.permissions.nil?
+  end
+
+public
+
+  def sync_perms
+    # these should mirror what's in config/initializers/omniauth.rb
+    case self.provider
+    when 'twitter'
+      self.permissions = '["read","write"]'
+    when 'facebook'
+      # TODO - add error checking here
+      perms = api.get_object('/me/permissions').first rescue {}
+      perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
+      self.permissions = perms.empty? ? "[]" : "[\"#{perms}\"]"
     end
   end
 
@@ -97,4 +103,14 @@ class Authorization < ActiveRecord::Base
 
     auth
   end
+
+  def simple_obj to_s=false
+    {
+      :type         => 'Authorization',
+      :provider     => provider,
+      :uid          => to_s ? uid.to_s : uid,
+      :permissions  => permissions
+    }
+  end
+
 end

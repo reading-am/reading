@@ -4,6 +4,30 @@ class Authorization
   can: (perm) ->
     perm in @permissions
 
+  sync_to_current_session: (success, error) ->
+    # hit the omniauth endpoint perm the omniauth-facebook
+    # github instructions
+    $.ajax
+      url: "/auth/#{@provider}/callback"
+      dataType: "json"
+      data:
+        return_type: "json",
+      success: (response) =>
+        if response.status is "AuthTaken"
+          error response
+        else
+          @sync_params_from_auth_response response
+          success response
+      error: ->
+        error {status: "AuthSaveFail"}
+      # need to field AuthTaken error here
+
+  sync_params_from_auth_response: (response) ->
+    unless !response.auth
+      @uid = response.auth.uid
+      @permissions = response.auth.permissions
+      current_user.authorizations[@provider][@uid] = this
+
   save: (params) ->
     data =
       authorization: # the id is passed in the url
@@ -17,6 +41,18 @@ class Authorization
       error: (jqXHR, textStatus, errorThrown) =>
         params.error() if params.error?
 
+  ask_permission: (perm, success, error) ->
+    # already has access
+    if @can(perm)
+      success()
+    else
+      perms = @permissions.slice 0 # copy the array
+      perms.push perm
+      @login
+        permissions: perms,
+        success: =>
+          if @can perm then success() else error()
+        error: error
 
 Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
@@ -29,17 +65,6 @@ class TwitterAuth extends Authorization
     @permissions ?= TwitterAuth::default_perms
 
   login: (params={}) ->
-    # if permissions have been submitted,
-    # check to see if there are new ones
-    # and add them. There is no subtracting
-    # permissions. That happens on the Provider side
-    if params.permissions
-      perms = @permissions.concat(params.permissions).unique()
-      changed = perms.length > @permissions.length
-    else
-      perms = @permsissions
-      changed = false
-
     success = params.success ? ->
     error = params.error ? ->
 
@@ -51,43 +76,9 @@ class TwitterAuth extends Authorization
         response.status = "AuthWrongAccount"
         error response
       else
-        if !@uid or @uid is "new"
-          # new account already saved by omniauth
-          @uid = response.authResponse.uid
-          @permissions = perms
-          current_user.authorizations[@provider][@uid] = this
-          success response
-        else
-          # existing account successfully authed
-          unless changed
-            # if nothing has changed, go ahead and execute the callback
-            success response
-          else
-            # perms have changed so save them and execute the callback
-            @permissions = perms
-            success response
+        @sync_params_from_auth_response response
+        success response
 
-            # right now to auth is saved in the omniauth callback else we'd need to save it here
-            # @save
-              # success: ->
-                # success response
-              # error: ->
-                # error "AuthSaveFail"
-    , perms
-
-  ask_permission: (perm, success, error) ->
-    # already has access
-    if @can(perm)
-      success()
-    else
-      TwitterProv::ask_permission (response) =>
-        if response.authResponse
-          @permissions.push perm
-          @save
-            success: success
-            error: error
-        else
-          error()
 
 TwitterAuth::default_perms = ["read","write"]
 
@@ -95,38 +86,12 @@ class FacebookAuth extends Authorization
   provider: "facebook"
 
   constructor: (@uid, @permissions) ->
-    if @permissions?
-      # TODO uggg this is compensating for the lack of email in the denorm
-      # we need to get that in some how
-      @permissions.push "email" if "read" in @permissions
-      @permissions = (FacebookAuth::denormalize_perm perm for perm in @permissions)
-    else
-      @permissions = FacebookAuth::default_perms
-
-  omni_create: (success, error) ->
-    # hit the omniauth endpoint perm the omniauth-facebook
-    # github instructions
-    $.ajax
-      url: "/auth/#{@provider}/callback"
-      dataType: "json"
-      data:
-        return_type: "json",
-        permissions: "[\"#{@permissions.join('","')}\"]"
-      success: (response) ->
-        if response.status is "AuthTaken"
-          error response
-        else
-          success response
-      error: ->
-        error {status: "AuthSaveFail"}
-      # need to field AuthTaken error here
-
-  can: (perm) ->
-    super FacebookAuth::denormalize_perm perm
+    @permissions ?= FacebookAuth::default_perms
 
   login: (params={}) ->
     success = params.success ? ->
-    error = params.error ? ->
+    error   = params.error ? ->
+    perms   = params.permissions ? []
 
     FB.getLoginStatus (response) =>
       if response.status is "connected" and @uid
@@ -139,59 +104,17 @@ class FacebookAuth extends Authorization
         response.status = error_status
         error response
       else
-        if params.permissions
-          perms = @permissions.concat(params.permissions).unique()
-          changed = perms.length > @permissions.length
-        else
-          perms = @permissions
-          changed = false
-
         FB.login (response) =>
           if response.authResponse
-            # authorized and good to go
-            unless changed or @uid is "new"
-              success response
-            else
-              @permissions = perms
-              if @uid is "new"
-                @omni_create (response) =>
-                  @uid = response.authResponse.uid
-                  current_user.authorizations[@provider][@uid] = this
-                  success response
-                , error
-              else
-                @save
-                  success: =>
-                    success response
-                  error: =>
-                    response.status = "AuthSaveFail"
-                    error response
-          else
-            # the user denied authorization!
+            @sync_to_current_session success, error
+          else # the user denied authorization!
             response.status = "AuthFailure"
             error response
-        , {scope: perms.join ','}
-  ask_permission: (perm, success, error) ->
-    perm = FacebookAuth::denormalize_perm perm
-    # already has access
-    if @can(perm)
-      success()
-    else
-      perms = @permissions.slice 0 # copy the array
-      perms.push perm
-      @login
-        permissions: perms,
-        success: success
-        error: error
+        , {scope: @permissions.concat(perms).unique().join ','}
 
 FacebookAuth::default_perms = ["email","offline_access"]
 
-FacebookAuth::denormalize_perm = (perm) ->
-  perm = "offline_access" if perm is "read"
-  perm = "publish_stream" if perm is "write"
-  perm
-
-
+# add to window scope
 window.Authorization = Authorization
 window.TwitterAuth = TwitterAuth
 window.FacebookAuth = FacebookAuth

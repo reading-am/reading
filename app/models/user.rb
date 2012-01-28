@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
       self.phone      ||= auth_hash["info"]["phone"]
       self.urls       ||= auth_hash["info"]["urls"]
       self.save
-      raise AuthError.new("AuthTaken", auth)
+      raise AuthError.new("AuthPreexisting", auth)
     else
       Authorization.create(
         :user       => self,
@@ -130,6 +130,8 @@ end
 
 class AuthError < StandardError
   # per: http://jqr.github.com/2009/02/11/passing-data-with-ruby-exceptions.html
+  attr_accessor :auth
+
   def initialize(message = nil, auth = nil)
     super(message)
     self.auth = auth

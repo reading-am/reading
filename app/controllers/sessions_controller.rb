@@ -7,10 +7,9 @@ class SessionsController < ApplicationController
       begin
         auth = current_user.add_provider(auth_hash)
         status = "AuthAdded"
-      rescue AuthTaken => e
-        status = "AuthTaken"
-      rescue AuthPreexisting => e
-        status = "AuthPreexisting"
+      rescue AuthError => e
+        status = e.message
+        auth = e.auth
       end
     else
       # Log him in or sign him up
@@ -19,7 +18,7 @@ class SessionsController < ApplicationController
       status = "AuthLoginCreate"
     end
 
-    data = {:status => status, :authResponse => auth_hash, :auth => defined?(auth) ? nil : auth.simple_obj}
+    data = {:status => status, :authResponse => auth_hash, :auth => auth.nil? ? nil : auth.simple_obj}
     if !params[:return_type].nil? and params[:return_type] == 'json'
       render :text => data.to_json
     else

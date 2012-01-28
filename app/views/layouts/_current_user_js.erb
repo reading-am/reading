@@ -1,16 +1,7 @@
-<%
-  auths = []
-  if logged_in?
-    current_user.authorizations.each do |auth|
-      auths << {provider: auth.provider, :uid => auth.uid, :permissions => auth.permissions}
-    end
-  end
-%>
-
 var current_user = {
   id: '<%= current_user.id if logged_in? %>',
   username: '<%= current_user.username if logged_in? %>',
   display_name: '<%= current_user.display_name if logged_in? %>'
 };
 
-var authorizations = <%= auths.to_json.html_safe %>;
+var authorizations = <%= logged_in? ? '[]' : current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe %>;

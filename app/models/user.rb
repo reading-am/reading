@@ -53,6 +53,7 @@ class User < ActiveRecord::Base
       # TODO - there has to be a cleaner, more concise way to do this
       auth.token  ||= auth_hash["credentials"]["token"]
       auth.secret ||= auth_hash["credentials"]["secret"]
+      auth.sync_perms # make sure the permissions stay in sync
       auth.save
 
       self.name       ||= auth_hash["info"]["name"]

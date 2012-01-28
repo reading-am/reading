@@ -5,16 +5,19 @@ class Authorization < ActiveRecord::Base
 
   PROVIDERS = ['twitter', 'facebook']
   validates :provider, :uid, :presence => true
-  before_create :set_default_perms
+  before_create :set_perms
 
-  def set_default_perms
+  def set_perms
     if self.permissions.nil?
       # these should mirror what's in config/initializers/omniauth.rb
       case self.provider
       when 'twitter'
         self.permissions = '["read","write"]'
       when 'facebook'
-        self.permissions = '["email","offline_access"]'
+        # TODO - add error checking here
+        perms = api.get_object('/me/permissions').first
+        perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
+        self.permissions = perms.empty? ? "[]" : "[\"#{perms}\"]"
       end
     end
   end

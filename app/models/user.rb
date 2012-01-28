@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
     username
   end
 
-  def add_provider(auth_hash, permissions=nil)
+  def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
       if auth.user_id != self.id
@@ -53,7 +53,6 @@ class User < ActiveRecord::Base
       # TODO - there has to be a cleaner, more concise way to do this
       auth.token  ||= auth_hash["credentials"]["token"]
       auth.secret ||= auth_hash["credentials"]["secret"]
-      auth.permissions ||= permissions
       auth.save
 
       self.name       ||= auth_hash["info"]["name"]
@@ -74,7 +73,6 @@ class User < ActiveRecord::Base
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
         :secret     => auth_hash["credentials"]["secret"],
-        :permissions=> permissions
       )
     end
   end

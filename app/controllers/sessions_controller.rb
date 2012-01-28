@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
       begin
-        auth = current_user.add_provider(auth_hash, params[:permissions])
+        auth = current_user.add_provider(auth_hash)
         status = "AuthAdded"
       rescue AuthTaken => e
         status = "AuthTaken"

@@ -4,4 +4,4 @@ var current_user = {
   display_name: '<%= current_user.display_name if logged_in? %>'
 };
 
-var authorizations = <%= logged_in? ? '[]' : current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe %>;
+var authorizations = <%= logged_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;

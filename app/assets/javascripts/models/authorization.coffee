@@ -1,13 +1,15 @@
+#################
+# Authorization #
+#################
 class Authorization
   constructor: (@uid, @permissions) ->
+    @uid ?= "new"
 
   can: (perm) ->
-    perm in @permissions
+    @uid and @uid != "new" and @permissions and perm in @permissions
 
   sync_to_current_session: (success, error) ->
-    # hit the omniauth endpoint perm the omniauth-facebook
-    # github instructions
-    $.ajax
+    $.ajax # hit the omniauth endpointk
       url: "/auth/#{@provider}/callback"
       dataType: "json"
       data:
@@ -16,13 +18,12 @@ class Authorization
         if response.status is "AuthTaken"
           error response
         else
-          @sync_params_from_auth_response response
+          @assign_params_from_auth_response response
           success response
       error: ->
         error {status: "AuthSaveFail"}
-      # need to field AuthTaken error here
 
-  sync_params_from_auth_response: (response) ->
+  assign_params_from_auth_response: (response) ->
     unless !response.auth
       @uid = response.auth.uid
       @permissions = response.auth.permissions
@@ -58,11 +59,12 @@ Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
   new window[type](params.uid, params.permissions)
 
+
+###############
+# TwitterAuth #
+###############
 class TwitterAuth extends Authorization
   provider: "twitter"
-
-  constructor: (@uid, @permissions) ->
-    @permissions ?= TwitterAuth::default_perms
 
   login: (params={}) ->
     success = params.success ? ->
@@ -76,17 +78,15 @@ class TwitterAuth extends Authorization
         response.status = "AuthWrongAccount"
         error response
       else
-        @sync_params_from_auth_response response
+        @assign_params_from_auth_response response
         success response
 
 
-TwitterAuth::default_perms = ["read","write"]
-
+################
+# FacebookAuth #
+################
 class FacebookAuth extends Authorization
   provider: "facebook"
-
-  constructor: (@uid, @permissions) ->
-    @permissions ?= FacebookAuth::default_perms
 
   login: (params={}) ->
     success = params.success ? ->
@@ -112,7 +112,6 @@ class FacebookAuth extends Authorization
             error response
         , {scope: @permissions.concat(perms).unique().join ','}
 
-FacebookAuth::default_perms = ["email","offline_access"]
 
 # add to window scope
 window.Authorization = Authorization

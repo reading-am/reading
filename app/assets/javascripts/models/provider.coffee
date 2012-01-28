@@ -1,3 +1,6 @@
+############
+# Provider #
+############
 class Provider
   accounts: ->
     attr for own attr, value of this
@@ -18,9 +21,10 @@ Provider::login = (params, response) ->
   popup.focus() if window.focus
   false
 
-Provider::ask_permission = (response) ->
-  this.login response
 
+###############
+# TwitterProv #
+###############
 class TwitterProv extends Provider
 
 TwitterProv::login = (response, perms) ->
@@ -30,6 +34,10 @@ TwitterProv::login = (response, perms) ->
     height: 700,
     response
 
+
+################
+# FacebookProv #
+################
 class FacebookProv extends Provider
 
 FacebookProv::login = (response, perms) ->
@@ -39,6 +47,8 @@ FacebookProv::login = (response, perms) ->
     height: 600,
     response
 
+
+# add to window scope
 window.Provider = Provider
 window.TwitterProv = TwitterProv
 window.FacebookProv = FacebookProv

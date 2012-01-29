@@ -1,0 +1,22 @@
+# serialize a form to JSON so that it can be
+# stored in a cookie and resubmitted later on
+form_to_json = (form) ->
+  $form = $(form)
+  json =
+    method: $form.attr("method")
+    action: $form.attr("action")
+    inputs: {}
+
+  $form.find(":input").each (i, el) ->
+    json.inputs[$(el).attr("name")] = $(el).val()
+
+  JSON.stringify json
+
+# unserialize JSON into a form so that it can be
+# pulled from a cookie and resubmitted
+json_to_form = (json) ->
+  json = JSON.parse(json)
+  $form = $("<form>").attr("method", json.method).attr("action", json.action)
+  for name of json.inputs
+    $form.append $("<input>").attr("name", name).val(json.inputs[name])
+  $form

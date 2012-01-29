@@ -68,8 +68,13 @@ $ ->
 
       if not auth.can permission
         auth.ask permission, (response) =>
-          $("#hook_params_account option[value='new']").val auth.uid if account is "new"
+          if account is "new"
+            $("#hook_params_account option[value='new']").val auth.uid
           $this.submit()
-        , (response) ->
+        , (response) =>
+          if account is "new" and auth.uid isnt "new"
+            # user approved some of the auth but not the write permission
+            $("#hook_params_account option[value='new']").val auth.uid
           alert errors[response.status] ? errors.generic
+
         false # stop submit

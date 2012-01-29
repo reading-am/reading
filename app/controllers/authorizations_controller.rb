@@ -47,4 +47,8 @@ class AuthorizationsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def loading
+    render "loading", :layout => false
+  end
 end

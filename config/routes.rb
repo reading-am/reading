@@ -20,6 +20,7 @@ Reading::Application.routes.draw do
   resources :hooks
   resources :footnotes
   
+  match '/auth/loading/:provider' => 'authorizations#loading'
   match '/authorizations/:provider/:uid/update' => 'authorizations#update'
   resources :authorizations
 

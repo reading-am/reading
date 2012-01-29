@@ -29,7 +29,7 @@ class TwitterProv extends Provider
 
 TwitterProv::login = (response, perms) ->
   super
-    url: '/auth/twitter'
+    url: '/auth/loading/twitter'
     width: 700
     height: 700,
     response
@@ -42,7 +42,7 @@ class FacebookProv extends Provider
 
 FacebookProv::login = (response, perms) ->
   super
-    url: '/auth/facebook'
+    url: '/auth/loading/facebook'
     width: 981
     height: 600,
     response

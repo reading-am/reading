@@ -3,15 +3,6 @@
 <%= ERB.new(IO.read "#{include_path}/builders.coffee.erb").result %>
 <%= ERB.new(IO.read "#{include_path}/serializers.coffee.erb").result %>
 
-errors =
-  generic: "There was an error processing your request. Sorry."
-  AuthFailure: "You chose not to give us access to your details"
-  AuthWrongAccount: "To modify that account, you'll need to log into it first"
-  AuthPreexisting: "You tried to connect a new account but you're logged in to one of your other accounts"
-  AuthAdded: "Your account was added but you didn't give us the permission we need to do what we need to do. Please try again."
-  AuthTaken: "That account is connected to a different Reading account"
-  AuthSaveFail: "There was an error saving your account. Please try again."
-
 # endpoints to get user data from each provider
 api_urls =
   twitter: "https://api.twitter.com/1/users/show.json?id="

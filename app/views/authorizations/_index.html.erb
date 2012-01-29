@@ -12,7 +12,7 @@
 <% end %>
 <% if @user == current_user %>
   <% Authorization::PROVIDERS.each do |provider| %>
-    <tr><td class="disconnected"><%= link_to provider_span(provider) << content_tag(:span, " click to connect", :class => 'admin'), "#", :data => {:provider => provider.capitalize, :method => 'login'} %></td></tr>
+    <tr><td class="disconnected"><%= link_to provider_span(provider) << content_tag(:span, " click to connect", :class => 'admin'), "#", :data => {:provider => provider.capitalize, :method => 'connect'} %></td></tr>
   <% end %>
 <% end %>
 </table>

@@ -2,7 +2,7 @@
 # Authorization #
 #################
 class Authorization
-  constructor: (@uid = "new", @permissions = []) ->
+  constructor: (@uid, @permissions = []) ->
 
   can: (perm) ->
     @uid and @uid != "new" and @permissions and perm in @permissions
@@ -65,9 +65,9 @@ Authorization::factory = (params) ->
 class TwitterAuth extends Authorization
   provider: "twitter"
 
-  constructor: (@uid = "new", @permissions = []) ->
+  constructor: (@uid, @permissions = []) ->
     # make sure you grab certain default permissions on a new authorization
-    @permissions = @permissions.concat(["read","write"]).unique() if @uid is "new"
+    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
     super @uid, @permissions
 
   login: (params={}) ->
@@ -92,9 +92,9 @@ class TwitterAuth extends Authorization
 class FacebookAuth extends Authorization
   provider: "facebook"
 
-  constructor: (@uid = "new", @permissions = []) ->
+  constructor: (@uid, @permissions = []) ->
     # make sure you grab certain default permissions on a new authorization
-    @permissions = @permissions.concat(["email","offline_access"]).unique() if @uid is "new"
+    @permissions = @permissions.concat(["email","offline_access"]).unique() if !@uid or @uid is "new"
     super @uid, @permissions
 
   login: (params={}) ->

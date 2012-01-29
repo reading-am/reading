@@ -13,6 +13,15 @@ $(window).focus(->
 
 window.base58 = libs.encdec()
 
+window.errors =
+  generic: "There was an error processing your request. Sorry."
+  AuthFailure: "You chose not to give us access to your details"
+  AuthWrongAccount: "To modify that account, you'll need to log into it first"
+  AuthPreexisting: "You tried to connect a new account but you're logged in to one of your other accounts"
+  AuthAdded: "Your account was added but you didn't give us the permission we need to do what we need to do. Please try again."
+  AuthTaken: "That account is connected to a different Reading account"
+  AuthSaveFail: "There was an error saving your account. Please try again."
+
 $ ->
   $("a.external").on "click", ->
     $this = $(this)
@@ -52,12 +61,15 @@ $ ->
   $search = $("#search input")
   $search.focus() if $search.val()
 
-  # trigger login from header
-  $("a[data-provider]").on "click", ->
+  $("a[data-provider][data-method]").on "click", ->
     $this = $(this)
-    Prov = window["#{$this.data("provider")}Prov"]
-    Prov::[$this.data("method")] (response) ->
-      if response.authResponse
+    uid = if $this.data("method") is "connect" then "new" else null
+    auth = new window["#{$this.data("provider")}Auth"](uid)
+
+    auth.login
+      success: (response) =>
         window.location.reload true
+      error: (response) ->
+        alert errors[response.status] ? errors.generic
 
     false

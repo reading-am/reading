@@ -50,6 +50,7 @@ $ ->
     $this       = $(this)
     $submit     = $this.find(":submit")
     provider    = $("#hook_provider", $this).val()
+    prov_cap    = provider[0].toUpperCase() + provider[1..]
     account     = $("#hook_params_account", $this).val()
     permission  = $("#hook_params_permission", $this).val()
 
@@ -60,7 +61,7 @@ $ ->
 
     if account
       if account is "new"
-        auth = new window["#{provider[0].toUpperCase()}#{provider[1..]}Auth"](account)
+        auth = new window["#{prov_cap}Auth"](account)
       else
         auth = current_user.authorizations[provider][account]
 
@@ -73,7 +74,7 @@ $ ->
           if account is "new" and auth.uid isnt "new"
             # user approved some of the auth but not the write permission
             $("#hook_params_account option[value='new']").val auth.uid
-          alert errors[response.status] ? errors.generic
+          alert (errors[response.status] ? errors.generic).replace /{provider}/gi, prov_cap
           # remove loading state
           $this.removeClass "loading"
           $submit.val prev_val

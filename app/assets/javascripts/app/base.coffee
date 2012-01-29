@@ -14,13 +14,13 @@ $(window).focus(->
 window.base58 = libs.encdec()
 
 window.errors =
-  generic: "There was an error processing your request. Sorry."
-  AuthFailure: "You chose not to give us access to your details"
-  AuthWrongAccount: "To modify that account, you'll need to log into it first"
-  AuthPreexisting: "You tried to connect a new account but you're logged in to one of your other accounts"
-  AuthAdded: "Your account was added but you didn't give us the permission we need to do what we need to do. Please try again."
-  AuthTaken: "That account is connected to a different Reading account"
-  AuthSaveFail: "There was an error saving your account. Please try again."
+  generic: "There was an error processing your request. Sorry. You should try again and if you continue to have problems, contact me at hello@reading.am."
+  AuthFailure: "Looks like we were unable to access your details from {provider}. Would you mind trying again?"
+  AuthWrongAccount: "To modify that account, you'll need to log into it on {provider} and try again. At the moment you're logged into a different {provider} account."
+  AuthPreexisting: "You tried to connect a new {provider} account but you're logged in to one of your existing {provider} accounts. Log in to the new account on {provider} and try again."
+  AuthAdded: "Your {provider} account was added but you didn't give us the permissions we need to do what we need to do. Would you mind trying again?"
+  AuthTaken: "That {provider} account is connected to a different Reading account. If you remove it from the other Reading account, you'll be able to add it to this one."
+  AuthSaveFail: "There was an error saving your account. Sorry. You should try again and if you continue to have problems, contact me at hello@reading.am."
 
 $ ->
   $("a.external").on "click", ->
@@ -63,13 +63,14 @@ $ ->
 
   $("a[data-provider][data-method]").on "click", ->
     $this = $(this)
+    provider = $this.data("provider")
     uid = if $this.data("method") is "connect" then "new" else null
-    auth = new window["#{$this.data("provider")}Auth"](uid)
+    auth = new window["#{provider}Auth"](uid)
 
     auth.login
       success: (response) =>
         window.location.reload true
       error: (response) ->
-        alert errors[response.status] ? errors.generic
+        alert (errors[response.status] ? errors.generic).replace /{provider}/gi, provider
 
     false

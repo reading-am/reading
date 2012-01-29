@@ -54,11 +54,6 @@ $ ->
     account     = $("#hook_params_account", $this).val()
     permission  = $("#hook_params_permission", $this).val()
 
-    # loading state
-    $this.addClass "loading"
-    prev_val = $submit.val()
-    $submit.val("Saving...")
-
     if account
       if account is "new"
         auth = new window["#{prov_cap}Auth"](account)
@@ -66,6 +61,7 @@ $ ->
         auth = current_user.authorizations[provider][account]
 
       if not auth.can permission
+        $('#loading').fadeIn()
         auth.ask permission, (response) =>
           if account is "new"
             $("#hook_params_account option[value='new']").val auth.uid
@@ -74,9 +70,7 @@ $ ->
           if account is "new" and auth.uid isnt "new"
             # user approved some of the auth but not the write permission
             $("#hook_params_account option[value='new']").val auth.uid
+          $('#loading').hide()
           alert (errors[response.status] ? errors.generic).replace /{provider}/gi, prov_cap
-          # remove loading state
-          $this.removeClass "loading"
-          $submit.val prev_val
 
         false # stop submit

@@ -66,11 +66,13 @@ $ ->
     provider = $this.data("provider")
     uid = if $this.data("method") is "connect" then "new" else null
     auth = new window["#{provider}Auth"](uid)
+    $('#loading').fadeIn()
 
     auth.login
       success: (response) =>
         window.location.reload true
       error: (response) ->
+        $('#loading').hide()
         alert (errors[response.status] ? errors.generic).replace /{provider}/gi, provider
 
     false

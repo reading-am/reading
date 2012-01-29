@@ -2,8 +2,7 @@
 # Authorization #
 #################
 class Authorization
-  constructor: (@uid, @permissions) ->
-    @uid ?= "new"
+  constructor: (@uid = "new", @permissions = []) ->
 
   can: (perm) ->
     @uid and @uid != "new" and @permissions and perm in @permissions
@@ -42,7 +41,7 @@ class Authorization
       error: (jqXHR, textStatus, errorThrown) =>
         params.error() if params.error?
 
-  ask_permission: (perm, success, error) ->
+  ask: (perm, success, error) ->
     # already has access
     if @can(perm)
       success()
@@ -51,8 +50,8 @@ class Authorization
       perms.push perm
       @login
         permissions: perms,
-        success: =>
-          if @can perm then success() else error()
+        success: (response) =>
+          if @can perm then success response else error response
         error: error
 
 Authorization::factory = (params) ->
@@ -65,6 +64,11 @@ Authorization::factory = (params) ->
 ###############
 class TwitterAuth extends Authorization
   provider: "twitter"
+
+  constructor: (@uid = "new", @permissions = []) ->
+    # make sure you grab certain default permissions on a new authorization
+    @permissions = @permissions.concat(["read","write"]).unique() if @uid is "new"
+    super @uid, @permissions
 
   login: (params={}) ->
     success = params.success ? ->
@@ -87,6 +91,11 @@ class TwitterAuth extends Authorization
 ################
 class FacebookAuth extends Authorization
   provider: "facebook"
+
+  constructor: (@uid = "new", @permissions = []) ->
+    # make sure you grab certain default permissions on a new authorization
+    @permissions = @permissions.concat(["email","offline_access"]).unique() if @uid is "new"
+    super @uid, @permissions
 
   login: (params={}) ->
     success = params.success ? ->

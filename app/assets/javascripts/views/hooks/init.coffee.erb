@@ -42,7 +42,7 @@ $ ->
   $("select[name='hook[provider]']", $con).change(->
     $this = $(this)
     $(".footnote").data "url", "/footnotes/" + $this.val()
-    $("#provider_params").replaceWith build_provider(hook_properties.providers[$this.prop("selectedIndex")].params)
+    $("#provider_params").replaceWith build_provider(hook_properties.providers[$this.prop("selectedIndex")])
   ).change()
 
   # populate the auth spans with real usernames
@@ -52,32 +52,24 @@ $ ->
   cpath = {path: "/"}
 
   #########################
-  # Procees New Hook Form #
+  # Process New Hook Form #
   #########################
   $("#new_hook").on "submit", ->
-    # setup
-    $this = $(this)
-    provider = $("#hook_provider").val()
-    account  = $("#hook_params_account").val()
+    $this       = $(this)
+    provider    = $("#hook_provider", $this).val()
+    account     = $("#hook_params_account", $this).val()
+    permission  = $("#hook_params_permission", $this).val()
 
-    if account is "new"
-      # User is trying to add a new account
-      auth = new window["#{provider[0].toUpperCase()}#{provider[1..]}Auth"]("new", ["read","write"])
-      auth.login
-        success: (response) ->
-          $("#hook_params_account option[value='new']").val auth.uid
-          $this.submit()
-        error: (response) ->
-          alert errors[response.status] ? errors.generic
-      false # stop submit
-    else if account
-      # User is adding a hook to an existing account
-      auth = current_user.authorizations[provider][account]
-      unless auth.can "write"
-        auth.ask_permission "write", (response) ->
+    if account
+      if account is "new"
+        auth = new window["#{provider[0].toUpperCase()}#{provider[1..]}Auth"]()
+      else
+        auth = current_user.authorizations[provider][account]
+
+      if not auth.can permission
+        auth.ask permission, (response) =>
+          $("#hook_params_account option[value='new']").val auth.uid if account is "new"
           $this.submit()
         , (response) ->
-          console.log response
-          alert 'There was an error getting permission to post to that account'
-
+          alert errors[response.status] ? errors.generic
         false # stop submit

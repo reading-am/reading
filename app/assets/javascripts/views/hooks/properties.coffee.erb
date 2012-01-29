@@ -9,10 +9,10 @@
 hook_properties =
   "events":<%= events.to_json %>,
   "providers":[
-    {"text":"Twitter", "params":[
+    {"text":"Twitter", "permission":"write", "params":[
       {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
     ]},
-    {"text":"Facebook", "params":[
+    {"text":"Facebook", "permission":"publish_stream", "params":[
       {"text":"account", "options":current_user.authorizations.facebook.accounts(), "datatype":"account"}
     ]},
     {"text":"HipChat", "params":[

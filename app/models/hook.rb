@@ -47,18 +47,22 @@ class Hook < ActiveRecord::Base
   end
 
   def facebook post, event_fired
-    authorization.api.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} http://#{post.short_url} \"#{post.page.title}\"")
+    authorization.api.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\" http://#{post.short_url}")
   end
 
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
-    tweet = "✌ #{post.page.domain.imperative.capitalize}​#{post.short_url} \"#{post.page.title}\""
-    if tweet.unpack('c*').length > 140
+    tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\""
+    tweet_len = tweet.unpack('c*').length
+    full_len = tweet_len + post.short_url.unpack('c*').length + 1 # plus one is the space
+    buffer = 10 # 10 for good measure and because twitter drove me batty about being over the character limit
+    if full_len + buffer > 140
       # after trying to count characters the twitter way: https://dev.twitter.com/docs/counting-characters#Ruby_Specific_Information
       # I finally gave up and just used the actual byte length
-      cutto = tweet.length - ("#{tweet}…\"".unpack('c*').length - 140) - 5 # -5 for good measure and because twitter drove me batty
+      cutto = tweet_len - (full_len + "…".unpack('c*').length - 140) - buffer
       tweet = "#{tweet[0..cutto]}…\""
     end
+    tweet << " #{post.short_url}"
     # we rescue with nil because twitter will error out on duplicate tweets
     authorization.api.update tweet rescue nil
   end

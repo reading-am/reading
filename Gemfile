@@ -16,7 +16,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-37signals'
 gem 'hipchat'
-gem 'curb', :git => 'git://github.com/taf2/curb.git' # only pulling from git because of warnings in main
+gem "curb", "~> 0.8.0"
 gem 'nokogiri'
 gem 'addressable'
 gem 'base58'
@@ -32,6 +32,7 @@ gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
 gem 'sunspot_rails'
 gem 'delayed_job'
+gem 'delayed_job_active_record'
 gem 'progress_bar'
 gem 'pony'
 gem 'validate_email'

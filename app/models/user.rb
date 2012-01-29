@@ -46,13 +46,14 @@ class User < ActiveRecord::Base
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
       if auth.user_id != self.id
-        raise AuthTaken, "Another user is already connected to that #{auth.provider.capitalize} account"
+        raise AuthError.new("AuthTaken")
       end
       # grab whatever info that came down from the credentials this time
       # and save it if we're missing it
       # TODO - there has to be a cleaner, more concise way to do this
       auth.token  ||= auth_hash["credentials"]["token"]
       auth.secret ||= auth_hash["credentials"]["secret"]
+      auth.sync_perms # make sure the permissions stay in sync
       auth.save
 
       self.name       ||= auth_hash["info"]["name"]
@@ -65,14 +66,14 @@ class User < ActiveRecord::Base
       self.phone      ||= auth_hash["info"]["phone"]
       self.urls       ||= auth_hash["info"]["urls"]
       self.save
-      raise AuthPreexisting, "You're already connected to that #{auth.provider.capitalize} account"
+      raise AuthError.new("AuthPreexisting", auth)
     else
       Authorization.create(
         :user       => self,
         :provider   => auth_hash["provider"],
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
-        :secret     => auth_hash["credentials"]["secret"]
+        :secret     => auth_hash["credentials"]["secret"],
       )
     end
   end
@@ -127,7 +128,12 @@ class User < ActiveRecord::Base
   end
 end
 
-class AuthTaken < StandardError
-end
-class AuthPreexisting < StandardError
+class AuthError < StandardError
+  # per: http://jqr.github.com/2009/02/11/passing-data-with-ruby-exceptions.html
+  attr_accessor :auth
+
+  def initialize(message = nil, auth = nil)
+    super(message)
+    self.auth = auth
+  end
 end

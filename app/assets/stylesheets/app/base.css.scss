@@ -314,6 +314,10 @@ a.rss abbr {
   }
 }
 
+#new_hook.loading {
+  opacity:0.4;
+}
+
 #constructor {
   line-height:35px;
 }
@@ -377,3 +381,33 @@ a.footnote {
 #readers a {
   font-weight:normal;
 }
+
+#loading {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:99999999;
+  text-align:center;
+  display:none;
+}
+  #loading span {
+    position:absolute;
+  }
+  #loading h1 {
+    font-size:175px;
+    margin:100px 0 0;
+    line-height:135px;
+    background:#FFF;
+  }
+  #loading h2 {
+    font-size:24px;
+    line-height:20px;
+    background:#FFF;
+    padding:5px 0 10px;
+  }
+  #loading div {
+    background:#FFF;
+    opacity:0.5;
+    width:100%; height:100%;
+    position:absolute;
+  }

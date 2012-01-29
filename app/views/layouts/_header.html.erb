@@ -24,7 +24,7 @@
   <% end %>
 <% else %>
   Sign up or in with
-  <%= link_to provider_span(:twitter), "/auth/twitter" %> or
-  <%= link_to provider_span(:facebook), "/auth/facebook" %>.
+  <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %> or
+  <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>.
 <% end %>
 </div>

@@ -8,5 +8,6 @@
 //= require jquery_ujs
 //= require_tree ./libs
 //= require_tree ./jquery
+//= require models
 //= require_tree ./app
 //= require_tree ./views

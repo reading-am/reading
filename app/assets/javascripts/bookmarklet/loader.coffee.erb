@@ -67,7 +67,7 @@ class Post
         yn: @yn
     data.token = token if token
     $.ajax
-      url: "http://#{domain}/posts/#{@id}/update.json"
+      url: "//#{domain}/posts/#{@id}/update.json"
       dataType: "jsonp"
       data: data
       success: (data, textStatus, jqXHR) =>
@@ -86,7 +86,7 @@ Post::find_or_create = (data, success) ->
   # don't send the null title or else it'll get posted
   delete data.title if data.title is null
   $.ajax
-    url: "http://#{domain}/posts/create.json"
+    url: "//#{domain}/posts/create.json"
     dataType: "jsonp"
     data: data
     success: (data, textStatus, jqXHR) ->
@@ -340,7 +340,7 @@ if jQuery? and jQuery().jquery? and jQuery().jquery >= "1.5"
   $ = jQuery
   init()
 else
-  load_script 'http://code.jquery.com/jquery-latest.min.js', ->
+  load_script 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', ->
     if typeof jQuery is 'undefined'
       alert 'There was an error loading Reading'
     else

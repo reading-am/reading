@@ -113,13 +113,18 @@ class FacebookAuth extends Authorization
         response.status = error_status
         error response
       else
+        # facebook will choke if you request the permission "installed"
+        # even though it's passed back in their permissions array
+        perms = @permissions.concat(perms).unique()
+        if installed = perms.indexOf "installed" > -1
+          perms = perms.splice installed, 1
         FB.login (response) =>
           if response.authResponse
             @sync_to_current_session success, error
           else # the user denied authorization!
             response.status = "AuthFailure"
             error response
-        , {scope: @permissions.concat(perms).unique().join ','}
+        , {scope: perms.join ','}
 
 
 # add to window scope

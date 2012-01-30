@@ -47,7 +47,7 @@ class Hook < ActiveRecord::Base
   end
 
   def facebook post, event_fired
-    authorization.api.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\" http://#{post.short_url}")
+    authorization.api.put_object("me", "feed", :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\" http://#{post.short_url}") rescue nil
   end
 
   def twitter post, event_fired

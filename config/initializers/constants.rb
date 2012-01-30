@@ -20,3 +20,5 @@ end
 
 TWITTER_KEY = 'saMngnlSaaIapiznEqqw'
 TWITTER_SECRET = '17tgkJvgwwdKplVqSfCHKTwsOjbaMuCW4Rxe3rrDkA'
+
+BOOKMARKLET_VERSION = '1.0.0'

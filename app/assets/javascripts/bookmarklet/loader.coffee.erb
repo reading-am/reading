@@ -25,6 +25,10 @@ on_reading = window.location.host.indexOf("reading.am") is 0 or
              window.location.host.indexOf("0.0.0.0") is 0
 token = reading.token ? null
 platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
+version = reading.version ? "0.0.0"
+
+latest_versions =
+  bookmarklet: "<%= BOOKMARKLET_VERSION %>"
 
 #-----------------------------------------
 # Content Vars
@@ -305,6 +309,22 @@ reading.submit = submit = (params) ->
       render_menu post, readers
 
 #-----------------------------------------
+# Check the bookmarklet version
+
+up_to_date = ->
+  if !latest_versions[platform]?
+    true
+  else
+    String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
+
+
+#-----------------------------------------
+# Prompt to upgrade
+
+upgrade = ->
+  $.getScript "//#{domain}/assets/bookmarklet/upgrade.js"
+
+#-----------------------------------------
 # Initialize!
 
 init = ->
@@ -338,7 +358,7 @@ init = ->
 
 if jQuery? and jQuery().jquery? and jQuery().jquery >= "1.5"
   $ = jQuery
-  init()
+  if up_to_date() then init() else upgrade()
 else
   load_script 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', ->
     if typeof jQuery is 'undefined'
@@ -346,5 +366,5 @@ else
     else
       $ = jQuery
       $.noConflict()
-      init()
+      if up_to_date() then init() else upgrade()
 

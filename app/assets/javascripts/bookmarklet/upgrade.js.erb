@@ -91,7 +91,7 @@ var $css = $('<style type="text/css">'+
       '}'+
     '</style>').appendTo('head'),
 
-    bookmarklet = "javascript:(function(){window.reading={token:'"+reading.token+"',platform:'bookmarklet',version:'1.0.1'};var head=document.getElementsByTagName('head')[0],script=document.createElement('script');script.src='https://reading.am/assets/bookmarklet/loader.js';head.appendChild(script);})()",
+    bookmarklet = "javascript:(function(){window.reading={token:'"+reading.token+"',platform:'bookmarklet',version:'<%= BOOKMARKLET_VERSION %>'};var head=document.getElementsByTagName('head')[0],script=document.createElement('script');script.src='https://<%= DOMAIN %>/assets/bookmarklet/loader.js';head.appendChild(script);})()",
     $subtext = $('<div>'+
                   '<div id="r_head">&#9996; It\'s time to upgrade your bookmarklet. Fantastic.</div>'+
                   '<div id="r_upgrade"><a href="'+bookmarklet+'" class="r_active">Drag me to your bookmark bar</a></div>'+

@@ -23,7 +23,7 @@
     <% else
       yn_avg = yn_average subposts
     %>
-      <h3><%= if yn_avg > 0 then "✓" elsif yn_avg < 0 then "×" end %></h3>
+      <h3 class="<%= if yn_avg > 0 then "yep" elsif yn_avg < 0 then "nope" end %>"></h3>
     <% end %>
     &nbsp;
     </div>

@@ -15,8 +15,20 @@ $dark_blue: #00FBFF;
 .post.referred_post a.external {
   background:#EEE;
 }
-.post.yep .body:before, .posts_group .yep .page:before {
+.post.yep .body:before {
   content:'✓';
+}
+h3.yep:before {
+  color:green;
+  content:'✓';
+}
+h3.nope {
+  line-height:20px;
+}
+h3.nope:before {
+  color:red;
+  content:'×';
+  font-size:24px;
 }
 .post.nope .body, .posts_group .nope .page {
   text-decoration:line-through;

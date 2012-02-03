@@ -36,6 +36,7 @@ gem 'delayed_job_active_record'
 gem 'progress_bar'
 gem 'pony'
 gem 'validate_email'
+gem 'twitter-bootstrap-rails', :group => :assets
 
 group :development do
   gem 'ruby-debug19'

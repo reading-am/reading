@@ -42,6 +42,8 @@ GEM
       execjs
     coffee-script-source (1.2.0)
     columnize (0.3.6)
+    commonjs (0.2.0)
+      therubyracer (~> 0.9.9)
     cookiejar (0.3.0)
     crack (0.3.1)
     curb (0.8.0)
@@ -87,6 +89,13 @@ GEM
     koala (1.3.0)
       faraday (~> 0.7.0)
       multi_json (~> 1.0)
+    less (2.0.9)
+      commonjs (~> 0.2.0)
+      therubyracer (~> 0.9.9)
+    less-rails (2.1.5)
+      actionpack (>= 3.1)
+      less (~> 2.0.7)
+    libv8 (3.3.10.4)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     mail (2.3.0)
@@ -197,6 +206,8 @@ GEM
       sunspot (= 1.3.0)
     sunspot_solr (1.3.0)
       escape (~> 0.0.4)
+    therubyracer (0.9.9)
+      libv8 (~> 3.3.10)
     thin (1.3.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -217,6 +228,11 @@ GEM
       faraday (~> 0.7)
       multi_json (~> 1.0)
       simple_oauth (~> 0.1)
+    twitter-bootstrap-rails (1.4.3)
+      actionpack
+      jquery-rails (>= 1.0)
+      less-rails (~> 2.1.0)
+      railties
     twitter-stream (0.1.14)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
@@ -266,6 +282,7 @@ DEPENDENCIES
   thin
   tinder
   twitter (>= 2.0.0.rc.2)
+  twitter-bootstrap-rails
   typhoeus
   uglifier
   validate_email

@@ -1,6 +1,13 @@
 $blue: #B3FEFF;
 $dark_blue: #00FBFF;
 
+.post {
+  margin:0 0 20px;
+}
+
+.post h2 a {
+  background:none;
+}
 .post.referred_post a.external {
   background:#EEE;
 }

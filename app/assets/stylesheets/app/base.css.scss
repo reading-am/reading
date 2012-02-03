@@ -49,6 +49,7 @@ a {
   a:hover {
     background:$dark_yellow;
     text-decoration:underline;
+    color:#000;
   }
 
 abbr, .glyph {
@@ -101,17 +102,12 @@ abbr, .glyph {
   background:none;
 }
 
-.date, .admin.action {
-  padding:2px 5px 0 0;
-  font-size: 12px
-}
-
 .admin.action {
   visibility:hidden;
   background:none;
 }
 
-tr:hover .admin.action {
+.row:hover .admin.action {
   visibility:visible;
 }
 
@@ -163,11 +159,6 @@ a.back, .actions {
   margin:10px 0 0;
 }
 
-th {
-  font-weight:bold;
-  font-size: 12px;
-}
-
 .hook_message {
   display:none;
   margin:15px 0;
@@ -208,10 +199,6 @@ a.active, a.active:hover, #subnav a.active, #subnav a.active:hover, h4 .active {
 footer {
   clear:both;
   margin:30px 0;
-}
-
-a.external {
-  font-style:italic;
 }
 
 #error_explanation {

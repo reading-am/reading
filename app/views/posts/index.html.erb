@@ -20,9 +20,10 @@
         time = post.created_at.strftime("%m/%d")
       end
     %>
+    &nbsp;
     </div>
     <div class="span10">
-      <%= render :partial => 'posts/post', :locals => { :post => post } %>
+      <%= render :partial => 'posts/post_alt', :locals => { :post => post } %>
     </div>
     <div class="span1">
     <% if logged_in? and post.user.id == current_user.id %>

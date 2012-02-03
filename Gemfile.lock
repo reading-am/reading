@@ -228,11 +228,10 @@ GEM
       faraday (~> 0.7)
       multi_json (~> 1.0)
       simple_oauth (~> 0.1)
-    twitter-bootstrap-rails (1.4.3)
-      actionpack
-      jquery-rails (>= 1.0)
-      less-rails (~> 2.1.0)
-      railties
+    twitter-bootstrap-rails (2.0rc0)
+      actionpack (>= 3.1)
+      less-rails (~> 2.1.2)
+      railties (>= 3.1)
     twitter-stream (0.1.14)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
@@ -282,7 +281,7 @@ DEPENDENCIES
   thin
   tinder
   twitter (>= 2.0.0.rc.2)
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails (~> 2.0rc0)
   typhoeus
   uglifier
   validate_email

@@ -11,8 +11,8 @@
 <% end %>
 
 <% time = '' %>
-<% @posts.group_by(&:page).each do |page, sub_posts| %>
-  <% post = sub_posts.first %>
+<% @posts.group_by(&:page).each do |page, subposts| %>
+  <% post = subposts.first %>
   <div class="row">
     <div class="span1 date">
     <%=
@@ -23,9 +23,12 @@
     &nbsp;
     </div>
     <div class="span10 posts_group">
-      <h3><%= render :partial => 'pages/page', :locals => { :page => page } %></h3>
+      <% yn_avg = yn_average subposts %>
+      <h3 class="<%= if yn_avg > 0 then "yep" elsif yn_avg < 0 then "nope" end %>">
+        <%= render :partial => 'pages/page', :locals => { :page => page } %>
+      </h3>
       <div class="posts">
-      <% sub_posts.each do |post| %>
+      <% subposts.each do |post| %>
         <%= render :partial => 'posts/subpost', :locals => { :post => post } %>
       <% end %>
       </div>

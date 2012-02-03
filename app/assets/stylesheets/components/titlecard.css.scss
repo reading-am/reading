@@ -1,0 +1,32 @@
+#titlecard {
+  position:fixed;
+  top:42px;
+  right:22px;
+  text-align:center;
+  line-height:22px;
+}
+#brand {
+  float:right;
+  font-size:18px;
+  width:75px;
+}
+#titlecard a {
+  background:none;
+}
+#brand:hover {
+  text-decoration:none;
+}
+#titlecard span {
+  font-size:80px;
+  line-height:0;
+}
+#colinks {
+  float:right;
+  clear:both;
+  font-size:12px;
+  opacity: 1;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+  margin-right:-1px;
+}

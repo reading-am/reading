@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217194935) do
+ActiveRecord::Schema.define(:version => 20120208155633) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -99,7 +99,13 @@ ActiveRecord::Schema.define(:version => 20111217194935) do
     t.string   "image"
     t.string   "phone"
     t.string   "urls"
-    t.boolean  "wants_mail",  :default => true
+    t.boolean  "wants_mail",          :default => true
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.string   "bio"
+    t.string   "link"
   end
 
 end

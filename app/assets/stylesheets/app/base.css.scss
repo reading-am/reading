@@ -28,7 +28,7 @@
  */
 $yellow: #FFFBCC;
 $dark_yellow: #FFF461;
-$blue: #B3FEFF;
+$blue: #cdfeff;
 $dark_blue: #00FBFF;
 $green: #38ff7E;
 $dark_green: #79ff30;
@@ -39,185 +39,74 @@ $grey: #EEE;
  */
 html {
   -webkit-font-smoothing: antialiased;
-  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
-  font-size: 15px;
-  line-height: 20px;
-  color:#111;
 }
-
+body {
+  margin:16px 0 50px;
+}
+h1 {
+  font-size:28px;
+}
 a {
-  background:$yellow;
   text-decoration:none;
   color:#000;
 }
   a:hover {
-    background:$dark_yellow;
     text-decoration:underline;
+    color:#000;
   }
-h1 {
-  font-weight:bold;
-  font-size:36px;
-  line-height:36px;
-}
-h3 {
-  margin:10px 0 0;
-}
-h4 {
-  margin:0 0 10px;
-}
-h4, h5 {
-  font-weight:bold;
-  letter-spacing:1px;
-}
-  h4 a {
-    background:none;
-  }
-h5 {
-  margin:25px 0 5px;
-}
-table {
-  margin:5px 0 20px;
-}
-td {
-  padding:2px 5px;
-  vertical-align:top;
-}
-strong {
-  font-weight:bold;
-}
 
-abbr, .glyph {
+.glyph {
   font-family:'WebSymbolsRegular';
+  text-transform:none;
+  font-size:100%;
 }
-  .twitter abbr {
+  .twitter .glyph {
     color:#2493c4;
     font-size:1.25em;
   }
 
-  .facebook abbr {
+  .facebook .glyph {
     color:#557b9f;
     background:white;
-  }
-
-#wrapper {
-  width:960px;
-  margin:50px auto;
-}
-
-.bookmarklet {
-  background:$yellow;
-  text-align:center;
-  margin:60px 0 0;
-  width:275px;
-}
-  .bookmarklet span, .bookmarklet a {
-    width:100%;
-  }
-  .bookmarklet a {
-    display:none;
-  }
-
-#content {
-  min-height:250px;
-}
-.section, #notice, #content {
-  margin:20px 0 0;
-}
-  #welcome {
-    line-height:27px;
-    margin:17px 0;
-  }
-  #blank_slate .bookmarklet {
-    font-size: 36px;
-    font-weight:bold;
-    line-height: 56px;
-    width: 615px;
-    margin:15px 0;
-  }
-  #blank_slate li {
-    list-style-type: circle;
-    margin-left: 30px;
-    padding-left: 3px;
   }
 
 #hooks h4, #authorizations h4 {
   margin:0;
 }
-#authorizations a {
-  background:none;
+#authorizations {
+  margin-bottom:24px;
 }
 
-.date, .admin.action {
-  padding:2px 5px 0 0;
-  font-size: 12px
+.admin.action, .row:hover li .admin.action {
+  -webkit-font-smoothing: subpixel-antialiased;
+  background:red;
+  padding:1px 3px;
+  color:#FFF;
+  border-radius:2px;
+  font-size:12px;
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
 }
-
-.admin.action {
-  visibility:hidden;
-  background:none;
+.row:hover .admin.action, .row:hover li:hover .admin.action {
+  opacity: 1;
 }
-
-tr:hover .admin.action {
-  visibility:visible;
-}
-
-#username, #username_actions {
-  font-size:32px;
-  float:left;
-  margin:18px 0 0;
-}
-  #username label {
-    font-size:14px;
-  }
-#username_actions {
-  font-size:56px;
-}
-  #username_actions input {
-    width:100px;
-    margin:36px;
-  }
-
-h1 a, a.user, .hook a {
-  background:none;
-}
-  h1 a:hover, a.user:hover {
-    background:none
-  }
 
 .user, .hook a {
   font-weight:bold;
 }
 
-.edit_user .field {
-  margin:5px 0;
+.edit_user .field_with_errors {
+  color:red;
 }
-  .edit_user .field_with_errors {
-    display:inline;
-    color:red;
-  }
-  .edit_user .field_with_errors input {
-    border:2px solid red;
-  }
-
-#user_info .edit_user label {
-  display:inline-block;
-  width:100px;
+.edit_user .field_with_errors input {
+  border:2px solid red;
 }
 
 a.back, .actions {
   display:inline-block;
   margin:10px 0 0;
-}
-
-th {
-  font-weight:bold;
-  font-size: 12px;
-}
-
-.hook_message {
-  display:none;
-  margin:15px 0;
-  font-size:12px;
 }
 
 #visit {
@@ -230,21 +119,15 @@ th {
   text-decoration:underline;
 }
 
-#subnav a, footer a, a.user.you, #foot_nav a {
+footer a, a.user.you {
   background-color:$blue;
 }
-  #subnav a:hover, footer a:hover, a.user.you:hover, #foot_nav a:hover {
+  footer a:hover, a.user.you:hover {
     background-color:$dark_blue;
   }
-a.active, a.active:hover, #subnav a.active, #subnav a.active:hover, h4 .active {
-  background:none;
-  text-decoration:underline;
+a.active, a.active:hover, h4 .active {
   cursor:default;
   font-weight:normal;
-}
-
-#foot_nav a {
-  margin:0 5px 0 0;
 }
 
 .disabled {
@@ -252,12 +135,7 @@ a.active, a.active:hover, #subnav a.active, #subnav a.active:hover, h4 .active {
 }
 
 footer {
-  clear:both;
   margin:30px 0;
-}
-
-a.external {
-  font-style:italic;
 }
 
 #error_explanation {
@@ -283,7 +161,7 @@ a:hover .provider.twitter {
 a:hover .provider.facebook {
   background-color:#def0ff;
 }
-a.rss abbr {
+a.rss .glyph {
   font-size:0.75em;
   vertical-align:top;
   background-color:#FFF;
@@ -298,78 +176,18 @@ a.rss abbr {
 .disconnected .provider, .disconnected a:hover .provider {
   background:$grey;
 }
-.disconnected abbr {
+.disconnected .glyph {
   color:#999;
 }
 
 #notice {
-  display:inline-block;
-  font-weight:bold;
-}
-
-.follow, #subnav .follow {
-  background-color:$green;
-  &:hover {
-    background-color:$dark_green;
-  }
+  margin-bottom:20px;
 }
 
 #new_hook.loading {
   opacity:0.4;
 }
 
-#constructor {
-  line-height:35px;
-}
-#constructor .wrapper {
-  background:$grey;
-  padding:8px 0;
-}
-#constructor_submit {
-  display:inline-block;
-  background:$green;
-  padding:0 5px;
-  line-height:32px;
-}
-
-#hooks_blank a {
-  background:none;
-  font-weight:bold;
-}
-  #hooks_blank a.email {
-    text-decoration:underline;
-  }
-a.footnote {
-  font-weight:normal;
-  font-size:12px;
-  background:$grey;
-}
-#constructor input[type='text'] {
-  font-size:13px;
-  width:110px;
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  #constructor select { font-size:16px; }
-}
-
-.pagination {
-  margin:0 0 20px;
-}
-.pagination a, .pagination em {
-  padding:0 2px;
-}
-.pagination em {
-  font-weight:bold;
-  text-decoration:underline;
-  margin:0 2px;
-}
-
-#search {
-  display:inline;
-}
-#search input {
-  width:70px;
-}
 
 .breadcrumb a {
   background:$blue;
@@ -398,6 +216,7 @@ a.footnote {
     margin:100px 0 0;
     line-height:135px;
     background:#FFF;
+    font-weight:normal;
   }
   #loading h2 {
     font-size:24px;
@@ -411,3 +230,60 @@ a.footnote {
     width:100%; height:100%;
     position:absolute;
   }
+
+.date {
+  line-height:26px;
+  text-align:right;
+}
+
+nav a {
+  display:inline-block;
+  border-radius:3px;
+  padding:3px 5px;
+  margin-right:2px;
+  font-size:16px;
+}
+.form-actions {
+  background:none;
+  border:none;
+}
+#user_info .form-actions {
+  padding-top:0;
+}
+#user_info .control-group.error .help-block {
+  display:none;
+}
+#authorizations li {
+  margin:5px 0 0;
+}
+.search_results {
+  margin-bottom:23px;
+}
+#posts_footer .span1 {
+  text-align:right;
+  margin-top:18px;
+  line-height:34px;
+}
+.section, .extra {
+  margin-bottom:23px;
+}
+#blank_slate .well, .extra .well {
+  text-align:center;
+}
+.extra p a {
+  text-decoration:underline;
+}
+#pick_a_url label {
+  font-size:24px;
+}
+#pick_a_url #user_username_controls {
+  margin-top:23px;
+}
+#lead_in {
+  color:#000;
+}
+#signup {
+  margin-top:8px;
+  margin-bottom:50px;
+  font-size:15px;
+}

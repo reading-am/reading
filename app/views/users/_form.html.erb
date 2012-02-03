@@ -1,37 +1,31 @@
-<%= form_for @user, :url => "/#{@user.username}/info" do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<div id="user_info" class="row">
+  <div class="span8">
+  <%= twitter_bootstrap_form_for @user, :html => {:class => "form-horizontal"}, :url => "/#{@user.username_was}/info" do |f| %>
+  <fieldset>
+    <%= f.file_field :avatar, :class => 'input-xlarge' %>
 
-      <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
+    <%= f.text_field :name, :class => 'input-xlarge' %>
+
+    <%= f.text_field :username, :class => 'input-xlarge' %>
+
+    <%= f.email_field :email, :placeholder => 'me@example.com', :class => 'input-xlarge' %>
+
+    <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Let me know when someone follows me" %><% end %>
+
+    <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' do %>
+      <p class="help-block">Keep it under 255 characters</p>
+    <% end %>
+
+    <%= f.text_field :link, 'Homepage', :placeholder => 'http://example.com', :class => 'input-xlarge' %>
+
+    <%= f.text_field :location, :placeholder => 'Louisville, KY', :class => 'input-xlarge' %>
+
+    <%= render 'authorizations/index' %>
+
+    <%= f.actions do %>
+      <%= f.submit 'Update Me' %>
+    <% end %>
+  </fieldset>
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :username %>
-    <%= f.text_field :username %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
-
-  <div class="field">
-    <%= f.label :wants_mail, 'Mail me, OK?' %>
-    <%= f.check_box :wants_mail %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update Me" %>
-  </div>
-<% end %>
+</div>
+</div>

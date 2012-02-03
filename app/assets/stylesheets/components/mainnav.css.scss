@@ -1,0 +1,22 @@
+$yellow: #FFFBCC;
+$dark_yellow: #FFF461;
+
+#mainnav {
+  margin-bottom:38px;
+}
+#mainnav a, #mainnav a:hover {
+  background:$yellow;
+  text-decoration:none;
+}
+#mainnav a:hover, #mainnav a.active, #mainnav a.active:hover {
+  background:$dark_yellow;
+  font-weight:normal;
+  text-decoration:none;
+}
+#search {
+  display:inline;
+}
+#search input {
+  width:180px;
+}
+

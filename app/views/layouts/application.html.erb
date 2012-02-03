@@ -5,18 +5,18 @@
     <% if mobile_device? %>
       Reading
     <% else %>
-      <%= @page_title || "✌ Reading – What you're reading. Not what you like. Not what you find interesting. Just what you're reading." %>
+      <%= @page_title || "✌ Reading – share What you're reading. Not what you like. Not what you find interesting. Just what you're reading." %>
     <% end %>
   </title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+  <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk">
   <meta property="fb:app_id" content="241046329250415" />
   <%= og_tags(@og_props || {}) %>
   <% if mobile_device? %><meta name="viewport" content="width=device-width; initial-scale = 1.0; maximum-scale=1.0; user-scalable=no"><% end %>
   <script> var ENVIRONMENT = '<%= Rails.env %>'; </script>
-  <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? and logged_in? %>
-  <%= stylesheet_link_tag 'reset' %>
+  <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? %>
   <%= stylesheet_link_tag 'application' %>
   <%= stylesheet_link_tag 'mobile', :media => 'only screen and (max-device-width: 480px)' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
@@ -27,10 +27,10 @@
 </head>
 <body>
 <%= render :partial => 'layouts/fb_api' %>
-  <div id="wrapper">
+<%= render :partial => 'layouts/titlecard' %>
+  <div class="container">
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
   <%= yield %>
-  <%= render :partial => 'layouts/footer' if params[:action] != 'visit' %>
   </div>
   <script>
     <%= render :partial => 'posts/post.js.tmpl' %>

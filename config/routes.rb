@@ -39,12 +39,12 @@ Reading::Application.routes.draw do
 
   # Search
   match '/search' => 'search#index'
-  match '/settings' => 'users#settings'
 
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }
   match '/:username/info'     => 'users#edit'
+  match '/:username/extras'   => 'users#extras'
   match '/:username/hooks'    => 'users#hooks'
   match '/:username/export'   => 'users#export'
   match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }

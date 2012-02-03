@@ -15,10 +15,28 @@ class User < ActiveRecord::Base
                                    :dependent => :destroy
   has_many :followers, :through => :reverse_relationships, :source => :follower
 
+  has_attached_file :avatar,
+    :styles => {
+      :mini => "25x25>",
+      :thumb => "70x70>",
+      :large => "500x500>"
+    },
+    :default_url => '/assets/users/:attachment/default_:style.png',
+    :storage => :s3,
+    :bucket => "reading-#{Rails.env}",
+    :s3_credentials => {
+      :access_key_id => ENV['S3_KEY'],
+      :secret_access_key => ENV['S3_SECRET']
+    }
+  validates_attachment_size :avatar, :less_than=>2.megabytes
+  validates_attachment_content_type :avatar, :content_type=>['image/jpeg', 'image/png', 'image/gif']
+
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true
   validates :email, :email => {:allow_blank => true}
-  
+  validates :bio, :length => { :maximum => 255 }
+  validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
+
   before_create { generate_token(:token) }
   before_create { generate_token(:auth_token) }
 

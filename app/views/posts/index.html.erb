@@ -1,60 +1,30 @@
-<% if @user and @user.posts.size == 0 %>
-  <%= render :partial => 'blank_slate' %>
-<% else %>
-
-<div id="content">
-
 <% if @user %>
-  <%= render :partial => 'users/you_subnav' %>
-<% elsif @domain %>
-  <h4>Stuff people are reading on <%= @domain.name %></h4>
+  <%= render :partial => 'users/card', :locals => {:user => @user} %>
+  <%= render :partial => 'users/you_subnav', :locals => {:user => @user} %>
+  <%= render :partial => 'blank_slate' if @user.posts.size == 0 or @user.following.size == 0 %>
 <% else %>
-  <h4>Some people are reading this stuff</h4>
-<% end %>
-
-<table>
-<% time = '' %>
-<% @posts.each do |post| %>
-  <tr>
-    <td class="date">
-    <%=
-      if time != post.created_at.strftime("%m/%d")
-        time = post.created_at.strftime("%m/%d")
-      end
-    %>
-    </td>
-    <td><%= render :partial => 'posts/post', :locals => { :post => post } %></td>
-    <% if logged_in? and post.user.id == current_user.id %>
-      <td><%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+  <div id="subhead" class="row">
+    <div class="span7 offset1">
+    <% if @domain %>
+      <h3>Stuff people are reading on <%= @domain.name %></h3>
+    <% else %>
+      <h3>Some people are reading this stuff</h3>
     <% end %>
-  </tr>
-<% end %>
-</table>
-
-<% unless request.path_info == '/' %>
-  <%= will_paginate @posts %>
-<% else %>
-  <div class="pagination"><a class="next_page" rel="next" href="/everybody/posts/page/2">Even More More More Reading →</a></div>
+    </div>
+  </div>
 <% end %>
 
-<% if !params[:type].nil? and logged_in? %>
-<div id="foot_nav">
-<%= link_to rss_path, {:class => 'rss'} do %>
-  <abbr>r</abbr> RSS
-<% end %>
-<% if @user and params[:type] == 'posts' and @user == current_user %>
-  <%= link_to '⬇ Export', "/#{current_user.username}/export.csv" %>
-<% end %>
+<%= render :partial => 'posts/group', :locals => {:posts => @posts} %>
+
+<div id="posts_footer" class="row">
+  <div class="span5 offset1">
+    <%= will_paginate @posts, :page_links => false %>
+  </div>
+  <% unless params[:type].nil? %>
+  <div class="span1">
+    <%= link_to rss_path, {:class => 'rss'} do %>
+      <span class="glyph">r</span> rss
+    <% end %>
+  </div>
+  <% end %>
 </div>
-<% end %>
-
-</div>
-
-<% if @user and @user == current_user %>
-<div class="bookmarklet">
-  <span>Drag me to your bookmarks bar</span>
-  <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
-</div>
-<% end %>
-
-<% end %>

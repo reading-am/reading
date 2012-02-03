@@ -1,0 +1,51 @@
+$blue: #B3FEFF;
+$dark_blue: #00FBFF;
+
+.posts_group {
+  margin-bottom:46px;
+}
+
+.posts_group .posts {
+  margin-top:10px;
+}
+
+.post h3 a {
+  background:none;
+}
+.post.referred_post a.external {
+  background:#EEE;
+}
+.post.yep .body:before {
+  content:'✔';
+}
+h3.yep:before {
+  color:green;
+  content:'✔';
+  font-size:19px;
+}
+h3.nope {
+  line-height:21px;
+}
+h3.nope:before {
+  color:red;
+  content:'×';
+  font-size:24px;
+}
+.post.nope .body, .posts_group .nope .page {
+  text-decoration:line-through;
+}
+.post.new {
+  opacity:0.3;
+}
+
+.post .plusnav a {
+  padding:0 5px;
+}
+.info {
+  background:none;
+  font-weight:bold;
+}
+  .info:hover {
+    background:$blue;
+    text-decoration:none;
+  }

@@ -5,19 +5,19 @@ hook.events.each_with_index do |event|
   events_text << Hook::EVENTS[event][:text]
 end
 %>
-<td class="hook">
-  ↪ When I <strong><%= events_text.join(', ') %></strong> please post to the <strong><%= hook.provider.capitalize %></strong>
+<div class="hook">
+  When I <em><%= events_text.join(', ') %></em> please post to the <em><%= hook.provider.capitalize %></em>
 <% if !hook.authorization.nil? %>
   account <%= provider_span(hook.authorization) %>
 <% elsif !hook.params.nil? %>
   <% if hook.params.length == 1 %>
     <% hook.params.each do |k,v| %>
-      <%= k %> <strong><%= v %></strong>
+      <%= k %> <em><%= v %></em>
     <% end %>
   <% elsif hook.params['room'] %>
-    room <strong><%= hook.params['room'] %></strong>
+    room <em><%= hook.params['room'] %></em>
   <% elsif hook.params['address'] %>
-    address <strong><%= hook.params['address'] %></strong>
+    address <em><%= hook.params['address'] %></em>
   <% end %>
 <% end %>
-</td>
+</div>

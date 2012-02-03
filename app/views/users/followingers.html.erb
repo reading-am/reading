@@ -1,17 +1,33 @@
-<div id="content">
+<%= render :partial => 'users/card', :locals => {:user => @user} %>
 
-<%= render :partial => 'users/you_subnav' %>
-
-<table>
+<div id="subnav" class="row">
+  <nav class="span1">
+    <%= link_to '« posts', "/#{@user.username}" %>
+  </nav>
+  <div class="span7">
+    <h3>
+      <% if params[:type] == 'followers' %>
+        People Following <%= @user.first_name %>
+      <% else %>
+        People <%= @user.first_name %> is Following
+      <% end %>
+    </h3>
+  </div>
+</div>
+<div class="user_list">
 <% if @users.empty? %>
-  <tr><td>Nobody's here yet.</td></tr>
+<div class="row">
+  <div class="span7 offset1">
+    <h4>Nobody's here yet.</h4>
+  </div>
+</div>
 <% else %>
 <% @users.each do |user| %>
-  <tr>
-    <td><%= render :partial => 'users/user', :locals => { :user => user } %></td>
-  </tr>
+<div class="row">
+  <div class="span7 offset1">
+    <%= render :partial => 'users/user', :locals => { :user => user } %>
+  </div>
+</div>
 <% end %>
 <% end %>
-</table>
-
 </div>

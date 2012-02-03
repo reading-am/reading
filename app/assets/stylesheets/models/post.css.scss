@@ -2,7 +2,11 @@ $blue: #B3FEFF;
 $dark_blue: #00FBFF;
 
 .posts_group {
-  margin:0 0 35px;
+  margin:0 0 40px;
+}
+
+.posts_group .posts {
+  margin:10px 0 0;
 }
 
 .post h3 a {

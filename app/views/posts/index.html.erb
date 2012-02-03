@@ -10,7 +10,6 @@
   <h4>Some people are reading this stuff</h4>
 <% end %>
 
-<div id="posts">
 <% time = '' %>
 <% @posts.group_by(&:page).each do |page, sub_posts| %>
   <% post = sub_posts.first %>
@@ -25,9 +24,11 @@
     </div>
     <div class="span10 posts_group">
       <h3><%= render :partial => 'pages/page', :locals => { :page => page } %></h3>
-    <% sub_posts.each do |post| %>
-      <%= render :partial => 'posts/post_alt', :locals => { :post => post } %>
-    <% end %>
+      <div class="posts">
+      <% sub_posts.each do |post| %>
+        <%= render :partial => 'posts/subpost', :locals => { :post => post } %>
+      <% end %>
+      </div>
     </div>
     <div class="span1">
     <% if logged_in? and post.user.id == current_user.id %>
@@ -36,7 +37,6 @@
     </div>
   </div>
 <% end %>
-</div>
 
 <% unless request.path_info == '/' %>
   <%= will_paginate @posts %>

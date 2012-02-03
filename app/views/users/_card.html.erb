@@ -1,0 +1,26 @@
+<div id="user_card" class="row">
+  <%= link_to user.avatar.url, :id => "avatar", :class => "span1", :target => "_blank" do %>
+    <%= image_tag user.avatar.url :thumb %>
+  <% end %>
+  <div class="span7">
+    <h1><%= user.display_name %></h1>
+  </div>
+  <nav class="span7">
+    <a href="/<%= user.username %>/following"<% if params[:type] == 'following' %> class="active"<% end %>><%= user.following.size %> Following</a>
+    - <a href="/<%= user.username %>/followers"<% if params[:type] == 'followers' %> class="active"<% end %>><%= user.followers.size %> Followers</a>
+    <% if logged_in? and user != current_user %>
+      <% follow_text = current_user.following?(user) ? 'unfollow' : 'follow' %>
+      - <a href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
+    <% end %>
+    </nav>
+    <% unless user.bio.nil? %>
+      <div id="user_bio" class="span7 offset1">
+        <%= user.bio %>
+      </div>
+    <% end %>
+    <% unless user.location.blank? and user.link.blank? %>
+      <div id="user_places" class="span7 offset1">
+        <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
+      </div>
+    <% end %>
+</div>

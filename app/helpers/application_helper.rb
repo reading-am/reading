@@ -4,7 +4,7 @@ module ApplicationHelper
     og = {
       :type   => "website",
       :title  => "✌ Reading",
-      :description => "What you're reading. Not what you like. Not what you find interesting. Just what you're reading.",
+      :description => "Share what you're reading. Not what you like. Not what you find interesting. Just what you're reading.",
       :image  => "apple-touch-icon.png"
     }
     og = og.merge(hash)
@@ -22,7 +22,7 @@ module ApplicationHelper
     content_tag :span, :class => ['provider', provider] do
       case provider.to_s
       when 'twitter', 'facebook'
-        output = content_tag(:abbr, provider[0])
+        output = content_tag :span, provider[0], :class => 'glyph'
       when '37signals'
         output = content_tag(:span, '✣')
       end
@@ -30,8 +30,8 @@ module ApplicationHelper
     end
   end
 
-  def rss_path
+  def rss_path token = false
     path = request.path.split('/page')[0]
-    "#{path + (path[-params[:type].length-1..-1] != "/#{params[:type]}" ? "/#{params[:type]}" : '')}.rss?t=#{current_user.token}"
+    "#{path + (path[-params[:type].length-1..-1] != "/#{params[:type]}" ? "/#{params[:type]}" : '')}.rss#{token ? "?t=#{token}" : ""}"
   end
 end

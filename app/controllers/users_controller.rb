@@ -62,10 +62,8 @@ class UsersController < ApplicationController
     end
     if @user != current_user
       redirect_to "/#{@user.username}"
-    end
- 
-    if params[:user] and @user.update_attributes(params[:user])
-      flash[:notice] = 'User was successfully updated.'
+    elsif params[:user] and @user.update_attributes(params[:user])
+      redirect_to("/#{@user.username}/info", :notice => 'User was successfully updated.')
     end
   end
 
@@ -126,15 +124,15 @@ class UsersController < ApplicationController
     end
     if @user != current_user
       redirect_to "/#{@user.username}"
-    end
+    else
+      @new_hook = Hook.new
+      @hooks = @user.hooks
 
-    @new_hook = Hook.new
-    @hooks = @user.hooks
-
-    respond_to do |format|
-      format.html { render 'hooks/index' }
-      format.xml  { render 'hooks/index', :xml => @hooks }
-      format.rss  { render 'hooks/index' }
+      respond_to do |format|
+        format.html { render 'hooks/index' }
+        format.xml  { render 'hooks/index', :xml => @hooks }
+        format.rss  { render 'hooks/index' }
+      end
     end
   end
 
@@ -171,11 +169,14 @@ class UsersController < ApplicationController
     end
   end
 
-  def settings
-    if logged_in?
-      redirect_to "/#{current_user.username}/info"
+  def extras
+    if params[:username]
+      @user = User.find_by_username(params[:username])
     else
-      redirect_to "/"
+      @user = User.find(params[:id])
+    end
+    if @user != current_user
+      redirect_to "/#{@user.username}"
     end
   end
 end

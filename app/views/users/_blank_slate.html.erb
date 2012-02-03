@@ -1,19 +1,63 @@
-<div id="blank_slate" class="section">
-<% if current_user && @user == current_user %>
-  You haven't posted anything that you're reading yet. If you had, you'd see it here.<br>
-  To get started, drag this link to your bookmarks bar:<br>
-  <div class="bookmarklet">
-    <span>Drag me to your bookmarks bar</span>
-    <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
+<div id="blank_slate" class="row section">
+  <div class="span7 offset1">
+    <% if logged_in? && @user == current_user %>
+      <% if params[:type] == 'posts' and @user.posts.size == 0 %>
+      <p>
+        <h3>
+          This is where you'll see the things you post to Reading,
+          but you haven't posted anything yet.
+        </h3>
+      </p>
+      <% elsif params[:type] == 'list' %>
+        <p>
+          <h3>
+            This is where you'll see your own posts and the posts from people you follow,
+        <% if @user.following.size == 0 %>
+            but you're not following anyone yet.
+        <% else %>
+            but you haven't posted anything that you're reading yet.
+        <% end %>
+          </h3>
+        </p>
+      <% end %>
+    <% if @user.posts.size == 0 %>
+    <p>
+      To begin adding posts to your profile,
+        <% if browser.chrome? %>
+          install the Chrome Extension.
+        <% else %>
+          drag this link to your bookmarks bar.
+        <% end %>
+      </p>
+      <div class="well">
+        <% if browser.chrome? %>
+          <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+        <% else %>
+          <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+        <% end %>
+      </div>
+      <p>
+        Or, alternately,
+        <% if browser.chrome? %>
+          you can use this bookmarklet in any browser by dragging it to your bookmarks bar:
+          <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+        <% else %>
+          if you have the Google Chrome browser, you can install this extension:
+          <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+        <% end %>
+      </p>
+      <p>
+        When you visit a webpage, press that button before you start reading so your friends can come read with you.
+        That's it, but also:
+        <ul>
+          <li>Don't wait until after you've read it.</li>
+          <li>Don't think too much about it.</li>
+          <li>Don't worry about whether the content is good or bad or boring or interesting,<br> everyone else will figure that out for themselves.</li>
+        </ul>
+      </p>
+      <% end %>
+    <% else %>
+    <h4><%= @user.display_name %> hasn't posted anything yet.</h4>
+    <% end %>
   </div>
-  When you visit a webpage, press that bookmark before you start reading so your friends can come read with you.<br>
-  That's it, but also:
-  <ul>
-    <li>Don't wait until after you've read it.</li>
-    <li>Don't think too much about it.</li>
-    <li>Don't worry about whether the content is good or bad or boring or interesting,<br> everyone else will figure that out for themselves.</li>
-  </ul>
-<% else %>
-  <h4><%= @user.display_name %> hasn't posted anything yet</h4>
-<% end %>
 </div>

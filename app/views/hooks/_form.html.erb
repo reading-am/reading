@@ -1,4 +1,4 @@
-<%= form_for(hook) do |f| %>
+<%= form_for hook, :html => {:class => 'form-inline'} do |f| %>
   <% if hook.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(hook.errors.count, "error") %> prohibited this hook from being saved:</h2>
@@ -11,9 +11,9 @@
     </div>
   <% end %>
 
-  <div id="constructor" class="hook section">
-    <span class="wrapper"><strong> ++ </strong></span>
-    <div id="constructor_submit"><%= f.submit "Thanks!" %></div>
+  <div id="constructor" class="well">
+    <span class="wrapper"></span>
+    <%= f.submit "Thanks!", :class => "btn btn-success" %>
+    <a href="#" class="footnote btn" data-url="/footnotes/campfire">Details</a>
   </div>
-  <a href="#" class="footnote" data-url="/footnotes/campfire">*How this hook works</a>
 <% end %>

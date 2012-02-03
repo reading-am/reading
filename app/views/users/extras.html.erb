@@ -1,0 +1,43 @@
+<%= render :partial => 'users/settings_subnav' if @user == current_user %>
+
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+
+<div class="row extra">
+  <div class="span7 offset1">
+    <h3>Bookmarklet</h3>
+    <p>
+      The bookmarklet is an easy way to post to Reading from any browser.
+      Drag the link below to your bookmarks bar and click it to post the current page
+      to your Reading account.
+    </p>
+    <div class="well">
+      <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+    </div>
+  </div>
+</div>
+
+<div class="row extra">
+  <div class="span7 offset1">
+    <h3>Chrome Extension</h3>
+    <p>
+      For Google Chrome users, the Reading extension is a better choice than our bookmarklet.
+      Not only can you post the current page, you can also right click to post links and images.
+    </p>
+    <div class="well">
+      <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+    </div>
+  </div>
+</div>
+
+<div class="row extra">
+  <div class="span7 offset1">
+    <h3>Export</h3>
+    <p>
+      Your data is your data and you should be able to do with it as you choose.
+      So here's a handy tab delineated <%= link_to 'CSV', 'http://en.wikipedia.org/wiki/Comma-separated_values' %> containing all of your Reading posts.
+    </p>
+    <div class="well">
+      <%= link_to 'Download CSV ⬇', "/#{current_user.username}/export.csv", :class => 'btn' %>
+    </div>
+  </div>
+</div>

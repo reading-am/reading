@@ -27,7 +27,7 @@ $ ->
     $this = $(this)
     link_host = @href.split("/")[2]
     document_host = document.location.href.split("/")[2]
-    base58_id = (if typeof $this.data("base58_id") isnt "undefined" then $this.data("base58_id") else "")
+    base58_id = (if typeof $this.data("base58-id") isnt "undefined" then $this.data("base58-id") else "")
     unless link_host is document_host
       # old redirect method through reading url
       # pre = "http://#{document_host}/"+(base58_id ? "p/#{base58_id}/" : "")
@@ -76,3 +76,8 @@ $ ->
         alert (errors[response.status] ? errors.generic).replace /{provider}/gi, provider
 
     false
+
+  $(".chrome-install").on "click", ()->
+    if /chrome/.test navigator.userAgent.toLowerCase()
+      chrome.webstore.install()
+      false

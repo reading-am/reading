@@ -26,7 +26,7 @@
 </head>
 <body>
 <%= render :partial => 'layouts/fb_api' %>
-  <div id="wrapper">
+  <div class="container">
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
   <%= yield %>
   <%= render :partial => 'layouts/footer' if params[:action] != 'visit' %>

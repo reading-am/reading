@@ -2,8 +2,6 @@
   <%= render :partial => 'blank_slate' %>
 <% else %>
 
-<div id="content">
-
 <% if @user %>
   <%= render :partial => 'users/you_subnav' %>
 <% elsif @domain %>
@@ -12,24 +10,28 @@
   <h4>Some people are reading this stuff</h4>
 <% end %>
 
-<table>
+<div id="posts">
 <% time = '' %>
 <% @posts.each do |post| %>
-  <tr>
-    <td class="date">
+  <div class="row">
+    <div class="span1 date">
     <%=
       if time != post.created_at.strftime("%m/%d")
         time = post.created_at.strftime("%m/%d")
       end
     %>
-    </td>
-    <td><%= render :partial => 'posts/post', :locals => { :post => post } %></td>
+    </div>
+    <div class="span10">
+      <%= render :partial => 'posts/post', :locals => { :post => post } %>
+    </div>
+    <div class="span1">
     <% if logged_in? and post.user.id == current_user.id %>
-      <td><%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+      <%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %>
     <% end %>
-  </tr>
+    </div>
+  </div>
 <% end %>
-</table>
+</div>
 
 <% unless request.path_info == '/' %>
   <%= will_paginate @posts %>
@@ -47,8 +49,6 @@
 <% end %>
 </div>
 <% end %>
-
-</div>
 
 <% if @user and @user == current_user %>
 <div class="bookmarklet">

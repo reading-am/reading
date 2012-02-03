@@ -23,8 +23,8 @@
     %>
     &nbsp;
     </div>
-    <div class="span10">
-    <h3><%= link_to page.display_title, page.url, :class => 'external' %></h3>
+    <div class="span10 posts_group">
+      <h3><%= render :partial => 'pages/page', :locals => { :page => page } %></h3>
     <% sub_posts.each do |post| %>
       <%= render :partial => 'posts/post_alt', :locals => { :post => post } %>
     <% end %>

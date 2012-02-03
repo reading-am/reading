@@ -39,10 +39,6 @@ $grey: #EEE;
  */
 html {
   -webkit-font-smoothing: antialiased;
-  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
-  font-size: 15px;
-  line-height: 20px;
-  color:#111;
 }
 
 a {
@@ -54,37 +50,6 @@ a {
     background:$dark_yellow;
     text-decoration:underline;
   }
-h1 {
-  font-weight:bold;
-  font-size:36px;
-  line-height:36px;
-}
-h3 {
-  margin:10px 0 0;
-}
-h4 {
-  margin:0 0 10px;
-}
-h4, h5 {
-  font-weight:bold;
-  letter-spacing:1px;
-}
-  h4 a {
-    background:none;
-  }
-h5 {
-  margin:25px 0 5px;
-}
-table {
-  margin:5px 0 20px;
-}
-td {
-  padding:2px 5px;
-  vertical-align:top;
-}
-strong {
-  font-weight:bold;
-}
 
 abbr, .glyph {
   font-family:'WebSymbolsRegular';
@@ -99,11 +64,6 @@ abbr, .glyph {
     background:white;
   }
 
-#wrapper {
-  width:960px;
-  margin:50px auto;
-}
-
 .bookmarklet {
   background:$yellow;
   text-align:center;
@@ -116,29 +76,23 @@ abbr, .glyph {
   .bookmarklet a {
     display:none;
   }
-
-#content {
-  min-height:250px;
+  
+#welcome {
+  line-height:27px;
+  margin:17px 0;
 }
-.section, #notice, #content {
-  margin:20px 0 0;
+#blank_slate .bookmarklet {
+  font-size: 36px;
+  font-weight:bold;
+  line-height: 56px;
+  width: 615px;
+  margin:15px 0;
 }
-  #welcome {
-    line-height:27px;
-    margin:17px 0;
-  }
-  #blank_slate .bookmarklet {
-    font-size: 36px;
-    font-weight:bold;
-    line-height: 56px;
-    width: 615px;
-    margin:15px 0;
-  }
-  #blank_slate li {
-    list-style-type: circle;
-    margin-left: 30px;
-    padding-left: 3px;
-  }
+#blank_slate li {
+  list-style-type: circle;
+  margin-left: 30px;
+  padding-left: 3px;
+}
 
 #hooks h4, #authorizations h4 {
   margin:0;

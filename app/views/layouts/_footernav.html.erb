@@ -1,0 +1,10 @@
+<div id="footernav" class="row">
+  <div class="span11 offset1">
+  <%= link_to rss_path, {:class => 'rss'} do %>
+    <abbr>r</abbr> RSS
+  <% end %>
+  <% if @user and params[:type] == 'posts' and @user == current_user %>
+    <%= link_to '⬇ Export', "/#{current_user.username}/export.csv" %>
+  <% end %>
+  </div>
+</div>

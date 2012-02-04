@@ -1,0 +1,15 @@
+$yellow: #FFFBCC;
+$dark_yellow: #FFF461;
+$blue: #B3FEFF;
+$dark_blue: #00FBFF;
+$green: #38ff7E;
+$dark_green: #79ff30;
+$grey: #EEE;
+
+#footernav a {
+  background-color:$blue;
+  margin:0 5px 0 0;
+}
+#footernav a:hover {
+  background-color:$dark_blue;
+}

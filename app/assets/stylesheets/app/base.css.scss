@@ -174,10 +174,10 @@ a.back, .actions {
   text-decoration:underline;
 }
 
-footer a, a.user.you, #foot_nav a {
+footer a, a.user.you {
   background-color:$blue;
 }
-  footer a:hover, a.user.you:hover, #foot_nav a:hover {
+  footer a:hover, a.user.you:hover {
     background-color:$dark_blue;
   }
 a.active, a.active:hover, h4 .active {
@@ -185,10 +185,6 @@ a.active, a.active:hover, h4 .active {
   text-decoration:underline;
   cursor:default;
   font-weight:normal;
-}
-
-#foot_nav a {
-  margin:0 5px 0 0;
 }
 
 .disabled {

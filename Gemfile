@@ -37,6 +37,7 @@ gem 'progress_bar'
 gem 'pony'
 gem 'validate_email'
 gem "twitter-bootstrap-rails", "~> 2.0rc0", :group => :assets
+gem 'bootstrap-will_paginate'
 
 group :development do
   gem 'ruby-debug19'

@@ -35,9 +35,7 @@
     <% end %>
     </div>
     <div class="span10 posts_group">
-      <h3>
-        <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post } %>
-      </h3>
+      <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post } %>
       <div class="posts">
       <% subposts.each do |post| %>
         <%= render :partial => 'posts/subpost', :locals => { :post => post } %>

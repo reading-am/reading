@@ -1,0 +1,29 @@
+$yellow: #FFFBCC;
+$dark_yellow: #FFF461;
+$blue: #B3FEFF;
+$dark_blue: #00FBFF;
+$green: #38ff7E;
+$dark_green: #79ff30;
+$grey: #EEE;
+
+#subnav {
+  margin-bottom:46px;
+}
+#subnav a {
+  background-color:$blue;
+}
+  #subnav a:hover {
+    background-color:$dark_blue;
+  }
+#subnav a.active, #subnav a.active:hover {
+  background:none;
+  text-decoration:underline;
+  cursor:default;
+  font-weight:normal;
+}
+.follow, #subnav .follow {
+  background-color:$green;
+  &:hover {
+    background-color:$dark_green;
+  }
+}

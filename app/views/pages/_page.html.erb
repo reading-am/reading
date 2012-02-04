@@ -1,5 +1,10 @@
 <div data-class="Page" data-id="<%= page.id %>" class="page <%= yn_class %>">
-  <%= link_to page.url, :class => 'external', :data => {:base58_id => Base58.encode(post.id)} do %>
-    <span><%= page.display_title %></span>
-  <% end %>
+  <h3>
+    <%= link_to page.url, :class => 'external', :data => {:base58_id => Base58.encode(post.id)} do %>
+      <span><%= page.display_title %></span>
+    <% end %>
+  </h3>
+  <span class="plusnav" style="display:none;">
+    |<%= link_to "+", "http://#{DOMAIN}/domains/#{post.page.domain.name}/pages/#{post.page.id}", :class => 'info' %>
+  </span>
 </div>

@@ -14,7 +14,4 @@
       because of <%= if post.user.username.nil? then post.user.display_name else link_to (because_of_you ? 'you' : post.referrer_post.user.display_name), "/#{post.referrer_post.user.username}", :class => "user#{because_of_you ? ' you' : ''}" end %>
     <% end %>
   </span>
-  <span class="plusnav">
-    |<%= link_to "+", "http://#{DOMAIN}/domains/#{post.page.domain.name}/pages/#{post.page.id}", :class => 'info' %>
-  </span>
 </div>

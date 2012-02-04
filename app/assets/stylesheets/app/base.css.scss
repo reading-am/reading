@@ -40,6 +40,9 @@ $grey: #EEE;
 html {
   -webkit-font-smoothing: antialiased;
 }
+body {
+  margin:46px 0 0;
+}
 
 a {
   background:$yellow;
@@ -77,11 +80,7 @@ abbr, .glyph {
   .bookmarklet a {
     display:none;
   }
-  
-#welcome {
-  line-height:27px;
-  margin:17px 0;
-}
+
 #blank_slate .bookmarklet {
   font-size: 36px;
   font-weight:bold;
@@ -175,13 +174,13 @@ a.back, .actions {
   text-decoration:underline;
 }
 
-#subnav a, footer a, a.user.you, #foot_nav a {
+footer a, a.user.you, #foot_nav a {
   background-color:$blue;
 }
-  #subnav a:hover, footer a:hover, a.user.you:hover, #foot_nav a:hover {
+  footer a:hover, a.user.you:hover, #foot_nav a:hover {
     background-color:$dark_blue;
   }
-a.active, a.active:hover, #subnav a.active, #subnav a.active:hover, h4 .active {
+a.active, a.active:hover, h4 .active {
   background:none;
   text-decoration:underline;
   cursor:default;
@@ -197,7 +196,6 @@ a.active, a.active:hover, #subnav a.active, #subnav a.active:hover, h4 .active {
 }
 
 footer {
-  clear:both;
   margin:30px 0;
 }
 
@@ -248,7 +246,7 @@ a.rss abbr {
   font-weight:bold;
 }
 
-.follow, #subnav .follow {
+.follow {
   background-color:$green;
   &:hover {
     background-color:$dark_green;

@@ -1,5 +1,6 @@
-<div class="row">
-  <div class="span12">
+<div id="subnav" class="row">
+  <div class="span1">&nbsp;</div>
+  <div class="span11">
     <h4>
     <% if @domain %>
       What people have been reading on <%= @domain.name %>
@@ -9,7 +10,7 @@
       Some people are reading this stuff
     <% end %>
     </h4>
-    <nav id="subnav">
+    <nav>
     <a href="/<%= @user.username %>"<% if params[:type] == 'posts' %> class="active"<% end %>>Posts</a>
     - <a href="/<%= @user.username %>/list"<% if params[:type] == 'list' %> class="active"<% end %>>Reading List</a>
     - <a href="/<%= @user.username %>/following"<% if params[:type] == 'following' %> class="active"<% end %>>Following</a>

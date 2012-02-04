@@ -10,7 +10,7 @@
       <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> is
     <% end %>
     <%= if !post.page.domain.nil? then post.page.domain.verb  else 'reading' end %>
-    <%= link_to post.page.display_title, post.page.url, :class => 'external', 'data-base58_id' => Base58.encode(post.id) %>
+    <%= link_to post.page.display_title, post.page.url, :class => 'external', :data => {:base58_id => Base58.encode(post.id)} %>
     <% if post.referrer_post and post.user != post.referrer_post.user %>
       because of <%= if post.user.username.nil? then post.user.display_name else link_to (because_of_you ? 'you' : post.referrer_post.user.display_name), "/#{post.referrer_post.user.username}", :class => "user#{because_of_you ? ' you' : ''}" end %>
     <% end %>

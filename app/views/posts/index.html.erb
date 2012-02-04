@@ -15,21 +15,28 @@
   <%
     subposts.reverse!
     post = subposts.first
+    yn_avg = yn_average subposts
+    if yn_avg > 0
+      yn_class = "yep"
+    elsif yn_avg < 0
+      yn_class = "nope"
+    else
+      yn_class = ""
+    end
   %>
   <div class="row">
     <div class="span1 date">
     <% if time != post.created_at.strftime("%m/%d") %>
       <%= time = post.created_at.strftime("%m/%d") %>
-    <% else
-      yn_avg = yn_average subposts
-    %>
-      <h3 class="<%= if yn_avg > 0 then "yep" elsif yn_avg < 0 then "nope" end %>"></h3>
+    <% elsif !yn_class.empty? %>
+      <h3 class="<%= yn_class %>"></h3>
+    <% else %>
+      &nbsp;
     <% end %>
-    &nbsp;
     </div>
     <div class="span10 posts_group">
       <h3>
-        <%= render :partial => 'pages/page', :locals => { :page => page } %>
+        <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post } %>
       </h3>
       <div class="posts">
       <% subposts.each do |post| %>

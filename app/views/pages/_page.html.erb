@@ -1,3 +1,5 @@
-<div data-class="Page" data-id="<%= page.id %>" class="page">
-  <%= link_to (page.title.blank? ? page.url : page.title), page.url, :class => 'external' %>
+<div data-class="Page" data-id="<%= page.id %>" class="page <%= yn_class %>">
+  <%= link_to page.url, :class => 'external', :data => {:base58_id => Base58.encode(post.id)} do %>
+    <span><%= page.display_title %></span>
+  <% end %>
 </div>

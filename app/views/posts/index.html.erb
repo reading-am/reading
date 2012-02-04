@@ -4,10 +4,16 @@
 
 <% if @user %>
   <%= render :partial => 'users/you_subnav' %>
-<% elsif @domain %>
-  <h4>Stuff people are reading on <%= @domain.name %></h4>
 <% else %>
-  <h4>Some people are reading this stuff</h4>
+  <div class="row">
+    <div class="span11 offset1">
+    <% if @domain %>
+      <h4>Stuff people are reading on <%= @domain.name %></h4>
+    <% else %>
+      <h4>Some people are reading this stuff</h4>
+    <% end %>
+    </div>
+  </div>
 <% end %>
 
 <% time = '' %>

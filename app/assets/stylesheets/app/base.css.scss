@@ -57,6 +57,8 @@ a {
 
 abbr, .glyph {
   font-family:'WebSymbolsRegular';
+  text-transform:none;
+  font-size:100%;
 }
   .twitter abbr {
     color:#2493c4;

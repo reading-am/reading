@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :followers, :through => :reverse_relationships, :source => :follower
 
   has_attached_file :avatar,
-    :styles => { :large => "500x500>", :thumb => "48x48>" },
+    :styles => { :large => "500x500>", :thumb => "70x70>" },
     :default_url => '/assets/users/:attachment/default_:style.png',
     :storage => :s3,
     :bucket => "reading-#{Rails.env}",
@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
       :secret_access_key => ENV['S3_SECRET']
     }
 
+  validates_attachment_size :avatar, :less_than=>2.megabytes
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true
   validates :email, :email => {:allow_blank => true}

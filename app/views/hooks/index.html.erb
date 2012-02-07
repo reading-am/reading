@@ -1,14 +1,14 @@
-<div id="content">
-<%= render :partial => 'users/settings_header' %>
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
 <% if notice %><p id="notice">➥  <%= notice %></p><% end %>
 
-<div id="hooks_blank" class="section">
-  Hooks perform an action each time you do something, like posting to
-  <%= link_to "Twitter", "http://twitter.com" %> when you <strong>read a page</strong>
-  or sending an <strong>email</strong> when you <strong>say "yep"</strong>.
-  Have an idea for a new hook? <%= mail_to "hello@#{DOMAIN}", 'Let us know', :subject => 'I\'m hooked on Reading', :encode => 'javascript', :class => 'email' %>.
+<div id="hooks_blank" class="row">
+  <div class="span7 offset1">
+    Hooks perform an action each time you do something, like posting to
+    <%= link_to "Twitter", "http://twitter.com" %> when you <strong>read a page</strong>
+    or sending an <strong>email</strong> when you <strong>say "yep"</strong>.
+    Have an idea for a new hook? <%= mail_to "hello@#{DOMAIN}", 'Let us know', :subject => 'I\'m hooked on Reading', :encode => 'javascript', :class => 'email' %>.
+  </div>
 </div>
 
 <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
@@ -28,4 +28,3 @@
 </table>
 </div>
 <% end %>
-</div>

@@ -6,7 +6,13 @@ $dark_yellow: #FFF461;
 }
 #mainnav a.active, #mainnav a.active:hover {
   background:$dark_yellow;
-  cursor:default;
   font-weight:normal;
   text-decoration:none;
 }
+#search {
+  display:inline;
+}
+#search input {
+  width:180px;
+}
+

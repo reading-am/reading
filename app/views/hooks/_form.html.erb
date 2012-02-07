@@ -1,19 +1,23 @@
-<%= form_for(hook) do |f| %>
-  <% if hook.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(hook.errors.count, "error") %> prohibited this hook from being saved:</h2>
+<div class="row">
+  <div class="span7 offset1">
+  <%= form_for(hook) do |f| %>
+    <% if hook.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(hook.errors.count, "error") %> prohibited this hook from being saved:</h2>
 
-      <ul>
-      <% hook.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+        <ul>
+        <% hook.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div id="constructor" class="hook section">
+      <span class="wrapper"><strong> ++ </strong></span>
+      <div id="constructor_submit"><%= f.submit "Thanks!" %></div>
     </div>
+    <a href="#" class="footnote" data-url="/footnotes/campfire">*How this hook works</a>
   <% end %>
-
-  <div id="constructor" class="hook section">
-    <span class="wrapper"><strong> ++ </strong></span>
-    <div id="constructor_submit"><%= f.submit "Thanks!" %></div>
   </div>
-  <a href="#" class="footnote" data-url="/footnotes/campfire">*How this hook works</a>
-<% end %>
+</div>

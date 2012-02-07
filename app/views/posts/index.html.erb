@@ -6,7 +6,7 @@
   <%= render :partial => 'users/you_subnav' %>
 <% else %>
   <div class="row">
-    <div class="span11 offset1">
+    <div class="span7 offset1">
     <% if @domain %>
       <h4>Stuff people are reading on <%= @domain.name %></h4>
     <% else %>
@@ -57,7 +57,7 @@
 <% end %>
 
 <div class="row">
-  <div class="span11 offset1">
+  <div class="span7 offset1">
   <% unless request.path_info == '/' %>
     <%= will_paginate @posts %>
   <% else %>

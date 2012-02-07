@@ -24,8 +24,9 @@ class User < ActiveRecord::Base
       :access_key_id => ENV['S3_KEY'],
       :secret_access_key => ENV['S3_SECRET']
     }
-
   validates_attachment_size :avatar, :less_than=>2.megabytes
+  validates_attachment_content_type :avatar, :content_type=>['image/jpeg', 'image/png', 'image/gif']
+
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true
   validates :email, :email => {:allow_blank => true}

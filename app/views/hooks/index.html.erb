@@ -14,17 +14,19 @@
 <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
 
 <% if @hooks.length > 0 %>
-<div id="hooks" class="section">
-<h4>Your hooks</h4>
-<table>
-<% @hooks.each do |hook| %>
-  <tr>
-    <%= render :partial => 'hooks/hook', :locals => {:hook => hook} %>
-    <% if hook.user.id == current_user.id %>
-    <td><%= link_to 'Delete', hook, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+<div id="hooks" class="row">
+  <div class="span7 offset1">
+    <h4>Your hooks</h4>
+    <table>
+    <% @hooks.each do |hook| %>
+    <tr>
+      <%= render :partial => 'hooks/hook', :locals => {:hook => hook} %>
+      <% if hook.user.id == current_user.id %>
+      <td><%= link_to 'Delete', hook, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
+      <% end %>
+    </tr>
     <% end %>
-  </tr>
-<% end %>
-</table>
+    </table>
+  </div>
 </div>
 <% end %>

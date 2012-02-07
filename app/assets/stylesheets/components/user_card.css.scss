@@ -4,8 +4,9 @@ $dark_green: #79ff30;
 #user_card {
   margin-bottom:46px;
 }
-#avatar {
+#avatar, #avatar:hover {
   text-align:right;
+  background:none;
 }
 #user_card h1 {
   margin-top:-8px;

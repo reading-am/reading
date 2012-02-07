@@ -1,7 +1,7 @@
 <div id="user_card" class="row">
-  <div id="avatar" class="span1">
-    <%= image_tag "users/avatar.png" %>
-  </div>
+  <%= link_to user.avatar.url, :id => "avatar", :class => "span1", :target => "_blank" do %>
+    <%= image_tag user.avatar.url :thumb %>
+  <% end %>
   <div class="span7">
     <h1><%= user.display_name %></h1>
   </div>

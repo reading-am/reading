@@ -3,7 +3,8 @@
 <% else %>
 
 <% if @user %>
-  <%= render :partial => 'users/you_subnav' %>
+  <%= render :partial => 'users/card', :locals => {:user => @user} %>
+  <%= render :partial => 'users/you_subnav', :locals => {:user => @user} %>
 <% else %>
   <div class="row">
     <div class="span7 offset1">

@@ -1,0 +1,20 @@
+<div id="user_card" class="row">
+  <div id="avatar" class="span1">
+    <%= image_tag "users/avatar.png" %>
+  </div>
+  <div class="span7">
+    <h1><%= user.display_name %></h1>
+  </div>
+  <nav class="span7">
+    <a href="/<%= user.username %>/following"<% if params[:type] == 'following' %> class="active"<% end %>>Following</a>
+    - <a href="/<%= user.username %>/followers"<% if params[:type] == 'followers' %> class="active"<% end %>>Followers</a>
+    <% if logged_in? and user != current_user %>
+      <% follow_text = current_user.following?(user) ? 'unfollow' : 'follow' %>
+      - <a href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
+    <% end %>
+    </nav>
+    <div class="span7 offset1">
+      This is a bio that came from a person but no longer exists for that person
+      because they were never real. Do you feel me?
+    </div>
+</div>

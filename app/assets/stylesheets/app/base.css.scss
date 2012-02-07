@@ -28,7 +28,7 @@
  */
 $yellow: #FFFBCC;
 $dark_yellow: #FFF461;
-$blue: #B3FEFF;
+$blue: #cdfeff;
 $dark_blue: #00FBFF;
 $green: #38ff7E;
 $dark_green: #79ff30;
@@ -43,7 +43,9 @@ html {
 body {
   margin:46px 0 0;
 }
-
+h1 {
+  font-size:28px;
+}
 a {
   background:$yellow;
   text-decoration:none;
@@ -184,7 +186,6 @@ footer a, a.user.you {
   }
 a.active, a.active:hover, h4 .active {
   background:none;
-  text-decoration:underline;
   cursor:default;
   font-weight:normal;
 }
@@ -242,13 +243,6 @@ a.rss abbr {
 #notice {
   display:inline-block;
   font-weight:bold;
-}
-
-.follow {
-  background-color:$green;
-  &:hover {
-    background-color:$dark_green;
-  }
 }
 
 #new_hook.loading {
@@ -340,4 +334,10 @@ a.footnote {
 .date {
   line-height:26px;
   text-align:right;
+}
+
+nav a {
+  border-radius:3px;
+  padding:3px 5px;
+  font-size:16px;
 }

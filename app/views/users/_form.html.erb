@@ -43,6 +43,20 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :link, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :link %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :bio, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_area :bio, :cols => nil, :rows => nil %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= f.label :wants_mail, 'Mail me, OK?', :class => "control-label" %>
       <div class="controls">
         <%= f.check_box :wants_mail %>

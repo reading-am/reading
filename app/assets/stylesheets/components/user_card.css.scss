@@ -2,14 +2,16 @@ $green: #38ff7E;
 $dark_green: #79ff30;
 
 #user_card {
-  margin-bottom:46px;
+  margin-bottom:36px;
 }
 #avatar, #avatar:hover {
   text-align:right;
   background:none;
 }
 #user_card h1 {
+  color:#000;
   margin-top:-8px;
+  margin-bottom:3px;
 }
 #user_card nav {
   margin-bottom:12px;

@@ -14,7 +14,9 @@
     <% end %>
     </nav>
     <div class="span7 offset1">
-      This is a bio that came from a person but no longer exists for that person
-      because they were never real. Do you feel me?
+      <%= user.bio %>
+    </div>
+    <div class="span7 offset1">
+      <%= link_to user.link %>
     </div>
 </div>

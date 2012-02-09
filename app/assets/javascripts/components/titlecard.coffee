@@ -1,15 +1,12 @@
 $ ->
   $card = $("#titlecard")
 
-  $card.on "click", () ->
-    if $(document).scrollTop() > 15
+  $card.on "click", ->
+    unless $card.find("strong").text() is "Reading"
       $("body").animate {scrollTop : 0}
       false
 
-  $card.on "mouseenter", () ->
-    if $(document).scrollTop() > 15
-      $card.find("strong").text "Go up."
-
-
-  $card.on "mouseleave", () ->
-    $card.find("strong").text "Reading"
+  $.waypoints.settings.scrollThrottle = 30
+  $("#mainnav").waypoint (event, direction) ->
+    $card.find("strong").text if direction is "down" then "Go up" else "Reading"
+  , {offset:-100}

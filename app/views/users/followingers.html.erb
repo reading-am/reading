@@ -1,6 +1,4 @@
-<div id="content">
-
-<%= render :partial => 'users/you_subnav' %>
+<%= render :partial => 'users/card', :locals => {:user => @user} %>
 
 <table>
 <% if @users.empty? %>
@@ -13,5 +11,3 @@
 <% end %>
 <% end %>
 </table>
-
-</div>

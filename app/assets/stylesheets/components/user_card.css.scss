@@ -1,5 +1,6 @@
 $green: #38ff7E;
 $dark_green: #79ff30;
+$grey: #EEE;
 
 #user_card {
   margin-bottom:36px;
@@ -26,4 +27,13 @@ $dark_green: #79ff30;
   &:hover {
     background-color:$dark_green;
   }
+}
+#user_bio {
+  font-family:'Georgia', serif;
+  font-style:italic;
+  -webkit-font-smoothing: subpixel-antialiased;
+  color:#777;
+}
+#user_places a {
+  background:none;
 }

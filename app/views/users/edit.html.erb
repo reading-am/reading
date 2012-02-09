@@ -1,6 +1,10 @@
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
-<% if notice %><p id="notice">➥  <%= notice %></p><% end %>
+<% if notice %>
+  <div id="notice" class="row">
+    <div class="span7 offset1"><h3>➥  <%= notice %></h3></div>
+  </div>
+<% end %>
 
 <%= render 'form' %>
 

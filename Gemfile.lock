@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/zzip/twitter_bootstrap_form_for.git
+  revision: 94f002a695eef37dd1ace95307f573ec268a7b1d
+  specs:
+    twitter_bootstrap_form_for (1.0.7)
+      actionpack (~> 3)
+      railties (~> 3)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -299,6 +307,7 @@ DEPENDENCIES
   tinder
   twitter (>= 2.0.0.rc.2)
   twitter-bootstrap-rails (~> 2.0rc0)
+  twitter_bootstrap_form_for!
   typhoeus
   uglifier
   validate_email

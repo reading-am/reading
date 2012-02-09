@@ -13,10 +13,14 @@
       - <a href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
     <% end %>
     </nav>
-    <div class="span7 offset1">
-      <%= user.bio %>
-    </div>
-    <div class="span7 offset1">
-      <%= link_to user.link %>
-    </div>
+    <% unless user.bio.nil? %>
+      <div class="span7 offset1">
+        <%= user.bio %>
+      </div>
+    <% end %>
+    <% unless user.link.nil? %>
+      <div class="span7 offset1">
+        <%= link_to user.link %>
+      </div>
+    <% end %>
 </div>

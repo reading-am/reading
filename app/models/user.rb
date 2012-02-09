@@ -30,7 +30,8 @@ class User < ActiveRecord::Base
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true
   validates :email, :email => {:allow_blank => true}
-  
+  validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
+
   before_create { generate_token(:token) }
   before_create { generate_token(:auth_token) }
 

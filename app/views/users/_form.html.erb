@@ -1,72 +1,25 @@
 <div id="user_info" class="row">
   <div class="span7 offset1">
-  <%= form_for @user, :html => {:class => "form-horizontal"}, :url => "/#{@user.username}/info" do |f| %>
+  <%= twitter_bootstrap_form_for @user, :html => {:class => "form-horizontal"}, :url => "/#{@user.username}/info" do |f| %>
   <fieldset>
-    <% if @user.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <%= f.file_field :avatar %>
 
-        <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
+    <%= f.text_field :name %>
+
+    <%= f.text_field :username %>
+
+    <%= f.email_field :email, :placeholder => 'me@example.com' %>
+
+    <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge' %>
+
+    <%= f.text_field :link, 'Homepage', :placeholder => 'http://example.com' %>
+
+    <%= f.toggles 'Mail me, OK?' do %><%= f.check_box :wants_mail, '' %><% end %>
+
+    <%= f.actions do %>
+      <%= f.submit 'Update Me' %>
     <% end %>
-
-    <div class="control-group">
-      <%= f.label :avatar, :class => "control-label" %>
-      <div class="controls">
-        <%= f.file_field :avatar %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :name, :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_field :name %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :username, :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_field :username %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :email, :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_field :email %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :link, :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_field :link %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :bio, :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_area :bio, :cols => nil, :rows => nil %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :wants_mail, 'Mail me, OK?', :class => "control-label" %>
-      <div class="controls">
-        <%= f.check_box :wants_mail %>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <%= f.submit "Update Me", :class => "btn btn-primary" %>
-    </div>
-  <% end %>
   </fieldset>
+  <% end %>
 </div>
 </div>

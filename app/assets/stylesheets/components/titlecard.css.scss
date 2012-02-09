@@ -1,10 +1,11 @@
 #titlecard {
-  position:absolute;
+  position:fixed;
   top:42px;
   right:22px;
   text-align:center;
   font-size:18px;
   line-height:22px;
+  width:75px;
 }
 #titlecard a, #titlecard a:hover {
   background:none;

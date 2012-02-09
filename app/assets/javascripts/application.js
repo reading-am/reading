@@ -12,3 +12,4 @@
 //= require models
 //= require_tree ./app
 //= require_tree ./views
+//= require_tree ./components

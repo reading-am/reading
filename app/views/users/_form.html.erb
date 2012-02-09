@@ -1,5 +1,5 @@
 <div id="user_info" class="row">
-  <div class="span7 offset1">
+  <div class="span8">
   <%= twitter_bootstrap_form_for @user, :html => {:class => "form-horizontal"}, :url => "/#{@user.username}/info" do |f| %>
   <fieldset>
     <%= f.file_field :avatar, :class => 'input-xlarge' %>
@@ -10,9 +10,9 @@
 
     <%= f.email_field :email, :placeholder => 'me@example.com', :class => 'input-xlarge' %>
 
-    <%= f.toggles 'Mail me, OK?' do %><%= f.check_box :wants_mail, '' %><% end %>
+    <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Send a love letter when someone follows me" %><% end %>
 
-    <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge' %>
+    <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' %>
 
     <%= f.text_field :link, 'Homepage', :placeholder => 'http://example.com', :class => 'input-xlarge' %>
 

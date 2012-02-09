@@ -12,7 +12,9 @@
 
     <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Send a love letter when someone follows me" %><% end %>
 
-    <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' %>
+    <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' do %>
+      <p class="help-block">Keep it under 255 characters</p>
+    <% end %>
 
     <%= f.text_field :link, 'Homepage', :placeholder => 'http://example.com', :class => 'input-xlarge' %>
 

@@ -1,5 +1,19 @@
 <%= render :partial => 'users/card', :locals => {:user => @user} %>
 
+<div id="subnav" class="row">
+  <nav class="span1">
+    <%= link_to '« posts', "/#{@user.username}" %>
+  </nav>
+  <div class="span7">
+    <h3>
+      <% if params[:type] == 'followers' %>
+        People Following <%= @user.first_name %>
+      <% else %>
+        People <%= @user.first_name %> is Following
+      <% end %>
+    </h3>
+  </div>
+</div>
 <div class="user_list">
 <% if @users.empty? %>
 <div class="row">

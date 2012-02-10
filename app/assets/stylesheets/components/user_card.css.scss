@@ -1,6 +1,11 @@
+$yellow: #FFFBCC;
+$dark_yellow: #FFF461;
+$blue: #cdfeff;
+$dark_blue: #00FBFF;
 $green: #38ff7E;
 $dark_green: #79ff30;
 $grey: #EEE;
+$dark_grey: #777;
 
 #user_card {
   margin-bottom:36px;
@@ -21,6 +26,10 @@ $grey: #EEE;
   background:none;
   padding:0;
 }
+#user_card nav a.active {
+  text-decoration:underline;
+  color:$dark_grey;
+}
 #user_card .follow {
   background-color:$green;
   padding:3px 5px;
@@ -32,7 +41,7 @@ $grey: #EEE;
   font-family:'Georgia', serif;
   font-style:italic;
   -webkit-font-smoothing: subpixel-antialiased;
-  color:#777;
+  color:$dark_grey;
 }
 #user_places {
   -webkit-font-smoothing: subpixel-antialiased;

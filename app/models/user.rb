@@ -16,7 +16,11 @@ class User < ActiveRecord::Base
   has_many :followers, :through => :reverse_relationships, :source => :follower
 
   has_attached_file :avatar,
-    :styles => { :large => "500x500>", :thumb => "70x70>" },
+    :styles => {
+      :mini => "25x25>",
+      :thumb => "70x70>",
+      :large => "500x500>"
+    },
     :default_url => '/assets/users/:attachment/default_:style.png',
     :storage => :s3,
     :bucket => "reading-#{Rails.env}",

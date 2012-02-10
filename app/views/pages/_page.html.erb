@@ -1,10 +1,10 @@
-<div data-class="Page" data-id="<%= page.id %>" class="page <%= yn_class %>">
+<div data-class="Page" data-id="<%= page.id %>" class="page <%= yn_class if defined? yn_class %>">
   <h3>
-    <%= link_to page.url, :class => 'external', :data => {:base58_id => Base58.encode(post.id)} do %>
+    <%= link_to page.url, :class => 'external', :data => {:base58_id => if defined? post then Base58.encode(post.id) else nil end } do %>
       <span><%= page.display_title %></span>
     <% end %>
   </h3>
   <span class="plusnav" style="display:none;">
-    |<%= link_to "+", "http://#{DOMAIN}/domains/#{post.page.domain.name}/pages/#{post.page.id}", :class => 'info' %>
+    |<%= link_to "+", "http://#{DOMAIN}/domains/#{page.domain.name}/pages/#{page.id}", :class => 'info' %>
   </span>
 </div>

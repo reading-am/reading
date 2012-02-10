@@ -1,0 +1,39 @@
+<% time = '' %>
+<% posts.group_by(&:page).each do |page, subposts| %>
+  <%
+    subposts.reverse!
+    post = subposts.first
+    yn_avg = yn_average subposts
+    if yn_avg > 0
+      yn_class = "yep"
+    elsif yn_avg < 0
+      yn_class = "nope"
+    else
+      yn_class = ""
+    end
+  %>
+  <div class="row">
+    <div class="span1 date">
+    <% if time != post.created_at.strftime("%m/%d") %>
+      <%= time = post.created_at.strftime("%m/%d") %>
+    <% elsif !yn_class.empty? %>
+      <h3 class="<%= yn_class %>"></h3>
+    <% else %>
+      &nbsp;
+    <% end %>
+    </div>
+    <div class="span6 posts_group">
+      <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post } %>
+      <div class="posts">
+      <% subposts.each do |post| %>
+        <%= render :partial => 'posts/subpost', :locals => { :post => post } %>
+      <% end %>
+      </div>
+    </div>
+    <div class="span1">
+    <% if logged_in? and post.user.id == current_user.id %>
+      <%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %>
+    <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,22 @@
+<%= render :partial => 'users/settings_subnav' if @user == current_user %>
+
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+
+<div class="row">
+  <div class="span7 offset1">
+    Put in the bit about the bookmarklet
+  </div>
+</div>
+
+<div class="row">
+  <div class="span7 offset1">
+    Chrome extension
+  </div>
+</div>
+
+<div class="row">
+  <div class="span7 offset1">
+    <h3>Export</h3>
+    <%= link_to 'Click here', "/#{current_user.username}/export.csv" %> to export the pages you've read as a tab delineated CSV
+  </div>
+</div>

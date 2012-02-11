@@ -1,0 +1,36 @@
+$yellow: #FFFBCC;
+$dark_yellow: #FFF461;
+$blue: #cdfeff;
+$dark_blue: #00FBFF;
+$green: #38ff7E;
+$dark_green: #79ff30;
+$grey: #EEE;
+
+#hooks_blank {
+  margin-bottom:23px;
+}
+#constructor {
+  line-height:35px;
+}
+#constructor .wrapper {
+  padding:8px 0;
+}
+
+#hooks_blank a {
+  background:none;
+  font-weight:bold;
+}
+  #hooks_blank a.email {
+    text-decoration:underline;
+  }
+#hooks .icon {
+  font-size:18px;
+  text-align:right;
+}
+#constructor input[type='text'] {
+  font-size:13px;
+  width:110px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  #constructor select { font-size:16px; }
+}

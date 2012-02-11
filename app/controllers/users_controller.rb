@@ -171,11 +171,14 @@ class UsersController < ApplicationController
     end
   end
 
-  def settings
-    if logged_in?
-      redirect_to "/#{current_user.username}/info"
+  def extras
+    if params[:username]
+      @user = User.find_by_username(params[:username])
     else
-      redirect_to "/"
+      @user = User.find(params[:id])
+    end
+    if @user != current_user
+      redirect_to "/#{@user.username}"
     end
   end
 end

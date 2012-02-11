@@ -156,12 +156,6 @@ a.back, .actions {
   margin:10px 0 0;
 }
 
-.hook_message {
-  display:none;
-  margin:15px 0;
-  font-size:12px;
-}
-
 #visit {
   margin:150px 0 0;
 }
@@ -242,38 +236,11 @@ a.rss abbr {
   opacity:0.4;
 }
 
-#constructor {
-  line-height:35px;
-}
-#constructor .wrapper {
-  background:$grey;
-  padding:8px 0;
-}
-#constructor_submit {
-  display:inline-block;
-  background:$green;
-  padding:0 5px;
-  line-height:32px;
-}
 
-#hooks_blank a {
-  background:none;
-  font-weight:bold;
-}
-  #hooks_blank a.email {
-    text-decoration:underline;
-  }
 a.footnote {
   font-weight:normal;
   font-size:12px;
   background:$grey;
-}
-#constructor input[type='text'] {
-  font-size:13px;
-  width:110px;
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  #constructor select { font-size:16px; }
 }
 
 .breadcrumb a {

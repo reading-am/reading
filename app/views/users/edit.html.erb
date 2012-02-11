@@ -1,18 +1,4 @@
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
-<% if notice %>
-  <div id="notice" class="row">
-    <div class="span7 offset1"><h3>➥  <%= notice %></h3></div>
-  </div>
-<% end %>
-
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
 <%= render 'form' %>
-
-<%= render 'authorizations/index' %>
-
-<div class="row">
-  <div class="span7 offset1">
-    <h4>Export</h4>
-    <%= link_to 'Click here', "/#{current_user.username}/export.csv" %> to export the pages you've read as a tab delineated CSV
-  </div>
-</div>

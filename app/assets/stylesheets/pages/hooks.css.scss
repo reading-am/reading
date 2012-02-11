@@ -12,10 +12,6 @@ $grey: #EEE;
 #constructor {
   line-height:35px;
 }
-#constructor .wrapper {
-  padding:8px 0;
-}
-
 #hooks_blank a {
   background:none;
   font-weight:bold;
@@ -31,6 +27,6 @@ $grey: #EEE;
   font-size:13px;
   width:110px;
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  #constructor select { font-size:16px; }
+#constructor select {
+  width:auto;
 }

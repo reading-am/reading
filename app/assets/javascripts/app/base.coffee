@@ -76,3 +76,8 @@ $ ->
         alert (errors[response.status] ? errors.generic).replace /{provider}/gi, provider
 
     false
+
+  $(".chrome-install").on "click", ()->
+    if /chrome/.test navigator.userAgent.toLowerCase()
+      chrome.webstore.install()
+      false

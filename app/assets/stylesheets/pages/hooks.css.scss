@@ -9,14 +9,12 @@ $grey: #EEE;
 #hooks_blank {
   margin-bottom:23px;
 }
-#constructor {
+#constructor, #constructor label {
+  font-size:15px;
   color:#000;
   line-height:35px;
-  background: #F5F5F5; /* Old browsers */
-  padding:8px 25px 4px 15px;
-  border-radius:5px;
 }
-#constructor label {
+#constructor select, #constructor input, #constructor textarea {
   color:#000;
 }
 #hooks_blank a {

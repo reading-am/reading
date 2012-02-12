@@ -14,6 +14,7 @@ $grey: #EEE;
 }
   #subnav a.active, #subnav a:hover {
     background-color:$dark_blue;
+    text-decoration:none;
   }
 #subnav a.active:hover {
   cursor:default;

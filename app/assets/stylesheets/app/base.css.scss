@@ -104,18 +104,20 @@ abbr, .glyph {
 #authorizations {
   margin-bottom:24px;
 }
-#authorizations a {
-  background:none;
-}
 
-.admin.action {
+.admin.action, .row:hover li .admin.action {
+  -webkit-font-smoothing: subpixel-antialiased;
   visibility:hidden;
-  background:none;
+  background:red;
+  padding:1px 3px;
+  color:#FFF;
+  border-radius:2px;
+  font-size:12px;
 }
-
-.row:hover .admin.action {
+.row:hover .admin.action, .row:hover li:hover .admin.action {
   visibility:visible;
 }
+
 
 #username, #username_actions {
   font-size:32px;
@@ -294,9 +296,18 @@ nav a {
   background:none;
   border:none;
 }
+#user_info .form-actions {
+  padding-top:0;
+}
 #user_info .control-group.error .help-block {
   display:none;
 }
+#authorizations li {
+  margin:5px 0 0;
+}
 .search_results {
   margin-bottom:23px;
+}
+.help-inline a, .help-block a, .disconnected a {
+  background:none;
 }

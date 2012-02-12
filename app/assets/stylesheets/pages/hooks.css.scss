@@ -12,14 +12,7 @@ $grey: #EEE;
 #constructor {
   color:#000;
   line-height:35px;
-  background: #ededed; /* Old browsers */
-  background: -moz-linear-gradient(top,  #ededed 0%, #ffffff 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #ededed 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #ededed 0%,#ffffff 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #ededed 0%,#ffffff 100%); /* IE10+ */
-  background: linear-gradient(top,  #ededed 0%,#ffffff 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+  background: #F5F5F5; /* Old browsers */
   padding:5px 30px 5px 10px;
   border-radius:5px;
 }
@@ -43,4 +36,7 @@ $grey: #EEE;
 }
 #constructor select {
   width:auto;
+}
+.footnote.btn {
+  font-weight:normal;
 }

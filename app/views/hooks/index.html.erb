@@ -14,14 +14,6 @@
 <div id="hooks">
   <div class="row">
     <div class="span7 offset1">
-      <h3>Hooks</h3>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span1 icon">
-      ✚
-    </div>
-    <div class="span7">
       <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>
     </div>
   </div>
@@ -43,5 +35,3 @@
   <% end %>
 </div>
 <% end %>
-
-<%= render 'authorizations/index' %>

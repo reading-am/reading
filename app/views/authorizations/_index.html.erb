@@ -1,21 +1,23 @@
-<div id="authorizations" class="row">
-  <div class="span7 offset1">
-    <h3>Connections</h3>
-    <h6>You can sign in using any of these accounts</h6>
-    <table>
-    <% @user.authorizations.each do |authorization| %>
-      <tr>
-        <%= render :partial => 'authorizations/authorization', :locals => {:authorization => authorization} %>
-        <% if authorization.user == current_user and @user.authorizations.length > 1 %>
-        <td><%= link_to 'Disconnect', authorization, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %></td>
-        <% end %>
-      </tr>
-    <% end %>
-    <% if @user == current_user %>
-      <% Authorization::PROVIDERS.each do |provider| %>
-        <tr><td class="disconnected"><%= link_to provider_span(provider) << content_tag(:span, " click to connect", :class => 'admin'), "#", :data => {:provider => provider.capitalize, :method => 'connect'} %></td></tr>
+<div class="control-group" id="authorizations">
+  <label>Connections</label>
+  <div class="controls">
+    <ul class="unstyled">
+      <% @user.authorizations.each do |authorization| %>
+        <li>
+          <%= render :partial => 'authorizations/authorization', :locals => {:authorization => authorization} %>
+          <% if authorization.user == current_user and @user.authorizations.length > 1 %>
+            <%= link_to 'Disconnect', authorization, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %>
+          <% end %>
+        </li>
       <% end %>
-    <% end %>
-    </table>
+      <% if @user == current_user %>
+        <% Authorization::PROVIDERS.each do |provider| %>
+          <li class="disconnected">
+            <%= link_to provider_span(provider) << content_tag(:span, " click to connect", :class => 'admin'), "#", :data => {:provider => provider.capitalize, :method => 'connect'} %>
+          </li>
+        <% end %>
+      <% end %>
+      <li class="help-block">You can sign in and <%= link_to "create hooks", "/#{@user.username}/hooks" %> with any of these accounts</li>
+    </ul>
   </div>
 </div>

@@ -20,6 +20,8 @@
 
     <%= f.text_field :location, :placeholder => 'Louisville, KY', :class => 'input-xlarge' %>
 
+    <%= render 'authorizations/index' %>
+
     <%= f.actions do %>
       <%= f.submit 'Update Me' %>
     <% end %>

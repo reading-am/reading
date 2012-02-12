@@ -62,9 +62,7 @@ class UsersController < ApplicationController
     end
     if @user != current_user
       redirect_to "/#{@user.username}"
-    end
- 
-    if params[:user] and @user.update_attributes(params[:user])
+    elsif params[:user] and @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
     end
   end
@@ -126,15 +124,15 @@ class UsersController < ApplicationController
     end
     if @user != current_user
       redirect_to "/#{@user.username}"
-    end
+    else
+      @new_hook = Hook.new
+      @hooks = @user.hooks
 
-    @new_hook = Hook.new
-    @hooks = @user.hooks
-
-    respond_to do |format|
-      format.html { render 'hooks/index' }
-      format.xml  { render 'hooks/index', :xml => @hooks }
-      format.rss  { render 'hooks/index' }
+      respond_to do |format|
+        format.html { render 'hooks/index' }
+        format.xml  { render 'hooks/index', :xml => @hooks }
+        format.rss  { render 'hooks/index' }
+      end
     end
   end
 

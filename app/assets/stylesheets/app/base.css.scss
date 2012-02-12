@@ -47,27 +47,25 @@ h1 {
   font-size:28px;
 }
 a {
-  background:$yellow;
   text-decoration:none;
   color:#000;
 }
   a:hover {
-    background:$dark_yellow;
     text-decoration:underline;
     color:#000;
   }
 
-abbr, .glyph {
+.glyph {
   font-family:'WebSymbolsRegular';
   text-transform:none;
   font-size:100%;
 }
-  .twitter abbr {
+  .twitter .glyph {
     color:#2493c4;
     font-size:1.25em;
   }
 
-  .facebook abbr {
+  .facebook .glyph {
     color:#557b9f;
     background:white;
   }
@@ -121,13 +119,6 @@ abbr, .glyph {
   opacity: 1;
 }
 
-h1 a, a.user, .hook a {
-  background:none;
-}
-  h1 a:hover, a.user:hover {
-    background:none
-  }
-
 .user, .hook a {
   font-weight:bold;
 }
@@ -161,7 +152,6 @@ footer a, a.user.you {
     background-color:$dark_blue;
   }
 a.active, a.active:hover, h4 .active {
-  background:none;
   cursor:default;
   font-weight:normal;
 }
@@ -197,10 +187,7 @@ a:hover .provider.twitter {
 a:hover .provider.facebook {
   background-color:#def0ff;
 }
-a.rss {
-  background:none;
-}
-a.rss abbr {
+a.rss .glyph {
   font-size:0.75em;
   vertical-align:top;
   background-color:#FFF;
@@ -215,7 +202,7 @@ a.rss abbr {
 .disconnected .provider, .disconnected a:hover .provider {
   background:$grey;
 }
-.disconnected abbr {
+.disconnected .glyph {
   color:#999;
 }
 
@@ -297,9 +284,6 @@ nav a {
 .search_results {
   margin-bottom:23px;
 }
-.help-inline a, .help-block a, .disconnected a {
-  background:none;
-}
 #posts_footer .span1 {
   text-align:right;
   margin-top:18px;
@@ -312,7 +296,6 @@ nav a {
   text-align:center;
 }
 .extra p a {
-  background:none;
   text-decoration:underline;
 }
 #pick_a_url label {
@@ -320,4 +303,7 @@ nav a {
 }
 #pick_a_url #user_username_controls {
   margin-top:23px;
+}
+#lead_in {
+  color:#000;
 }

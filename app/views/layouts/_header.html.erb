@@ -1,3 +1,15 @@
+<% if logged_in? %>
+<div class="row">
+  <nav id="mainnav" class="span7 offset1">
+  <% if current_user.username_was %>
+    <%= link_to "You", "/#{current_user.username}/list", :class => (request.path.split('/')[1] == current_user.username and params[:action] != 'edit' and params[:action] != 'hooks' ? 'active' : '') %>
+    - <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'search' && params[:username] != current_user.username ? 'active' : '') %>
+    - <%= link_to "Stuff", "/#{current_user.username}/info", :class => (params[:controller] == 'users' and params[:action] == 'edit' ||  params[:action] == 'hooks' ? 'active' : '') %>
+    - <%= render :partial => 'search/form' %>
+  <% end %>
+  </nav>
+</div>
+<% else %>
 <%
   if @user.nil? or (logged_in? && current_user.id == @user.id)
     you = "you"
@@ -9,24 +21,14 @@
 %>
 <div class="row">
   <div class="span7 offset1">
-  <% if !logged_in? %>
-  <h3><span id="lead_in">What <%= youre %> reading. </span>Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
-  <% end %>
+    <h3><span id="lead_in"><% if you == "you" %>Share what<% else %>What<% end %> <%= youre %> reading. </span>Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
   </div>
 </div>
 <div class="row">
   <nav id="mainnav" class="span7 offset1">
-  <% if logged_in? %>
-    <% if current_user.username_was %>
-      <%= link_to "You", "/#{current_user.username}/list", :class => (request.path.split('/')[1] == current_user.username and params[:action] != 'edit' and params[:action] != 'hooks' ? 'active' : '') %>
-      - <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'search' && params[:username] != current_user.username ? 'active' : '') %>
-      - <%= link_to "Stuff", "/#{current_user.username}/info", :class => (params[:controller] == 'users' and params[:action] == 'edit' ||  params[:action] == 'hooks' ? 'active' : '') %>
-      - <%= render :partial => 'search/form' %>
-    <% end %>
-  <% else %>
     Sign up or in with
     <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %> or
     <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>.
-  <% end %>
   </nav>
 </div>
+<% end %>

@@ -5,7 +5,7 @@
     <% if mobile_device? %>
       Reading
     <% else %>
-      <%= @page_title || "✌ Reading – What you're reading. Not what you like. Not what you find interesting. Just what you're reading." %>
+      <%= @page_title || "✌ Reading – share What you're reading. Not what you like. Not what you find interesting. Just what you're reading." %>
     <% end %>
   </title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -16,7 +16,7 @@
   <%= og_tags(@og_props || {}) %>
   <% if mobile_device? %><meta name="viewport" content="width=device-width; initial-scale = 1.0; maximum-scale=1.0; user-scalable=no"><% end %>
   <script> var ENVIRONMENT = '<%= Rails.env %>'; </script>
-  <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? and logged_in? %>
+  <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? %>
   <%= stylesheet_link_tag 'application' %>
   <%= stylesheet_link_tag 'mobile', :media => 'only screen and (max-device-width: 480px)' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>

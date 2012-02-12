@@ -6,7 +6,7 @@ $green: #38ff7E;
 $dark_green: #79ff30;
 $grey: #EEE;
 
-#subnav {
+#subnav, #subhead {
   margin-bottom:23px;
 }
 #subnav a {
@@ -32,4 +32,8 @@ $grey: #EEE;
 }
 #subnav nav.span1 a {
   padding:4px;
+}
+#subhead h3 {
+  color:#000;
+  text-decoration:underline;
 }

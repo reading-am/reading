@@ -6,12 +6,12 @@
   <%= render :partial => 'users/card', :locals => {:user => @user} %>
   <%= render :partial => 'users/you_subnav', :locals => {:user => @user} %>
 <% else %>
-  <div id="subnav" class="row">
+  <div id="subhead" class="row">
     <div class="span7 offset1">
     <% if @domain %>
-      <h2>Stuff people are reading on <%= @domain.name %></h2>
+      <h3>Stuff people are reading on <%= @domain.name %></h3>
     <% else %>
-      <h2>Some people are reading this stuff</h2>
+      <h3>Some people are reading this stuff</h3>
     <% end %>
     </div>
   </div>
@@ -23,11 +23,13 @@
   <div class="span5 offset1">
     <%= will_paginate @posts, :page_links => false %>
   </div>
+  <% unless params[:type].nil? %>
   <div class="span1">
     <%= link_to rss_path, {:class => 'rss'} do %>
-      <abbr>r</abbr> rss
+      <span class="glyph">r</span> rss
     <% end %>
   </div>
+  <% end %>
 </div>
 
 <% end %>

@@ -1,6 +1,11 @@
 <div id="titlecard">
-  <a href="/">
+  <%= link_to "/", :id => "brand" do %>
     <span>✌</span><br>
     <strong>Reading</strong>
-  </a>
+  <% end %>
+  <div id="colinks">
+    <%= link_to 'Blog', "http://writing.#{DOMAIN}" %>
+    . <%= link_to 'Twitter', 'http://twitter.com/reading' %>
+    . <%= mail_to "hello@#{DOMAIN}", 'Email', :subject => 'Hey there Reading!', :encode => 'javascript', :class => 'email' %>
+  </div>
 </div>

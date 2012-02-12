@@ -41,7 +41,7 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 body {
-  margin:16px 0 0;
+  margin:16px 0 50px;
 }
 h1 {
   font-size:28px;
@@ -107,15 +107,18 @@ abbr, .glyph {
 
 .admin.action, .row:hover li .admin.action {
   -webkit-font-smoothing: subpixel-antialiased;
-  visibility:hidden;
   background:red;
   padding:1px 3px;
   color:#FFF;
   border-radius:2px;
   font-size:12px;
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
 }
 .row:hover .admin.action, .row:hover li:hover .admin.action {
-  visibility:visible;
+  opacity: 1;
 }
 
 

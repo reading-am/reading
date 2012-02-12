@@ -1,5 +1,6 @@
 $ ->
   $card = $("#titlecard")
+  $links = $("#colinks", $card)
 
   $card.on "click", ->
     unless $card.find("strong").text() is "Reading"
@@ -8,5 +9,10 @@ $ ->
 
   $.waypoints.settings.scrollThrottle = 30
   $("#mainnav").waypoint (event, direction) ->
-    $card.find("strong").text if direction is "down" then "Go up" else "Reading"
+    if direction is "down"
+      $card.find("strong").text "Go up"
+      $links.css({opacity:0})
+    else
+      $card.find("strong").text "Reading"
+      $links.css({opacity:1})
   , {offset:-100}

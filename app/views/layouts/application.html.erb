@@ -26,10 +26,10 @@
 </head>
 <body>
 <%= render :partial => 'layouts/fb_api' %>
+<%= render :partial => 'layouts/titlecard' %>
   <div class="container">
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
   <%= yield %>
-  <%= render :partial => 'layouts/footer' if params[:action] != 'visit' %>
   </div>
   <script>
     <%= render :partial => 'posts/post.js.tmpl' %>

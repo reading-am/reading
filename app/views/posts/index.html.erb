@@ -19,29 +19,15 @@
 
 <%= render :partial => 'posts/group', :locals => {:posts => @posts} %>
 
-<div class="row">
-  <div class="span7 offset1">
-  <% unless request.path_info == '/' %>
+<div id="posts_footer" class="row">
+  <div class="span5 offset1">
     <%= will_paginate @posts, :page_links => false %>
-  <% else %>
-    <div class="pagination">
-      <ul>
-        <li>
-          <a class="next_page" rel="next" href="/everybody/posts/page/2">Even More More More Reading →</a>
-        </li>
-      </ul>
-    </div>
-  <% end %>
+  </div>
+  <div class="span1">
+    <%= link_to rss_path, {:class => 'rss'} do %>
+      <abbr>r</abbr> rss
+    <% end %>
   </div>
 </div>
-
-<%= render :partial => 'layouts/footernav' if !params[:type].nil? and logged_in? %>
-
-<% if @user and @user == current_user %>
-<div class="bookmarklet">
-  <span>Drag me to your bookmarks bar</span>
-  <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
-</div>
-<% end %>
 
 <% end %>

@@ -211,6 +211,9 @@ a:hover .provider.twitter {
 a:hover .provider.facebook {
   background-color:#def0ff;
 }
+a.rss {
+  background:none;
+}
 a.rss abbr {
   font-size:0.75em;
   vertical-align:top;
@@ -310,4 +313,9 @@ nav a {
 }
 .help-inline a, .help-block a, .disconnected a {
   background:none;
+}
+#posts_footer .span1 {
+  text-align:right;
+  margin-top:18px;
+  line-height:34px;
 }

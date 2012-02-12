@@ -4,7 +4,10 @@
 
 <div class="row">
   <div class="span7 offset1">
-    Put in the bit about the bookmarklet
+    <div class="bookmarklet">
+      <span>Drag me to your bookmarks bar</span>
+      <%= link_to '✌ Reading', bookmarklet_url(current_user) if logged_in? and current_user == @user %>
+    </div>
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 <div id="subnav" class="row">
   <nav class="span7 offset1">
-    <a href="/<%= user.username %>"<% if params[:type] == 'posts' %> class="active"<% end %>>Posts</a>
+    <a href="/<%= user.username %>"<% if params[:type] == 'posts' %> class="active"<% end %>><%= user.posts.size %> Posts</a>
     <a href="/<%= user.username %>/list"<% if params[:type] == 'list' %> class="active"<% end %>>Reading List</a>
   </nav>
 </div>

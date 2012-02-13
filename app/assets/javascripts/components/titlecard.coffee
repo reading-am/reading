@@ -4,7 +4,7 @@ $ ->
 
   $card.on "click", ->
     unless $card.find("strong").text() is "Reading"
-      $("body").animate {scrollTop : 0}
+      $(if $.browser.webkit then "body" else "html").animate {scrollTop : 0}
       false
 
   $.waypoints.settings.scrollThrottle = 30

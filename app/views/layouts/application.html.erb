@@ -18,7 +18,6 @@
   <script> var ENVIRONMENT = '<%= Rails.env %>'; </script>
   <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? %>
   <%= stylesheet_link_tag 'application' %>
-  <%= stylesheet_link_tag 'mobile', :media => 'only screen and (max-device-width: 480px)' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
   <%= javascript_include_tag 'application' %>
   <!--[if IE]><%= javascript_include_tag 'ie/html5' %><![endif]-->

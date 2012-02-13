@@ -1,0 +1,67 @@
+<div id="blank_slate" class="row section">
+  <div class="span7 offset1">
+    <% if logged_in? && @user == current_user %>
+      <% if params[:type] == 'posts' and @user.posts.size == 0 %>
+      <p>
+        <h3>
+          You haven't posted anything that you're reading yet.<br>
+          If you had, you'd see it here.
+        </h3>
+      </p>
+      <% elsif params[:type] == 'list' %>
+        <% if @user.following.size == 0 %>
+        <p>
+          <h3>
+            You're not following anyone yet.
+            If you were, you'd see what they're reading here.
+          </h3>
+          </p>
+        <% else %>
+        <p>
+          <h3>
+            You still haven't posted anything that you're reading yet.
+          </h3>
+        </p>
+        <% end %>
+      <% end %>
+    <% if @user.posts.size == 0 %>
+    <p>
+      To get started,
+        <% if browser.chrome? %>
+          install the Chrome Extension.
+        <% else %>
+          drag this link to your bookmarks bar.
+        <% end %>
+      </p>
+      <div class="well">
+        <% if browser.chrome? %>
+          <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+        <% else %>
+          <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+        <% end %>
+      </div>
+      <p>
+        Or, alternately,
+        <% if browser.chrome? %>
+          you can use this bookmarklet in any browser by dragging it to your bookmarks bar:
+          <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+        <% else %>
+          if you have the Google Chrome browser, you can install this extension:
+          <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+        <% end %>
+      </p>
+      <p>
+        When you visit a webpage, press that button before you start reading so your friends can come read with you.
+        That's it, but also:
+        <ul>
+          <li>Don't wait until after you've read it.</li>
+          <li>Don't think too much about it.</li>
+          <li>Don't worry about whether the content is good or bad or boring or interesting,<br> everyone else will figure that out for themselves.</li>
+        </ul>
+      </p>
+      <% end %>
+    <% else %>
+    <h4><%= @user.display_name %> hasn't posted anything yet.</h4>
+    <% end %>
+  </div>
+</div>

@@ -12,8 +12,7 @@
         <% if @user.following.size == 0 %>
         <p>
           <h3>
-            You're not following anyone yet.
-            If you were, you'd see what they're reading here.
+            This is where you'll see your own posts and posts from the people you follow.
           </h3>
           </p>
         <% else %>
@@ -26,7 +25,7 @@
       <% end %>
     <% if @user.posts.size == 0 %>
     <p>
-      To get started,
+      To begin adding posts to your profile,
         <% if browser.chrome? %>
           install the Chrome Extension.
         <% else %>

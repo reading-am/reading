@@ -33,7 +33,7 @@ $ ->
   # switch out and link the footnotes explaining a hook
   $("select[name='hook[provider]']", $con).change(->
     $this = $(this)
-    $("#details").data "url", "/footnotes/" + $this.val()
+    $(".footnote").data "url", "/footnotes/" + $this.val()
     $("#provider_params").replaceWith build_provider(hook_properties.providers[$this.prop("selectedIndex")])
   ).change()
 

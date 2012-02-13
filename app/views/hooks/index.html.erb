@@ -10,7 +10,6 @@
   </div>
 </div>
 
-<% if @hooks.length > 0 %>
 <div id="hooks">
   <div class="row">
     <div class="span7 offset1">
@@ -18,6 +17,7 @@
     </div>
   </div>
 
+<% if @hooks.length > 0 %>
   <% @hooks.each do |hook| %>
     <div class="row">
       <div class="span1 icon">
@@ -33,5 +33,11 @@
       </div>
     </div>
   <% end %>
-</div>
+<% else %>
+  <div class="row">
+    <div class="span7 offset1">
+      <p>You don't have any hooks yet. Why not add one using the form above?</p>
+    </div>
+  </div>
 <% end %>
+</div>

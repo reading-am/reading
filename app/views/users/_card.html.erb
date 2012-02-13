@@ -1,5 +1,10 @@
+<%
+  has_avatar = user != current_user or (user == current_user and !user.avatar.size.nil?)
+  avatar_url = has_avatar ? user.avatar.url : "/#{user.username}/info"
+  avatar_target = has_avatar ? "_blank" : nil
+%>
 <div id="user_card" class="row">
-  <%= link_to user.avatar.url, :id => "avatar", :class => "span1", :target => "_blank" do %>
+  <%= link_to avatar_url, :id => "avatar", :class => "span1", :target => avatar_target do %>
     <%= image_tag user.avatar.url :thumb %>
   <% end %>
   <div class="span7">
@@ -13,11 +18,13 @@
       - <a href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
     <% end %>
     </nav>
-    <% unless user.bio.nil? %>
-      <div id="user_bio" class="span7 offset1">
+    <div id="user_bio" class="span7 offset1">
+    <% if !user.bio.nil? %>
         <%= user.bio %>
-      </div>
+    <% elsif user == current_user %>
+      <%= link_to "Click here to add a bio.", "/#{user.username}/info" %>
     <% end %>
+    </div>
     <% unless user.location.blank? and user.link.blank? %>
       <div id="user_places" class="span7 offset1">
         <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>

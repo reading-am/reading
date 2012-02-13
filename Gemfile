@@ -36,7 +36,7 @@ gem 'delayed_job_active_record'
 gem 'progress_bar'
 gem 'pony'
 gem 'validate_email'
-gem "twitter-bootstrap-rails", "~> 2.0rc0", :group => :assets
+gem "twitter-bootstrap-rails", "~> 2.0rc0"
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'

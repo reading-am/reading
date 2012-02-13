@@ -4,24 +4,21 @@
       <% if params[:type] == 'posts' and @user.posts.size == 0 %>
       <p>
         <h3>
-          You haven't posted anything that you're reading yet.<br>
-          If you had, you'd see it here.
+          This is where you'll see the things you post to Reading,
+          but you haven't posted anything yet.
         </h3>
       </p>
       <% elsif params[:type] == 'list' %>
+        <p>
+          <h3>
+            This is where you'll see your own posts and the posts from people you follow,
         <% if @user.following.size == 0 %>
-        <p>
-          <h3>
-            This is where you'll see your own posts and posts from the people you follow.
-          </h3>
-          </p>
+            but you're not following anyone yet.
         <% else %>
-        <p>
-          <h3>
-            You still haven't posted anything that you're reading yet.
+            but you haven't posted anything that you're reading yet.
+        <% end %>
           </h3>
         </p>
-        <% end %>
       <% end %>
     <% if @user.posts.size == 0 %>
     <p>

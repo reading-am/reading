@@ -2,7 +2,9 @@
   <div class="span8">
   <%= twitter_bootstrap_form_for @user, :html => {:class => "form-horizontal"}, :url => "/#{@user.username_was}/info" do |f| %>
   <fieldset>
-    <%= f.file_field :avatar, :class => 'input-xlarge' %>
+    <%= f.file_field :avatar, :class => 'input-xlarge' do %>
+      <p class="help-block">JPG, PNG or GIF under 2mb. <strong>Note:</strong> no preview is shown.</p>
+    <% end %>
 
     <%= f.text_field :name, :class => 'input-xlarge' %>
 

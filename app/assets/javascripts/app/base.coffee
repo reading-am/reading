@@ -43,16 +43,6 @@ $ ->
       window.open @href
       false
 
-  $(".bookmarklet").hover (->
-    $this = $(this)
-    $this.find("span").hide()
-    $this.find("a").css "display", "block"
-  ), ->
-    # safari won't let you drag with this in place
-    # $this = $(this)
-    # $this.find("span").show()
-    # $this.find("a").hide()
-
   $(".footnote").on "click", ->
     window.open $(this).data("url"), "footnote", "location=0,status=0,scrollbars=0,width=900,height=400"
     false

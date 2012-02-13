@@ -1,27 +1,17 @@
+@media (max-width: 768px){
+
 body {
 	-webkit-text-size-adjust: none;
-  font-size:14px;
-  line-height: 19px;
 }
 
-#wrapper {
-  width:auto;
-  margin:15px;
-}
-
-h1 {
-  font-size:24px;
-}
-h3 {
-  margin:0;
-}
-#lead_in {
+#titlecard, .row .span1 {
   display:none;
 }
 
-td {
-  padding:5px;
 }
-.date {
-  padding-top:5px;
+
+@media (max-width: 480px){
+  #search input {
+    width:130px;
+  }
 }

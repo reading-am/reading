@@ -16,7 +16,11 @@ body {
   }
 }
 @media (max-width: 400px){
+  .hide_iphone {
+    display:none;
+    visibility:hidden;
+  }
   #search input {
-    width:90px;
+    width:70px;
   }
 }

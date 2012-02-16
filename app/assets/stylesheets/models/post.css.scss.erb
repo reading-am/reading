@@ -9,13 +9,20 @@ $dark_blue: #00FBFF;
   margin-top:10px;
 }
 
+.post .body {
+  color:#333;
+}
 .post h3 a {
   background:none;
 }
 .post.referred_post a.external {
   background:#EEE;
 }
-.post.yep .body:before {
+.post.yep {
+  color:#000;
+}
+.post.yep .yn:before {
+  color:green;
   content:'✔';
 }
 h3.yep:before {
@@ -31,8 +38,11 @@ h3.nope:before {
   content:'×';
   font-size:24px;
 }
-.post.nope .body, .posts_group .nope .page {
+.post.nope .yn_wrap, .posts_group .nope .page {
   text-decoration:line-through;
+}
+.post.nope .yn_wrap {
+  color:red;
 }
 .post.new {
   opacity:0.3;

@@ -7,7 +7,9 @@
   <span class="plusnav" style="display:none;">
     |<%= link_to "+", "http://#{DOMAIN}/domains/#{page.domain.name}/pages/#{page.id}", :class => 'info' %>
   </span>
-  <% unless page.meta.nil? or page.domain_id == 10 #youtube %>
+  <% # domain_id 10 is youtube
+    unless page.meta.nil? or page.domain_id == 10 or page.meta['excerpt'].nil?
+  %>
   <p class="excerpt">
     <%= page.meta['excerpt'].html_safe %>
   </p>

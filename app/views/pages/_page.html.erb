@@ -9,7 +9,7 @@
   </span>
   <% unless page.meta.nil? or page.domain_id == 10 #youtube %>
   <p class="excerpt">
-    <%= page.meta['excerpt'] %>
+    <%= page.meta['excerpt'].html_safe %>
   </p>
   <% end %>
 </div>

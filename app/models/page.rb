@@ -6,6 +6,7 @@ class Page < ActiveRecord::Base
   validates_presence_of :url, :domain
 
   before_validation { parse_domain }
+  before_create :populate_readability
 
   # search
   searchable do
@@ -37,5 +38,19 @@ public
     doc = Nokogiri::HTML(c.body_str)
     title = doc.search('title').first
     title.nil? ? '' : title.text
+  end
+
+  def populate_readability
+    c = Curl::Easy.new
+    c.follow_location = true
+    c.url = "https://www.readability.com/api/content/v1/parser?token=#{READABILITY_TOKEN}&url=#{self.url}"
+    c.perform
+    self.readability = c.body_str
+  end
+
+  def meta
+    unless readability.nil?
+      ActiveSupport::JSON.decode(readability)
+    end
   end
 end

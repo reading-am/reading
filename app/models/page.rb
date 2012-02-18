@@ -11,6 +11,11 @@ class Page < ActiveRecord::Base
   # search
   searchable do
     text :title, :url
+    text :content do
+      if meta and meta['content']
+        Sanitize.clean meta['content']
+      end
+    end
   end
   handle_asynchronously :solr_index
 
@@ -27,7 +32,13 @@ public
   end
 
   def display_title
-    !title.blank? ? title : url
+    if meta and meta['title']
+      meta['title']
+    elsif !title.blank?
+      title
+    else
+      url
+    end
   end
 
   def remote_title
@@ -49,8 +60,6 @@ public
   end
 
   def meta
-    unless readability.nil?
-      ActiveSupport::JSON.decode(readability)
-    end
+    ActiveSupport::JSON.decode(readability) unless readability.blank?
   end
 end

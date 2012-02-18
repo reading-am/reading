@@ -42,6 +42,7 @@ gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstr
 gem 'aws-sdk'
 gem 'paperclip'
 gem 'browser'
+gem 'sanitize'
 
 group :development do
   gem 'ruby-debug19'

@@ -12,9 +12,10 @@
     # 64 = linkedin
     excluded_domains = [10, 64]
     unless excluded_domains.include? page.domain_id or page.meta.nil? or page.meta['excerpt'].nil?
+      xerpt = page.meta['excerpt'].gsub(/(&nbsp;|\s|&#13;|\r)+/, " ")
   %>
-  <p class="excerpt">
-    <%= page.meta['excerpt'].html_safe %>
+  <p class="excerpt" title="<%= xerpt.html_safe %>">
+    <%= xerpt.html_safe %>
   </p>
   <% end %>
 </div>

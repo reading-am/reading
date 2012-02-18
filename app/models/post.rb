@@ -28,6 +28,11 @@ class Post < ActiveRecord::Base
     text :page_url do
       page.url
     end
+    text :page_content do
+      if page.meta and page.meta['content']
+        Sanitize.clean page.meta['content']
+      end
+    end
   end
   handle_asynchronously :solr_index
 

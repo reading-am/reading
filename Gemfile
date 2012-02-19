@@ -33,7 +33,6 @@ gem 'koala' # facebook
 gem 'sunspot_rails'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
-gem 'progress_bar'
 gem 'pony'
 gem 'validate_email'
 gem "twitter-bootstrap-rails", "~> 2.0rc0"

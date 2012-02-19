@@ -13,8 +13,8 @@ class Page < ActiveRecord::Base
   searchable do
     text :title, :url
     text :content do
-      if meta and meta['content']
-        Sanitize.clean meta['content']
+      if readability_data
+        Sanitize.clean readability_data.content rescue nil
       end
     end
   end
@@ -66,9 +66,4 @@ public
     self.save
   end
 
-  def meta
-    if !readability.blank?
-      Yajl::Parser.parse(readability) rescue nil
-    end
-  end
 end

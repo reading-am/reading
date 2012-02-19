@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120219153549) do
+ActiveRecord::Schema.define(:version => 20120219220253) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -58,12 +58,11 @@ ActiveRecord::Schema.define(:version => 20120219153549) do
 
   create_table "pages", :force => true do |t|
     t.text     "url"
-    t.string   "title"
+    t.text     "title"
     t.integer  "domain_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "readability"
-    t.string   "r_title"
+    t.text     "r_title"
     t.string   "r_excerpt"
   end
 
@@ -79,18 +78,18 @@ ActiveRecord::Schema.define(:version => 20120219153549) do
   create_table "readability_data", :force => true do |t|
     t.text     "content"
     t.string   "domain"
-    t.string   "author"
-    t.string   "url"
+    t.text     "author"
+    t.text     "url"
     t.string   "short_url"
-    t.string   "title"
+    t.text     "title"
     t.integer  "total_pages"
     t.integer  "word_count"
     t.datetime "date_published"
     t.integer  "page_id"
     t.integer  "next_page_id"
     t.integer  "rendered_pages"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "excerpt"
   end
 

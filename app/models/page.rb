@@ -9,8 +9,6 @@ class Page < ActiveRecord::Base
   before_validation { parse_domain }
   after_create :populate_readability
 
-  #default_scope :include => {:readability_data => :excerpt}}
-
   # search
   searchable do
     text :title, :url
@@ -21,6 +19,9 @@ class Page < ActiveRecord::Base
     end
   end
   handle_asynchronously :solr_index
+
+  # NOTE - properties prefixed with r_ (r_title, r_excerpt)
+  # are from readability_data
 
 private
 
@@ -35,13 +36,17 @@ public
   end
 
   def display_title
-    if meta and meta['title']
-      meta['title']
+    if !r_title.blank? and r_title != "(no title provided)"
+      r_title
     elsif !title.blank?
       title
     else
       url
     end
+  end
+
+  def excerpt
+    r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
   def remote_title
@@ -55,7 +60,10 @@ public
   end
 
   def populate_readability
-    ReadabilityData.create :page => self
+    r = ReadabilityData.create :page => self
+    self.r_title = r.title
+    self.r_excerpt = r.excerpt
+    self.save
   end
 
   def meta

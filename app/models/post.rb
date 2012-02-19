@@ -29,8 +29,8 @@ class Post < ActiveRecord::Base
       page.url
     end
     text :page_content do
-      if page.meta and page.meta['content']
-        Sanitize.clean page.meta['content']
+      if page.readability_data
+        Sanitize.clean page.readability_data.content rescue nil
       end
     end
   end

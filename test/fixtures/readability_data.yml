@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  content: MyText
+  domain: MyString
+  author: MyString
+  url: MyString
+  short_url: MyString
+  title: MyString
+  total_pages: 1
+  word_count: 1
+  date_published: 2012-02-19 01:42:06
+  page_id: 1
+  next_page_id: 1
+  rendered_pages: 1
+
+two:
+  content: MyText
+  domain: MyString
+  author: MyString
+  url: MyString
+  short_url: MyString
+  title: MyString
+  total_pages: 1
+  word_count: 1
+  date_published: 2012-02-19 01:42:06
+  page_id: 1
+  next_page_id: 1
+  rendered_pages: 1

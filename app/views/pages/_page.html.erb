@@ -11,11 +11,10 @@
     # 10 = youtube
     # 64 = linkedin
     excluded_domains = [10, 64]
-    unless excluded_domains.include? page.domain_id or page.meta.nil? or page.meta['excerpt'].nil?
-      xerpt = page.meta['excerpt'].gsub(/(&nbsp;|\s|&#13;|\r)+/, " ")
+    if !excluded_domains.include? page.domain_id and !page.excerpt.blank?
   %>
-  <p class="excerpt" title="<%= xerpt.html_safe %>">
-    <%= xerpt.html_safe %>
+  <p class="excerpt" title="<%= page.excerpt.html_safe %>">
+    <%= page.excerpt.html_safe %>
   </p>
   <% end %>
 </div>

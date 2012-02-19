@@ -12,6 +12,6 @@ class ReadabilityData < ActiveRecord::Base
 
   def populate_from_remote
     obj = Yajl::Parser.parse remote rescue nil
-    self.attributes = obj unless obj.blank?
+    self.attributes = obj unless obj.blank? or obj['error']
   end
 end

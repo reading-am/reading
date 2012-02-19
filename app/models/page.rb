@@ -60,6 +60,8 @@ public
   end
 
   def meta
-    ActiveSupport::JSON.decode(readability) unless readability.blank?
+    if !readability.blank?
+      ActiveSupport::JSON.decode(readability) rescue nil
+    end
   end
 end

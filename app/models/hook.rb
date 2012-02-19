@@ -17,16 +17,14 @@ class Hook < ActiveRecord::Base
   ]
 
   def params
-    unless read_attribute(:params).nil?
-      ActiveSupport::JSON.decode(read_attribute(:params))
-    end
+    Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
   end
 
   def events
     if read_attribute(:events).class == Array
       read_attribute(:events)
     else
-      ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
+      Yajl::Parser.parse(read_attribute(:events)).map {|event| event.to_sym}
     end
   end
 

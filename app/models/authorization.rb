@@ -29,7 +29,7 @@ public
   end
 
   def permissions
-    ActiveSupport::JSON.decode(read_attribute(:permissions)) if !read_attribute(:permissions).nil?
+    Yajl::Parser.parse(read_attribute(:permissions)) unless read_attribute(:permissions).nil?
   end
 
   def can perm

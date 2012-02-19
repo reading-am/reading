@@ -42,6 +42,7 @@ gem 'aws-sdk'
 gem 'paperclip'
 gem 'browser'
 gem 'sanitize'
+gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 
 group :development do
   gem 'ruby-debug19'

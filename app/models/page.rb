@@ -61,7 +61,7 @@ public
 
   def meta
     if !readability.blank?
-      ActiveSupport::JSON.decode(readability) rescue nil
+      Yajl::Parser.parse(readability) rescue nil
     end
   end
 end

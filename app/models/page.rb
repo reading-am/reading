@@ -1,12 +1,15 @@
 class Page < ActiveRecord::Base
   belongs_to :domain
+  has_one  :readability_data
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
 
   validates_presence_of :url, :domain
 
   before_validation { parse_domain }
-  before_create :populate_readability
+  after_create :populate_readability
+
+  #default_scope :include => {:readability_data => :excerpt}}
 
   # search
   searchable do
@@ -52,11 +55,7 @@ public
   end
 
   def populate_readability
-    c = Curl::Easy.new
-    c.follow_location = true
-    c.url = "https://www.readability.com/api/content/v1/parser?token=#{READABILITY_TOKEN}&url=#{self.url}"
-    c.perform
-    self.readability = c.body_str
+    ReadabilityData.create :page => self
   end
 
   def meta

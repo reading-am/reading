@@ -1,7 +1,11 @@
+<%
+  no_posts = @user.posts.size == 0
+  no_following = @user.following.size == 0
+%>
 <div id="blank_slate" class="row section">
   <div class="span7 offset1">
     <% if logged_in? && @user == current_user %>
-      <% if params[:type] == 'posts' and @user.posts.size == 0 %>
+      <% if params[:type] == 'posts' and no_posts %>
       <p>
         <h3>
           This is where you'll see the things you post to Reading,
@@ -12,7 +16,7 @@
         <p>
           <h3>
             This is where you'll see your own posts and the posts from people you follow,
-        <% if @user.following.size == 0 %>
+        <% if no_following %>
             but you're not following anyone yet.
         <% else %>
             but you haven't posted anything that you're reading yet.
@@ -20,7 +24,7 @@
           </h3>
         </p>
       <% end %>
-    <% if @user.posts.size == 0 %>
+    <% if no_posts %>
     <p>
       To begin adding posts to your profile,
         <% if browser.chrome? %>
@@ -57,7 +61,13 @@
       </p>
       <% end %>
     <% else %>
-    <h4><%= @user.display_name %> hasn't posted anything yet.</h4>
+    <h4>
+      <% if params[:type] == 'posts' and no_posts %>
+        <%= @user.display_name %> hasn't posted anything yet.
+      <% elsif params[:type] == 'list' and no_following %>
+        <%= @user.display_name %> isn't following anyone yet.
+      <% end %>
+    </h4>
     <% end %>
   </div>
 </div>

@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
     },
     :default_url => '/assets/users/:attachment/default_:style.png',
     :storage => :s3,
+    :s3_protocol => 'https',
     :bucket => "reading-#{Rails.env}",
     :s3_credentials => {
       :access_key_id => ENV['S3_KEY'],

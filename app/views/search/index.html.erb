@@ -1,5 +1,5 @@
 <div id="your_results" class="search_results">
-<div class="row">
+<div class="row section">
   <div class="span7 offset1">
     <h1><%= @posts.total_entries > 0 ? @posts.total_entries : 'None' %> of your own posts matched</h1>
   </div>
@@ -10,7 +10,7 @@
 
 <% if @pages %>
 <div id="community_results" class="search_results">
-<div class="row">
+<div class="row section">
   <div class="span7 offset1">
     <h1><%= pluralize @pages.total_entries, 'page' %> from the community matched</h1>
   </div>

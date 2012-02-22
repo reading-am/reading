@@ -275,6 +275,7 @@ DEPENDENCIES
   coffee-rails
   crack
   curb (~> 0.8.0)
+  daemons
   dalli
   delayed_job
   delayed_job_active_record

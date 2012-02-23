@@ -1,3 +1,4 @@
+# encoding: utf-8
 class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
@@ -23,6 +24,8 @@ class UsersController < ApplicationController
         User.find_by_username(params[:username]) :
         User.find(params[:id])
       if !@user then not_found end
+
+      @page_title = @user.name.empty? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
 
       if params[:type] == 'list'
         @posts = @user.feed.paginate(:page => params[:page])

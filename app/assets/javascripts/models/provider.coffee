@@ -56,8 +56,8 @@ class InstapaperProv extends Provider
 InstapaperProv::login = (response, perms) ->
   super
     url: '/auth/loading/instapaper'
-    width: 700
-    height: 700,
+    width: 430
+    height: 360,
     response
 
 

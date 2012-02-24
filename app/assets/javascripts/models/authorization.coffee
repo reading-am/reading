@@ -141,7 +141,7 @@ class InstapaperAuth extends Authorization
     success = params.success ? ->
     error = params.error ? ->
 
-    InstapaperAuth::login (response) =>
+    InstapaperProv::login (response) =>
       if (!response.authResponse) or (response.status is "AuthTaken") or (@uid is "new" and response.status is "AuthPreexisting")
         error response
       else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
@@ -156,4 +156,5 @@ class InstapaperAuth extends Authorization
 # add to window scope
 window.Authorization = Authorization
 window.TwitterAuth = TwitterAuth
+window.FacebookAuth = FacebookAuth
 window.InstapaperAuth = InstapaperAuth

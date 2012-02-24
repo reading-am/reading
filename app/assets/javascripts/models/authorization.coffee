@@ -56,7 +56,7 @@ class Authorization
 
 Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
-  new window[type](params.uid, params.permissions)
+  new window[type](params.uid, params.permissions, params.info)
 
 
 ###############
@@ -132,7 +132,7 @@ class FacebookAuth extends Authorization
 class InstapaperAuth extends Authorization
   provider: "instapaper"
 
-  constructor: (@uid, @permissions = []) ->
+  constructor: (@uid, @permissions = [], @info) ->
     # make sure you grab certain default permissions on a new authorization
     @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
     super @uid, @permissions

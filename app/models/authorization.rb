@@ -32,6 +32,10 @@ public
     Yajl::Parser.parse(read_attribute(:permissions)) unless read_attribute(:permissions).nil?
   end
 
+  def info
+    Yajl::Parser.parse(read_attribute(:info)) unless read_attribute(:info).nil?
+  end
+
   def can perm
     permissions.include? perm.to_s
   end
@@ -109,7 +113,8 @@ public
       :type         => 'Authorization',
       :provider     => provider,
       :uid          => to_s ? uid.to_s : uid,
-      :permissions  => permissions
+      :permissions  => permissions,
+      :info         => info
     }
   end
 

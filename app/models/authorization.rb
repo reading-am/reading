@@ -63,6 +63,17 @@ public
       @api_user ||= Koala::Facebook::API.new(token)
     when 'twitter'
       @api_user ||= Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
+    when 'instapaper'
+      if @api_user.nil?
+        Instapaper.configure do |config|
+          config.consumer_key = INSTAPAPER_KEY
+          config.consumer_secret = INSTAPAPER_SECRET
+          config.oauth_token = token
+          config.oauth_token_secret = secret
+        end
+        @api_user = Instapaper
+      end
+      @api_user
     end
   end
 

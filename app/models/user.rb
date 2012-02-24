@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
 
   def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
-    if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+    if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
       if auth.user_id != self.id
         raise AuthError.new("AuthTaken")
       end
@@ -93,6 +93,7 @@ class User < ActiveRecord::Base
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
         :secret     => auth_hash["credentials"]["secret"],
+        :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
       )
     end
   end

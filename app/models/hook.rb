@@ -13,7 +13,8 @@ class Hook < ActiveRecord::Base
     'hipchat',
     'campfire',
     'url',
-    'opengraph'
+    'opengraph',
+    'instapaper'
   ]
 
   def params
@@ -47,6 +48,10 @@ class Hook < ActiveRecord::Base
 
   def facebook post, event_fired
     authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\"") rescue nil
+  end
+
+  def instapaper post, event_fired
+    authorization.api.add_bookmark post.page.url rescue nil
   end
 
   def twitter post, event_fired

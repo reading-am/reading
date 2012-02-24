@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter', 'facebook']
+  PROVIDERS = ['twitter', 'facebook', 'instapaper']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -19,17 +19,26 @@ public
     # these should mirror what's in config/initializers/omniauth.rb
     case self.provider
     when 'twitter'
+    when 'instapaper'
       self.permissions = '["read","write"]'
     when 'facebook'
       # TODO - add error checking here
       perms = api.get_object('/me/permissions').first rescue {}
       perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
-      self.permissions = perms.empty? ? "[]" : "[\"#{perms}\"]"
+      self.permissions = perms.blank? ? "[]" : "[\"#{perms}\"]"
     end
   end
 
   def permissions
     Yajl::Parser.parse(read_attribute(:permissions)) unless read_attribute(:permissions).nil?
+  end
+
+  def info
+    Yajl::Parser.parse(read_attribute(:info)) unless read_attribute(:info).nil?
+  end
+
+  def display_name
+    (info.blank? or info['username'].blank?) ? uid : info['username']
   end
 
   def can perm
@@ -55,6 +64,17 @@ public
       @api_user ||= Koala::Facebook::API.new(token)
     when 'twitter'
       @api_user ||= Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
+    when 'instapaper'
+      if @api_user.nil?
+        Instapaper.configure do |config|
+          config.consumer_key = INSTAPAPER_KEY
+          config.consumer_secret = INSTAPAPER_SECRET
+          config.oauth_token = token
+          config.oauth_token_secret = secret
+        end
+        @api_user = Instapaper
+      end
+      @api_user
     end
   end
 
@@ -109,7 +129,8 @@ public
       :type         => 'Authorization',
       :provider     => provider,
       :uid          => to_s ? uid.to_s : uid,
-      :permissions  => permissions
+      :permissions  => permissions,
+      :info         => info
     }
   end
 

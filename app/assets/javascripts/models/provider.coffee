@@ -3,7 +3,10 @@
 ############
 class Provider
   accounts: ->
-    attr for own attr, value of this
+    {
+      text:if val.info? and val.info.username? then val.info.username else val.uid,
+      value:val.uid
+    } for own key, val of this
 
 # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
 Provider::login = (params, response) ->
@@ -48,7 +51,21 @@ FacebookProv::login = (response, perms) ->
     response
 
 
+##################
+# InstapaperProv #
+##################
+class InstapaperProv extends Provider
+
+InstapaperProv::login = (response, perms) ->
+  super
+    url: '/auth/loading/instapaper'
+    width: 430
+    height: 360,
+    response
+
+
 # add to window scope
 window.Provider = Provider
 window.TwitterProv = TwitterProv
 window.FacebookProv = FacebookProv
+window.InstapaperProv = InstapaperProv

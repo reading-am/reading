@@ -14,7 +14,7 @@ module ApplicationHelper
   def provider_span input
     if input.class == Authorization
       provider = input.provider
-      text = content_tag(:span, input.uid, :class => 'account')
+      text = content_tag(:span, input.display_name, :class => 'account')
     else
       provider = input
       text = input.to_s.capitalize

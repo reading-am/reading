@@ -24,7 +24,7 @@ public
       # TODO - add error checking here
       perms = api.get_object('/me/permissions').first rescue {}
       perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
-      self.permissions = perms.empty? ? "[]" : "[\"#{perms}\"]"
+      self.permissions = perms.blank? ? "[]" : "[\"#{perms}\"]"
     end
   end
 
@@ -34,6 +34,10 @@ public
 
   def info
     Yajl::Parser.parse(read_attribute(:info)) unless read_attribute(:info).nil?
+  end
+
+  def display_name
+    (info.blank? or info['username'].blank?) ? uid : info['username']
   end
 
   def can perm

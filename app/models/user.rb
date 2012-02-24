@@ -109,9 +109,9 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    if !self.name.nil? and self.name != ''
+    if !self.name.blank?
       self.name
-    elsif !self.username.nil?
+    elsif !self.username.blank?
       self.username
     else
       'Anonymous'

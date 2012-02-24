@@ -14,7 +14,7 @@ module ApplicationHelper
   def provider_span input
     if input.class == Authorization
       provider = input.provider
-      text = content_tag(:span, input.uid, :class => 'account')
+      text = content_tag(:span, input.display_name, :class => 'account')
     else
       provider = input
       text = input.to_s.capitalize
@@ -22,9 +22,11 @@ module ApplicationHelper
     content_tag :span, :class => ['provider', provider] do
       case provider.to_s
       when 'twitter', 'facebook'
-        output = content_tag :span, provider[0], :class => 'glyph'
+        output = content_tag :span, provider[0], :class => 'glyph icon'
       when '37signals'
-        output = content_tag(:span, '✣')
+        output = content_tag :span, '✣', :class => 'icon'
+      when 'instapaper'
+        output = content_tag :span, 'I', :class => 'icon'
       end
       output << ' ' << text
     end

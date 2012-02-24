@@ -12,15 +12,16 @@ api_urls =
 populate_accounts = (provider, selection) ->
   selection.each ->
     $this = $(this)
-    $.ajax
-      url: api_urls[provider] + $this.text()
-      dataType: "jsonp"
-      success: (r) ->
-        if r.screen_name
-          $this.text (if provider is "twitter" then "@" else "") + r.screen_name
-        else if r.username
-          $this.text r.username
-        else $this.text r.name  if r.name
+    unless isNaN $this.text()
+      $.ajax
+        url: api_urls[provider] + $this.text()
+        dataType: "jsonp"
+        success: (r) ->
+          if r.screen_name
+            $this.text (if provider is "twitter" then "@" else "") + r.screen_name
+          else if r.username
+            $this.text r.username
+          else $this.text r.name  if r.name
 
 $ ->
   # build the constructor with the initial selection
@@ -74,4 +75,3 @@ $ ->
           alert (errors[response.status] ? errors.generic).replace /{provider}/gi, prov_cap
 
         false # stop submit
-

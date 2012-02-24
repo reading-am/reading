@@ -16,7 +16,7 @@
     <div class="span1 date">
     <% if time != subposts.last.created_at.strftime("%m/%d") %>
       <%= time = subposts.last.created_at.strftime("%m/%d") %>
-    <% elsif !yn_class.empty? %>
+    <% elsif !yn_class.blank? %>
       <h3 class="<%= yn_class %>"></h3>
     <% else %>
       &nbsp;

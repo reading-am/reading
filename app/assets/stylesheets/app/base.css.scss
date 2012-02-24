@@ -153,6 +153,15 @@ footer {
 .provider.twitter {
   background-color:#d7f3ff;
 }
+.provider.instapaper {
+  background-color:#EEE;
+}
+.provider.instapaper .icon {
+  padding:0 5px;
+  font-family:Georgia, serif;
+  font-weight:bold;
+  background:#DDD;
+}
 a:hover .provider.twitter {
   background-color:#e6f7ff;
 }
@@ -179,6 +188,10 @@ a.rss .glyph {
 }
 .disconnected .glyph {
   color:#999;
+}
+.disconnected .provider.instapaper .icon {
+  background:#AAA;
+  color:#FFF;
 }
 
 #notice {

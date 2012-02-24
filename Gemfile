@@ -15,6 +15,7 @@ gem 'dalli' # Memcache
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-37signals'
+gem 'omniauth-instapaper'
 gem 'hipchat'
 gem "curb", "~> 0.8.0"
 gem 'nokogiri'
@@ -44,6 +45,7 @@ gem 'paperclip'
 gem 'browser'
 gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
+gem 'instapaper'
 
 group :development do
   gem 'ruby-debug19'

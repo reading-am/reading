@@ -126,8 +126,34 @@ class FacebookAuth extends Authorization
             error response
         , {scope: perms.join ','}
 
+###############
+# TwitterAuth #
+###############
+class InstapaperAuth extends Authorization
+  provider: "instapaper"
+
+  constructor: (@uid, @permissions = []) ->
+    # make sure you grab certain default permissions on a new authorization
+    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
+    super @uid, @permissions
+
+  login: (params={}) ->
+    success = params.success ? ->
+    error = params.error ? ->
+
+    InstapaperAuth::login (response) =>
+      if (!response.authResponse) or (response.status is "AuthTaken") or (@uid is "new" and response.status is "AuthPreexisting")
+        error response
+      else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
+        # the user isn't logged into the right account on the provider's site
+        response.status = "AuthWrongAccount"
+        error response
+      else
+        @assign_params_from_auth_response response
+        success response
+
 
 # add to window scope
 window.Authorization = Authorization
 window.TwitterAuth = TwitterAuth
-window.FacebookAuth = FacebookAuth
+window.InstapaperAuth = InstapaperAuth

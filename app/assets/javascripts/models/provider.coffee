@@ -48,7 +48,21 @@ FacebookProv::login = (response, perms) ->
     response
 
 
+##################
+# InstapaperProv #
+##################
+class InstapaperProv extends Provider
+
+InstapaperProv::login = (response, perms) ->
+  super
+    url: '/auth/loading/instapaper'
+    width: 700
+    height: 700,
+    response
+
+
 # add to window scope
 window.Provider = Provider
 window.TwitterProv = TwitterProv
 window.FacebookProv = FacebookProv
+window.InstapaperProv = InstapaperProv

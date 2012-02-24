@@ -25,6 +25,8 @@ module ApplicationHelper
         output = content_tag :span, provider[0], :class => 'glyph'
       when '37signals'
         output = content_tag(:span, '✣')
+      when 'instapaper'
+        output = content_tag(:span, 'I')
       end
       output << ' ' << text
     end

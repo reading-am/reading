@@ -87,6 +87,8 @@ GEM
       addressable (~> 2.2)
       multipart-post (~> 1.1)
       rack (~> 1.1)
+    faraday_middleware (0.8.4)
+      faraday (>= 0.7.4, < 0.9)
     hashie (1.2.0)
     hike (1.2.1)
     hipchat (0.4.1)
@@ -96,6 +98,11 @@ GEM
       multi_json
       multi_xml
     i18n (0.6.0)
+    instapaper (0.2.1)
+      faraday_middleware (~> 0.7)
+      multi_json (~> 1.0.3)
+      rash (~> 0.3)
+      simple_oauth (~> 0.1)
     journey (1.0.1)
     jquery-rails (2.0.0)
       railties (< 5.0, >= 3.2.0.beta)
@@ -135,6 +142,9 @@ GEM
       omniauth-oauth2 (~> 1.0)
     omniauth-facebook (1.2.0)
       omniauth-oauth2 (~> 1.0.0)
+    omniauth-instapaper (0.1.0)
+      multi_json
+      omniauth-xauth (~> 0.0.2)
     omniauth-oauth (1.0.0)
       oauth
       omniauth (~> 1.0)
@@ -143,6 +153,9 @@ GEM
       omniauth (~> 1.0)
     omniauth-twitter (0.0.8)
       omniauth-oauth (~> 1.0)
+    omniauth-xauth (0.0.2)
+      oauth
+      omniauth (~> 1.0)
     paperclip (2.6.0)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
@@ -180,6 +193,8 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (0.9.2.2)
+    rash (0.3.2)
+      hashie (~> 1.2.0)
     rdoc (3.12)
       json (~> 1.4)
     rsolr (1.0.7)
@@ -281,11 +296,13 @@ DEPENDENCIES
   delayed_job_active_record
   em-http-request
   hipchat
+  instapaper
   jquery-rails
   koala
   nokogiri
   omniauth-37signals
   omniauth-facebook
+  omniauth-instapaper
   omniauth-twitter
   paperclip
   pg

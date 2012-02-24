@@ -13,7 +13,7 @@ populate_accounts = (provider, selection) ->
   selection.each ->
     $this = $(this)
     $.ajax
-      url: api_urls[provider] + $this.text()
+      url: api_urls[provider] + $this.val()
       dataType: "jsonp"
       success: (r) ->
         if r.screen_name

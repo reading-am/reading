@@ -19,6 +19,7 @@ public
     # these should mirror what's in config/initializers/omniauth.rb
     case self.provider
     when 'twitter'
+    when 'instapaper'
       self.permissions = '["read","write"]'
     when 'facebook'
       # TODO - add error checking here

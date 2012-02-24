@@ -15,6 +15,9 @@ hook_properties =
     {"text":"Facebook", "permission":"publish_stream", "params":[
       {"text":"account", "options":current_user.authorizations.facebook.accounts(), "datatype":"account"}
     ]},
+    {"text":"Instapaper", "permission":"write", "params":[
+      {"text":"account", "options":current_user.authorizations.instapaper.accounts(), "datatype":"account"}
+    ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}

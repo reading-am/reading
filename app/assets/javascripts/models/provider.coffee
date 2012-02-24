@@ -3,7 +3,10 @@
 ############
 class Provider
   accounts: ->
-    attr for own attr, value of this
+    {
+      text:if val.info? and val.info.username? then val.info.username else val.uid,
+      value:val.uid
+    } for own key, val of this
 
 # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
 Provider::login = (params, response) ->

@@ -1,11 +1,14 @@
-field = (param, scope, add_label) ->
+field = (param, scope, add_label=true) ->
   param.name = param.text.toLowerCase().replace(RegExp(" ", "g"), "_")  unless param.name
   param.scoped_name = scope + "[" + param.name + "]"  if scope
   param.id = param.scoped_name.toLowerCase().replace(/\[/g, "_").replace(/\]/g, "")  unless param.id
-  func = (if param.options then select_field else text_field)
-  $field = $("<span class=\"control-group\">")
-  $field.append " <label for=\"#{param.id}\">#{param.text}</label> " if add_label or typeof add_label is "undefined"
-  $field.append func(param)
+  if param.type is "hidden"
+    hidden_field(param)
+  else
+    func = (if param.options then select_field else text_field)
+    $field = $("<span class=\"control-group\">")
+    $field.append " <label for=\"#{param.id}\">#{param.text}</label> " if add_label and param.text?
+    $field.append func(param)
 
 select_field = (param) ->
   $select = $("<select>").attr("name", param.scoped_name).attr("id", param.id)
@@ -25,15 +28,18 @@ text_field = (param) ->
   $input.attr "data-type", param.datatype  if param.datatype
   $("<span class=\"control-group\">").append $input
 
+hidden_field = (param) ->
+  $("<input type=\"hidden\" name=\"#{param.scoped_name}\" id=\"#{param.id}\" value=\"#{param.value}\">")
+
 build_provider = (prov) ->
   $prov = $("<span>").attr("id", "provider_params")
-  i = 0
-  while i < prov.params.length
-    $prov.append " using " if i is 1
-    $prov.append "<br>"    if i is 2
-    $prov.append " and "   if i > 1
-    $prov.append field(prov.params[i], "hook[params]")
-    i++
-  $prov.append "<input type=\"hidden\" name=\"permission\" value=\"#{prov.permission or ''}\" id=\"hook_params_permission\">"
+  count = 0
+  for param in prov.params
+    $prov.append " using " if count is 1
+    $prov.append "<br>"    if count is 2
+    $prov.append " and "   if count > 1
+    $prov.append field(param, "hook[params]")
+    count++ unless param.type? and param.type is "hidden"
+
   populate_accounts $("#hook_provider").val(), $("[data-type=\"account\"] option[value!=\"new\"]", $prov)
   $prov

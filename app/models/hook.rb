@@ -9,13 +9,6 @@ class Hook < ActiveRecord::Base
     :yep  => {:perms => [:write], :text => 'say "yep"'},
     :nope => {:perms => [:write], :text => 'say "nope"'}
   }
-  PROVIDERS = [
-    'hipchat',
-    'campfire',
-    'url',
-    'opengraph',
-    'instapaper'
-  ]
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?

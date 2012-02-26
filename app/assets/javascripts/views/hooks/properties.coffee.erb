@@ -9,13 +9,13 @@
 hook_properties =
   "events":<%= events.to_json %>,
   "providers":[
-    {"text":"Twitter", "params":[
-      {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
-    ]},
     {"text":"Facebook", "params":[
       {"text":"account", "options":current_user.authorizations.facebook.accounts(), "datatype":"account"},
       {"name":"permission", "options":[{text:"the timeline",value:"publish_actions"},{text:"the wall",value:"publish_stream"}]}
+    ]},
+    {"text":"Twitter", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
     ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},

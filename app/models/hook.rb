@@ -35,8 +35,8 @@ class Hook < ActiveRecord::Base
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
-    Pusher['everybody'].trigger_async("#{event_fired}_obj", post.simple_obj)
-    Pusher[post.user.username].trigger_async("#{event_fired}_obj", post.simple_obj)
+    Pusher['everybody'].trigger("#{event_fired}_obj", post.simple_obj)
+    Pusher[post.user.username].trigger("#{event_fired}_obj", post.simple_obj)
   end
 
   def facebook post, event_fired
@@ -101,23 +101,10 @@ class Hook < ActiveRecord::Base
     room.speak output if !room.nil?
   end
 
-  def opengraph post, event_fired
-
-  end
-
   def url post, event_fired
     url = self.params['address']
     url = "http://#{url}" if url[0, 4] != "http"
-    http = EventMachine::HttpRequest.new(url)
-
-    data = { :post => post.simple_obj(true) }
-    if self.params['method'] == 'get'
-      addr = Addressable::URI.new
-      addr.query_values = data # this chokes unless you wrap ints in quotes per: http://stackoverflow.com/questions/3765834/cant-convert-fixnum-to-string-during-rake-dbcreate
-      http.get :query => addr.query
-    else
-      http.post :body => data
-    end
+    Typhoeus::Request.send params['method'], url, :params => {:post => post.simple_obj(true)}
   end
 
 end

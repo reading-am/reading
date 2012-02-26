@@ -69,7 +69,7 @@ $ ->
           $this.submit()
         , (response) =>
           if account is "new" and auth.uid isnt "new"
-            # user approved some of the auth but not the write permission
+            # user approved some of the auth but not the right permission
             $("#hook_params_account option[value='new']").val auth.uid
           $('#loading').hide()
           alert (errors[response.status] ? errors.generic).replace /{provider}/gi, prov_cap

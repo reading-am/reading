@@ -40,7 +40,14 @@ class Hook < ActiveRecord::Base
   end
 
   def facebook post, event_fired
-    authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\"") rescue nil
+    case params['permission']
+    when 'publish_stream' # wall
+      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\"") rescue nil
+    when 'publish_actions' # timeline
+      action = post.domain.imperative
+      action = "read" if action == "listen" # we didn't get approved for listen
+      authorization.api.put_connections("me", "reading-am:#{action}", :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am'))
+    end
   end
 
   def instapaper post, event_fired
@@ -95,12 +102,7 @@ class Hook < ActiveRecord::Base
   end
 
   def opengraph post, event_fired
-    url = "https://graph.facebook.com/me/reading-am:#{post.domain.imperative}"
-    http = EventMachine::HttpRequest.new(url).post :body => {
-      :access_token => authorization.token,
-      #gsub for testing since Facebook doesn't like my localhost
-      :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am')
-    }
+
   end
 
   def url post, event_fired

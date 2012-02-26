@@ -118,6 +118,7 @@ class FacebookAuth extends Authorization
         perms = @permissions.concat(perms).unique()
         if installed = perms.indexOf "installed" > -1
           perms = perms.splice installed, 1
+        console.log perms.join ','
         FB.login (response) =>
           if response.authResponse
             @sync_to_current_session success, error

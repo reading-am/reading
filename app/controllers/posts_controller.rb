@@ -196,8 +196,9 @@ class PostsController < ApplicationController
         # Post through the classic JS method
         # Facebook hits this page to grab info
         # for the timeline
+        @page_title = "✌ #{@ref.page.display_title}"
         @og_props = {
-          :title => "✌ #{@ref.page.title || @ref.page.url}",
+          :title => @page_title,
           :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",
           :description => false
         }

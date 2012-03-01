@@ -16,6 +16,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
+gem 'omniauth-tumblr'
 gem 'hipchat'
 gem "curb", "~> 0.8.0"
 gem 'nokogiri'

@@ -50,6 +50,17 @@ FacebookProv::login = (response, perms) ->
     height: 600,
     response
 
+###############
+# TumblrProv #
+###############
+class TumblrProv extends Provider
+
+TumblrProv::login = (response, perms) ->
+  super
+    url: '/auth/loading/tumblr'
+    width: 700
+    height: 700,
+    response
 
 ##################
 # InstapaperProv #
@@ -68,4 +79,5 @@ InstapaperProv::login = (response, perms) ->
 window.Provider = Provider
 window.TwitterProv = TwitterProv
 window.FacebookProv = FacebookProv
+window.TumblrProv = TumblrProv
 window.InstapaperProv = InstapaperProv

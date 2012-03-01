@@ -156,6 +156,12 @@ footer {
 .provider.instapaper {
   background-color:#EEE;
 }
+.provider.tumblr {
+  background-color:$grey;
+}
+.tumblr .glyph {
+  color:#2C4762;
+}
 .provider.instapaper .icon {
   padding:0 5px;
   font-family:Georgia, serif;

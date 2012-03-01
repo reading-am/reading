@@ -2,7 +2,9 @@
 # Authorization #
 #################
 class Authorization
-  constructor: (@uid, @permissions = []) ->
+  constructor: (@uid, @permissions = [], @info) ->
+    # make sure you grab certain default permissions on a new authorization
+    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
 
   can: (perm) ->
     @uid and @uid != "new" and @permissions and perm in @permissions
@@ -54,6 +56,21 @@ class Authorization
           if @can perm then success response else error response
         error: error
 
+  login: (params={}) ->
+    success = params.success ? ->
+    error = params.error ? ->
+
+    @_login (response) =>
+      if (!response.authResponse) or (response.status is "AuthTaken") or (@uid is "new" and response.status is "AuthPreexisting")
+        error response
+      else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
+        # the user isn't logged into the right account on the provider's site
+        response.status = "AuthWrongAccount"
+        error response
+      else
+        @assign_params_from_auth_response response
+        success response
+
 Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
   new window[type](params.uid, params.permissions, params.info)
@@ -64,26 +81,23 @@ Authorization::factory = (params) ->
 ###############
 class TwitterAuth extends Authorization
   provider: "twitter"
+  _login: TwitterProv::login
 
-  constructor: (@uid, @permissions = []) ->
-    # make sure you grab certain default permissions on a new authorization
-    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
-    super @uid, @permissions
 
-  login: (params={}) ->
-    success = params.success ? ->
-    error = params.error ? ->
+###############
+# TumblrAuth #
+###############
+class TumblrAuth extends Authorization
+  provider: "tumblr"
+  _login: TumblrProv::login
 
-    TwitterProv::login (response) =>
-      if (!response.authResponse) or (response.status is "AuthTaken") or (@uid is "new" and response.status is "AuthPreexisting")
-        error response
-      else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
-        # the user isn't logged into the right account on the provider's site
-        response.status = "AuthWrongAccount"
-        error response
-      else
-        @assign_params_from_auth_response response
-        success response
+
+##################
+# InstapaperAuth #
+##################
+class InstapaperAuth extends Authorization
+  provider: "instapaper"
+  _login: InstapaperProv::login
 
 
 ################
@@ -95,7 +109,6 @@ class FacebookAuth extends Authorization
   constructor: (@uid, @permissions = []) ->
     # make sure you grab certain default permissions on a new authorization
     @permissions = @permissions.concat(["email","offline_access"]).unique() if !@uid or @uid is "new"
-    super @uid, @permissions
 
   login: (params={}) ->
     success = params.success ? ->
@@ -126,35 +139,10 @@ class FacebookAuth extends Authorization
             error response
         , {scope: perms.join ','}
 
-###############
-# TwitterAuth #
-###############
-class InstapaperAuth extends Authorization
-  provider: "instapaper"
-
-  constructor: (@uid, @permissions = [], @info) ->
-    # make sure you grab certain default permissions on a new authorization
-    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
-    super @uid, @permissions
-
-  login: (params={}) ->
-    success = params.success ? ->
-    error = params.error ? ->
-
-    InstapaperProv::login (response) =>
-      if (!response.authResponse) or (response.status is "AuthTaken") or (@uid is "new" and response.status is "AuthPreexisting")
-        error response
-      else if @uid and @uid isnt "new" and response.authResponse.uid isnt @uid
-        # the user isn't logged into the right account on the provider's site
-        response.status = "AuthWrongAccount"
-        error response
-      else
-        @assign_params_from_auth_response response
-        success response
-
 
 # add to window scope
 window.Authorization = Authorization
 window.TwitterAuth = TwitterAuth
 window.FacebookAuth = FacebookAuth
+window.TumblrAuth = TumblrAuth
 window.InstapaperAuth = InstapaperAuth

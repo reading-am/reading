@@ -88,7 +88,8 @@ class PostsController < ApplicationController
               :yn => @post.yn,
               :page => {
                 :url => @post.page.url,
-                :title => @post.page.title
+                :title => @post.page.title,
+                :wrapped_url => @post.page.wrapped_url
               }
             },
             :readers => User.who_posted_to(@post.page).collect { |user|

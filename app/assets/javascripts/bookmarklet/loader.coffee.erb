@@ -111,6 +111,7 @@ class Provider
     vals =
       url: post.page.url
       short_url: "http://#{post.short_url()}"
+      wrapped_url: post.page.wrapped_url
       title: post.page.title
     parsed_url = @url_scheme
     for val of vals
@@ -124,15 +125,20 @@ class Provider
 
 providers = [
   new Provider
+    name: "Facebook"
+    url_scheme: "https://www.facebook.com/sharer.php?u={wrapped_url}&t={title}"
+    action: (url) ->
+      popup url, 520, 370
+  new Provider
     name: "Twitter"
     url_scheme: "https://twitter.com/share?url={short_url}&text=✌%20Reading%20%22{title}%22"
     action: (url) ->
       popup url, 475, 345
   new Provider
-    name: "Facebook"
-    url_scheme: "https://www.facebook.com/sharer.php?u={short_url}&t={title}"
+    name: "Tumblr"
+    url_scheme: "http://www.tumblr.com/share?v=3&u={wrapped_url}&t=✌%20Reading%20%22{title}%22"
     action: (url) ->
-      popup url, 520, 370
+      popup url, 450, 430
   new Provider
     name: "Instapaper"
     url_scheme: "http://www.instapaper.com/hello2?url={url}&title={title}"

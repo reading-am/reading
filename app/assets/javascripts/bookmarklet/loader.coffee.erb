@@ -125,15 +125,15 @@ class Provider
 
 providers = [
   new Provider
-    name: "Facebook"
-    url_scheme: "https://www.facebook.com/sharer.php?u={wrapped_url}&t={title}"
-    action: (url) ->
-      popup url, 520, 370
-  new Provider
     name: "Twitter"
     url_scheme: "https://twitter.com/share?url={short_url}&text=✌%20Reading%20%22{title}%22"
     action: (url) ->
       popup url, 475, 345
+  new Provider
+    name: "Facebook"
+    url_scheme: "https://www.facebook.com/sharer.php?u={wrapped_url}&t={title}"
+    action: (url) ->
+      popup url, 520, 370
   new Provider
     name: "Tumblr"
     url_scheme: "http://www.tumblr.com/share?v=3&u={wrapped_url}&t=✌%20Reading%20%22{title}%22"

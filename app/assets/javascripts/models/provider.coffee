@@ -24,6 +24,7 @@ Provider::login = (params, response) ->
   popup.focus() if window.focus
   false
 
+window.Provider = Provider
 
 ###############
 # TwitterProv #
@@ -37,6 +38,7 @@ TwitterProv::login = (response, perms) ->
     height: 700,
     response
 
+window.TwitterProv = TwitterProv
 
 ################
 # FacebookProv #
@@ -50,6 +52,21 @@ FacebookProv::login = (response, perms) ->
     height: 600,
     response
 
+window.FacebookProv = FacebookProv
+
+###############
+# TumblrProv #
+###############
+class TumblrProv extends Provider
+
+TumblrProv::login = (response, perms) ->
+  super
+    url: '/auth/loading/tumblr'
+    width: 700
+    height: 700,
+    response
+
+window.TumblrProv = TumblrProv
 
 ##################
 # InstapaperProv #
@@ -63,9 +80,18 @@ InstapaperProv::login = (response, perms) ->
     height: 360,
     response
 
-
-# add to window scope
-window.Provider = Provider
-window.TwitterProv = TwitterProv
-window.FacebookProv = FacebookProv
 window.InstapaperProv = InstapaperProv
+
+###################
+# ReadabilityProv #
+###################
+class ReadabilityProv extends Provider
+
+ReadabilityProv::login = (response, perms) ->
+  super
+    url: '/auth/loading/readability'
+    width: 600
+    height: 450,
+    response
+
+window.ReadabilityProv = ReadabilityProv

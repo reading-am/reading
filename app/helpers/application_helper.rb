@@ -23,10 +23,14 @@ module ApplicationHelper
       case provider.to_s
       when 'twitter', 'facebook'
         output = content_tag :span, provider[0], :class => 'glyph icon'
+      when 'tumblr'
+        output = content_tag :span, 'k', :class => 'glyph icon'
       when '37signals'
         output = content_tag :span, '✣', :class => 'icon'
       when 'instapaper'
         output = content_tag :span, 'I', :class => 'icon'
+      when 'readability'
+        output = content_tag :span, '♣', :class => 'icon'
       end
       output << ' ' << text
     end

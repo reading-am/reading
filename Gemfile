@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'thin' # server
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.2'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
@@ -16,6 +16,8 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
+gem 'omniauth-tumblr'
+gem 'omniauth-readability'
 gem 'hipchat'
 gem "curb", "~> 0.8.0"
 gem 'nokogiri'
@@ -46,8 +48,11 @@ gem 'browser'
 gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper'
+gem 'tumblr-ruby', require: 'tumblr'
+gem 'readit'
 
 group :development do
   gem 'ruby-debug19'
   gem 'sunspot_solr'
 end
+

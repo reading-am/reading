@@ -11,11 +11,14 @@
         </li>
       <% end %>
       <% if @user == current_user %>
+        <li class="disconnected">
+          <select data-method="connect">
+            <option>Connect a new account</option>
         <% Authorization::PROVIDERS.each do |provider| %>
-          <li class="disconnected">
-            <%= link_to provider_span(provider) << content_tag(:span, " click to connect", :class => 'admin'), "#", :data => {:provider => provider.capitalize, :method => 'connect'} %>
-          </li>
+          <option value="<%= provider.capitalize %>"><%= provider.capitalize %></option>
         <% end %>
+          </select>
+        </li>
       <% end %>
       <li class="help-block">You can sign in and <%= link_to "create hooks", "/#{@user.username}/hooks" %> with any of these accounts</li>
     </ul>

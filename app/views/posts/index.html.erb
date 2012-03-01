@@ -7,6 +7,8 @@
     <div class="span7 offset1">
     <% if @domain %>
       <h3>Stuff people are reading on <%= @domain.name %></h3>
+    <% elsif logged_in? %>
+      <h3>Posts from everyone on Reading</h3>
     <% else %>
       <h3>Some people are reading this stuff</h3>
     <% end %>

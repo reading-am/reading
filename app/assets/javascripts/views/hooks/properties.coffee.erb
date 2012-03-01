@@ -17,6 +17,10 @@ hook_properties =
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
     ]},
+    {"text":"Tumblr", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"}
+    ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.instapaper.accounts(), "datatype":"account"}

@@ -59,6 +59,7 @@ class Post
   constructor: (p) ->
     @id = p.id
     @yn = p.yn if p.yn?
+    @wrapped_url = p.wrapped_url
     @page = p.page if p.page?
     @updated_at = new Date
     @loading = false
@@ -111,7 +112,7 @@ class Provider
     vals =
       url: post.page.url
       short_url: "http://#{post.short_url()}"
-      wrapped_url: post.page.wrapped_url
+      wrapped_url: post.wrapped_url
       title: post.page.title
     parsed_url = @url_scheme
     for val of vals

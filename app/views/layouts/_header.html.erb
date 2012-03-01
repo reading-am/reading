@@ -1,11 +1,11 @@
-<% stuff_sections = ['edit','hooks','extras'] %>
+<% settings_sections = ['edit','hooks','extras'] %>
 <% if logged_in? %>
 <div class="row">
   <nav id="mainnav" class="span7 offset1">
   <% if current_user.username_was %>
-    <%= link_to "You", "/#{current_user.username}/list", :class => ((request.path.split('/')[1] == current_user.username and !stuff_sections.include? params[:action]) ? 'active' : '') %>
+    <%= link_to "You", "/#{current_user.username}/list", :class => ((request.path.split('/')[1] == current_user.username and !settings_sections.include? params[:action]) ? 'active' : '') %>
     <span class="hide_iphone">-</span> <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'search' && params[:username] != current_user.username ? 'active' : '') %>
-    <span class="hide_iphone">-</span> <%= link_to "Stuff", "/#{current_user.username}/info", :class => ((params[:controller] == 'users' and stuff_sections.include? params[:action]) ? 'active' : '') %>
+    <span class="hide_iphone">-</span> <%= link_to "Settings", "/#{current_user.username}/info", :class => ((params[:controller] == 'users' and settings_sections.include? params[:action]) ? 'active' : '') %>
     <span class="hide_iphone">-</span> <%= render :partial => 'search/form' %>
   <% end %>
   </nav>

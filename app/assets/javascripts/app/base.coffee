@@ -51,10 +51,8 @@ $ ->
   $search = $("#search input")
   $search.focus() if $search.val()
 
-  $("a[data-provider][data-method]").on "click", ->
-    $this = $(this)
-    provider = $this.data("provider")
-    uid = if $this.data("method") is "connect" then "new" else null
+  do_provider_method = (provider, method) ->
+    uid = if method is "connect" then "new" else null
     auth = new window["#{provider}Auth"](uid)
     $('#loading').fadeIn()
 
@@ -66,6 +64,16 @@ $ ->
         alert (errors[response.status] ? errors.generic).replace /{provider}/gi, provider
 
     false
+
+  $("a[data-provider][data-method]").on "click", ->
+    $this = $(this)
+    do_provider_method $this.data("provider"), $this.data("method")
+
+  $("#authorizations select").on "change", ->
+    $this = $(this)
+    do_provider_method $this.val(), $this.data("method")
+    $this.val $this.find('option:first').val()
+
 
   $(".chrome-install").on "click", ()->
     if /chrome/.test navigator.userAgent.toLowerCase()

@@ -156,6 +156,20 @@ footer {
 .provider.instapaper {
   background-color:#EEE;
 }
+.provider.tumblr {
+  background-color:$grey;
+}
+.tumblr .glyph {
+  color:#2C4762;
+}
+.provider.readability {
+  background:#f4f4ec;
+}
+.provider.readability .icon {
+  color:#9C0001;
+  font-size:20px;
+  line-height:0;
+}
 .provider.instapaper .icon {
   padding:0 5px;
   font-family:Georgia, serif;
@@ -269,6 +283,9 @@ nav a {
 }
 #authorizations li {
   margin:5px 0 0;
+}
+#authorizations .provider {
+  font-size:15px;
 }
 .search_results {
   margin-bottom:23px;

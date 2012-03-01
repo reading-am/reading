@@ -22,6 +22,7 @@ Reading::Application.routes.draw do
   
   match '/auth/loading/:provider' => 'authorizations#loading'
   match '/authorizations/:provider/:uid/update' => 'authorizations#update'
+  match '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id

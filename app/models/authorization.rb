@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter', 'facebook', 'instapaper']
+  PROVIDERS = ['twitter', 'facebook', 'instapaper','readability']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -20,6 +20,7 @@ public
     case self.provider
     when 'twitter'
     when 'instapaper'
+    when 'readability'
       self.permissions = '["read","write"]'
     when 'facebook'
       # TODO - add error checking here
@@ -58,14 +59,13 @@ public
   end
 
   def api
-    #via: http://blog.assimov.net/post/2358661274/twitter-integration-with-omniauth-and-devise-on-rails-3
-    case provider
-    when 'facebook'
-      @api_user ||= Koala::Facebook::API.new(token)
-    when 'twitter'
-      @api_user ||= Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
-    when 'instapaper'
-      if @api_user.nil?
+    if @api_user.nil?
+      case provider
+      when 'facebook'
+        @api_user = Koala::Facebook::API.new(token)
+      when 'twitter'
+        @api_user = Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
+      when 'instapaper'
         Instapaper.configure do |config|
           config.consumer_key = INSTAPAPER_KEY
           config.consumer_secret = INSTAPAPER_SECRET
@@ -73,9 +73,19 @@ public
           config.oauth_token_secret = secret
         end
         @api_user = Instapaper
+      when 'tumblr'
+        @api_user = Tumblr::Client.new do |client|
+          client.consumer_key = TUMBLR_KEY
+          client.consumer_secret = TUMBLR_SECRET
+          client.oauth_token = token
+          client.oauth_token_secret = secret
+        end
+      when 'readability'
+        @api_user = Readit::API.new token, secret
       end
-      @api_user
     end
+
+    @api_user
   end
 
   def self.find_or_create(auth_hash)

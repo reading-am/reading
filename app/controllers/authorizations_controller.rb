@@ -31,6 +31,27 @@ class AuthorizationsController < ApplicationController
     end
   end
 
+  def places
+    @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
+
+    if allowed = @auth.user == current_user
+      places = @auth.api.user_info.response.user.blogs
+    end
+    respond_to do |format|
+      if places.nil?
+        format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request"}}, :callback => params[:callback] }
+      else
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {:places => places}
+        }, :callback => params[:callback] }
+      end
+    end
+  end
+
   # DELETE /authorizations/1
   # DELETE /authorizations/1.xml
   def destroy

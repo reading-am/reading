@@ -17,6 +17,13 @@ hook_properties =
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
     ]},
+<%
+#    {"text":"Tumblr", "params":[
+#      {"name":"permission", "value":"write", "type":"hidden"},
+#      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"},
+#      {"text":"blog", "options":(data){ {name:data.name, value:data.name} }, "src":"account.places"}
+#    ]},
+%>
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.instapaper.accounts(), "datatype":"account"}
@@ -24,6 +31,10 @@ hook_properties =
     {"text":"Pinboard", "params":[
       {"text":"user", "placeholder":"my_username"},
       {"text":"password", "placeholder": "my_strong_password"}
+    ]},
+    {"text":"Readability", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.authorizations.readability.accounts(), "datatype":"account"}
     ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},

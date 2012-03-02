@@ -71,3 +71,5 @@ $ ->
     if /chrome/.test navigator.userAgent.toLowerCase()
       chrome.webstore.install()
       false
+
+  # $('a[rel=tooltip]').tooltip({delay:{show:1000}})

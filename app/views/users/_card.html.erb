@@ -15,7 +15,7 @@
     - <a href="/<%= user.username %>/followers"<% if params[:type] == 'followers' %> class="active"<% end %>><%= user.followers.size %> Followers</a>
     <% if logged_in? and user != current_user %>
       <% follow_text = current_user.following?(user) ? 'unfollow' : 'follow' %>
-      - <a href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
+      - <a rel="tooltip" data-title="Add what <%= user.first_name %> reads to your following feed" href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
     <% end %>
     </nav>
     <div id="user_bio" class="span7 offset1">

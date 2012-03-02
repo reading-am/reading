@@ -1,19 +1,21 @@
-$yellow: #FFFBCC;
-$dark_yellow: #FFF461;
-$blue: #cdfeff;
-$dark_blue: #00FBFF;
-$green: #38ff7E;
-$dark_green: #79ff30;
-$grey: #EEE;
+@import "twitter/bootstrap/mixins";
+
+@yellow: #FFFBCC;
+@dark_yellow: #FFF461;
+@blue: #cdfeff;
+@dark_blue: #00FBFF;
+@green: #38ff7E;
+@dark_green: #79ff30;
+@grey: #EEE;
 
 #subnav, #subhead {
   margin-bottom:23px;
 }
 #subnav a {
-  background-color:$blue;
+  background-color:@blue;
 }
   #subnav a.active, #subnav a:hover {
-    background-color:$dark_blue;
+    background-color:@dark_blue;
     text-decoration:none;
   }
 #subnav a.active:hover {
@@ -21,9 +23,9 @@ $grey: #EEE;
   text-decoration:none;
 }
 .follow, #subnav .follow {
-  background-color:$green;
-  &:hover {
-    background-color:$dark_green;
+  background-color:@green;
+  :hover {
+    background-color:@dark_green;
   }
 }
 #subnav #signout {

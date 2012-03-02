@@ -1,7 +1,7 @@
 #r_am, #r_am * {
   padding:0;
   margin:0;
-  color:#000;
+  color:#000 !important;
   background:none;
   border:none;
   font-family:"Helvetica Neue", helvetica, arial, sans-serif;
@@ -39,7 +39,7 @@
   margin:18px 0 25px;
 }
 .r_submitted #r_icon {
-  color:yellow;
+  color:yellow !important;
 }
 #r_actions {
   margin:10px 0 0;

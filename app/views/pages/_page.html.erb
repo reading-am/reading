@@ -4,9 +4,11 @@
       <span><%= page.display_title %></span>
     <% end %>
   </h3>
-  <span class="plusnav" style="display:none;">
-    |<%= link_to "+", "http://#{DOMAIN}/domains/#{page.domain.name}/pages/#{page.id}", :class => 'info' %>
-  </span>
+<% 
+#  <span class="plusnav" style="display:none;">
+#    |<%= link_to "+", "http://#{DOMAIN}/domains/#{page.domain.name}/pages/#{page.id}", :class => 'info'
+#  </span>
+%>
   <%
     # 10 = youtube
     # 64 = linkedin

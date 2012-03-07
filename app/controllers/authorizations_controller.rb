@@ -38,13 +38,17 @@ class AuthorizationsController < ApplicationController
       places = @auth.api.user_info.response.user.blogs
     end
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {:places => places}
-      }, :callback => params[:callback] }
+      if places.nil?
+        format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request"}}, :callback => params[:callback] }
+      else
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {:places => places}
+        }, :callback => params[:callback] }
+      end
     end
   end
 

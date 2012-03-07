@@ -19,7 +19,8 @@ hook_properties =
     ]},
     {"text":"Tumblr", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"}
+      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"},
+      {"text":"blog", "options":(data){ {name:data.name, value:data.name} }, "src":"account.places"}
     ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},

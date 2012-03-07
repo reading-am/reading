@@ -43,6 +43,15 @@ class Authorization
       error: (jqXHR, textStatus, errorThrown) =>
         params.error() if params.error?
 
+  places: (params) ->
+    $.ajax
+      url: "/authorizations/#{@provider}/#{@uid}/places.json"
+      success: (data, textStatus, jqXHR) =>
+        params.success(data.response.places) if params.success?
+      error: (jqXHR, textStatus, errorThrown) =>
+        params.error() if params.error?
+
+
   ask: (perm, success, error) ->
     # already has access
     if @can(perm)

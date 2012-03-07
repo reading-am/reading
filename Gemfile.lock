@@ -254,6 +254,11 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    tumblr-ruby (0.1.0)
+      activesupport
+      hashie
+      oauth
+      rack
     twitter (2.1.0)
       activesupport (< 4, >= 2.3.9)
       faraday (~> 0.7)
@@ -320,6 +325,7 @@ DEPENDENCIES
   sunspot_solr
   thin
   tinder
+  tumblr-ruby
   twitter (>= 2.0.0.rc.2)
   twitter-bootstrap-rails
   twitter_bootstrap_form_for!

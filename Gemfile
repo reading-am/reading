@@ -47,6 +47,7 @@ gem 'browser'
 gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper'
+gem 'tumblr-ruby', require: 'tumblr'
 
 group :development do
   gem 'ruby-debug19'

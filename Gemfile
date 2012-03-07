@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'thin' # server
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.2'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'

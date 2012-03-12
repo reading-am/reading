@@ -17,6 +17,8 @@ end
     <% hook.params.each do |k,v| %>
       <%= k %> <em><%= v %></em>
     <% end %>
+  <% elsif hook.params['user'] %>
+    account <em><%= hook.params['user'] %></em>
   <% elsif hook.params['room'] %>
     room <em><%= hook.params['room'] %></em>
   <% elsif hook.params['address'] %>

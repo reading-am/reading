@@ -54,6 +54,17 @@ class Hook < ActiveRecord::Base
     authorization.api.add_bookmark post.page.url rescue nil
   end
 
+  def pinboard post, event_fired
+    Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/add',
+      :username => self.params['user'],
+      :password => self.params['password'],
+      :params => {
+        :url => post.page.url,
+        :description => post.page.title,
+        :tags => 'Reading.am'
+      }
+  end
+
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
     tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\""

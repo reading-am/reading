@@ -155,6 +155,11 @@ providers = [
     url_scheme: "https://readitlaterlist.com/save?url={url}&title={title}"
     action: (url) ->
       popup url, 490, 400
+  new Provider
+    name: "Pinboard"
+    url_scheme: "https://pinboard.in/add?showtags=yes&url={url}&title={title}&tags=Reading.am"
+    action: (url) ->
+      popup url, 490, 400
 ]
 
 #-----------------------------------------

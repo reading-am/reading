@@ -90,8 +90,8 @@ class ReadabilityProv extends Provider
 ReadabilityProv::login = (response, perms) ->
   super
     url: '/auth/loading/readability'
-    width: 430
-    height: 360,
+    width: 600
+    height: 450,
     response
 
 window.ReadabilityProv = ReadabilityProv

@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter', 'facebook', 'tumblr', 'instapaper','readability']
+  PROVIDERS = ['twitter', 'facebook', 'instapaper','readability']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -81,7 +81,7 @@ public
           client.oauth_token_secret = secret
         end
       when 'readability'
-        # api goes here
+        @api_user = Readit::API.new token, secret
       end
     end
 

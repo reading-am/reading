@@ -55,7 +55,7 @@ class Hook < ActiveRecord::Base
   end
 
   def readability post, event_fired
-    # post here
+    authorization.api.bookmark :url => post.page.url
   end
 
   def pinboard post, event_fired

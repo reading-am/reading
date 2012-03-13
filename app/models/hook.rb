@@ -54,6 +54,10 @@ class Hook < ActiveRecord::Base
     authorization.api.add_bookmark post.page.url rescue nil
   end
 
+  def readability post, event_fired
+    # post here
+  end
+
   def pinboard post, event_fired
     Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/add',
       :username => self.params['user'],

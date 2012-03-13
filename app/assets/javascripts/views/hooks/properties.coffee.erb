@@ -32,6 +32,10 @@ hook_properties =
       {"text":"user", "placeholder":"my_username"},
       {"text":"password", "placeholder": "my_strong_password"}
     ]},
+    {"text":"Readability", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.authorizations.readability.accounts(), "datatype":"account"}
+    ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}

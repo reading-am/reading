@@ -80,6 +80,8 @@ public
           client.oauth_token = token
           client.oauth_token_secret = secret
         end
+      when 'readability'
+        # api goes here
       end
     end
 

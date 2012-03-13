@@ -29,6 +29,8 @@ module ApplicationHelper
         output = content_tag :span, '✣', :class => 'icon'
       when 'instapaper'
         output = content_tag :span, 'I', :class => 'icon'
+      when 'readability'
+        output = content_tag :span, '♣', :class => 'icon'
       end
       output << ' ' << text
     end

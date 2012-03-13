@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter', 'facebook', 'tumblr', 'instapaper']
+  PROVIDERS = ['twitter', 'facebook', 'tumblr', 'instapaper','readability']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -20,6 +20,7 @@ public
     case self.provider
     when 'twitter'
     when 'instapaper'
+    when 'readability'
       self.permissions = '["read","write"]'
     when 'facebook'
       # TODO - add error checking here

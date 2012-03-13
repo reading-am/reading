@@ -89,6 +89,7 @@ GEM
       rack (~> 1.1)
     faraday_middleware (0.8.4)
       faraday (< 0.9, >= 0.7.4)
+    guess_html_encoding (0.0.2)
     hashie (1.2.0)
     hike (1.2.1)
     hipchat (0.4.1)
@@ -151,6 +152,10 @@ GEM
     omniauth-oauth2 (1.0.0)
       oauth2 (~> 0.5.0)
       omniauth (~> 1.0)
+    omniauth-readability (0.0.1)
+      multi_json
+      omniauth (~> 1.0.0.rc2)
+      omniauth-oauth (~> 1.0.0.rc2)
     omniauth-tumblr (1.0)
       omniauth-oauth (~> 1.0)
     omniauth-twitter (0.0.8)
@@ -210,6 +215,9 @@ GEM
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
     ruby-hmac (0.4.0)
+    ruby-readability (0.5.0)
+      guess_html_encoding (>= 0.0.2)
+      nokogiri (>= 1.4.2)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     rufus-scheduler (2.0.16)
@@ -310,6 +318,7 @@ DEPENDENCIES
   omniauth-37signals
   omniauth-facebook
   omniauth-instapaper
+  omniauth-readability
   omniauth-tumblr
   omniauth-twitter
   paperclip
@@ -318,6 +327,7 @@ DEPENDENCIES
   pusher (~> 0.8.3)
   rails (= 3.2.2)
   ruby-debug19
+  ruby-readability
   rufus-scheduler
   sanitize
   sass-rails

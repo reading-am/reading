@@ -84,6 +84,7 @@ Authorization::factory = (params) ->
   type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
   new window[type](params.uid, params.permissions, params.info)
 
+window.Authorization = Authorization
 
 ###############
 # TwitterAuth #
@@ -92,6 +93,7 @@ class TwitterAuth extends Authorization
   provider: "twitter"
   _login: TwitterProv::login
 
+window.TwitterAuth = TwitterAuth
 
 ###############
 # TumblrAuth #
@@ -100,6 +102,7 @@ class TumblrAuth extends Authorization
   provider: "tumblr"
   _login: TumblrProv::login
 
+window.TumblrAuth = TumblrAuth
 
 ##################
 # InstapaperAuth #
@@ -108,6 +111,16 @@ class InstapaperAuth extends Authorization
   provider: "instapaper"
   _login: InstapaperProv::login
 
+window.InstapaperAuth = InstapaperAuth
+
+###################
+# ReadabilityAuth #
+###################
+class ReadabilityAuth extends Authorization
+  provider: "readability"
+  _login: ReadabilityProv::login
+
+window.ReadabilityAuth = ReadabilityAuth
 
 ################
 # FacebookAuth #
@@ -148,10 +161,4 @@ class FacebookAuth extends Authorization
             error response
         , {scope: perms.join ','}
 
-
-# add to window scope
-window.Authorization = Authorization
-window.TwitterAuth = TwitterAuth
 window.FacebookAuth = FacebookAuth
-window.TumblrAuth = TumblrAuth
-window.InstapaperAuth = InstapaperAuth

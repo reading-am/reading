@@ -17,6 +17,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
+gem 'omniauth-readability'
 gem 'hipchat'
 gem "curb", "~> 0.8.0"
 gem 'nokogiri'
@@ -48,8 +49,10 @@ gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper'
 gem 'tumblr-ruby', require: 'tumblr'
+gem 'ruby-readability', require: 'readability'
 
 group :development do
   gem 'ruby-debug19'
   gem 'sunspot_solr'
 end
+

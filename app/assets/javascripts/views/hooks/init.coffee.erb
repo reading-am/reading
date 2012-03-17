@@ -52,11 +52,20 @@ $ ->
     if $places.length
       provider = $("#hook_provider").val()
       account  = $("#hook_params_account").val()
-      $places.html $("<option>").text "Loading..."
-      current_user.authorizations[provider][account].places {success:(places) ->
-        $places.html ""
-        $places.append($("<option>").text(place.text).val(place.value)) for place in places
-      }
+      if account is "new"
+        $places
+          .attr("disabled", "disabled")
+          .addClass("disabled")
+          .html($("<option>").text "Select after connecting")
+      else
+        $places
+          .removeAttr("disabled")
+          .removeClass("disabled")
+          .html($("<option>").text "Loading...")
+        current_user.authorizations[provider][account].places {success:(places) ->
+          $places.html ""
+          $places.append($("<option>").text(place.text).val(place.value)) for place in places
+        }
 
   # populate the auth spans with real usernames
   populate_accounts "twitter", $(".provider.twitter .account")

@@ -69,6 +69,10 @@ class Hook < ActiveRecord::Base
       }
   end
 
+  def tumblr post, event_fired
+
+  end
+
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
     tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\""

@@ -33,7 +33,6 @@ class HooksController < ApplicationController
       redirect_to "/"
     end
     @hook = Hook.new
-    @has_facebook = (auth = Authorization.find_by_user_id_and_provider(current_user.id, 'facebook') and auth.token)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -56,7 +55,7 @@ class HooksController < ApplicationController
   def create
     redirect_to '/' if !logged_in?
 
-    if ['twitter','facebook','instapaper','readability'].include? params[:hook][:provider]
+    if Authorization::PROVIDERS.include? params[:hook][:provider]
       auth = Authorization.find_by_provider_and_uid(params[:hook][:provider], params[:hook][:params][:account])
       params[:hook][:params].delete(:account)
       params[:hook][:params] = params[:hook][:params].to_json

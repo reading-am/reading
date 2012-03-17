@@ -84,7 +84,14 @@ $ ->
     account     = $("#hook_params_account", $this).val()
     permission  = $("#hook_params_permission", $this).val()
 
-    if account
+    # validate that none of the inputs are empty
+    $empty = $this.find(":input[value='']")
+    if $empty.length and account isnt "new"
+      $("#loading").hide()
+      alert "Please specify a " + $("label[for="+$empty.attr("id")+"]").text() + " and resubmit the form"
+      false # stop submit
+
+    else if account
       if account is "new"
         auth = new window["#{prov_cap}Auth"](account)
       else
@@ -94,11 +101,10 @@ $ ->
         $('#loading').fadeIn()
         auth.ask permission, (response) =>
           if account is "new"
-            $("#loading").hide()
             $("#hook_params_account")
               .prepend($("<option>").text(auth.name).val(auth.uid))
               .val(auth.uid).change()
-          #$this.submit()
+          $this.submit()
         , (response) =>
           if account is "new" and auth.uid isnt "new"
             # user approved some of the auth but not the right permission

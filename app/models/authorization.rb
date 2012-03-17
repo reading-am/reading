@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter', 'facebook', 'instapaper','readability']
+  PROVIDERS = ['twitter','facebook','instapaper','readability','tumblr']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -16,17 +16,14 @@ private
 public
 
   def sync_perms
-    # these should mirror what's in config/initializers/omniauth.rb
     case self.provider
-    when 'twitter'
-    when 'instapaper'
-    when 'readability'
-      self.permissions = '["read","write"]'
     when 'facebook'
       # TODO - add error checking here
       perms = api.get_object('/me/permissions').first rescue {}
       perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
       self.permissions = perms.blank? ? "[]" : "[\"#{perms}\"]"
+    else
+      self.permissions = '["read","write"]'
     end
   end
 

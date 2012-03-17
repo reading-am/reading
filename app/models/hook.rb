@@ -42,7 +42,7 @@ class Hook < ActiveRecord::Base
   def facebook post, event_fired
     case params['permission']
     when 'publish_stream' # wall
-      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\"") rescue nil
+      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.display_title}\"") rescue nil
     when 'publish_actions' # timeline
       action = post.domain.imperative
       action = "read" if action == "listen" # we didn't get approved for listen
@@ -64,14 +64,18 @@ class Hook < ActiveRecord::Base
       :password => self.params['password'],
       :params => {
         :url => post.page.url,
-        :description => post.page.title,
+        :description => post.page.display_title,
         :tags => 'Reading.am'
       }
   end
 
+  def tumblr post, event_fired
+    authorization.api.link "#{self.params['blog']}.tumblr.com", post.wrapped_url, {:title => post.page.display_title, :description => post.page.excerpt}
+  end
+
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
-    tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.title}\""
+    tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.display_title}\""
     tweet_len = tweet.unpack('c*').length
     full_len = tweet_len + post.short_url.unpack('c*').length + 1 # plus one is the space
     buffer = 10 # 10 for good measure and because twitter drove me batty about being over the character limit
@@ -88,7 +92,7 @@ class Hook < ActiveRecord::Base
 
   def hipchat post, event_fired
     user_link = "<a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a>"
-    post_link = "<a href='#{post.wrapped_url}'>#{post.page.title.blank? ? post.page.url : post.page.title}</a>"
+    post_link = "<a href='#{post.wrapped_url}'>#{post.page.display_title}</a>"
     case event_fired
     when :new
       output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
@@ -102,7 +106,7 @@ class Hook < ActiveRecord::Base
   end
 
   def campfire post, event_fired
-    post_link = "#{'"' + post.page.title + '" ' if !post.page.title.blank?}#{post.wrapped_url}"
+    post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
     when :new
       output = "✌ #{post.page.domain.verb.capitalize} #{post_link}"

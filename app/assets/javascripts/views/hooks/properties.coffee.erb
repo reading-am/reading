@@ -6,7 +6,7 @@
   end
 %>
 
-hook_properties =
+window.hook_properties =
   "events":<%= events.to_json %>,
   "providers":[
     {"text":"Facebook", "params":[
@@ -17,13 +17,13 @@ hook_properties =
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
     ]},
-<%
-#    {"text":"Tumblr", "params":[
-#      {"name":"permission", "value":"write", "type":"hidden"},
-#      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"},
-#      {"text":"blog", "options":(data){ {name:data.name, value:data.name} }, "src":"account.places"}
-#    ]},
-%>
+    {"text":"Tumblr", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"},
+      {"text":"blog", "src":"account.places", "options":(data) ->
+        {name:data.name, value:data.name}
+      }
+    ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.instapaper.accounts(), "datatype":"account"}

@@ -70,7 +70,7 @@ class Hook < ActiveRecord::Base
   end
 
   def tumblr post, event_fired
-    authorization.api.link "#{self.params['blog']}.tumblr.com", post.wrapped_url, {:title => post.page.display_title, :description => post.page.excerpt}
+    authorization.api.link "#{self.params['blog']}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
   end
 
   def twitter post, event_fired

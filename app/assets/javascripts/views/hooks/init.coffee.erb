@@ -46,6 +46,18 @@ $ ->
     $("#provider_params").replaceWith build_provider(hook_properties.providers[$this.prop("selectedIndex")])
   ).change()
 
+  # switch out and link the footnotes explaining a hook
+  $con.on "change", "#hook_provider, #hook_params_account", ->
+    $places = $("select[data-src='account.places']")
+    if $places.length
+      provider = $("#hook_provider").val()
+      account  = $("#hook_params_account").val()
+      $places.html $("<option>").text "Loading..."
+      current_user.authorizations[provider][account].places {success:(places) ->
+        $places.html ""
+        $places.append($("<option>").text(place.text).val(place.value)) for place in places
+      }
+
   # populate the auth spans with real usernames
   populate_accounts "twitter", $(".provider.twitter .account")
   populate_accounts "facebook", $(".provider.facebook .account")

@@ -20,9 +20,7 @@ window.hook_properties =
     {"text":"Tumblr", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"},
-      {"text":"blog", "src":"account.places", "options":(data) ->
-        {name:data.name, value:data.name}
-      }
+      {"text":"blog", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
     ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},

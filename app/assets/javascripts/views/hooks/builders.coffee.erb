@@ -13,18 +13,16 @@ window.builders =
 
   select_field: (param) ->
     $select = $("<select>").attr("name", param.scoped_name).attr("id", param.id)
-    $select.attr "data-type", param.datatype  if param.datatype
+    $select.attr "data-type", param.datatype if param.datatype
+    $select.attr "data-src", param.src if param.src
     i = 0
 
-    if param.src?
-      # execute closure here
-    else
-      while i < param.options.length
-        op = (if typeof param.options[i] is "string" then text: param.options[i] else param.options[i])
-        op.value = op.text.toLowerCase()  unless op.value
-        $select.append $("<option>").val(op.value).text((if op.text then op.text else op.value))
-        i++
-      $select.append $("<option>").val("new").text("+ connect new")  if param.datatype is "account"
+    while i < param.options.length
+      op = (if typeof param.options[i] is "string" then text: param.options[i] else param.options[i])
+      op.value = op.text.toLowerCase()  unless op.value
+      $select.append $("<option>").val(op.value).text((if op.text then op.text else op.value))
+      i++
+    $select.append $("<option>").val("new").text("+ connect new")  if param.datatype is "account"
 
     $select
 

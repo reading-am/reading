@@ -56,12 +56,12 @@ $ ->
         $places
           .attr("disabled", "disabled")
           .addClass("disabled")
-          .html($("<option>").text "Select after connecting")
+          .html($("<option>").text "select after connecting")
       else
         $places
           .removeAttr("disabled")
           .removeClass("disabled")
-          .html($("<option>").text "Loading...")
+          .html($("<option>").text("Loading...").val(""))
         current_user.authorizations[provider][account].places {success:(places) ->
           $places.html ""
           $places.append($("<option>").text(place.text).val(place.value)) for place in places

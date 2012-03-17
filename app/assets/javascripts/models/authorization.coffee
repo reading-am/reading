@@ -3,6 +3,7 @@
 #################
 class Authorization
   constructor: (@uid, @permissions = [], @info) ->
+    @name = if @info? and @info.username? then @info.username else @uid
     # make sure you grab certain default permissions on a new authorization
     @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
 
@@ -26,8 +27,8 @@ class Authorization
 
   assign_params_from_auth_response: (response) ->
     unless !response.auth
-      @uid = response.auth.uid
-      @permissions = response.auth.permissions
+      # rerun the constructor
+      @constructor response.auth.uid, response.auth.permissions
       current_user.authorizations[@provider][@uid] = this
 
   save: (params) ->

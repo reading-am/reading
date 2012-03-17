@@ -71,8 +71,6 @@ $ ->
   populate_accounts "twitter", $(".provider.twitter .account")
   populate_accounts "facebook", $(".provider.facebook .account")
 
-  cpath = {path: "/"}
-
   #########################
   # Process New Hook Form #
   #########################
@@ -101,13 +99,14 @@ $ ->
         $('#loading').fadeIn()
         auth.ask permission, (response) =>
           if account is "new"
+            # populate and select the new auth
             $("#hook_params_account")
               .prepend($("<option>").text(auth.name).val(auth.uid))
               .val(auth.uid).change()
           $this.submit()
         , (response) =>
           if account is "new" and auth.uid isnt "new"
-            # user approved some of the auth but not the right permission
+            # user approved some of the auth but not the right permissions
             $("#hook_params_account option[value='new']").val auth.uid
           $('#loading').hide()
           alert (errors[response.status] ? errors.generic).replace /{provider}/gi, prov_cap

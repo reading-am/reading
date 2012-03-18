@@ -64,7 +64,7 @@ class AuthorizationsController < ApplicationController
     @authorization.destroy
 
     respond_to do |format|
-      format.html { redirect_to("/#{current_user.username}/info") }
+      format.html { redirect_to("/settings/info") }
       format.xml  { head :ok }
     end
   end

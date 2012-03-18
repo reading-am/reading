@@ -1,6 +1,6 @@
 <%
   has_avatar = user != current_user or (user == current_user and !user.avatar.size.nil?)
-  avatar_url = has_avatar ? user.avatar.url : "/#{user.username}/info"
+  avatar_url = has_avatar ? user.avatar.url : "/settings/info"
   avatar_target = has_avatar ? "_blank" : nil
 %>
 <div id="user_card" class="row">
@@ -22,7 +22,7 @@
     <% if !user.bio.nil? %>
         <%= user.bio %>
     <% elsif user == current_user %>
-      <%= link_to "Click here to add a bio.", "/#{user.username}/info" %>
+      <%= link_to "Click here to add a bio.", "/settings/info" %>
     <% end %>
     </div>
     <% unless user.location.blank? and user.link.blank? %>

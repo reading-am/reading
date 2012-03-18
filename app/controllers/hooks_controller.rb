@@ -17,7 +17,7 @@ class HooksController < ApplicationController
     if !logged_in?
       redirect_to "/"
     elsif @hook.user != current_user
-      redirect_to "/#{current_user.username}/hooks"
+      redirect_to "/settings/hooks"
     end
 
     respond_to do |format|
@@ -46,7 +46,7 @@ class HooksController < ApplicationController
     if !logged_in?
       redirect_to "/"
     elsif @hook.user != current_user
-      redirect_to "/#{current_user.username}/hooks"
+      redirect_to "/settings/hooks"
     end
   end
 
@@ -69,7 +69,7 @@ class HooksController < ApplicationController
 
     respond_to do |format|
       if @hook.errors.size == 0 and @hook.save
-        format.html { redirect_to("/#{current_user.username}/hooks", :notice => 'Hook was successfully created.') }
+        format.html { redirect_to("/settings/hooks", :notice => 'Hook was successfully created.') }
         format.xml  { render :xml => @hook, :status => :created, :location => @hook }
       else
         format.html { render :action => "new" }
@@ -85,12 +85,12 @@ class HooksController < ApplicationController
     if !logged_in?
       redirect_to "/"
     elsif @hook.user != current_user
-      redirect_to "/#{current_user.username}/hooks"
+      redirect_to "/settings/hooks"
     end
 
     respond_to do |format|
       if @hook.update_attributes(params[:hook])
-        format.html { redirect_to("/#{current_user.username}/hooks", :notice => 'Hook was successfully updated.') }
+        format.html { redirect_to("/settings/hooks", :notice => 'Hook was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -111,7 +111,7 @@ class HooksController < ApplicationController
     @hook.destroy
 
     respond_to do |format|
-      format.html { redirect_to("/#{current_user.username}/hooks") }
+      format.html { redirect_to("/settings/hooks") }
       format.xml  { head :ok }
     end
   end

@@ -56,17 +56,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def settings
+    redirect_to logged_in? ? "/settings/info" : "/"
+  end
+
   # GET /users/1/edit
   def edit
-    if params[:username]
-      @user = User.find_by_username(params[:username])
-    else
-      @user = User.find(params[:id])
-    end
-    if @user != current_user
-      redirect_to "/#{@user.username}"
-    elsif params[:user] and @user.update_attributes(params[:user])
-      redirect_to("/#{@user.username}/info", :notice => 'User was successfully updated.')
+    redirect_to "/" if !logged_in?
+    @user = current_user
+    if params[:user] and @user.update_attributes(params[:user])
+      redirect_to("/settings/info", :notice => 'User was successfully updated.')
     end
   end
 
@@ -120,22 +119,15 @@ class UsersController < ApplicationController
   end
 
   def hooks
-    if params[:username]
-      @user = User.find_by_username(params[:username])
-    else
-      @user = User.find(params[:id])
-    end
-    if @user != current_user
-      redirect_to "/#{@user.username}"
-    else
-      @new_hook = Hook.new
-      @hooks = @user.hooks
+    redirect_to "/" if !logged_in?
+    @user = current_user
+    @new_hook = Hook.new
+    @hooks = @user.hooks
 
-      respond_to do |format|
-        format.html { render 'hooks/index' }
-        format.xml  { render 'hooks/index', :xml => @hooks }
-        format.rss  { render 'hooks/index' }
-      end
+    respond_to do |format|
+      format.html { render 'hooks/index' }
+      format.xml  { render 'hooks/index', :xml => @hooks }
+      format.rss  { render 'hooks/index' }
     end
   end
 
@@ -144,7 +136,7 @@ class UsersController < ApplicationController
     if !logged_in?
       redirect_to root_url and return
     elsif current_user.username
-      redirect_to "/#{current_user.username}/info" and return
+      redirect_to "/settings/info" and return
     end
 
     respond_to do |format|
@@ -173,14 +165,8 @@ class UsersController < ApplicationController
   end
 
   def extras
-    if params[:username]
-      @user = User.find_by_username(params[:username])
-    else
-      @user = User.find(params[:id])
-    end
-    if @user != current_user
-      redirect_to "/#{@user.username}"
-    end
+    redirect_to "/" if !logged_in?
+    @user = current_user
   end
 end
 

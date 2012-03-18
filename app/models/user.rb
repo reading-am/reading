@@ -134,6 +134,10 @@ class User < ActiveRecord::Base
     Post.from_users_followed_by(self).includes([:user, :page, :domain, {:referrer_post => :user}])
   end
 
+  def unread_since(datetime)
+    Post.unread_by_since(self, datetime).includes([:user, :page, :domain, {:referrer_post => :user}])
+  end
+
   def following_who_posted_to page
     User.who_posted_to(page).only_follows(self)
   end

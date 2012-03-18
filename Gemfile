@@ -23,7 +23,6 @@ gem "curb", "~> 0.8.0"
 gem 'nokogiri'
 gem 'addressable'
 gem 'base58'
-gem 'rufus-scheduler'
 gem 'will_paginate'
 gem 'tinder' # campfire
 gem 'pusher', "~> 0.8.3"

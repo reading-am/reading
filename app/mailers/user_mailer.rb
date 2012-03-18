@@ -10,10 +10,9 @@ class UserMailer < ActionMailer::Base
     )
   end
 
-  def digest(user, timeframe)
-    @user     = user
-    datetime  = (timeframe == :daily ? 1.day.ago : 7.days.ago) # it'll either be daily or weekly
-    @posts    = @user.unread_since datetime
+  def digest(user, freq)
+    @user   = user
+    @posts  = @user.unread_since freq.days.ago
     mail(
       :to       => @user.email,
       :subject  => "Your Reading Digest - #{Time.now.strftime("%b %d, %Y")}"

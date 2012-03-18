@@ -14,6 +14,12 @@
 
     <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Let me know when someone follows me" %><% end %>
 
+    <% if @user.access?(:digest) %>
+      <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['weekly',7]] do %>
+        <p class="help-block">Our email that catches you up on what you've missed</p>
+      <% end %>
+    <% end %>
+
     <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' do %>
       <p class="help-block">Keep it under 255 characters</p>
     <% end %>

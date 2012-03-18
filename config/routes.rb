@@ -17,9 +17,6 @@ Reading::Application.routes.draw do
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
   match '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
-  resources :hooks
-  resources :footnotes
-  
   match '/auth/loading/:provider' => 'authorizations#loading'
   match '/authorizations/:provider/:uid/update' => 'authorizations#update'
   match '/authorizations/:provider/:uid/places' => 'authorizations#places'
@@ -41,12 +38,18 @@ Reading::Application.routes.draw do
   # Search
   match '/search' => 'search#index'
 
+  resources :hooks
+  resources :footnotes
+  
+  # Settings
+  match '/settings' => 'users#settings'
+  match '/settings/info' => 'users#edit'
+  match '/settings/hooks'  => 'users#hooks'
+  match '/settings/extras' => 'users#extras'
+
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }
-  match '/:username/info'     => 'users#edit'
-  match '/:username/extras'   => 'users#extras'
-  match '/:username/hooks'    => 'users#hooks'
   match '/:username/export'   => 'users#export'
   match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }
   match '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }

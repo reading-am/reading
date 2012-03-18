@@ -15,6 +15,8 @@ class Post < ActiveRecord::Base
 
   # Return posts from the users being followed by the given user.
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
+  # For digest. All posts from a users feed that they haven't read
+  scope :unread_by_since, lambda { |user, datetime| unread_since(user, datetime) }
 
   # for will_paginate
   self.per_page = 100
@@ -45,6 +47,15 @@ class Post < ActiveRecord::Base
                       WHERE follower_id = :user_id)
     where("user_id IN (#{following_ids}) OR user_id = :user_id",
           { :user_id => user })
+  end
+
+  def self.unread_since(user, datetime)
+    following_ids = %(SELECT followed_id FROM relationships
+                      WHERE follower_id = :user_id)
+    read_page_ids = %(SELECT page_id FROM posts
+                      WHERE user_id = :user_id AND created_at >= :datetime)
+    where("user_id IN (#{following_ids}) AND created_at >= :datetime AND page_id NOT IN (#{read_page_ids})",
+          { :user_id => user, :datetime => datetime })
   end
 
   public

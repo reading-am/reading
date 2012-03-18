@@ -45,11 +45,12 @@ $dark_grey: #777;
     background-color:$dark_green;
   }
 }
-#user_bio {
+#user_bio, .user .bio {
   font-family:'Georgia', serif;
   font-style:italic;
   -webkit-font-smoothing: subpixel-antialiased;
   color:$dark_grey;
+  font-weight:normal;
 }
 #user_places {
   -webkit-font-smoothing: subpixel-antialiased;

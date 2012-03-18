@@ -169,8 +169,6 @@ GEM
       mime-types
     pg (0.13.2)
     polyglot (0.3.3)
-    pony (1.4)
-      mail (> 2.0)
     pr_geohash (1.0.0)
     pusher (0.8.5)
       multi_json (~> 1.0)
@@ -323,7 +321,6 @@ DEPENDENCIES
   omniauth-twitter
   paperclip
   pg
-  pony
   pusher (~> 0.8.3)
   rails (= 3.2.2)
   readit

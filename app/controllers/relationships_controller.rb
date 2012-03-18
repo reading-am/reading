@@ -7,11 +7,7 @@ class RelationshipsController < ApplicationController
     result = !!current_user.follow!(@user)
 
     if result && @user.wants_mail && @user.email
-      Pony.mail(
-        :to       => deliver_to(@user.email),
-        :subject  => "#{current_user.display_name} is now following you on Reading.am",
-        :body     => "Check out your new admirer: http://#{DOMAIN}/#{current_user.username}\n\nI love you,\nReading\n\n--------\nNo mas? http://#{DOMAIN}/settings"
-      )
+      UserMailer.delay.new_follower(@user, current_user)
     end
 
     respond_to do |format|

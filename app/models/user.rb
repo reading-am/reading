@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
 
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
+  # scope daily_digesters
+  # scope weekly_digesters
 
   private
 

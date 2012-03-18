@@ -1,5 +1,6 @@
-This is your Reading Digest
-----------
+#-------------------------------------------------
+# ✌ Reading Digest - <%= Time.now.strftime("%b %d, %Y") %>
+#-------------------------------------------------
 
 <% @posts.group_by(&:page).each do |page, subposts| %>
 ## <%= page.display_title %>
@@ -7,5 +8,5 @@ This is your Reading Digest
 
 <% end %>
 
----------
-Prefer not to get a digest? http://<%= DOMAIN %>/settings/info
+------------------
+Prefer to not get a digest? http://<%= DOMAIN %>/settings/info

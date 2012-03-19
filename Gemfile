@@ -36,7 +36,8 @@ gem 'sunspot_rails'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'daemons' # for delayed_job
-gem 'hirefire' # has to be AFTER delayed_job
+# gem 'hirefire' # has to be AFTER delayed_job
+gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'validate_email'
 gem "twitter-bootstrap-rails"
 gem 'bootstrap-will_paginate'

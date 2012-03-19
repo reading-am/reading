@@ -45,6 +45,8 @@ GEM
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
     base58 (0.1.0)
+    bitmask_attributes (0.2.4)
+      activerecord (~> 3.0)
     bootstrap-will_paginate (0.0.6)
       will_paginate
     browser (0.1.3)
@@ -296,6 +298,7 @@ DEPENDENCIES
   addressable
   aws-sdk
   base58
+  bitmask_attributes
   bootstrap-will_paginate
   browser
   coffee-rails

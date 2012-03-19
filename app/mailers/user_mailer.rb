@@ -9,4 +9,13 @@ class UserMailer < ActionMailer::Base
       :subject  => "#{@enactor.display_name} is now following you on Reading.am"
     )
   end
+
+  def digest(user)
+    @user   = user
+    @posts  = @user.unread_since(@user.mail_digest.days.ago)
+    mail(
+      :to       => @user.email,
+      :subject  => "Your Reading Digest - #{Time.now.strftime("%b %d, %Y")}"
+    )
+  end
 end

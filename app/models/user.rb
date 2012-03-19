@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  bitmask :access, :as => [:digest]
+
   has_many :authorizations, :dependent => :destroy
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
   has_many :domains, :through => :posts
@@ -43,6 +45,7 @@ class User < ActiveRecord::Base
 
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
+  scope :digesting_on_day, lambda { |freq| digesting(freq) }
 
   private
 
@@ -53,6 +56,10 @@ class User < ActiveRecord::Base
   def self.follows user
     where("id IN (SELECT followed_id FROM relationships WHERE follower_id = :user_id)",
           { :user_id => user})
+  end
+
+  def self.digesting freq
+    where("email IS NOT NULL AND mail_digest IN (:freq)", { :freq => freq })
   end
 
   public

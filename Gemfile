@@ -48,6 +48,7 @@ gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper'
 gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit'
+gem 'bitmask_attributes'
 
 group :development do
   gem 'ruby-debug19'

@@ -1,19 +1,10 @@
-desc "Send out the daily Reading Digest"
-task :send_daily_digest => :environment do
+desc "Send out the Reading Digest"
+task :send_digest => :environment do
   puts "Sending emails..."
-  freq = 1
+  freq = [1] # daily digesters
+  freq << 7 if Time.now.wday == 1 # if it's Monday, send to the weekly people
   User.digesting_on_day(freq).each do |user|
-    UserMailer.delay.digest(user, freq)
-  end
-  puts "done."
-end
-
-desc "Send out the weekly Reading Digest"
-task :send_weekly_digest => :environment do
-  puts "Sending emails..."
-  freq = 7
-  User.digesting_on_day(freq).each do |user|
-    UserMailer.delay.digest(user, freq)
+    UserMailer.delay.digest(user)
   end
   puts "done."
 end

@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
   end
 
   def self.digesting freq
-    where("mail_digest = :freq AND email IS NOT NULL", { :freq => freq })
+    where("email IS NOT NULL AND mail_digest IN (:freq)", { :freq => freq })
   end
 
   public

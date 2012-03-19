@@ -15,7 +15,7 @@
     <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Let me know when someone follows me" %><% end %>
 
     <% if @user.access?(:digest) %>
-      <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['weekly',7]] do %>
+      <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['every other day (recommended)',2],['weekly',7]] do %>
         <p class="help-block">An email to catch up on what you've missed</p>
       <% end %>
     <% end %>

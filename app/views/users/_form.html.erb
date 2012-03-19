@@ -16,7 +16,7 @@
 
     <% if @user.access?(:digest) %>
       <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['weekly',7]] do %>
-        <p class="help-block">Our email that catches you up on what you've missed</p>
+        <p class="help-block">To catch up on what you've missed</p>
       <% end %>
     <% end %>
 

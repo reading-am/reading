@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120320125937) do
+ActiveRecord::Schema.define(:version => 20120320132453) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20120320125937) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "verb"
+    t.integer  "pages_count", :default => 0
   end
 
   create_table "hooks", :force => true do |t|

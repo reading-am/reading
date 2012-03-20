@@ -6,7 +6,7 @@ class Post < ActiveRecord::Base
   has_one     :domain, :through => :page
   has_many    :referring_posts, :class_name => 'Post',
     :foreign_key => 'referrer_post_id'
-  belongs_to  :referrer_post, :class_name => 'Post', :counter_cache => true # NOTE: this is saved on model as :posts_count rather than :referring_posts_count
+  belongs_to  :referrer_post, :class_name => 'Post', :counter_cache => true
 
   validates_presence_of :user, :page
 

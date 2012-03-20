@@ -1,5 +1,5 @@
 class Page < ActiveRecord::Base
-  belongs_to :domain
+  belongs_to :domain, :counter_cache => true
   has_one  :readability_data
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts

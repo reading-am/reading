@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120318232109) do
+ActiveRecord::Schema.define(:version => 20120320134230) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20120318232109) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "verb"
+    t.integer  "pages_count", :default => 0
   end
 
   create_table "hooks", :force => true do |t|
@@ -65,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20120318232109) do
     t.datetime "updated_at"
     t.text     "r_title"
     t.string   "r_excerpt"
+    t.integer  "posts_count", :default => 0
   end
 
   create_table "posts", :force => true do |t|
@@ -74,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20120318232109) do
     t.integer  "referrer_post_id"
     t.integer  "page_id"
     t.boolean  "yn"
+    t.integer  "referring_posts_count", :default => 0
   end
 
   create_table "readability_data", :force => true do |t|
@@ -129,6 +132,9 @@ ActiveRecord::Schema.define(:version => 20120318232109) do
     t.string   "link"
     t.integer  "mail_digest"
     t.integer  "access"
+    t.integer  "posts_count",         :default => 0
+    t.integer  "following_count",     :default => 0
+    t.integer  "followers_count",     :default => 0
   end
 
 end

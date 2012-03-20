@@ -1,12 +1,12 @@
 class Post < ActiveRecord::Base
   attr_protected :id # this is so that we can safely use post.attributes = in post#update without worrying about overwriting the id
 
-  belongs_to  :user
-  belongs_to  :page
+  belongs_to  :user, :counter_cache => true
+  belongs_to  :page, :counter_cache => true
   has_one     :domain, :through => :page
   has_many    :referring_posts, :class_name => 'Post',
     :foreign_key => 'referrer_post_id'
-  belongs_to  :referrer_post, :class_name => 'Post'
+  belongs_to  :referrer_post, :class_name => 'Post', :counter_cache => :referring_posts_count
 
   validates_presence_of :user, :page
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120318232109) do
+ActiveRecord::Schema.define(:version => 20120320124412) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20120318232109) do
     t.datetime "updated_at"
     t.text     "r_title"
     t.string   "r_excerpt"
+    t.integer  "posts_count", :default => 0
   end
 
   create_table "posts", :force => true do |t|
@@ -129,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20120318232109) do
     t.string   "link"
     t.integer  "mail_digest"
     t.integer  "access"
+    t.integer  "posts_count",         :default => 0
   end
 
 end

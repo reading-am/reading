@@ -37,10 +37,10 @@ public
   end
 
   def display_title
-    if !r_title.blank? and r_title != "(no title provided)"
-      r_title
-    elsif !title.blank?
+    if !title.blank?
       title
+    elsif !r_title.blank? and r_title != "(no title provided)"
+      r_title
     else
       url
     end

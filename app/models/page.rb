@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
   has_many :users, :through => :posts
 
   validates_presence_of :url, :domain
+  validates_uniqueness_of :url
 
   before_validation { parse_domain }
   after_create :populate_readability

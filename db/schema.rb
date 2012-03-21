@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120320134230) do
+ActiveRecord::Schema.define(:version => 20120320230405) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20120320134230) do
     t.string   "permissions"
     t.text     "info"
   end
+
+  add_index "authorizations", ["provider", "uid"], :name => "index_authorizations_on_provider_and_uid"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -48,6 +50,8 @@ ActiveRecord::Schema.define(:version => 20120320134230) do
     t.integer  "pages_count", :default => 0
   end
 
+  add_index "domains", ["name"], :name => "index_domains_on_name", :unique => true
+
   create_table "hooks", :force => true do |t|
     t.string   "provider"
     t.integer  "user_id"
@@ -57,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20120320134230) do
     t.string   "events"
     t.integer  "authorization_id"
   end
+
+  add_index "hooks", ["user_id", "provider"], :name => "index_hooks_on_user_id_and_provider"
 
   create_table "pages", :force => true do |t|
     t.text     "url"
@@ -68,6 +74,8 @@ ActiveRecord::Schema.define(:version => 20120320134230) do
     t.string   "r_excerpt"
     t.integer  "posts_count", :default => 0
   end
+
+  add_index "pages", ["url"], :name => "index_pages_on_url", :unique => true
 
   create_table "posts", :force => true do |t|
     t.integer  "user_id"
@@ -136,5 +144,9 @@ ActiveRecord::Schema.define(:version => 20120320134230) do
     t.integer  "following_count",     :default => 0
     t.integer  "followers_count",     :default => 0
   end
+
+  add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true
+  add_index "users", ["token"], :name => "index_users_on_token", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
 end

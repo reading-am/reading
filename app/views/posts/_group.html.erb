@@ -1,4 +1,7 @@
-<% time = '' %>
+<%
+    time = ''
+    wrap_urls = false unless defined? wrap_urls
+%>
 <% posts.group_by(&:page).each do |page, subposts| %>
   <%
     subposts.reverse!
@@ -23,7 +26,7 @@
     <% end %>
     </div>
     <div class="span6 posts_group">
-      <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post } %>
+      <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post, :wrap_url => wrap_urls } %>
       <div class="posts">
       <% subposts.each do |post| %>
         <%= render :partial => 'posts/subpost', :locals => { :post => post } %>

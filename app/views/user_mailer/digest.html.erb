@@ -8,14 +8,14 @@
 <body>
 
 <% if @posts.count > 0 %>
-<%= render :partial => 'posts/group', :locals => {:posts => @posts} %>
+  <%= render :partial => 'posts/group', :locals => {:posts => @posts, :wrap_urls => true} %>
 <% else %>
-Huh, you didn't miss any posts.
-Either you're a stellar Reader or you should consider following more people.
+  Huh, you didn't miss any posts.<br>
+  Either you're a stellar Reader or you should consider following more people.
 <% end %>
 
-------------------
-Prefer to not get a digest? http://<%= DOMAIN %>/settings/info
+------------------<br>
+Prefer to not get a digest? <%= link_to "Change your settings", "http://#{DOMAIN}/settings/info" %>.
 
 </body>
 </html>

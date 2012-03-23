@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= stylesheet_link_tag 'email' %>
+  <%= stylesheet_link_tag 'models/post' %>
+  <%= stylesheet_link_tag 'app/base' %>
+</head>
+<body>
+
+<% if @posts.count > 0 %>
+<%= render :partial => 'posts/group', :locals => {:posts => @posts} %>
+<% else %>
+Huh, you didn't miss any posts.
+Either you're a stellar Reader or you should consider following more people.
+<% end %>
+
+------------------
+Prefer to not get a digest? http://<%= DOMAIN %>/settings/info
+
+</body>
+</html>

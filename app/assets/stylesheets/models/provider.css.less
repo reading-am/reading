@@ -1,0 +1,67 @@
+@grey: #EEE;
+
+.twitter .glyph {
+  color:#2493c4;
+  font-size:1.25em;
+}
+.facebook .glyph {
+  color:#557b9f;
+  background:white;
+}
+.provider {
+  font-style:normal;
+}
+.provider, a:hover .provider {
+  text-decoration:none;
+}
+.provider.twitter {
+  background-color:#d7f3ff;
+}
+.provider.instapaper {
+  background-color:#EEE;
+}
+.provider.tumblr {
+  background-color:@grey;
+}
+.tumblr .glyph {
+  color:#2C4762;
+}
+.provider.readability {
+  background:#f4f4ec;
+}
+.provider.readability .icon {
+  color:#9C0001;
+  font-size:20px;
+  line-height:0;
+}
+.provider.instapaper .icon {
+  padding:0 5px;
+  font-family:Georgia, serif;
+  font-weight:bold;
+  background:#DDD;
+}
+a:hover .provider.twitter {
+  background-color:#e6f7ff;
+}
+.provider.facebook {
+  background-color:#d2eaff;
+}
+a:hover .provider.facebook {
+  background-color:#def0ff;
+}
+.disconnected, .disconnected a, .disconnected .provider {
+  color:#555;
+}
+.disconnected .admin {
+  font-size:12px;
+}
+.disconnected .provider, .disconnected a:hover .provider {
+  background:@grey;
+}
+.disconnected .glyph {
+  color:#999;
+}
+.disconnected .provider.instapaper .icon {
+  background:#AAA;
+  color:#FFF;
+}

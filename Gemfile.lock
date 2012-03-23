@@ -1,4 +1,21 @@
 GIT
+  remote: git://github.com/Sija/premailer-rails3.git
+  revision: 868654326ac998dede4fde02d953da35fca9ba27
+  specs:
+    premailer-rails3 (1.1.0)
+      premailer (~> 1.7)
+      rails (~> 3)
+
+GIT
+  remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
+  revision: e69b023d9ea653bd461e80ec0627ab595ef8569b
+  specs:
+    twitter-bootstrap-rails (2.0.4)
+      actionpack (>= 3.1)
+      less-rails (~> 2.1.6)
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/zzip/twitter_bootstrap_form_for.git
   revision: eb4f07f5a15d44db449b4335f2c57eb3899604ce
   specs:
@@ -64,6 +81,9 @@ GEM
       therubyracer (~> 0.9.9)
     cookiejar (0.3.0)
     crack (0.3.1)
+    css_parser (1.2.6)
+      addressable
+      rdoc
     curb (0.8.0)
     daemons (1.1.8)
     dalli (1.1.5)
@@ -96,6 +116,7 @@ GEM
     hipchat (0.4.1)
       httparty
     hirefireapp (0.0.7)
+    htmlentities (4.3.1)
     http_parser.rb (0.5.3)
     httparty (0.8.1)
       multi_json
@@ -173,6 +194,9 @@ GEM
     pg (0.13.2)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
+    premailer (1.7.3)
+      css_parser (>= 1.1.9)
+      htmlentities (>= 4.0.0)
     pusher (0.8.5)
       multi_json (~> 1.0)
       ruby-hmac (~> 0.4.0)
@@ -271,10 +295,6 @@ GEM
       faraday (~> 0.7)
       multi_json (~> 1.0)
       simple_oauth (~> 0.1)
-    twitter-bootstrap-rails (2.0.3)
-      actionpack (>= 3.1)
-      less-rails (~> 2.1.6)
-      railties (>= 3.1)
     twitter-stream (0.1.14)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
@@ -315,6 +335,7 @@ DEPENDENCIES
   instapaper
   jquery-rails
   koala
+  less-rails
   nokogiri
   omniauth-37signals
   omniauth-facebook
@@ -324,6 +345,7 @@ DEPENDENCIES
   omniauth-twitter
   paperclip
   pg
+  premailer-rails3!
   pusher (~> 0.8.3)
   rails (= 3.2.2)
   readit
@@ -336,7 +358,7 @@ DEPENDENCIES
   tinder
   tumblr-ruby
   twitter (>= 2.0.0.rc.2)
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails!
   twitter_bootstrap_form_for!
   typhoeus
   uglifier

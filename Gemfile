@@ -5,6 +5,7 @@ gem 'thin' # server
 gem 'rails', '3.2.2'
 group :assets do
   gem 'sass-rails'
+  gem 'less-rails'
   gem 'coffee-rails'
   gem 'uglifier'
 end
@@ -39,7 +40,7 @@ gem 'daemons' # for delayed_job
 # gem 'hirefire' # has to be AFTER delayed_job
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'validate_email'
-gem "twitter-bootstrap-rails"
+gem "twitter-bootstrap-rails", :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'
@@ -51,6 +52,7 @@ gem 'instapaper'
 gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit'
 gem 'bitmask_attributes'
+gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 
 group :development do
   gem 'ruby-debug19'

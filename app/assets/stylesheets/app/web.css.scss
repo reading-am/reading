@@ -12,17 +12,6 @@
     font-style: normal;
 }
 
-@mixin gradient($first, $second) {
-  background: $second; /* Old browsers */
-  background: -moz-linear-gradient(top, $first 0%, $second 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$first), color-stop(100%,$second)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, $first 0%,$second 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, $first 0%,$second 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, $first 0%,$second 100%); /* IE10+ */
-  background: linear-gradient(top, $first 0%,$second 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$first', endColorstr='$second',GradientType=0 ); /* IE6-9 */
-}
-
 /*
  * Variables
  */
@@ -34,42 +23,11 @@ $green: #38ff7E;
 $dark_green: #79ff30;
 $grey: #EEE;
 
-/*
- * Basic HTML elements
- */
-html {
-  -webkit-font-smoothing: antialiased;
-}
-body {
-  margin:16px 0 50px;
-}
-h1 {
-  font-size:28px;
-  color:#000;
-}
-a {
-  text-decoration:none;
-  color:#000;
-}
-  a:hover {
-    text-decoration:underline;
-    color:#000;
-  }
-
 .glyph {
   font-family:'WebSymbolsRegular';
   text-transform:none;
   font-size:100%;
 }
-  .twitter .glyph {
-    color:#2493c4;
-    font-size:1.25em;
-  }
-
-  .facebook .glyph {
-    color:#557b9f;
-    background:white;
-  }
 
 #hooks h4, #authorizations h4 {
   margin:0;
@@ -142,70 +100,10 @@ footer {
 #error_explanation {
   color:red;
 }
-
-/* provider spans */
-.provider {
-  font-style:normal;
-}
-.provider, a:hover .provider {
-  text-decoration:none;
-}
-.provider.twitter {
-  background-color:#d7f3ff;
-}
-.provider.instapaper {
-  background-color:#EEE;
-}
-.provider.tumblr {
-  background-color:$grey;
-}
-.tumblr .glyph {
-  color:#2C4762;
-}
-.provider.readability {
-  background:#f4f4ec;
-}
-.provider.readability .icon {
-  color:#9C0001;
-  font-size:20px;
-  line-height:0;
-}
-.provider.instapaper .icon {
-  padding:0 5px;
-  font-family:Georgia, serif;
-  font-weight:bold;
-  background:#DDD;
-}
-a:hover .provider.twitter {
-  background-color:#e6f7ff;
-}
-.provider.facebook {
-  background-color:#d2eaff;
-}
-a:hover .provider.facebook {
-  background-color:#def0ff;
-}
 a.rss .glyph {
   font-size:0.75em;
   vertical-align:top;
   background-color:#FFF;
-}
-
-.disconnected, .disconnected a, .disconnected .provider {
-  color:#555;
-}
-.disconnected .admin {
-  font-size:12px;
-}
-.disconnected .provider, .disconnected a:hover .provider {
-  background:$grey;
-}
-.disconnected .glyph {
-  color:#999;
-}
-.disconnected .provider.instapaper .icon {
-  background:#AAA;
-  color:#FFF;
 }
 
 #notice {
@@ -227,37 +125,6 @@ a.rss .glyph {
 #readers a {
   font-weight:normal;
 }
-
-#loading {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  z-index:99999999;
-  text-align:center;
-  display:none;
-}
-  #loading span {
-    position:absolute;
-  }
-  #loading h1 {
-    font-size:175px;
-    margin:100px 0 0;
-    line-height:135px;
-    background:#FFF;
-    font-weight:normal;
-  }
-  #loading h2 {
-    font-size:24px;
-    line-height:20px;
-    background:#FFF;
-    padding:5px 0 10px;
-  }
-  #loading div {
-    background:#FFF;
-    opacity:0.5;
-    width:100%; height:100%;
-    position:absolute;
-  }
 
 .date {
   line-height:26px;

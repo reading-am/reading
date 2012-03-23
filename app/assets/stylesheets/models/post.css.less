@@ -1,8 +1,8 @@
-$blue: #B3FEFF;
-$dark_blue: #00FBFF;
+@blue: #B3FEFF;
+@dark_blue: #00FBFF;
 
-.posts_group {
-  margin-bottom:46px !important; // This is needed so the responsive stylesheet doesn't override it
+.row .posts_group { // .row is needed so the responsive stylesheet doesn't override it
+  margin-bottom:46px;
 }
 
 .posts_group .posts {
@@ -56,6 +56,6 @@ h3.nope:before {
   font-weight:bold;
 }
   .info:hover {
-    background:$blue;
+    background:@blue;
     text-decoration:none;
   }

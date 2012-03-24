@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   before_create { generate_token(:token) }
   before_create { generate_token(:auth_token) }
 
+  scope :find_by_username, lambda { |username| where("lower(username) = ?", username.downcase).limit(1) }
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }

@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
     :s3_protocol => 'https',
     :bucket => "reading-#{Rails.env}",
     :s3_credentials => {
-      :access_key_id => ENV['S3_KEY'],
-      :secret_access_key => ENV['S3_SECRET']
+      :access_key_id => ENV['READING_S3_KEY'],
+      :secret_access_key => ENV['READING_S3_SECRET']
     }
   validates_attachment_size :avatar, :less_than=>2.megabytes
   validates_attachment_content_type :avatar, :content_type=>['image/jpeg', 'image/png', 'image/gif']

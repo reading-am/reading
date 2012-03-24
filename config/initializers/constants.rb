@@ -1,37 +1,11 @@
 SHORT_DOMAIN = 'ing.am'
-
-if Rails.env == 'production'
-  DOMAIN = 'reading.am'
-
-  FACEBOOK_KEY = '241046329250415'
-  FACEBOOK_SECRET = 'dedc9c174b5f712fe29bde26df8f8cdf'
-
-  TUMBLR_KEY = 'Eng1Mfs57r2AUwzDbN20fqdP7QL1xKuzsp2TVWTyJWfKOjKxMr'
-  TUMBLR_SECRET = 'acdMaWxmJOJcWCJA67Fyhyfz3IM8TttPKpqizUviYMbtAcgo3z'
-
-  SIGNALS37_KEY = '870ff838037a62a7058c0fc93f4cb14632626b0f'
-  SIGNALS37_SECRET = '6a2741bc2e998b3e07de412ac8504437dd3ea430'
-else
-  DOMAIN = Rails.env == 'staging' ? 'staging.reading.am' : '0.0.0.0:3000'
-  # DOMAIN = 'reading.dev'
-  FACEBOOK_KEY = '115933145182597'
-  FACEBOOK_SECRET = 'da0fac5ca6afbe272f51e297d3380dce'
-
-  TUMBLR_KEY = 'uCJLklwqxUbEnoanGx8jmP56kkAH0Isky1ZGHgBqMjwLCejLLB'
-  TUMBLR_SECRET = 'utULXc3qVj0jyPnLPH2fJT1tKE9wEkjwqVKRvcLwkBy9lG9dZG'
-
-  SIGNALS37_KEY = '0d2eb24337e813014d81c35eb5fac0425293a9e9'
-  SIGNALS37_SECRET = '27f7b8f3dcaabff9b2bf556aa4d9144c2c34eed5'
-end
-
-TWITTER_KEY = 'saMngnlSaaIapiznEqqw'
-TWITTER_SECRET = '17tgkJvgwwdKplVqSfCHKTwsOjbaMuCW4Rxe3rrDkA'
-
-READABILITY_TOKEN = '16978b20e4eb2d300a8f7ac0a77eda07f9fc249f' # for the content API
-READABILITY_KEY = 'leppert'
-READABILITY_SECRET = 'x48Ex22NzvB5pAUAEuxrLTb7WZ7c6tdB'
-
-INSTAPAPER_KEY = 'sNurhY0VTuwhNdkTvP16g5aTs4DM9YVsONzNDj8nCMsFPSb1Lc'
-INSTAPAPER_SECRET = 'FedO0z1q7ef33F2khItKPJFyikhRbCeD1l3KfNhwDJcaAFH2YC'
-
 BOOKMARKLET_VERSION = '1.0.1'
+
+case Rails.env
+when 'production'
+  DOMAIN = 'reading.am'
+when 'staging'
+  DOMAIN = 'staging.reading.am'
+when 'development'
+  DOMAIN = '0.0.0.0:3000'
+end

@@ -1,4 +1,5 @@
-desc "Send out the Reading Digest"
+desc "This task is called by the Heroku scheduler add-on"
+
 task :send_digest => :environment do
   puts "Sending emails..."
   freq = [1] # daily digesters

@@ -54,6 +54,11 @@ gem 'readit'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 
+# for sitemaps. See: https://github.com/kjvarga/sitemap_generator/wiki/Generate-Sitemaps-on-read-only-filesystems-like-Heroku
+gem 'sitemap_generator'
+gem 'carrierwave'
+gem 'fog'
+
 group :development do
   gem 'ruby-debug19'
   gem 'sunspot_solr'

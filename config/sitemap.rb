@@ -1,5 +1,5 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host  = "https://reading.am"
+SitemapGenerator::Sitemap.default_host  = "https://#{DOMAIN}"
 SitemapGenerator::Sitemap.sitemaps_host = "https://s3.amazonaws.com/reading-#{Rails.env}/"
 SitemapGenerator::Sitemap.public_path   = 'tmp/'
 SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'

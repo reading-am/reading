@@ -4,4 +4,4 @@
 # User-Agent: *
 # Disallow: /
 
-Sitemap: https://s3.amazonaws.com/reading-production/sitemaps/sitemap_index.xml.gz
+Sitemap: http://reading-production.s3.amazonaws.com/sitemaps/sitemap_index.xml.gz

@@ -6,7 +6,7 @@
         <li>
           <%= render :partial => 'authorizations/authorization', :locals => {:authorization => authorization} %>
           <% if authorization.user == current_user and @user.authorizations.length > 1 %>
-            <%= link_to 'Disconnect', authorization, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %>
+            <%= link_to 'Disconnect', authorization, :class => 'admin action', :confirm => "Disconnecting will also remove any hooks that use this connection. Are you sure you want to continue?", :method => :delete %>
           <% end %>
         </li>
       <% end %>

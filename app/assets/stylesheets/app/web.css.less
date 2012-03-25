@@ -15,13 +15,13 @@
 /*
  * Variables
  */
-$yellow: #FFFBCC;
-$dark_yellow: #FFF461;
-$blue: #cdfeff;
-$dark_blue: #00FBFF;
-$green: #38ff7E;
-$dark_green: #79ff30;
-$grey: #EEE;
+@yellow: #FFFBCC;
+@dark_yellow: #FFF461;
+@blue: #cdfeff;
+@dark_blue: #00FBFF;
+@green: #38ff7E;
+@dark_green: #79ff30;
+@grey: #EEE;
 
 .glyph {
   font-family:'WebSymbolsRegular';
@@ -31,9 +31,6 @@ $grey: #EEE;
 
 #hooks h4, #authorizations h4 {
   margin:0;
-}
-#authorizations {
-  margin-bottom:24px;
 }
 
 .admin.action, .row:hover li .admin.action {
@@ -66,19 +63,19 @@ a.back, .actions {
 
 #visit {
   margin:150px 0 0;
-}
-#visit h2 {
-  font-size:16px;
-}
-#visit span {
-  text-decoration:underline;
+  h2 {
+    font-size:16px;
+  }
+  span {
+    text-decoration:underline;
+  }
 }
 
 footer a, a.user.you {
-  background-color:$blue;
+  background-color:@blue;
 }
   footer a:hover, a.user.you:hover {
-    background-color:$dark_blue;
+    background-color:@dark_blue;
   }
 a.active, a.active:hover, h4 .active {
   cursor:default;
@@ -112,10 +109,10 @@ a.rss .glyph {
 
 
 .breadcrumb a {
-  background:$blue;
-}
-.breadcrumb a:hover {
-  background:$dark_blue;
+  background:@blue;
+  &:hover {
+    background:@dark_blue;
+  }
 }
 
 #readers a {
@@ -138,17 +135,24 @@ nav a {
   background:none;
   border:none;
 }
-#user_info .form-actions {
-  padding-top:0;
+#user_info {
+  .form-actions {
+    padding-top:0;
+  }
+  .control-group.error .help-block {
+    display:none;
+  }
 }
-#user_info .control-group.error .help-block {
-  display:none;
-}
-#authorizations li {
-  margin:5px 0 0;
-}
-#authorizations .provider {
-  font-size:15px;
+#authorizations {
+  li {
+    margin:5px 0 0;
+  }
+  .provider {
+    font-size:15px;
+  }
+  .disconnected {
+    display:none; // hidden because Safari doesn't popup auth window onchange event
+  }
 }
 .search_results {
   margin-bottom:23px;
@@ -167,11 +171,13 @@ nav a {
 .extra p a {
   text-decoration:underline;
 }
-#pick_a_url label {
-  font-size:24px;
-}
-#pick_a_url #user_username_controls {
-  margin-top:23px;
+#pick_a_url {
+  label {
+    font-size:24px;
+  }
+  #user_username_controls {
+    margin-top:23px;
+  }
 }
 #lead_in {
   color:#000;

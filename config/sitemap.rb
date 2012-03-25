@@ -1,5 +1,4 @@
 SitemapGenerator::Sitemap.default_host  = "https://#{DOMAIN}"
-SitemapGenerator::Sitemap.sitemaps_host = "http://reading-#{Rails.env}.s3.amazonaws.com/"
 SitemapGenerator::Sitemap.public_path   = 'tmp/'
 SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::WaveAdapter.new

@@ -1,7 +1,7 @@
 Reading::Application.routes.draw do
   root :to => "posts#index"
   
-  match '/sitemap.xml', :controller => 'sitemap', :action => 'index'
+  match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
 
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"

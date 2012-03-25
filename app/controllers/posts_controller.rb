@@ -46,7 +46,7 @@ class PostsController < ApplicationController
     @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
     @post.yn    = params[:yn]
 
-    unless @post.user.nil?
+    if !@post.user.blank?
       # A post is a duplicate if it's the exact same page and within 1hr of the last post
       duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first : false;
       # TODO - clean up these conditionals for duplicates and the same in the respond_to
@@ -102,7 +102,7 @@ class PostsController < ApplicationController
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        if @post.user.nil? # TODO clean up this auth hack. Ugh.
+        if @post.user.blank? # TODO clean up this auth hack. Ugh.
           format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
         else
           format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@post.errors.to_yaml}"}}, :callback => params[:callback] }

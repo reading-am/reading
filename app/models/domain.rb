@@ -4,7 +4,7 @@ class Domain < ActiveRecord::Base
   has_many :users, :through => :pages
 
   validates_presence_of :name
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, :case_sensitive => false
 
   def to_param
     name

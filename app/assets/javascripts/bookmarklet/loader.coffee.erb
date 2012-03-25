@@ -160,6 +160,11 @@ providers = [
     url_scheme: "https://pinboard.in/add?showtags=yes&url={url}&title={title}&tags=Reading.am"
     action: (url) ->
       popup url, 490, 400
+  new Provider
+    name: "Email"
+    url_scheme: "mailto:?subject=✌%20Reading%20%22{title}%22&body={wrapped_url}"
+    action: (url) ->
+      window.location.href = url
 ]
 
 #-----------------------------------------

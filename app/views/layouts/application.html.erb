@@ -17,7 +17,7 @@
   <%= og_tags(@og_props || {}) %>
   <% if mobile_device? %><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /><% end %>
   <script> var ENVIRONMENT = '<%= Rails.env %>'; </script>
-  <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? %>
+  <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? and ["posts","list"].include? params[:type] %>
   <%= stylesheet_link_tag 'application' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
   <%= javascript_include_tag 'application' %>

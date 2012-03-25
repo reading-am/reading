@@ -177,7 +177,9 @@ class PostsController < ApplicationController
   # but Rails make sharing code between controller methods
   # a pain in the ass
   def visit
-    @token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
+    # this is disabled while I look for some funny business
+    #@token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
+    @token = if logged_in? then current_user.token else '' end
     @referrer_id = 0 # default
 
     if !params[:id]

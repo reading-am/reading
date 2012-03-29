@@ -179,7 +179,7 @@ class PostsController < ApplicationController
   def visit
     # this is disabled while I look for some funny business
     #@token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
-    @token = if logged_in? then current_user.token else '' end
+    @token = if params[:token] == '-' then params[:token] elsif logged_in? then current_user.token else '' end
     @referrer_id = 0 # default
 
     if !params[:id]

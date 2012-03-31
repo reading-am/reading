@@ -69,7 +69,7 @@ class PostsController < ApplicationController
     end
 
     respond_to do |format|
-      if !@post.changed? or @post.save
+      if (!@post.new_record? and !@post.changed?) or @post.save
         # We treat Pusher just like any other hook except that we don't store it
         # with the user so we go ahead and construct one here
         Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@post, event)

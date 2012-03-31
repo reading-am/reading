@@ -96,8 +96,11 @@ Post::find_or_create = (data, success) ->
     data: data
     success: (data, textStatus, jqXHR) ->
       switch data.meta.status
-        when 400 then alert errors.general
-        when 403 then alert errors.forbidden
+        when 400
+          alert errors.general
+        when 403
+          $("#r_am").remove() # need to encapsulate this into the menu itself
+          alert errors.forbidden
         else
           if success
             data.response.post = new Post data.response.post

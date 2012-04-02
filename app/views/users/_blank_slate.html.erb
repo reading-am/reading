@@ -35,7 +35,7 @@
       </p>
       <div class="well">
         <% if browser.chrome? %>
-          <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+          <%= extension_install :chrome, 'Install Chrome Extension' %>
         <% else %>
           <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
         <% end %>
@@ -47,7 +47,7 @@
           <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
         <% else %>
           if you have the Google Chrome browser, you can install this extension:
-          <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+          <%= extension_install :chrome, 'Install Chrome Extension' %>
         <% end %>
       </p>
       <p>

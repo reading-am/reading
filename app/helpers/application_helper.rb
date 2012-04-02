@@ -42,7 +42,7 @@ module ApplicationHelper
   end
 
   def extension_install browser, text=false
-    text = browser.to_s.capitalize if text.blank?
+    text = "#{browser.to_s.capitalize} Extension" if text.blank?
     case browser.to_s
       when 'chrome'
         link = 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk'

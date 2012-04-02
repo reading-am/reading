@@ -40,4 +40,17 @@ module ApplicationHelper
     path = request.path.split('/page')[0]
     "#{path + (path[-params[:type].length-1..-1] != "/#{params[:type]}" ? "/#{params[:type]}" : '')}.rss#{token ? "?t=#{token}" : ""}"
   end
+
+  def extension_install browser, text=false
+    text = browser.to_s.capitalize if text.blank?
+    case browser.to_s
+      when 'chrome'
+        link = 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk'
+      when 'safari'
+        link = 'http://reading-production.s3.amazonaws.com/extensions/reading.safariextz'
+      when 'firefox'
+        link = 'https://addons.mozilla.org/en-us/firefox/addon/reading-am/'
+    end
+    link_to text, link, :class => "btn #{browser}-install"
+  end
 end

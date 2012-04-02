@@ -80,4 +80,8 @@ $ ->
       chrome.webstore.install()
       false
 
+  $(".firefox-install").on "click", ()->
+    window.open($(this).attr("href"))
+    false
+
   # $('a[rel=tooltip]').tooltip({delay:{show:1000}})

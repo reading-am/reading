@@ -18,13 +18,15 @@
 
 <div class="row extra">
   <div class="span7 offset1">
-    <h3>Chrome Extension</h3>
+    <h3>Browser Extensions</h3>
     <p>
       For Google Chrome users, the Reading extension is a better choice than our bookmarklet.
       Not only can you post the current page, you can also right click to post links and images.
     </p>
     <div class="well">
-      <%= link_to 'Install Chrome Extension', 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk', :class => 'btn chrome-install' %>
+      <%= extension_install :chrome %>
+      <%= extension_install :safari %>
+      <%= extension_install :firefox %>
     </div>
   </div>
 </div>

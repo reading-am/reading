@@ -29,6 +29,10 @@
       To begin adding posts to your profile,
         <% if browser.chrome? %>
           install the Chrome Extension.
+        <% elsif browser.safari? %>
+          install the Safari Extension.
+        <% elsif browser.firefox? %>
+          install the Firefox Extension.
         <% else %>
           drag this link to your bookmarks bar.
         <% end %>
@@ -36,18 +40,24 @@
       <div class="well">
         <% if browser.chrome? %>
           <%= extension_install :chrome, 'Install Chrome Extension' %>
+        <% elsif browser.safari? %>
+          <%= extension_install :safari, 'Install Safari Extension' %>
+        <% elsif browser.firefox? %>
+          <%= extension_install :firefox, 'Install Firefox Extension' %>
         <% else %>
           <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
         <% end %>
       </div>
       <p>
         Or, alternately,
-        <% if browser.chrome? %>
+        <% if browser.chrome? or browser.safari? or browser.firefox? %>
           you can use this bookmarklet in any browser by dragging it to your bookmarks bar:
           <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
         <% else %>
-          if you have the Google Chrome browser, you can install this extension:
-          <%= extension_install :chrome, 'Install Chrome Extension' %>
+          if you have one of these browsers, you can install our extension:
+          <%= extension_install :chrome %>
+          <%= extension_install :safari %>
+          <%= extension_install :firefox %>
         <% end %>
       </p>
       <p>

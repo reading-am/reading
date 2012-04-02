@@ -31,6 +31,8 @@ Reading::Application.routes.draw do
     resources :pages
   end
 
+  match '/extensions/safari/update' => 'extras#safari_update'
+
   match '/pick_a_url' => 'users#pick_a_url'
   match "/users" => redirect("/")
   resources :users do

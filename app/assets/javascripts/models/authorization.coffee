@@ -137,9 +137,10 @@ window.ReadabilityAuth = ReadabilityAuth
 class FacebookAuth extends Authorization
   provider: "facebook"
 
-  constructor: (@uid, @permissions = []) ->
+  constructor: (@uid, @permissions = [], @info) ->
     # make sure you grab certain default permissions on a new authorization
     @permissions = @permissions.concat(["email","offline_access"]).unique() if !@uid or @uid is "new"
+    super @uid, @permissions, @info
 
   login: (params={}) ->
     success = params.success ? ->

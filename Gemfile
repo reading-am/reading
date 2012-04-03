@@ -44,7 +44,7 @@ gem "twitter-bootstrap-rails", :git => 'git://github.com/seyhunak/twitter-bootst
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'
-gem 'paperclip'
+gem 'paperclip', '2.7.0'
 gem 'browser'
 gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser

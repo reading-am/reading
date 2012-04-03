@@ -26,7 +26,8 @@ class User < ActiveRecord::Base
     :default_url => '/assets/users/:attachment/default_:style.png',
     :storage => :s3,
     :s3_protocol => 'https',
-    :bucket => "reading-#{Rails.env}",
+    :bucket => "reading-production",
+    #:bucket => "reading-#{Rails.env}",
     :s3_credentials => {
       :access_key_id => ENV['READING_S3_KEY'],
       :secret_access_key => ENV['READING_S3_SECRET']
@@ -159,7 +160,9 @@ class User < ActiveRecord::Base
       :type       => 'User',
       :id         => to_s ? id.to_s : id,
       :username   => username,
-      :display_name => display_name
+      :display_name => display_name,
+      :avatar     => avatar.url,
+      :mini_avatar=> avatar.url(:mini)
     }
   end
 end

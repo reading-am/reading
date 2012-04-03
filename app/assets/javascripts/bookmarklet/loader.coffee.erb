@@ -197,10 +197,10 @@ render_menu = (post, readers = false) ->
 
   first_post= !$reading.hasClass('r_submitted')
 
-  $readers.slideUp().html '<li>&#8258; Other Readers</li>' # clear previous readers
+  $readers.slideUp().html '<li class=\"r_padded\">&#8258; Other Readers</li>' # clear previous readers
   if readers
     $.each readers, (i, user) ->
-      $readers.append "<li><a href=\"http://#{domain}/#{user.username}\">#{user.display_name}</a></li>"
+      $readers.append "<li class=\"r_user\"><a href=\"http://#{domain}/#{user.username}\"><img src=\"#{user.mini_avatar}\"> #{user.display_name}</a></li>"
 
   $wrapper.delay(500).animate
     height: "14px"
@@ -387,3 +387,4 @@ else
       $ = jQuery
       $.noConflict()
       if up_to_date() then init() else upgrade()
+

@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
       :thumb => "70x70>",
       :large => "500x500>"
     },
-    :default_url => '/assets/users/:attachment/default_:style.png',
+    :default_url => "//#{DOMAIN}/assets/users/:attachment/default_:style.png",
     :storage => :s3,
     :s3_protocol => 'https',
     :bucket => "reading-production",

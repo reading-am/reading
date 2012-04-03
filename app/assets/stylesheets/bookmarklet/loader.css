@@ -30,7 +30,7 @@
   width:50px;
 }
 #r_am .r_padded {
-  padding:10px 10px 5px;
+  padding:8px 10px;
 }
 #r_wrp, #r_am li {
   background:yellow;
@@ -79,6 +79,7 @@
 }
 #r_am .r_user a {
   line-height:25px;
+  padding-right:6px;
 }
 #r_am .r_user img {
   vertical-align:middle;

@@ -206,8 +206,8 @@ render_menu = (post, readers = false) ->
           <img src=\"#{user.mini_avatar}\"> #{user.display_name}
         </a>"
       if user.posts?
-        dom += "<a href=\"#{user.posts.before.wrapped_url}\">«</a>" if user.posts.before?
-        dom += "<a href=\"#{user.posts.after.wrapped_url}\">»</a>" if user.posts.after?
+        dom += "<a class=\"r_tagalong r_before\" href=\"#{user.posts.before.wrapped_url}\">«</a>" if user.posts.before?
+        dom += "<a class=\"r_tagalong r_after\" href=\"#{user.posts.after.wrapped_url}\">»</a>" if user.posts.after?
       dom += "</li>"
       $readers.append dom
 

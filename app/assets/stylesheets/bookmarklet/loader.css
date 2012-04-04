@@ -92,3 +92,10 @@ a#r_stuff {
   vertical-align:middle;
   margin:-2px 2px 0 0;
 }
+#r_am a.r_tagalong {
+  padding:0 5px;
+  background:#00FBFF;
+}
+#r_am a.r_tagalong:hover {
+  background:#CDFEFF;
+}

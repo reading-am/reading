@@ -95,15 +95,13 @@ class PostsController < ApplicationController
             :readers => User.who_posted_to(@post.page).collect { |user|
               if user != @post.user # don't show the person posting
                 obj = user.simple_obj
-                if @post.user.access?(:tagalong)
-                  cur_post = user.posts.where('page_id = ?', @post.page.id).last
-                  before =  user.posts.where('id < ?', cur_post.id).first
-                  after = user.posts.where('id > ?', cur_post.id).last
-                  obj[:posts] = {
-                    :before => before.blank? ? nil : before.simple_obj,
-                    :after => after.blank? ? nil : after.simple_obj
-                  }
-                end
+                cur_post = user.posts.where('page_id = ?', @post.page.id).last
+                before =  user.posts.where('id < ?', cur_post.id).first
+                after = user.posts.where('id > ?', cur_post.id).last
+                obj[:posts] = {
+                  :before => before.blank? ? nil : before.simple_obj,
+                  :after => after.blank? ? nil : after.simple_obj
+                }
                 obj
               end
             }.compact

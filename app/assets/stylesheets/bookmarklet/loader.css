@@ -26,11 +26,9 @@
 }
 #r_wrp {
   overflow:hidden;
-  height:60px;
+  height:75px;
   width:50px;
-}
-#r_wrp, #r_other {
-  padding:8px 10px;
+  padding:0 10px;
 }
 #r_wrp, #r_am li {
   background:yellow;
@@ -38,7 +36,7 @@
 #r_icon {
   font-size:56px;
   line-height:0;
-  margin:18px 0 25px;
+  margin:26px 0 25px;
 }
 .r_submitted #r_icon {
   color:yellow !important;
@@ -46,10 +44,13 @@
 #r_actions {
   margin:15px 0 0;
   width:150px;
+  line-height:32px;
+}
+#r_actions a {
+  padding:2px;
 }
 #r_am a {
   display:inline-block;
-  padding:2px;
 }
 #r_am a:hover, #r_am .r_active {
   background:#FFF;
@@ -68,21 +69,24 @@
 #r_stuff_menu, #r_readers {
   display:none;
 }
-#r_stuff_menu a {
-  padding:5px;
-}
 #r_nope {
   margin:0 3px 0 0;
 }
-#r_stuff {
+a#r_stuff {
   margin:0 3px;
+  padding:2px 8px 3px;
+  border-left:1px dotted #000;
+  border-right:1px dotted #000;
 }
 #r_close {
   margin:0 0 0 3px;
 }
-#r_am .r_user a {
+#r_am .r_user a, #r_other, #r_stuff_menu a {
+  padding:0 8px;
   line-height:25px;
-  padding-right:6px;
+}
+#r_am .r_user a {
+  padding-left:0;
 }
 #r_am .r_user img {
   vertical-align:middle;

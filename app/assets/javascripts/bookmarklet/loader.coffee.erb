@@ -203,12 +203,12 @@ render_menu = (post, readers = false) ->
       $readers.append "<li class=\"r_user\"><a href=\"http://#{domain}/#{user.username}\"><img src=\"#{user.mini_avatar}\"> #{user.display_name}</a></li>"
 
   $wrapper.delay(500).animate
-    height: "14px"
+    height: "29px"
     width: $actions.width()
 
   $icon.delay(500).animate "margin-top": "-56px", ->
     $reading.addClass('r_submitted')
-  $readers.delay(700).slideDown() if readers
+  $readers.delay(800).slideDown() if readers
 
   if first_post
     $('#r_close').click ->
@@ -387,4 +387,3 @@ else
       $ = jQuery
       $.noConflict()
       if up_to_date() then init() else upgrade()
-

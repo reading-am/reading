@@ -5,7 +5,7 @@ class Authorization
   constructor: (@uid, @permissions = [], @info) ->
     @name = if @info? and @info.username? then @info.username else @uid
     # make sure you grab certain default permissions on a new authorization
-    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
+    @permissions = @permissions.concat(["read","write"]).unique() if @provider != "facebook" and (!@uid or @uid is "new")
 
   can: (perm) ->
     @uid and @uid != "new" and @permissions and perm in @permissions

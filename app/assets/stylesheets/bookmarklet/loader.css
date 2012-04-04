@@ -29,7 +29,7 @@
   height:60px;
   width:50px;
 }
-#r_am .r_padded {
+#r_wrp, #r_other {
   padding:8px 10px;
 }
 #r_wrp, #r_am li {
@@ -44,7 +44,7 @@
   color:yellow !important;
 }
 #r_actions {
-  margin:10px 0 0;
+  margin:15px 0 0;
   width:150px;
 }
 #r_am a {
@@ -67,6 +67,9 @@
 }
 #r_stuff_menu, #r_readers {
   display:none;
+}
+#r_stuff_menu a {
+  padding:5px;
 }
 #r_nope {
   margin:0 3px 0 0;

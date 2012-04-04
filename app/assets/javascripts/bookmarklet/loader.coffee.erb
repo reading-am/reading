@@ -200,9 +200,6 @@ render_menu = (post, readers = false) ->
   $readers.slideUp().html '<li id=\"r_other\">&#8258; Other Readers</li>' # clear previous readers
   if readers
     $.each readers, (i, user) ->
-<<<<<<< HEAD
-      $readers.append "<li class=\"r_user\"><a href=\"http://#{domain}/#{user.username}\"><img src=\"#{user.mini_avatar}\"> #{user.display_name}</a></li>"
-=======
       dom = "
       <li class=\"r_user\">
         <a href=\"http://#{domain}/#{user.username}\">
@@ -213,7 +210,6 @@ render_menu = (post, readers = false) ->
         dom += "<a class=\"r_tagalong r_after\" href=\"#{user.posts.after.wrapped_url}\">»</a>" if user.posts.after?
       dom += "</li>"
       $readers.append dom
->>>>>>> tagalong
 
   $wrapper.delay(500).animate
     height: "29px"

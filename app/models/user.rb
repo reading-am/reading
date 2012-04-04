@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
       :thumb => "70x70>",
       :large => "500x500>"
     },
-    :default_url => '/assets/users/:attachment/default_:style.png',
+    :default_url => "//#{DOMAIN}/assets/users/:attachment/default_:style.png",
     :storage => :s3,
     :s3_protocol => 'https',
     :bucket => "reading-#{Rails.env}",
@@ -159,7 +159,9 @@ class User < ActiveRecord::Base
       :type       => 'User',
       :id         => to_s ? id.to_s : id,
       :username   => username,
-      :display_name => display_name
+      :display_name => display_name,
+      :avatar     => avatar.url,
+      :mini_avatar=> avatar.url(:mini)
     }
   end
 end

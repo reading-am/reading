@@ -26,9 +26,9 @@
 }
 #r_wrp {
   overflow:hidden;
-  height:60px;
+  height:75px;
   width:50px;
-  padding:10px 10px 5px;
+  padding:0 10px;
 }
 #r_wrp, #r_am li {
   background:yellow;
@@ -36,14 +36,21 @@
 #r_icon {
   font-size:56px;
   line-height:0;
-  margin:18px 0 25px;
+  margin:26px 0 25px;
 }
 .r_submitted #r_icon {
   color:yellow !important;
 }
 #r_actions {
-  margin:10px 0 0;
-  width:140px;
+  margin:15px 0 0;
+  width:150px;
+  line-height:32px;
+}
+#r_actions a {
+  padding:2px;
+}
+#r_am a {
+  display:inline-block;
 }
 #r_am a:hover, #r_am .r_active {
   background:#FFF;
@@ -57,7 +64,6 @@
 #r_am li {
   float:right;
   clear:both;
-  padding:3px 5px;
   margin:3px 0;
 }
 #r_stuff_menu, #r_readers {
@@ -66,9 +72,23 @@
 #r_nope {
   margin:0 3px 0 0;
 }
-#r_stuff {
+a#r_stuff {
   margin:0 3px;
+  padding:2px 8px 3px;
+  border-left:1px dotted #000;
+  border-right:1px dotted #000;
 }
 #r_close {
   margin:0 0 0 3px;
+}
+#r_am .r_user a, #r_other, #r_stuff_menu a {
+  padding:0 8px;
+  line-height:25px;
+}
+#r_am .r_user a {
+  padding-left:0;
+}
+#r_am .r_user img {
+  vertical-align:middle;
+  margin:-2px 2px 0 0;
 }

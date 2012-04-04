@@ -95,6 +95,7 @@ a#r_stuff {
 #r_am a.r_tagalong {
   padding:0 5px;
   background:#00FBFF;
+  border-right:1px solid #CDFEFF;
 }
 #r_am a.r_tagalong:hover {
   background:#CDFEFF;

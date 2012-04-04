@@ -4,8 +4,11 @@
 class Authorization
   constructor: (@uid, @permissions = [], @info) ->
     @name = if @info? and @info.username? then @info.username else @uid
-    # make sure you grab certain default permissions on a new authorization
-    @permissions = @permissions.concat(["read","write"]).unique() if @provider != "facebook" and (!@uid or @uid is "new")
+    @set_default_perms @permissions
+
+  # make sure you grab certain default permissions on a new authorization
+  set_default_perms: (@permissions) ->
+    @permissions = @permissions.concat(["read","write"]).unique() if !@uid or @uid is "new"
 
   can: (perm) ->
     @uid and @uid != "new" and @permissions and perm in @permissions
@@ -137,10 +140,8 @@ window.ReadabilityAuth = ReadabilityAuth
 class FacebookAuth extends Authorization
   provider: "facebook"
 
-  constructor: (@uid, @permissions = [], @info) ->
-    # make sure you grab certain default permissions on a new authorization
+  set_default_perms: (@permissions) ->
     @permissions = @permissions.concat(["email","offline_access"]).unique() if !@uid or @uid is "new"
-    super @uid, @permissions, @info
 
   login: (params={}) ->
     success = params.success ? ->

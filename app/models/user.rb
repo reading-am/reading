@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  bitmask :access, :as => [:digest]
+  bitmask :access, :as => [:digest,:tagalong]
 
   has_many :authorizations, :dependent => :destroy
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
@@ -26,7 +26,8 @@ class User < ActiveRecord::Base
     :default_url => "//#{DOMAIN}/assets/users/:attachment/default_:style.png",
     :storage => :s3,
     :s3_protocol => 'https',
-    :bucket => "reading-#{Rails.env}",
+    :bucket => "reading-production",
+    #:bucket => "reading-#{Rails.env}",
     :s3_credentials => {
       :access_key_id => ENV['READING_S3_KEY'],
       :secret_access_key => ENV['READING_S3_SECRET']

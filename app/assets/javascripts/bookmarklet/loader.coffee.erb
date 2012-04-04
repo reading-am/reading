@@ -180,7 +180,7 @@ render_loading = ->
     $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
     $html.fadeIn 500
   else
-    $("#r_icon", $reading).animate "margin-top": "-27px"
+    $("#r_icon", $reading).animate "margin-top": "-25px"
 
 #-----------------------------------------
 # Renderer for yellow popover
@@ -197,18 +197,18 @@ render_menu = (post, readers = false) ->
 
   first_post= !$reading.hasClass('r_submitted')
 
-  $readers.slideUp().html '<li>&#8258; Other Readers</li>' # clear previous readers
+  $readers.slideUp().html '<li id=\"r_other\">&#8258; Other Readers</li>' # clear previous readers
   if readers
     $.each readers, (i, user) ->
-      $readers.append "<li><a href=\"http://#{domain}/#{user.username}\">#{user.display_name}</a></li>"
+      $readers.append "<li class=\"r_user\"><a href=\"http://#{domain}/#{user.username}\"><img src=\"#{user.mini_avatar}\"> #{user.display_name}</a></li>"
 
   $wrapper.delay(500).animate
-    height: "14px"
+    height: "29px"
     width: $actions.width()
 
-  $icon.delay(500).animate "margin-top": "-52px", ->
+  $icon.delay(500).animate "margin-top": "-56px", ->
     $reading.addClass('r_submitted')
-  $readers.delay(700).slideDown() if readers
+  $readers.delay(800).slideDown() if readers
 
   if first_post
     $('#r_close').click ->

@@ -200,16 +200,23 @@ render_menu = (post, readers = false) ->
   $readers.slideUp().html '<li id=\"r_other\">&#8258; Other Readers</li>' # clear previous readers
   if readers
     $.each readers, (i, user) ->
-      dom = "
-      <li class=\"r_user\">
+      $li = $("<li class=\"r_user\">
         <a href=\"http://#{domain}/#{user.username}\">
           <img src=\"#{user.mini_avatar}\"> #{user.display_name}
-        </a>"
+        </a>
+      </li>")
       if user.posts?
-        dom += "<a class=\"r_tagalong r_before\" href=\"#{user.posts.before.wrapped_url}\" title=\"#{user.posts.before.title}\">«</a>" if user.posts.before?
-        dom += "<a class=\"r_tagalong r_after\" href=\"#{user.posts.after.wrapped_url}\" title=\"#{user.posts.after.title}\">»</a>" if user.posts.after?
-      dom += "</li>"
-      $readers.append dom
+        if user.posts.before?
+          $li.append $("<a>«</a>").attr
+            class: "r_tagalong r_before"
+            href:   user.posts.before.wrapped_url
+            title:  user.posts.before.title
+        if user.posts.after?
+          $li.append $("<a>»</a>").attr
+            class: "r_tagalong r_after"
+            href:   user.posts.after.wrapped_url
+            title:  user.posts.after.title
+      $readers.append $li
 
   $wrapper.delay(500).animate
     height: "29px"

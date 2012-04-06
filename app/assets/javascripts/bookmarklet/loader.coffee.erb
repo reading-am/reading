@@ -207,12 +207,12 @@ render_menu = (post, readers = false) ->
       </li>")
       if user.posts?
         if user.posts.before?
-          $li.append $("<a>«</a>").attr
+          $li.append $("<a>&laquo;</a>").attr
             class: "r_tagalong r_before"
             href:   user.posts.before.wrapped_url
             title:  user.posts.before.title
         if user.posts.after?
-          $li.append $("<a>»</a>").attr
+          $li.append $("<a>&raquo;</a>").attr
             class: "r_tagalong r_after"
             href:   user.posts.after.wrapped_url
             title:  user.posts.after.title

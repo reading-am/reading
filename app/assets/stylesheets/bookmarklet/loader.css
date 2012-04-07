@@ -30,6 +30,10 @@
   width:50px;
   padding:0 10px;
 }
+#r_wrp, #r_am li, #r_stuff_menu, #r_readers {
+  float:right;
+  clear:both;
+}
 #r_wrp, #r_am li {
   background:yellow;
 }
@@ -62,8 +66,6 @@
   margin:3px 0 0 0;
 }
 #r_am li {
-  float:right;
-  clear:both;
   margin:3px 0;
 }
 #r_stuff_menu, #r_readers {

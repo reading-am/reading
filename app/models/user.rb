@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
-  bitmask :access, :as => [:digest,:tagalong]
+  bitmask :access, :as => [
+    :digest,
+    :tagalong,
+    :comments
+  ]
 
   has_many :authorizations, :dependent => :destroy
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]

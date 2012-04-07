@@ -100,3 +100,32 @@ a#r_stuff {
 #r_am a.r_tagalong:hover {
   background:#CDFEFF;
 }
+.r_popped_over {
+  overflow:hidden;
+}
+#r_popover {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  overflow:hidden;
+  z-index:99999998;
+}
+#r_popover div {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:#FFF;
+  opacity:0.5;
+  cursor:pointer;
+}
+#r_popover iframe {
+  position:relative;
+  width:480px; height:550px;
+  display:block;
+  margin:100px auto;
+  border:0;
+  background:#FFF;
+  -webkit-box-shadow: 0 0 50px 50px #FFF;
+     -moz-box-shadow: 0 0 50px 50px #FFF;
+          box-shadow: 0 0 50px 50px #FFF;
+}

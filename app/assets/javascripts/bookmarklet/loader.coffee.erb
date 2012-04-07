@@ -281,7 +281,7 @@ render_menu = (post, readers = false) ->
     $('a:not(#r_stuff)', $actions).mouseenter ->
       hide_stuff()
 
-    $readers.on "click", ".r_user a", () ->
+    $readers.on "click", ".r_user a:not(.r_tagalong)", () ->
       render_popover $(this).attr("href")
       false
 

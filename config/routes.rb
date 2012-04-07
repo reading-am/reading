@@ -1,4 +1,6 @@
 Reading::Application.routes.draw do
+  resources :comments
+
   root :to => "posts#index"
   
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'

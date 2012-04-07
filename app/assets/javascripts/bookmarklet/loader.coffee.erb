@@ -16,8 +16,8 @@ base58 = libs.encdec()
 #-----------------------------------------
 # Config Vars
 
-domain = "<%= DOMAIN %>"
-short_domain = "<%= SHORT_DOMAIN %>"
+DOMAIN = "<%= DOMAIN %>"
+SHORT_DOMAIN = "<%= SHORT_DOMAIN %>"
 win_focus = true
 reading.ready = false
 on_reading = window.location.host.indexOf("reading.am") is 0 or
@@ -37,7 +37,8 @@ active = "r_active"
 inactive = "r_inactive"
 errors =
   general: "Sorry, something went wrong. If you keep getting this error, would you mind letting us know at hello@reading.am?"
-  forbidden: "** You must be signed in to post to Reading **\nSign in or create an account at http://#{domain}"
+  forbidden: "** You must be signed in to post to Reading **\nSign in or create an account at http://#{DOMAIN}"
+  loading: "Sorry, we were unable to load Reading. If you keep getting this error, would you mind letting us know at hello@reading.am?"
 
 #-----------------------------------------
 # Helpers
@@ -64,7 +65,7 @@ class Post
     @updated_at = new Date
     @loading = false
   short_url: ->
-    "#{short_domain}/p/#{base58.encode(@id)}"
+    "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
   save: (success) ->
     @loading = new Date
     data =
@@ -72,7 +73,7 @@ class Post
         yn: @yn
     data.token = token if token
     $.ajax
-      url: "//#{domain}/posts/#{@id}/update.json"
+      url: "//#{DOMAIN}/posts/#{@id}/update.json"
       dataType: "jsonp"
       data: data
       success: (data, textStatus, jqXHR) =>
@@ -91,7 +92,7 @@ Post::find_or_create = (data, success) ->
   # don't send the null title or else it'll get posted
   delete data.title if data.title is null
   $.ajax
-    url: "//#{domain}/posts/create.json"
+    url: "//#{DOMAIN}/posts/create.json"
     dataType: "jsonp"
     data: data
     success: (data, textStatus, jqXHR) ->
@@ -201,21 +202,16 @@ render_menu = (post, readers = false) ->
   if readers
     $.each readers, (i, user) ->
       $li = $("<li class=\"r_user\">
-        <a href=\"http://#{domain}/#{user.username}\">
+        <a href=\"http://#{DOMAIN}/#{user.username}\">
           <img src=\"#{user.mini_avatar}\"> #{user.display_name}
         </a>
       </li>")
       if user.posts?
-        if user.posts.before?
-          $li.append $("<a>&laquo;</a>").attr
-            class: "r_tagalong r_before"
-            href:   user.posts.before.wrapped_url
-            title:  user.posts.before.title
-        if user.posts.after?
-          $li.append $("<a>&raquo;</a>").attr
-            class: "r_tagalong r_after"
-            href:   user.posts.after.wrapped_url
-            title:  user.posts.after.title
+        for dir in [["before","&laquo;"],["after","&raquo;"]] when user.posts[dir[0]]?
+          $li.append $("<a>").html(dir[1]).attr
+            class: "r_tagalong r_#{dir[0]}"
+            href:   user.posts[dir[0]].wrapped_url
+            title:  user.posts[dir[0]].title
       $readers.append $li
 
   $wrapper.delay(500).animate
@@ -331,7 +327,7 @@ reading.submit = submit = (params) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
-      window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{domain}/t/-/#{params.url}" else params.url
+      window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url
     else
       post = data.post
       readers = data.readers
@@ -358,7 +354,7 @@ up_to_date = ->
 # Prompt to upgrade
 
 upgrade = ->
-  $.getScript "//#{domain}/assets/bookmarklet/upgrade.js"
+  $.getScript "//#{DOMAIN}/assets/bookmarklet/upgrade.js"
 
 #-----------------------------------------
 # Initialize!
@@ -380,11 +376,11 @@ init = ->
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"
-      url = parse_url()
+      url   = parse_url()
       title = null
       return window.location = url if token is "-" or !token
     else
-      url = window.location.href
+      url   = window.location.href
       title = window.document.title
 
     submit {url: url, title: title, referrer_id: reading.referrer_id ? 0}
@@ -396,10 +392,9 @@ if jQuery? and jQuery().jquery? and jQuery().jquery >= "1.5"
   $ = jQuery
   if up_to_date() then init() else upgrade()
 else
-  load_script 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', ->
-    if typeof jQuery is 'undefined'
-      alert 'There was an error loading Reading'
-    else
-      $ = jQuery
-      $.noConflict()
+  load_script "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", ->
+    if jQuery?
+      $ = jQuery.noConflict()
       if up_to_date() then init() else upgrade()
+    else
+      alert errors.loading

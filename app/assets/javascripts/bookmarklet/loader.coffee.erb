@@ -181,7 +181,7 @@ render_loading = ->
     $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
     $html.fadeIn 500
   else
-    $("#r_icon", $reading).animate "margin-top": "-25px"
+    $("#r_icon", $reading).animate "margin-top": "-18px"
 
 #-----------------------------------------
 # Renderer for popover

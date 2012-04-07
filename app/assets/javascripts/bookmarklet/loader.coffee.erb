@@ -172,7 +172,7 @@ providers = [
 ]
 
 #-----------------------------------------
-# Renderer peace sign loader
+# Renderer for peace sign loader
 
 render_loading = ->
   $reading = $("#r_am")
@@ -182,6 +182,27 @@ render_loading = ->
     $html.fadeIn 500
   else
     $("#r_icon", $reading).animate "margin-top": "-25px"
+
+#-----------------------------------------
+# Renderer for popover
+
+render_popover = (src) ->
+  $popover = $("#r_popover")
+  if $popover.length
+    $popover.find("iframe").attr
+      src: src
+  else
+    $popover = $("<div>").attr
+      id: "r_popover"
+    $iframe = $("<iframe>").attr
+      src: src
+    $popover
+      .append("<div>") # background
+      .append($iframe)
+      .on "click", ->
+        $popover.remove()
+        $("body").removeClass "r_popped_over"
+    $("body").addClass("r_popped_over").append $popover
 
 #-----------------------------------------
 # Renderer for yellow popover
@@ -255,6 +276,10 @@ render_menu = (post, readers = false) ->
 
     $('a:not(#r_stuff)', $actions).mouseenter ->
       hide_stuff()
+
+    $readers.on "click", ".r_user a", () ->
+      render_popover $(this).attr("href")
+      false
 
   $('#r_yep, #r_nope').removeClass("#{active} #{inactive}").unbind().click ->
     yep_nope post, $(this).is('#r_yep')

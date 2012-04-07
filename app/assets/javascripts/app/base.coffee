@@ -22,7 +22,12 @@ window.errors =
   AuthTaken: "That {provider} account is connected to a different Reading account. If you remove it from the other Reading account, you'll be able to add it to this one."
   AuthSaveFail: "There was an error saving your account. Sorry. You should try again and if you continue to have problems, contact me at hello@reading.am."
 
+# --------------------
+# doc ready
 $ ->
+
+  $("body").addClass("framed") if window.top isnt window
+
   $("a.external").on "click", ->
     $this = $(this)
     link_host = @href.split("/")[2]

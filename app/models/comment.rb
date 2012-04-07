@@ -15,4 +15,8 @@ class Comment < ActiveRecord::Base
   def tags
     extract_hashtags body
   end
+
+  def urls
+    extract_urls body
+  end
 end

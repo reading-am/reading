@@ -192,17 +192,21 @@ render_popover = (src) ->
     $popover.find("iframe").attr 
       src: src
   else
-    $popover = $("<div>").attr
-      id: "r_popover"
-    $iframe = $("<iframe>").attr
-      src: src
+    $body =     $("body")
+    $bg =       $("<div>")
+    $iframe =   $("<iframe>").attr src: src
+    $popover =  $("<div>").attr id: "r_popover"
+
     $popover
-      .append("<div>") # background
+      .append($bg)
       .append($iframe)
       .on "click", ->
         $popover.remove()
-        $("body").removeClass "r_popped_over"
-    $("body").addClass("r_popped_over").append $popover
+        $body.removeClass "r_popped_over"
+
+    $body.addClass("r_popped_over").append $popover
+    $popover.fadeIn("fast")
+
 
 #-----------------------------------------
 # Renderer for yellow popover

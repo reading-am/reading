@@ -188,8 +188,8 @@ render_loading = ->
 
 render_popover = (src) ->
   $popover = $("#r_popover")
-  if $popover.length
-    $popover.find("iframe").attr
+  if $popover.length # check for existing popover
+    $popover.find("iframe").attr 
       src: src
   else
     $popover = $("<div>").attr

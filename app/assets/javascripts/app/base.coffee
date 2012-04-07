@@ -26,26 +26,26 @@ window.errors =
 # doc ready
 $ ->
 
-  $("body").addClass("framed") if window.top isnt window
+  framed = window.top isnt window
+  $("body").addClass("framed") if framed
 
   $("a.external").on "click", ->
     $this = $(this)
     link_host = @href.split("/")[2]
     document_host = document.location.href.split("/")[2]
     base58_id = (if typeof $this.data("base58-id") isnt "undefined" then $this.data("base58-id") else "")
-    unless link_host is document_host
-      # old redirect method through reading url
-      # pre = "http://#{document_host}/"+(base58_id ? "p/#{base58_id}/" : "")
-      # window.open pre+this.href
-
-      # new AJAX method - only log it if they're logged in
-      if current_user.logged_in()
-        $.ajax
-          url: "/posts/create.json"
-          data:
-            url: @href
-            referrer_id: (if base58_id then base58.decode(base58_id) else "")
-      window.open @href
+    if link_host isnt document_host
+      if framed
+        pre = "//#{document_host}/"+(if base58_id then "p/#{base58_id}/" else "")
+        window.top.location = pre+@href
+      else
+        if current_user.logged_in()
+          $.ajax
+            url: "/posts/create.json"
+            data:
+              url: @href
+              referrer_id: (if base58_id then base58.decode(base58_id) else "")
+        window.open @href
       false
 
   $(".footnote").on "click", ->

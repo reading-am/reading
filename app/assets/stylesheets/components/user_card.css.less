@@ -1,0 +1,64 @@
+@yellow: #FFFBCC;
+@dark_yellow: #FFF461;
+@blue: #cdfeff;
+@dark_blue: #00FBFF;
+@green: #38ff7E;
+@dark_green: #79ff30;
+@grey: #EEE;
+@dark_grey: #777;
+
+#user_card {
+  margin-bottom:36px;
+  h1 {
+    color:#000;
+    margin-top:-8px;
+    margin-bottom:3px;
+  }
+  nav {
+    margin-bottom:12px;
+    a, a.active:hover {
+      background:none;
+      padding:0;
+      border-bottom:1px solid #CCC;
+      border-radius:0;
+    }
+    a:hover {
+      text-decoration:none;
+      border-color:#000;
+    }
+    a.active {
+      color:@dark_grey;
+    }
+  }
+  .follow {
+    border-radius:3px;
+    background-color:@green;
+    padding:3px 5px;
+    border:0;
+    &:hover {
+      background-color:@dark_green;
+    }
+  }
+}
+#avatar, #avatar:hover {
+  text-align:right;
+  background:none;
+  min-height:50px;
+  img {
+    max-width:100%;
+  }
+}
+#user_bio, .user .bio {
+  font-family:'Georgia', serif;
+  font-style:italic;
+  -webkit-font-smoothing: subpixel-antialiased;
+  color:@dark_grey;
+  font-weight:normal;
+}
+#user_places {
+  -webkit-font-smoothing: subpixel-antialiased;
+  color:#000;
+  a {
+    background:none;
+  }
+}

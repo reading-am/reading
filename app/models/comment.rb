@@ -8,7 +8,11 @@ class Comment < ActiveRecord::Base
     :foreign_key => :parent_id
   attr_accessible :body
 
-  def mentioned
+  def mentions
     extract_mentioned_screen_names body
+  end
+
+  def tags
+    extract_hashtags body
   end
 end

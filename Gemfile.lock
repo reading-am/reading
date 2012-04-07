@@ -318,6 +318,8 @@ GEM
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
       simple_oauth (~> 0.1.4)
+    twitter-text (1.4.13)
+      activesupport
     typhoeus (0.3.3)
       mime-types
     tzinfo (0.3.32)
@@ -381,6 +383,7 @@ DEPENDENCIES
   tumblr-ruby
   twitter (>= 2.0.0.rc.2)
   twitter-bootstrap-rails!
+  twitter-text
   twitter_bootstrap_form_for!
   typhoeus
   uglifier

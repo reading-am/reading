@@ -6,6 +6,7 @@
     <th>Post</th>
     <th>Body</th>
     <th>Parent</th>
+    <th>Page</th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,6 +18,7 @@
     <td><%= comment.post %></td>
     <td><%= comment.body_html %></td>
     <td><%= comment.parent %></td>
+    <td><%= comment.page %></td>
     <td><%= link_to 'Show', comment %></td>
     <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
     <td><%= link_to 'Destroy', comment, confirm: 'Are you sure?', method: :delete %></td>

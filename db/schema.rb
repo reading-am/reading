@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120407172913) do
+ActiveRecord::Schema.define(:version => 20120407184053) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -34,9 +34,11 @@ ActiveRecord::Schema.define(:version => 20120407172913) do
     t.integer  "comment_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "page_id"
   end
 
   add_index "comments", ["comment_id"], :name => "index_comments_on_comment_id"
+  add_index "comments", ["page_id"], :name => "index_comments_on_page_id"
   add_index "comments", ["post_id"], :name => "index_comments_on_post_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 

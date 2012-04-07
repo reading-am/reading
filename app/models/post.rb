@@ -4,6 +4,7 @@ class Post < ActiveRecord::Base
   belongs_to  :user, :counter_cache => true
   belongs_to  :page, :counter_cache => true
   has_one     :domain, :through => :page
+  has_many    :comments # intentionally not dependent destroy here, have it on pages and users
   has_many    :referring_posts, :class_name => 'Post',
     :foreign_key => 'referrer_post_id'
   belongs_to  :referrer_post, :class_name => 'Post', :counter_cache => :referring_posts_count

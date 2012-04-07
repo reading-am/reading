@@ -3,6 +3,7 @@ class Page < ActiveRecord::Base
   has_one  :readability_data
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
+  has_many :comments, :dependent => :destroy
 
   validates_presence_of :url, :domain
   validates_uniqueness_of :url

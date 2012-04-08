@@ -107,6 +107,10 @@ Post::find_or_create = (data, success) ->
             data.response.post = new Post data.response.post
             success data.response
 
+class Comment
+  constructor: (@body) ->
+
+
 class Provider
   constructor: (p) ->
     @name = p.name

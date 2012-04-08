@@ -18,6 +18,11 @@
       - <a rel="tooltip" data-title="Add what <%= user.first_name %> reads to your following feed" href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
     <% end %>
     </nav>
+    <% unless user.location.blank? and user.link.blank? %>
+      <div id="user_places" class="span7 offset1">
+        <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
+      </div>
+    <% end %>
     <div id="user_bio" class="span7 offset1">
     <% if !user.bio.nil? %>
         <%= user.bio %>
@@ -25,9 +30,4 @@
       <%= link_to "Click here to add a bio.", "/settings/info" %>
     <% end %>
     </div>
-    <% unless user.location.blank? and user.link.blank? %>
-      <div id="user_places" class="span7 offset1">
-        <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
-      </div>
-    <% end %>
 </div>

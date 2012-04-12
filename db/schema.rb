@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120320230405) do
+ActiveRecord::Schema.define(:version => 20120412184344) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -26,6 +26,21 @@ ActiveRecord::Schema.define(:version => 20120320230405) do
   end
 
   add_index "authorizations", ["provider", "uid"], :name => "index_authorizations_on_provider_and_uid"
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "post_id"
+    t.text     "body"
+    t.integer  "comment_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "page_id"
+  end
+
+  add_index "comments", ["comment_id"], :name => "index_comments_on_comment_id"
+  add_index "comments", ["page_id"], :name => "index_comments_on_page_id"
+  add_index "comments", ["post_id"], :name => "index_comments_on_post_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -72,7 +87,8 @@ ActiveRecord::Schema.define(:version => 20120320230405) do
     t.datetime "updated_at"
     t.text     "r_title"
     t.string   "r_excerpt"
-    t.integer  "posts_count", :default => 0
+    t.integer  "posts_count",    :default => 0
+    t.integer  "comments_count", :default => 0
   end
 
   add_index "pages", ["url"], :name => "index_pages_on_url", :unique => true
@@ -103,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20120320230405) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.string   "excerpt"
+    t.string   "direction"
   end
 
   create_table "relationships", :force => true do |t|
@@ -143,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20120320230405) do
     t.integer  "posts_count",         :default => 0
     t.integer  "following_count",     :default => 0
     t.integer  "followers_count",     :default => 0
+    t.integer  "comments_count",      :default => 0
   end
 
   add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true

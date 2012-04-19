@@ -136,3 +136,12 @@ a#r_stuff {
      -moz-box-shadow: 0 0 50px 50px #FFF;
           box-shadow: 0 0 50px 50px #FFF;
 }
+#r_comments textarea {
+  float:right;
+  background:#FFF;
+  border:5px solid #00FBFF;
+  text-align:left;
+  width:150px;
+  height:15px;
+  padding:5px;
+}

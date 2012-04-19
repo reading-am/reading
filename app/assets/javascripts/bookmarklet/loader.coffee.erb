@@ -66,6 +66,7 @@ API::call = (method, params) ->
     data = if params.data? then params.data else {}
     data.token = token if token
 
+    complete = if params.complete? then params.complete else ->
     success = if params.success? then params.success else log
     error = if params.error? then params.error else (jqXHR, textStatus, errorThrown) ->
       log jqXHR, textStatus, errorThrown
@@ -79,7 +80,8 @@ API::call = (method, params) ->
       url: "//#{DOMAIN}/#{method}.json"
       dataType: "jsonp"
       data: data
-      error: params.error
+      complete: complete
+      error: error
       success: (data, textStatus, jqXHR) ->
         if data.meta.status < 400
           success Model::factory(data.response)
@@ -124,19 +126,13 @@ class Post extends Model
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
   save: (success) ->
     @loading = new Date
-    data =
-      post: # the id is passed in the url
-        yn: @yn
-    data.token = token if token
-    $.ajax
-      url: "//#{DOMAIN}/posts/#{@id}/update.json"
-      dataType: "jsonp"
-      data: data
-      success: (data, textStatus, jqXHR) =>
+    API::call "posts/#{@id}/update",
+      data: {post: {yn: @yn}}
+      complete: (jqXHR, textStatus) =>
         @loading = false
-        if data.meta.status isnt 400 and data.meta.status isnt 403
-          @updated_at = new Date
-          success data.response if success
+      success: (data, textStatus, jqXHR) =>
+        @updated_at = new Date
+        success data.response if success
   touch: (success) ->
     @save success
 
@@ -144,24 +140,18 @@ Post::find_or_create = (data, success) ->
   # validations
   return alert errors.general if !data.url or data.url is "about:blank"
 
-  data.token = token if token
   # don't send the null title or else it'll get posted
   delete data.title if data.title is null
-  $.ajax
-    url: "//#{DOMAIN}/posts/create.json"
-    dataType: "jsonp"
+  API::call "posts/create",
     data: data
-    success: (data, textStatus, jqXHR) ->
-      switch data.meta.status
-        when 400
+    success: success
+    error: (jqXHR, textStatus, errorThrown) ->
+      switch errorThrown
+        when "Bad Request"
           alert errors.general
-        when 403
+        when "Forbidden"
           $("#r_am").remove() # need to encapsulate this into the menu itself
           alert errors.forbidden
-        else
-          if success
-            data.response.post = new Post data.response.post
-            success data.response
 
 class Comment extends Model
   constructor: (c) ->

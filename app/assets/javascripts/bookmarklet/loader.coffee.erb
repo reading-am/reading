@@ -168,10 +168,12 @@ class Comment extends Model
     @id = c.id
     @body = c.body
 
-Comment::create = (params) ->
+Comment::create = (data, success) ->
   # validations
-  return alert errors.general if !params.data.body || params.data.page_id
-  API::call "comments/create", params
+  return alert errors.general if !data.body || !data.page_id
+  API::call "comments/create",
+    data: data,
+    success: success
 
 class Provider extends Model
   constructor: (p) ->

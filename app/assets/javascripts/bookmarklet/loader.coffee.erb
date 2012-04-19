@@ -56,6 +56,17 @@ popup = (url, width, height) ->
 #-----------------------------------------
 # Classes
 
+class Page
+  constructor: (p) ->
+    @id = p.id
+  comments: (success) ->
+    $.ajax
+      url: "//#{DOMAIN}/pages/#{@id}/comments.json"
+      dataType: "jsonp"
+      success: (data, textStatus, jqXHR) =>
+        if data.meta.status isnt 400 and data.meta.status isnt 403
+          success data.response if success
+
 class Post
   constructor: (p) ->
     @id = p.id
@@ -456,6 +467,7 @@ else
 
 <% if Rails.env == 'development' %>
 window.r_ =
+  Page: Page
   Post: Post
   Comment: Comment
 <% end %>

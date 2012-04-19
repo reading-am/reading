@@ -108,8 +108,31 @@ Post::find_or_create = (data, success) ->
             success data.response
 
 class Comment
-  constructor: (@body) ->
+  constructor: (c) ->
+    @id = c.id
+    @body = c.body
 
+Comment::create = (data, success) ->
+  # validations
+  return alert errors.general if !data.body || data.page_id
+
+  data.token = token if token
+  $.ajax
+    url: "//#{DOMAIN}/comments/create.json"
+    dataType: "jsonp"
+    data: data
+    success: (data, textStatus, jqXHR) ->
+      switch data.meta.status
+        when 400
+          alert errors.general
+        when 403
+          alert errors.forbidden
+        else
+          if success
+            data.response.post = new Comment data.response.comment
+            success data.response
+
+window.Comment = Comment
 
 class Provider
   constructor: (p) ->
@@ -181,8 +204,8 @@ providers = [
 render_loading = ->
   $reading = $("#r_am")
   if(!$reading.length)
-    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n/,"") %>').appendTo("head")
-    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n/,"") %>').prependTo("body")
+    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').appendTo("head")
+    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').prependTo("body")
     $html.fadeIn 500
   else
     $("#r_icon", $reading).animate "margin-top": "-18px"
@@ -369,6 +392,7 @@ reading.submit = submit = (params) ->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 
+      console.log post
       render_menu post, readers
 
 #-----------------------------------------
@@ -429,3 +453,9 @@ else
       if up_to_date() then init() else upgrade()
     else
       alert errors.loading
+
+<% if Rails.env == 'development' %>
+window.r_ =
+  Post: Post
+  Comment: Comment
+<% end %>

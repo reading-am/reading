@@ -40,15 +40,38 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(params[:comment])
+    @comment       = Comment.new
+    @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @comment.page  = Page.find(params[:page_id])
+    @comment.body  = params[:body]
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render json: @comment, status: :created, location: @comment }
+        # We treat Pusher just like any other hook except that we don't store it
+        # with the user so we go ahead and construct one here
+        event = :comment
+        Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@comment, event)
+        @comment.user.hooks.each do |hook| hook.run(@comment, event) end
+
+        format.html { redirect_to(@comment, :notice => 'Comment was successfully created.') }
+        format.xml  { render :xml => @comment, :status => :created, :location => @comment }
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {
+            :comment => @comment.simple_obj
+          }
+        }, :callback => params[:callback] }
       else
-        format.html { render action: "new" }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @comment.errors, :status => :unprocessable_entity }
+        if @comment.user.blank? # TODO clean up this auth hack. Ugh.
+          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
+        else
+          format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@comment.errors.to_yaml}"}}, :callback => params[:callback] }
+        end
       end
     end
   end

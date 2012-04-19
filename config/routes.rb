@@ -1,6 +1,4 @@
 Reading::Application.routes.draw do
-  resources :comments
-
   root :to => "posts#index"
   
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
@@ -13,6 +11,11 @@ Reading::Application.routes.draw do
   match '/posts/create' => 'posts#create'
   match '/posts/:id/update' => 'posts#update'
   resources :posts
+
+  match '/comments/create' => 'comments#create'
+  resources :comments
+
+  match '/pages/:id/comments' => 'pages#comments'
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional

@@ -68,4 +68,12 @@ public
     self.save
   end
 
+  def simple_obj to_s=false
+    {
+      :type   => 'Page',
+      :id     => to_s ? id.to_s : id,
+      :url    => url,
+      :title  => title
+    }
+  end
 end

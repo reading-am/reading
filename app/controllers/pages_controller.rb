@@ -12,5 +12,23 @@ class PagesController < ApplicationController
     end
   end
 
+  def comments
+    @page = Page.find(params[:id])
+    respond_to do |format|
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {
+            :comments => @page.comments.collect { |comment|
+              comment.simple_obj
+            }
+          }
+        }
+      }
+    end
+  end
+
 end
 

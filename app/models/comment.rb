@@ -9,7 +9,7 @@ class Comment < ActiveRecord::Base
   has_many   :children, :class_name => 'Comment',
     :foreign_key => :parent_id
 
-  validates_presence_of :user, :page
+  validates_presence_of :user, :page, :body
 
   attr_accessible :body
 
@@ -32,5 +32,13 @@ class Comment < ActiveRecord::Base
       :username_url_base => "//#{DOMAIN}/",
       :hashtag_url_base => "//#{DOMAIN}/search?q="
     }).html_safe
+  end
+
+  def simple_obj to_s=false
+    {
+      :type   => "Comment",
+      :id     => to_s ? id.to_s : id,
+      :body  => body
+    }
   end
 end

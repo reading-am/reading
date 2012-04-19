@@ -81,11 +81,8 @@ class Post < ActiveRecord::Base
       :url    => page.url,
       :yn     => yn,
       :wrapped_url => wrapped_url,
-      :user => {
-        :id           => to_s ? user.id.to_s : user.id,
-        :username     => user.username,
-        :display_name => user.display_name
-      },
+      :user => user.simple_obj(to_s),
+      :page => page.simple_obj(to_s),
       :referrer_post => {
         :id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
         :user => {

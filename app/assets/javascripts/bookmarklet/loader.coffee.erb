@@ -444,7 +444,6 @@ reading.submit = submit = (params) ->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 
-      console.log post
       render_menu post, readers
 
 #-----------------------------------------

@@ -14,6 +14,10 @@ libs = {}
 base58 = libs.encdec()
 
 #-----------------------------------------
+# Debug
+log = <% if Rails.env == 'development' %> -> console.log.apply console, arguments <% else %> -> <% end %>
+
+#-----------------------------------------
 # Config Vars
 
 DOMAIN = "<%= DOMAIN %>"
@@ -56,18 +60,59 @@ popup = (url, width, height) ->
 #-----------------------------------------
 # Classes
 
-class Page
+class API
+
+API::call = (method, params) ->
+    data = if params.data? then params.data else {}
+    data.token = token if token
+
+    success = if params.success? then params.success else log
+    error = if params.error? then params.error else (jqXHR, textStatus, errorThrown) ->
+      log jqXHR, textStatus, errorThrown
+      switch errorThrown
+        when "Bad Request"
+          alert errors.general
+        when "Forbidden"
+          alert errors.forbidden
+
+    $.ajax
+      url: "//#{DOMAIN}/#{method}.json"
+      dataType: "jsonp"
+      data: data
+      error: params.error
+      success: (data, textStatus, jqXHR) ->
+        if data.meta.status < 400
+          success Model::factory(data.response)
+        else
+          jqXHR.status = data.meta.status
+          jqXHR.responseText = data
+          error jqXHR, textStatus, data.meta.msg
+
+class Model
+
+Model::factory = (input) ->
+  if input instanceof Array
+    input = (Model::factory val for val in input)
+  else if input instanceof Object and (input not instanceof Model)
+    if typeof input.type? and typeof classes[input.type] is "function"
+      input = new classes[input.type](input)
+    else
+      for prop, val of input
+        input[prop] = Model::factory val
+  input
+
+class Page extends Model
   constructor: (p) ->
     @id = p.id
   comments: (success) ->
-    $.ajax
-      url: "//#{DOMAIN}/pages/#{@id}/comments.json"
-      dataType: "jsonp"
-      success: (data, textStatus, jqXHR) =>
-        if data.meta.status isnt 400 and data.meta.status isnt 403
-          success data.response if success
+    API::call "pages/#{@id}/comments",
+      success: success
 
-class Post
+class User extends Model
+  constructor: (u) ->
+    @id = u.id
+
+class Post extends Model
   constructor: (p) ->
     @id = p.id
     @yn = p.yn if p.yn?
@@ -118,34 +163,17 @@ Post::find_or_create = (data, success) ->
             data.response.post = new Post data.response.post
             success data.response
 
-class Comment
+class Comment extends Model
   constructor: (c) ->
     @id = c.id
     @body = c.body
 
-Comment::create = (data, success) ->
+Comment::create = (params) ->
   # validations
-  return alert errors.general if !data.body || data.page_id
+  return alert errors.general if !params.data.body || params.data.page_id
+  API::call "comments/create", params
 
-  data.token = token if token
-  $.ajax
-    url: "//#{DOMAIN}/comments/create.json"
-    dataType: "jsonp"
-    data: data
-    success: (data, textStatus, jqXHR) ->
-      switch data.meta.status
-        when 400
-          alert errors.general
-        when 403
-          alert errors.forbidden
-        else
-          if success
-            data.response.post = new Comment data.response.comment
-            success data.response
-
-window.Comment = Comment
-
-class Provider
+class Provider extends Model
   constructor: (p) ->
     @name = p.name
     @url_scheme = p.url_scheme
@@ -162,6 +190,19 @@ class Provider
     parsed_url
   run: (post) ->
     @action @url post
+
+# this is for our factory method since I seem to be having
+# a hard time using this[obj.type]
+classes =
+  Model: Model
+  Page: Page
+  Post: Post
+  Comment: Comment
+  Provider: Provider
+
+<% if Rails.env == 'development' %>
+window.r_ = classes
+<% end %>
 
 #-----------------------------------------
 # Vars
@@ -464,10 +505,3 @@ else
       if up_to_date() then init() else upgrade()
     else
       alert errors.loading
-
-<% if Rails.env == 'development' %>
-window.r_ =
-  Page: Page
-  Post: Post
-  Comment: Comment
-<% end %>

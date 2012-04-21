@@ -265,10 +265,7 @@ render_menu = (post, readers = false) ->
       $('#r_stuff').removeClass "r_active"
       false
 
-    i = 0
-    while i < providers.length
-      $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{providers[i].name}</a></li>"
-      i++
+    $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{provider.name}</a></li>" for provider, i in providers
     $reading.append $stuff
 
     $('#r_stuff').on

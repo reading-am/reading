@@ -270,30 +270,31 @@ render_menu = (post, readers = false) ->
       $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{providers[i].name}</a></li>"
       i++
     $reading.append $stuff
-    $('#r_stuff').mouseenter(->
-      show_stuff()
-    ).click ->
-      false
 
-    $reading.mouseleave ->
+    $('#r_stuff').on
+      mouseenter: show_stuff
+      click: -> false
+
+    $reading.on "mouseleave", ->
       hide_stuff()
 
-    $('a:not(#r_stuff)', $actions).mouseenter ->
+    $actions.on "mouseenter", "a:not(#r_stuff)", ->
       hide_stuff()
 
-    $readers.on "click", ".r_user a:not(.r_tagalong)", () ->
+    $readers.on "click", ".r_user a:not(.r_tagalong)", ->
       render_popover $(this).attr("href")
       false
 
-  $('#r_yep, #r_nope').removeClass("#{active} #{inactive}").unbind().click ->
-    yep_nope post, $(this).is('#r_yep')
+    $reading.on "click", "#r_yep, #r_nope", ->
+      yep_nope post, $(this).is('#r_yep')
 
-  $('.r_share', $reading).unbind().click ->
-    provider = providers[$(this).attr('data-provider_id')]
-    provider.run post
-    false
+    $reading.on "click", ".r_share", ->
+      provider = providers[$(this).attr('data-provider_id')]
+      provider.run post
+      false
 
   # sync up the UI with the model that was returned on find_or_create
+  $('#r_yep, #r_nope').removeClass("#{active} #{inactive}")
   yep_nope(post, post.yn) if post.yn?
 
 
@@ -417,7 +418,7 @@ init = ->
 #-----------------------------------------
 # Check for jQuery and initialize
 
-if jQuery? and jQuery().jquery? and jQuery().jquery >= "1.5"
+if jQuery? and jQuery().jquery? and jQuery().jquery >= "1.7"
   $ = jQuery
   if up_to_date() then init() else upgrade()
 else

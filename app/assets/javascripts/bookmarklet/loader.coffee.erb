@@ -168,6 +168,8 @@ Post::find_or_create = (data, success) ->
           $("#r_am").remove() # need to encapsulate this into the menu itself
           alert errors.forbidden
 
+Post::current = {}
+
 ###########
 # Comment #
 ###########
@@ -231,6 +233,12 @@ class Controller
 class Comments_Controller
 
 Comments_Controller::init = ->
+  $reading.on "keyup", "textarea", (e) ->
+    if e.which is 13
+      Comment::create
+        body: $(this).val()
+        page_id: Post::current.page.id
+      false
 
 
 #-----------------------------------------
@@ -282,12 +290,13 @@ providers = [
 #-----------------------------------------
 # Renderer for peace sign loader
 
+$reading = {}
 render_loading = ->
   $reading = $("#r_am")
   if(!$reading.length)
     $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').appendTo("head")
-    $html = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').prependTo("body")
-    $html.fadeIn 500
+    $reading = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').prependTo("body")
+    $reading.fadeIn 500
   else
     $("#r_icon", $reading).animate "margin-top": "-18px"
 
@@ -322,7 +331,6 @@ render_popover = (src) ->
 render_menu = (post, readers = false) ->
   readers   = false if readers.length is 0
 
-  $reading  = $("#r_am")
   $icon     = $("#r_icon", $reading)
   $actions  = $("#r_actions", $reading)
   $wrapper  = $("#r_wrp", $reading)
@@ -470,6 +478,7 @@ reading.submit = submit = (params) ->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 
+      Post::current = post
       render_menu post, readers
 
 #-----------------------------------------
@@ -516,6 +525,7 @@ init = ->
       title = window.document.title
 
     submit {url: url, title: title, referrer_id: reading.referrer_id ? 0}
+    Comments_Controller::init()
 
 #-----------------------------------------
 # Check for jQuery and initialize

@@ -1,20 +1,31 @@
 #-----------------------------------------
-# TODO
-# + test on page without jQuery
-# + test on page with readers
-# + test on page without /t/ and /p/
-# + test on wrapped link logged out
-# - check for empty title in window vs empty param
+# App Structure
+
+Reading =
+  Models: {}
+  Collections: {}
+  Routers: {}
+  Views: {}
+
+<% if Rails.env == 'development' %>
+window.r_ = Reading
+<% end %>
 
 #-----------------------------------------
 # Libs
+
 libs = {}
 
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
+<% ['underscore','backbone'].each do |lib| %>
+`<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/#{lib}.js" %>`
+<% end %>
+
 #-----------------------------------------
 # Debug
+
 log = <% if Rails.env == 'development' %> -> console.log.apply console, arguments <% else %> -> <% end %>
 
 #-----------------------------------------
@@ -102,8 +113,8 @@ Model::factory = (input) ->
   if input instanceof Array
     input = (Model::factory val for val in input)
   else if input instanceof Object and (input not instanceof Model)
-    if typeof input.type? and typeof classes[input.type] is "function"
-      input = new classes[input.type](input)
+    if typeof input.type? and typeof Reading.Models[input.type] is "function"
+      input = new Reading.Models[input.type](input)
     else
       for prop, val of input
         input[prop] = Model::factory val
@@ -112,9 +123,7 @@ Model::factory = (input) ->
 ########
 # Page #
 ########
-class Page extends Model
-  constructor: (p) ->
-    @id = p.id
+class Reading.Models.Page extends Backbone.Model
   comments: (success) ->
     API::call "pages/#{@id}/comments",
       success: success
@@ -122,15 +131,13 @@ class Page extends Model
 ########
 # User #
 ########
-class User extends Model
-  constructor: (u) ->
-    @id = u.id
+class Reading.Models.User extends Backbone.Model
 
 ########
 # Post #
 ########
-class Post extends Model
-  constructor: (p) ->
+class Reading.Models.Post extends Backbone.Model
+  initialize: (p) ->
     @id = p.id
     @yn = p.yn if p.yn?
     @wrapped_url = p.wrapped_url
@@ -151,7 +158,7 @@ class Post extends Model
   touch: (success) ->
     @save success
 
-Post::find_or_create = (data, success) ->
+Reading.Models.Post::find_or_create = (data, success) ->
   # validations
   return alert errors.general if !data.url or data.url is "about:blank"
 
@@ -168,17 +175,14 @@ Post::find_or_create = (data, success) ->
           $("#r_am").remove() # need to encapsulate this into the menu itself
           alert errors.forbidden
 
-Post::current = {}
+Reading.Models.Post::current = {}
 
 ###########
 # Comment #
 ###########
-class Comment extends Model
-  constructor: (c) ->
-    @id = c.id
-    @body = c.body
+class Reading.Models.Comment extends Backbone.Model
 
-Comment::create = (data, success) ->
+Reading.Models.Comment::create = (data, success) ->
   # validations
   return alert errors.general if !data.body || !data.page_id
   API::call "comments/create",
@@ -188,11 +192,7 @@ Comment::create = (data, success) ->
 ############
 # Provider #
 ############
-class Provider extends Model
-  constructor: (p) ->
-    @name = p.name
-    @url_scheme = p.url_scheme
-    @action = p.action
+class Reading.Models.Provider extends Backbone.Model
   url: (post) ->
     vals =
       url: post.page.url
@@ -205,19 +205,6 @@ class Provider extends Model
     parsed_url
   run: (post) ->
     @action @url post
-
-# this is for our factory method since I seem to be having
-# a hard time using this[obj.type]
-classes =
-  Model: Model
-  Page: Page
-  Post: Post
-  Comment: Comment
-  Provider: Provider
-
-<% if Rails.env == 'development' %>
-window.r_ = classes
-<% end %>
 
 #-----------------------------------------
 # Controllers
@@ -235,52 +222,61 @@ class Comments_Controller
 Comments_Controller::init = ->
   $reading.on "keyup", "textarea", (e) ->
     if e.which is 13
-      Comment::create
+      Reading.Models.Comment::create
         body: $(this).val()
-        page_id: Post::current.page.id
+        page_id: Reading.Models.Post::current.page.id
       false
 
+#-----------------------------------------
+# Views
+
+Reading.Views.Providers ||= {}
+
+class Reading.Views.Providers.ProviderView extends Backbone.View
+  render: ->
+    $(@el).html(@template(@model.toJSON()))
+    return this
 
 #-----------------------------------------
 # Vars
 
 providers = [
-  new Provider
+  new Reading.Models.Provider
     name: "Twitter"
     url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
     action: (url) ->
       popup url, 475, 345
-  new Provider
+  new Reading.Models.Provider
     name: "Facebook"
     url_scheme: "https://www.facebook.com/sharer.php?u={{wrapped_url}}&t={{title}}"
     action: (url) ->
       popup url, 520, 370
-  new Provider
+  new Reading.Models.Provider
     name: "Tumblr"
     url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20%22{{title}}%22"
     action: (url) ->
       popup url, 450, 430
-  new Provider
+  new Reading.Models.Provider
     name: "Instapaper"
     url_scheme: "http://www.instapaper.com/hello2?url={{url}}&title={{title}}"
     action: (url) ->
       window.location = url
-  new Provider
+  new Reading.Models.Provider
     name: "Readability"
     url_scheme: "http://www.readability.com/save?url={{url}}"
     action: (url) ->
       window.location = url
-  new Provider
+  new Reading.Models.Provider
     name: "Pocket"
     url_scheme: "https://getpocket.com/save?url={{url}}&title={{title}}"
     action: (url) ->
       popup url, 490, 400
-  new Provider
+  new Reading.Models.Provider
     name: "Pinboard"
     url_scheme: "https://pinboard.in/add?showtags=yes&url={{url}}&title={{title}}&tags=Reading.am"
     action: (url) ->
       popup url, 490, 400
-  new Provider
+  new Reading.Models.Provider
     name: "Email"
     url_scheme: "mailto:?subject=✌%20Reading%20%22{{title}}%22&body={{wrapped_url}}"
     action: (url) ->
@@ -343,16 +339,16 @@ render_menu = (post, readers = false) ->
   if readers
     $.each readers, (i, user) ->
       $li = $("<li class=\"r_user\">
-        <a href=\"http://#{DOMAIN}/#{user.username}\">
-          <img src=\"#{user.mini_avatar}\"> #{user.display_name}
+        <a href=\"http://#{DOMAIN}/#{user.get("username")}\">
+          <img src=\"#{user.get("mini_avatar")}\"> #{user.get("display_name")}
         </a>
       </li>")
-      if user.posts?
-        for dir in [["before","&laquo;"],["after","&raquo;"]] when user.posts[dir[0]]?
+      if user.get("posts")?
+        for dir in [["before","&laquo;"],["after","&raquo;"]] when user.get("posts")[dir[0]]?
           $li.append $("<a>").html(dir[1]).attr
             class: "r_tagalong r_#{dir[0]}"
-            href:   user.posts[dir[0]].wrapped_url
-            title:  user.posts[dir[0]].title
+            href:   user.get("posts")[dir[0]].wrapped_url
+            title:  user.get("posts")[dir[0]].title
       $readers.append $li
 
   $wrapper.delay(500).animate
@@ -381,7 +377,7 @@ render_menu = (post, readers = false) ->
       $('#r_stuff').removeClass "r_active"
       false
 
-    $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{provider.name}</a></li>" for provider, i in providers
+    $stuff.append "<li><a href=\"#\" class=\"r_share\" data-provider_id=\"#{i}\">#{provider.get("name")}</a></li>" for provider, i in providers
     $reading.append $stuff
 
     $('#r_stuff').on
@@ -463,7 +459,7 @@ load_script = (url, success) ->
 self = this
 reading.submit = submit = (params) ->
   render_loading() if platform isnt "redirect"
-  Post::find_or_create params, (data) ->
+  Reading.Models.Post::find_or_create params, (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
@@ -478,7 +474,7 @@ reading.submit = submit = (params) ->
         post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
       ), 2500
 
-      Post::current = post
+      Reading.Models.Post::current = post
       render_menu post, readers
 
 #-----------------------------------------

@@ -128,10 +128,18 @@ class Reading.Models.Page extends Backbone.Model
     API::call "pages/#{@id}/comments",
       success: success
 
+class Reading.Collections.PagesCollection extends Backbone.Collection
+  model: Reading.Models.Page
+  url: '/pages'
+
 ########
 # User #
 ########
 class Reading.Models.User extends Backbone.Model
+
+class Reading.Collections.UsersCollection extends Backbone.Collection
+  model: Reading.Models.User
+  url: '/users'
 
 ########
 # Post #
@@ -177,6 +185,10 @@ Reading.Models.Post::find_or_create = (data, success) ->
 
 Reading.Models.Post::current = {}
 
+class Reading.Collections.PostsCollection extends Backbone.Collection
+  model: Reading.Models.Post
+  url: '/posts'
+
 ###########
 # Comment #
 ###########
@@ -188,6 +200,10 @@ Reading.Models.Comment::create = (data, success) ->
   API::call "comments/create",
     data: data,
     success: success
+
+class Reading.Collections.CommentsCollection extends Backbone.Collection
+  model: Reading.Models.Comment
+  url: '/comments'
 
 ############
 # Provider #
@@ -205,6 +221,10 @@ class Reading.Models.Provider extends Backbone.Model
     parsed_url
   run: (post) ->
     @action @url post
+
+class Reading.Collections.ProvidersCollection extends Backbone.Collection
+  model: Reading.Models.Provider
+  url: '/providers'
 
 #-----------------------------------------
 # Controllers

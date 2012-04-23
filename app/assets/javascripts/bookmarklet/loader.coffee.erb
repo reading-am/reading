@@ -248,6 +248,48 @@ Comments_Controller::init = ->
 #-----------------------------------------
 # Views
 
+########
+# User #
+########
+Reading.Views.Users ||= {}
+
+class Reading.Views.Users.UserView extends Backbone.View
+  template: Hogan.compile "<a href=\"http://#{DOMAIN}/{{username}}\"><img src=\"{{mini_avatar}}\"> {{display_name}}</a>"
+
+  tagName: "li"
+  className: "r_user"
+
+  events:
+    "click a:not(.r_tagalong)" : "show"
+
+  show: ->
+    render_popover @$("a").attr("href")
+    false
+
+  render: ->
+    $(@el).html(@template.render(@model.toJSON()))
+    return this
+
+class Reading.Views.Users.UsersCollectionView extends Backbone.View
+  tagName: "ul"
+
+  initialize: ->
+    @options.users.bind('reset', @addAll)
+
+  addAll: =>
+    @options.users.each(@addOne)
+
+  addOne: (user) =>
+    view = new Reading.Views.Users.UserView({model : user})
+    @$el.append(view.render().el)
+
+  render: =>
+    @addAll()
+    return this
+
+#############
+# Providers #
+#############
 Reading.Views.Providers ||= {}
 
 class Reading.Views.Providers.ProviderView extends Backbone.View
@@ -267,8 +309,6 @@ class Reading.Views.Providers.ProviderView extends Backbone.View
     return this
 
 class Reading.Views.Providers.ProviderCollectionView extends Backbone.View
-  id: "r_stuff_menu"
-
   tagName: "ul"
 
   initialize: ->
@@ -383,21 +423,24 @@ render_menu = (post, readers = false) ->
 
   first_post= !$reading.hasClass('r_submitted')
 
-  $readers.slideUp().html '<li id=\"r_other\">&#8258; Other Readers</li>' # clear previous readers
-  if readers
-    $.each readers, (i, user) ->
-      $li = $("<li class=\"r_user\">
-        <a href=\"http://#{DOMAIN}/#{user.get("username")}\">
-          <img src=\"#{user.get("mini_avatar")}\"> #{user.get("display_name")}
-        </a>
-      </li>")
-      if user.get("posts")?
-        for dir in [["before","&laquo;"],["after","&raquo;"]] when user.get("posts")[dir[0]]?
-          $li.append $("<a>").html(dir[1]).attr
-            class: "r_tagalong r_#{dir[0]}"
-            href:   user.get("posts")[dir[0]].wrapped_url
-            title:  user.get("posts")[dir[0]].title
-      $readers.append $li
+  readers = new Reading.Collections.UsersCollection(readers)
+  readers_view = new Reading.Views.Users.UsersCollectionView({id: "r_readers", users: readers})
+  $wrapper.after(readers_view.render().el)
+#  $readers.slideUp().html '<li id=\"r_other\">&#8258; Other Readers</li>' # clear previous readers
+#  if readers
+#    $.each readers, (i, user) ->
+#      $li = $("<li class=\"r_user\">
+#        <a href=\"http://#{DOMAIN}/#{user.get("username")}\">
+#          <img src=\"#{user.get("mini_avatar")}\"> #{user.get("display_name")}
+#        </a>
+#      </li>")
+#      if user.get("posts")?
+#        for dir in [["before","&laquo;"],["after","&raquo;"]] when user.get("posts")[dir[0]]?
+#          $li.append $("<a>").html(dir[1]).attr
+#            class: "r_tagalong r_#{dir[0]}"
+#            href:   user.get("posts")[dir[0]].wrapped_url
+#            title:  user.get("posts")[dir[0]].title
+#      $readers.append $li
 
   $wrapper.delay(500).animate
     height: "29px"
@@ -405,7 +448,7 @@ render_menu = (post, readers = false) ->
 
   $icon.delay(500).animate "margin-top": "-56px", ->
     $reading.addClass('r_submitted')
-  $readers.delay(800).slideDown() if readers
+  readers_view.$el.delay(800).slideDown() if readers
 
   if first_post
     $('#r_close').click ->
@@ -425,7 +468,7 @@ render_menu = (post, readers = false) ->
       $('#r_stuff').removeClass "r_active"
       false
 
-    view = new Reading.Views.Providers.ProviderCollectionView({providers : providers})
+    view = new Reading.Views.Providers.ProviderCollectionView({id: "r_stuff_menu", providers: providers})
     $wrapper.after(view.render().el)
 
     $('#r_stuff').on
@@ -434,10 +477,6 @@ render_menu = (post, readers = false) ->
 
     $reading.on "mouseleave", hide_stuff
     $actions.on "mouseenter", "a:not(#r_stuff)", hide_stuff
-
-    $readers.on "click", ".r_user a:not(.r_tagalong)", ->
-      render_popover $(this).attr("href")
-      false
 
     $reading.on "click", "#r_yep, #r_nope", ->
       yep_nope post, $(this).is('#r_yep')

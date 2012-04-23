@@ -254,7 +254,13 @@ Comments_Controller::init = ->
 Reading.Views.Users ||= {}
 
 class Reading.Views.Users.UserView extends Backbone.View
-  template: Hogan.compile "<a href=\"http://#{DOMAIN}/{{username}}\"><img src=\"{{mini_avatar}}\"> {{display_name}}</a>"
+  template: Hogan.compile "
+    <a href=\"http://#{DOMAIN}/{{username}}\">
+      <img src=\"{{mini_avatar}}\"> {{display_name}}
+    </a>
+    {{#posts}}
+      {{#posts.before}}<a href=\"{{posts.before.wrapped_url}}\" class=\"r_tagalong r_before\" title=\"{{posts.before.title}}\">&laquo;</a>{{/posts.before}}{{#posts.after}}<a href=\"{{posts.after.wrapped_url}}\" class=\"r_tagalong r_after\" title=\"{{posts.after.title}}\">&raquo;</a>{{/posts.after}}
+    {{/posts}}"
 
   tagName: "li"
   className: "r_user"
@@ -418,29 +424,15 @@ render_menu = (post, readers = false) ->
   $icon     = $("#r_icon", $reading)
   $actions  = $("#r_actions", $reading)
   $wrapper  = $("#r_wrp", $reading)
-  $stuff    = $("#r_stuff_menu", $reading)
-  $readers  = $("#r_readers", $reading)
 
   first_post= !$reading.hasClass('r_submitted')
 
-  readers = new Reading.Collections.UsersCollection(readers)
-  readers_view = new Reading.Views.Users.UsersCollectionView({id: "r_readers", users: readers})
-  $wrapper.after(readers_view.render().el)
-#  $readers.slideUp().html '<li id=\"r_other\">&#8258; Other Readers</li>' # clear previous readers
-#  if readers
-#    $.each readers, (i, user) ->
-#      $li = $("<li class=\"r_user\">
-#        <a href=\"http://#{DOMAIN}/#{user.get("username")}\">
-#          <img src=\"#{user.get("mini_avatar")}\"> #{user.get("display_name")}
-#        </a>
-#      </li>")
-#      if user.get("posts")?
-#        for dir in [["before","&laquo;"],["after","&raquo;"]] when user.get("posts")[dir[0]]?
-#          $li.append $("<a>").html(dir[1]).attr
-#            class: "r_tagalong r_#{dir[0]}"
-#            href:   user.get("posts")[dir[0]].wrapped_url
-#            title:  user.get("posts")[dir[0]].title
-#      $readers.append $li
+#  $readers.slideUp().html '' # clear previous readers
+
+  if readers
+    readers = new Reading.Collections.UsersCollection(readers)
+    readers_view = new Reading.Views.Users.UsersCollectionView({id: "r_readers", users: readers})
+    $wrapper.after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
 
   $wrapper.delay(500).animate
     height: "29px"
@@ -457,19 +449,19 @@ render_menu = (post, readers = false) ->
       false
 
     show_stuff = ->
-      $("#r_stuff_menu", $reading).show()
-      $readers.hide() if readers
+      share_view.$el.show()
+      readers_view.$el.hide() if readers
       $('#r_stuff').addClass "r_active"
       false
 
     hide_stuff = ->
-      $("#r_stuff_menu", $reading).hide()
-      $readers.show() if readers
+      share_view.$el.hide()
+      readers_view.$el.show() if readers
       $('#r_stuff').removeClass "r_active"
       false
 
-    view = new Reading.Views.Providers.ProviderCollectionView({id: "r_stuff_menu", providers: providers})
-    $wrapper.after(view.render().el)
+    share_view = new Reading.Views.Providers.ProviderCollectionView({id: "r_stuff_menu", providers: providers})
+    $wrapper.after(share_view.render().el)
 
     $('#r_stuff').on
       mouseenter: show_stuff

@@ -93,6 +93,9 @@ Backbone.sync = (method, model, options) ->
 Backbone.Model::_url = Backbone.Model::url
 Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 
+Backbone.Collection::parse = (response) ->
+  response.response[@name.toLowerCase()]
+
 #######
 # API #
 #######
@@ -170,7 +173,7 @@ class Reading.Models.User extends Backbone.Model
 
 class Reading.Collections.Users extends Backbone.Collection
   model: Reading.Models.User
-  url: "users"
+  name: "Users"
 
 ########
 # Post #
@@ -211,7 +214,7 @@ Reading.Models.Post::current = {}
 
 class Reading.Collections.Posts extends Backbone.Collection
   model: Reading.Models.Post
-  url: '/posts'
+  url: "posts"
 
 ###########
 # Comment #

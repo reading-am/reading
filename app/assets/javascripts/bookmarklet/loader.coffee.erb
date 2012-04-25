@@ -23,6 +23,11 @@ base58 = libs.encdec()
 `<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/#{lib}.js" %>`
 <% end %>
 
+# Backbone addons
+<% ['nest_collection'].each do |lib| %>
+ <%= IO.read "#{Rails.root}/app/assets/javascripts/backbone/addons/#{lib}.coffee" %>
+<% end %>
+
 #-----------------------------------------
 # Debug
 
@@ -33,6 +38,8 @@ log = <% if Rails.env == 'development' %> -> console.log.apply console, argument
 
 DOMAIN = "<%= DOMAIN %>"
 SHORT_DOMAIN = "<%= SHORT_DOMAIN %>"
+PROTOCOL = "http"
+API_URL = "#{PROTOCOL}://#{DOMAIN}/api"
 win_focus = true
 reading.ready = false
 on_reading = window.location.host.indexOf("reading.am") is 0 or
@@ -70,6 +77,21 @@ popup = (url, width, height) ->
 
 #-----------------------------------------
 # Models
+
+Backbone._sync = Backbone.sync
+Backbone.sync = (method, model, options) ->
+  console.log method, model, options
+  options.dataType = "jsonp"
+  if token
+    if options.data?
+      options.data.token = token
+    else
+      options.data = token: token
+  Backbone._sync.call Backbone, method, model, options
+
+# Override the url method to append the absolute API route
+Backbone.Model::_url = Backbone.Model::url
+Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 
 #######
 # API #
@@ -124,47 +146,49 @@ Model::factory = (input) ->
 # Page #
 ########
 class Reading.Models.Page extends Backbone.Model
+  urlRoot: "pages"
+
+  initialize: ->
+    self = this
+    @users = @nestCollection('users', new Reading.Collections.Users(@get('users')))
+    @users.url = => "#{self.url()}/users"
+
+
   comments: (success) ->
     API::call "pages/#{@id}/comments",
       success: success
 
-class Reading.Collections.PagesCollection extends Backbone.Collection
+class Reading.Collections.Pages extends Backbone.Collection
   model: Reading.Models.Page
-  url: '/pages'
+  url: "pages"
 
 ########
 # User #
 ########
 class Reading.Models.User extends Backbone.Model
+  urlRoot: "users"
 
-class Reading.Collections.UsersCollection extends Backbone.Collection
+class Reading.Collections.Users extends Backbone.Collection
   model: Reading.Models.User
-  url: '/users'
+  url: "users"
 
 ########
 # Post #
 ########
 class Reading.Models.Post extends Backbone.Model
-  initialize: (p) ->
-    @id = p.id
-    @yn = p.yn if p.yn?
-    @wrapped_url = p.wrapped_url
-    @page = p.page if p.page?
-    @updated_at = new Date
-    @loading = false
+  urlRoot: "posts"
+
+#  initialize: (p) ->
+#    @id = p.id
+#    @yn = p.yn if p.yn?
+#    @wrapped_url = p.wrapped_url
+#    @page = p.page if p.page?
+#    @updated_at = new Date
+#    @loading = false
   short_url: ->
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
-  save: (success) ->
-    @loading = new Date
-    API::call "posts/#{@id}/update",
-      data: {post: {yn: @yn}}
-      complete: (jqXHR, textStatus) =>
-        @loading = false
-      success: (data, textStatus, jqXHR) =>
-        @updated_at = new Date
-        success data.response if success
-  touch: (success) ->
-    @save success
+
+  touch: @save
 
 Reading.Models.Post::find_or_create = (data, success) ->
   # validations
@@ -185,7 +209,7 @@ Reading.Models.Post::find_or_create = (data, success) ->
 
 Reading.Models.Post::current = {}
 
-class Reading.Collections.PostsCollection extends Backbone.Collection
+class Reading.Collections.Posts extends Backbone.Collection
   model: Reading.Models.Post
   url: '/posts'
 
@@ -201,7 +225,7 @@ Reading.Models.Comment::create = (data, success) ->
     data: data,
     success: success
 
-class Reading.Collections.CommentsCollection extends Backbone.Collection
+class Reading.Collections.Comments extends Backbone.Collection
   model: Reading.Models.Comment
   url: '/comments'
 
@@ -220,7 +244,7 @@ class Reading.Models.Provider extends Backbone.Model
       parsed_url = parsed_url.replace("{{#{val}}}", encodeURIComponent(vals[val]))
     parsed_url
 
-class Reading.Collections.ProvidersCollection extends Backbone.Collection
+class Reading.Collections.Providers extends Backbone.Collection
   model: Reading.Models.Provider
   url: '/providers'
 
@@ -276,7 +300,7 @@ class Reading.Views.Users.UserView extends Backbone.View
     $(@el).html(@template.render(@model.toJSON()))
     return this
 
-class Reading.Views.Users.UsersCollectionView extends Backbone.View
+class Reading.Views.Users.UsersView extends Backbone.View
   tagName: "ul"
 
   initialize: ->
@@ -314,7 +338,7 @@ class Reading.Views.Providers.ProviderView extends Backbone.View
     $(@el).html(@template.render(@model.toJSON()))
     return this
 
-class Reading.Views.Providers.ProviderCollectionView extends Backbone.View
+class Reading.Views.Providers.ProvidersView extends Backbone.View
   tagName: "ul"
 
   initialize: ->
@@ -334,7 +358,7 @@ class Reading.Views.Providers.ProviderCollectionView extends Backbone.View
 #-----------------------------------------
 # Vars
 
-providers = new Reading.Collections.ProvidersCollection [
+providers = new Reading.Collections.Providers [
   new Reading.Models.Provider
     name: "Twitter"
     url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
@@ -430,8 +454,8 @@ render_menu = (post, readers = false) ->
 #  $readers.slideUp().html '' # clear previous readers
 
   if readers
-    readers = new Reading.Collections.UsersCollection(readers)
-    readers_view = new Reading.Views.Users.UsersCollectionView({id: "r_readers", users: readers})
+    readers = new Reading.Collections.Users readers
+    readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: readers})
     $wrapper.after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
 
   $wrapper.delay(500).animate
@@ -460,7 +484,7 @@ render_menu = (post, readers = false) ->
       $('#r_stuff').removeClass "r_active"
       false
 
-    share_view = new Reading.Views.Providers.ProviderCollectionView({id: "r_stuff_menu", providers: providers})
+    share_view = new Reading.Views.Providers.ProvidersView({id: "r_stuff_menu", providers: providers})
     $wrapper.after(share_view.render().el)
 
     $('#r_stuff').on
@@ -576,7 +600,9 @@ upgrade = ->
 # Initialize!
 
 init = ->
+  # we need this because we load jQuery after Backbone
   Backbone.setDomLibrary $
+
   # fire an event to let people know reading is ready
   # can't seem to use jquery.trigger for events attached
   # without jquery

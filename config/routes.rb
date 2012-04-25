@@ -1,7 +1,15 @@
 Reading::Application.routes.draw do
   root :to => "posts#index"
-  
+
+  # sitemap
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
+
+  # api
+  scope '/api', :defaults => { :format => 'json' } do
+    resources :pages do
+      resources :users
+    end
+  end
 
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"

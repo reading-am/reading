@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
 
+  def api?
+    request.path[1..3] == "api"
+  end
+
   def authenticate
     # This should probably be throwing some sort of error
     # instead of simply redirecting, especially for AJAX requests

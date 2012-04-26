@@ -89,12 +89,8 @@ Backbone.sync = (method, model, options) ->
       options.data = token: token
   Backbone._sync.call Backbone, method, model, options
 
-# Override the url method to append the absolute API route
-Backbone.Model::_url = Backbone.Model::url
-Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
-
 Backbone.Collection::parse = (response) ->
-  response.response[@name.toLowerCase()]
+  Backbone.Model::factory response.response[@name.toLowerCase()]
 
 #######
 # API #
@@ -123,7 +119,7 @@ API::call = (method, params) ->
       error: error
       success: (data, textStatus, jqXHR) ->
         if data.meta.status < 400
-          success Model::factory(data.response)
+          success Backbone.Model::factory(data.response)
         else
           jqXHR.status = data.meta.status
           jqXHR.responseText = data
@@ -132,17 +128,18 @@ API::call = (method, params) ->
 #########
 # Model #
 #########
-class Model
+# Override the url method to append the absolute API route
+Backbone.Model::_url = Backbone.Model::url
+Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 
-Model::factory = (input) ->
+Backbone.Model::factory = (input) ->
   if input instanceof Array
-    input = (Model::factory val for val in input)
-  else if input instanceof Object and (input not instanceof Model)
+    input = (Backbone.Model::factory val for val in input)
+  else if input instanceof Object and (input not instanceof Backbone.Model)
+    for prop, val of input
+      input[prop] = Backbone.Model::factory val
     if typeof input.type? and typeof Reading.Models[input.type] is "function"
       input = new Reading.Models[input.type](input)
-    else
-      for prop, val of input
-        input[prop] = Model::factory val
   input
 
 ########

@@ -42,34 +42,49 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    if params[:username] == 'everybody'
-      @posts  = Post.order("created_at DESC")
-                    .includes([:user, :page, :domain, {:referrer_post => :user}])
-                    .paginate(:page => params[:page])
-      @channels = 'everybody'
-    else
-      @user = params[:username] ?
-        User.find_by_username(params[:username]) :
-        User.find(params[:id])
-      if !@user then not_found end
-
-      @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
-
-      if params[:type] == 'list'
-        @posts = @user.feed.paginate(:page => params[:page])
-        @channels = @user.following.map { |user| user.username }
-        # add the user to the channels since it's not in .following()
-        @channels.push @user.username
-      else
-        @posts = @user.posts.paginate(:page => params[:page])
-        @channels = @user.username
+    if api?
+      @user = User.find(params[:id])
+      respond_to do |format|
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {
+            :user => @user.simple_obj
+          }
+        }, :callback => params[:callback] }
       end
-    end
+    else
+      if params[:username] == 'everybody'
+        @posts  = Post.order("created_at DESC")
+                      .includes([:user, :page, :domain, {:referrer_post => :user}])
+                      .paginate(:page => params[:page])
+        @channels = 'everybody'
+      else
+        @user = params[:username] ?
+          User.find_by_username(params[:username]) :
+          User.find(params[:id])
+        if !@user then not_found end
 
-    respond_to do |format|
-      format.html { render 'posts/index' }
-      format.xml  { render 'posts/index', :xml => @posts }
-      format.rss  { render 'posts/index' }
+        @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
+
+        if params[:type] == 'list'
+          @posts = @user.feed.paginate(:page => params[:page])
+          @channels = @user.following.map { |user| user.username }
+          # add the user to the channels since it's not in .following()
+          @channels.push @user.username
+        else
+          @posts = @user.posts.paginate(:page => params[:page])
+          @channels = @user.username
+        end
+      end
+
+      respond_to do |format|
+        format.html { render 'posts/index' }
+        format.xml  { render 'posts/index', :xml => @posts }
+        format.rss  { render 'posts/index' }
+      end
     end
   end
 

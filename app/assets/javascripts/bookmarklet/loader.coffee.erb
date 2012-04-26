@@ -89,9 +89,6 @@ Backbone.sync = (method, model, options) ->
       options.data = token: token
   Backbone._sync.call Backbone, method, model, options
 
-Backbone.Collection::parse = (response) ->
-  Backbone.Model::factory response.response[@name.toLowerCase()]
-
 #######
 # API #
 #######
@@ -142,11 +139,17 @@ Backbone.Model::factory = (input) ->
       input = new Reading.Models[input.type](input)
   input
 
+Backbone.Model::urlRoot = ->
+  "#{@type.toLowerCase()}s"
+
+Backbone.Model::parse = Backbone.Collection::parse = (response) ->
+  Backbone.Model::factory response.response[@type.toLowerCase()]
+
 ########
 # Page #
 ########
 class Reading.Models.Page extends Backbone.Model
-  urlRoot: "pages"
+  type: "Page"
 
   initialize: ->
     self = this
@@ -159,24 +162,24 @@ class Reading.Models.Page extends Backbone.Model
       success: success
 
 class Reading.Collections.Pages extends Backbone.Collection
+  type: "Pages"
   model: Reading.Models.Page
-  url: "pages"
 
 ########
 # User #
 ########
 class Reading.Models.User extends Backbone.Model
-  urlRoot: "users"
+  type: "User"
 
 class Reading.Collections.Users extends Backbone.Collection
+  type: "Users"
   model: Reading.Models.User
-  name: "Users"
 
 ########
 # Post #
 ########
 class Reading.Models.Post extends Backbone.Model
-  urlRoot: "posts"
+  type: "Post"
 
 #  initialize: (p) ->
 #    @id = p.id
@@ -210,13 +213,14 @@ Reading.Models.Post::find_or_create = (data, success) ->
 Reading.Models.Post::current = {}
 
 class Reading.Collections.Posts extends Backbone.Collection
+  type: "Posts"
   model: Reading.Models.Post
-  url: "posts"
 
 ###########
 # Comment #
 ###########
 class Reading.Models.Comment extends Backbone.Model
+  type: "Comment"
 
 Reading.Models.Comment::create = (data, success) ->
   # validations
@@ -226,13 +230,14 @@ Reading.Models.Comment::create = (data, success) ->
     success: success
 
 class Reading.Collections.Comments extends Backbone.Collection
+  type: "Comments"
   model: Reading.Models.Comment
-  url: '/comments'
 
 ############
 # Provider #
 ############
 class Reading.Models.Provider extends Backbone.Model
+  type: "Provider"
   url: (post) ->
     vals =
       url: post.page.url
@@ -245,8 +250,8 @@ class Reading.Models.Provider extends Backbone.Model
     parsed_url
 
 class Reading.Collections.Providers extends Backbone.Collection
+  type: "Providers"
   model: Reading.Models.Provider
-  url: '/providers'
 
 #-----------------------------------------
 # Controllers

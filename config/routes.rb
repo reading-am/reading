@@ -6,6 +6,7 @@ Reading::Application.routes.draw do
 
   # api
   scope '/api', :defaults => { :format => 'json' } do
+    resources :users
     resources :pages do
       resources :users
     end

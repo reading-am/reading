@@ -2,6 +2,14 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
+    # for JSONP requests
+    if !params[:_method].blank?
+      case params[:_method]
+      when 'POST'
+        return create()
+      end
+    end
+
     if api?
       if params[:page_id]
         @page = Page.find(params[:page_id])

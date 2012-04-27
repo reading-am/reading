@@ -81,6 +81,8 @@ class Post < ActiveRecord::Base
       :url    => page.url,
       :yn     => yn,
       :wrapped_url => wrapped_url,
+      :created_at => created_at,
+      :updated_at => updated_at,
       :user => user.simple_obj(to_s),
       :page => page.simple_obj(to_s),
       :referrer_post => {

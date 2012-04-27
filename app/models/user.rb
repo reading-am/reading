@@ -166,7 +166,9 @@ class User < ActiveRecord::Base
       :username   => username,
       :display_name => display_name,
       :avatar     => avatar.url,
-      :mini_avatar=> avatar.url(:mini)
+      :mini_avatar=> avatar.url(:mini),
+      :created_at => created_at,
+      :udpated_at => updated_at
     }
   end
 end

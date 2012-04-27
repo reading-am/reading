@@ -38,7 +38,10 @@ class Comment < ActiveRecord::Base
     {
       :type   => "Comment",
       :id     => to_s ? id.to_s : id,
-      :body  => body
+      :body   => body,
+      :created_at => created_at,
+      :updated_at => updated_at,
+      :user   => user.simple_obj
     }
   end
 end

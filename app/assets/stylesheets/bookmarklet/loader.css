@@ -151,3 +151,25 @@ a#r_stuff {
 #r_am .r_destroy {
   color:red !important;
 }
+#r_am .r_comment {
+  max-width:360px;
+  background:none;
+}
+#r_am .r_comment_header {
+  overflow:auto;
+  background:yellow;
+}
+#r_am .r_comment_header .r_user {
+  float:left;
+}
+#r_am .r_comment_actions {
+  float:right;
+}
+#r_am .r_comment_body {
+  background:white;
+  margin:0 0 0 25px;
+  padding:7px 14px;
+  text-align:left;
+  border:5px solid yellow;
+  border-top-width:3px;
+}

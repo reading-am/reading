@@ -318,7 +318,7 @@ class Reading.Views.Users.UserView extends Backbone.View
     render_popover @$("a").attr("href")
     false
 
-  render: ->
+  render: =>
     $(@el).html(@template.render(@model.toJSON()))
     return this
 
@@ -346,9 +346,15 @@ Reading.Views.Comments ||= {}
 
 class Reading.Views.Comments.CommentView extends Backbone.View
   template: Hogan.compile "
-    {{body}}
-    <a href=\"#\" class=\"r_reply\">reply</a>
-    <a href=\"#\" class=\"r_destroy\">delete</a>"
+    <div class=\"r_comment_header\">
+      <div class=\"r_user\"></div>
+      <div class=\"r_comment_actions\">
+        <a href=\"#\" class=\"r_reply\">reply</a>
+        <a href=\"#\" class=\"r_destroy\">delete</a>
+      </div>
+    </div>
+    <div class=\"r_comment_body\">{{body}}</div>
+  "
 
   tagName: "li"
   className: "r_comment"
@@ -368,8 +374,12 @@ class Reading.Views.Comments.CommentView extends Backbone.View
 
     return false
 
-  render: ->
+  render: =>
     $(@el).html(@template.render(@model.toJSON()))
+    child_view = new Reading.Views.Users.UserView
+      model: @model.get('user')
+      el:   @$(".r_user")
+    child_view.render()
     return this
 
 class Reading.Views.Comments.CommentsView extends Backbone.View
@@ -535,7 +545,8 @@ render_menu = (post, readers = false) ->
   Reading.Models.Post::current.get("page").comments.fetch
     success: (collection, response) ->
       comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
-      $wrapper.after(comments_view.render().el)
+      $reading.append(comments_view.render().$el.prepend("<li><textarea placeholder=\"Add a comment\"></textarea></li>"))
+
 
   $wrapper.delay(500).animate
     height: "29px"

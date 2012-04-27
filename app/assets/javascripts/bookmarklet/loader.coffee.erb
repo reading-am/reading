@@ -345,10 +345,20 @@ class Reading.Views.Users.UsersView extends Backbone.View
 Reading.Views.Comments ||= {}
 
 class Reading.Views.Comments.CommentView extends Backbone.View
-  template: Hogan.compile "{{body}}"
+  template: Hogan.compile "{{body}} <a href=\"#\" class=\"r_destroy\">delete</a>"
 
   tagName: "li"
   className: "r_comment"
+
+  events:
+    "click .r_destroy" : "destroy"
+
+  destroy: ->
+    if confirm "Are you sure you want to delete this comment?"
+      @model.destroy()
+      this.remove()
+
+    return false
 
   render: ->
     $(@el).html(@template.render(@model.toJSON()))

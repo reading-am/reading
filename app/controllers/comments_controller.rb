@@ -16,6 +16,9 @@ class CommentsController < ApplicationController
   # GET /comments/1
   # GET /comments/1.json
   def show
+    # for JSONP requests
+    return update() if params[:_method] == 'PUT'
+
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
@@ -60,8 +63,8 @@ class CommentsController < ApplicationController
         format.xml  { render :xml => @comment, :status => :created, :location => @comment }
         format.json { render :json => {
           :meta => {
-            :status => 200,
-            :msg => 'OK'
+            :status => 201,
+            :msg => 'Created'
           },
           :response => {
             :comment => @comment.simple_obj
@@ -82,12 +85,21 @@ class CommentsController < ApplicationController
   # PUT /comments/1
   # PUT /comments/1.json
   def update
+    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      if @comment.update_attributes(params[:comment])
+      if @user != @comment.user
+        format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
+      elsif @comment.update_attributes(params[:model])
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {}
+        },:callback => params[:callback] }
       else
         format.html { render action: "edit" }
         format.json { render json: @comment.errors, status: :unprocessable_entity }

@@ -339,6 +339,38 @@ class Reading.Views.Users.UsersView extends Backbone.View
     @addAll()
     return this
 
+###########
+# Comment #
+###########
+Reading.Views.Comments ||= {}
+
+class Reading.Views.Comments.CommentView extends Backbone.View
+  template: Hogan.compile "{{body}}"
+
+  tagName: "li"
+  className: "r_comment"
+
+  render: ->
+    $(@el).html(@template.render(@model.toJSON()))
+    return this
+
+class Reading.Views.Comments.CommentsView extends Backbone.View
+  tagName: "ul"
+
+  initialize: ->
+    @options.comments.bind('reset', @addAll)
+
+  addAll: =>
+    @options.comments.each(@addOne)
+
+  addOne: (comment) =>
+    view = new Reading.Views.Comments.CommentView({model : comment})
+    @$el.append(view.render().el)
+
+  render: =>
+    @addAll()
+    return this
+
 #############
 # Providers #
 #############
@@ -475,10 +507,17 @@ render_menu = (post, readers = false) ->
 
 #  $readers.slideUp().html '' # clear previous readers
 
+  # readers
   if readers
     readers = new Reading.Collections.Users readers
     readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: readers})
     $wrapper.after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+
+  # comments
+  Reading.Models.Post::current.get("page").comments.fetch
+    success: (collection, response) ->
+      comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
+      $wrapper.after(comments_view.render().el)
 
   $wrapper.delay(500).animate
     height: "29px"

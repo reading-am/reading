@@ -145,3 +145,9 @@ a#r_stuff {
   height:15px;
   padding:5px;
 }
+#r_am .r_reply {
+  color:green !important;
+}
+#r_am .r_destroy {
+  color:red !important;
+}

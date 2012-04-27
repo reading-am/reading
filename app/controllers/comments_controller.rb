@@ -2,19 +2,29 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    # for JSONP requests
-    if !params[:_method].blank?
-      case params[:_method]
-      when 'POST'
-        return create()
+    if api?
+      if params[:page_id]
+        @page = Page.find(params[:page_id])
+        @comments = @page.comments()
       end
+    else
+      @comments = Comment.all
     end
-
-    @comments = Comment.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @comments }
+      format.xml  { render :xml => @users }
+      format.json { render :json => {
+        :meta => {
+          :status => 200,
+          :msg => 'OK'
+        },
+        :response => {
+          :comments => @comments.collect { |comment|
+            comment.simple_obj
+          }
+        }
+      }, :callback => params[:callback] }
     end
   end
 

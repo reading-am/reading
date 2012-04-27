@@ -13,6 +13,7 @@ Reading::Application.routes.draw do
     resources :comments
     resources :pages do
       resources :users
+      resources :comments
     end
   end
 

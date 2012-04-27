@@ -170,8 +170,12 @@ class Reading.Models.Page extends Backbone.Model
 
   initialize: ->
     self = this
+
     @users = @nestCollection('users', new Reading.Collections.Users(@get('users')))
     @users.url = => "#{self.url()}/users"
+
+    @comments = @nestCollection('comments', new Reading.Collections.Comments(@get('comments')))
+    @comments.url = => "#{self.url()}/comments"
 
 
   comments: (success) ->

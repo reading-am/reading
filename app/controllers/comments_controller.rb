@@ -3,7 +3,12 @@ class CommentsController < ApplicationController
   # GET /comments.json
   def index
     # for JSONP requests
-    return create() if params[:_method] == 'POST'
+    if !params[:_method].blank?
+      case params[:_method]
+      when 'POST'
+        return create()
+      end
+    end
 
     @comments = Comment.all
 
@@ -17,7 +22,14 @@ class CommentsController < ApplicationController
   # GET /comments/1.json
   def show
     # for JSONP requests
-    return update() if params[:_method] == 'PUT'
+    if !params[:_method].blank?
+      case params[:_method]
+      when 'PUT'
+        return update()
+      when 'DELETE'
+        return destroy()
+      end
+    end
 
     @comment = Comment.find(params[:id])
 
@@ -74,7 +86,7 @@ class CommentsController < ApplicationController
         format.html { render :action => "new" }
         format.xml  { render :xml => @comment.errors, :status => :unprocessable_entity }
         if @comment.user.blank? # TODO clean up this auth hack. Ugh.
-          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
+          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}, :response => {}}, :callback => params[:callback] }
         else
           format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@comment.errors.to_yaml}"}}, :callback => params[:callback] }
         end
@@ -90,7 +102,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @user != @comment.user
-        format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
+        format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}, :response => {}}, :callback => params[:callback] }
       elsif @comment.update_attributes(params[:model])
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
         format.json { render :json => {
@@ -110,12 +122,24 @@ class CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
+    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @comment = Comment.find(params[:id])
-    @comment.destroy
+
+    @comment.destroy if @user == @comment.user
 
     respond_to do |format|
-      format.html { redirect_to comments_url }
-      format.json { head :no_content }
+      if !@comment.destroyed?
+        format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}, :response => {}}, :callback => params[:callback] }
+      else
+        format.html { redirect_to comments_url }
+        format.json { render :json => {
+          :meta => {
+            :status => 200,
+            :msg => 'OK'
+          },
+          :response => {}
+        },:callback => params[:callback] }
+      end
     end
   end
 end

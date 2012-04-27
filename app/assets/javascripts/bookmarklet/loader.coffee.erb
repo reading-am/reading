@@ -76,18 +76,33 @@ popup = (url, width, height) ->
   window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
 #-----------------------------------------
-# Models
+# Sync for JSONP
+
+methodMap =
+  create: 'POST',
+  update: 'PUT',
+  delete: 'DELETE',
+  read:   'GET'
 
 Backbone._sync = Backbone.sync
 Backbone.sync = (method, model, options) ->
   console.log method, model, options
+
+  type = methodMap[method]
   options.dataType = "jsonp"
-  if token
-    if options.data?
-      options.data.token = token
-    else
-      options.data = token: token
-  Backbone._sync.call Backbone, method, model, options
+  options.data = {_method: type}
+  options.data.token = token if token
+
+  if model && (method == 'create' || method == 'update')
+    options.data.model = model.toJSON()
+
+  if !options.url
+    options.url = _.result(model, 'url') || urlError()
+
+  return $.ajax options
+
+#-----------------------------------------
+# Models
 
 #######
 # API #
@@ -132,10 +147,12 @@ Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 Backbone.Model::factory = (input) ->
   if input instanceof Array
     input = (Backbone.Model::factory val for val in input)
+    if input[0] instanceof Object and input[0].type? and Reading.Collections["#{input[0].type}s"] is "function"
+      input = new Reading.Collections["#{input[0].type}s"](input)
   else if input instanceof Object and (input not instanceof Backbone.Model)
     for prop, val of input
       input[prop] = Backbone.Model::factory val
-    if typeof input.type? and typeof Reading.Models[input.type] is "function"
+    if input.type? and typeof Reading.Models[input.type] is "function"
       input = new Reading.Models[input.type](input)
   input
 
@@ -221,13 +238,9 @@ class Reading.Collections.Posts extends Backbone.Collection
 ###########
 class Reading.Models.Comment extends Backbone.Model
   type: "Comment"
-
-Reading.Models.Comment::create = (data, success) ->
-  # validations
-  return alert errors.general if !data.body || !data.page_id
-  API::call "comments/create",
-    data: data,
-    success: success
+  validate: (attr) ->
+    if !attr.body || !attr.page_id
+      return errors.general
 
 class Reading.Collections.Comments extends Backbone.Collection
   type: "Comments"

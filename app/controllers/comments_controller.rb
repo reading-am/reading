@@ -2,6 +2,9 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
+    # for JSONP requests
+    return create() if params[:_method] == 'POST'
+
     @comments = Comment.all
 
     respond_to do |format|
@@ -42,8 +45,8 @@ class CommentsController < ApplicationController
   def create
     @comment       = Comment.new
     @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @comment.page  = Page.find(params[:page_id])
-    @comment.body  = params[:body]
+    @comment.page  = Page.find(params[:model][:page_id])
+    @comment.body  = params[:model][:body]
 
     respond_to do |format|
       if @comment.save

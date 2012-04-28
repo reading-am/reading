@@ -162,8 +162,15 @@ a#r_stuff {
 #r_am .r_comment_header .r_user {
   float:left;
 }
+#r_am .r_comment_header time {
+  float:right;
+  margin:5px;
+  font-size:10px;
+  color:#7F7F00 !important;
+}
 #r_am .r_comment_actions {
   float:right;
+  display:none;
 }
 #r_am .r_comment_body {
   background:white;

@@ -19,14 +19,21 @@ libs = {}
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
-<% ['underscore','hogan','backbone','prettydate'].each do |lib| %>
+<% ['underscore','hogan','backbone'].each do |lib| %>
 `<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/#{lib}.js" %>`
 <% end %>
 
 # Backbone addons
 <% ['nest_collection'].each do |lib| %>
- <%= IO.read "#{Rails.root}/app/assets/javascripts/backbone/addons/#{lib}.coffee" %>
+<%= IO.read "#{Rails.root}/app/assets/javascripts/backbone/addons/#{lib}.coffee" %>
 <% end %>
+
+# jQuery plugins
+load_$plugins = ->
+<% ['humane'].each do |lib| %>
+  `<%= IO.read "#{Rails.root}/app/assets/javascripts/jquery/#{lib}.js" %>`
+<% end %>
+  return # need this return here else it returns too soon
 
 #-----------------------------------------
 # Debug
@@ -348,7 +355,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
   template: Hogan.compile "
     <div class=\"r_comment_header\">
       <div class=\"r_user\"></div>
-      <a title=\"{{updated_at}}\" class=\"r_prettydate\"></a>
+      <time datetime=\"{{updated_at}}\"></time>
       <div class=\"r_comment_actions\">
         <a href=\"#\" class=\"r_reply\">reply</a>
         <a href=\"#\" class=\"r_destroy\">delete</a>
@@ -380,7 +387,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
 
   render: =>
     $(@el).html(@template.render(@model.toJSON()))
-    @$(".r_prettydate").prettyDate()
+    @$("time").humaneDates()
     child_view = new Reading.Views.Users.UserView
       model: @model.get('user')
       el:   @$(".r_user")
@@ -697,6 +704,7 @@ upgrade = ->
 init = ->
   # we need this because we load jQuery after Backbone
   Backbone.setDomLibrary $
+  load_$plugins()
 
   # fire an event to let people know reading is ready
   # can't seem to use jquery.trigger for events attached
@@ -712,13 +720,8 @@ init = ->
     win_focus = false
   )
 
-  # pretty date jquery plugin
-  jQuery.fn.prettyDate = ->
-    @each ->
-      date = prettyDate(@title)
-      jQuery(this).text(date) if date
   setInterval ->
-    $(".r_prettydate").prettyDate()
+    $("time").humaneDates()
   , 5000
 
   if platform is "redirect" or platform is "bookmarklet"

@@ -73,7 +73,9 @@ public
       :type   => 'Page',
       :id     => to_s ? id.to_s : id,
       :url    => url,
-      :title  => title
+      :title  => title,
+      :created_at => created_at,
+      :updated_at => updated_at
     }
   end
 end

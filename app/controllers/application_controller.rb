@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   http_basic_authenticate_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
 
-  before_filter :check_domain, :set_time_zone, :set_user_device, :set_headers
+  before_filter :check_domain, :set_user_device, :set_headers
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404

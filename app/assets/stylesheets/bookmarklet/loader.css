@@ -162,15 +162,22 @@ a#r_stuff {
 #r_am .r_comment_header .r_user {
   float:left;
 }
-#r_am .r_comment_header time {
+#r_am .r_comment_header time, #r_am .r_comment_actions {
   float:right;
   margin:5px;
+}
+#r_am .r_comment_header time {
   font-size:10px;
   color:#7F7F00 !important;
 }
-#r_am .r_comment_actions {
-  float:right;
+#r_am .r_comment:hover .r_comment_header time {
   display:none;
+}
+#r_am .r_comment_actions {
+  display:none;
+}
+#r_am .r_comment:hover .r_comment_actions {
+  display:block;
 }
 #r_am .r_comment_body {
   background:white;

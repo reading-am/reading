@@ -49,7 +49,7 @@ module ApplicationHelper
       when 'safari'
         link = 'http://reading-production.s3.amazonaws.com/extensions/reading.safariextz'
       when 'firefox'
-        link = 'https://addons.mozilla.org/en-us/firefox/addon/reading-am/'
+        link = 'http://reading-production.s3.amazonaws.com/extensions/reading.xpi'
     end
     link_to text, link, :class => "btn #{browser}-install"
   end

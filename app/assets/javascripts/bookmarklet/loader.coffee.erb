@@ -277,26 +277,6 @@ class Reading.Collections.Providers extends Backbone.Collection
   type: "Providers"
   model: Reading.Models.Provider
 
-#-----------------------------------------
-# Controllers
-
-##############
-# Controller #
-##############
-class Controller
-
-#######################
-# Comments_Controller #
-#######################
-class Comments_Controller
-
-Comments_Controller::init = ->
-  $reading.on "keyup", "textarea", (e) ->
-    if e.which is 13
-      Reading.Models.Comment::create
-        body: $(this).val()
-        page_id: Reading.Models.Post::current.page.id
-      false
 
 #-----------------------------------------
 # Views
@@ -397,8 +377,12 @@ class Reading.Views.Comments.CommentView extends Backbone.View
 class Reading.Views.Comments.CommentsView extends Backbone.View
   tagName: "ul"
 
+  events:
+    "keypress textarea" : "createOnEnter"
+
   initialize: ->
-    @options.comments.bind('reset', @addAll)
+    @options.comments.bind 'reset', @addAll
+    @options.comments.bind 'add', @addOne
 
   addAll: =>
     @options.comments.each(@addOne)
@@ -406,6 +390,14 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
   addOne: (comment) =>
     view = new Reading.Views.Comments.CommentView({model : comment})
     @$el.append(view.render().el)
+
+  createOnEnter: (e) ->
+    if e.keyCode is 13
+      @options.comments.create
+        body: @$("textarea").val(),
+        user: Reading.Models.Post::current.get("user")
+        page_id: Reading.Models.Post::current.get("page").get("id")
+      @$("textarea").val ''
 
   render: =>
     @addAll()
@@ -734,7 +726,6 @@ init = ->
       title = window.document.title
 
     submit {url: url, title: title, referrer_id: reading.referrer_id ? 0}
-    Comments_Controller::init()
 
 #-----------------------------------------
 # Check for jQuery and initialize

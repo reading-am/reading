@@ -30,6 +30,10 @@
   width:50px;
   padding:0 10px;
 }
+#r_am img {
+  width:auto;
+  height:auto;
+}
 #r_wrp, #r_am li, #r_stuff_menu, #r_readers {
   float:right;
   clear:both;

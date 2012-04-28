@@ -105,8 +105,8 @@ Backbone.sync = (method, model, options) ->
 
   if !options.url
     options.url = _.result(model, 'url') || urlError()
-
-  return $.ajax options
+  console.log options
+  $.ajax options
 
 #-----------------------------------------
 # Models
@@ -151,6 +151,10 @@ API::call = (method, params) ->
 Backbone.Model::_url = Backbone.Model::url
 Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 
+Backbone.Model::toJSON = (options) ->
+  obj = _.clone @attributes
+  Backbone.Model::deconstruct obj
+
 Backbone.Model::factory = (input) ->
   if input instanceof Array
     input = (Backbone.Model::factory val for val in input)
@@ -168,6 +172,17 @@ Backbone.Model::urlRoot = ->
 
 Backbone.Model::parse = Backbone.Collection::parse = (response) ->
   Backbone.Model::factory response.response[@type.toLowerCase()]
+
+# converts nested Backbone objects to simply an id reference
+Backbone.Model::deconstruct = (input) ->
+  if input instanceof Array
+    input = (Backbone.Model::deconstruct val for val in input)
+  else if input instanceof Object
+    for prop, val of input
+      if val instanceof Backbone.Model
+        input["#{prop}_id"] = val.get("id")
+        delete input[prop]
+  input
 
 ########
 # Page #
@@ -250,7 +265,7 @@ class Reading.Collections.Posts extends Backbone.Collection
 class Reading.Models.Comment extends Backbone.Model
   type: "Comment"
   validate: (attr) ->
-    if !attr.body || !attr.page_id
+    if !attr.body || !attr.page
       return errors.general
 
 class Reading.Collections.Comments extends Backbone.Collection
@@ -396,8 +411,8 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
       @options.comments.create
         body: @$("textarea").val(),
         user: Reading.Models.Post::current.get("user")
-        page_id: Reading.Models.Post::current.get("page").get("id")
-      @$("textarea").val ''
+        page: Reading.Models.Post::current.get("page")
+      @$("textarea").val ""
 
   render: =>
     @addAll()

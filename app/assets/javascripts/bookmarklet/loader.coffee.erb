@@ -82,6 +82,11 @@ parse_url = ->
 popup = (url, width, height) ->
   window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
+render_helpers =
+  nl2br: ->
+    (str) -> (str+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
+
+
 #-----------------------------------------
 # Sync for JSONP
 
@@ -151,9 +156,13 @@ API::call = (method, params) ->
 Backbone.Model::_url = Backbone.Model::url
 Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 
-Backbone.Model::toJSON = (options) ->
+Backbone.Model::toJSON = ->
   obj = _.clone @attributes
   Backbone.Model::deconstruct obj
+
+# JSON with lambdas for moustache
+Backbone.Model::toJSONT = ->
+  _.extend @toJSON(), render_helpers
 
 Backbone.Model::factory = (input) ->
   if input instanceof Array
@@ -321,7 +330,7 @@ class Reading.Views.Users.UserView extends Backbone.View
     false
 
   render: =>
-    $(@el).html(@template.render(@model.toJSON()))
+    $(@el).html(@template.render(@model.toJSONT()))
     return this
 
 class Reading.Views.Users.UsersView extends Backbone.View
@@ -356,7 +365,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
         <a href=\"#\" class=\"r_destroy\">delete</a>
       </div>
     </div>
-    <div class=\"r_comment_body\">{{body}}</div>
+    <div class=\"r_comment_body\">{{#nl2br}}{{body}}{{/nl2br}}</div>
   "
 
   tagName: "li"
@@ -381,7 +390,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     return false
 
   render: =>
-    $(@el).html(@template.render(@model.toJSON()))
+    $(@el).html(@template.render(@model.toJSONT()))
     @$("time").humaneDates()
     child_view = new Reading.Views.Users.UserView
       model: @model.get('user')
@@ -437,7 +446,7 @@ class Reading.Views.Providers.ProviderView extends Backbone.View
     false
 
   render: ->
-    $(@el).html(@template.render(@model.toJSON()))
+    $(@el).html(@template.render(@model.toJSONT()))
     return this
 
 class Reading.Views.Providers.ProvidersView extends Backbone.View

@@ -19,7 +19,7 @@ libs = {}
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
-<% ['underscore','hogan','backbone'].each do |lib| %>
+<% ['underscore','hogan','backbone','prettydate'].each do |lib| %>
 `<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/#{lib}.js" %>`
 <% end %>
 
@@ -348,6 +348,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
   template: Hogan.compile "
     <div class=\"r_comment_header\">
       <div class=\"r_user\"></div>
+      <a title=\"{{updated_at}}\" class=\"r_prettydate\"></a>
       <div class=\"r_comment_actions\">
         <a href=\"#\" class=\"r_reply\">reply</a>
         <a href=\"#\" class=\"r_destroy\">delete</a>
@@ -363,6 +364,10 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     "click .r_reply" : "reply"
     "click .r_destroy" : "destroy"
 
+  initialize: ->
+    @model.bind 'change', @render, this
+    @model.bind 'destroy', @remove, this
+
   reply: ->
     alert "reply will go here"
     return false
@@ -370,12 +375,12 @@ class Reading.Views.Comments.CommentView extends Backbone.View
   destroy: ->
     if confirm "Are you sure you want to delete this comment?"
       @model.destroy()
-      this.remove()
 
     return false
 
   render: =>
     $(@el).html(@template.render(@model.toJSON()))
+    @$(".r_prettydate").prettyDate()
     child_view = new Reading.Views.Users.UserView
       model: @model.get('user')
       el:   @$(".r_user")
@@ -706,6 +711,15 @@ init = ->
   ).blur(->
     win_focus = false
   )
+
+  # pretty date jquery plugin
+  jQuery.fn.prettyDate = ->
+    @each ->
+      date = prettyDate(@title)
+      jQuery(this).text(date) if date
+  setInterval ->
+    $(".r_prettydate").prettyDate()
+  , 5000
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"

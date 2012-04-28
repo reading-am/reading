@@ -19,7 +19,7 @@ libs = {}
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
-<% ['underscore','hogan','backbone'].each do |lib| %>
+<% ['underscore','hogan','backbone','keymaster'].each do |lib| %>
 `<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/#{lib}.js" %>`
 <% end %>
 
@@ -407,12 +407,13 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
     @$el.append(view.render().el)
 
   createOnEnter: (e) ->
-    if e.keyCode is 13
+    if e.keyCode is 13 and !key.alt
       @options.comments.create
         body: @$("textarea").val(),
         user: Reading.Models.Post::current.get("user")
         page: Reading.Models.Post::current.get("page")
       @$("textarea").val ""
+      false
 
   render: =>
     @addAll()

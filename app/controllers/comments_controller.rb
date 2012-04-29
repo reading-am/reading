@@ -12,8 +12,9 @@ class CommentsController < ApplicationController
 
     if api?
       if params[:page_id]
-        @page = Page.find(params[:page_id])
-        @comments = @page.comments()
+        #@page = Page.find(params[:page_id])
+        #@comments = @page.comments()
+        @comments = Comment.from_users_followed_by(User.find(1)).where("page_id = ?", params[:page_id])
       end
     else
       @comments = Comment.all

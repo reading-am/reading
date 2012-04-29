@@ -215,11 +215,6 @@ class Reading.Models.Page extends Backbone.Model
     @comments = @nestCollection('comments', new Reading.Collections.Comments(@get('comments')))
     @comments.url = => "#{self.url()}/comments"
 
-
-  comments: (success) ->
-    API::call "pages/#{@id}/comments",
-      success: success
-
 class Reading.Collections.Pages extends Backbone.Collection
   type: "Pages"
   model: Reading.Models.Page
@@ -240,13 +235,6 @@ class Reading.Collections.Users extends Backbone.Collection
 class Reading.Models.Post extends Backbone.Model
   type: "Post"
 
-#  initialize: (p) ->
-#    @id = p.id
-#    @yn = p.yn if p.yn?
-#    @wrapped_url = p.wrapped_url
-#    @page = p.page if p.page?
-#    @updated_at = new Date
-#    @loading = false
   short_url: ->
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
 
@@ -487,6 +475,28 @@ class Reading.Views.Providers.ProvidersView extends Backbone.View
     @addAll()
     return this
 
+class Reading.Views.App extends Backbone.View
+  template: Handlebars.compile "
+    <div id=\"r_wrp\">
+      <div id=\"r_icon\">&#9996;</div>
+      <div id=\"r_subtext\">Loading</div>
+      <div id=\"r_actions\">
+        <a href=\"#\" id=\"r_yep\">Yep</a> .
+        <a href=\"#\" id=\"r_nope\">Nope</a>
+        <a href=\"#\" id=\"r_stuff\">Share</a>
+        <a href=\"#\" id=\"r_close\">&#10005;</a>
+      </div>
+    </div>
+  "
+
+  tagName: "div"
+
+  id: "r_am"
+
+  render: =>
+    $(@el).html(@template())
+    return this
+
 #-----------------------------------------
 # Vars
 
@@ -541,7 +551,8 @@ render_loading = ->
   $reading = $("#r_am")
   if(!$reading.length)
     $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').appendTo("head")
-    $reading = $('<%= IO.read("#{Rails.root}/app/views/bookmarklet/loader.html").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').prependTo("body")
+    app_view = new Reading.Views.App
+    $reading = app_view.render().$el.prependTo("body")
     $reading.fadeIn 500
   else
     $("#r_icon", $reading).animate "margin-top": "-18px"
@@ -664,20 +675,8 @@ yep_nope = (post, state) ->
     $other.removeClass(active).addClass inactive
 
   if post.yn isnt state
-    # show the loader
-    $close = $('#r_close')
-    i = 0
-    shapes = ['&#10043;', '&#10044;', '&#10045;', '&#10046;']
-    loading = setInterval(->
-      $close.html shapes[i]
-      i = (if i < shapes.length - 1 then i + 1 else 0)
-    , 250)
-    # save the post state
     post.yn = state
-    post.save ->
-      clearInterval loading
-      $close.html '&#10005;'
-  #return
+    post.save()
   false
 
 #-----------------------------------------

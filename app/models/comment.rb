@@ -13,6 +13,19 @@ class Comment < ActiveRecord::Base
 
   attr_accessible :body
 
+  scope :from_users_followed_by, lambda { |user| followed_by(user) }
+
+  private
+
+  def self.followed_by(user)
+    following_ids = %(SELECT followed_id FROM relationships
+                      WHERE follower_id = :user_id)
+    where("user_id IN (#{following_ids}) OR user_id = :user_id",
+          { :user_id => user })
+  end
+
+  public
+
   def mentions
     extract_mentioned_screen_names body
   end

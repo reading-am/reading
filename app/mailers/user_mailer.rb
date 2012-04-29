@@ -11,6 +11,16 @@ class UserMailer < ActionMailer::Base
     )
   end
 
+  def mentioned(comment, subject)
+    @enactor = comment.user
+    @subject = subject
+    @comment = comment
+    mail(
+      :to       => @subject.email,
+      :subject  => "#{@enactor.display_name} mentioned you in a comment at \"#{@comment.page.display_title}\""
+    )
+  end
+
   def digest(user)
     @user   = user
     @posts  = @user.unread_since(@user.mail_digest.days.ago).limit(30)

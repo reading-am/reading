@@ -89,6 +89,7 @@ Handlebars.registerHelper "autolink", (context, fn) ->
   new Handlebars.SafeString twttr.txt.autoLink context,
       urlClass: 'r_url',
       usernameClass: 'r_mention',
+      hashtagClass: 'r_tag',
       usernameUrlBase: "//#{DOMAIN}/",
       listUrlBase: "//#{DOMAIN}/",
       hashtagUrlBase: "//#{DOMAIN}/search?q="

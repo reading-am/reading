@@ -89,6 +89,11 @@ class CommentsController < ApplicationController
         Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@comment, event)
         @comment.user.hooks.each do |hook| hook.run(@comment, event) end
 
+        User.mentioned_in(@comment)
+          .where('email IS NOT NULL AND wants_mail = ?', true).each do |user|
+            UserMailer.delay.mentioned(@comment, user)
+        end
+
         format.html { redirect_to(@comment, :notice => 'Comment was successfully created.') }
         format.xml  { render :xml => @comment, :status => :created, :location => @comment }
         format.json { render :json => {

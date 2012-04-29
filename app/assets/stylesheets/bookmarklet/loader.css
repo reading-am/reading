@@ -194,7 +194,8 @@ a#r_stuff {
   border:5px solid yellow;
   border-top-width:3px;
 }
-#r_am .r_url {
+#r_am .r_mention:hover, #r_am .r_tag:hover, #r_am .r_url {
+  color:#000 !important;
   text-decoration:underline;
 }
 #r_am .r_mention {
@@ -202,6 +203,7 @@ a#r_stuff {
   background:#c8feff;
   text-decoration:none;
 }
-#r_am .r_mention:hover {
-  text-decoration:underline;
+#r_am .r_tag {
+  color:#999 !important;
+  text-decoration:none;
 }

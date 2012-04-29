@@ -82,12 +82,12 @@ parse_url = ->
 popup = (url, width, height) ->
   window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
-Handlebars.registerHelper 'nl2br', (context, fn) ->
+Handlebars.registerHelper "nl2br", (context, fn) ->
   new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
 
-Handlebars.registerHelper 'autolink', (context, fn) ->
+Handlebars.registerHelper "autolink", (context, fn) ->
   new Handlebars.SafeString twttr.txt.autoLink context,
-      urlClass: '',
+      urlClass: 'r_url',
       usernameClass: 'r_mention',
       usernameUrlBase: "//#{DOMAIN}/",
       listUrlBase: "//#{DOMAIN}/",
@@ -169,10 +169,6 @@ Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 Backbone.Model::toJSON = ->
   obj = _.clone @attributes
   Backbone.Model::deconstruct obj
-
-# JSON with lambdas for moustache
-Backbone.Model::toJSONT = ->
-  _.extend @toJSON(), render_helpers
 
 Backbone.Model::factory = (input) ->
   if input instanceof Array
@@ -416,7 +412,8 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
   tagName: "ul"
 
   events:
-    "keypress textarea" : "createOnEnter"
+    "keypress textarea" : "createOnEnter",
+    "click .r_mention" : "showUser"
 
   initialize: ->
     @options.comments.bind 'reset', @addAll
@@ -428,6 +425,10 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
   addOne: (comment) =>
     view = new Reading.Views.Comments.CommentView({model : comment})
     @$("li:first").after(view.render().el)
+
+  showUser: (e) ->
+    render_popover $(e.target).attr("href") 
+    false
 
   createOnEnter: (e) ->
     if e.keyCode is 13 and !key.alt

@@ -114,7 +114,7 @@ a#r_stuff {
   top:0; left:0;
   width:100%; height:100%;
   overflow:hidden;
-  z-index:999999998;
+  z-index:9999999999;
   display:none;
 }
 #r_popover div {
@@ -194,6 +194,14 @@ a#r_stuff {
   border:5px solid yellow;
   border-top-width:3px;
 }
+#r_am .r_url {
+  text-decoration:underline;
+}
 #r_am .r_mention {
   font-weight:bold;
+  background:#c8feff;
+  text-decoration:none;
+}
+#r_am .r_mention:hover {
+  text-decoration:underline;
 }

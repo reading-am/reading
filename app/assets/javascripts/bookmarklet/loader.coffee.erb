@@ -411,6 +411,8 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     return this
 
 class Reading.Views.Comments.CommentsView extends Backbone.View
+  template: Handlebars.compile "<li><textarea placeholder=\"Add a comment\"></textarea></li>"
+
   tagName: "ul"
 
   events:
@@ -425,7 +427,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
 
   addOne: (comment) =>
     view = new Reading.Views.Comments.CommentView({model : comment})
-    @$el.prepend(view.render().el)
+    @$("li:first").after(view.render().el)
 
   createOnEnter: (e) ->
     if e.keyCode is 13 and !key.alt
@@ -437,6 +439,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
       false
 
   render: =>
+    $(@el).html(@template())
     @addAll()
     return this
 
@@ -586,7 +589,7 @@ render_menu = (post, readers = false) ->
   Reading.Models.Post::current.get("page").comments.fetch
     success: (collection, response) ->
       comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
-      $reading.append(comments_view.render().$el.prepend("<li><textarea placeholder=\"Add a comment\"></textarea></li>"))
+      $reading.append(comments_view.render().el)
 
 
   $wrapper.delay(500).animate

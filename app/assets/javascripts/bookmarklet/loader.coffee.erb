@@ -86,7 +86,12 @@ Handlebars.registerHelper 'nl2br', (context, fn) ->
   new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
 
 Handlebars.registerHelper 'autolink', (context, fn) ->
-  new Handlebars.SafeString twttr.txt.autoLink context
+  new Handlebars.SafeString twttr.txt.autoLink context,
+      urlClass: '',
+      usernameClass: 'user',
+      usernameUrlBase: "//#{DOMAIN}/",
+      listUrlBase: "//#{DOMAIN}/",
+      hashtagUrlBase: "//#{DOMAIN}/search?q="
 
 Handlebars.registerHelper 'format_comment', (context, fn) ->
   context = Handlebars.helpers.nl2br.call this, context, fn

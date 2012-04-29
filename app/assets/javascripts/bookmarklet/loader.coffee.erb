@@ -19,7 +19,7 @@ libs = {}
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
-<% ['underscore','handlebars','backbone','keymaster'].each do |lib| %>
+<% ['underscore','handlebars','backbone','keymaster','twitter-text'].each do |lib| %>
 `<%= IO.read("#{Rails.root}/app/assets/javascripts/libs/#{lib}.js").gsub('`','\\\\`') %>`
 <% end %>
 
@@ -31,7 +31,7 @@ base58 = libs.encdec()
 # jQuery plugins
 load_$plugins = ->
 <% ['humane'].each do |lib| %>
-  `<%= IO.read "#{Rails.root}/app/assets/javascripts/jquery/#{lib}.js" %>`
+  `<%= IO.read("#{Rails.root}/app/assets/javascripts/jquery/#{lib}.js").gsub('`','\\\\`') %>`
 <% end %>
   return # need this return here else it returns too soon
 
@@ -84,6 +84,13 @@ popup = (url, width, height) ->
 
 Handlebars.registerHelper 'nl2br', (context, fn) ->
   new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
+
+Handlebars.registerHelper 'autolink', (context, fn) ->
+  new Handlebars.SafeString twttr.txt.autoLink context
+
+Handlebars.registerHelper 'format_comment', (context, fn) ->
+  context = Handlebars.helpers.nl2br.call this, context, fn
+  Handlebars.helpers.autolink.call this, context.string, fn
 
 #-----------------------------------------
 # Sync for JSONP
@@ -364,7 +371,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
       </div>
     </div>
     <div class=\"r_comment_body\">
-      {{nl2br body}}
+      {{format_comment body}}
     </div>
   "
 

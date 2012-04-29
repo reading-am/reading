@@ -144,6 +144,13 @@ a#r_stuff {
   width:150px;
   height:15px;
   padding:5px;
+  transition: width 0.25s;
+  -moz-transition: width 0.25s;
+  -webkit-transition: width 0.25s;
+  -o-transition: width 0.25s;
+}
+#r_comments textarea:focus {
+  width:330px;
 }
 #r_am .r_reply {
   color:green !important;
@@ -186,4 +193,7 @@ a#r_stuff {
   text-align:left;
   border:5px solid yellow;
   border-top-width:3px;
+}
+#r_am .r_mention {
+  font-weight:bold;
 }

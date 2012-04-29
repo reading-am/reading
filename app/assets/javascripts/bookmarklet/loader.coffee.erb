@@ -88,7 +88,7 @@ Handlebars.registerHelper 'nl2br', (context, fn) ->
 Handlebars.registerHelper 'autolink', (context, fn) ->
   new Handlebars.SafeString twttr.txt.autoLink context,
       urlClass: '',
-      usernameClass: 'user',
+      usernameClass: 'r_mention',
       usernameUrlBase: "//#{DOMAIN}/",
       listUrlBase: "//#{DOMAIN}/",
       hashtagUrlBase: "//#{DOMAIN}/search?q="
@@ -425,7 +425,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
 
   addOne: (comment) =>
     view = new Reading.Views.Comments.CommentView({model : comment})
-    @$el.append(view.render().el)
+    @$el.prepend(view.render().el)
 
   createOnEnter: (e) ->
     if e.keyCode is 13 and !key.alt

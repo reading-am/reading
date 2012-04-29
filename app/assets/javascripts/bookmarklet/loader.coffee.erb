@@ -368,8 +368,10 @@ class Reading.Views.Comments.CommentView extends Backbone.View
       <div class=\"r_user\"></div>
       <time datetime=\"{{updated_at}}\"></time>
       <div class=\"r_comment_actions\">
-        <a href=\"#\" class=\"r_reply\">reply</a>
-        <a href=\"#\" class=\"r_destroy\">delete</a>
+        {{! <a href=\"#\" class=\"r_reply\">reply</a> }}
+        {{#if is_owner}}
+          <a href=\"#\" class=\"r_destroy\">delete</a>
+        {{/if}}
       </div>
     </div>
     <div class=\"r_comment_body\">
@@ -399,7 +401,9 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     return false
 
   render: =>
-    $(@el).html(@template(@model.toJSON()))
+    json = @model.toJSON()
+    json.is_owner = @model.get("user").get("id") == Reading.Models.Post::current.get("user").get("id")
+    $(@el).html(@template(json))
     @$("time").humaneDates()
     child_view = new Reading.Views.Users.UserView
       model: @model.get('user')

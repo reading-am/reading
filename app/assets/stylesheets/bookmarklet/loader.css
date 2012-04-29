@@ -150,7 +150,7 @@ a#r_stuff {
   -o-transition: width 0.25s;
 }
 #r_comments textarea:focus {
-  width:330px;
+  width:305px;
 }
 #r_am .r_reply {
   color:green !important;

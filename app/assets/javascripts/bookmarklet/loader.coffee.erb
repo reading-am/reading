@@ -19,8 +19,8 @@ libs = {}
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
-<% ['underscore','hogan','backbone','keymaster'].each do |lib| %>
-`<%= IO.read "#{Rails.root}/app/assets/javascripts/libs/#{lib}.js" %>`
+<% ['underscore','handlebars','backbone','keymaster'].each do |lib| %>
+`<%= IO.read("#{Rails.root}/app/assets/javascripts/libs/#{lib}.js").gsub('`','\\\\`') %>`
 <% end %>
 
 # Backbone addons
@@ -82,10 +82,8 @@ parse_url = ->
 popup = (url, width, height) ->
   window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
-render_helpers =
-  nl2br: ->
-    (str) -> (str+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
-
+Handlebars.registerHelper 'nl2br', (context, fn) ->
+  new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
 
 #-----------------------------------------
 # Sync for JSONP
@@ -311,7 +309,7 @@ class Reading.Collections.Providers extends Backbone.Collection
 Reading.Views.Users ||= {}
 
 class Reading.Views.Users.UserView extends Backbone.View
-  template: Hogan.compile "
+  template: Handlebars.compile "
     <a href=\"http://#{DOMAIN}/{{username}}\">
       <img src=\"{{mini_avatar}}\"> {{display_name}}
     </a>
@@ -330,7 +328,7 @@ class Reading.Views.Users.UserView extends Backbone.View
     false
 
   render: =>
-    $(@el).html(@template.render(@model.toJSONT()))
+    $(@el).html(@template(@model.toJSON()))
     return this
 
 class Reading.Views.Users.UsersView extends Backbone.View
@@ -356,7 +354,7 @@ class Reading.Views.Users.UsersView extends Backbone.View
 Reading.Views.Comments ||= {}
 
 class Reading.Views.Comments.CommentView extends Backbone.View
-  template: Hogan.compile "
+  template: Handlebars.compile "
     <div class=\"r_comment_header\">
       <div class=\"r_user\"></div>
       <time datetime=\"{{updated_at}}\"></time>
@@ -365,7 +363,9 @@ class Reading.Views.Comments.CommentView extends Backbone.View
         <a href=\"#\" class=\"r_destroy\">delete</a>
       </div>
     </div>
-    <div class=\"r_comment_body\">{{#nl2br}}{{body}}{{/nl2br}}</div>
+    <div class=\"r_comment_body\">
+      {{nl2br body}}
+    </div>
   "
 
   tagName: "li"
@@ -390,7 +390,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     return false
 
   render: =>
-    $(@el).html(@template.render(@model.toJSONT()))
+    $(@el).html(@template(@model.toJSON()))
     @$("time").humaneDates()
     child_view = new Reading.Views.Users.UserView
       model: @model.get('user')
@@ -434,7 +434,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
 Reading.Views.Providers ||= {}
 
 class Reading.Views.Providers.ProviderView extends Backbone.View
-  template: Hogan.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
+  template: Handlebars.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
 
   events:
     "click" : "run"
@@ -446,7 +446,7 @@ class Reading.Views.Providers.ProviderView extends Backbone.View
     false
 
   render: ->
-    $(@el).html(@template.render(@model.toJSONT()))
+    $(@el).html(@template(@model.toJSON()))
     return this
 
 class Reading.Views.Providers.ProvidersView extends Backbone.View

@@ -121,7 +121,7 @@ Backbone.sync = (method, model, options) ->
 
   if !options.url
     options.url = _.result(model, 'url') || urlError()
-  console.log options
+
   $.ajax options
 
 #-----------------------------------------
@@ -242,7 +242,12 @@ class Reading.Models.Post extends Backbone.Model
   short_url: ->
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
 
-  touch: @save
+  keep_fresh: ->
+    # update the date_created every 15 seconds ala chartbeat
+    # consider not doing this for context-menu posts
+    self.interval = setTimeout (->
+      post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
+    ), 2500
 
 Reading.Models.Post::find_or_create = (data, success) ->
   # don't send the null title or else it'll get posted
@@ -257,8 +262,6 @@ Reading.Models.Post::find_or_create = (data, success) ->
         when "Forbidden"
           $("#r_am").remove() # need to encapsulate this into the menu itself
           alert errors.forbidden
-
-Reading.Models.Post::current = {}
 
 class Reading.Collections.Posts extends Backbone.Collection
   type: "Posts"
@@ -333,7 +336,7 @@ class Reading.Views.Users.UsersView extends Backbone.View
   tagName: "ul"
 
   initialize: ->
-    @options.users.bind('reset', @addAll)
+    @options.users.bind "reset", @addAll
 
   addAll: =>
     @options.users.each(@addOne)
@@ -376,8 +379,8 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     "click .r_destroy" : "destroy"
 
   initialize: ->
-    @model.bind 'change', @render, this
-    @model.bind 'destroy', @remove, this
+    @model.bind "change", @render, this
+    @model.bind "destroy", @remove, this
 
   reply: ->
     alert "reply will go here"
@@ -410,8 +413,8 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
     "click .r_mention" : "showUser"
 
   initialize: ->
-    @options.comments.bind 'reset', @addAll
-    @options.comments.bind 'add', @addOne
+    @options.comments.bind "reset", @addAll
+    @options.comments.bind "add", @addOne
 
   addAll: =>
     @options.comments.each(@addOne)
@@ -463,7 +466,7 @@ class Reading.Views.Providers.ProvidersView extends Backbone.View
   tagName: "ul"
 
   initialize: ->
-    @options.providers.bind('reset', @addAll)
+    @options.providers.bind "reset", @addAll
 
   addAll: =>
     @options.providers.each(@addOne)
@@ -520,9 +523,10 @@ class Reading.Views.App extends Backbone.View
 
     @$("#r_icon").delay(500).animate "margin-top": "-56px"
 
-    #@get_comments()
+    @model.bind "sync", @get_comments, this
 
   get_comments: ->
+    log "hit"
     Reading.Models.Post::current.get("page").comments.fetch
       success: (collection, response) ->
         comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
@@ -631,59 +635,18 @@ render_popover = (src) ->
     $body.addClass("r_popped_over").append $popover
     $popover.fadeIn("fast")
 
-#-----------------------------------------
-# Script Loader
-
-load_script = (url, success) ->
-  script = document.createElement('script')
-  script.src = url
-  head = document.getElementsByTagName('head')[0]
-  done = false
-  script.onload = script.onreadystatechange = =>
-    if not done and (not @readyState or @readyState is 'loaded' or @readyState is 'complete')
-      done = true
-      success()
-      script.onload = script.onreadystatechange = null
-      head.removeChild script
-  head.appendChild script
 
 #-----------------------------------------
 # Submit the post
 
 self = this
-post = new Reading.Models.Post
+post = Reading.Models.Post::current = new Reading.Models.Post
 
 reading.submit = submit = (params) ->
   post.save params, success: (data) ->
     if platform is "redirect"
-      # forward back through to Reading so that the user's
-      # token doesn't show up in the referrer
+      # forward back through to Reading so that the user's token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url
-    else
-      # update the date_created every 15 seconds ala chartbeat
-      # consider not doing this for context-menu posts
-      clearInterval self.interval if self.interval?
-      self.interval = setInterval (->
-        post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
-      ), 2500
-
-      Reading.Models.Post::current = post
-
-#-----------------------------------------
-# Check the bookmarklet version
-
-up_to_date = ->
-  if !latest_versions[platform]?
-    true
-  else
-    String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
-
-
-#-----------------------------------------
-# Prompt to upgrade
-
-upgrade = ->
-  $.getScript "//#{DOMAIN}/assets/bookmarklet/upgrade.js"
 
 #-----------------------------------------
 # Initialize!
@@ -707,7 +670,8 @@ init = ->
     win_focus = false
   )
 
-  app_view = new Reading.Views.App if platform isnt "redirect"
+  if platform isnt "redirect"
+    app_view = new Reading.Views.App(model: Reading.Models.Post::current)
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"
@@ -722,6 +686,36 @@ init = ->
       url: url
       title: title
       referrer_id: reading.referrer_id ? 0
+
+
+#-----------------------------------------
+# Script Loader
+
+load_script = (url, success) ->
+  script = document.createElement('script')
+  script.src = url
+  head = document.getElementsByTagName('head')[0]
+  done = false
+  script.onload = script.onreadystatechange = =>
+    if not done and (not @readyState or @readyState is 'loaded' or @readyState is 'complete')
+      done = true
+      success()
+      script.onload = script.onreadystatechange = null
+      head.removeChild script
+  head.appendChild script
+
+
+#-----------------------------------------
+# Check the bookmarklet version
+
+up_to_date = ->
+  !latest_versions[platform]? || String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
+
+#-----------------------------------------
+# Prompt to upgrade
+
+upgrade = -> $.getScript "//#{DOMAIN}/assets/bookmarklet/upgrade.js"
+
 
 #-----------------------------------------
 # Check for jQuery and initialize

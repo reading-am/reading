@@ -5,6 +5,14 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
+    # for JSONP requests
+    if !params[:_method].blank?
+      case params[:_method]
+      when 'POST'
+        return create()
+      end
+    end
+
     @posts =  Post.order("created_at DESC")
                   .includes([:user, :page, :domain, {:referrer_post => :user}])
                   .paginate(:page => params[:page])
@@ -41,9 +49,14 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
+    url   = params[:model][:url]
+    title = params[:model][:title]
+    yn    = params[:model][:yn]
+    ref_id= params[:model][:referrer_id]
+
     @post       = Post.new
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @post.page  = Page.find_by_url(params[:url]) || Page.new(:url => params[:url], :title => params[:title])
+    @post.page  = Page.find_by_url(url) || Page.new(:url => url, :title => title)
     @post.yn    = params[:yn]
 
     if !@post.user.blank?
@@ -53,12 +66,12 @@ class PostsController < ApplicationController
       if !duplicate
         event = :new
         if @post.page.new_record?
-          @post.page.title = !params[:title].nil? ? params[:title] : @post.page.remote_title
+          @post.page.title = !title.nil? ? title : @post.page.remote_title
         end
-        @post.referrer_post ||= Post.find_by_id(params[:referrer_id])
+        @post.referrer_post ||= Post.find_by_id(ref_id)
       else
         @post = duplicate
-        @post.yn = params[:yn] if !params[:yn].nil?
+        @post.yn = yn if !yn.nil?
         if !@post.changed?
           event = :duplicate
           @post.touch

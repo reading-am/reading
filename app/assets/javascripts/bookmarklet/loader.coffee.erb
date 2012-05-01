@@ -87,11 +87,11 @@ Handlebars.registerHelper "nl2br", (context, fn) ->
 
 Handlebars.registerHelper "autolink", (context, fn) ->
   new Handlebars.SafeString twttr.txt.autoLink context,
-      urlClass: 'r_url',
-      usernameClass: 'r_mention',
-      hashtagClass: 'r_tag',
-      usernameUrlBase: "//#{DOMAIN}/",
-      listUrlBase: "//#{DOMAIN}/",
+      urlClass:       "r_url",
+      usernameClass:  "r_mention",
+      hashtagClass:   "r_tag",
+      usernameUrlBase:"//#{DOMAIN}/",
+      listUrlBase:    "//#{DOMAIN}/",
       hashtagUrlBase: "//#{DOMAIN}/search?q="
 
 Handlebars.registerHelper 'format_comment', (context, fn) ->
@@ -195,7 +195,7 @@ Backbone.Model::deconstruct = (input) ->
     input = (Backbone.Model::deconstruct val for val in input)
   else if input instanceof Object
     for prop, val of input
-      if val instanceof Backbone.Model
+      if val instanceof Backbone.Model and val.get("id")
         input["#{prop}_id"] = val.get("id")
         delete input[prop]
   input
@@ -235,15 +235,16 @@ class Reading.Collections.Users extends Backbone.Collection
 class Reading.Models.Post extends Backbone.Model
   type: "Post"
 
+  validate: (attr) ->
+    if !attr.url || attr.url is "about:blank"
+      return errors.general
+
   short_url: ->
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
 
   touch: @save
 
 Reading.Models.Post::find_or_create = (data, success) ->
-  # validations
-  return alert errors.general if !data.url or data.url is "about:blank"
-
   # don't send the null title or else it'll get posted
   delete data.title if data.title is null
   API::call "posts/create",
@@ -283,10 +284,10 @@ class Reading.Models.Provider extends Backbone.Model
   type: "Provider"
   url: (post) ->
     vals =
-      url: post.page.url
+      url: post.get("page").get("url")
       short_url: "http://#{post.short_url()}"
-      wrapped_url: post.wrapped_url
-      title: post.page.title
+      wrapped_url: post.get("wrapped_url")
+      title: post.get("page").get("title")
     parsed_url = @get("url_scheme")
     for val of vals
       parsed_url = parsed_url.replace("{{#{val}}}", encodeURIComponent(vals[val]))
@@ -483,18 +484,81 @@ class Reading.Views.App extends Backbone.View
       <div id=\"r_actions\">
         <a href=\"#\" id=\"r_yep\">Yep</a> .
         <a href=\"#\" id=\"r_nope\">Nope</a>
-        <a href=\"#\" id=\"r_stuff\">Share</a>
+        <a href=\"#\" id=\"r_share\">Share</a>
         <a href=\"#\" id=\"r_close\">&#10005;</a>
       </div>
-    </div>
-  "
+    </div>"
 
   tagName: "div"
 
   id: "r_am"
 
+  events:
+    "click #r_yep, #r_nope" : "yep_nope"
+    "mouseenter #r_share" : "show_share"
+    "mouseleave, mouseleave #r_share" : "hide_share"
+    "mouseleave" : "hide_share"
+    "mouseenter #r_actions a:not(#r_share)" : "hide_share"
+    "click #r_close" : "close"
+
+  initialize: ->
+    $('<style type="text/css">')
+      .html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>')
+      .appendTo("head")
+
+    @render()
+
+    # prevent # from showing up in the url
+    # can't bind in events because of conflicts
+    @$el.on "click", "a[href=#]", -> false
+
+    @$el.prependTo("body").fadeIn 500
+
+    @$("#r_wrp").delay(500).animate
+      height: "29px"
+      width: @$("#r_actions").width()
+
+    @$("#r_icon").delay(500).animate "margin-top": "-56px"
+
+    #@get_comments()
+
+  get_comments: ->
+    Reading.Models.Post::current.get("page").comments.fetch
+      success: (collection, response) ->
+        comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
+        $el.append(comments_view.render().el)
+
+  get_readers: ->
+    readers = new Reading.Collections.Users readers
+    readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: readers})
+    $wrapper.after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+    readers_view.$el.delay(800).slideDown() if readers
+
+  yep_nope: ->
+    yep_nope post, $(this).is('#r_yep')
+
+  show_share: ->
+    @share_view.$el.show()
+    #readers_view.$el.hide() if readers
+    $('#r_share').addClass "r_active"
+    false
+
+  hide_share: ->
+    @share_view.$el.hide()
+    #readers_view.$el.show() if readers
+    $('#r_share').removeClass "r_active"
+    false
+
+  close: ->
+    $el.fadeOut 400, ->
+      $el.remove()
+    false
+
   render: =>
     $(@el).html(@template())
+    @share_view = new Reading.Views.Providers.ProvidersView({id: "r_share_menu", providers: providers})
+    @$("#r_wrp").after(@share_view.render().el)
+
     return this
 
 #-----------------------------------------
@@ -544,20 +608,6 @@ providers = new Reading.Collections.Providers [
 ]
 
 #-----------------------------------------
-# Renderer for peace sign loader
-
-$reading = {}
-render_loading = ->
-  $reading = $("#r_am")
-  if(!$reading.length)
-    $css  = $('<style type="text/css">').html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>').appendTo("head")
-    app_view = new Reading.Views.App
-    $reading = app_view.render().$el.prependTo("body")
-    $reading.fadeIn 500
-  else
-    $("#r_icon", $reading).animate "margin-top": "-18px"
-
-#-----------------------------------------
 # Renderer for popover
 
 render_popover = (src) ->
@@ -581,104 +631,6 @@ render_popover = (src) ->
     $body.addClass("r_popped_over").append $popover
     $popover.fadeIn("fast")
 
-
-#-----------------------------------------
-# Renderer for yellow popover
-
-render_menu = (post, readers = false) ->
-  readers   = false if readers.length is 0
-
-  $icon     = $("#r_icon", $reading)
-  $actions  = $("#r_actions", $reading)
-  $wrapper  = $("#r_wrp", $reading)
-
-  first_post= !$reading.hasClass('r_submitted')
-
-#  $readers.slideUp().html '' # clear previous readers
-
-  # readers
-  if readers
-    readers = new Reading.Collections.Users readers
-    readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: readers})
-    $wrapper.after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-
-  # comments
-  Reading.Models.Post::current.get("page").comments.fetch
-    success: (collection, response) ->
-      comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
-      $reading.append(comments_view.render().el)
-
-
-  $wrapper.delay(500).animate
-    height: "29px"
-    width: $actions.width()
-
-  $icon.delay(500).animate "margin-top": "-56px", ->
-    $reading.addClass('r_submitted')
-  readers_view.$el.delay(800).slideDown() if readers
-
-  if first_post
-    $('#r_close').click ->
-      $reading.fadeOut 400, ->
-        $reading.remove()
-      false
-
-    show_stuff = ->
-      share_view.$el.show()
-      readers_view.$el.hide() if readers
-      $('#r_stuff').addClass "r_active"
-      false
-
-    hide_stuff = ->
-      share_view.$el.hide()
-      readers_view.$el.show() if readers
-      $('#r_stuff').removeClass "r_active"
-      false
-
-    share_view = new Reading.Views.Providers.ProvidersView({id: "r_stuff_menu", providers: providers})
-    $wrapper.after(share_view.render().el)
-
-    $('#r_stuff').on
-      mouseenter: show_stuff
-      click: -> false
-
-    $reading.on "mouseleave", hide_stuff
-    $actions.on "mouseenter", "a:not(#r_stuff)", hide_stuff
-
-    $reading.on "click", "#r_yep, #r_nope", ->
-      yep_nope post, $(this).is('#r_yep')
-
-    $reading.on "click", ".r_share", ->
-      provider = providers.get($(this).attr('data-provider_id'))
-      provider.run post
-      false
-
-  # sync up the UI with the model that was returned on find_or_create
-  $('#r_yep, #r_nope').removeClass("#{active} #{inactive}")
-  yep_nope(post, post.yn) if post.yn?
-
-
-#-----------------------------------------
-# Post and render the yep nope state
-
-yep_nope = (post, state) ->
-  $this   = (if state then $('#r_yep') else $('#r_nope'))
-  $other  = (if state then $('#r_nope') else $('#r_yep'))
-
-  # set the UI
-  if $this.hasClass(active)
-    $this.removeClass active
-    $other.removeClass inactive
-    state = null
-  else
-    $this.removeClass(inactive).addClass active
-    $other.removeClass(active).addClass inactive
-
-  if post.yn isnt state
-    post.yn = state
-    post.save()
-  false
-
 #-----------------------------------------
 # Script Loader
 
@@ -699,16 +651,15 @@ load_script = (url, success) ->
 # Submit the post
 
 self = this
+post = new Reading.Models.Post
+
 reading.submit = submit = (params) ->
-  render_loading() if platform isnt "redirect"
-  Reading.Models.Post::find_or_create params, (data) ->
+  post.save params, success: (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's
       # token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url
     else
-      post = data.post
-      readers = data.readers
       # update the date_created every 15 seconds ala chartbeat
       # consider not doing this for context-menu posts
       clearInterval self.interval if self.interval?
@@ -717,7 +668,6 @@ reading.submit = submit = (params) ->
       ), 2500
 
       Reading.Models.Post::current = post
-      render_menu post, readers
 
 #-----------------------------------------
 # Check the bookmarklet version
@@ -757,9 +707,7 @@ init = ->
     win_focus = false
   )
 
-  setInterval ->
-    $("time").humaneDates()
-  , 5000
+  app_view = new Reading.Views.App if platform isnt "redirect"
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"
@@ -770,7 +718,10 @@ init = ->
       url   = window.location.href
       title = window.document.title
 
-    submit {url: url, title: title, referrer_id: reading.referrer_id ? 0}
+    submit
+      url: url
+      title: title
+      referrer_id: reading.referrer_id ? 0
 
 #-----------------------------------------
 # Check for jQuery and initialize

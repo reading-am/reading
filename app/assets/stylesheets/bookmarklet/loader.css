@@ -34,7 +34,7 @@
   width:auto;
   height:auto;
 }
-#r_wrp, #r_am li, #r_stuff_menu, #r_readers {
+#r_wrp, #r_am li, #r_share_menu, #r_readers {
   float:right;
   clear:both;
 }
@@ -72,13 +72,13 @@
 #r_am li {
   margin:3px 0;
 }
-#r_stuff_menu, #r_readers {
+#r_share_menu, #r_readers {
   display:none;
 }
 #r_nope {
   margin:0 3px 0 0;
 }
-a#r_stuff {
+a#r_share {
   margin:0 3px;
   padding:2px 8px 3px;
   border-left:1px dotted #000;
@@ -87,7 +87,7 @@ a#r_stuff {
 #r_close {
   margin:0 0 0 3px;
 }
-#r_am .r_user a, #r_other, #r_stuff_menu a {
+#r_am .r_user a, #r_other, #r_share_menu a {
   padding:0 8px;
   line-height:25px;
 }

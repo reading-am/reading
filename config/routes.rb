@@ -6,11 +6,12 @@ Reading::Application.routes.draw do
 
   # api
   scope '/api', :defaults => { :format => 'json' } do
+    resources :posts
+    resources :comments
     resources :users do
       resources :posts
       resources :comments
     end
-    resources :comments
     resources :pages do
       resources :users
       resources :comments

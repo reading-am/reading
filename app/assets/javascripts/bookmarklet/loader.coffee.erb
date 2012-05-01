@@ -207,13 +207,11 @@ class Reading.Models.Page extends Backbone.Model
   type: "Page"
 
   initialize: ->
-    self = this
-
     @users = @nestCollection('users', new Reading.Collections.Users(@get('users')))
-    @users.url = => "#{self.url()}/users"
+    @users.url = => "#{@url()}/users"
 
     @comments = @nestCollection('comments', new Reading.Collections.Comments(@get('comments')))
-    @comments.url = => "#{self.url()}/comments"
+    @comments.url = => "#{@url()}/comments"
 
 class Reading.Collections.Pages extends Backbone.Collection
   type: "Pages"
@@ -243,6 +241,7 @@ class Reading.Models.Post extends Backbone.Model
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
 
   keep_fresh: ->
+    # FIXME
     # update the date_created every 15 seconds ala chartbeat
     # consider not doing this for context-menu posts
     self.interval = setTimeout (->
@@ -505,6 +504,9 @@ class Reading.Views.App extends Backbone.View
     "click #r_close" : "close"
 
   initialize: ->
+    @model.bind "sync", @get_comments, this
+    @model.bind "sync", @get_readers, this
+
     $('<style type="text/css">')
       .html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>')
       .appendTo("head")
@@ -523,20 +525,18 @@ class Reading.Views.App extends Backbone.View
 
     @$("#r_icon").delay(500).animate "margin-top": "-56px"
 
-    @model.bind "sync", @get_comments, this
-
   get_comments: ->
-    log "hit"
-    Reading.Models.Post::current.get("page").comments.fetch
-      success: (collection, response) ->
+    @model.get("page").comments.fetch
+      success: (collection, response) =>
         comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
-        $el.append(comments_view.render().el)
+        @$el.append(comments_view.render().el)
 
   get_readers: ->
-    readers = new Reading.Collections.Users readers
-    readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: readers})
-    $wrapper.after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-    readers_view.$el.delay(800).slideDown() if readers
+    @model.get("page").users.fetch
+      success: (collection, response) =>
+        readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: collection})
+        @$("#r_wrp").after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+        readers_view.$el.slideDown()
 
   yep_nope: ->
     yep_nope post, $(this).is('#r_yep')
@@ -639,11 +639,11 @@ render_popover = (src) ->
 #-----------------------------------------
 # Submit the post
 
-self = this
 post = Reading.Models.Post::current = new Reading.Models.Post
 
 reading.submit = submit = (params) ->
-  post.save params, success: (data) ->
+  post.set params
+  post.save success: (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url

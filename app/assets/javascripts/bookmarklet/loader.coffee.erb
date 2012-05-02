@@ -174,12 +174,11 @@ Backbone.Model::toJSON = ->
 Backbone.Model::factory = (input) ->
   if input instanceof Array
     input = (Backbone.Model::factory val for val in input)
+    if input[0] instanceof Object and input[0].type? and typeof Reading.Collections["#{input[0].type}s"] is "function"
+      input = new Reading.Collections["#{input[0].type}s"](input)
   else if input instanceof Object and (input not instanceof Backbone.Model and input not instanceof Backbone.Collection)
     for prop, val of input
-      if val instanceof Array and val[0] instanceof Object and val[0].type? and typeof Reading.Collections["#{val[0].type}s"] is "function"
-        input[prop] = new Reading.Collections["#{val[0].type}s"](val)
-      else
-        input[prop] = Backbone.Model::factory val
+      input[prop] = Backbone.Model::factory val
     if input.type? and typeof Reading.Models[input.type] is "function"
       input = new Reading.Models[input.type](input)
   input
@@ -187,8 +186,14 @@ Backbone.Model::factory = (input) ->
 Backbone.Model::urlRoot = ->
   "#{@type.toLowerCase()}s"
 
-Backbone.Model::parse = Backbone.Collection::parse = (response) ->
-  Backbone.Model::factory response.response[@type.toLowerCase()]
+Backbone.Model::parse = (response) ->
+  obj = if response.response? then response.response[@type.toLowerCase()] else response
+  Backbone.Model::factory obj
+
+Backbone.Collection::parse = (response) ->
+  # don't factory collection API responses
+  # they'll get factoried in model.parse
+  response.response[@type.toLowerCase()]
 
 # converts nested Backbone objects to simply an id reference
 Backbone.Model::deconstruct = (input) ->

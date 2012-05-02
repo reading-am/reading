@@ -248,20 +248,6 @@ class Reading.Models.Post extends Backbone.Model
       post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
     ), 2500
 
-Reading.Models.Post::find_or_create = (data, success) ->
-  # don't send the null title or else it'll get posted
-  delete data.title if data.title is null
-  API::call "posts/create",
-    data: data
-    success: success
-    error: (jqXHR, textStatus, errorThrown) ->
-      switch errorThrown
-        when "Bad Request"
-          alert errors.general
-        when "Forbidden"
-          $("#r_am").remove() # need to encapsulate this into the menu itself
-          alert errors.forbidden
-
 class Reading.Collections.Posts extends Backbone.Collection
   type: "Posts"
   model: Reading.Models.Post
@@ -310,7 +296,7 @@ Reading.Views.Users ||= {}
 
 class Reading.Views.Users.UserView extends Backbone.View
   template: Handlebars.compile "
-    <a href=\"http://#{DOMAIN}/{{username}}\">
+  <a href=\"{{url}}\">
       <img src=\"{{mini_avatar}}\"> {{display_name}}
     </a>
     {{#posts}}
@@ -324,21 +310,22 @@ class Reading.Views.Users.UserView extends Backbone.View
     "click a:not(.r_tagalong)" : "show"
 
   show: ->
-    render_popover @$("a").attr("href")
+    @popover = new Reading.Views.Users.UserPopoverView model: @model
+    @popover.render()
     false
 
   render: =>
-    $(@el).html(@template(@model.toJSON()))
+    @$el.html(@template(@model.toJSON()))
     return this
 
 class Reading.Views.Users.UsersView extends Backbone.View
   tagName: "ul"
 
   initialize: ->
-    @options.users.bind "reset", @addAll
+    @collection.bind "reset", @addAll
 
   addAll: =>
-    @options.users.each(@addOne)
+    @collection.each(@addOne)
 
   addOne: (user) =>
     view = new Reading.Views.Users.UserView({model : user})
@@ -347,6 +334,33 @@ class Reading.Views.Users.UsersView extends Backbone.View
   render: =>
     @addAll()
     return this
+
+
+class Reading.Views.Users.UserPopoverView extends Backbone.View
+
+  template: Handlebars.compile "
+    <div></div>
+    <iframe src=\"{{url}}\"></iframe>
+  "
+
+  tagName: "div"
+  id: "r_popover"
+
+  events:
+    "click" : "close"
+
+  close: ->
+    @$el.remove()
+
+  render: ->
+#    if $popover.length # check for existing popover
+#      $popover.find("iframe").attr
+#        src: src
+#    else
+    @$el.html(@template(@model.toJSON()))
+    $("body").append @el
+    @$el.fadeIn("fast")
+
 
 ###########
 # Comment #
@@ -412,11 +426,11 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
     "click .r_mention" : "showUser"
 
   initialize: ->
-    @options.comments.bind "reset", @addAll
-    @options.comments.bind "add", @addOne
+    @collection.bind "reset", @addAll
+    @collection.bind "add", @addOne
 
   addAll: =>
-    @options.comments.each(@addOne)
+    @collection.each(@addOne)
 
   addOne: (comment) =>
     view = new Reading.Views.Comments.CommentView({model : comment})
@@ -428,7 +442,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
 
   createOnEnter: (e) ->
     if e.keyCode is 13 and !key.alt
-      @options.comments.create
+      @collection.create
         body: @$("textarea").val(),
         user: Reading.Models.Post::current.get("user")
         page: Reading.Models.Post::current.get("page")
@@ -465,10 +479,10 @@ class Reading.Views.Providers.ProvidersView extends Backbone.View
   tagName: "ul"
 
   initialize: ->
-    @options.providers.bind "reset", @addAll
+    @collection.bind "reset", @addAll
 
   addAll: =>
-    @options.providers.each(@addOne)
+    @collection.each(@addOne)
 
   addOne: (provider) =>
     view = new Reading.Views.Providers.ProviderView({model : provider})
@@ -513,6 +527,11 @@ class Reading.Views.App extends Backbone.View
 
     @render()
 
+    @share_view = new Reading.Views.Providers.ProvidersView
+      id: "r_share_menu"
+      collection: providers
+    @$("#r_wrp").after(@share_view.render().el)
+
     # prevent # from showing up in the url
     # can't bind in events because of conflicts
     @$el.on "click", "a[href=#]", -> false
@@ -526,43 +545,44 @@ class Reading.Views.App extends Backbone.View
     @$("#r_icon").delay(500).animate "margin-top": "-56px"
 
   get_comments: ->
-    @model.get("page").comments.fetch
-      success: (collection, response) =>
-        comments_view = new Reading.Views.Comments.CommentsView({id: "r_comments", comments: collection})
-        @$el.append(comments_view.render().el)
+    @comments_view = new Reading.Views.Comments.CommentsView
+      id: "r_comments"
+      collection: @model.get("page").comments
+
+    @comments_view.collection.fetch()
+    @$el.append(@comments_view.render().el)
 
   get_readers: ->
-    @model.get("page").users.fetch
-      success: (collection, response) =>
-        readers_view = new Reading.Views.Users.UsersView({id: "r_readers", users: collection})
-        @$("#r_wrp").after(readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-        readers_view.$el.slideDown()
+    @readers_view = new Reading.Views.Users.UsersView
+      id: "r_readers"
+      collection: @model.get("page").users
+
+    @readers_view.collection.fetch()
+    @$("#r_wrp").after(@readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+    @readers_view.$el.slideDown()
 
   yep_nope: ->
     yep_nope post, $(this).is('#r_yep')
 
   show_share: ->
     @share_view.$el.show()
-    #readers_view.$el.hide() if readers
+    @readers_view.$el.hide()
     $('#r_share').addClass "r_active"
     false
 
   hide_share: ->
     @share_view.$el.hide()
-    #readers_view.$el.show() if readers
+    @readers_view.$el.show()
     $('#r_share').removeClass "r_active"
     false
 
   close: ->
-    $el.fadeOut 400, ->
-      $el.remove()
+    @$el.fadeOut 400, =>
+      @$el.remove()
     false
 
   render: =>
-    $(@el).html(@template())
-    @share_view = new Reading.Views.Providers.ProvidersView({id: "r_share_menu", providers: providers})
-    @$("#r_wrp").after(@share_view.render().el)
-
+    @$el.html(@template())
     return this
 
 #-----------------------------------------
@@ -612,31 +632,6 @@ providers = new Reading.Collections.Providers [
 ]
 
 #-----------------------------------------
-# Renderer for popover
-
-render_popover = (src) ->
-  $popover = $("#r_popover")
-  if $popover.length # check for existing popover
-    $popover.find("iframe").attr
-      src: src
-  else
-    $body =     $("body")
-    $bg =       $("<div>")
-    $iframe =   $("<iframe>").attr src: src
-    $popover =  $("<div>").attr id: "r_popover"
-
-    $popover
-      .append($bg)
-      .append($iframe)
-      .on "click", ->
-        $popover.remove()
-        $body.removeClass "r_popped_over"
-
-    $body.addClass("r_popped_over").append $popover
-    $popover.fadeIn("fast")
-
-
-#-----------------------------------------
 # Submit the post
 
 post = Reading.Models.Post::current = new Reading.Models.Post
@@ -671,7 +666,7 @@ init = ->
   )
 
   if platform isnt "redirect"
-    app_view = new Reading.Views.App(model: Reading.Models.Post::current)
+    app_view = new Reading.Views.App model: Reading.Models.Post::current
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"

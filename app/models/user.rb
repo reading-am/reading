@@ -170,6 +170,7 @@ class User < ActiveRecord::Base
       :id         => to_s ? id.to_s : id,
       :username   => username,
       :display_name => display_name,
+      :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
       :mini_avatar=> avatar.url(:mini),
       :created_at => created_at,

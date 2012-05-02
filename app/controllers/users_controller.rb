@@ -28,10 +28,10 @@ class UsersController < ApplicationController
             cur_post = user.posts.where('page_id = ?', @page.id).last
             before =  user.posts.where('id < ?', cur_post.id).first
             after = user.posts.where('id > ?', cur_post.id).last
-            obj[:posts] = {
-              :before => before.blank? ? nil : before.simple_obj,
-              :after => after.blank? ? nil : after.simple_obj
-            }
+            obj[:posts] = [
+              before.blank? ? {} : before.simple_obj,
+              after.blank? ? {} : after.simple_obj
+            ]
             obj
           }
         }

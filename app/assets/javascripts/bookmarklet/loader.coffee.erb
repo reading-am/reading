@@ -353,10 +353,6 @@ class Reading.Views.Users.UserPopoverView extends Backbone.View
     @$el.remove()
 
   render: ->
-#    if $popover.length # check for existing popover
-#      $popover.find("iframe").attr
-#        src: src
-#    else
     @$el.html(@template(@model.toJSON()))
     $("body").append @el
     @$el.fadeIn("fast")

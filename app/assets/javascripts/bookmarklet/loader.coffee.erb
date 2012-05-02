@@ -310,8 +310,8 @@ class Reading.Views.Users.UserView extends Backbone.View
     "click a:not(.r_tagalong)" : "show"
 
   show: ->
-    @popover = new Reading.Views.Users.UserPopoverView model: @model
-    @popover.render()
+    popover = new Reading.Views.Users.UserPopoverView model: @model
+    popover.render()
     false
 
   render: =>
@@ -433,7 +433,9 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
     @$("li:first").after(view.render().el)
 
   showUser: (e) ->
-    render_popover $(e.target).attr("href") 
+    popover = new Reading.Views.Users.UserPopoverView
+      model: new Reading.Models.User(url: $(e.target).attr("href"))
+    popover.render()
     false
 
   createOnEnter: (e) ->

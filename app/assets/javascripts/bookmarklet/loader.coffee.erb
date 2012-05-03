@@ -207,8 +207,8 @@ Backbone.Model::deconstruct = (input) ->
     input = (Backbone.Model::deconstruct val for val in input)
   else if input instanceof Object
     for prop, val of input
-      if val instanceof Backbone.Model and val.get("id")
-        input["#{prop}_id"] = val.get("id")
+      if val instanceof Backbone.Model 
+        input["#{prop}_id"] = val.get("id") if val.get("id")
         delete input[prop]
       else if val instanceof Array
         val = Backbone.Model::deconstruct val
@@ -524,7 +524,8 @@ class Reading.Views.App extends Backbone.View
   id: "r_am"
 
   events:
-    "click #r_yep, #r_nope" : "yep_nope"
+    "click #r_yep" : "yep"
+    "click #r_nope" : "nope"
     "mouseenter #r_share" : "show_share"
     "mouseleave, mouseleave #r_share" : "hide_share"
     "mouseleave" : "hide_share"
@@ -534,6 +535,7 @@ class Reading.Views.App extends Backbone.View
   initialize: ->
     @model.bind "sync", @get_comments, this
     @model.bind "sync", @get_readers, this
+    <%#@model.bind "sync", @render, this%>
 
     $('<style type="text/css">')
       .html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>')
@@ -575,8 +577,17 @@ class Reading.Views.App extends Backbone.View
     @$("#r_wrp").after(@readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
     @readers_view.$el.slideDown()
 
-  yep_nope: ->
-    yep_nope post, $(this).is('#r_yep')
+  yep: ->
+    @$('#r_yep').addClass(active).removeClass(inactive)
+    @$('#r_nope').addClass(inactive).removeClass(active)
+    @model.set "yn", true
+    @model.save()
+
+  nope: ->
+    @$('#r_yep').addClass(inactive).removeClass(active)
+    @$('#r_nope').addClass(active).removeClass(inactive)
+    @model.set "yn", false
+    @model.save()
 
   show_share: ->
     @share_view.$el.show()
@@ -596,7 +607,11 @@ class Reading.Views.App extends Backbone.View
     false
 
   render: =>
-    @$el.html(@template())
+    @$el.html(@template(@model.toJSON()))
+    switch @model.get("yn")
+      when true then @yep()
+      when false then @nope()
+
     return this
 
 #-----------------------------------------

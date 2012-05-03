@@ -195,6 +195,12 @@ Backbone.Model::toJSON = ->
   obj = _.clone @attributes
   Backbone.Model::deconstruct obj
 
+Backbone.Model::has_many = (name, type) ->
+  type = name if !type?
+  name = name.toLowerCase()
+  @[name] = @nestCollection(name, Reading.Collections[type], @get(name))
+  @[name].url = => "#{@url()}/#{name}"
+
 # converts nested Backbone objects to simply an id reference
 Backbone.Model::deconstruct = (input) ->
   if input instanceof Array
@@ -215,11 +221,8 @@ class Reading.Models.Page extends Backbone.Model
   type: "Page"
 
   initialize: ->
-    @users = @nestCollection('users', Reading.Collections.Users, @get('users'))
-    @users.url = => "#{@url()}/users"
-
-    @comments = @nestCollection('comments', Reading.Collections.Comments, @get('comments'))
-    @comments.url = => "#{@url()}/comments"
+    @has_many "Users"
+    @has_many "Comments"
 
 class Reading.Collections.Pages extends Backbone.Collection
   type: "Pages"
@@ -232,8 +235,7 @@ class Reading.Models.User extends Backbone.Model
   type: "User"
 
   initialize: ->
-    @posts = @nestCollection('posts', Reading.Collections.Posts, @get('posts'))
-    @posts.url = => "#{@url()}/posts"
+    @has_many "Posts"
 
 class Reading.Collections.Users extends Backbone.Collection
   type: "Users"

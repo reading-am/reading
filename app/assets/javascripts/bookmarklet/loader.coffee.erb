@@ -167,10 +167,6 @@ API::call = (method, params) ->
 Backbone.Model::_url = Backbone.Model::url
 Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
 
-Backbone.Model::toJSON = ->
-  obj = _.clone @attributes
-  Backbone.Model::deconstruct obj
-
 Backbone.Model::factory = (input) ->
   if input instanceof Array
     input = (Backbone.Model::factory val for val in input)
@@ -195,6 +191,10 @@ Backbone.Collection::parse = (response) ->
   # they'll get factoried in model.parse
   response.response[@type.toLowerCase()]
 
+Backbone.Model::toJSON = ->
+  obj = _.clone @attributes
+  Backbone.Model::deconstruct obj
+
 # converts nested Backbone objects to simply an id reference
 Backbone.Model::deconstruct = (input) ->
   if input instanceof Array
@@ -204,6 +204,8 @@ Backbone.Model::deconstruct = (input) ->
       if val instanceof Backbone.Model and val.get("id")
         input["#{prop}_id"] = val.get("id")
         delete input[prop]
+      else if val instanceof Array
+        val = Backbone.Model::deconstruct val
   input
 
 ########
@@ -229,7 +231,7 @@ class Reading.Collections.Pages extends Backbone.Collection
 class Reading.Models.User extends Backbone.Model
   type: "User"
 
-  initialize: ->    
+  initialize: ->
     @posts = @nestCollection('posts', Reading.Collections.Posts, @get('posts'))
     @posts.url = => "#{@url()}/posts"
 

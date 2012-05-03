@@ -1,5 +1,12 @@
 # from: https://gist.github.com/1610397 in the comments
-Backbone.Model::nestCollection = (attributeName, nestedCollection) ->
+Backbone.Model::nestCollection = (attributeName, collectionClass, nestedCollection) ->
+  # don't instantiate if it's already a collection
+  if nestedCollection not instanceof collectionClass
+    nestedCollection = new collectionClass nestedCollection
+
+  # reset the array
+  @set attributeName, []
+
   #setup nested references
   for item, i in nestedCollection
     @attributes[attributeName][i] = nestedCollection.at(i).attributes

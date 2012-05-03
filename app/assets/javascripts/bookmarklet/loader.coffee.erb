@@ -213,10 +213,10 @@ class Reading.Models.Page extends Backbone.Model
   type: "Page"
 
   initialize: ->
-    @users = @nestCollection('users', new Reading.Collections.Users(@get('users')))
+    @users = @nestCollection('users', Reading.Collections.Users, @get('users'))
     @users.url = => "#{@url()}/users"
 
-    @comments = @nestCollection('comments', new Reading.Collections.Comments(@get('comments')))
+    @comments = @nestCollection('comments', Reading.Collections.Comments, @get('comments'))
     @comments.url = => "#{@url()}/comments"
 
 class Reading.Collections.Pages extends Backbone.Collection
@@ -228,6 +228,10 @@ class Reading.Collections.Pages extends Backbone.Collection
 ########
 class Reading.Models.User extends Backbone.Model
   type: "User"
+
+  initialize: ->    
+    @posts = @nestCollection('posts', Reading.Collections.Posts, @get('posts'))
+    @posts.url = => "#{@url()}/posts"
 
 class Reading.Collections.Users extends Backbone.Collection
   type: "Users"

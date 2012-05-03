@@ -29,8 +29,8 @@ class UsersController < ApplicationController
             before =  user.posts.where('id < ?', cur_post.id).first
             after = user.posts.where('id > ?', cur_post.id).last
             obj[:posts] = [
-              before.blank? ? {} : before.simple_obj,
-              after.blank? ? {} : after.simple_obj
+              before.blank? ? {:type => 'Post', :id => -1} : before.simple_obj,
+              after.blank? ? {:type => 'Post', :id => -1} : after.simple_obj
             ]
             obj
           }

@@ -86,6 +86,7 @@ class Post < ActiveRecord::Base
       :user => user.simple_obj(to_s),
       :page => page.simple_obj(to_s),
       :referrer_post => {
+        :type => "Post",
         :id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
         :user => {
           :id           => has_ref ? (to_s ? referrer_post.user.id.to_s : referrer_post.user.id) : '',

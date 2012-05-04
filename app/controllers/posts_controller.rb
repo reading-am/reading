@@ -69,7 +69,7 @@ class PostsController < ApplicationController
   # POST /posts.xml
   def create
     url   = params[:model][:url]
-    title = params[:model][:title]
+    title = params[:model][:title] == 'null' ? nil : params[:model][:title]
     yn    = params[:model][:yn]
     ref_id= params[:model][:referrer_id]
 

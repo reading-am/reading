@@ -109,7 +109,7 @@ methodMap =
 
 Backbone._sync = Backbone.sync
 Backbone.sync = (method, model, options) ->
-  console.log method, model, options
+  log method, model, options
 
   type = methodMap[method]
   options.dataType = "jsonp"
@@ -174,7 +174,10 @@ Backbone.Model::factory = (input) ->
       input = new Reading.Collections["#{input[0].type}s"](input)
   else if input instanceof Object and (input not instanceof Backbone.Model and input not instanceof Backbone.Collection)
     for prop, val of input
-      input[prop] = Backbone.Model::factory val
+      if prop is "created_at" or prop is "updated_at"
+        input[prop] = new Date val
+      else
+        input[prop] = Backbone.Model::factory val
     if input.type? and typeof Reading.Models[input.type] is "function"
       input = new Reading.Models[input.type](input)
   input
@@ -247,6 +250,9 @@ class Reading.Collections.Users extends Backbone.Collection
 class Reading.Models.Post extends Backbone.Model
   type: "Post"
 
+  initialize: ->
+    @bind "change:id", @keep_fresh
+
   validate: (attr) ->
     if !attr.url || attr.url is "about:blank"
       return errors.general
@@ -254,13 +260,18 @@ class Reading.Models.Post extends Backbone.Model
   short_url: ->
     "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
 
+  # update the date_created every 15 seconds ala chartbeat
+  # consider not doing this for context-menu posts
   keep_fresh: ->
-    # FIXME
-    # update the date_created every 15 seconds ala chartbeat
-    # consider not doing this for context-menu posts
-    self.interval = setTimeout (->
-      post.touch() if win_focus and not post.loading and new Date - post.updated_at >= 15000
-    ), 2500
+    loading = false
+    interval = setInterval =>
+      now = new Date
+      if win_focus and not loading and now - @get("updated_at") >= 15000
+        loading = true
+        @save "updated_at", now, success: -> loading = false
+    , 2500
+
+    @bind "destroy", -> clearInterval interval
 
 class Reading.Collections.Posts extends Backbone.Collection
   type: "Posts"
@@ -579,9 +590,8 @@ class Reading.Views.App extends Backbone.View
 
   set_yn: (e) ->
     $tar = $(e.target)
-    state = if $tar.hasClass(active) then null else $tar.is("#r_yep")
-    @model.set "yn", state
-    @model.save()
+    @model.save
+      yn: (if $tar.hasClass(active) then null else $tar.is("#r_yep"))
 
   render_yn: ->
     $this  = (if @model.get("yn") then @$("#r_yep") else @$("#r_nope"))
@@ -668,8 +678,7 @@ providers = new Reading.Collections.Providers [
 post = Reading.Models.Post::current = new Reading.Models.Post
 
 reading.submit = submit = (params) ->
-  post.set params
-  post.save success: (data) ->
+  post.save params, success: (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url
@@ -685,8 +694,8 @@ init = ->
   # fire an event to let people know reading is ready
   # can't seem to use jquery.trigger for events attached
   # without jquery
-  e = document.createEvent 'Event'
-  e.initEvent 'reading.ready', true, true
+  e = document.createEvent "Event"
+  e.initEvent "reading.ready", true, true
   document.dispatchEvent e
   reading.ready = true
 

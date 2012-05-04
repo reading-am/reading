@@ -533,8 +533,8 @@ class Reading.Views.App extends Backbone.View
     "click #r_close" : "close"
 
   initialize: ->
-    @model.bind "sync", @get_comments, this
-    @model.bind "sync", @get_readers, this
+    @model.bind "change:id", @get_comments, this
+    @model.bind "change:id", @get_readers, this
     <%#@model.bind "sync", @render, this%>
 
     $('<style type="text/css">')

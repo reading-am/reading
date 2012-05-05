@@ -456,6 +456,7 @@ class Reading.Views.Comments.CommentView extends Backbone.View
   events:
     "click .r_reply" : "reply"
     "click .r_destroy" : "destroy"
+    "click a.r_url:not(.r_mention)": "new_window"
 
   initialize: ->
     @model.bind "change", @render, this
@@ -464,6 +465,10 @@ class Reading.Views.Comments.CommentView extends Backbone.View
   reply: ->
     alert "reply will go here"
     return false
+
+  new_window: (e) ->
+    window.open e.currentTarget.href
+    false
 
   destroy: ->
     if confirm "Are you sure you want to delete this comment?"

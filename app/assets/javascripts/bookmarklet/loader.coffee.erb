@@ -219,6 +219,15 @@ Backbone.Model::deconstruct = (input) ->
         input[prop] = Backbone.Model::deconstruct val
   input
 
+Backbone.Model::intervals = Backbone.Collection::intervals = Backbone.View::intervals = (command, secs, fn) ->
+  @_intervals = [] if _.isUndefined @_intervals
+  switch command
+    when "clear"
+      _.each @_intervals, (id) -> clearInterval id
+      @_intervals = []
+    when "add"
+      @_intervals.push setInterval fn, secs*1000
+
 ########
 # Page #
 ########
@@ -254,6 +263,7 @@ class Reading.Models.Post extends Backbone.Model
 
   initialize: ->
     @bind "change:id", @keep_fresh
+    @bind "destroy", => @intervals "clear"
 
   validate: (attr) ->
     if !attr.url || attr.url is "about:blank"
@@ -266,14 +276,11 @@ class Reading.Models.Post extends Backbone.Model
   # consider not doing this for context-menu posts
   keep_fresh: ->
     loading = false
-    interval = setInterval =>
+    @intervals "add", 3, =>
       now = new Date
       if win_focus and not loading and now - @get("updated_at") >= 15000
         loading = true
         @save "updated_at", now, success: -> loading = false
-    , 2500
-
-    @bind "destroy", -> clearInterval interval
 
 class Reading.Collections.Posts extends Backbone.Collection
   type: "Posts"
@@ -555,7 +562,7 @@ class Reading.Views.App extends Backbone.View
 
     @render()
 
-    setInterval (=> @$("time").humaneDates()), 15000
+    @intervals "add", 15, => @$("time").humaneDates()
 
     @share_view = new Reading.Views.Providers.ProvidersView
       id: "r_share_menu"
@@ -621,6 +628,8 @@ class Reading.Views.App extends Backbone.View
     false
 
   close: ->
+    @intervals "clear"
+    @model.intervals "clear"
     @$el.fadeOut 400, =>
       @$el.remove()
     false
@@ -678,13 +687,15 @@ providers = new Reading.Collections.Providers [
 #-----------------------------------------
 # Submit the post
 
-post = Reading.Models.Post::current = new Reading.Models.Post
-
 reading.submit = submit = (params) ->
+  post = Reading.Models.Post::current = new Reading.Models.Post
   post.save params, success: (data) ->
     if platform is "redirect"
       # forward back through to Reading so that the user's token doesn't show up in the referrer
       window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url
+
+  Reading.Views.App::current.close() if Reading.Views.App::current?
+  Reading.Views.App::current = new Reading.Views.App model: post if platform isnt "redirect"
 
 #-----------------------------------------
 # Initialize!
@@ -702,14 +713,7 @@ init = ->
   document.dispatchEvent e
   reading.ready = true
 
-  $(window).focus(->
-    win_focus = true
-  ).blur(->
-    win_focus = false
-  )
-
-  if platform isnt "redirect"
-    app_view = new Reading.Views.App model: Reading.Models.Post::current
+  $(window).focus(-> win_focus = true).blur(-> win_focus = false)
 
   if platform is "redirect" or platform is "bookmarklet"
     if platform is "redirect"

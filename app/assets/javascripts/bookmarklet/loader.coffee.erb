@@ -548,13 +548,14 @@ class Reading.Views.App extends Backbone.View
     @model.bind "change:yn", @render_yn, this
     @model.bind "change:id", @get_comments, this
     @model.bind "change:id", @get_readers, this
-    <%#@model.bind "sync", @render, this%>
 
     $('<style type="text/css">')
       .html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>')
       .appendTo("head")
 
     @render()
+
+    setInterval (=> @$("time").humaneDates()), 15000
 
     @share_view = new Reading.Views.Providers.ProvidersView
       id: "r_share_menu"

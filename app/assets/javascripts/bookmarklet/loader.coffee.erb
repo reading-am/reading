@@ -523,6 +523,9 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
         user: Reading.Models.Post::current.get("user")
         page: Reading.Models.Post::current.get("page")
       @$("textarea").val ""
+      @$("ul").animate
+        scrollTop: 0
+        duration: "fast"
       false
 
   render: =>

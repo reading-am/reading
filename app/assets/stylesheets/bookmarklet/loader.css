@@ -152,6 +152,17 @@ a#r_share {
 #r_comments textarea:focus {
   width:305px;
 }
+#r_comments, #r_comments ul {
+  float:right;
+  clear:both;
+}
+#r_comments {
+  overflow:auto;
+}
+#r_comments ul {
+  overflow:scroll;
+  max-height:350px;
+}
 #r_am .r_reply {
   color:green !important;
 }

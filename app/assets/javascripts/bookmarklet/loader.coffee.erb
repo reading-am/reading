@@ -228,6 +228,12 @@ Backbone.Model::intervals = Backbone.Collection::intervals = Backbone.View::inte
     when "add"
       @_intervals.push setInterval fn, secs*1000
 
+Backbone.Collection::poll = (secs) ->
+  @bind "reset add", _.once =>
+    @_url = @url
+    @url = => "#{_.result(this, "_url")}?after=#{@last().toJSON().created_at}"
+    @intervals "add", secs, => @fetch()
+
 ########
 # Page #
 ########
@@ -298,6 +304,9 @@ class Reading.Models.Comment extends Backbone.Model
 class Reading.Collections.Comments extends Backbone.Collection
   type: "Comments"
   model: Reading.Models.Comment
+
+  initialize: ->
+    @poll 5
 
 ############
 # Provider #
@@ -449,9 +458,12 @@ class Reading.Views.Comments.CommentView extends Backbone.View
     return this
 
 class Reading.Views.Comments.CommentsView extends Backbone.View
-  template: Handlebars.compile "<li><textarea placeholder=\"Add a comment\"></textarea></li>"
+  template: Handlebars.compile "
+    <textarea placeholder=\"Add a comment\"></textarea>
+    <ul></ul>
+  "
 
-  tagName: "ul"
+  tagName: "div"
 
   events:
     "keypress textarea" : "createOnEnter",
@@ -466,7 +478,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
 
   addOne: (comment) =>
     view = new Reading.Views.Comments.CommentView({model : comment})
-    @$("li:first").after(view.render().el)
+    @$("ul").prepend(view.render().el)
 
   showUser: (e) ->
     popover = new Reading.Views.Users.UserPopoverView

@@ -94,9 +94,18 @@ Handlebars.registerHelper "autolink", (context, fn) ->
       listUrlBase:    "//#{DOMAIN}/",
       hashtagUrlBase: "//#{DOMAIN}/search?q="
 
+Handlebars.registerHelper "embed_images", (context, fn) ->
+  $context = $("<div>#{context}</div>")
+  $context.find("a[href$=#{["jpg","jpeg","png","gif"].join("],a[href$=")}]").each ->
+    $this = $(this)
+    $this.html("<img src=\"#{$this.attr("href")}\">")
+  new Handlebars.SafeString $context.html()
+
 Handlebars.registerHelper 'format_comment', (context, fn) ->
   context = Handlebars.helpers.nl2br.call this, context, fn
-  Handlebars.helpers.autolink.call this, context.string, fn
+  context = Handlebars.helpers.autolink.call this, context.string, fn
+  context = Handlebars.helpers.embed_images.call this, context.string, fn
+  context
 
 _.mixin
   ISODateString: (d) ->
@@ -318,6 +327,8 @@ class Reading.Models.Comment extends Backbone.Model
 class Reading.Collections.Comments extends Backbone.Collection
   type: "Comments"
   model: Reading.Models.Comment
+
+  comparator: (comment) -> comment.get("id")
 
   initialize: ->
     @poll "id", 5

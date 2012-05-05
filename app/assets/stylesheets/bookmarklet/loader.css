@@ -173,6 +173,10 @@ a#r_share {
   max-width:360px;
   background:none;
 }
+#r_am .r_comment img {
+  max-width:297px;
+  max-height:175px;
+}
 #r_am .r_comment_header {
   overflow:auto;
   background:yellow;

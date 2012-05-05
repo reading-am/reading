@@ -20,9 +20,13 @@ class CommentsController < ApplicationController
             :page_id => params[:page_id]
           }
         }
-        if params[:after]
-          where[:cond] += " AND created_at > :created_at"
-          where[:params][:created_at] = params[:after]
+        if params[:after_created_at]
+          where[:cond] += " AND created_at > :after_created_at"
+          where[:params][:after_created_at] = params[:after_created_at]
+        end
+        if params[:after_id]
+          where[:cond] += " AND id > :after_id"
+          where[:params][:after_id] = params[:after_id]
         end
         @comments = Comment.from_users_followed_by(User.find(1)).where(where[:cond], where[:params])
       end

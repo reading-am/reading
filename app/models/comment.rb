@@ -54,7 +54,8 @@ class Comment < ActiveRecord::Base
       :body   => body,
       :created_at => created_at,
       :updated_at => updated_at,
-      :user   => user.simple_obj
+      :user   => user.simple_obj,
+      :page_id => page_id
     }
   end
 end

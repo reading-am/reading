@@ -236,19 +236,17 @@ Backbone.Model::intervals = Backbone.Collection::intervals = Backbone.View::inte
     when "add"
       @_intervals.push setInterval fn, secs*1000
 
-Backbone.Collection::poll = (secs) ->
+Backbone.Collection::poll = (attr, secs) ->
   polling = false
-  fn = _.once =>
+  @bind "reset add", _.once =>
     @_url = @url
-    @url = => "#{_.result(this, "_url")}?after=#{encodeURIComponent _.ISODateString @last().get("created_at")}"
+    @url = => "#{_.result(this, "_url")}?after_#{attr}=#{encodeURIComponent @last().toJSON()[attr]}"
     @intervals "add", secs, =>
       if !polling
         polling = true
-        @fetch()
-
-  @bind "reset add", =>
-    polling = false
-    fn()
+        @fetch
+          add: true
+          success: -> polling = false
 
 ########
 # Page #
@@ -314,7 +312,7 @@ class Reading.Collections.Posts extends Backbone.Collection
 class Reading.Models.Comment extends Backbone.Model
   type: "Comment"
   validate: (attr) ->
-    if !attr.body || !attr.page
+    if !attr.body || (!attr.page and !attr.page_id)
       return errors.general
 
 class Reading.Collections.Comments extends Backbone.Collection
@@ -322,7 +320,7 @@ class Reading.Collections.Comments extends Backbone.Collection
   model: Reading.Models.Comment
 
   initialize: ->
-    @poll 5
+    @poll "id", 5
 
 ############
 # Provider #

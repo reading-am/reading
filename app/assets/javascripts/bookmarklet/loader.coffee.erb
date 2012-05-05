@@ -98,6 +98,14 @@ Handlebars.registerHelper 'format_comment', (context, fn) ->
   context = Handlebars.helpers.nl2br.call this, context, fn
   Handlebars.helpers.autolink.call this, context.string, fn
 
+_.mixin
+  ISODateString: (d) ->
+    if d.toISOString
+      d.toISOString()
+    else
+      pad = (n) -> if n<10 then "0#{n}" else n
+      "#{d.getUTCFullYear()}-#{pad(d.getUTCMonth()+1)}-#{pad(d.getUTCDate())}T#{pad(d.getUTCHours())}:#{pad(d.getUTCMinutes())}:#{pad(d.getUTCSeconds())}Z"
+
 #-----------------------------------------
 # Sync for JSONP
 
@@ -209,7 +217,7 @@ Backbone.Model::deconstruct = (input) ->
   if _.isArray input
     input = (Backbone.Model::deconstruct val for val in input)
   else if _.isDate input
-    input = JSON.parse(JSON.stringify(input))
+    input = _.ISODateString input
   else if _.isObject input
     for prop, val of input
       if val instanceof Backbone.Model
@@ -229,10 +237,18 @@ Backbone.Model::intervals = Backbone.Collection::intervals = Backbone.View::inte
       @_intervals.push setInterval fn, secs*1000
 
 Backbone.Collection::poll = (secs) ->
-  @bind "reset add", _.once =>
+  polling = false
+  fn = _.once =>
     @_url = @url
-    @url = => "#{_.result(this, "_url")}?after=#{@last().toJSON().created_at}"
-    @intervals "add", secs, => @fetch()
+    @url = => "#{_.result(this, "_url")}?after=#{encodeURIComponent _.ISODateString @last().get("created_at")}"
+    @intervals "add", secs, =>
+      if !polling
+        polling = true
+        @fetch()
+
+  @bind "reset add", =>
+    polling = false
+    fn()
 
 ########
 # Page #

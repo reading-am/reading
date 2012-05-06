@@ -7,7 +7,8 @@ class Hook < ActiveRecord::Base
   EVENTS = {
     :new  => {:perms => [:write], :text => 'read a page'},
     :yep  => {:perms => [:write], :text => 'say "yep"'},
-    :nope => {:perms => [:write], :text => 'say "nope"'}
+    :nope => {:perms => [:write], :text => 'say "nope"'},
+    :comment => {:perms => [:write], :text => 'comment'}
   }
 
   def params

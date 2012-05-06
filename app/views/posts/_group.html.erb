@@ -34,6 +34,12 @@
       </div>
     </div>
     <div class="span1">
+    <% if page.comments.size > 0 %>
+      <a class="has_comments" href="#">
+        <%= page.comments.size %>
+        <div class="triangle"></div>
+      </a>
+    <% end %>
     <% if logged_in? and post.user.id == current_user.id %>
       <%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %>
     <% end %>

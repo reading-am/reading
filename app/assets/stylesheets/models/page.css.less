@@ -1,3 +1,6 @@
+@light_purple: #b01ecf;
+@dark_purple: #7d0097;
+
 .page a, .page.nope a span {
   color:#333;
   background:none;
@@ -18,7 +21,7 @@
   white-space: nowrap;
 }
 .has_comments {
-  background:#b01ecf;
+  background:@light_purple;
   color:#FFF;
   border-radius:2px;
   padding:0 6px;
@@ -34,14 +37,17 @@
 .has_comments:hover {
   text-decoration:none;
   color:#FFF;
-  background:#7d0097;
+  background:@dark_purple;
 }
 .has_comments .triangle {
-  border-color: #b01ecf transparent transparent transparent;
+  border-color: @light_purple transparent transparent transparent;
   border-style: solid;
   border-width: 5px 5px 0 0;
   height:0; width:0;
   position:absolute;
   bottom:-5px;
   left:5px;
+}
+.has_comments:hover .triangle {
+  border-color: @dark_purple transparent transparent transparent;
 }

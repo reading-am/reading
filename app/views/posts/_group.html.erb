@@ -7,6 +7,8 @@
     subposts.reverse!
     post = subposts.first
     yn_avg = yn_average subposts
+    comment_count = 0
+    subposts.each do |p| comment_count += p.comments.size end
     if yn_avg > 0
       yn_class = "yep"
     elsif yn_avg < 0
@@ -34,9 +36,9 @@
       </div>
     </div>
     <div class="span1">
-    <% if page.comments.size > 0 %>
-      <a class="has_comments" href="#">
-        <%= page.comments.size %>
+    <% if comment_count > 0 %>
+      <a class="has_comments" href="#" title="There <%= comment_count == 1 ? "is" : "are" %> <%= comment_count %> recent <%= "comment".pluralize comment_count %>">
+        <%= comment_count %>
         <div class="triangle"></div>
       </a>
     <% end %>

@@ -520,6 +520,7 @@ class Reading.Views.Comments.CommentsView extends Backbone.View
     if e.keyCode is 13 and !key.alt
       @collection.create
         body: @$("textarea").val(),
+        post: Reading.Models.Post::current
         user: Reading.Models.Post::current.get("user")
         page: Reading.Models.Post::current.get("page")
       @$("textarea").val ""

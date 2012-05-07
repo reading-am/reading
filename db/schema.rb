@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120412201206) do
+ActiveRecord::Schema.define(:version => 20120507013216) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(:version => 20120412201206) do
     t.integer  "page_id"
     t.boolean  "yn"
     t.integer  "referring_posts_count", :default => 0
+    t.integer  "comments_count",        :default => 0
   end
 
   create_table "readability_data", :force => true do |t|

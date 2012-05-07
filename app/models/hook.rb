@@ -32,7 +32,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  #handle_asynchronously :run
+  handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -113,8 +113,15 @@ class Hook < ActiveRecord::Base
       output = "✌ #{user_link} said on #{post_link}:<br><em>#{obj.body}</em>"
     end
 
+    colors = {
+      :new => "yellow",
+      :yep => "green",
+      :nope => "red",
+      :comment => "purple"
+    }
+
     client = HipChat::Client.new(params['token'])
-    client[params['room']].send('Reading.am', output, :notify => (event_fired == :new)) # only notify if this is not a post update
+    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
   def campfire post, event_fired

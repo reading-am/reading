@@ -30,8 +30,6 @@ Reading::Application.routes.draw do
   match '/comments/create' => 'comments#create'
   resources :comments
 
-  match '/pages/:id/comments' => 'pages#comments'
-
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional
   # Notice the .rss negative lookahead that allows user RSS feeds to pass through

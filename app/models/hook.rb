@@ -32,7 +32,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run
+  #handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -91,19 +91,27 @@ class Hook < ActiveRecord::Base
     authorization.api.update tweet rescue nil
   end
 
-  def hipchat post, event_fired
-    user_link = "<a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a>"
-    post_link = "<a href='#{post.wrapped_url}'>#{post.page.display_title}</a>"
+  def hipchat obj, event_fired
+    user_link = "<a href='http://#{DOMAIN}/#{obj.user.username}'>#{obj.user.display_name}</a>"
+
     case event_fired
-    when :new
-      output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
-      output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
-    when :yep, :nope
-      output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
+    when :new, :yep, :nope
+      post_link = "<a href='#{obj.wrapped_url}'>#{obj.page.display_title}</a>"
+    when :comment
     end
 
-    client = HipChat::Client.new(self.params['token'])
-    client[self.params['room']].send('Reading.am', output, (event_fired == :new)) # only notify if this is not a post update
+    case event_fired
+    when :new
+      output = "✌ #{user_link} is #{!obj.page.domain.nil? ? obj.page.domain.verb : 'reading'} #{post_link}"
+      output += " because of <a href='http://#{DOMAIN}/#{obj.referrer_post.user.username}'>#{obj.referrer_post.user.display_name}</a>" if obj.referrer_post and obj.user != obj.referrer_post.user
+    when :yep, :nope
+      output = "#{obj.yn ? '✓' : '×'} #{user_link} said \"#{obj.yn ? 'yep' : 'nope'}\" to #{post_link}"
+    when :comment
+      output = "✌ #{user_link} said:<br><em>#{obj.body}</em>"
+    end
+
+    client = HipChat::Client.new(params['token'])
+    client[params['room']].send('Reading.am', output, :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
   def campfire post, event_fired

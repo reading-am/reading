@@ -37,7 +37,7 @@
     </div>
     <div class="span1">
     <% if comment_count > 0 %>
-      <a class="has_comments" href="#" title="There <%= comment_count == 1 ? "is" : "are" %> <%= comment_count %> recent <%= "comment".pluralize comment_count %>">
+      <a class="has_comments" href="<%= page.url %>" title="There <%= comment_count == 1 ? "is" : "are" %> <%= comment_count %> recent <%= "comment".pluralize comment_count %>">
         <%= comment_count %>
         <div class="triangle"></div>
       </a>

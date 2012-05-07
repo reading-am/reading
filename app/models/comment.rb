@@ -42,8 +42,8 @@ class Comment < ActiveRecord::Base
     auto_link(html_escape(body), {
       :url_class => '',
       :username_class => 'user',
-      :username_url_base => "//#{DOMAIN}/",
-      :hashtag_url_base => "//#{DOMAIN}/search?q="
+      :username_url_base => "http://#{DOMAIN}/",
+      :hashtag_url_base => "http://#{DOMAIN}/search?q="
     }).html_safe
   end
 

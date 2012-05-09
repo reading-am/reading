@@ -6,7 +6,7 @@ class RelationshipsController < ApplicationController
     # double bang converts to boolean http://rubyquicktips.com/post/583755021/convert-anything-to-boolean
     result = !!current_user.follow!(@user)
 
-    if result && @user.wants_mail && @user.email
+    if result && @user.email_when_followed && @user.email
       UserMailer.delay.new_follower(@user, current_user)
     end
 

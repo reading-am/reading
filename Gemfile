@@ -9,6 +9,8 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier'
 end
+
+gem 'rails-backbone'
 gem 'jquery-rails'
 
 gem 'pg' # PostgresSQL

@@ -107,8 +107,8 @@ class CommentsController < ApplicationController
         @comment.user.hooks.each do |hook| hook.run(@comment, event) end
 
         User.mentioned_in(@comment)
-          .where('email IS NOT NULL AND wants_mail = ?', true).each do |user|
-            UserMailer.delay.mentioned(@comment, user)
+          .where('id != ? AND email IS NOT NULL AND email_when_mentioned = ?', @comment.user.id, true).each do |user|
+            UserMailer.mentioned(@comment, user).deliver
         end
 
         format.html { redirect_to(@comment, :notice => 'Comment was successfully created.') }

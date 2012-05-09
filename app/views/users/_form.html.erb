@@ -12,7 +12,10 @@
 
     <%= f.email_field :email, :placeholder => 'me@example.com', :class => 'input-xlarge' %>
 
-    <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Let me know when someone follows me" %><% end %>
+    <%= f.toggles 'Email me when' do %>
+      <%= f.check_box :email_when_followed, "someone follows me" %>
+      <%= f.check_box :email_when_mentioned, "someone mentions me in a comment" %>
+    <% end %>
 
     <% if @user.access?(:digest) %>
       <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['every other day (recommended)',2],['weekly',7]] do %>

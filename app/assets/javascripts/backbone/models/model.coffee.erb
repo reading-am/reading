@@ -67,7 +67,7 @@
   polling = false
   @bind "reset add", ø._.once =>
     @_url = @url
-    @url = => "#{_.result(this, "_url")}?after_#{attr}=#{encodeURIComponent @last().toJSON()[attr]}"
+    @url = => "#{ø._.result(this, "_url")}?after_#{attr}=#{encodeURIComponent @last().toJSON()[attr]}"
     @intervals "add", secs, =>
       if !polling
         polling = true

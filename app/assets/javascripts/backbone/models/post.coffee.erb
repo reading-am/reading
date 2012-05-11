@@ -18,7 +18,7 @@ class ø.Models.Post extends ø.Backbone.Model
     loading = false
     @intervals "add", 3, =>
       now = new Date
-      if win_focus and not loading and now - @get("updated_at") >= 15000
+      if ø.$(window).hasFocus() and not loading and now - @get("updated_at") >= 15000
         loading = true
         @save "updated_at", now, success: -> loading = false
 

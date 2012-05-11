@@ -27,7 +27,6 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
   #-----------------------------------------
   # Config Vars
 
-  win_focus = true
   reading.ready = false
   on_reading = window.location.host.indexOf("reading.am") is 0 or
                window.location.host.indexOf("staging.reading.am") is 0 or
@@ -317,7 +316,9 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
     document.dispatchEvent e
     reading.ready = true
 
+    win_focus = true
     ø.$(window).focus(-> win_focus = true).blur(-> win_focus = false)
+    ø.$.fn.hasFocus = -> win_focus
 
     if platform is "redirect" or platform is "bookmarklet"
       if platform is "redirect"

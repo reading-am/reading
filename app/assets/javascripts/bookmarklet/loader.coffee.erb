@@ -1,17 +1,4 @@
 #-----------------------------------------
-# App Structure
-
-Reading =
-  Models: {}
-  Collections: {}
-  Routers: {}
-  Views: {}
-
-<% if Rails.env == 'development' %>
-window.r_ = Reading
-<% end %>
-
-#-----------------------------------------
 # Libs
 
 libs = {}
@@ -19,802 +6,346 @@ libs = {}
 <%= IO.read "#{Rails.root}/app/assets/javascripts/libs/base58.coffee" %>
 base58 = libs.encdec()
 
-<% ['underscore','handlebars','backbone','keymaster','twitter-text'].each do |lib| %>
+<% ['head'].each do |lib| %>
 `<%= IO.read("#{Rails.root}/app/assets/javascripts/libs/#{lib}.js").gsub('`','\\\\`') %>`
 <% end %>
 
-# Backbone addons
-<% ['nest_collection'].each do |lib| %>
-<%= IO.read "#{Rails.root}/app/assets/javascripts/backbone/addons/#{lib}.coffee" %>
-<% end %>
+head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
+  {humane:        "//<%= DOMAIN %>/assets/cdn/jquery/humane.js"},
+  {underscore:    "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"},
+  {backbone:      "//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"},
+  {handlbars:     "//<%= DOMAIN %>/assets/cdn/handlebars.js"},
+  {keymaster:     "//<%= DOMAIN %>/assets/cdn/keymaster.js"},
+  {twitter_text:  "//<%= DOMAIN %>/assets/cdn/twitter-text.js"},
+  {twitter_text:  "//<%= DOMAIN %>/assets/bookmarklet/core.js"}
+, ->
 
-# jQuery plugins
-load_$plugins = ->
-<% ['humane'].each do |lib| %>
-  `<%= IO.read("#{Rails.root}/app/assets/javascripts/jquery/#{lib}.js").gsub('`','\\\\`') %>`
-<% end %>
-  return # need this return here else it returns too soon
+  #-----------------------------------------
+  # Debug
 
-#-----------------------------------------
-# Debug
 
-log = <% if Rails.env == 'development' %> -> console.log.apply console, arguments <% else %> -> <% end %>
+  #-----------------------------------------
+  # Config Vars
 
-#-----------------------------------------
-# Config Vars
+  win_focus = true
+  reading.ready = false
+  on_reading = window.location.host.indexOf("reading.am") is 0 or
+               window.location.host.indexOf("staging.reading.am") is 0 or
+               window.location.host.indexOf("0.0.0.0") is 0
+  token = reading.token ? null
+  platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
+  version = reading.version ? "0.0.0"
 
-DOMAIN = "<%= DOMAIN %>"
-SHORT_DOMAIN = "<%= SHORT_DOMAIN %>"
-PROTOCOL = "http"
-API_URL = "#{PROTOCOL}://#{DOMAIN}/api"
-win_focus = true
-reading.ready = false
-on_reading = window.location.host.indexOf("reading.am") is 0 or
-             window.location.host.indexOf("staging.reading.am") is 0 or
-             window.location.host.indexOf("0.0.0.0") is 0
-token = reading.token ? null
-platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
-version = reading.version ? "0.0.0"
+  latest_versions =
+    bookmarklet: "<%= BOOKMARKLET_VERSION %>"
 
-latest_versions =
-  bookmarklet: "<%= BOOKMARKLET_VERSION %>"
+  #-----------------------------------------
+  # Content Vars
 
-#-----------------------------------------
-# Content Vars
+  active = "r_active"
+  inactive = "r_inactive"
+  errors =
+    general: "Sorry, something went wrong. If you keep getting this error, would you mind letting us know at hello@reading.am?"
+    forbidden: "** You must be signed in to post to Reading **\nSign in or create an account at http://<%= DOMAIN %>"
+    loading: "Sorry, we were unable to load ø. If you keep getting this error, would you mind letting us know at hello@reading.am?"
 
-active = "r_active"
-inactive = "r_inactive"
-errors =
-  general: "Sorry, something went wrong. If you keep getting this error, would you mind letting us know at hello@reading.am?"
-  forbidden: "** You must be signed in to post to Reading **\nSign in or create an account at http://#{DOMAIN}"
-  loading: "Sorry, we were unable to load Reading. If you keep getting this error, would you mind letting us know at hello@reading.am?"
+  #-----------------------------------------
+  # Helpers
 
-#-----------------------------------------
-# Helpers
+  parse_url = ->
+    url = window.location.href.split(window.location.host)[1].substring(1)
+    while url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/'
+      url = url.substring(url.indexOf('/', 2) + 1)
+    url = "http://#{url}" if url.indexOf('://') is -1
+    url
 
-parse_url = ->
-  url = window.location.href.split(window.location.host)[1].substring(1)
-  while url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/'
-    url = url.substring(url.indexOf('/', 2) + 1)
-  url = "http://#{url}" if url.indexOf('://') is -1
-  url
+  popup = (url, width, height) ->
+    window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
-popup = (url, width, height) ->
-  window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
+  Handlebars.registerHelper "nl2br", (context, fn) ->
+    new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
 
-Handlebars.registerHelper "nl2br", (context, fn) ->
-  new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
+  Handlebars.registerHelper "autolink", (context, fn) ->
+    new Handlebars.SafeString twttr.txt.autoLink context,
+        urlClass:       "r_url",
+        usernameClass:  "r_mention",
+        hashtagClass:   "r_tag",
+        usernameUrlBase:"//<%= DOMAIN %>/",
+        listUrlBase:    "//<%= DOMAIN %>/",
+        hashtagUrlBase: "//<%= DOMAIN %>/search?q="
 
-Handlebars.registerHelper "autolink", (context, fn) ->
-  new Handlebars.SafeString twttr.txt.autoLink context,
-      urlClass:       "r_url",
-      usernameClass:  "r_mention",
-      hashtagClass:   "r_tag",
-      usernameUrlBase:"//#{DOMAIN}/",
-      listUrlBase:    "//#{DOMAIN}/",
-      hashtagUrlBase: "//#{DOMAIN}/search?q="
+  Handlebars.registerHelper "embed_images", (context, fn) ->
+    $context = ø.$("<div>#{context}</div>")
+    $context.find("a[href$=#{["jpg","jpeg","png","gif"].join("],a[href$=")}]").each ->
+      $this = ø.$(this)
+      $this.html("<img src=\"#{$this.attr("href")}\">")
+    new Handlebars.SafeString $context.html()
 
-Handlebars.registerHelper "embed_images", (context, fn) ->
-  $context = $("<div>#{context}</div>")
-  $context.find("a[href$=#{["jpg","jpeg","png","gif"].join("],a[href$=")}]").each ->
-    $this = $(this)
-    $this.html("<img src=\"#{$this.attr("href")}\">")
-  new Handlebars.SafeString $context.html()
+  Handlebars.registerHelper 'format_comment', (context, fn) ->
+    context = Handlebars.helpers.nl2br.call this, context, fn
+    context = Handlebars.helpers.autolink.call this, context.string, fn
+    context = Handlebars.helpers.embed_images.call this, context.string, fn
+    context
 
-Handlebars.registerHelper 'format_comment', (context, fn) ->
-  context = Handlebars.helpers.nl2br.call this, context, fn
-  context = Handlebars.helpers.autolink.call this, context.string, fn
-  context = Handlebars.helpers.embed_images.call this, context.string, fn
-  context
 
-_.mixin
-  ISODateString: (d) ->
-    if d.toISOString
-      d.toISOString()
-    else
-      pad = (n) -> if n<10 then "0#{n}" else n
-      "#{d.getUTCFullYear()}-#{pad(d.getUTCMonth()+1)}-#{pad(d.getUTCDate())}T#{pad(d.getUTCHours())}:#{pad(d.getUTCMinutes())}:#{pad(d.getUTCSeconds())}Z"
 
-#-----------------------------------------
-# Sync for JSONP
+  #-----------------------------------------
+  # Sync for JSONP
 
-methodMap =
-  create: 'POST',
-  update: 'PUT',
-  delete: 'DELETE',
-  read:   'GET'
 
-Backbone._sync = Backbone.sync
-Backbone.sync = (method, model, options) ->
-  log method, model, options
 
-  type = methodMap[method]
-  options.dataType = "jsonp"
-  options.data = {_method: type}
-  options.data.token = token if token
+  #-----------------------------------------
+  # Models
 
-  if model && (method == 'create' || method == 'update')
-    options.data.model = model.toJSON()
+  #######
+  # API #
+  #######
+  class API
 
-  if !options.url
-    options.url = _.result(model, 'url') || urlError()
+  API::call = (method, params) ->
+      data = if params.data? then params.data else {}
+      data.token = token if token
 
-  $.ajax options
+      complete = if params.complete? then params.complete else ->
+      success = if params.success? then params.success else log
+      error = if params.error? then params.error else (jqXHR, textStatus, errorThrown) ->
+        log jqXHR, textStatus, errorThrown
+        switch errorThrown
+          when "Bad Request"
+            alert errors.general
+          when "Forbidden"
+            alert errors.forbidden
 
-#-----------------------------------------
-# Models
+      ø.$.ajax
+        url: "//<%= DOMAIN %>/#{method}.json"
+        dataType: "jsonp"
+        data: data
+        complete: complete
+        error: error
+        success: (data, textStatus, jqXHR) ->
+          if data.meta.status < 400
+            success ø.Backbone.Model::factory(data.response)
+          else
+            jqXHR.status = data.meta.status
+            jqXHR.responseText = data
+            error jqXHR, textStatus, data.meta.msg
 
-#######
-# API #
-#######
-class API
+  #-----------------------------------------
+  # Views
 
-API::call = (method, params) ->
-    data = if params.data? then params.data else {}
-    data.token = token if token
 
-    complete = if params.complete? then params.complete else ->
-    success = if params.success? then params.success else log
-    error = if params.error? then params.error else (jqXHR, textStatus, errorThrown) ->
-      log jqXHR, textStatus, errorThrown
-      switch errorThrown
-        when "Bad Request"
-          alert errors.general
-        when "Forbidden"
-          alert errors.forbidden
+  class ø.Views.App extends ø.Backbone.View
+    template: Handlebars.compile "
+      <div id=\"r_wrp\">
+        <div id=\"r_icon\">&#9996;</div>
+        <div id=\"r_subtext\">Loading</div>
+        <div id=\"r_actions\">
+          <a href=\"#\" id=\"r_yep\">Yep</a> .
+          <a href=\"#\" id=\"r_nope\">Nope</a>
+          <a href=\"#\" id=\"r_share\">Share</a>
+          <a href=\"#\" id=\"r_close\">&#10005;</a>
+        </div>
+      </div>"
 
-    $.ajax
-      url: "//#{DOMAIN}/#{method}.json"
-      dataType: "jsonp"
-      data: data
-      complete: complete
-      error: error
-      success: (data, textStatus, jqXHR) ->
-        if data.meta.status < 400
-          success Backbone.Model::factory(data.response)
-        else
-          jqXHR.status = data.meta.status
-          jqXHR.responseText = data
-          error jqXHR, textStatus, data.meta.msg
+    tagName: "div"
 
-#########
-# Model #
-#########
-# Override the url method to append the absolute API route
-Backbone.Model::_url = Backbone.Model::url
-Backbone.Model::url = -> "#{API_URL}/#{@_url()}"
+    id: "r_am"
 
-Backbone.Model::factory = (input) ->
-  if _.isArray input
-    input = (Backbone.Model::factory val for val in input)
-    if _.isObject input[0] and input[0].type? and _.isFunction Reading.Collections["#{input[0].type}s"]
-      input = new Reading.Collections["#{input[0].type}s"](input)
-  else if input instanceof Object and (input not instanceof Backbone.Model and input not instanceof Backbone.Collection)
-    for prop, val of input
-      if prop is "created_at" or prop is "updated_at"
-        input[prop] = new Date val
+    events:
+      "click #r_yep, #r_nope" : "set_yn"
+      "mouseenter #r_share" : "show_share"
+      "mouseleave, mouseleave #r_share" : "hide_share"
+      "mouseleave" : "hide_share"
+      "mouseenter #r_actions a:not(#r_share)" : "hide_share"
+      "click #r_close" : "close"
+
+    initialize: ->
+      @model.bind "change:yn", @render_yn, this
+      @model.bind "change:id", @get_comments, this
+      @model.bind "change:id", @get_readers, this
+
+      ø.$('<style type="text/css">')
+        .html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>')
+        .appendTo("head")
+
+      @render()
+
+      @intervals "add", 15, => @$("time").humaneDates()
+
+      @share_view = new ø.Views.Providers.ProvidersView
+        id: "r_share_menu"
+        collection: providers
+      @$("#r_wrp").after(@share_view.render().el)
+
+      # prevent # from showing up in the url
+      # can't bind in events because of conflicts
+      @$el.on "click", "a[href=#]", -> false
+
+      @$el.prependTo("body").fadeIn 500
+
+      @$("#r_wrp").delay(500).animate
+        height: "29px"
+        width: @$("#r_actions").width()
+
+      @$("#r_icon").delay(500).animate "margin-top": "-56px"
+
+    get_comments: ->
+      @comments_view = new ø.Views.Comments.CommentsView
+        id: "r_comments"
+        collection: @model.get("page").comments
+
+      @comments_view.collection.fetch()
+      @$el.append(@comments_view.render().el)
+
+    get_readers: ->
+      @readers_view = new ø.Views.Users.UsersView
+        id: "r_readers"
+        collection: @model.get("page").users
+
+      @readers_view.collection.fetch()
+      @$("#r_wrp").after(@readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+      @readers_view.$el.slideDown()
+
+    set_yn: (e) ->
+      $tar = ø.$(e.target)
+      @model.save
+        yn: (if $tar.hasClass(active) then null else $tar.is("#r_yep"))
+
+    render_yn: ->
+      $this  = (if @model.get("yn") then @$("#r_yep") else @$("#r_nope"))
+      $other = (if @model.get("yn") then @$("#r_nope") else @$("#r_yep"))
+
+      # set the UI
+      if @model.get("yn") is null
+        $this.removeClass "#{active} #{inactive}"
+        $other.removeClass "#{active} #{inactive}"
       else
-        input[prop] = Backbone.Model::factory val
-    if input.type? and _.isFunction Reading.Models[input.type]
-      input = new Reading.Models[input.type](input)
-  input
-
-Backbone.Model::urlRoot = ->
-  "#{@type.toLowerCase()}s"
-
-Backbone.Model::parse = (response) ->
-  obj = if response.response? then response.response[@type.toLowerCase()] else response
-  Backbone.Model::factory obj
-
-Backbone.Collection::parse = (response) ->
-  # don't factory collection API responses
-  # they'll get factoried in model.parse
-  response.response[@type.toLowerCase()]
-
-Backbone.Model::toJSON = ->
-  obj = _.clone @attributes
-  Backbone.Model::deconstruct obj
-
-Backbone.Model::has_many = (name, type) ->
-  type = name if !type?
-  name = name.toLowerCase()
-  @[name] = @nestCollection(name, Reading.Collections[type], @get(name))
-  @[name].url = => "#{@url()}/#{name}"
-
-# converts nested Backbone objects to simply an id reference
-Backbone.Model::deconstruct = (input) ->
-  if _.isArray input
-    input = (Backbone.Model::deconstruct val for val in input)
-  else if _.isDate input
-    input = _.ISODateString input
-  else if _.isObject input
-    for prop, val of input
-      if val instanceof Backbone.Model
-        input["#{prop}_id"] = val.get("id") if val.get("id")
-        delete input[prop]
-      else
-        input[prop] = Backbone.Model::deconstruct val
-  input
-
-Backbone.Model::intervals = Backbone.Collection::intervals = Backbone.View::intervals = (command, secs, fn) ->
-  @_intervals = [] if _.isUndefined @_intervals
-  switch command
-    when "clear"
-      _.each @_intervals, (id) -> clearInterval id
-      @_intervals = []
-    when "add"
-      @_intervals.push setInterval fn, secs*1000
-
-Backbone.Collection::poll = (attr, secs) ->
-  polling = false
-  @bind "reset add", _.once =>
-    @_url = @url
-    @url = => "#{_.result(this, "_url")}?after_#{attr}=#{encodeURIComponent @last().toJSON()[attr]}"
-    @intervals "add", secs, =>
-      if !polling
-        polling = true
-        @fetch
-          add: true
-          success: -> polling = false
-
-########
-# Page #
-########
-class Reading.Models.Page extends Backbone.Model
-  type: "Page"
-
-  initialize: ->
-    @has_many "Users"
-    @has_many "Comments"
-
-class Reading.Collections.Pages extends Backbone.Collection
-  type: "Pages"
-  model: Reading.Models.Page
-
-########
-# User #
-########
-class Reading.Models.User extends Backbone.Model
-  type: "User"
-
-  initialize: ->
-    @has_many "Posts"
-
-class Reading.Collections.Users extends Backbone.Collection
-  type: "Users"
-  model: Reading.Models.User
-
-########
-# Post #
-########
-class Reading.Models.Post extends Backbone.Model
-  type: "Post"
-
-  initialize: ->
-    @bind "change:id", @keep_fresh
-    @bind "destroy", => @intervals "clear"
-
-  validate: (attr) ->
-    if !attr.url || attr.url is "about:blank"
-      return errors.general
-
-  short_url: ->
-    "#{SHORT_DOMAIN}/p/#{base58.encode(@id)}"
-
-  # update the date_created every 15 seconds ala chartbeat
-  # consider not doing this for context-menu posts
-  keep_fresh: ->
-    loading = false
-    @intervals "add", 3, =>
-      now = new Date
-      if win_focus and not loading and now - @get("updated_at") >= 15000
-        loading = true
-        @save "updated_at", now, success: -> loading = false
-
-class Reading.Collections.Posts extends Backbone.Collection
-  type: "Posts"
-  model: Reading.Models.Post
-
-###########
-# Comment #
-###########
-class Reading.Models.Comment extends Backbone.Model
-  type: "Comment"
-  validate: (attr) ->
-    if !attr.body || (!attr.page and !attr.page_id)
-      return errors.general
-
-class Reading.Collections.Comments extends Backbone.Collection
-  type: "Comments"
-  model: Reading.Models.Comment
-
-  comparator: (comment) -> comment.get("id")
-
-  initialize: ->
-    @poll "id", 5
-
-############
-# Provider #
-############
-class Reading.Models.Provider extends Backbone.Model
-  type: "Provider"
-  url: (post) ->
-    vals =
-      url: post.get("page").get("url")
-      short_url: "http://#{post.short_url()}"
-      wrapped_url: post.get("wrapped_url")
-      title: post.get("page").get("title")
-    parsed_url = @get("url_scheme")
-    for val of vals
-      parsed_url = parsed_url.replace("{{#{val}}}", encodeURIComponent(vals[val]))
-    parsed_url
-
-class Reading.Collections.Providers extends Backbone.Collection
-  type: "Providers"
-  model: Reading.Models.Provider
-
-
-#-----------------------------------------
-# Views
-
-########
-# User #
-########
-Reading.Views.Users ||= {}
-
-class Reading.Views.Users.UserView extends Backbone.View
-  template: Handlebars.compile "
-    <a href=\"{{url}}\">
-      <img src=\"{{mini_avatar}}\"> {{display_name}}
-    </a>
-      {{#post_before}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_before\" title=\"{{title}}\">&laquo;</a>{{/post_before}}{{#post_after}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_after\" title=\"{{title}}\">&raquo;</a>{{/post_after}}
-  "
-
-  tagName: "li"
-  className: "r_user"
-
-  events:
-    "click a:not(.r_tagalong)" : "show"
-
-  show: ->
-    popover = new Reading.Views.Users.UserPopoverView model: @model
-    popover.render()
-    false
-
-  render: =>
-    json = @model.toJSON()
-    json.post_before = json.posts[0] if json.posts[0]? and json.posts[0].id > -1
-    json.post_after = json.posts[1] if json.posts[1]? and json.posts[1].id > -1
-    @$el.html(@template(json))
-    return this
-
-class Reading.Views.Users.UsersView extends Backbone.View
-  tagName: "ul"
-
-  initialize: ->
-    @collection.bind "reset", @addAll
-
-  addAll: =>
-    @collection.each(@addOne)
-
-  addOne: (user) =>
-    view = new Reading.Views.Users.UserView({model : user})
-    @$el.append(view.render().el)
-
-  render: =>
-    @addAll()
-    return this
-
-
-class Reading.Views.Users.UserPopoverView extends Backbone.View
-
-  template: Handlebars.compile "
-    <div></div>
-    <iframe src=\"{{url}}\"></iframe>
-  "
-
-  tagName: "div"
-  id: "r_popover"
-
-  events:
-    "click" : "close"
-
-  close: ->
-    @$el.remove()
-
-  render: ->
-    @$el.html(@template(@model.toJSON()))
-    $("body").append @el
-    @$el.fadeIn("fast")
-
-
-###########
-# Comment #
-###########
-Reading.Views.Comments ||= {}
-
-class Reading.Views.Comments.CommentView extends Backbone.View
-  template: Handlebars.compile "
-    <div class=\"r_comment_header\">
-      <div class=\"r_user\"></div>
-      <time datetime=\"{{updated_at}}\"></time>
-      <div class=\"r_comment_actions\">
-        {{! <a href=\"#\" class=\"r_reply\">reply</a> }}
-        {{#if is_owner}}
-          <a href=\"#\" class=\"r_destroy\">delete</a>
-        {{/if}}
-      </div>
-    </div>
-    <div class=\"r_comment_body\">
-      {{format_comment body}}
-    </div>
-  "
-
-  tagName: "li"
-  className: "r_comment"
-
-  events:
-    "click .r_reply" : "reply"
-    "click .r_destroy" : "destroy"
-    "click a.r_url:not(.r_mention)": "new_window"
-
-  initialize: ->
-    @model.bind "change", @render, this
-    @model.bind "destroy", @remove, this
-
-  reply: ->
-    alert "reply will go here"
-    return false
-
-  new_window: (e) ->
-    window.open e.currentTarget.href
-    false
-
-  destroy: ->
-    if confirm "Are you sure you want to delete this comment?"
-      @model.destroy()
-
-    return false
-
-  render: =>
-    json = @model.toJSON()
-    json.is_owner = @model.get("user").get("id") == Reading.Models.Post::current.get("user").get("id")
-    $(@el).html(@template(json))
-    @$("time").humaneDates()
-    child_view = new Reading.Views.Users.UserView
-      model: @model.get('user')
-      el:   @$(".r_user")
-    child_view.render()
-    return this
-
-class Reading.Views.Comments.CommentsView extends Backbone.View
-  template: Handlebars.compile "
-    <textarea placeholder=\"Add a comment\"></textarea>
-    <ul></ul>
-  "
-
-  tagName: "div"
-
-  events:
-    "keypress textarea" : "createOnEnter",
-    "click .r_mention" : "showUser"
-
-  initialize: ->
-    @collection.bind "reset", @addAll
-    @collection.bind "add", @addOne
-
-  addAll: =>
-    @collection.each(@addOne)
-
-  addOne: (comment) =>
-    view = new Reading.Views.Comments.CommentView({model : comment})
-    @$("ul").prepend(view.render().el)
-
-  showUser: (e) ->
-    popover = new Reading.Views.Users.UserPopoverView
-      model: new Reading.Models.User(url: $(e.target).attr("href"))
-    popover.render()
-    false
-
-  createOnEnter: (e) ->
-    if e.keyCode is 13 and !key.alt
-      @collection.create
-        body: @$("textarea").val(),
-        post: Reading.Models.Post::current
-        user: Reading.Models.Post::current.get("user")
-        page: Reading.Models.Post::current.get("page")
-      @$("textarea").val ""
-      @$("ul").animate
-        scrollTop: 0
-        duration: "fast"
+        $this.removeClass(inactive).addClass active
+        $other.removeClass(active).addClass inactive
+
+    show_share: ->
+      @share_view.$el.show()
+      @readers_view.$el.hide()
+      ø.$('#r_share').addClass "r_active"
       false
 
-  render: =>
-    $(@el).html(@template())
-    @addAll()
-    return this
+    hide_share: ->
+      @share_view.$el.hide()
+      @readers_view.$el.show()
+      ø.$('#r_share').removeClass "r_active"
+      false
 
-#############
-# Providers #
-#############
-Reading.Views.Providers ||= {}
+    close: ->
+      @intervals "clear"
+      @model.intervals "clear"
+      @$el.fadeOut 400, =>
+        @$el.remove()
+      false
 
-class Reading.Views.Providers.ProviderView extends Backbone.View
-  template: Handlebars.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
+    render: =>
+      @$el.html(@template(@model.toJSON()))
+      return this
 
-  events:
-    "click" : "run"
+  #-----------------------------------------
+  # Vars
 
-  tagName: "li"
+  providers = new ø.Collections.Providers [
+    new ø.Models.Provider
+      name: "Twitter"
+      url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
+      action: (url) ->
+        popup url, 475, 345
+    new ø.Models.Provider
+      name: "Facebook"
+      url_scheme: "https://www.facebook.com/sharer.php?u={{wrapped_url}}&t={{title}}"
+      action: (url) ->
+        popup url, 520, 370
+    new ø.Models.Provider
+      name: "Tumblr"
+      url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20%22{{title}}%22"
+      action: (url) ->
+        popup url, 450, 430
+    new ø.Models.Provider
+      name: "Instapaper"
+      url_scheme: "http://www.instapaper.com/hello2?url={{url}}&title={{title}}"
+      action: (url) ->
+        window.location = url
+    new ø.Models.Provider
+      name: "Readability"
+      url_scheme: "http://www.readability.com/save?url={{url}}"
+      action: (url) ->
+        window.location = url
+    new ø.Models.Provider
+      name: "Pocket"
+      url_scheme: "https://getpocket.com/save?url={{url}}&title={{title}}"
+      action: (url) ->
+        popup url, 490, 400
+    new ø.Models.Provider
+      name: "Pinboard"
+      url_scheme: "https://pinboard.in/add?showtags=yes&url={{url}}&title={{title}}&tags=ø.am"
+      action: (url) ->
+        popup url, 490, 400
+    new ø.Models.Provider
+      name: "Email"
+      url_scheme: "mailto:?subject=✌%20Reading%20%22{{title}}%22&body={{wrapped_url}}"
+      action: (url) ->
+        window.location.href = url
+  ]
 
-  run: ->
-    @model.get("action")(@model.url Reading.Models.Post::current)
-    false
+  #-----------------------------------------
+  # Submit the post
 
-  render: ->
-    $(@el).html(@template(@model.toJSON()))
-    return this
+  reading.submit = submit = (params) ->
+    post = ø.Models.Post::current = new ø.Models.Post
+    post.save params, success: (data) ->
+      if platform is "redirect"
+        # forward back through to Reading so that the user's token doesn't show up in the referrer
+        window.location = if window.location.href.indexOf('/t/') > -1 then "http://<%= DOMAIN %>/t/-/#{params.url}" else params.url
 
-class Reading.Views.Providers.ProvidersView extends Backbone.View
-  tagName: "ul"
+    ø.Views.App::current.close() if ø.Views.App::current?
+    ø.Views.App::current = new ø.Views.App model: post if platform isnt "redirect"
 
-  initialize: ->
-    @collection.bind "reset", @addAll
+  #-----------------------------------------
+  # Initialize!
 
-  addAll: =>
-    @collection.each(@addOne)
+  init = ->
+    # fire an event to let people know reading is ready
+    # can't seem to use jquery.trigger for events attached
+    # without jquery
+    e = document.createEvent "Event"
+    e.initEvent "reading.ready", true, true
+    document.dispatchEvent e
+    reading.ready = true
 
-  addOne: (provider) =>
-    view = new Reading.Views.Providers.ProviderView({model : provider})
-    @$el.append(view.render().el)
+    ø.$(window).focus(-> win_focus = true).blur(-> win_focus = false)
 
-  render: =>
-    @addAll()
-    return this
+    if platform is "redirect" or platform is "bookmarklet"
+      if platform is "redirect"
+        url   = parse_url()
+        title = null
+        return window.location = url if token is "-" or !token
+      else
+        url   = window.location.href
+        title = window.document.title
 
-class Reading.Views.App extends Backbone.View
-  template: Handlebars.compile "
-    <div id=\"r_wrp\">
-      <div id=\"r_icon\">&#9996;</div>
-      <div id=\"r_subtext\">Loading</div>
-      <div id=\"r_actions\">
-        <a href=\"#\" id=\"r_yep\">Yep</a> .
-        <a href=\"#\" id=\"r_nope\">Nope</a>
-        <a href=\"#\" id=\"r_share\">Share</a>
-        <a href=\"#\" id=\"r_close\">&#10005;</a>
-      </div>
-    </div>"
-
-  tagName: "div"
-
-  id: "r_am"
-
-  events:
-    "click #r_yep, #r_nope" : "set_yn"
-    "mouseenter #r_share" : "show_share"
-    "mouseleave, mouseleave #r_share" : "hide_share"
-    "mouseleave" : "hide_share"
-    "mouseenter #r_actions a:not(#r_share)" : "hide_share"
-    "click #r_close" : "close"
-
-  initialize: ->
-    @model.bind "change:yn", @render_yn, this
-    @model.bind "change:id", @get_comments, this
-    @model.bind "change:id", @get_readers, this
-
-    $('<style type="text/css">')
-      .html('<%= IO.read("#{Rails.root}/app/assets/stylesheets/bookmarklet/loader.css").gsub(/\n|\t|\r/,"").gsub(/\s{2,}/," ") %>')
-      .appendTo("head")
-
-    @render()
-
-    @intervals "add", 15, => @$("time").humaneDates()
-
-    @share_view = new Reading.Views.Providers.ProvidersView
-      id: "r_share_menu"
-      collection: providers
-    @$("#r_wrp").after(@share_view.render().el)
-
-    # prevent # from showing up in the url
-    # can't bind in events because of conflicts
-    @$el.on "click", "a[href=#]", -> false
-
-    @$el.prependTo("body").fadeIn 500
-
-    @$("#r_wrp").delay(500).animate
-      height: "29px"
-      width: @$("#r_actions").width()
-
-    @$("#r_icon").delay(500).animate "margin-top": "-56px"
-
-  get_comments: ->
-    @comments_view = new Reading.Views.Comments.CommentsView
-      id: "r_comments"
-      collection: @model.get("page").comments
-
-    @comments_view.collection.fetch()
-    @$el.append(@comments_view.render().el)
-
-  get_readers: ->
-    @readers_view = new Reading.Views.Users.UsersView
-      id: "r_readers"
-      collection: @model.get("page").users
-
-    @readers_view.collection.fetch()
-    @$("#r_wrp").after(@readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-    @readers_view.$el.slideDown()
-
-  set_yn: (e) ->
-    $tar = $(e.target)
-    @model.save
-      yn: (if $tar.hasClass(active) then null else $tar.is("#r_yep"))
-
-  render_yn: ->
-    $this  = (if @model.get("yn") then @$("#r_yep") else @$("#r_nope"))
-    $other = (if @model.get("yn") then @$("#r_nope") else @$("#r_yep"))
-
-    # set the UI
-    if @model.get("yn") is null
-      $this.removeClass "#{active} #{inactive}"
-      $other.removeClass "#{active} #{inactive}"
-    else
-      $this.removeClass(inactive).addClass active
-      $other.removeClass(active).addClass inactive
-
-  show_share: ->
-    @share_view.$el.show()
-    @readers_view.$el.hide()
-    $('#r_share').addClass "r_active"
-    false
-
-  hide_share: ->
-    @share_view.$el.hide()
-    @readers_view.$el.show()
-    $('#r_share').removeClass "r_active"
-    false
-
-  close: ->
-    @intervals "clear"
-    @model.intervals "clear"
-    @$el.fadeOut 400, =>
-      @$el.remove()
-    false
-
-  render: =>
-    @$el.html(@template(@model.toJSON()))
-    return this
-
-#-----------------------------------------
-# Vars
-
-providers = new Reading.Collections.Providers [
-  new Reading.Models.Provider
-    name: "Twitter"
-    url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
-    action: (url) ->
-      popup url, 475, 345
-  new Reading.Models.Provider
-    name: "Facebook"
-    url_scheme: "https://www.facebook.com/sharer.php?u={{wrapped_url}}&t={{title}}"
-    action: (url) ->
-      popup url, 520, 370
-  new Reading.Models.Provider
-    name: "Tumblr"
-    url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20%22{{title}}%22"
-    action: (url) ->
-      popup url, 450, 430
-  new Reading.Models.Provider
-    name: "Instapaper"
-    url_scheme: "http://www.instapaper.com/hello2?url={{url}}&title={{title}}"
-    action: (url) ->
-      window.location = url
-  new Reading.Models.Provider
-    name: "Readability"
-    url_scheme: "http://www.readability.com/save?url={{url}}"
-    action: (url) ->
-      window.location = url
-  new Reading.Models.Provider
-    name: "Pocket"
-    url_scheme: "https://getpocket.com/save?url={{url}}&title={{title}}"
-    action: (url) ->
-      popup url, 490, 400
-  new Reading.Models.Provider
-    name: "Pinboard"
-    url_scheme: "https://pinboard.in/add?showtags=yes&url={{url}}&title={{title}}&tags=Reading.am"
-    action: (url) ->
-      popup url, 490, 400
-  new Reading.Models.Provider
-    name: "Email"
-    url_scheme: "mailto:?subject=✌%20Reading%20%22{{title}}%22&body={{wrapped_url}}"
-    action: (url) ->
-      window.location.href = url
-]
-
-#-----------------------------------------
-# Submit the post
-
-reading.submit = submit = (params) ->
-  post = Reading.Models.Post::current = new Reading.Models.Post
-  post.save params, success: (data) ->
-    if platform is "redirect"
-      # forward back through to Reading so that the user's token doesn't show up in the referrer
-      window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{DOMAIN}/t/-/#{params.url}" else params.url
-
-  Reading.Views.App::current.close() if Reading.Views.App::current?
-  Reading.Views.App::current = new Reading.Views.App model: post if platform isnt "redirect"
-
-#-----------------------------------------
-# Initialize!
-
-init = ->
-  # we need this because we load jQuery after Backbone
-  Backbone.setDomLibrary $
-  load_$plugins()
-
-  # fire an event to let people know reading is ready
-  # can't seem to use jquery.trigger for events attached
-  # without jquery
-  e = document.createEvent "Event"
-  e.initEvent "reading.ready", true, true
-  document.dispatchEvent e
-  reading.ready = true
-
-  $(window).focus(-> win_focus = true).blur(-> win_focus = false)
-
-  if platform is "redirect" or platform is "bookmarklet"
-    if platform is "redirect"
-      url   = parse_url()
-      title = null
-      return window.location = url if token is "-" or !token
-    else
-      url   = window.location.href
-      title = window.document.title
-
-    submit
-      url: url
-      title: title
-      referrer_id: reading.referrer_id ? 0
+      submit
+        url: url
+        title: title
+        referrer_id: reading.referrer_id ? 0
 
 
-#-----------------------------------------
-# Script Loader
+  #-----------------------------------------
+  # Check the bookmarklet version
 
-load_script = (url, success) ->
-  script = document.createElement('script')
-  script.src = url
-  head = document.getElementsByTagName('head')[0]
-  done = false
-  script.onload = script.onreadystatechange = =>
-    if not done and (not @readyState or @readyState is 'loaded' or @readyState is 'complete')
-      done = true
-      success()
-      script.onload = script.onreadystatechange = null
-      head.removeChild script
-  head.appendChild script
+  up_to_date = ->
+    !latest_versions[platform]? || String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
 
+  #-----------------------------------------
+  # Prompt to upgrade
 
-#-----------------------------------------
-# Check the bookmarklet version
+  upgrade = -> ø.$.getScript "//<%= DOMAIN %>/assets/bookmarklet/upgrade.js"
 
-up_to_date = ->
-  !latest_versions[platform]? || String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
+  #-----------------------------------------
+  # Check for jQuery and initialize
 
-#-----------------------------------------
-# Prompt to upgrade
-
-upgrade = -> $.getScript "//#{DOMAIN}/assets/bookmarklet/upgrade.js"
-
-
-#-----------------------------------------
-# Check for jQuery and initialize
-
-if jQuery? and jQuery().jquery? and jQuery().jquery >= "1.7"
-  $ = jQuery
   if up_to_date() then init() else upgrade()
-else
-  load_script "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", ->
-    if jQuery?
-      $ = jQuery.noConflict()
-      if up_to_date() then init() else upgrade()
-    else
-      alert errors.loading

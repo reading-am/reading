@@ -1,5 +1,5 @@
 # from: https://gist.github.com/1610397 in the comments
-Backbone.Model::nestCollection = (attributeName, collectionClass, nestedCollection) ->
+ø.Backbone.Model::nestCollection = (attributeName, collectionClass, nestedCollection) ->
   # don't instantiate if it's already a collection
   if nestedCollection not instanceof collectionClass
     nestedCollection = new collectionClass nestedCollection
@@ -19,7 +19,7 @@ Backbone.Model::nestCollection = (attributeName, collectionClass, nestedCollecti
 
   nestedCollection.bind 'remove', (initiative) =>
     updateObj = {}
-    updateObj[attributeName] = _.without(@get(attributeName), initiative.attributes)
+    updateObj[attributeName] = ø._.without(@get(attributeName), initiative.attributes)
     @set(updateObj)
 
   nestedCollection

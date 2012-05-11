@@ -1,0 +1,76 @@
+# Override the url method to append the absolute API route
+ø.Backbone.Model::_url = ø.Backbone.Model::url
+ø.Backbone.Model::url = -> "//<%= DOMAIN %>/api/#{@_url()}"
+
+ø.Backbone.Model::factory = (input) ->
+  if ø._.isArray input
+    input = (ø.Backbone.Model::factory val for val in input)
+    if ø._.isObject input[0] and input[0].type? and ø._.isFunction ø.Collections["#{input[0].type}s"]
+      input = new ø.Collections["#{input[0].type}s"](input)
+  else if input instanceof Object and (input not instanceof ø.Backbone.Model and input not instanceof ø.Backbone.Collection)
+    for prop, val of input
+      if prop is "created_at" or prop is "updated_at"
+        input[prop] = new Date val
+      else
+        input[prop] = ø.Backbone.Model::factory val
+    if input.type? and ø._.isFunction ø.Models[input.type]
+      input = new ø.Models[input.type](input)
+  input
+
+ø.Backbone.Model::urlRoot = ->
+  "#{@type.toLowerCase()}s"
+
+ø.Backbone.Model::parse = (response) ->
+  obj = if response.response? then response.response[@type.toLowerCase()] else response
+  ø.Backbone.Model::factory obj
+
+ø.Backbone.Collection::parse = (response) ->
+  # don't factory collection API responses
+  # they'll get factoried in model.parse
+  response.response[@type.toLowerCase()]
+
+ø.Backbone.Model::toJSON = ->
+  obj = ø._.clone @attributes
+  ø.Backbone.Model::deconstruct obj
+
+ø.Backbone.Model::has_many = (name, type) ->
+  type = name if !type?
+  name = name.toLowerCase()
+  @[name] = @nestCollection(name, ø.Collections[type], @get(name))
+  @[name].url = => "#{@url()}/#{name}"
+
+# converts nested Backbone objects to simply an id reference
+ø.Backbone.Model::deconstruct = (input) ->
+  if ø._.isArray input
+    input = (ø.Backbone.Model::deconstruct val for val in input)
+  else if ø._.isDate input
+    input = ø._.ISODateString input
+  else if ø._.isObject input
+    for prop, val of input
+      if val instanceof ø.Backbone.Model
+        input["#{prop}_id"] = val.get("id") if val.get("id")
+        delete input[prop]
+      else
+        input[prop] = ø.Backbone.Model::deconstruct val
+  input
+
+ø.Backbone.Model::intervals = ø.Backbone.Collection::intervals = ø.Backbone.View::intervals = (command, secs, fn) ->
+  @_intervals = [] if ø._.isUndefined @_intervals
+  switch command
+    when "clear"
+      ø._.each @_intervals, (id) -> clearInterval id
+      @_intervals = []
+    when "add"
+      @_intervals.push setInterval fn, secs*1000
+
+ø.Backbone.Collection::poll = (attr, secs) ->
+  polling = false
+  @bind "reset add", ø._.once =>
+    @_url = @url
+    @url = => "#{_.result(this, "_url")}?after_#{attr}=#{encodeURIComponent @last().toJSON()[attr]}"
+    @intervals "add", secs, =>
+      if !polling
+        polling = true
+        @fetch
+          add: true
+          success: -> polling = false

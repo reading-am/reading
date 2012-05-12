@@ -15,7 +15,7 @@
     font-style:normal;
     font-size:12px;
     line-height:normal;
-    text-align:center;
+    text-align:left;
     text-decoration:none;
     text-shadow:none;
     text-transform:none;
@@ -39,6 +39,9 @@
   }
   #r_wrp, li {
     background:yellow;
+  }
+  #r_icon, #r_subtext {
+    text-align:center;
   }
   #r_icon {
     font-size:56px;
@@ -147,23 +150,6 @@
       overflow:scroll;
       max-height:350px;
     }
-    textarea {
-      float:right;
-      background:#FFF;
-      border:5px solid #00FBFF;
-      border-radius:0;
-      text-align:left;
-      width:305px; //150px;
-      height:15px;
-      padding:5px;
-      transition: width 0.25s;
-      -moz-transition: width 0.25s;
-      -webkit-transition: width 0.25s;
-      -o-transition: width 0.25s;
-      &:focus {
-        width:305px;
-      }
-    }
   }
   .r_reply {
     color:green !important;
@@ -207,7 +193,6 @@
     background:white;
     margin:0 0 0 25px;
     padding:7px 14px;
-    text-align:left;
     border:5px solid yellow;
     border-top-width:3px;
   }

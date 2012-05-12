@@ -36,7 +36,9 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
           post: ø.Models.Post::current
           user: ø.Models.Post::current.get("user")
           page: ø.Models.Post::current.get("page")
-        @$("textarea").val ""
+        @$("textarea")
+          .val("")
+          .mentionsInput("reset")
         @$("ul").animate
           scrollTop: 0
           duration: "fast"

@@ -5,7 +5,7 @@ Reading::Application.routes.draw do
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
 
   # api
-  scope '/api', :defaults => { :format => 'json' } do
+  namespace :api, :defaults => { :format => 'json' } do
     resources :posts
     resources :comments
     resources :users do

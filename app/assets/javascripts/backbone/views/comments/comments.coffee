@@ -56,6 +56,7 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
           { id:5, name:'Andreas Haugstrup', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' },
           { id:6, name:'Pete Lacey', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' }
         ]
+        #data = ø.Models.Post::current.get("user").following()
         data = ø._.filter(data, (item) -> item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 )
         callback.call this, data
 

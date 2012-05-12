@@ -1,3 +1,4 @@
+# encoding: utf-8
 class PagesController < ApplicationController
 
   def show
@@ -7,25 +8,7 @@ class PagesController < ApplicationController
     else
       respond_to do |format|
         format.html  # show.html.erb
-        format.json  { render :json => @page }
       end
-    end
-  end
-
-  def comments
-    @page = Page.find(params[:id])
-    respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :comments => @page.comments.collect { |comment|
-            comment.simple_obj
-          }
-        }
-      }, :callback => params[:callback] }
     end
   end
 

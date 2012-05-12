@@ -1,3 +1,4 @@
+# encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
@@ -37,10 +38,6 @@ class ApplicationController < ActionController::Base
 
   def logged_in?
     !current_user.nil?
-  end
-
-  def api?
-    request.path[1..3] == "api"
   end
 
   def authenticate

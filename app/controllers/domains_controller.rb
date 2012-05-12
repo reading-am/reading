@@ -1,3 +1,4 @@
+# encoding: utf-8
 class DomainsController < ApplicationController
   # GET /domains/1
   # GET /domains/1.xml

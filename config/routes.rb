@@ -11,6 +11,7 @@ Reading::Application.routes.draw do
     resources :users do
       resources :posts
       resources :comments
+      resources :following, :controller => "users", :defaults => { :type => "following" }
     end
     resources :pages do
       resources :users

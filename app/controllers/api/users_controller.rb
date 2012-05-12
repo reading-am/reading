@@ -3,7 +3,13 @@ class Api::UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    if params[:page_id]
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      case params[:type]
+      when 'following'
+        @users = @user.followers
+      end
+    elsif params[:page_id]
       @page = Page.find(params[:page_id])
       @users = User.who_posted_to(@page)
       # this is disabled until we get more users on the site
@@ -19,13 +25,17 @@ class Api::UsersController < ApplicationController
         :response => {
           :users => @users.collect { |user|
             obj = user.simple_obj
-            cur_post = user.posts.where('page_id = ?', @page.id).last
-            before =  user.posts.where('id < ?', cur_post.id).first
-            after = user.posts.where('id > ?', cur_post.id).last
-            obj[:posts] = [
-              before.blank? ? {:type => 'Post', :id => -1} : before.simple_obj,
-              after.blank? ? {:type => 'Post', :id => -1} : after.simple_obj
-            ]
+
+            if !@page.blank?
+              cur_post = user.posts.where('page_id = ?', @page.id).last
+              before =  user.posts.where('id < ?', cur_post.id).first
+              after = user.posts.where('id > ?', cur_post.id).last
+              obj[:posts] = [
+                before.blank? ? {:type => 'Post', :id => -1} : before.simple_obj,
+                after.blank? ? {:type => 'Post', :id => -1} : after.simple_obj
+              ]
+            end
+
             obj
           }
         }

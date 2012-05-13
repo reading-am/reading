@@ -174,6 +174,8 @@ class User < ActiveRecord::Base
       :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
       :mini_avatar=> avatar.url(:mini),
+      :following_count => following.size,
+      :followers_count => followers.size,
       :created_at => created_at,
       :udpated_at => updated_at
     }

@@ -70,8 +70,12 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
         if following
           finish following
         else
-          following = ø.Models.Post::current.get("user").following
-          following.fetch success: finish
+          user = ø.Models.Post::current.get("user")
+          following = user.following
+          if user.get("following_count") > 0
+            following.fetch success: finish
+          else
+            finish following
 
   render: =>
     ø.$(@el).html(@template())

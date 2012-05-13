@@ -45,10 +45,12 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
         false
 
   attach_autocomplete: ø._.once ->
+    following = false
+
     # this should only be called after it's been attached to the DOM
     @$("textarea").mentionsInput
       onDataRequest: (mode, query, callback) ->
-        ø.Models.Post::current.get("user").following.fetch success: (collection) =>
+        finish = (collection) =>
           data = collection.filter (user) ->
             "#{user.get("username")} #{user.get("display_name")}".toLowerCase().indexOf(query.toLowerCase()) > -1
 
@@ -57,6 +59,12 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
             name: user.get("display_name")
             avatar: user.get("mini_avatar")
             type: "contact"
+
+        if following
+          finish following
+        else
+          following = ø.Models.Post::current.get("user").following
+          following.fetch success: finish
 
   render: =>
     ø.$(@el).html(@template())

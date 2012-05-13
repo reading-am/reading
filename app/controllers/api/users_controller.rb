@@ -5,10 +5,7 @@ class Api::UsersController < ApplicationController
   def index
     if params[:user_id]
       @user = User.find(params[:user_id])
-      case params[:type]
-      when 'following'
-        @users = @user.followers
-      end
+      @users = @user.send(params[:type])
     elsif params[:page_id]
       @page = Page.find(params[:page_id])
       @users = User.who_posted_to(@page)

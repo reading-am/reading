@@ -48,17 +48,15 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
     # this should only be called after it's been attached to the DOM
     @$("textarea").mentionsInput
       onDataRequest: (mode, query, callback) ->
-        data = [
-          { id:1, name:'Kenneth Auchenberg', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' },
-          { id:2, name:'Jon Froda', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' },
-          { id:3, name:'Anders Pollas', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' },
-          { id:4, name:'Kasper Hulthin', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' },
-          { id:5, name:'Andreas Haugstrup', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' },
-          { id:6, name:'Pete Lacey', 'avatar':'http://cdn0.4dots.com/i/customavatars/avatar7112_1.gif', 'type':'contact' }
-        ]
-        #data = ø.Models.Post::current.get("user").following()
-        data = ø._.filter(data, (item) -> item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 )
-        callback.call this, data
+        ø.Models.Post::current.get("user").following.fetch success: (collection) =>
+          data = collection.filter (user) ->
+            "#{user.get("username")} #{user.get("display_name")}".toLowerCase().indexOf(query.toLowerCase()) > -1
+
+          callback.call this, ø._.map data, (user) ->
+            id: user.get("id")
+            name: user.get("display_name")
+            avatar: user.get("mini_avatar")
+            type: "contact"
 
   render: =>
     ø.$(@el).html(@template())

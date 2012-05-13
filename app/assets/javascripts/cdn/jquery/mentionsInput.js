@@ -18,6 +18,12 @@
     minChars      : 2,
     showAvatars   : true,
     elastic       : true,
+    schema        : {
+      id : "id",
+      name : "name",
+      alt_name: "alt_name",
+      avatar : "avatar"
+    },
     classes       : {
       autoCompleteItemActive : "active"
     },
@@ -26,6 +32,7 @@
       autocompleteList           : _.template('<div class="mentions-autocomplete-list"></div>'),
       autocompleteListItem       : _.template('<li data-ref-id="<%= id %>" data-ref-type="<%= type %>" data-display="<%= display %>"><%= content %></li>'),
       autocompleteListItemAvatar : _.template('<img  src="<%= avatar %>" />'),
+      autocompleteListItemAltName: _.template('<span class="alt_name"><%= alt_name %></span>'),
       autocompleteListItemIcon   : _.template('<div class="icon <%= icon %>"></div>'),
       mentionsOverlay            : _.template('<div class="mentions"><div></div></div>'),
       mentionItemSyntax          : _.template('@[<%= value %>](<%= type %>:<%= id %>)'),
@@ -197,7 +204,7 @@
     }
 
     function onInputBoxBlur(e) {
-      hideAutoComplete();
+      //hideAutoComplete();
     }
 
     function onInputBoxInput(e) {
@@ -295,10 +302,10 @@
     function populateDropdown(query, results) {
       elmAutocompleteList.show();
 
-      // Filter items that has already been mentioned
+      // Filter items that have already been mentioned
       var mentionValues = _.pluck(mentionsCollection, 'value');
       results = _.reject(results, function (item) {
-        return _.include(mentionValues, item.name);
+        return _.include(mentionValues, item[settings.schema.name]);
       });
 
       if (!results.length) {
@@ -312,29 +319,34 @@
       _.each(results, function (item, index) {
         var itemUid = _.uniqueId('mention_');
 
-        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: item.name});
+        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: item[settings.schema.name]});
 
         var elmListItem = $(settings.templates.autocompleteListItem({
-          'id'      : utils.htmlEncode(item.id),
-          'display' : utils.htmlEncode(item.name),
+          'id'      : utils.htmlEncode(item[settings.schema.id]),
+          'display' : utils.htmlEncode(item[settings.schema.name]),
           'type'    : utils.htmlEncode(item.type),
-          'content' : utils.highlightTerm(utils.htmlEncode((item.name)), query)
+          'content' : utils.highlightTerm(utils.htmlEncode((item[settings.schema.name])), query)
         })).attr('data-uid', itemUid);
 
         if (index === 0) {
           selectAutoCompleteItem(elmListItem);
         }
 
+        if (item[settings.schema.alt_name]) {
+          elmListItem.append(settings.templates.autocompleteListItemAltName({ alt_name : item[settings.schema.alt_name] }));
+        }
+
         if (settings.showAvatars) {
           var elmIcon;
 
-          if (item.avatar) {
-            elmIcon = $(settings.templates.autocompleteListItemAvatar({ avatar : item.avatar }));
+          if (item[settings.schema.avatar]) {
+            elmIcon = $(settings.templates.autocompleteListItemAvatar({ avatar : item[settings.schema.avatar] }));
           } else {
             elmIcon = $(settings.templates.autocompleteListItemIcon({ icon : item.icon }));
           }
           elmIcon.prependTo(elmListItem);
         }
+
         elmListItem = elmListItem.appendTo(elmDropDownList);
       });
 

@@ -49,6 +49,11 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
 
     # this should only be called after it's been attached to the DOM
     @$("textarea").mentionsInput
+      schema:
+        name: "username"
+        alt_name: "full_name"
+        avatar: "mini_avatar"
+
       classes:
         autoCompleteItemActive : "r_active"
 
@@ -58,10 +63,9 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
             "#{user.get("username")} #{user.get("display_name")}".toLowerCase().indexOf(query.toLowerCase()) > -1
 
           callback.call this, ø._.map data, (user) ->
-            id: user.get("id")
-            name: user.get("display_name")
-            avatar: user.get("mini_avatar")
-            type: "contact"
+            user = user.toJSON()
+            user.username = "@#{user.username}"
+            user
 
         if following
           finish following

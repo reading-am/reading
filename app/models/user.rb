@@ -131,10 +131,10 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    if !self.name.blank?
-      self.name
-    elsif !self.username.blank?
-      self.username
+    if !name.blank?
+      name
+    elsif !username.blank?
+      username
     else
       'Anonymous'
     end
@@ -170,6 +170,7 @@ class User < ActiveRecord::Base
       :id         => to_s ? id.to_s : id,
       :username   => username,
       :display_name => display_name,
+      :full_name  => name,
       :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
       :mini_avatar=> avatar.url(:mini),

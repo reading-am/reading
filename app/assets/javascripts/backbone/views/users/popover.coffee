@@ -18,5 +18,5 @@ class ø.Views.Users.UserPopoverView extends ø.Backbone.View
 
   render: ->
     @$el.html(@template(@model.toJSON()))
-    ø.$("body").append @el
+    ø.$("body").prepend @el
     @$el.fadeIn("fast")

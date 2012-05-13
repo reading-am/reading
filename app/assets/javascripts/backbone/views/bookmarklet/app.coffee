@@ -35,6 +35,9 @@ class ø.Views.BookmarkletApp extends ø.Backbone.View
 
     @intervals "add", 15, => @$("time").humaneDates()
 
+    popup = (url, width, height) ->
+      window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
+
     @share_view = new ø.Views.Providers.ProvidersView
       id: "r_share_menu"
       collection: new ø.Collections.Providers [

@@ -80,14 +80,14 @@
     settings = $.extend(true, {}, defaultSettings, settings );
 
     function initTextarea() {
-      elmInputBox = $(domInput);
+      elmInputBox = ø.$(domInput);
 
       if (elmInputBox.attr('data-mentions-input') == 'true') {
         return;
       }
 
       elmInputWrapper = elmInputBox.parent();
-      elmWrapperBox = $(settings.templates.wrapper());
+      elmWrapperBox = ø.$(settings.templates.wrapper());
       elmInputBox.wrapAll(elmWrapperBox);
       elmWrapperBox = elmInputWrapper.find('> div');
 
@@ -106,13 +106,13 @@
     }
 
     function initAutocomplete() {
-      elmAutocompleteList = $(settings.templates.autocompleteList());
+      elmAutocompleteList = ø.$(settings.templates.autocompleteList());
       elmAutocompleteList.appendTo(elmWrapperBox);
       elmAutocompleteList.delegate('li', 'mousedown', onAutoCompleteItemClick);
     }
 
     function initMentionsOverlay() {
-      elmMentionsOverlay = $(settings.templates.mentionsOverlay());
+      elmMentionsOverlay = ø.$(settings.templates.mentionsOverlay());
       elmMentionsOverlay.prependTo(elmWrapperBox);
     }
 
@@ -191,7 +191,7 @@
     }
 
     function onAutoCompleteItemClick(e) {
-      var elmTarget = $(this);
+      var elmTarget = ø.$(this);
       var mention = autocompleteItemCollection[elmTarget.attr('data-uid')];
 
       addMention(mention);
@@ -265,7 +265,7 @@
               elmCurrentAutoCompleteItem = elmAutocompleteList.find('li').first();
             }
           } else {
-            elmCurrentAutoCompleteItem = $(elmActiveAutoCompleteItem).prev();
+            elmCurrentAutoCompleteItem = ø.$(elmActiveAutoCompleteItem).prev();
           }
 
           if (elmCurrentAutoCompleteItem.length) {
@@ -314,14 +314,14 @@
       }
 
       elmAutocompleteList.empty();
-      var elmDropDownList = $("<ul>").appendTo(elmAutocompleteList).hide();
+      var elmDropDownList = ø.$("<ul>").appendTo(elmAutocompleteList).hide();
 
       _.each(results, function (item, index) {
         var itemUid = _.uniqueId('mention_');
 
         autocompleteItemCollection[itemUid] = _.extend({}, item, {value: item[settings.schema.name]});
 
-        var elmListItem = $(settings.templates.autocompleteListItem({
+        var elmListItem = ø.$(settings.templates.autocompleteListItem({
           'id'      : utils.htmlEncode(item[settings.schema.id]),
           'display' : utils.htmlEncode(item[settings.schema.name]),
           'type'    : utils.htmlEncode(item.type),
@@ -340,9 +340,9 @@
           var elmIcon;
 
           if (item[settings.schema.avatar]) {
-            elmIcon = $(settings.templates.autocompleteListItemAvatar({ avatar : item[settings.schema.avatar] }));
+            elmIcon = ø.$(settings.templates.autocompleteListItemAvatar({ avatar : item[settings.schema.avatar] }));
           } else {
-            elmIcon = $(settings.templates.autocompleteListItemIcon({ icon : item.icon }));
+            elmIcon = ø.$(settings.templates.autocompleteListItemIcon({ icon : item.icon }));
           }
           elmIcon.prependTo(elmListItem);
         }

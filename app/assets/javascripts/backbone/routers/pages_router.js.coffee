@@ -15,20 +15,20 @@ class ø.Routers.Pages extends ø.Backbone.Router
 
   newPage: ->
     @view = new ø.Views.Pages.New(collection: @pages)
-    $("#pages").html(@view.render().el)
+    ø.$("#pages").html(@view.render().el)
 
   index: ->
     @view = new ø.Views.Pages.Index(pages: @pages)
-    $("#pages").html(@view.render().el)
+    ø.$("#pages").html(@view.render().el)
 
   show: (id) ->
     page = @pages.get(id)
 
     @view = new ø.Views.Pages.Show(model: page)
-    $("#pages").html(@view.render().el)
+    ø.$("#pages").html(@view.render().el)
 
   edit: (id) ->
     page = @pages.get(id)
 
     @view = new ø.Views.Pages.Edit(model: page)
-    $("#pages").html(@view.render().el)
+    ø.$("#pages").html(@view.render().el)

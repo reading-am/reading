@@ -1,4 +1,5 @@
 #= require_self
+#= require ./constants
 #= require_tree ./addons
 #= require_tree ./templates
 #= require_tree ./models

@@ -8,6 +8,7 @@ group :assets do
   gem 'less-rails'
   gem 'coffee-rails'
   gem 'uglifier'
+  gem 'handlebars_assets'
 end
 
 gem 'rails-backbone'

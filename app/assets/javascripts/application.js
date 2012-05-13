@@ -6,14 +6,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//
-// These are commented out. Add = back.
-// require underscore
-// require backbone
-// require backbone_rails_sync
-// require backbone_datalink
-// require backbone/reading
-// require twitter/bootstrap
+//= require handlebars
+//= require underscore
+//= require backbone
+//= require backbone/reading
+//= require twitter/bootstrap
 //
 //= require_tree ./libs
 //= require_tree ./jquery

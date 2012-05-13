@@ -2,7 +2,7 @@ class ø.Models.Comment extends ø.Backbone.Model
   type: "Comment"
   validate: (attr) ->
     if !attr.body || (!attr.page and !attr.page_id)
-      return errors.general
+      return ø.Errors.general
 
 class ø.Collections.Comments extends ø.Backbone.Collection
   type: "Comments"

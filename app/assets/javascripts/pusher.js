@@ -11,11 +11,11 @@ var notify_tmpl = function(obj){
 },
 // insert an object into the DOM
 insert_obj = function(obj){
-  var $obj = $.tmpl(obj.type, obj), $wrapper;
+  var $obj = ø.$.tmpl(obj.type, obj), $wrapper;
   switch(obj.type){
     case 'Post':
-      $wrapper = $('<td>').append($obj);
-      $('<tr>').append('<td class="date">').append($wrapper).prependTo('#content tbody');
+      $wrapper = ø.$('<td>').append($obj);
+      ø.$('<tr>').append('<td class="date">').append($wrapper).prependTo('#content tbody');
     break;
   }
   return $obj;
@@ -31,9 +31,9 @@ new_obj = function(obj){
 },
 // an update to an existing obj ex: yep & nope on a post
 update_obj = function(obj){
-  var $existing = $('[data-class="'+obj.type+'"][data-id="'+obj.id+'"]');
+  var $existing = ø.$('[data-class="'+obj.type+'"][data-id="'+obj.id+'"]');
   if($existing.length){
-    var $obj = $.tmpl(obj.type, obj);
+    var $obj = ø.$.tmpl(obj.type, obj);
     if($existing.hasClass('new')) $obj.addClass('new');
     $existing.replaceWith($obj);
   } else {

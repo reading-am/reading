@@ -14,7 +14,7 @@
 (function($) {
   // Handler for propertychange events only
   function propHandler() {
-    var $this = $(this);
+    var $this = ø.$(this);
     if (window.event.propertyName == "value" && !$this.data("triggering.inputEvent")) {
       $this.data("triggering.inputEvent", true).trigger("input");
       window.setTimeout(function () {
@@ -42,7 +42,7 @@
         evts = ["focus", "blur", "paste", "cut", "keydown", "drop", ""].join("." + ns + " ");
 
       function checkState() {
-        var $this = $(elem);
+        var $this = ø.$(elem);
         if (elem.value != state && !$this.data("triggering.inputEvent")) {
           state = elem.value;
 
@@ -74,15 +74,15 @@
         return false;
 //      } else if (onprop) {
 //        // Else fall back to propertychange if available
-//        $(this).find("input, textarea").andSelf().filter("input, textarea").bind("propertychange." + ns, propHandler);
+//        ø.$(this).find("input, textarea").andSelf().filter("input, textarea").bind("propertychange." + ns, propHandler);
       } else {
         // Else clutch at straws!
-        $(this).find("input, textarea").andSelf().filter("input, textarea").bind(evts, handler);
+        ø.$(this).find("input, textarea").andSelf().filter("input, textarea").bind(evts, handler);
       }
-      $(this).data("inputEventHandlerNS", ns);
+      ø.$(this).data("inputEventHandlerNS", ns);
     },
     teardown: function () {
-      var elem = $(this);
+      var elem = ø.$(this);
       elem.find("input, textarea").unbind(elem.data("inputEventHandlerNS"));
       elem.data("inputEventHandlerNS", "");
     }

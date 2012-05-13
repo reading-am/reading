@@ -7,7 +7,7 @@ class ø.Models.Post extends ø.Backbone.Model
 
   validate: (attr) ->
     if !attr.url || attr.url is "about:blank"
-      return errors.general
+      return ø.Errors.general
 
   short_url: ->
     "<%= SHORT_DOMAIN %>/p/#{base58.encode(@id)}"

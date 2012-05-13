@@ -14,7 +14,7 @@ class Authorization
     @uid and @uid != "new" and @permissions and perm in @permissions
 
   sync_to_current_session: (success, error) ->
-    $.ajax # hit the omniauth endpointk
+    ø.$.ajax # hit the omniauth endpointk
       url: "/auth/#{@provider}/callback"
       dataType: "json"
       data:
@@ -38,7 +38,7 @@ class Authorization
     data =
       authorization: # the id is passed in the url
         permissions: "[\"#{@permissions.join('","')}\"]"
-    $.ajax
+    ø.$.ajax
       url: "/authorizations/#{@provider}/#{@uid}/update.json"
       type: 'POST'
       data: data
@@ -48,7 +48,7 @@ class Authorization
         params.error() if params.error?
 
   places: (params) ->
-    $.ajax
+    ø.$.ajax
       url: "/authorizations/#{@provider}/#{@uid}/places.json"
       success: (data, textStatus, jqXHR) =>
         params.success(data.response.places) if params.success?

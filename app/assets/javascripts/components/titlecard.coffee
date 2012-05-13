@@ -1,14 +1,14 @@
-$ ->
-  $card = $("#titlecard")
-  $links = $("#colinks", $card)
+ø.$ ->
+  $card = ø.$("#titlecard")
+  $links = ø.$("#colinks", $card)
 
   $card.on "click", ->
     unless $card.find("strong").text() is "Reading"
-      $(if $.browser.webkit then "body" else "html").animate {scrollTop : 0}
+      ø.$(if ø.$.browser.webkit then "body" else "html").animate {scrollTop : 0}
       false
 
-  $.waypoints.settings.scrollThrottle = 30
-  $("body").waypoint (event, direction) ->
+  ø.$.waypoints.settings.scrollThrottle = 30
+  ø.$("body").waypoint (event, direction) ->
     if direction is "down"
       $card.find("strong").text "Go up"
       $links.css({opacity:0})

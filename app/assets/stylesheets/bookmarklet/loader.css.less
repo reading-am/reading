@@ -1,3 +1,5 @@
+@import "variables";
+
 #r_am {
   display:none;
   z-index:999999999;
@@ -7,7 +9,7 @@
   &, * {
     padding:0;
     margin:0;
-    color:#000 !important;
+    color:@black !important;
     background:none;
     border:none;
     font-family:"Helvetica Neue", helvetica, arial, sans-serif;
@@ -33,12 +35,12 @@
     width:50px;
     padding:0 10px;
   }
-  #r_wrp, li, #r_share_menu, #r_readers {
+  #r_wrp, #r_share_menu, #r_share_menu li, #r_readers, #r_readers li, .r_comment {
     float:right;
     clear:both;
   }
-  #r_wrp, li {
-    background:yellow;
+  #r_wrp, #r_readers li, #r_share_menu li {
+    background:@yellow;
   }
   #r_icon, #r_subtext {
     text-align:center;
@@ -49,7 +51,7 @@
     margin:26px 0 25px;
   }
   .r_submitted #r_icon {
-    color:yellow !important;
+    color:@yellow !important;
   }
   #r_actions {
     margin:15px 0 0;
@@ -63,7 +65,7 @@
     display:inline-block;
   }
   a:hover, .r_active {
-    background:#FFF;
+    background:@white;
   }
   #r_actions .r_inactive {
     text-decoration:line-through;
@@ -83,8 +85,8 @@
   a#r_share {
     margin:0 3px;
     padding:2px 8px 3px;
-    border-left:1px dotted #000;
-    border-right:1px dotted #000;
+    border-left:1px dotted @black;
+    border-right:1px dotted @black;
   }
   #r_close {
     margin:0 0 0 3px;
@@ -105,9 +107,9 @@
   a.r_tagalong {
     padding:0 5px;
     background:#00FBFF;
-    border-right:1px solid #CDFEFF;
+    border-right:1px solid @light_blue;
     &:hover {
-      background:#CDFEFF;
+      background:@light_blue;
     }
   }
   .r_popped_over {
@@ -124,7 +126,7 @@
       position:fixed;
       top:0; left:0;
       width:100%; height:100%;
-      background:#FFF;
+      background:@white;
       cursor:pointer;
       opacity:0.5;
     }
@@ -134,28 +136,28 @@
       display:block;
       margin:100px auto;
       border:0;
-      background:#FFF;
-      -webkit-box-shadow: 0 0 50px 50px #FFF;
-         -moz-box-shadow: 0 0 50px 50px #FFF;
-              box-shadow: 0 0 50px 50px #FFF;
+      background:@white;
+      -webkit-box-shadow: 0 0 50px 50px @white;
+         -moz-box-shadow: 0 0 50px 50px @white;
+              box-shadow: 0 0 50px 50px @white;
     }
   }
   #r_comments {
     overflow:auto;
-    &, ul {
+    &, .r_comments_list {
       float:right;
       clear:both;
     }
-    ul {
+    .r_comments_list {
       overflow:scroll;
       max-height:350px;
     }
   }
   .r_reply {
-    color:green !important;
+    color:@green !important;
   }
   .r_destroy {
-    color:red !important;
+    color:@red !important;
   }
   .r_comment {
     max-width:360px;
@@ -167,7 +169,7 @@
   }
   .r_comment_header {
     overflow:auto;
-    background:yellow;
+    background:@yellow;
     .r_user {
       float:left;
     }
@@ -177,7 +179,7 @@
     }
     time {
       font-size:10px;
-      color:#7F7F00 !important;
+      color:@dark_yellow !important;
     }
   }
   .r_comment:hover .r_comment_header time {
@@ -193,20 +195,20 @@
     background:white;
     margin:0 0 0 25px;
     padding:7px 14px;
-    border:5px solid yellow;
+    border:5px solid @yellow;
     border-top-width:3px;
   }
   .r_mention:hover, .r_tag:hover, .r_url {
-    color:#000 !important;
+    color:@black !important;
     text-decoration:underline;
   }
   .r_mention {
     font-weight:bold;
-    background:#c8feff;
+    background:@light_blue;
     text-decoration:none;
   }
   .r_tag {
-    color:#999 !important;
+    color:@dark_grey !important;
     text-decoration:none;
   }
 }

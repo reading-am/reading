@@ -1,5 +1,4 @@
-//Variables
-@white: #fff;
+@import "variables";
 
 //Mixins
 .border-radius(@radius: 5px) {
@@ -22,14 +21,14 @@
   float:right;
   margin-top:3px;
 
-  textarea{
+  textarea {
     width: 100%;
     display: block;
     height: 18px;
     padding: 5px;
     overflow: hidden;
     background: transparent;
-    border:5px solid #00FBFF;
+    border:5px solid @blue;
     position: relative;
     height:15px;
     outline: 0;
@@ -40,7 +39,7 @@
             box-sizing: border-box;
   }
 
-  .mentions{
+  .mentions {
     position: absolute;
     left: 5px; // sync with border
     top: 5px; // sync with border
@@ -53,16 +52,16 @@
     white-space: pre-wrap;
     word-wrap: break-word;
 
-    & > div{
+    & > div {
       color: @white !important;
       white-space: pre-wrap;
       width: 100%;
 
-      & > strong{
+      & > strong {
         font-weight:normal;
-        background: #d8dfea;
+        background: @light_blue;
 
-        & > span{
+        & > span {
           .opacity(0);
         }
       }
@@ -71,12 +70,11 @@
   & .mentions-autocomplete-list {
     display: none;
     background: @white;
-    border: 1px solid #b2b2b2;
+    border: 1px solid @dark_grey;
     position: absolute;
     left: 0;
     right: 0;
     z-index: 10000;
-    margin-top: -2px;
 
     .border-radius();
     border-top-right-radius:0;
@@ -86,17 +84,17 @@
        -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
 
-    ul{
+    ul {
       margin: 0;
       padding: 0;
     }
 
-    li{
+    li {
       background-color: @white;
       padding: 0 5px;
       margin: 0;
       width: auto;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid @light_grey;
       height: 26px;
       line-height: 26px;
       overflow: hidden;
@@ -104,34 +102,32 @@
       list-style: none;
       white-space: nowrap;
 
-      &:last-child{
+      &:last-child {
         .border-radius();
       }
 
       & > img,
-      & > div.icon{
+      & > div.icon {
         width: 16px;
         height: 16px;
         float: left;
         margin-top:5px;
         margin-right: 5px;
-        -moz-background-origin:3px;
-
-        .border-radius(3px);
       }
 
-      em{
+      em {
         font-weight: bold;
         font-style: none;
       }
 
       &:hover,
-      &.active{
-        background-color: #f2f2f2;
+      &.r_active {
+        background-color: @light_blue;
+        border-color: @blue;
       }
 
-      b{
-        background: #ffff99;
+      b {
+        background: @yellow;
         font-weight: normal;
       }
     }

@@ -3,7 +3,7 @@
 class ø.Views.Comments.CommentsView extends ø.Backbone.View
   template: Handlebars.compile "
     <textarea placeholder=\"Add a comment\"></textarea>
-    <ul></ul>
+    <ul class=\"r_comments_list\"></ul>
   "
 
   tagName: "div"
@@ -49,6 +49,9 @@ class ø.Views.Comments.CommentsView extends ø.Backbone.View
 
     # this should only be called after it's been attached to the DOM
     @$("textarea").mentionsInput
+      classes:
+        autoCompleteItemActive : "r_active"
+
       onDataRequest: (mode, query, callback) ->
         finish = (collection) =>
           data = collection.filter (user) ->

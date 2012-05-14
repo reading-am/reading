@@ -1,10 +1,8 @@
-class ø.Models.Page extends ø.Backbone.Model
-  type: "Page"
+define ["backbone"], (Backbone) ->
 
-  initialize: ->
-    @has_many "Users"
-    @has_many "Comments"
+  class Page extends Backbone.Model
+    type: "Page"
 
-class ø.Collections.Pages extends ø.Backbone.Collection
-  type: "Pages"
-  model: ø.Models.Page
+    initialize: ->
+      @has_many "Users"
+      @has_many "Comments"

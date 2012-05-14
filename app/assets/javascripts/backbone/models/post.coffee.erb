@@ -1,27 +1,25 @@
-class ø.Models.Post extends ø.Backbone.Model
-  type: "Post"
+define ["jquery","backbone","constants"], ($, Backbone, Constants) ->
 
-  initialize: ->
-    @bind "change:id", @keep_fresh
-    @bind "destroy", => @intervals "clear"
+  class Post extends Backbone.Model
+    type: "Post"
 
-  validate: (attr) ->
-    if !attr.url || attr.url is "about:blank"
-      return ø.Errors.general
+    initialize: ->
+      @bind "change:id", @keep_fresh
+      @bind "destroy", => @intervals "clear"
 
-  short_url: ->
-    "<%= SHORT_DOMAIN %>/p/#{base58.encode(@id)}"
+    validate: (attr) ->
+      if !attr.url || attr.url is "about:blank"
+        return Constants.errors.general
 
-  # update the date_created every 15 seconds ala chartbeat
-  # consider not doing this for context-menu posts
-  keep_fresh: ->
-    loading = false
-    @intervals "add", 3, =>
-      now = new Date
-      if ø.$(window).hasFocus() and not loading and now - @get("updated_at") >= 15000
-        loading = true
-        @save "updated_at", now, success: -> loading = false
+    short_url: ->
+      "<%= SHORT_DOMAIN %>/p/#{base58.encode(@id)}"
 
-class ø.Collections.Posts extends ø.Backbone.Collection
-  type: "Posts"
-  model: ø.Models.Post
+    # update the date_created every 15 seconds ala chartbeat
+    # consider not doing this for context-menu posts
+    keep_fresh: ->
+      loading = false
+      @intervals "add", 3, =>
+        now = new Date
+        if $(window).hasFocus() and not loading and now - @get("updated_at") >= 15000
+          loading = true
+          @save "updated_at", now, success: -> loading = false

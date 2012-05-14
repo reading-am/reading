@@ -1,83 +1,84 @@
-ø.Views.Comments ||= {}
+define ["jquery","underscore","backbone","handlebars"],
+($, _, Backbone, Handlebars) ->
 
-class ø.Views.Comments.CommentsView extends ø.Backbone.View
-  template: Handlebars.compile "
-    <textarea placeholder=\"Add a comment\"></textarea>
-    <ul class=\"r_comments_list\"></ul>
-  "
+  class CommentsView extends Backbone.View
+    template: Handlebars.compile "
+      <textarea placeholder=\"Add a comment\"></textarea>
+      <ul class=\"r_comments_list\"></ul>
+    "
 
-  tagName: "div"
+    tagName: "div"
 
-  events:
-    "keypress textarea" : "createOnEnter",
-    "click .r_mention" : "showUser"
+    events:
+      "keypress textarea" : "createOnEnter",
+      "click .r_mention" : "showUser"
 
-  initialize: ->
-    @collection.bind "reset", @addAll
-    @collection.bind "add", @addOne
+    initialize: ->
+      @collection.bind "reset", @addAll
+      @collection.bind "add", @addOne
 
-  addAll: =>
-    @collection.each(@addOne)
+    addAll: =>
+      @collection.each(@addOne)
 
-  addOne: (comment) =>
-    view = new ø.Views.Comments.CommentView({model : comment})
-    @$("ul").prepend(view.render().el)
+    addOne: (comment) =>
+      view = new ø.Views.Comments.CommentView({model : comment})
+      @$("ul").prepend(view.render().el)
 
-  showUser: (e) ->
-    popover = new ø.Views.Users.UserPopoverView
-      model: new ø.Models.User(url: ø.$(e.target).attr("href"))
-    popover.render()
-    false
+    showUser: (e) ->
+      popover = new ø.Views.Users.UserPopoverView
+        model: new ø.Models.User(url: $(e.target).attr("href"))
+      popover.render()
+      false
 
-  createOnEnter: (e) ->
-      if e.keyCode is 13 and !key.alt
-        @collection.create
-          body: @$("textarea").val(),
-          post: ø.Models.Post::current
-          user: ø.Models.Post::current.get("user")
-          page: ø.Models.Post::current.get("page")
-        @$("textarea")
-          .val("")
-          .mentionsInput("reset")
-        @$("ul").animate
-          scrollTop: 0
-          duration: "fast"
-        false
+    createOnEnter: (e) ->
+        if e.keyCode is 13 and !key.alt
+          @collection.create
+            body: @$("textarea").val(),
+            post: ø.Models.Post::current
+            user: ø.Models.Post::current.get("user")
+            page: ø.Models.Post::current.get("page")
+          @$("textarea")
+            .val("")
+            .mentionsInput("reset")
+          @$("ul").animate
+            scrollTop: 0
+            duration: "fast"
+          false
 
-  attach_autocomplete: ø._.once ->
-    following = false
+    attach_autocomplete: _.once ->
+      following = false
 
-    # this should only be called after it's been attached to the DOM
-    @$("textarea").mentionsInput
-      schema:
-        name: "username"
-        alt_name: "full_name"
-        avatar: "mini_avatar"
+      # this should only be called after it's been attached to the DOM
+      @$("textarea").mentionsInput
+        schema:
+          name: "username"
+          alt_name: "full_name"
+          avatar: "mini_avatar"
 
-      classes:
-        autoCompleteItemActive : "r_active"
+        classes:
+          autoCompleteItemActive : "r_active"
 
-      onDataRequest: (mode, query, callback) ->
-        finish = (collection) =>
-          data = collection.filter (user) ->
-            "#{user.get("username")} #{user.get("display_name")}".toLowerCase().indexOf(query.toLowerCase()) > -1
+        onDataRequest: (mode, query, callback) ->
+          finish = (collection) =>
+            data = collection.filter (user) ->
+              "#{user.get("username")} #{user.get("display_name")}".toLowerCase().indexOf(query.toLowerCase()) > -1
 
-          callback.call this, ø._.map data, (user) ->
-            user = user.toJSON()
-            user.username = "@#{user.username}"
-            user
+            callback.call this, _.map data, (user) ->
+              user = user.toJSON()
+              user.username = "@#{user.username}"
+              user
 
-        if following
-          finish following
-        else
-          user = ø.Models.Post::current.get("user")
-          following = user.following
-          if user.get("following_count") > 0
-            following.fetch success: finish
-          else
+          if following
             finish following
+          else
+            user = ø.Models.Post::current.get("user")
+            following = user.following
+            if user.get("following_count") > 0
+              following.fetch success: finish
+            else
+              finish following
 
-  render: =>
-    ø.$(@el).html(@template())
-    @addAll()
-    return this
+    render: =>
+      $(@el).html(@template())
+      @addAll()
+      return this

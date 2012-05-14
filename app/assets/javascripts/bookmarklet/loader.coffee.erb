@@ -8,23 +8,44 @@ load_style = (path) ->
 load_style "//<%= DOMAIN %>/assets/bookmarklet/loader.css"
 load_style "//<%= DOMAIN %>/assets/jquery/mentionsInput.css"
 
-<% ['head'].each do |lib| %>
+<% ['curl'].each do |lib| %>
 `<%= IO.read("#{Rails.root}/app/assets/javascripts/libs/#{lib}.js").gsub('`','\\\\`') %>`
 <% end %>
 
-head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
-  {underscore:    "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"},
-  {backbone:      "//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"},
-  {humane:        "//<%= DOMAIN %>/assets/cdn/jquery/humane.js"},
-  {elastic:       "//<%= DOMAIN %>/assets/cdn/jquery/elastic.js"},
-  {input_polyfill:"//<%= DOMAIN %>/assets/cdn/jquery/events.input.js"},
-  {mentions:      "//<%= DOMAIN %>/assets/cdn/jquery/mentionsInput.js"},
-  {keymaster:     "//<%= DOMAIN %>/assets/cdn/keymaster.js"},
-  {twitter_text:  "//<%= DOMAIN %>/assets/cdn/twitter-text.js"},
-  {handlbars:     "//<%= DOMAIN %>/assets/cdn/handlebars.js"},
-  {handlbars_helpers: "//<%= DOMAIN %>/assets/handlebars/helpers.js"},
-  {core:          "//<%= DOMAIN %>/assets/bookmarklet/core.js"}
-, ->
+curl
+  baseUrl: "//<%= DOMAIN %>/assets"
+  packages:
+    app:
+      path: "backbone"
+      main: "reading"
+  paths:
+    jquery:         "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"
+    underscore:     "libs/lodash"
+    backbone:       "libs/backbone_extended"
+    constants:      "backbone/constants"
+    humane:         "cdn/jquery/humane"
+    elastic:        "cdn/jquery/elastic"
+    input_polyfill: "cdn/jquery/events.input"
+    mentions:       "cdn/jquery/mentionsInput"
+    keymaster:      "cdn/keymaster"
+    twitter_text:   "cdn/twitter-text"
+    handlebars:     "cdn/handlebars"
+
+curl([
+  "jquery"
+  "underscore"
+  "backbone"
+  "constants"
+  "humane"
+  "elastic"
+  "input_polyfill"
+  "mentions"
+  "keymaster"
+  "//<%= DOMAIN %>/assets/handlebars/helpers"
+  "//<%= DOMAIN %>/assets/backbone/models/post"
+  "//<%= DOMAIN %>/assets/backbone/views/bookmarklet/app"
+  "domReady!"
+]).then ($, _, Backbone, Constants, h, e, i, m, k, l, Post, AppView) ->
 
   #-----------------------------------------
   # Config Vars
@@ -65,11 +86,11 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
         log jqXHR, textStatus, errorThrown
         switch errorThrown
           when "Bad Request"
-            alert ø.Errors.general
+            alert Constants.errors.general
           when "Forbidden"
-            alert ø.Errors.forbidden
+            alert Constants.errors.forbidden
 
-      ø.$.ajax
+      $.ajax
         url: "//<%= DOMAIN %>/#{method}.json"
         dataType: "jsonp"
         data: data
@@ -77,7 +98,7 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
         error: error
         success: (data, textStatus, jqXHR) ->
           if data.meta.status < 400
-            success ø.Backbone.Model::factory(data.response)
+            success Backbone.Model::factory(data.response)
           else
             jqXHR.status = data.meta.status
             jqXHR.responseText = data
@@ -87,14 +108,14 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
   # Submit the post
 
   reading.submit = submit = (params) ->
-    post = ø.Models.Post::current = new ø.Models.Post
+    post = Post::current = new Post
     post.save params, success: (data) ->
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://<%= DOMAIN %>/t/-/#{params.url}" else params.url
 
-    ø.Views.BookmarkletApp::current.close() if ø.Views.BookmarkletApp::current?
-    ø.Views.BookmarkletApp::current = new ø.Views.BookmarkletApp model: post if platform isnt "redirect"
+    AppView::current.close() if AppView::current?
+    AppView::current = new AppView model: post if platform isnt "redirect"
 
   #-----------------------------------------
   # Initialize!
@@ -109,8 +130,8 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
     reading.ready = true
 
     win_focus = true
-    ø.$(window).focus(-> win_focus = true).blur(-> win_focus = false)
-    ø.$.fn.hasFocus = -> win_focus
+    $(window).focus(-> win_focus = true).blur(-> win_focus = false)
+    $.fn.hasFocus = -> win_focus
 
     if platform is "redirect" or platform is "bookmarklet"
       if platform is "redirect"
@@ -136,7 +157,7 @@ head.js {jquery:  "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"},
   #-----------------------------------------
   # Prompt to upgrade
 
-  upgrade = -> ø.$.getScript "//<%= DOMAIN %>/assets/bookmarklet/upgrade.js"
+  upgrade = -> $.getScript "//<%= DOMAIN %>/assets/bookmarklet/upgrade.js"
 
   #-----------------------------------------
   # Check for jQuery and initialize

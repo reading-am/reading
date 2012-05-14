@@ -11,7 +11,7 @@
     * Disabled usage of onPropertyChange event in IE, since its a bit delayed, if you type really fast.
 */
 
-(function($) {
+define(["jquery"], function($) {
   // Handler for propertychange events only
   function propHandler() {
     var $this = ø.$(this);
@@ -129,4 +129,4 @@
 
     }
   }
-})(jQuery);
+});

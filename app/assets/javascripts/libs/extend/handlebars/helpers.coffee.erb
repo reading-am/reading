@@ -1,4 +1,8 @@
-define ["libs/handlebars","twitter_text"], (Handlebars, TwitterText) ->
+define [
+  "jquery"
+  "libs/handlebars"
+  "twitter_text"
+], ($, Handlebars, TwitterText) ->
 
   Handlebars.registerHelper "nl2br", (context, fn) ->
     new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
@@ -13,9 +17,9 @@ define ["libs/handlebars","twitter_text"], (Handlebars, TwitterText) ->
         hashtagUrlBase: "//<%= DOMAIN %>/search?q="
 
   Handlebars.registerHelper "embed_images", (context, fn) ->
-    $context = ø.$("<div>#{context}</div>")
+    $context = $("<div>#{context}</div>")
     $context.find("a[href$=#{["jpg","jpeg","png","gif"].join("],a[href$=")}]").each ->
-      $this = ø.$(this)
+      $this = $(this)
       $this.html("<img src=\"#{$this.attr("href")}\">")
     new Handlebars.SafeString $context.html()
 

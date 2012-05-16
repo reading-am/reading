@@ -1,6 +1,9 @@
-define ["backbone"], (Backbone) ->
+define [
+  "backbone"
+  "app"
+], (Backbone, App) ->
 
-  class Provider extends Backbone.Model
+  class App.Models.Provider extends Backbone.Model
     type: "Provider"
     url: (post) ->
       vals =

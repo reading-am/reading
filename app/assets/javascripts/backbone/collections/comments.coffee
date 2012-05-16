@@ -1,6 +1,10 @@
-define ["backbone","app/models/comment"], (Backbone, Comment) ->
+define [
+  "backbone"
+  "app"
+  "app/models/comment"
+], (Backbone, App, Comment) ->
 
-  class Comments extends Backbone.Collection
+  class App.Collections.Comments extends Backbone.Collection
     type: "Comments"
     model: Comment
 

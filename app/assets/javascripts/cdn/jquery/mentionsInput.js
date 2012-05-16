@@ -80,14 +80,14 @@ define(["jquery","underscore"], function ($, _, undefined) {
     settings = $.extend(true, {}, defaultSettings, settings );
 
     function initTextarea() {
-      elmInputBox = ø.$(domInput);
+      elmInputBox = $(domInput);
 
       if (elmInputBox.attr('data-mentions-input') == 'true') {
         return;
       }
 
       elmInputWrapper = elmInputBox.parent();
-      elmWrapperBox = ø.$(settings.templates.wrapper());
+      elmWrapperBox = $(settings.templates.wrapper());
       elmInputBox.wrapAll(elmWrapperBox);
       elmWrapperBox = elmInputWrapper.find('> div');
 
@@ -106,13 +106,13 @@ define(["jquery","underscore"], function ($, _, undefined) {
     }
 
     function initAutocomplete() {
-      elmAutocompleteList = ø.$(settings.templates.autocompleteList());
+      elmAutocompleteList = $(settings.templates.autocompleteList());
       elmAutocompleteList.appendTo(elmWrapperBox);
       elmAutocompleteList.delegate('li', 'mousedown', onAutoCompleteItemClick);
     }
 
     function initMentionsOverlay() {
-      elmMentionsOverlay = ø.$(settings.templates.mentionsOverlay());
+      elmMentionsOverlay = $(settings.templates.mentionsOverlay());
       elmMentionsOverlay.prependTo(elmWrapperBox);
     }
 
@@ -191,7 +191,7 @@ define(["jquery","underscore"], function ($, _, undefined) {
     }
 
     function onAutoCompleteItemClick(e) {
-      var elmTarget = ø.$(this);
+      var elmTarget = $(this);
       var mention = autocompleteItemCollection[elmTarget.attr('data-uid')];
 
       addMention(mention);
@@ -265,7 +265,7 @@ define(["jquery","underscore"], function ($, _, undefined) {
               elmCurrentAutoCompleteItem = elmAutocompleteList.find('li').first();
             }
           } else {
-            elmCurrentAutoCompleteItem = ø.$(elmActiveAutoCompleteItem).prev();
+            elmCurrentAutoCompleteItem = $(elmActiveAutoCompleteItem).prev();
           }
 
           if (elmCurrentAutoCompleteItem.length) {
@@ -314,14 +314,14 @@ define(["jquery","underscore"], function ($, _, undefined) {
       }
 
       elmAutocompleteList.empty();
-      var elmDropDownList = ø.$("<ul>").appendTo(elmAutocompleteList).hide();
+      var elmDropDownList = $("<ul>").appendTo(elmAutocompleteList).hide();
 
       _.each(results, function (item, index) {
         var itemUid = _.uniqueId('mention_');
 
         autocompleteItemCollection[itemUid] = _.extend({}, item, {value: item[settings.schema.name]});
 
-        var elmListItem = ø.$(settings.templates.autocompleteListItem({
+        var elmListItem = $(settings.templates.autocompleteListItem({
           'id'      : utils.htmlEncode(item[settings.schema.id]),
           'display' : utils.htmlEncode(item[settings.schema.name]),
           'type'    : utils.htmlEncode(item.type),
@@ -340,9 +340,9 @@ define(["jquery","underscore"], function ($, _, undefined) {
           var elmIcon;
 
           if (item[settings.schema.avatar]) {
-            elmIcon = ø.$(settings.templates.autocompleteListItemAvatar({ avatar : item[settings.schema.avatar] }));
+            elmIcon = $(settings.templates.autocompleteListItemAvatar({ avatar : item[settings.schema.avatar] }));
           } else {
-            elmIcon = ø.$(settings.templates.autocompleteListItemIcon({ icon : item.icon }));
+            elmIcon = $(settings.templates.autocompleteListItemIcon({ icon : item.icon }));
           }
           elmIcon.prependTo(elmListItem);
         }

@@ -1,5 +1,9 @@
-define ["backbone","app/models/provider"], (Backbone, Provider) ->
+define [
+  "backbone"
+  "app"
+  "app/models/provider"
+], (Backbone, App, Provider) ->
 
-  class Providers extends Backbone.Collection
+  class App.Collections.Providers extends Backbone.Collection
     type: "Providers"
     model: Provider

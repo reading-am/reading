@@ -1,5 +1,9 @@
-define ["backbone","app/models/post"], (Backbone, Post) ->
+define [
+  "backbone"
+  "app"
+  "app/models/post"
+], (Backbone, App, Post) ->
 
-  class Posts extends Backbone.Collection
+  class App.Collections.Posts extends Backbone.Collection
     type: "Posts"
     model: Post

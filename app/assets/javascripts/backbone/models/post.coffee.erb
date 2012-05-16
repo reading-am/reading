@@ -1,11 +1,12 @@
 define [
   "jquery"
   "backbone"
+  "app"
   "app/constants"
   "libs/base58"
-], ($, Backbone, Constants, base58) ->
+], ($, Backbone, App, Constants, base58) ->
 
-  class Post extends Backbone.Model
+  class App.Models.Post extends Backbone.Model
     type: "Post"
 
     initialize: ->

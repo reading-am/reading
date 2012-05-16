@@ -1,6 +1,10 @@
-define ["backbone"], (Backbone) ->
+define [
+  "backbone"
+  "app"
+  "app/collections/posts"
+], (Backbone, App) ->
 
-  class User extends Backbone.Model
+  class App.Models.User extends Backbone.Model
     type: "User"
 
     initialize: ->

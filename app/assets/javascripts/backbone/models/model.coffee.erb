@@ -1,7 +1,8 @@
 define [
   "underscore"
   "libs/backbone"
-], (_, Backbone) ->
+  "app"
+], (_, Backbone, App) ->
 
   # Override the url method to append the absolute API route
   Backbone.Model::_url = Backbone.Model::url
@@ -10,16 +11,16 @@ define [
   Backbone.Model::factory = (input) ->
     if _.isArray input
       input = (Backbone.Model::factory val for val in input)
-      if _.isObject input[0] and input[0].type? and _.isFunction ø.Collections["#{input[0].type}s"]
-        input = new ø.Collections["#{input[0].type}s"](input)
+      if _.isObject input[0] and input[0].type? and _.isFunction App.Collections["#{input[0].type}s"]
+        input = new App.Collections["#{input[0].type}s"](input)
     else if input instanceof Object and (input not instanceof Backbone.Model and input not instanceof Backbone.Collection)
       for prop, val of input
         if prop is "created_at" or prop is "updated_at"
           input[prop] = new Date val
         else
           input[prop] = Backbone.Model::factory val
-      if input.type? and _.isFunction ø.Models[input.type]
-        input = new ø.Models[input.type](input)
+      if input.type? and _.isFunction App.Models[input.type]
+        input = new App.Models[input.type](input)
     input
 
   Backbone.Model::urlRoot = ->
@@ -29,11 +30,6 @@ define [
     obj = if response.response? then response.response[@type.toLowerCase()] else response
     Backbone.Model::factory obj
 
-  Backbone.Collection::parse = (response) ->
-    # don't factory collection API responses
-    # they'll get factoried in model.parse
-    response.response[@type.toLowerCase()]
-
   Backbone.Model::toJSON = ->
     obj = _.clone @attributes
     Backbone.Model::deconstruct obj
@@ -41,7 +37,7 @@ define [
   Backbone.Model::has_many = (name, type) ->
     type = name if !type?
     name = name.toLowerCase()
-    @[name] = @nestCollection(name, ø.Collections[type], @get(name))
+    @[name] = @nestCollection(name, App.Collections[type], @get(name))
     @[name].url = => "#{@url()}/#{name}"
 
   # converts nested Backbone objects to simply an id reference

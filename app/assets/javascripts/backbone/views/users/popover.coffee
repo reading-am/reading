@@ -1,22 +1,22 @@
-ø.Views.Users ||= {}
+define ["jquery","backbone","handlebars"], ($, Backbone, Handlebars) ->
 
-class ø.Views.Users.UserPopoverView extends ø.Backbone.View
+  class UserPopoverView extends Backbone.View
 
-  template: Handlebars.compile "
-    <div></div>
-    <iframe src=\"{{url}}\"></iframe>
-  "
+    template: Handlebars.compile "
+      <div></div>
+      <iframe src=\"{{url}}\"></iframe>
+    "
 
-  tagName: "div"
-  id: "r_popover"
+    tagName: "div"
+    id: "r_popover"
 
-  events:
-    "click" : "close"
+    events:
+      "click" : "close"
 
-  close: ->
-    @$el.remove()
+    close: ->
+      @$el.remove()
 
-  render: ->
-    @$el.html(@template(@model.toJSON()))
-    ø.$("body").prepend @el
-    @$el.fadeIn("fast")
+    render: ->
+      @$el.html(@template(@model.toJSON()))
+      $("body").prepend @el
+      @$el.fadeIn("fast")

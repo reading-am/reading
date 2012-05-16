@@ -1,25 +1,32 @@
-# from: https://gist.github.com/1610397 in the comments
-ø.Backbone.Model::nestCollection = (attributeName, collectionClass, nestedCollection) ->
-  # don't instantiate if it's already a collection
-  if nestedCollection not instanceof collectionClass
-    nestedCollection = new collectionClass nestedCollection
+define [
+  "underscore",
+  "libs/backbone"
+], (_, Backbone) ->
 
-  # reset the array
-  @set attributeName, []
+  # from: https://gist.github.com/1610397 in the comments
+  Backbone.Model::nestCollection = (attributeName, collectionClass, nestedCollection) ->
+    # don't instantiate if it's already a collection
+    if nestedCollection not instanceof collectionClass
+      nestedCollection = new collectionClass nestedCollection
 
-  #setup nested references
-  for item, i in nestedCollection
-    @attributes[attributeName][i] = nestedCollection.at(i).attributes
+    # reset the array
+    @set attributeName, []
 
-  #create empty arrays if none
-  nestedCollection.bind 'add', (initiative) =>
-    if !@get(attributeName)
-      @attributes[attributeName] = []
-    @get(attributeName).push(initiative.attributes)
+    #setup nested references
+    for item, i in nestedCollection
+      @attributes[attributeName][i] = nestedCollection.at(i).attributes
 
-  nestedCollection.bind 'remove', (initiative) =>
-    updateObj = {}
-    updateObj[attributeName] = ø._.without(@get(attributeName), initiative.attributes)
-    @set(updateObj)
+    #create empty arrays if none
+    nestedCollection.bind 'add', (initiative) =>
+      if !@get(attributeName)
+        @attributes[attributeName] = []
+      @get(attributeName).push(initiative.attributes)
 
-  nestedCollection
+    nestedCollection.bind 'remove', (initiative) =>
+      updateObj = {}
+      updateObj[attributeName] = _.without(@get(attributeName), initiative.attributes)
+      @set(updateObj)
+
+    nestedCollection
+
+  return Backbone

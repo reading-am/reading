@@ -1,4 +1,7 @@
-define ["underscore","libs/backbone"], (_, Backbone) ->
+define [
+  "underscore",
+  "libs/backbone"
+], (_, Backbone) ->
 
   Backbone.Collection::poll = (attr, secs) ->
     polling = false

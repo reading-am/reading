@@ -1,5 +1,13 @@
-define ["jquery","underscore","backbone","handlebars"],
-($, _, Backbone, Handlebars) ->
+define [
+  "jquery"
+  "underscore"
+  "backbone"
+  "handlebars"
+  "app/collections/providers"
+  "app/views/providers/providers"
+  "app/views/comments/comments"
+  "app/views/users/users"
+], ($, _, Backbone, Handlebars, Providers, ProvidersView, CommentsView, UsersView) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -41,49 +49,50 @@ define ["jquery","underscore","backbone","handlebars"],
       popup = (url, width, height) ->
         window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
-      @share_view = new ø.Views.Providers.ProvidersView
+      @share_view = new ProvidersView
         id: "r_share_menu"
-        collection: new ø.Collections.Providers [
-          new ø.Models.Provider
+        collection: new Providers [
+          {
             name: "Twitter"
             url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
             action: (url) ->
               popup url, 475, 345
-          new ø.Models.Provider
+          },{
             name: "Facebook"
             url_scheme: "https://www.facebook.com/sharer.php?u={{wrapped_url}}&t={{title}}"
             action: (url) ->
               popup url, 520, 370
-          new ø.Models.Provider
+          },{
             name: "Tumblr"
             url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20%22{{title}}%22"
             action: (url) ->
               popup url, 450, 430
-          new ø.Models.Provider
+          },{
             name: "Instapaper"
             url_scheme: "http://www.instapaper.com/hello2?url={{url}}&title={{title}}"
             action: (url) ->
               window.location = url
-          new ø.Models.Provider
+          },{
             name: "Readability"
             url_scheme: "http://www.readability.com/save?url={{url}}"
             action: (url) ->
               window.location = url
-          new ø.Models.Provider
+          },{
             name: "Pocket"
             url_scheme: "https://getpocket.com/save?url={{url}}&title={{title}}"
             action: (url) ->
               popup url, 490, 400
-          new ø.Models.Provider
+          },{
             name: "Pinboard"
-            url_scheme: "https://pinboard.in/add?showtags=yes&url={{url}}&title={{title}}&tags=ø.am"
+            url_scheme: "https://pinboard.in/add?showtags=yes&url={{url}}&title={{title}}&tags=reading.am"
             action: (url) ->
               popup url, 490, 400
-          new ø.Models.Provider
+          },{
             name: "Email"
             url_scheme: "mailto:?subject=✌%20Reading%20%22{{title}}%22&body={{wrapped_url}}"
             action: (url) ->
               window.location.href = url
+          }
         ]
       @$("#r_wrp").after(@share_view.render().el)
 
@@ -100,7 +109,7 @@ define ["jquery","underscore","backbone","handlebars"],
       @$("#r_icon").delay(500).animate "margin-top": "-56px"
 
     get_comments: ->
-      @comments_view = new ø.Views.Comments.CommentsView
+      @comments_view = new CommentsView
         id: "r_comments"
         collection: @model.get("page").comments
 
@@ -110,7 +119,7 @@ define ["jquery","underscore","backbone","handlebars"],
       @comments_view.attach_autocomplete()
 
     get_readers: ->
-      @readers_view = new ø.Views.Users.UsersView
+      @readers_view = new UsersView
         id: "r_readers"
         collection: @model.get("page").users
 
@@ -119,7 +128,7 @@ define ["jquery","underscore","backbone","handlebars"],
       @readers_view.$el.slideDown()
 
     set_yn: (e) ->
-      $tar = ø.$(e.target)
+      $tar = $(e.target)
       @model.save
         yn: (if $tar.hasClass(active) then null else $tar.is("#r_yep"))
 
@@ -138,13 +147,13 @@ define ["jquery","underscore","backbone","handlebars"],
     show_share: ->
       @share_view.$el.show()
       @readers_view.$el.hide()
-      ø.$('#r_share').addClass "r_active"
+      $('#r_share').addClass "r_active"
       false
 
     hide_share: ->
       @share_view.$el.hide()
       @readers_view.$el.show()
-      ø.$('#r_share').removeClass "r_active"
+      $('#r_share').removeClass "r_active"
       false
 
     close: ->

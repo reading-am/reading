@@ -6,12 +6,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require handlebars
-//= require underscore
-//= require backbone
-//= require backbone/reading
 //= require twitter/bootstrap
-//
 //= require_tree ./libs
 //= require_tree ./jquery
 //= require models

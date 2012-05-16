@@ -1,5 +1,11 @@
-define ["jquery","underscore","backbone","handlebars","backbone/models/post","backbone/views/users/user"],
-($, _, Backbone, Handlebars, Post, UserView) ->
+define [
+  "jquery"
+  "underscore"
+  "backbone"
+  "handlebars"
+  "app/models/post"
+  "app/views/users/user"
+], ($, _, Backbone, Handlebars, Post, UserView) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "
@@ -32,7 +38,7 @@ define ["jquery","underscore","backbone","handlebars","backbone/models/post","ba
 
     reply: ->
       alert "reply will go here"
-      return false
+      false
 
     new_window: (e) ->
       window.open e.currentTarget.href
@@ -42,15 +48,18 @@ define ["jquery","underscore","backbone","handlebars","backbone/models/post","ba
       if confirm "Are you sure you want to delete this comment?"
         @model.destroy()
 
-      return false
+      false
 
     render: =>
       json = @model.toJSON()
       json.is_owner = @model.get("user").get("id") == Post::current.get("user").get("id")
       $(@el).html(@template(json))
+
       @$("time").humaneDates()
+
       child_view = new UserView
-      model: @model.get('user')
-      el:   @$(".r_user")
-    child_view.render()
-    return this
+        model: @model.get('user')
+        el:   @$(".r_user")
+      child_view.render()
+
+      return this

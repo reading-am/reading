@@ -1,18 +1,18 @@
-ø.Views.Users ||= {}
+define ["backbone","app/views/users/user"], (Backbone, UserView) ->
 
-class ø.Views.Users.UsersView extends ø.Backbone.View
-  tagName: "ul"
+  class UsersView extends Backbone.View
+    tagName: "ul"
 
-  initialize: ->
-    @collection.bind "reset", @addAll
+    initialize: ->
+      @collection.bind "reset", @addAll
 
-  addAll: =>
-    @collection.each(@addOne)
+    addAll: =>
+      @collection.each(@addOne)
 
-  addOne: (user) =>
-    view = new ø.Views.Users.UserView({model : user})
-    @$el.append(view.render().el)
+    addOne: (user) =>
+      view = new UserView({model : user})
+      @$el.append(view.render().el)
 
-  render: =>
-    @addAll()
-    return this
+    render: =>
+      @addAll()
+      return this

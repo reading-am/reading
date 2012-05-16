@@ -1,4 +1,4 @@
-define ["handlebars","twitter_text"], (Handlebars, TwitterText) ->
+define ["libs/handlebars","twitter_text"], (Handlebars, TwitterText) ->
 
   Handlebars.registerHelper "nl2br", (context, fn) ->
     new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
@@ -24,3 +24,5 @@ define ["handlebars","twitter_text"], (Handlebars, TwitterText) ->
     context = Handlebars.helpers.autolink.call this, context.string, fn
     context = Handlebars.helpers.embed_images.call this, context.string, fn
     context
+
+  return Handlebars

@@ -1,16 +1,16 @@
-ø.Views.Providers ||= {}
+define ["backbone","app/views/providers/provider"], (Backbone, ProviderView) ->
 
-class ø.Views.Providers.ProvidersView extends ø.Backbone.View
-  tagName: "ul"
+  class ProvidersView extends Backbone.View
+    tagName: "ul"
 
-  initialize: ->
+    initialize: ->
       @collection.bind "reset", @addAll
 
     addAll: =>
       @collection.each(@addOne)
 
     addOne: (provider) =>
-      view = new ø.Views.Providers.ProviderView({model : provider})
+      view = new ProviderView({model : provider})
       @$el.append(view.render().el)
 
     render: =>

@@ -1,5 +1,13 @@
-define ["jquery","underscore","backbone","handlebars"],
-($, _, Backbone, Handlebars) ->
+define [
+  "jquery"
+  "underscore"
+  "backbone"
+  "handlebars"
+  "app/views/comments/comment"
+  "app/views/users/popover"
+  "app/models/user"
+  "app/models/post"
+], ($, _, Backbone, Handlebars, CommentView, UserPopoverView, User, Post) ->
 
   class CommentsView extends Backbone.View
     template: Handlebars.compile "
@@ -21,12 +29,12 @@ define ["jquery","underscore","backbone","handlebars"],
       @collection.each(@addOne)
 
     addOne: (comment) =>
-      view = new ø.Views.Comments.CommentView({model : comment})
+      view = new CommentView({model : comment})
       @$("ul").prepend(view.render().el)
 
     showUser: (e) ->
-      popover = new ø.Views.Users.UserPopoverView
-        model: new ø.Models.User(url: $(e.target).attr("href"))
+      popover = new UserPopoverView
+        model: new User(url: $(e.target).attr("href"))
       popover.render()
       false
 
@@ -34,9 +42,9 @@ define ["jquery","underscore","backbone","handlebars"],
         if e.keyCode is 13 and !key.alt
           @collection.create
             body: @$("textarea").val(),
-            post: ø.Models.Post::current
-            user: ø.Models.Post::current.get("user")
-            page: ø.Models.Post::current.get("page")
+            post: Post::current
+            user: Post::current.get("user")
+            page: Post::current.get("page")
           @$("textarea")
             .val("")
             .mentionsInput("reset")
@@ -71,7 +79,7 @@ define ["jquery","underscore","backbone","handlebars"],
           if following
             finish following
           else
-            user = ø.Models.Post::current.get("user")
+            user = Post::current.get("user")
             following = user.following
             if user.get("following_count") > 0
               following.fetch success: finish

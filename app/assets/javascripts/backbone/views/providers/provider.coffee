@@ -1,17 +1,17 @@
-ø.Views.Providers ||= {}
+define ["jquery","backbone","handlebars","app/models/post"], ($, Backbone, Handlebars, Post) ->
 
-class ø.Views.Providers.ProviderView extends ø.Backbone.View
-  template: Handlebars.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
+  class ProviderView extends Backbone.View
+    template: Handlebars.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
 
-  events:
-    "click" : "run"
+    events:
+      "click" : "run"
 
-  tagName: "li"
+    tagName: "li"
 
-  run: ->
-    @model.get("action")(@model.url ø.Models.Post::current)
-    false
+    run: ->
+      @model.get("action")(@model.url Post::current)
+      false
 
-  render: ->
-    ø.$(@el).html(@template(@model.toJSON()))
-    return this
+    render: ->
+      $(@el).html(@template(@model.toJSON()))
+      return this

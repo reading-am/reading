@@ -1,22 +1,30 @@
-methodMap =
-  create: 'POST',
-  update: 'PUT',
-  delete: 'DELETE',
-  read:   'GET'
+define [
+  "jquery",
+  "underscore",
+  "libs/backbone"
+], ($, _, Backbone) ->
 
-ø.Backbone._sync = ø.Backbone.sync
-ø.Backbone.sync = (method, model, options) ->
-  ø._.log method, model, options
+  methodMap =
+    create: 'POST',
+    update: 'PUT',
+    delete: 'DELETE',
+    read:   'GET'
 
-  type = methodMap[method]
-  options.dataType = "jsonp"
-  options.data = {_method: type}
-  options.data.token = reading.token if reading.token?
+  Backbone._sync = Backbone.sync
+  Backbone.sync = (method, model, options) ->
+    _.log method, model, options
 
-  if model && (method == 'create' || method == 'update')
-    options.data.model = model.toJSON()
+    type = methodMap[method]
+    options.dataType = "jsonp"
+    options.data = {_method: type}
+    options.data.token = reading.token if reading.token?
 
-  if !options.url
-    options.url = ø._.result(model, 'url') || urlError()
+    if model && (method == 'create' || method == 'update')
+      options.data.model = model.toJSON()
 
-  ø.$.ajax options
+    if !options.url
+      options.url = _.result(model, 'url') || urlError()
+
+    $.ajax options
+
+  return Backbone

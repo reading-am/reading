@@ -1,4 +1,7 @@
-define ["underscore", "libs/backbone"], (_, Backbone) ->
+define [
+  "underscore"
+  "libs/backbone"
+], (_, Backbone) ->
 
   # Override the url method to append the absolute API route
   Backbone.Model::_url = Backbone.Model::url

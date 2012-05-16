@@ -18,34 +18,35 @@ curl
     app:
       path: "backbone"
       main: "reading"
+    extend:
+      path: "libs/extend"
   paths:
     jquery:         "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"
-    underscore:     "libs/lodash"
+    underscore:     "libs/lodash_extended"
     backbone:       "libs/backbone_extended"
-    constants:      "backbone/constants"
     humane:         "cdn/jquery/humane"
     elastic:        "cdn/jquery/elastic"
     input_polyfill: "cdn/jquery/events.input"
     mentions:       "cdn/jquery/mentionsInput"
     keymaster:      "cdn/keymaster"
     twitter_text:   "cdn/twitter-text"
-    handlebars:     "cdn/handlebars"
+    handlebars:     "libs/handlebars"
 
-curl([
+curl [
   "jquery"
   "underscore"
   "backbone"
-  "constants"
+  "app/constants"
+  "app/models/post"
+  "app/views/bookmarklet/app"
   "humane"
   "elastic"
   "input_polyfill"
   "mentions"
   "keymaster"
-  "//<%= DOMAIN %>/assets/handlebars/helpers"
-  "//<%= DOMAIN %>/assets/backbone/models/post"
-  "//<%= DOMAIN %>/assets/backbone/views/bookmarklet/app"
-  "domReady!"
-]).then ($, _, Backbone, Constants, h, e, i, m, k, l, Post, AppView) ->
+], ($, _, Backbone, Constants, Post, AppView) ->
+
+  console.log "hit"
 
   #-----------------------------------------
   # Config Vars

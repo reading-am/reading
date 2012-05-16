@@ -1,4 +1,4 @@
-define ["backbone","constants"], (Backbone, Constants) ->
+define ["backbone","app/constants"], (Backbone, Constants) ->
 
   class Comment extends Backbone.Model
     type: "Comment"

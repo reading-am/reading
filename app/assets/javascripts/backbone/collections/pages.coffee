@@ -1,4 +1,4 @@
-define ["backbone","backbone/models/page"], (Backbone, Page) ->
+define ["backbone","app/models/page"], (Backbone, Page) ->
 
   class Pages extends Backbone.Collection
     type: "Pages"

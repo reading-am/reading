@@ -1,4 +1,9 @@
-define ["jquery","backbone","app/constants"], ($, Backbone, Constants) ->
+define [
+  "jquery"
+  "backbone"
+  "app/constants"
+  "libs/base58"
+], ($, Backbone, Constants, base58) ->
 
   class Post extends Backbone.Model
     type: "Post"

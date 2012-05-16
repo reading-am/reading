@@ -1,9 +1,9 @@
-class ø.Routers.Pages extends ø.Backbone.Router
+class Routers.Pages extends Backbone.Router
   initialize: (options) ->
     if options.model
-      @model = new ø.Models.Page options.model
+      @model = new Models.Page options.model
     else
-      @pages = new ø.Collections.Pages()
+      @pages = new Collections.Pages()
       @pages.reset options.pages
 
   routes:
@@ -14,21 +14,21 @@ class ø.Routers.Pages extends ø.Backbone.Router
     ".*"       : "index"
 
   newPage: ->
-    @view = new ø.Views.Pages.New(collection: @pages)
-    ø.$("#pages").html(@view.render().el)
+    @view = new Views.Pages.New(collection: @pages)
+    $("#pages").html(@view.render().el)
 
   index: ->
-    @view = new ø.Views.Pages.Index(pages: @pages)
-    ø.$("#pages").html(@view.render().el)
+    @view = new Views.Pages.Index(pages: @pages)
+    $("#pages").html(@view.render().el)
 
   show: (id) ->
     page = @pages.get(id)
 
-    @view = new ø.Views.Pages.Show(model: page)
-    ø.$("#pages").html(@view.render().el)
+    @view = new Views.Pages.Show(model: page)
+    $("#pages").html(@view.render().el)
 
   edit: (id) ->
     page = @pages.get(id)
 
-    @view = new ø.Views.Pages.Edit(model: page)
-    ø.$("#pages").html(@view.render().el)
+    @view = new Views.Pages.Edit(model: page)
+    $("#pages").html(@view.render().el)

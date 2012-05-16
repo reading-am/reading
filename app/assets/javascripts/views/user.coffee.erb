@@ -1,11 +1,11 @@
-ø.$ ->
-  ø.$("a.follow").click ->
-    $this = ø.$(this)
+$ ->
+  $("a.follow").click ->
+    $this = $(this)
     follow = "Follow"
     disabled = "disabled"
     return false  if $this.hasClass(disabled)
     $this.addClass disabled
-    ø.$.get $this.attr("href"), (data) ->
+    $.get $this.attr("href"), (data) ->
       if data is "true"
         $span = $this.find("span")
         text = (if $span.text().indexOf(follow) is 0 then "Un" + follow.toLowerCase() else follow)
@@ -18,7 +18,7 @@
 
 <% if Rails.env == 'development' %>
   # replace images from production S3 account
-  ø.$("img").error ->
-    $this = ø.$(this)
+  $("img").error ->
+    $this = $(this)
     $this.unbind("error").attr("src", $this.attr("src").replace("development","production"))
 <% end %>

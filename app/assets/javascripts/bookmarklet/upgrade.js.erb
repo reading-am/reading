@@ -1,6 +1,6 @@
 (function($, params){
 
-var $css = ø.$('<style type="text/css">'+
+var $css = $('<style type="text/css">'+
       '#r_am, #r_am * {'+
         'padding:0;'+
         'margin:0;'+
@@ -92,17 +92,17 @@ var $css = ø.$('<style type="text/css">'+
     '</style>').appendTo('head'),
 
     bookmarklet = "javascript:(function(){window.reading={token:'"+reading.token+"',platform:'bookmarklet',version:'<%= BOOKMARKLET_VERSION %>'};var head=document.getElementsByTagName('head')[0],script=document.createElement('script');script.src='https://<%= DOMAIN %>/assets/bookmarklet/loader.js';head.appendChild(script);})()",
-    $subtext = ø.$('<div>'+
+    $subtext = $('<div>'+
                   '<div id="r_head">&#9996; It\'s time to upgrade your bookmarklet. Fantastic.</div>'+
                   '<div id="r_upgrade"><a href="'+bookmarklet+'" class="r_active">Drag me to your bookmark bar</a></div>'+
                   '<div id="r_details">Don\'t forget to delete your old bookmarklet. Having trouble? <a href="mailto:hello@reading.am">Click here for help</a>.</div>'+
                 '</div>'),
-    $wrapper = ø.$('<div id="r_wrp">').append($subtext),
-    $reading = ø.$('<div id="r_am">').append($wrapper);
+    $wrapper = $('<div id="r_wrp">').append($subtext),
+    $reading = $('<div id="r_am">').append($wrapper);
 
-ø.$('body').prepend($reading);
-ø.$('#r_upgrade a').mouseover(function(){
-  ø.$(this).html('&#9996; Reading');
+$('body').prepend($reading);
+$('#r_upgrade a').mouseover(function(){
+  $(this).html('&#9996; Reading');
 });
 
 $reading.fadeIn(500);

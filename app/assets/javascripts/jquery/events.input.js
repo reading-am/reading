@@ -14,7 +14,7 @@
 define(["jquery"], function($) {
   // Handler for propertychange events only
   function propHandler() {
-    var $this = ø.$(this);
+    var $this = $(this);
     if (window.event.propertyName == "value" && !$this.data("triggering.inputEvent")) {
       $this.data("triggering.inputEvent", true).trigger("input");
       window.setTimeout(function () {
@@ -42,7 +42,7 @@ define(["jquery"], function($) {
         evts = ["focus", "blur", "paste", "cut", "keydown", "drop", ""].join("." + ns + " ");
 
       function checkState() {
-        var $this = ø.$(elem);
+        var $this = $(elem);
         if (elem.value != state && !$this.data("triggering.inputEvent")) {
           state = elem.value;
 
@@ -74,15 +74,15 @@ define(["jquery"], function($) {
         return false;
 //      } else if (onprop) {
 //        // Else fall back to propertychange if available
-//        ø.$(this).find("input, textarea").andSelf().filter("input, textarea").bind("propertychange." + ns, propHandler);
+//        $(this).find("input, textarea").andSelf().filter("input, textarea").bind("propertychange." + ns, propHandler);
       } else {
         // Else clutch at straws!
-        ø.$(this).find("input, textarea").andSelf().filter("input, textarea").bind(evts, handler);
+        $(this).find("input, textarea").andSelf().filter("input, textarea").bind(evts, handler);
       }
-      ø.$(this).data("inputEventHandlerNS", ns);
+      $(this).data("inputEventHandlerNS", ns);
     },
     teardown: function () {
-      var elem = ø.$(this);
+      var elem = $(this);
       elem.find("input, textarea").unbind(elem.data("inputEventHandlerNS"));
       elem.data("inputEventHandlerNS", "");
     }

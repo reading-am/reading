@@ -3,11 +3,15 @@ define [
   "underscore"
   "backbone"
   "handlebars"
+  "keymaster"
   "app/views/comments/comment"
   "app/views/users/popover"
   "app/models/user"
   "app/models/post"
-], ($, _, Backbone, Handlebars, CommentView, UserPopoverView, User, Post) ->
+  "plugins/mentionsInput"
+  "plugins/events.input"
+  "plugins/elastic"
+], ($, _, Backbone, Handlebars, Key, CommentView, UserPopoverView, User, Post) ->
 
   class CommentsView extends Backbone.View
     template: Handlebars.compile "
@@ -39,7 +43,7 @@ define [
       false
 
     createOnEnter: (e) ->
-        if e.keyCode is 13 and !key.alt
+        if e.keyCode is 13 and !Key.alt
           @collection.create
             body: @$("textarea").val(),
             post: Post::current

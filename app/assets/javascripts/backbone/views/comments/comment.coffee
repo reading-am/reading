@@ -5,6 +5,7 @@ define [
   "handlebars"
   "app/models/post"
   "app/views/users/user"
+  "plugins/humane"
 ], ($, _, Backbone, Handlebars, Post, UserView) ->
 
   class CommentView extends Backbone.View

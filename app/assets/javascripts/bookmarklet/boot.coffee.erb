@@ -8,28 +8,6 @@ load_style = (path) ->
 load_style "//<%= DOMAIN %>/assets/bookmarklet/loader.css"
 load_style "//<%= DOMAIN %>/assets/jquery/mentionsInput.css"
 
-<% ['curl'].each do |lib| %>
-`<%= IO.read("#{Rails.root}/app/assets/javascripts/libs/#{lib}.js").gsub('`','\\\\`') %>`
-<% end %>
-
-curl
-  baseUrl: "//<%= DOMAIN %>/assets"
-  packages:
-    app:
-      path: "backbone"
-      main: "reading"
-    extend:
-      path: "libs/extend"
-    plugins:
-      path: "jquery"
-  paths:
-    jquery:         "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"
-    underscore:     "libs/lodash_extended"
-    backbone:       "libs/backbone_extended"
-    handlebars:     "libs/handlebars_extended"
-    keymaster:      "libs/keymaster"
-    twitter_text:   "libs/twitter-text"
-
 curl [
   "jquery"
   "underscore"

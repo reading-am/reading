@@ -10,7 +10,10 @@
   end
 %>
 
-window.hook_properties =
+define [
+  "models/current_user"
+], (current_user) ->
+
   "events":<%= events.to_json %>,
   "providers":[
     {"text":"Facebook", "params":[

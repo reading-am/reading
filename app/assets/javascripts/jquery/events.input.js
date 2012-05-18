@@ -129,4 +129,6 @@ define(["jquery"], function($) {
 
     }
   }
+
+  return $;
 });

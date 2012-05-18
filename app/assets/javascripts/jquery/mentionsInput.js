@@ -432,4 +432,6 @@ define(["jquery","underscore"], function ($, _, undefined) {
     });
   };
 
+  return $;
+
 });

@@ -2,8 +2,20 @@ curl [
   "jquery"
   "libs/base58"
   "libs/indian"
+  "models/current_user"
+  "plugins/rails"
   "plugins/cookies"
-], ($, base58, Indian) ->
+  "plugins/color.min"
+  "plugins/tmpl.min"
+  "plugins/waypoints.min"
+  "components/titlecard"
+  "views/settings"
+  "views/post"
+  "views/user"
+  "views/hooks/init"
+], ($, base58, Indian, current_user) ->
+
+  window.current_user = current_user
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"
@@ -18,7 +30,7 @@ curl [
   ).blur ->
     window.hasfocus = false
 
-  window.base58 = libs.encdec()
+  window.base58 = base58
 
   # --------------------
   # doc ready

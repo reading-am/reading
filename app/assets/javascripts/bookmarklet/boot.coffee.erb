@@ -1,13 +1,3 @@
-load_style = (path) ->
-  style = document.createElement("link")
-  style.type = "text/css"
-  style.rel  = "stylesheet"
-  style.href = path
-  document.getElementsByTagName("head")[0].appendChild(style)
-
-load_style "//<%= DOMAIN %>/assets/bookmarklet/loader.css"
-load_style "//<%= DOMAIN %>/assets/jquery/mentionsInput.css"
-
 curl [
   "jquery"
   "underscore"
@@ -17,6 +7,8 @@ curl [
   "app/views/bookmarklet/app"
   "app/collections/pages"
   "app/collections/providers"
+  "css!bookmarklet/loader"
+  "css!components/mentionsInput"
 ], ($, _, Backbone, Constants, Post, AppView) ->
 
   #-----------------------------------------

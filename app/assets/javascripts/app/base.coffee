@@ -6,7 +6,6 @@ curl [
   "plugins/rails"
   "plugins/cookies"
   "plugins/color.min"
-  "plugins/tmpl.min"
   "plugins/waypoints.min"
   "components/titlecard"
   "views/settings"

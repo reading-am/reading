@@ -1,4 +1,7 @@
-define ["jquery"], ($) ->
+define [
+  "jquery"
+  "plugins/color.min"
+], ($) ->
 
   $ ->
 

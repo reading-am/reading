@@ -1,4 +1,7 @@
-define ["jquery"], ($) ->
+define [
+  "jquery"
+  "plugins/waypoints.min"
+], ($) ->
 
   $ ->
     $card = $("#titlecard")

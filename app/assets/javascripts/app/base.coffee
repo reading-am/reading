@@ -2,6 +2,7 @@ curl [
   "jquery"
   "libs/base58"
   "libs/indian"
+  "app"
   "models/current_user"
   "plugins/rails"
   "plugins/cookies"
@@ -10,7 +11,7 @@ curl [
   "views/post"
   "views/user"
   "views/hooks/init"
-], ($, base58, Indian, current_user) ->
+], ($, base58, Indian, App, current_user) ->
 
   window.current_user = current_user
 
@@ -63,7 +64,7 @@ curl [
 
     do_provider_method = (provider, method) ->
       uid = if method is "connect" then "new" else null
-      auth = new window["#{provider}Auth"](uid)
+      auth = new App.Models["#{provider}Auth"](uid)
       $('#loading').fadeIn()
 
       auth.login

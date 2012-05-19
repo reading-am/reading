@@ -3,7 +3,7 @@ define [
   "underscore"
   "backbone"
   "handlebars"
-  "keymaster"
+  "libs/keymaster"
   "app/views/comments/comment"
   "app/views/users/popover"
   "app/models/user"

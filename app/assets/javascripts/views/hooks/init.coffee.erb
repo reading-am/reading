@@ -1,8 +1,10 @@
 define [
   "jquery"
+  "app"
+  "app/constants"
   "views/hooks/builders"
   "views/hooks/properties"
-], ($, builders, hook_properties) ->
+], ($, App, Constants, builders, hook_properties) ->
 
   # endpoints to get user data from each provider
   api_urls =
@@ -97,7 +99,7 @@ define [
 
       else if account
         if account is "new"
-          auth = new window["#{prov_cap}Auth"](account)
+          auth = new App.Models["#{prov_cap}Auth"](account)
         else
           auth = current_user.authorizations[provider][account]
 
@@ -115,6 +117,6 @@ define [
               # user approved some of the auth but not the right permissions
               $("#hook_params_account option[value='new']").val auth.uid
             $('#loading').hide()
-            alert (Errors[response.status] ? Errors.generic).replace /{provider}/gi, prov_cap
+            alert (Constants.errors[response.status] ? Constants.errors.generic).replace /{provider}/gi, prov_cap
 
           false # stop submit

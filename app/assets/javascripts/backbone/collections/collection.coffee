@@ -12,7 +12,7 @@ define [
     polling = false
     @bind "reset add", _.once =>
       @_url = @url
-      @url = => "#{_.result(this, "_url")}?after_#{attr}=#{encodeURIComponent @last().toJSON()[attr]}"
+      @url = => "#{_.result(this, "_url")}?after_#{attr}=#{if @length > 0 then encodeURIComponent @last().toJSON()[attr] else ''}"
       @intervals "add", secs, =>
         if !polling
           polling = true

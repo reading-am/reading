@@ -20,11 +20,11 @@ class Api::CommentsController < ApplicationController
           :page_id => params[:page_id]
         }
       }
-      if params[:after_created_at]
+      if !params[:after_created_at].blank?
         where[:cond] += " AND created_at > :after_created_at"
         where[:params][:after_created_at] = params[:after_created_at]
       end
-      if params[:after_id]
+      if !params[:after_id].blank?
         where[:cond] += " AND id > :after_id"
         where[:params][:after_id] = params[:after_id]
       end

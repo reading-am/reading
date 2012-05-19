@@ -3,11 +3,12 @@ define [
   "underscore"
   "backbone"
   "handlebars"
+  "app/models/post"
   "app/collections/providers"
   "app/views/providers/providers"
   "app/views/comments/comments"
   "app/views/users/users"
-], ($, _, Backbone, Handlebars, Providers, ProvidersView, CommentsView, UsersView) ->
+], ($, _, Backbone, Handlebars, Post, Providers, ProvidersView, CommentsView, UsersView) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -123,9 +124,10 @@ define [
         id: "r_readers"
         collection: @model.get("page").users
 
-      @readers_view.collection.fetch()
-      @$("#r_wrp").after(@readers_view.render().$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-      @readers_view.$el.slideDown()
+      @readers_view.collection.fetch success: (collection) =>
+        collection.remove Post::current.get("user")
+        @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+        @readers_view.$el.slideDown()
 
     set_yn: (e) ->
       $tar = $(e.target)

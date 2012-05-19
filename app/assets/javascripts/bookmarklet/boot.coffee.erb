@@ -2,14 +2,13 @@ curl [
   "jquery"
   "underscore"
   "backbone"
-  "app/constants"
   "app/models/post"
   "app/views/bookmarklet/app"
   "app/collections/pages"
   "app/collections/providers"
   "css!bookmarklet/loader"
   "css!components/mentionsInput"
-], ($, _, Backbone, Constants, Post, AppView) ->
+], ($, _, Backbone, Post, AppView) ->
 
   #-----------------------------------------
   # Config Vars
@@ -34,39 +33,6 @@ curl [
       url = url.substring(url.indexOf('/', 2) + 1)
     url = "http://#{url}" if url.indexOf('://') is -1
     url
-
-  #######
-  # API #
-  #######
-  class API
-
-  API::call = (method, params) ->
-      data = if params.data? then params.data else {}
-      data.token = token if token
-
-      complete = if params.complete? then params.complete else ->
-      success = if params.success? then params.success else log
-      error = if params.error? then params.error else (jqXHR, textStatus, errorThrown) ->
-        log jqXHR, textStatus, errorThrown
-        switch errorThrown
-          when "Bad Request"
-            alert Constants.errors.general
-          when "Forbidden"
-            alert Constants.errors.forbidden
-
-      $.ajax
-        url: "//<%= DOMAIN %>/#{method}.json"
-        dataType: "jsonp"
-        data: data
-        complete: complete
-        error: error
-        success: (data, textStatus, jqXHR) ->
-          if data.meta.status < 400
-            success Backbone.Model::factory(data.response)
-          else
-            jqXHR.status = data.meta.status
-            jqXHR.responseText = data
-            error jqXHR, textStatus, data.meta.msg
 
   #-----------------------------------------
   # Submit the post

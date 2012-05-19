@@ -110,14 +110,15 @@ define [
       @$("#r_icon").delay(500).animate "margin-top": "-56px"
 
     get_comments: ->
-      @comments_view = new CommentsView
-        id: "r_comments"
-        collection: @model.get("page").comments
+      if @model.get("user").get("can_comment") # TODO remove once comments are public
+        @comments_view = new CommentsView
+          id: "r_comments"
+          collection: @model.get("page").comments
 
-      @comments_view.collection.fetch()
-      @$el.append(@comments_view.render().el)
+        @comments_view.collection.fetch()
+        @$el.append(@comments_view.render().el)
 
-      @comments_view.attach_autocomplete()
+        @comments_view.attach_autocomplete()
 
     get_readers: ->
       @readers_view = new UsersView

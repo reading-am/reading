@@ -31,13 +31,15 @@ class ApplicationController < ActionController::Base
         @current_user ||= User.find_by_auth_token!(cookies[:auth_token])
       rescue
         cookies.delete(:auth_token)
-        nil
+        User.new
       end
+    else
+      User.new
     end
   end
 
   def logged_in?
-    !current_user.nil?
+    !current_user.id.nil?
   end
 
   def authenticate

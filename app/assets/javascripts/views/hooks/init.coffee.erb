@@ -2,9 +2,10 @@ define [
   "jquery"
   "app"
   "app/constants"
+  "models/current_user"
   "views/hooks/builders"
   "views/hooks/properties"
-], ($, App, Constants, builders, hook_properties) ->
+], ($, App, Constants, current_user, builders, hook_properties) ->
 
   # endpoints to get user data from each provider
   api_urls =
@@ -40,10 +41,14 @@ define [
     $prov
 
   $ ->
+    # TODO remove once comments are public
+    events = hook_properties.events
+    events.splice(events.length-1,1) if !current_user.can_comment
+
     # build the constructor with the initial selection
     $con = $('#constructor')
     $(".wrapper", $con)
-      .append("When I ").append(builders.field({text: "events", options: hook_properties.events}, "hook", false))
+      .append("When I ").append(builders.field({text: "events", options: events}, "hook", false))
       .append(" please post to the ").append(builders.field({text: "provider", options: hook_properties.providers}, "hook", false))
       .append "<span id=\"provider_params\">"
 

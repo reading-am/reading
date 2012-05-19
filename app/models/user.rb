@@ -177,7 +177,8 @@ class User < ActiveRecord::Base
       :following_count => following.size,
       :followers_count => followers.size,
       :created_at => created_at,
-      :udpated_at => updated_at
+      :udpated_at => updated_at,
+      :can_comment => access?(:comments) # TODO remove once comments are public
     }
   end
 end

@@ -14,7 +14,7 @@
 
     <%= f.toggles 'Email me when' do %>
       <%= f.check_box :email_when_followed, "someone follows me" %>
-      <%= f.check_box :email_when_mentioned, "someone mentions me in a comment" %>
+      <%= f.check_box :email_when_mentioned, "someone mentions me in a comment" if current_user.access?(:comments) %> <%# TODO remove once comments are public %>
     <% end %>
 
     <% if @user.access?(:digest) %>

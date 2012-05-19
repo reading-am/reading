@@ -8,9 +8,9 @@ define [
 
   # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
   Provider::login = (params, response) ->
-    # TODO I don't like that this is scoped to Provider
+    # TODO I don't like that this is scoped to window
     # but it works as a shared space for the redirect.html.erb response
-    Provider::login.response = response ? ->
+    window.provider_response = response ? ->
 
     screenX = window.screenX ? window.screenLeft
     screenY = window.screenY ? window.screenTop

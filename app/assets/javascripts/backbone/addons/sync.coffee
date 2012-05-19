@@ -27,7 +27,6 @@ define [
       options.url = _.result(model, 'url') || urlError()
 
     options.error = if options.error? then options.error else (jqXHR, textStatus, errorThrown) ->
-      alert "hey"
       _.log jqXHR, textStatus, errorThrown
       switch errorThrown
         when "Bad Request"
@@ -42,7 +41,6 @@ define [
       else
         jqXHR.status = data.meta.status
         jqXHR.responseText = data
-        _.log "error!", jqXHR, textStatus, data.meta.msg, options.error
         options.error jqXHR, textStatus, data.meta.msg
 
     $.ajax options

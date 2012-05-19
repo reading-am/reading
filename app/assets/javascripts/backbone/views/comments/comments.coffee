@@ -57,7 +57,7 @@ define [
             duration: "fast"
           false
 
-    attach_autocomplete: _.once ->
+    attach_autocomplete: ->
       following = false
 
       # this should only be called after it's been attached to the DOM

@@ -5,8 +5,6 @@ curl [
   "models/current_user"
   "plugins/rails"
   "plugins/cookies"
-  "plugins/color.min"
-  "plugins/waypoints.min"
   "components/titlecard"
   "views/settings"
   "views/post"
@@ -28,8 +26,6 @@ curl [
     window.hasfocus = true
   ).blur ->
     window.hasfocus = false
-
-  window.base58 = base58
 
   # --------------------
   # doc ready

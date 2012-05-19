@@ -32,7 +32,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  #handle_asynchronously :run
+  handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired

@@ -5,9 +5,12 @@ define [
   "app/collections/comments"
 ], (Backbone, App) ->
 
-  class App.Models.Page extends Backbone.Model
+  class Page extends Backbone.Model
     type: "Page"
 
     initialize: ->
       @has_many "Users"
       @has_many "Comments"
+
+  App.Models.Page = Page
+  return Page

@@ -3,7 +3,7 @@ define [
   "app"
 ], (Backbone, App) ->
 
-  class App.Models.Provider extends Backbone.Model
+  class Provider extends Backbone.Model
     type: "Provider"
     url: (post) ->
       vals =
@@ -15,3 +15,6 @@ define [
       for val of vals
         parsed_url = parsed_url.replace("{{#{val}}}", encodeURIComponent(vals[val]))
       parsed_url
+
+  App.Models.Provider = Provider
+  return Provider

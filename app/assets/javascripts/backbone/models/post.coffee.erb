@@ -6,7 +6,7 @@ define [
   "libs/base58"
 ], ($, Backbone, App, Constants, base58) ->
 
-  class App.Models.Post extends Backbone.Model
+  class Post extends Backbone.Model
     type: "Post"
 
     initialize: ->
@@ -29,3 +29,6 @@ define [
         if $(window).hasFocus() and not loading and now - @get("updated_at") >= 15000
           loading = true
           @save "updated_at", now, success: -> loading = false
+
+  App.Models.Post = Post
+  return Post

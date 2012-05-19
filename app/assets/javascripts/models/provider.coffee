@@ -2,15 +2,15 @@ define [
   "app"
 ], (App) ->
 
-  class App.Models.Provider
+  class Provider
     accounts: ->
       {text:val.name, value:val.uid} for own key, val of this
 
   # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
-  App.Models.Provider::login = (params, response) ->
+  Provider::login = (params, response) ->
     # TODO I don't like that this is scoped to Provider
     # but it works as a shared space for the redirect.html.erb response
-    App.Models.Provider::login.response = response ? ->
+    Provider::login.response = response ? ->
 
     screenX = window.screenX ? window.screenLeft
     screenY = window.screenY ? window.screenTop
@@ -22,4 +22,5 @@ define [
     popup.focus() if window.focus
     false
 
-  return App.Models.Provider
+  App.Models.Provider = Provider
+  return Provider

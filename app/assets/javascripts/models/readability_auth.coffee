@@ -1,8 +1,12 @@
 define [
   "app"
   "models/authorization"
-], (App, Authorization) ->
+  "models/readability_prov"
+], (App, Authorization, ReadabilityProv) ->
 
-  class App.Models.ReadabilityAuth extends Authorization
+  class ReadabilityAuth extends Authorization
     provider: "readability"
-    _login: App.Models.ReadabilityProv::login
+    _login: ReadabilityProv::login
+
+  App.Models.ReadabilityAuth = ReadabilityAuth
+  return ReadabilityAuth

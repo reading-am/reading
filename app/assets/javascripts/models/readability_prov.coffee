@@ -3,13 +3,14 @@ define [
   "models/provider"
 ], (App, Provider) ->
 
-  class App.Models.ReadabilityProv extends Provider
+  class ReadabilityProv extends Provider
 
-  App.Models.ReadabilityProv::login = (response, perms) ->
+  ReadabilityProv::login = (response, perms) ->
     super
       url: '/auth/loading/readability'
       width: 600
       height: 450,
       response
 
-  return App.Models.ReadabilityProv
+  App.Models.ReadabilityProv = ReadabilityProv
+  return ReadabilityProv

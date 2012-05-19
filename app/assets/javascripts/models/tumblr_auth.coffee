@@ -1,11 +1,12 @@
 define [
   "app"
   "models/authorization"
-], (App, Authorization) ->
+  "models/tumblr_prov"
+], (App, Authorization, TumblrProv) ->
 
-  class App.Models.TumblrAuth extends Authorization
+  class TumblrAuth extends Authorization
     provider: "tumblr"
-    _login: App.Models.TumblrProv::login
+    _login: TumblrProv::login
     places: (params) ->
       # transform the return val
       if params.success?
@@ -14,3 +15,6 @@ define [
           success ({text:place.title, value:place.name} for place in places)
 
       super params
+
+  App.Models.TumblrAuth = TumblrAuth
+  return TumblrAuth

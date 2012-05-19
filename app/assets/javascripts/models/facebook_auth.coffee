@@ -4,7 +4,7 @@ define [
   "models/authorization"
 ], (_, App, Authorization) ->
 
-  class App.Models.FacebookAuth extends Authorization
+  class FacebookAuth extends Authorization
     provider: "facebook"
 
     set_default_perms: (@permissions) ->
@@ -38,3 +38,6 @@ define [
               response.status = "AuthFailure"
               error response
           , {scope: perms.join ','}
+  
+  App.Models.FacebookAuth = FacebookAuth
+  return FacebookAuth

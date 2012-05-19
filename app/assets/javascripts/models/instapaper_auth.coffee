@@ -1,8 +1,12 @@
 define [
   "app"
   "models/authorization"
-], (App, Authorization) ->
+  "models/instapaper_prov"
+], (App, Authorization, InstapaperProv) ->
 
-  class App.Models.InstapaperAuth extends Authorization
+  class InstapaperAuth extends Authorization
     provider: "instapaper"
-    _login: App.Models.InstapaperProv::login
+    _login: InstapaperProv::login
+
+  App.Models.InstapaperAuth = InstapaperAuth
+  return InstapaperAuth

@@ -2,7 +2,7 @@ define [
   "app"
 ], (App) ->
 
-  class App.Models.User
+  class User
     constructor: (params) ->
       @id             = params.id
       @username       = params.username
@@ -17,3 +17,6 @@ define [
         return true if @authorizations[provider][i].uid is uid and perm in @authorizations
         i++
       false
+
+  App.Models.User = User
+  return User

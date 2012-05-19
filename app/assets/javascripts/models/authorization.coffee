@@ -4,7 +4,7 @@ define [
   "app"
 ], ($, _, App) ->
 
-  class App.Models.Authorization
+  class Authorization
     constructor: (@uid, @permissions = [], @info) ->
       @name = if @info? and @info.username? then @info.username else @uid
       @set_default_perms @permissions
@@ -87,8 +87,9 @@ define [
           @assign_params_from_auth_response response
           success response
 
-  App.Models.Authorization::factory = (params) ->
+  Authorization::factory = (params) ->
     type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
     new App.Models[type](params.uid, params.permissions, params.info)
 
-  return App.Models.Authorization
+  App.Models.Authorization = Authorization
+  return Authorization

@@ -3,13 +3,14 @@ define [
   "models/provider"
 ], (App, Provider) ->
 
-  class App.Models.TumblrProv extends Provider
+  class TumblrProv extends Provider
 
-  App.Models.TumblrProv::login = (response, perms) ->
+  TumblrProv::login = (response, perms) ->
     super
       url: '/auth/loading/tumblr'
       width: 700
       height: 700,
       response
 
-  return App.Models.TumblrProv
+  App.Models.TumblrProv = TumblrProv
+  return TumblrProv

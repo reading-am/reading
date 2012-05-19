@@ -1,8 +1,12 @@
 define [
   "app"
   "models/authorization"
-], (App, Authorization) ->
+  "models/twitter_prov"
+], (App, Authorization, TwitterProv) ->
 
-  class App.Models.TwitterAuth extends Authorization
+  class TwitterAuth extends Authorization
     provider: "twitter"
-    _login: App.Models.TwitterProv::login
+    _login: TwitterProv::login
+
+  App.Models.TwitterAuth = TwitterAuth
+  return TwitterAuth

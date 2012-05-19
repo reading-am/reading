@@ -126,8 +126,9 @@ define [
 
       @readers_view.collection.fetch success: (collection) =>
         collection.remove Post::current.get("user")
-        @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-        @readers_view.$el.slideDown()
+        if collection.length > 0
+          @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+          @readers_view.$el.slideDown()
 
     set_yn: (e) ->
       $tar = $(e.target)

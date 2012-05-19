@@ -10,7 +10,6 @@ define [
     type: "Post"
 
     initialize: ->
-      @bind "change:id", @keep_fresh
       @bind "destroy", => @intervals "clear"
 
     validate: (attr) ->

@@ -18,7 +18,7 @@ define [
     type = methodMap[method]
     options.dataType = "jsonp"
     options.data = {_method: type}
-    options.data.token = reading.token if reading.token?
+    options.data.token = reading.token if reading? and reading.token?
 
     if model && (method == 'create' || method == 'update')
       options.data.model = model.toJSON()

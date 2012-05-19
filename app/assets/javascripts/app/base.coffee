@@ -3,6 +3,7 @@ curl [
   "libs/base58"
   "libs/indian"
   "app"
+  "app/models/post"
   "models/current_user"
   "plugins/rails"
   "plugins/cookies"
@@ -11,7 +12,7 @@ curl [
   "views/post"
   "views/user"
   "views/hooks/init"
-], ($, base58, Indian, App, current_user) ->
+], ($, base58, Indian, App, Post, current_user) ->
 
   window.current_user = current_user
 
@@ -41,16 +42,15 @@ curl [
       document_host = document.location.href.split("/")[2]
       base58_id = (if typeof $this.data("base58-id") isnt "undefined" then $this.data("base58-id") else "")
       if link_host isnt document_host
-        if framed
+        if framed # used in the user popover in offsite in the bookmarklet
           pre = "//#{document_host}/"+(if base58_id then "p/#{base58_id}/" else "")
           window.top.location = pre+@href
         else
           if current_user.logged_in()
-            $.ajax
-              url: "/posts/create.json"
-              data:
-                url: @href
-                referrer_id: (if base58_id then base58.decode(base58_id) else "")
+            post = new Post
+              url: @href
+              referrer_id: (if base58_id then base58.decode(base58_id) else "")
+            post.save()
           window.open @href
         false
 
@@ -86,12 +86,12 @@ curl [
       $this.val $this.find('option:first').val()
 
 
-    $(".chrome-install").on "click", ()->
+    $(".chrome-install").on "click", ->
       if /chrome/.test navigator.userAgent.toLowerCase()
         chrome.webstore.install()
         false
 
-    $(".firefox-install").on "click", ()->
+    $(".firefox-install").on "click", ->
       window.open($(this).attr("href"))
       false
 

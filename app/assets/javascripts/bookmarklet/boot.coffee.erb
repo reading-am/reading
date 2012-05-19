@@ -38,14 +38,20 @@ curl [
   # Submit the post
 
   reading.submit = submit = (params) ->
-    post = Post::current = new Post
-    post.save params, success: (data) ->
+    # clear old items from previous posts
+    Post::current.intervals "clear" if Post::current?
+    AppView::current.close() if AppView::current?
+
+    Post::current = new Post
+    AppView::current = new AppView model: Post::current if platform isnt "redirect"
+
+    Post::current.save params, success: (model) ->
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://<%= DOMAIN %>/t/-/#{params.url}" else params.url
+      else
+        model.keep_fresh()
 
-    AppView::current.close() if AppView::current?
-    AppView::current = new AppView model: post if platform isnt "redirect"
 
   #-----------------------------------------
   # Initialize!

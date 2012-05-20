@@ -1,19 +1,18 @@
-@light_purple: #b01ecf;
-@dark_purple: #7d0097;
+@import "variables";
 
 .page a, .page.nope a span {
-  color:#333;
+  color:@darkest_grey;
   background:none;
 }
 .page.yep a span {
-  color:#000;
+  color:@black;
 }
 .page.nope a {
   color:red;
   text-decoration:line-through;
 }
 .page .excerpt {
-  color:#777;
+  color:@medium_grey;
   font-family:'Georgia', serif;
   font-style:italic;
   overflow:hidden;
@@ -21,8 +20,8 @@
   white-space: nowrap;
 }
 .has_comments {
-  background:@light_purple;
-  color:#FFF;
+  background:@purple;
+  color:@white;
   border-radius:2px;
   padding:0 6px;
   float:left;
@@ -36,11 +35,11 @@
 }
 .has_comments:hover {
   text-decoration:none;
-  color:#FFF;
+  color:@white;
   background:@dark_purple;
 }
 .has_comments .triangle {
-  border-color: @light_purple transparent transparent transparent;
+  border-color: @purple transparent transparent transparent;
   border-style: solid;
   border-width: 5px 5px 0 0;
   height:0; width:0;

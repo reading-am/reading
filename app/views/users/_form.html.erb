@@ -17,10 +17,8 @@
       <%= f.check_box :email_when_mentioned, "someone mentions me in a comment" if current_user.access?(:comments) %> <%# TODO remove once comments are public %>
     <% end %>
 
-    <% if @user.access?(:digest) %>
-      <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['every other day (recommended)',2],['weekly',7]] do %>
-        <p class="help-block">An email to catch up on what you've missed</p>
-      <% end %>
+    <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['every other day (recommended)',2],['weekly',7]] do %>
+      <p class="help-block">An email to catch up on what you've missed</p>
     <% end %>
 
     <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' do %>

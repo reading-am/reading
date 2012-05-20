@@ -1,0 +1,15 @@
+curl
+  baseUrl: "//<%= DOMAIN %>/assets"
+  packages:
+    app:
+      path: "backbone"
+      main: "reading"
+    extend:
+      path: "libs/extend"
+    plugins:
+      path: "jquery"
+  paths:
+    jquery:         "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"
+    underscore:     "libs/lodash_extended"
+    backbone:       "libs/backbone_extended"
+    handlebars:     "libs/handlebars_extended"

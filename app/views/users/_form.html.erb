@@ -10,21 +10,22 @@
 
     <%= f.text_field :username, :class => 'input-xlarge' %>
 
-    <%= f.email_field :email, :placeholder => 'me@example.com', :class => 'input-xlarge' %>
+    <%= f.email_field :email, :placeholder => 'your_dated_hs_email@aol.com', :class => 'input-xlarge' %>
 
-    <%= f.toggles 'Contact' do %><%= f.check_box :wants_mail, "Let me know when someone follows me" %><% end %>
+    <%= f.toggles 'Email me when' do %>
+      <%= f.check_box :email_when_followed, "someone follows me" %>
+      <%= f.check_box :email_when_mentioned, "someone mentions me in a comment" if current_user.access?(:comments) %> <%# TODO remove once comments are public %>
+    <% end %>
 
-    <% if @user.access?(:digest) %>
-      <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['every other day (recommended)',2],['weekly',7]] do %>
-        <p class="help-block">An email to catch up on what you've missed</p>
-      <% end %>
+    <%= f.select :mail_digest, "Send a digest", [['never',''],['daily',1],['every other day (recommended)',2],['weekly',7]] do %>
+      <p class="help-block">An email to catch up on what you've missed</p>
     <% end %>
 
     <%= f.text_area :bio, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'This one time I...' do %>
       <p class="help-block">Keep it under 255 characters</p>
     <% end %>
 
-    <%= f.text_field :link, 'Homepage', :placeholder => 'http://example.com', :class => 'input-xlarge' %>
+    <%= f.text_field :link, 'Homepage', :placeholder => 'http://your_super_popular_homepage.com', :class => 'input-xlarge' %>
 
     <%= f.text_field :location, :placeholder => 'Louisville, KY', :class => 'input-xlarge' %>
 

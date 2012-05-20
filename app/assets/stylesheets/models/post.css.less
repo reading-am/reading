@@ -1,5 +1,4 @@
-@blue: #B3FEFF;
-@dark_blue: #00FBFF;
+@import "variables";
 
 .row .posts_group { // .row is needed so the responsive stylesheet doesn't override it
   margin-bottom:46px;
@@ -10,24 +9,24 @@
 }
 
 .post .body {
-  color:#333;
+  color:@darkest_grey;
 }
 .post h3 a {
   background:none;
 }
 .post.referred_post a.external {
-  background:#EEE;
+  background:@light_grey;
 }
 .post.yep {
-  color:#000;
+  color:@black;
 }
 .post.yep .yn:before {
-  color:green;
-  content:'✔';
+  color:@green;
+  content:@check;
 }
 h3.yep:before {
-  color:green;
-  content:'✔';
+  color:@green;
+  content:@check;
   font-size:19px;
 }
 h3.nope {
@@ -35,7 +34,7 @@ h3.nope {
 }
 h3.nope:before {
   color:red;
-  content:'×';
+  content:@x;
   font-size:24px;
 }
 .post.nope .yn_wrap, .posts_group .nope .page {
@@ -56,6 +55,6 @@ h3.nope:before {
   font-weight:bold;
 }
   .info:hover {
-    background:@blue;
+    background:@light_blue;
     text-decoration:none;
   }

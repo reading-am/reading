@@ -1,0 +1,101 @@
+curl [
+  "jquery"
+  "underscore"
+  "backbone"
+  "app/models/post"
+  "app/views/bookmarklet/app"
+  "app/collections/pages"
+  "app/collections/providers"
+  "css!bookmarklet/loader"
+  "css!components/mentionsInput"
+], ($, _, Backbone, Post, AppView) ->
+
+  #-----------------------------------------
+  # Config Vars
+
+  reading.ready = false
+  on_reading = window.location.host.indexOf("reading.am") is 0 or
+               window.location.host.indexOf("staging.reading.am") is 0 or
+               window.location.host.indexOf("0.0.0.0") is 0
+  token = reading.token ? null
+  platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
+  version = reading.version ? "0.0.0"
+
+  latest_versions =
+    bookmarklet: "<%= BOOKMARKLET_VERSION %>"
+
+  #-----------------------------------------
+  # Helpers
+
+  parse_url = ->
+    url = window.location.href.split(window.location.host)[1].substring(1)
+    while url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/'
+      url = url.substring(url.indexOf('/', 2) + 1)
+    url = "http://#{url}" if url.indexOf('://') is -1
+    url
+
+  #-----------------------------------------
+  # Submit the post
+
+  reading.submit = submit = (params) ->
+    # clear old items from previous posts
+    Post::current.intervals "clear" if Post::current?
+    AppView::current.close() if AppView::current?
+
+    Post::current = new Post
+    AppView::current = new AppView model: Post::current if platform isnt "redirect"
+
+    Post::current.save params, success: (model) ->
+      if platform is "redirect"
+        # forward back through to Reading so that the user's token doesn't show up in the referrer
+        window.location = if window.location.href.indexOf('/t/') > -1 then "http://<%= DOMAIN %>/t/-/#{params.url}" else params.url
+      else
+        model.keep_fresh()
+
+
+  #-----------------------------------------
+  # Initialize!
+
+  init = ->
+    # fire an event to let people know reading is ready
+    # can't seem to use jquery.trigger for events attached
+    # without jquery
+    e = document.createEvent "Event"
+    e.initEvent "reading.ready", true, true
+    document.dispatchEvent e
+    reading.ready = true
+
+    win_focus = true
+    $(window).focus(-> win_focus = true).blur(-> win_focus = false)
+    $.fn.hasFocus = -> win_focus
+
+    if platform is "redirect" or platform is "bookmarklet"
+      if platform is "redirect"
+        url   = parse_url()
+        title = null
+        return window.location = url if token is "-" or !token
+      else
+        url   = window.location.href
+        title = window.document.title
+
+      submit
+        url: url
+        title: title
+        referrer_id: reading.referrer_id ? 0
+
+
+  #-----------------------------------------
+  # Check the bookmarklet version
+
+  up_to_date = ->
+    !latest_versions[platform]? || String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
+
+  #-----------------------------------------
+  # Prompt to upgrade
+
+  upgrade = -> $.getScript "//<%= DOMAIN %>/assets/bookmarklet/upgrade.js"
+
+  #-----------------------------------------
+  # Check for jQuery and initialize
+
+  if up_to_date() then init() else upgrade()

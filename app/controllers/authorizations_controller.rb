@@ -1,3 +1,4 @@
+# encoding: utf-8
 class AuthorizationsController < ApplicationController
   # PUT /authorizations/1
   # PUT /authorizations/1.xml

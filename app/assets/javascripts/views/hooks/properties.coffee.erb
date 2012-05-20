@@ -1,12 +1,19 @@
 <%
-  events = [{:text => 'read, say "yep" or "nope"', :value => '["new","yep","nope"]', :perms => [:write]}]
+  events = [{
+    :text => 'do anything',
+    :value => "[\"#{Hook::EVENTS.each_key.to_a.join('","')}\"]",
+    :perms => [:write]
+  }]
   Hook::EVENTS.each do |event, params|
     params[:value] = "[\"#{event}\"]"
     events << params
   end
 %>
 
-window.hook_properties =
+define [
+  "models/current_user"
+], (current_user) ->
+
   "events":<%= events.to_json %>,
   "providers":[
     {"text":"Facebook", "params":[

@@ -3,6 +3,7 @@ class Page < ActiveRecord::Base
   has_one  :readability_data
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
+  has_many :comments, :dependent => :destroy
 
   validates_presence_of :url, :domain
   validates_uniqueness_of :url
@@ -67,4 +68,14 @@ public
     self.save
   end
 
+  def simple_obj to_s=false
+    {
+      :type   => 'Page',
+      :id     => to_s ? id.to_s : id,
+      :url    => url,
+      :title  => title,
+      :created_at => created_at,
+      :updated_at => updated_at
+    }
+  end
 end

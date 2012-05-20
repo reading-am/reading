@@ -1,7 +1,7 @@
 module MailHelper
 
   def current_user
-    nil
+    @current_user ||= User.new
   end
 
   def logged_in?

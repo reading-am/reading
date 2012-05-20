@@ -1,3 +1,4 @@
+# encoding: utf-8
 class PagesController < ApplicationController
 
   def show
@@ -7,7 +8,6 @@ class PagesController < ApplicationController
     else
       respond_to do |format|
         format.html  # show.html.erb
-        format.json  { render :json => @page }
       end
     end
   end

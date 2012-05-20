@@ -138,7 +138,9 @@ public
       :provider     => provider,
       :uid          => to_s ? uid.to_s : uid,
       :permissions  => permissions,
-      :info         => info
+      :info         => info,
+      :created_at   => created_at,
+      :updated_at   => updated_at
     }
   end
 

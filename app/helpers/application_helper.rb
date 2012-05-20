@@ -1,5 +1,7 @@
 # encoding: utf-8
 module ApplicationHelper
+  include Twitter::Autolink
+
   def og_tags hash={}
     og = {
       :type   => "website",

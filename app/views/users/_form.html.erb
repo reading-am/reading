@@ -10,7 +10,7 @@
 
     <%= f.text_field :username, :class => 'input-xlarge' %>
 
-    <%= f.email_field :email, :placeholder => 'me@example.com', :class => 'input-xlarge' %>
+    <%= f.email_field :email, :placeholder => 'your_dated_hs_email@aol.com', :class => 'input-xlarge' %>
 
     <%= f.toggles 'Email me when' do %>
       <%= f.check_box :email_when_followed, "someone follows me" %>
@@ -25,7 +25,7 @@
       <p class="help-block">Keep it under 255 characters</p>
     <% end %>
 
-    <%= f.text_field :link, 'Homepage', :placeholder => 'http://example.com', :class => 'input-xlarge' %>
+    <%= f.text_field :link, 'Homepage', :placeholder => 'http://your_super_popular_homepage.com', :class => 'input-xlarge' %>
 
     <%= f.text_field :location, :placeholder => 'Louisville, KY', :class => 'input-xlarge' %>
 

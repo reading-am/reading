@@ -2,13 +2,16 @@ source 'http://rubygems.org'
 
 gem 'thin' # server
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.3'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'
   gem 'coffee-rails'
   gem 'uglifier'
+  gem 'handlebars_assets'
 end
+
+gem 'rails-backbone'
 gem 'jquery-rails'
 
 gem 'pg' # PostgresSQL
@@ -53,6 +56,7 @@ gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
+gem 'twitter-text' # for comment parsing
 
 # for sitemaps. See: https://github.com/kjvarga/sitemap_generator/wiki/Generate-Sitemaps-on-read-only-filesystems-like-Heroku
 gem 'sitemap_generator'

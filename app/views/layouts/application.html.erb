@@ -32,10 +32,6 @@
   <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
   <%= yield %>
   </div>
-  <script>
-    <%= render :partial => 'posts/post.js.tmpl' %>
-  </script>
-  <%= render :partial => 'layouts/pusher' if logged_in? and @channels %>
   <%= render :partial => 'layouts/loading' %>
 </body>
 </html>

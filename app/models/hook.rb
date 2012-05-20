@@ -7,7 +7,8 @@ class Hook < ActiveRecord::Base
   EVENTS = {
     :new  => {:perms => [:write], :text => 'read a page'},
     :yep  => {:perms => [:write], :text => 'say "yep"'},
-    :nope => {:perms => [:write], :text => 'say "nope"'}
+    :nope => {:perms => [:write], :text => 'say "nope"'},
+    :comment => {:perms => [:write], :text => 'comment'}
   }
 
   def params
@@ -90,19 +91,37 @@ class Hook < ActiveRecord::Base
     authorization.api.update tweet rescue nil
   end
 
-  def hipchat post, event_fired
-    user_link = "<a href='http://#{DOMAIN}/#{post.user.username}'>#{post.user.display_name}</a>"
+  def hipchat obj, event_fired
+    case event_fired
+    when :new, :yep, :nope
+      post = obj
+    when :comment
+      post = obj.post
+    end
+    user = obj.user
+
+    user_link = "<a href='http://#{DOMAIN}/#{user.username}'>#{user.display_name}</a>"
     post_link = "<a href='#{post.wrapped_url}'>#{post.page.display_title}</a>"
+
     case event_fired
     when :new
       output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
       output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
     when :yep, :nope
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
+    when :comment
+      output = "✌ #{user_link} said on #{post_link}:<br><em>#{obj.body_html}</em>"
     end
 
-    client = HipChat::Client.new(self.params['token'])
-    client[self.params['room']].send('Reading.am', output, (event_fired == :new)) # only notify if this is not a post update
+    colors = {
+      :new => "yellow",
+      :yep => "green",
+      :nope => "red",
+      :comment => "purple"
+    }
+
+    client = HipChat::Client.new(params['token'])
+    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
   def campfire post, event_fired

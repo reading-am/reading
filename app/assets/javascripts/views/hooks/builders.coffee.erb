@@ -1,4 +1,5 @@
-window.builders =
+define ["jquery"], ($) ->
+
   field: (param, scope, add_label=true) ->
     param.name = param.text.toLowerCase().replace(RegExp(" ", "g"), "_")  unless param.name
     param.scoped_name = scope + "[" + param.name + "]"  if scope

@@ -1,3 +1,4 @@
+@import "variables";
 @import "twitter/bootstrap/bootstrap";
 @import "bootstrap_responsive.css.less";
 @gridColumns: 8;
@@ -10,7 +11,7 @@ textarea:focus {
 }
 .btn-success {
   padding:4px 10px;
-  .buttonBackground(#79ff30, #38ff7E);
+  .buttonBackground(@dark_green, @bright_green);
 }
 .btn-success, .btn-success:hover {
   color:#000;

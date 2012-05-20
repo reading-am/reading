@@ -1,7 +1,24 @@
 Reading::Application.routes.draw do
   root :to => "posts#index"
-  
+
+  # sitemap
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
+
+  # api
+  namespace :api, :defaults => { :format => 'json' } do
+    resources :posts
+    resources :comments
+    resources :users do
+      resources :posts
+      resources :comments
+      resources :following, :controller => "users", :defaults => { :type => "following" }
+      resources :followers, :controller => "users", :defaults => { :type => "followers" }
+    end
+    resources :pages do
+      resources :users
+      resources :comments
+    end
+  end
 
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"
@@ -11,6 +28,9 @@ Reading::Application.routes.draw do
   match '/posts/create' => 'posts#create'
   match '/posts/:id/update' => 'posts#update'
   resources :posts
+
+  match '/comments/create' => 'comments#create'
+  resources :comments
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional

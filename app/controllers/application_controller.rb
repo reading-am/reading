@@ -1,9 +1,10 @@
+# encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
   http_basic_authenticate_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
 
-  before_filter :check_domain, :set_time_zone, :set_user_device, :set_headers
+  before_filter :check_domain, :set_user_device, :set_headers
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
@@ -30,13 +31,13 @@ class ApplicationController < ActionController::Base
         @current_user ||= User.find_by_auth_token!(cookies[:auth_token])
       rescue
         cookies.delete(:auth_token)
-        nil
       end
     end
+    @current_user ||= User.new
   end
 
   def logged_in?
-    !current_user.nil?
+    !current_user.id.nil?
   end
 
   def authenticate

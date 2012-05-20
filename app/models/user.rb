@@ -1,11 +1,16 @@
 class User < ActiveRecord::Base
-  bitmask :access, :as => [:digest,:tagalong]
+  bitmask :access, :as => [
+    :digest,
+    :tagalong,
+    :comments
+  ]
 
   has_many :authorizations, :dependent => :destroy
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
   has_many :domains, :through => :posts
   has_many :hooks, :dependent => :destroy
   has_many :pages, :through => :posts
+  has_many :comments, :dependent => :destroy
 
   # from: http://ruby.railstutorial.org/chapters/following-users
   has_many :relationships, :foreign_key => "follower_id",
@@ -47,6 +52,7 @@ class User < ActiveRecord::Base
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
+  scope :mentioned_in, lambda { |comment| mentioned(comment) }
 
   private
 
@@ -61,6 +67,10 @@ class User < ActiveRecord::Base
 
   def self.digesting freq
     where("email IS NOT NULL AND mail_digest IN (:freq)", { :freq => freq })
+  end
+
+  def self.mentioned comment
+    where("username IN (:mentions)", { :mentions => comment.mentions })
   end
 
   public
@@ -121,10 +131,10 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    if !self.name.blank?
-      self.name
-    elsif !self.username.blank?
-      self.username
+    if !name.blank?
+      name
+    elsif !username.blank?
+      username
     else
       'Anonymous'
     end
@@ -160,8 +170,15 @@ class User < ActiveRecord::Base
       :id         => to_s ? id.to_s : id,
       :username   => username,
       :display_name => display_name,
+      :full_name  => name,
+      :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
-      :mini_avatar=> avatar.url(:mini)
+      :mini_avatar=> avatar.url(:mini),
+      :following_count => following.size,
+      :followers_count => followers.size,
+      :created_at => created_at,
+      :udpated_at => updated_at,
+      :can_comment => access?(:comments) # TODO remove once comments are public
     }
   end
 end

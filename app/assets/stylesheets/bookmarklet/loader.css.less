@@ -61,8 +61,10 @@
   #r_actions a {
     padding:2px;
   }
-  a {
-    display:inline-block;
+  #r_wrp, #r_readers, #r_share_menu {
+    a {
+      display:inline-block;
+    }
   }
   a:hover, .r_active {
     background:@white;
@@ -114,6 +116,10 @@
   }
   .r_popped_over {
     overflow:hidden;
+  }
+  .r_quoted {
+    color:@darkest_grey !important;
+    background:@light_grey;
   }
   #r_comments {
     &, .r_comments_list {
@@ -183,6 +189,10 @@
     color:@dark_grey !important;
     text-decoration:none;
   }
+}
+.r_quote {
+  color: @black !important;
+  background-color: rgba(255,255,0,.5);
 }
 #r_popover {
   position:fixed;

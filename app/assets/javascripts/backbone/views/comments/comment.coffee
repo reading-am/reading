@@ -49,7 +49,7 @@ define [
       $body = $("body > *:not(#r_am)")
 
       $body.unhighlight className: cname
-      $body.highlight text, className: cname, wordsOnly: true
+      $body.highlight text, className: cname
 
       offset = $(".#{cname}").position().top - $(window).height()/2
       offset = 0 if offset < 0

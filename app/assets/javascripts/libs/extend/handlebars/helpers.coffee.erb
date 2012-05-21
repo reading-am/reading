@@ -29,7 +29,7 @@ define [
 
     if matches
       cname = "r_quoted"
-      config = className: cname, wordsOnly: true
+      config = className: cname 
       $body = $("body > *:not(#r_am)")
 
       matches = _(matches).map (text) -> text.substring(1, text.length-1)

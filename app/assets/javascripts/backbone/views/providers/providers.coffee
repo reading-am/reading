@@ -1,4 +1,7 @@
-define ["backbone","app/views/providers/provider"], (Backbone, ProviderView) ->
+define [
+  "backbone"
+  "app/views/providers/provider"
+], (Backbone, ProviderView) ->
 
   class ProvidersView extends Backbone.View
     tagName: "ul"

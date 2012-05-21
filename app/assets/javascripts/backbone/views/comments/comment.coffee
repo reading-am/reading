@@ -51,7 +51,7 @@ define [
       $body.unhighlight className: cname
       $body.highlight text, className: cname
 
-      offset = $(".#{cname}").position().top - $(window).height()/2
+      offset = $(".#{cname}").offset().top - $(window).height()/2
       offset = 0 if offset < 0
       $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
 

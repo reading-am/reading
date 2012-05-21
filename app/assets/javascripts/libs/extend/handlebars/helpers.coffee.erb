@@ -1,8 +1,9 @@
 define [
   "jquery"
+  "underscore"
   "libs/handlebars"
   "libs/twitter-text"
-], ($, Handlebars, TwitterText) ->
+], ($, _, Handlebars, TwitterText) ->
 
   Handlebars.registerHelper "nl2br", (context, fn) ->
     new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
@@ -23,8 +24,34 @@ define [
       $this.html("<img src=\"#{$this.attr("href")}\">")
     new Handlebars.SafeString $context.html()
 
+  Handlebars.registerHelper "link_quotes", (context, fn) ->
+    matches = context.match(/"(?:[^\\"]+|\\.)*"/gi)
+
+    if matches
+      cname = "r_quoted"
+      config = className: cname, wordsOnly: true
+      $body = $("body > *:not(#r_am)")
+
+      matches = _(matches).map (text) -> text.substring(1, text.length-1)
+      matches = _(matches).filter (text) ->
+        $body.highlight text, config
+        if $body.find(".#{cname}").length
+          $body.unhighlight config
+        else
+          false
+
+      if matches
+        $context = $("<div>#{context}</div>")
+        config.element = "a"
+        $context.highlight matches, config
+        $context.find(".#{cname}").attr(href: "#")
+        context = $context.html()
+
+    new Handlebars.SafeString context
+
   Handlebars.registerHelper 'format_comment', (context, fn) ->
     context = Handlebars.helpers.nl2br.call this, context, fn
+    context = Handlebars.helpers.link_quotes.call this, context.string, fn
     context = Handlebars.helpers.autolink.call this, context.string, fn
     context = Handlebars.helpers.embed_images.call this, context.string, fn
     context

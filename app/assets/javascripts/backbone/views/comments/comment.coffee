@@ -6,6 +6,7 @@ define [
   "app/models/post"
   "app/views/users/user"
   "plugins/humane"
+  "plugins/highlight"
 ], ($, _, Backbone, Handlebars, Post, UserView) ->
 
   class CommentView extends Backbone.View
@@ -30,6 +31,7 @@ define [
 
     events:
       "click .r_reply" : "reply"
+      "click .r_quoted" : "find_quote"
       "click .r_destroy" : "destroy"
       "click a.r_url:not(.r_mention)": "new_window"
 
@@ -39,6 +41,20 @@ define [
 
     reply: ->
       alert "reply will go here"
+      false
+
+    find_quote: (e) ->
+      cname = "r_quote"
+      text = $(e.currentTarget).text()
+      $body = $("body > *:not(#r_am)")
+
+      $body.unhighlight className: cname
+      $body.highlight text, className: cname, wordsOnly: true
+
+      offset = $(".#{cname}").position().top - $(window).height()/2
+      offset = 0 if offset < 0
+      $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
+
       false
 
     new_window: (e) ->

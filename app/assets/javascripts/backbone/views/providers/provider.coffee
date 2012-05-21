@@ -1,4 +1,8 @@
-define ["jquery","backbone","handlebars","app/models/post"], ($, Backbone, Handlebars, Post) ->
+define [
+  "backbone"
+  "handlebars"
+  "app/models/post"
+], (Backbone, Handlebars, Post) ->
 
   class ProviderView extends Backbone.View
     template: Handlebars.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
@@ -13,5 +17,5 @@ define ["jquery","backbone","handlebars","app/models/post"], ($, Backbone, Handl
       false
 
     render: ->
-      $(@el).html(@template(@model.toJSON()))
+      @$el.html(@template(@model.toJSON()))
       return this

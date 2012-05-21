@@ -51,7 +51,7 @@ define [
         if val instanceof Backbone.Model
           input["#{prop}_id"] = val.get("id") if val.get("id")
           delete input[prop]
-        else
+        else if !_.isFunction val
           input[prop] = Backbone.Model::deconstruct val
     input
 

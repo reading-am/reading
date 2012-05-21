@@ -47,7 +47,9 @@ define(["jquery"], function(jQuery){
   jQuery.extend({
       highlight: function (node, re, nodeName, className) {
           if (node.nodeType === 3) {
-              var match = node.data.match(re);
+              // replace newline characters and double spaces before matching
+              // so you can match across linebreaks
+              var match = node.data.replace(/(\n|\r)/g, " ").replace(/\s{2,}/g, " ").match(re);
               if (match) {
                   var highlight = document.createElement(nodeName || 'span');
                   highlight.className = className || 'highlight';

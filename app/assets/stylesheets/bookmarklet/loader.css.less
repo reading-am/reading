@@ -179,19 +179,28 @@
     padding:7px 14px;
     border:5px solid @yellow;
     border-top-width:3px;
-  }
-  .r_mention:hover, .r_tag:hover, .r_url {
-    color:@black !important;
-    text-decoration:underline;
-  }
-  .r_mention {
-    font-weight:bold;
-    background:@light_blue;
-    text-decoration:none;
-  }
-  .r_tag {
-    color:@dark_grey !important;
-    text-decoration:none;
+    pre, code {
+      font-family: Monaco, ProFont, "Bitstream Vera Sans Mono", "American Typewriter", "Andale Mono", monospace;
+      display:inline-block;
+    }
+    code {
+      padding:2px 5px;
+      color:@medium_grey !important;
+      background-color:@light_grey;
+    }
+    .r_mention:hover, .r_tag:hover, .r_url, .r_email {
+      color:@black !important;
+      text-decoration:underline;
+    }
+    .r_mention {
+      font-weight:bold;
+      background:@light_blue;
+      text-decoration:none;
+    }
+    .r_tag {
+      color:@dark_grey !important;
+      text-decoration:none;
+    }
   }
 }
 .r_quote {

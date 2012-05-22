@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   def is_mobile_safari_request? # from: http://www.ibm.com/developerworks/opensource/library/os-eclipse-iphoneruby1/
     request.user_agent =~ /(Mobile\/.+Safari)/
   end
-  
+
   def is_iphone_or_ipod_request?
     if !request.user_agent then return false end
     ua = request.user_agent.downcase

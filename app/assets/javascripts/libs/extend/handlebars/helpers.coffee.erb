@@ -19,7 +19,7 @@ define [
 
   Handlebars.registerHelper "embed_images", (context, fn) ->
     $context = $("<div>#{context}</div>")
-    $context.find("a[href$=#{["jpg","jpeg","png","gif"].join("],a[href$=")}]").each ->
+    $context.find("a[href*=\\.#{["jpg","jpeg","png","gif"].join("],a[href*=\\.")}]").each ->
       $this = $(this)
       $this.html("<img src=\"#{$this.attr("href")}\">")
     new Handlebars.SafeString $context.html()

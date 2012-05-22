@@ -42,7 +42,10 @@ define [
 
   # converts nested Backbone objects to simply an id reference
   Backbone.Model::deconstruct = (input) ->
-    if _.isArray input
+    if _.isFunction input
+      # Don't do anything here, just pass through.
+      # For whatever reason, _.isObject(function(){}) == true
+    else if _.isArray input
       input = (Backbone.Model::deconstruct val for val in input)
     else if _.isDate input
       input = _.ISODateString input
@@ -51,7 +54,7 @@ define [
         if val instanceof Backbone.Model
           input["#{prop}_id"] = val.get("id") if val.get("id")
           delete input[prop]
-        else if !_.isFunction val
+        else
           input[prop] = Backbone.Model::deconstruct val
     input
 

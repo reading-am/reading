@@ -39,12 +39,27 @@ class Comment < ActiveRecord::Base
   end
 
   def body_html
-    auto_link(html_escape(body), {
+    html = html_escape(body)
+    ### These methods are mirrored in the handlebars js helpers
+    # nl2br
+    html.gsub!(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/, "\\1<br>\\2")
+    # email
+    html.gsub!(/(([a-z0-9*._+]){1,}\@(([a-z0-9]+[-]?){1,}[a-z0-9]+\.){1,}([a-z]{2,4}|museum)(?![\w\s?&.\/;#~%"=-]*>))/, "<a href=\"mailto:\\1\">\\1</a>")
+    # code
+    html.gsub!(/`((?:[^`]+|\\.)*)`/) {|s| s.scan("\n").blank? ? "<code>#{s[1..-2]}</code>" : "<pre><code>#{s[1..-2]}</code></pre>" }
+    # quotes
+    html.gsub!(/&quot;.*&quot;/, "<i>\\&</i>")
+    # links and @mentions
+    html = auto_link(html, {
       :url_class => '',
       :username_class => 'user',
       :username_url_base => "http://#{DOMAIN}/",
       :hashtag_url_base => "http://#{DOMAIN}/search?q="
-    }).html_safe
+    })
+    # images
+    html.gsub!(/<a href="(.*\.(jpg|jpeg|png|gif).*)">.*<\/a>/, "<a href=\"\\1\"><img src=\"\\1\"></a>")
+
+    html.html_safe
   end
 
   def simple_obj to_s=false

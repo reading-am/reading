@@ -119,6 +119,7 @@ define [
         @$el.append(@comments_view.render().el)
 
         @comments_view.attach_autocomplete()
+        @comments_view.make_images_draggable()
 
     get_readers: ->
       @readers_view = new UsersView

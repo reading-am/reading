@@ -1,4 +1,6 @@
 # encoding: UTF-8
+include ActionView::Helpers::TextHelper
+
 class Hook < ActiveRecord::Base
   belongs_to :user
   belongs_to :authorization
@@ -102,6 +104,7 @@ class Hook < ActiveRecord::Base
 
     user_link = "<a href='http://#{DOMAIN}/#{user.username}'>#{user.display_name}</a>"
     post_link = "<a href='#{post.wrapped_url}'>#{post.page.display_title}</a>"
+    post_link_truncated = "<a href='#{post.wrapped_url}'>#{truncate(post.page.display_title)}</a>"
 
     case event_fired
     when :new
@@ -110,7 +113,7 @@ class Hook < ActiveRecord::Base
     when :yep, :nope
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
     when :comment
-      output = "#{obj.body_html} | ✌ <em>#{user_link} said on #{post_link}</em>"
+      output = "#{obj.body_html} | ✌ <em>#{user_link} said on #{post_link_truncated}</em>"
     end
 
     colors = {

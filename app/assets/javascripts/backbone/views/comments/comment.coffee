@@ -33,6 +33,7 @@ define [
       "click .r_reply" : "reply"
       "click .r_quoted" : "find_quote"
       "click .r_destroy" : "destroy"
+      "click a.r_url img": "find_image"
       "click a.r_url:not(.r_mention)": "new_window"
 
     initialize: ->
@@ -56,6 +57,15 @@ define [
       $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
 
       false
+
+    find_image: (e) ->
+      console.log "hit", e.currentTarget.src
+      $img = $("body > *:not(#r_am)").find("img[src='#{e.currentTarget.src}']")
+      if $img.length
+        offset = $img.offset().top - $(window).height()/2
+        offset = 0 if offset < 0
+        $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
+        false
 
     new_window: (e) ->
       window.open e.currentTarget.href

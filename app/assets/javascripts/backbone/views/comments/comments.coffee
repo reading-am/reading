@@ -8,9 +8,11 @@ define [
   "app/views/users/popover"
   "app/models/user"
   "app/models/post"
+  "jquery_ui"
   "plugins/mentionsInput"
   "plugins/events.input"
   "plugins/elastic"
+  "plugins/insert_at_caret"
 ], ($, _, Backbone, Handlebars, Key, CommentView, UserPopoverView, User, Post) ->
 
   class CommentsView extends Backbone.View
@@ -56,6 +58,21 @@ define [
             scrollTop: 0
             duration: "fast"
           false
+
+    make_images_draggable: _.once ->
+      $("img").draggable
+        helper:'clone'
+        addClass: false
+        opacity: 0.5
+        zIndex: 9999999999
+      @$("textarea").droppable
+        accept: "img"
+        tolerance: "pointer"
+        addClasses: false
+        activeClass: "r_drag_active"
+        hoverClass: "r_drag_hover"
+        drop: (event, ui) =>
+          @$("textarea").insertAtCaret ui.draggable.attr("src")
 
     attach_autocomplete: ->
       following = false

@@ -1,17 +1,5 @@
 @import "variables";
-
-//Mixins
-.border-radius(@radius: 5px) {
-  -webkit-border-radius: @radius;
-     -moz-border-radius: @radius;
-          border-radius: @radius;
-}
-
-.opacity(@opacity: 100) {
-  filter: e(%("alpha(opacity=%d)", @opacity));
-    -moz-opacity: @opacity / 100;
-         opacity: @opacity / 100;
-}
+@import "twitter/bootstrap/mixins";
 
 //Styles
 #r_am #r_comments .mentions-input-box {
@@ -33,10 +21,15 @@
     height:15px;
     outline: 0;
     resize: none;
-
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+    .transition(border-color .25s ease-in-out);
+    .transition(border-color .25s ease-in-out);
+    .box-sizing(border-box);
+    &.r_drag_active {
+      border-color:@dark_blue;
+    }
+    &.r_drag_hover {
+      border-color:@dark_green;
+    }
   }
 
   .mentions {
@@ -76,13 +69,10 @@
     right: 0;
     z-index: 10000;
 
-    .border-radius();
+    .border-radius(5px);
     border-top-right-radius:0;
     border-top-left-radius:0;
-
-    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
-       -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
+    .box-shadow(0 2px 5px rgba(0, 0, 0, 0.148438));
 
     ul {
       margin: 0;
@@ -103,7 +93,7 @@
       white-space: nowrap;
 
       &:last-child {
-        .border-radius();
+        .border-radius(5px);
       }
 
       & > img,

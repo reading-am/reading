@@ -1,3 +1,5 @@
+@import "variables";
+
 /*
  * Fonts and Mixins
  */
@@ -11,17 +13,6 @@
     font-weight: normal;
     font-style: normal;
 }
-
-/*
- * Variables
- */
-@yellow: #FFFBCC;
-@dark_yellow: #FFF461;
-@blue: #cdfeff;
-@dark_blue: #00FBFF;
-@green: #38ff7E;
-@dark_green: #79ff30;
-@grey: #EEE;
 
 .glyph {
   font-family:'WebSymbolsRegular';
@@ -72,10 +63,10 @@ a.back, .actions {
 }
 
 footer a, a.user.you {
-  background-color:@blue;
+  background-color:@light_blue;
 }
   footer a:hover, a.user.you:hover {
-    background-color:@dark_blue;
+    background-color:@blue;
   }
 a.active, a.active:hover, h4 .active {
   cursor:default;
@@ -109,9 +100,9 @@ a.rss .glyph {
 
 
 .breadcrumb a {
-  background:@blue;
+  background:@light_blue;
   &:hover {
-    background:@dark_blue;
+    background:@blue;
   }
 }
 

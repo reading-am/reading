@@ -110,7 +110,7 @@ class Hook < ActiveRecord::Base
     when :yep, :nope
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
     when :comment
-      output = "✌ #{user_link} said on #{post_link}:<br><em>#{obj.body_html}</em>"
+      output = "#{obj.body_html} | ✌ <em>#{user_link} said on #{post_link}</em>"
     end
 
     colors = {

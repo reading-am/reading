@@ -62,7 +62,7 @@ define [
       console.log "hit", e.currentTarget.src
       $img = $("body > *:not(#r_am)").find("img[src='#{e.currentTarget.src}']")
       if $img.length
-        offset = $img.offset().top - $(window).height()/2
+        offset = $img.offset().top + $img.height()/2 - $(window).height()/2
         offset = 0 if offset < 0
         $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
         false

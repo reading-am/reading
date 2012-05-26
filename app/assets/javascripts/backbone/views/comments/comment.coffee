@@ -1,13 +1,12 @@
 define [
   "jquery"
-  "underscore"
   "backbone"
   "handlebars"
   "app/models/post"
   "app/views/users/user"
   "plugins/humane"
   "plugins/highlight"
-], ($, _, Backbone, Handlebars, Post, UserView) ->
+], ($, Backbone, Handlebars, Post, UserView) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "

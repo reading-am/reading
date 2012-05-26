@@ -14,6 +14,7 @@ define [
 
     logged_in: ->
       return Boolean @get "id"
+
     can: (perm, provider, uid) ->
       uid = String uid
       i = 0

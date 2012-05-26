@@ -1,14 +1,10 @@
 define [
-  "jquery"
-  "underscore"
   "backbone"
   "handlebars"
   "models/current_user"
-  "app/models/post"
   "app/views/users/user"
   "plugins/humane"
-  "plugins/highlight"
-], ($, _, Backbone, Handlebars, current_user, Post, UserView) ->
+], (Backbone, Handlebars, current_user, UserView) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "
@@ -30,58 +26,10 @@ define [
     tagName: "li"
     className: "r_comment"
 
-    events:
-      "click .r_reply" : "reply"
-      "click .r_quoted" : "find_quote"
-      "click .r_destroy" : "destroy"
-      "click a.r_url img": "find_image"
-      "click a.r_url:not(.r_mention)": "new_window"
-
-    initialize: ->
-      @model.bind "change", @render, this
-      @model.bind "destroy", @remove, this
-
-    reply: ->
-      alert "reply will go here"
-      false
-
-    find_quote: (e) ->
-      cname = "r_quote"
-      text = $(e.currentTarget).text()
-      $body = $("body > *:not(#r_am)")
-
-      $body.unhighlight className: cname
-      $body.highlight text, className: cname
-
-      offset = $(".#{cname}").offset().top - $(window).height()/2
-      offset = 0 if offset < 0
-      $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
-
-      false
-
-    find_image: (e) ->
-      console.log "hit", e.currentTarget.src
-      $img = $("body > *:not(#r_am)").find("img[src='#{e.currentTarget.src}']")
-      if $img.length
-        offset = $img.offset().top + $img.height()/2 - $(window).height()/2
-        offset = 0 if offset < 0
-        $(if $.browser.webkit then "body" else "html").animate scrollTop : offset
-        false
-
-    new_window: (e) ->
-      window.open e.currentTarget.href
-      false
-
-    destroy: ->
-      if confirm "Are you sure you want to delete this comment?"
-        @model.destroy()
-
-      false
-
     render: =>
       json = @model.toJSON()
       json.is_owner = @model.get("user").get("id") == current_user.get("id")
-      $(@el).html(@template(json))
+      @$el.html(@template(json))
 
       @$("time").humaneDates()
 

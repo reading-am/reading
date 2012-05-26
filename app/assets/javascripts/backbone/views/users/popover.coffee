@@ -2,10 +2,10 @@ define [
   "jquery"
   "backbone"
   "handlebars"
-  "css!users/popover"
+  "css!components/popover"
 ], ($, Backbone, Handlebars) ->
 
-  class UserPopoverView extends Backbone.View
+  class UserPopover extends Backbone.View
 
     template: Handlebars.compile "
       <div class=\"r_blocker\"></div>

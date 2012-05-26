@@ -3,7 +3,7 @@ define [
   "handlebars"
   "models/current_user"
   "app/views/comments/comment"
-  "css!comments/popover"
+  "css!components/popover"
 ], (Backbone, Handlebars, current_user, CommentView) ->
 
   class CommentPopover extends Backbone.View

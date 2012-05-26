@@ -1,14 +1,19 @@
-define ["jquery","backbone","handlebars"], ($, Backbone, Handlebars) ->
+define [
+  "jquery"
+  "backbone"
+  "handlebars"
+  "css!users/popover"
+], ($, Backbone, Handlebars) ->
 
   class UserPopoverView extends Backbone.View
 
     template: Handlebars.compile "
-      <div></div>
-      <iframe src=\"{{url}}\"></iframe>
+      <div class=\"r_blocker\"></div>
+      <iframe class=\"r_content\" src=\"{{url}}\"></iframe>
     "
 
-    tagName: "div"
-    id: "r_popover"
+    id: "r_user_popover"
+    className: "r_popover"
 
     events:
       "click" : "close"

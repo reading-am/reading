@@ -78,7 +78,9 @@ define [
 
     render: =>
       json = @model.toJSON()
-      json.is_owner = @model.get("user").get("id") == Post::current.get("user").get("id")
+      # TODO there has to be a better current_user solution here
+      # this is being shared between the main site and the bookmarklet
+      json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
       $(@el).html(@template(json))
 
       @$("time").humaneDates()

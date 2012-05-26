@@ -62,9 +62,9 @@ class Api::PostsController < ApplicationController
 
     if !@post.user.blank?
       # A post is a duplicate if it's the exact same page and within 1hr of the last post
-      duplicate = (!@post.user.posts.first.nil? and @post.page == @post.user.posts.first.page and (Time.now - @post.user.posts.first.created_at < 60*60)) ? @post.user.posts.first : false;
+      duplicate = Post.where("user_id = ? and page_id = ? and created_at > ?", @post.user, @post.page, 1.day.ago).first
       # TODO - clean up these conditionals for duplicates and the same in the respond_to
-      if !duplicate
+      if duplicate.blank?
         event = :new
         if @post.page.new_record?
           @post.page.title = !title.nil? ? title : @post.page.remote_title

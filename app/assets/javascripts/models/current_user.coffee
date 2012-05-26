@@ -1,5 +1,5 @@
 define [
-  "models/user"
+  "app/models/user"
   "models/authorization"
   "models/twitter_prov"
   "models/facebook_prov"
@@ -11,6 +11,7 @@ define [
   "models/tumblr_auth"
   "models/instapaper_auth"
   "models/readability_auth"
+  "app/collections/users" # needed from within models/user
 ], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv) ->
 
   current_user = new User window.current_user
@@ -23,6 +24,6 @@ define [
     readability:new ReadabilityProv
 
   auths[auth.provider][auth.uid] = Authorization::factory auth for auth in window.authorizations
-  current_user.authorizations = auths
+  current_user.set "authorizations", auths
 
   return current_user

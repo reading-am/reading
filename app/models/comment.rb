@@ -13,7 +13,7 @@ class Comment < ActiveRecord::Base
 
   attr_accessible :body
 
-  default_scope includes(:user)
+  default_scope includes([:user,:page])
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
   private
@@ -71,7 +71,7 @@ class Comment < ActiveRecord::Base
       :created_at => created_at,
       :updated_at => updated_at,
       :user   => user.simple_obj,
-      :page_id => page_id
+      :page   => page.simple_obj
     }
   end
 end

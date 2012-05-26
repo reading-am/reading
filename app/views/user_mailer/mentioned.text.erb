@@ -1,6 +1,6 @@
 <%= @enactor.display_name %> mentioned you:
 
-<%= @comment.body %>
+<%= @comment.body.html_safe %>
 
 -> Respond at <%= @comment.post.wrapped_url %>
 

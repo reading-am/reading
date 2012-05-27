@@ -12,6 +12,7 @@ define [
       @$el.html(@template())
 
       child_view = new CommentView
+        size: "medium"
         model: @model
         tagName: "div"
         className: "r_content r_comment"

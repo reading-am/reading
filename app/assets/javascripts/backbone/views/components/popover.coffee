@@ -10,7 +10,7 @@ define [
     className: "r_popover"
 
     events:
-      "click" : "close"
+      "click .r_blocker" : "close"
 
     close: ->
       @$el.remove()

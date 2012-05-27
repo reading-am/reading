@@ -19,3 +19,5 @@ define [
       @$el.html(@template(@model.toJSON()))
       $("body").prepend @el
       @$el.fadeIn("fast")
+
+      return this

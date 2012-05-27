@@ -2,10 +2,11 @@ define [
   "jquery"
   "backbone"
   "handlebars"
-  "css!components/popover"
-], ($, Backbone, Handlebars) ->
+  "app/views/components/popover"
+  "css!users/popover"
+], ($, Backbone, Handlebars, Popover) ->
 
-  class UserPopover extends Backbone.View
+  class UserPopover extends Popover
 
     template: Handlebars.compile "
       <div class=\"r_blocker\"></div>
@@ -13,13 +14,6 @@ define [
     "
 
     id: "r_user_popover"
-    className: "r_popover"
-
-    events:
-      "click" : "close"
-
-    close: ->
-      @$el.remove()
 
     render: ->
       @$el.html(@template(@model.toJSON()))

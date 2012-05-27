@@ -1,16 +1,12 @@
 define [
   "backbone"
-  "handlebars"
-  "models/current_user"
+  "app/views/components/popover"
   "app/views/comments/comment"
-  "css!components/popover"
-], (Backbone, Handlebars, current_user, CommentView) ->
+  "css!comments/popover"
+], (Backbone, Popover, CommentView) ->
 
-  class CommentPopover extends Backbone.View
-    template: Handlebars.compile "<div class=\"r_blocker\"></div>"
-
+  class CommentPopover extends Popover
     id: "r_comment_popover"
-    className: "r_popover"
 
     render: =>
       @$el.html(@template())

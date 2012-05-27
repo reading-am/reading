@@ -16,9 +16,13 @@ class CommentsController < ApplicationController
   def show
     @comment = Comment.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @comment }
+    if @comment.user.username != params[:username]
+      redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
+    else
+      respond_to do |format|
+        format.html { render :layout => 'bb' }
+        format.xml  { render :xml => @comment }
+      end
     end
   end
 
@@ -36,6 +40,11 @@ class CommentsController < ApplicationController
   # GET /comments/1/edit
   def edit
     @comment = Comment.find(params[:id])
+  end
+
+  def shortener
+    @comment = Comment.find(Base58.decode(params[:id]))
+    redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
   end
 
 end

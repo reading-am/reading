@@ -2,11 +2,12 @@ define [
   "underscore"
   "libs/backbone"
   "app"
-], (_, Backbone, App) ->
+  "app/constants"
+], (_, Backbone, App, Constants) ->
 
   # Override the url method to append the absolute API route
   Backbone.Model::_url = Backbone.Model::url
-  Backbone.Model::url = -> "//<%= DOMAIN %>/api/#{@_url()}"
+  Backbone.Model::url = -> "//#{Constants.domain}/api/#{@_url()}"
 
   Backbone.Model::factory = (input) ->
     if _.isArray input

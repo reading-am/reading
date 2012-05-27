@@ -17,7 +17,7 @@ define [
         return Constants.errors.general
 
     short_url: ->
-      "<%= SHORT_DOMAIN %>/p/#{base58.encode(@id)}"
+      "#{Constants.short_domain}/p/#{base58.encode(@id)}"
 
     # update the date_created every 15 seconds ala chartbeat
     # consider not doing this for context-menu posts

@@ -16,7 +16,7 @@ define [
       @collection.each(@addOne)
 
     addOne: (user) =>
-      view = new UserView({model : user})
+      view = new UserView model: user, size: "small"
       @subviews.push(view)
       @$el.append(view.render().el)
  

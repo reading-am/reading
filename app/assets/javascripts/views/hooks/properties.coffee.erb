@@ -17,21 +17,21 @@ define [
   "events":<%= events.to_json %>,
   "providers":[
     {"text":"Facebook", "params":[
-      {"text":"account", "options":current_user.authorizations.facebook.accounts(), "datatype":"account"},
+      {"text":"account", "options":current_user.get("authorizations").facebook.accounts(), "datatype":"account"},
       {"name":"permission", "options":[{text:"the timeline",value:"publish_actions"},{text:"the wall",value:"publish_stream"}]}
     ]},
     {"text":"Twitter", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.authorizations.twitter.accounts(), "datatype":"account"}
+      {"text":"account", "options":current_user.get("authorizations").twitter.accounts(), "datatype":"account"}
     ]},
     {"text":"Tumblr", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.authorizations.tumblr.accounts(), "datatype":"account"},
+      {"text":"account", "options":current_user.get("authorizations").tumblr.accounts(), "datatype":"account"},
       {"text":"blog", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
     ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.authorizations.instapaper.accounts(), "datatype":"account"}
+      {"text":"account", "options":current_user.get("authorizations").instapaper.accounts(), "datatype":"account"}
     ]},
     {"text":"Pinboard", "params":[
       {"text":"user", "placeholder":"my_username"},
@@ -39,7 +39,7 @@ define [
     ]},
     {"text":"Readability", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.authorizations.readability.accounts(), "datatype":"account"}
+      {"text":"account", "options":current_user.get("authorizations").readability.accounts(), "datatype":"account"}
     ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},

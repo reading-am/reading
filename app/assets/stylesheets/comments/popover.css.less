@@ -1,0 +1,32 @@
+@import "variables";
+
+#r_comment_popover {
+  margin-top:150px;
+  .r_content {
+    width:380px;
+    padding:20px;
+  }
+  .r_comment {
+    max-width:none;
+    .r_comment_header {
+      background:none;
+      time {
+        color:@dark_grey !important;
+      }
+    }
+    .r_comment_body {
+      border:none;
+      font-size:16px;
+      margin:15px 0 0;
+      padding:0;
+    }
+  }
+  .r_user {
+    font-size: 18px;
+    font-weight: bold;
+    img {
+      width:50px;
+      margin:0 5px 0 0;
+    }
+  }
+}

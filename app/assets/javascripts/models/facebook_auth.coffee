@@ -17,7 +17,7 @@ define [
 
       FB.getLoginStatus (response) =>
         if response.status is "connected" and @uid
-          if @uid is "new" and current_user.authorizations[@provider][response.authResponse.userID]
+          if @uid is "new" and current_user.get("authorizations")[@provider][response.authResponse.userID]
             error_status = "AuthPreexisting"
           else if @uid isnt "new" and String(response.authResponse.userID) isnt @uid
             error_status = "AuthWrongAccount"

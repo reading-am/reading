@@ -2,13 +2,14 @@ curl [
   "jquery"
   "underscore"
   "backbone"
+  "app/constants"
   "app/models/post"
   "app/views/bookmarklet/app"
   "app/collections/pages"
   "app/collections/providers"
   "css!bookmarklet/loader"
   "css!components/mentionsInput"
-], ($, _, Backbone, Post, AppView) ->
+], ($, _, Backbone, Constants, Post, AppView) ->
 
   #-----------------------------------------
   # Config Vars
@@ -48,7 +49,7 @@ curl [
     Post::current.save params, success: (model) ->
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
-        window.location = if window.location.href.indexOf('/t/') > -1 then "http://<%= DOMAIN %>/t/-/#{params.url}" else params.url
+        window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
         model.keep_fresh()
 
@@ -93,7 +94,7 @@ curl [
   #-----------------------------------------
   # Prompt to upgrade
 
-  upgrade = -> $.getScript "//<%= DOMAIN %>/assets/bookmarklet/upgrade.js"
+  upgrade = -> $.getScript "//#{Constants.domain}/assets/bookmarklet/upgrade.js"
 
   #-----------------------------------------
   # Check for jQuery and initialize

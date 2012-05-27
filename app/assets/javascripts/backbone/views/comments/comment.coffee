@@ -1,13 +1,13 @@
 define [
   "jquery"
-  "underscore"
   "backbone"
   "handlebars"
   "app/models/post"
   "app/views/users/user"
   "plugins/humane"
   "plugins/highlight"
-], ($, _, Backbone, Handlebars, Post, UserView) ->
+  "css!comments/comment"
+], ($, Backbone, Handlebars, Post, UserView) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "
@@ -30,15 +30,17 @@ define [
     className: "r_comment"
 
     events:
-      "click .r_reply" : "reply"
-      "click .r_quoted" : "find_quote"
-      "click .r_destroy" : "destroy"
-      "click a.r_url img": "find_image"
+      "click .r_reply"    : "reply"
+      "click .r_quoted"   : "find_quote"
+      "click .r_destroy"  : "destroy"
+      "click a.r_url img" : "find_image"
       "click a.r_url:not(.r_mention)": "new_window"
 
-    initialize: ->
+    initialize: (options) ->
       @model.bind "change", @render, this
       @model.bind "destroy", @remove, this
+
+      @size = options.size ? "small"
 
     reply: ->
       alert "reply will go here"
@@ -79,14 +81,17 @@ define [
 
     render: =>
       json = @model.toJSON()
-      json.is_owner = @model.get("user").get("id") == Post::current.get("user").get("id")
-      $(@el).html(@template(json))
+      # TODO there has to be a better current_user solution here
+      # this is being shared between the main site and the bookmarklet
+      json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
+      @$el.html(@template(json)).toggleClass("is_owner", json.is_owner)
 
       @$("time").humaneDates()
 
       child_view = new UserView
-        model: @model.get('user')
-        el:   @$(".r_user")
+        el:     @$(".r_user")
+        size:   @size
+        model:  @model.get('user')
       child_view.render()
 
       return this

@@ -35,7 +35,7 @@ define [
       unless !response.auth
         # rerun the constructor
         @constructor response.auth.uid, response.auth.permissions
-        current_user.authorizations[@provider][@uid] = this
+        current_user.get("authorizations")[@provider][@uid] = this
 
     save: (params) ->
       data =

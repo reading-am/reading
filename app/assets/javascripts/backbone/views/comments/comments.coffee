@@ -82,7 +82,7 @@ define [
         schema:
           name: "username"
           alt_name: "full_name"
-          avatar: "mini_avatar"
+          avatar: "avatar_mini"
 
         classes:
           autoCompleteItemActive : "r_active"

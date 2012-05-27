@@ -1,30 +1,8 @@
-<p id="notice"><%= notice %></p>
+<script type="text/javascript">
 
-<p>
-  <b>User:</b>
-  <%= @comment.user %>
-</p>
+  curl(["backbone", "app/routers/comments"], function(Backbone, Router){
+    new Router({model: Backbone.Model.prototype.factory(<%= @comment.simple_obj.to_json.html_safe -%>)});
+    Backbone.history.start({pushState: true});
+  });
 
-<p>
-  <b>Post:</b>
-  <%= @comment.post %>
-</p>
-
-<p>
-  <b>Body:</b>
-  <%= @comment.body_html %>
-</p>
-
-<p>
-  <b>Parent:</b>
-  <%= @comment.parent %>
-</p>
-
-<p>
-  <b>Page:</b>
-  <%= @comment.page %>
-</p>
-
-
-<%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= link_to 'Back', comments_path %>
+</script>

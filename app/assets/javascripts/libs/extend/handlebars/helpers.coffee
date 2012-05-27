@@ -1,9 +1,10 @@
 define [
   "jquery"
   "underscore"
+  "app/constants"
   "libs/handlebars"
   "libs/twitter-text"
-], ($, _, Handlebars, TwitterText) ->
+], ($, _, Constants, Handlebars, TwitterText) ->
 
   Handlebars.registerHelper "nl2br", (context, fn) ->
     new Handlebars.SafeString (context+"").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2")
@@ -13,9 +14,9 @@ define [
         urlClass:       "r_url",
         usernameClass:  "r_mention",
         hashtagClass:   "r_tag",
-        usernameUrlBase:"//<%= DOMAIN %>/",
-        listUrlBase:    "//<%= DOMAIN %>/",
-        hashtagUrlBase: "//<%= DOMAIN %>/search?q="
+        usernameUrlBase:"//#{Constants.domain}/",
+        listUrlBase:    "//#{Constants.domain}/",
+        hashtagUrlBase: "//#{Constants.domain}/search?q="
 
   Handlebars.registerHelper "embed_images", (context, fn) ->
     $context = $("<div>#{context}</div>")

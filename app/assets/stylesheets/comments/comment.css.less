@@ -1,0 +1,69 @@
+@import "variables";
+
+.r_comment, #r_am .r_comment {
+  max-width:360px;
+  background:none;
+  img {
+    max-width:297px;
+    max-height:175px;
+  }
+  .r_reply {
+    color:@green !important;
+  }
+  .r_destroy {
+    color:@red !important;
+  }
+  .r_comment_header {
+    overflow:auto;
+    background:@yellow;
+    .r_user {
+      float:left;
+    }
+    time, .r_comment_actions {
+      float:right;
+      margin:5px;
+    }
+    time {
+      font-size:10px;
+      color:@dark_yellow !important;
+    }
+  }
+  &.is_owner:hover .r_comment_header time {
+    display:none;
+  }
+  .r_comment_actions {
+    display:none;
+  }
+  &.is_owner:hover .r_comment_actions {
+    display:block;
+  }
+  .r_comment_body {
+    background:@white;
+    margin:0 0 0 25px;
+    padding:7px 14px;
+    border:5px solid @yellow;
+    border-top-width:3px;
+    pre, code {
+      font-family: "Bitstream Vera Sans Mono","Courier",monospace;
+      display:inline-block;
+    }
+    code {
+      padding:2px 5px;
+      color:@medium_grey !important;
+      background-color:@light_grey;
+    }
+    .r_mention:hover, .r_tag:hover, .r_url, .r_email {
+      color:@black !important;
+      text-decoration:underline;
+    }
+    .r_mention {
+      font-weight:bold;
+      background:@light_blue;
+      text-decoration:none;
+    }
+    .r_tag {
+      color:@dark_grey !important;
+      text-decoration:none;
+    }
+  }
+}

@@ -43,7 +43,7 @@ define [
   $ ->
     # TODO remove once comments are public
     events = hook_properties.events
-    events.splice(events.length-1,1) if !current_user.can_comment
+    events.splice(events.length-1,1) if !current_user.get("can_comment")
 
     # build the constructor with the initial selection
     $con = $('#constructor')
@@ -75,7 +75,7 @@ define [
             .removeAttr("disabled")
             .removeClass("disabled")
             .html($("<option>").text("Loading...").val(""))
-          current_user.authorizations[provider][account].places {success:(places) ->
+          current_user.get("authorizations")[provider][account].places {success:(places) ->
             $places.html ""
             $places.append($("<option>").text(place.text).val(place.value)) for place in places
           }
@@ -106,7 +106,7 @@ define [
         if account is "new"
           auth = new App.Models["#{prov_cap}Auth"](account)
         else
-          auth = current_user.authorizations[provider][account]
+          auth = current_user.get("authorizations")[provider][account]
 
         if not auth.can permission
           $('#loading').fadeIn()

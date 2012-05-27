@@ -43,7 +43,7 @@ class CommentsController < ApplicationController
   end
 
   def shortener
-    @comment = Comment.find(params[:id])
+    @comment = Comment.find(Base58.decode(params[:id]))
     redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
   end
 

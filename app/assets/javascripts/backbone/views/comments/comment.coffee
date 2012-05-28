@@ -46,7 +46,7 @@ define [
       @size = options.size ? "small"
 
     share: ->
-      @share_view = new SharePopover
+      @share_view = new SharePopover subject: @model
       @share_view.render()
 
     reply: ->

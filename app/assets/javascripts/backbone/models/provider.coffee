@@ -1,16 +1,30 @@
 define [
   "backbone"
   "app"
-], (Backbone, App) ->
+  "app/models/post"
+  "app/models/comment"
+], (Backbone, App, Post, Comment) ->
 
   class Provider extends Backbone.Model
     type: "Provider"
-    url: (post) ->
-      vals =
-        url: post.get("page").get("url")
-        short_url: "http://#{post.short_url()}"
-        wrapped_url: post.get("wrapped_url")
-        title: post.get("page").get("title")
+
+    run: -> @get("action").call this
+
+    url: (vals) ->
+      subject = @get("subject")
+      if subject instanceof Post
+        vals =
+          url: subject.get("page").get("url")
+          short_url: "http://#{subject.short_url()}"
+          wrapped_url: subject.get("wrapped_url")
+          title: subject.get("page").get("title")
+      else if subject instanceof Comment
+        vals =
+          url: subject.get("url")
+          short_url: "http://#{subject.short_url()}"
+          wrapped_url: subject.get("url")
+          title: subject.get("page").get("title")
+
       parsed_url = @get("url_scheme")
       for val of vals
         parsed_url = parsed_url.replace("{{#{val}}}", encodeURIComponent(vals[val]))

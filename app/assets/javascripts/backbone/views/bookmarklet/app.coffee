@@ -98,7 +98,7 @@ define [
         $other.removeClass(active).addClass inactive
 
     showShare: ->
-      @share_view = new SharePopover
+      @share_view = new SharePopover subject: Post::current
       @share_view.render()
 
     close: ->

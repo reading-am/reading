@@ -24,45 +24,53 @@ define [
 
       @providers = new Providers [
         {
+          subject: options.subject
           name: "Twitter"
           url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
-          action: (url) ->
-            popup url, 475, 345
+          action: ->
+            popup @url(), 475, 345
         },{
+          subject: options.subject
           name: "Facebook"
           url_scheme: "https://www.facebook.com/sharer.php?u={{wrapped_url}}&t={{title}}"
-          action: (url) ->
-            popup url, 520, 370
+          action: ->
+            popup @url(), 520, 370
         },{
+          subject: options.subject
           name: "Tumblr"
           url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20%22{{title}}%22"
-          action: (url) ->
-            popup url, 450, 430
+          action: ->
+            popup @url(), 450, 430
         },{
+          subject: options.subject
           name: "Instapaper"
           url_scheme: "http://www.instapaper.com/hello2?url={{url}}&title={{title}}"
-          action: (url) ->
-            window.location = url
+          action: ->
+            window.location = @url()
         },{
+          subject: options.subject
           name: "Readability"
           url_scheme: "http://www.readability.com/save?url={{url}}"
-          action: (url) ->
-            window.location = url
+          action: ->
+            window.location = @url()
         },{
+          subject: options.subject
           name: "Pocket"
           url_scheme: "https://getpocket.com/save?url={{url}}&title={{title}}"
-          action: (url) ->
-            popup url, 490, 400
+          action: ->
+            popup @url(), 490, 400
         },{
+          subject: options.subject
           name: "Pinboard"
           url_scheme: "https://pinboard.in/add?showtags=yes&url={{url}}&title={{title}}&tags=reading.am"
-          action: (url) ->
-            popup url, 490, 400
+          action: ->
+            popup @url(), 490, 400
         },{
+          subject: options.subject
           name: "Email"
           url_scheme: "mailto:?subject=✌%20Reading%20%22{{title}}%22&body={{wrapped_url}}"
-          action: (url) ->
-            window.location.href = url
+          action: ->
+            window.location.href = @url()
         }
       ]
 

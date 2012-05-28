@@ -8,7 +8,11 @@ define [
     template: Handlebars.compile "<iframe id=\"page_frame\" src=\"{{page.url}}\"></iframe>"
 
     render: ->
-      @$el.html(@template(@model.toJSON()))
       @popover = new CommentPopover model: @model
+      @popover.close = => window.location = @$("iframe").attr("src")
+      @popover.delegateEvents()
+
+      @$el.html(@template(@model.toJSON()))
       @$el.prepend(@popover.render().el)
+
       return this

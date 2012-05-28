@@ -7,6 +7,10 @@
     max-width:297px;
     max-height:175px;
   }
+  .r_permalink {
+    font-size:16px;
+    line-height:0;
+  }
   .r_reply {
     color:@green !important;
   }
@@ -28,13 +32,14 @@
       color:@dark_yellow !important;
     }
   }
-  &.is_owner:hover .r_comment_header time {
+  &:hover .r_comment_header time {
     display:none;
   }
   .r_comment_actions {
     display:none;
+    a { margin:0 0 0 3px; }
   }
-  &.is_owner:hover .r_comment_actions {
+  &:hover .r_comment_actions {
     display:block;
   }
   .r_comment_body {

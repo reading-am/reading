@@ -4,10 +4,11 @@ define [
   "handlebars"
   "app/models/post"
   "app/views/users/user"
+  "app/views/components/share_popover"
   "plugins/humane"
   "plugins/highlight"
   "css!comments/comment"
-], ($, Backbone, Handlebars, Post, UserView) ->
+], ($, Backbone, Handlebars, Post, UserView, SharePopover) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "
@@ -15,6 +16,7 @@ define [
         <div class=\"r_user\"></div>
         <time datetime=\"{{updated_at}}\"></time>
         <div class=\"r_comment_actions\">
+          <a href=\"#\" class=\"r_share\">share</a>
           {{! <a href=\"#\" class=\"r_reply\">reply</a> }}
           {{#if is_owner}}
             <a href=\"#\" class=\"r_destroy\">delete</a>
@@ -30,6 +32,7 @@ define [
     className: "r_comment"
 
     events:
+      "click .r_share"    : "share"
       "click .r_reply"    : "reply"
       "click .r_quoted"   : "find_quote"
       "click .r_destroy"  : "destroy"
@@ -41,6 +44,10 @@ define [
       @model.bind "destroy", @remove, this
 
       @size = options.size ? "small"
+
+    share: ->
+      @share_view = new SharePopover
+      @share_view.render()
 
     reply: ->
       alert "reply will go here"

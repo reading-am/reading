@@ -4,10 +4,11 @@ define [
   "handlebars"
   "app/models/post"
   "app/views/users/user"
+  "app/views/components/share_popover"
   "plugins/humane"
   "plugins/highlight"
   "css!comments/comment"
-], ($, Backbone, Handlebars, Post, UserView) ->
+], ($, Backbone, Handlebars, Post, UserView, SharePopover) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "
@@ -15,10 +16,10 @@ define [
         <div class=\"r_user\"></div>
         <time datetime=\"{{updated_at}}\"></time>
         <div class=\"r_comment_actions\">
-          {{! <a href=\"#\" class=\"r_reply\">reply</a> }}
-          {{#if is_owner}}
-            <a href=\"#\" class=\"r_destroy\">delete</a>
-          {{/if}}
+          {{#if is_owner}}<a href=\"#\" class=\"r_destroy\">Delete</a>{{/if}}
+          <a href=\"#\" class=\"r_share\">Share</a>
+          {{! <a href=\"#\" class=\"r_reply\">Reply</a> }}
+          <a href=\"{{url}}\" class=\"r_permalink\">⚓</a>
         </div>
       </div>
       <div class=\"r_comment_body\">
@@ -30,6 +31,8 @@ define [
     className: "r_comment"
 
     events:
+      "click .r_permalink": "new_window"
+      "click .r_share"    : "share"
       "click .r_reply"    : "reply"
       "click .r_quoted"   : "find_quote"
       "click .r_destroy"  : "destroy"
@@ -41,6 +44,10 @@ define [
       @model.bind "destroy", @remove, this
 
       @size = options.size ? "small"
+
+    share: ->
+      @share_view = new SharePopover subject: @model
+      @share_view.render()
 
     reply: ->
       alert "reply will go here"
@@ -84,7 +91,7 @@ define [
       # TODO there has to be a better current_user solution here
       # this is being shared between the main site and the bookmarklet
       json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
-      @$el.html(@template(json)).toggleClass("is_owner", json.is_owner)
+      @$el.html(@template(json))
 
       @$("time").humaneDates()
 

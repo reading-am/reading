@@ -10,9 +10,12 @@ SitemapGenerator::Sitemap.create do
     feed = user.feed.first
     following = user.relationships.last
     follower = user.reverse_relationships.last
-    add "/#{user.username}",            :changefreq => 'hourly',  :lastmod => post.blank?       ? user.created_at : post.created_at, :priority => 0.7
-    add "/#{user.username}/list",       :changefreq => 'hourly',  :lastmod => feed.blank?       ? user.created_at : feed.created_at
-    add "/#{user.username}/following",  :changefreq => 'daily',   :lastmod => following.blank?  ? user.created_at : following.created_at
-    add "/#{user.username}/followers",  :changefreq => 'daily',   :lastmod => follower.blank?   ? user.created_at : follower.created_at
+    add "/#{user.username}",            :changefreq => 'hourly',  :lastmod => post.blank?       ? user.updated_at : post.updated_at, :priority => 0.7
+    add "/#{user.username}/list",       :changefreq => 'hourly',  :lastmod => feed.blank?       ? user.updated_at : feed.updated_at
+    add "/#{user.username}/following",  :changefreq => 'daily',   :lastmod => following.blank?  ? user.updated_at : following.updated_at
+    add "/#{user.username}/followers",  :changefreq => 'daily',   :lastmod => follower.blank?   ? user.updated_at : follower.updated_at
+  end
+  Comment.find_each do |comment|
+    add "/#{comment.user.username}/comments/#{comment.id}", :changefreq => 'weekly', :lastmod => comment.updated_at
   end
 end

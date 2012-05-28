@@ -14,10 +14,3 @@ define [
     "
 
     id: "r_user_popover"
-
-    render: ->
-      @$el.html(@template(@model.toJSON()))
-      $("body").prepend @el
-      @$el.fadeIn("fast")
-
-      return this

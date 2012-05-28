@@ -17,13 +17,13 @@ define [
           url: subject.get("page").get("url")
           short_url: "http://#{subject.short_url()}"
           wrapped_url: subject.get("wrapped_url")
-          title: subject.get("page").get("title")
+          title: "\"#{subject.get("page").get("title")}\""
       else if subject instanceof Comment
         vals =
           url: subject.get("url")
           short_url: "http://#{subject.short_url()}"
           wrapped_url: subject.get("url")
-          title: subject.get("page").get("title")
+          title: "a comment by #{subject.get("user").get("display_name")} on \"#{subject.get("page").get("title")}\""
 
       parsed_url = @get("url_scheme")
       for val of vals

@@ -26,7 +26,7 @@ define [
         {
           subject: options.subject
           name: "Twitter"
-          url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20%22{{title}}%22"
+          url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20{{title}}"
           action: ->
             popup @url(), 475, 345
         },{
@@ -38,7 +38,7 @@ define [
         },{
           subject: options.subject
           name: "Tumblr"
-          url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20%22{{title}}%22"
+          url_scheme: "http://www.tumblr.com/share?v=3&u={{wrapped_url}}&t=✌%20Reading%20{{title}}"
           action: ->
             popup @url(), 450, 430
         },{
@@ -68,7 +68,7 @@ define [
         },{
           subject: options.subject
           name: "Email"
-          url_scheme: "mailto:?subject=✌%20Reading%20%22{{title}}%22&body={{wrapped_url}}"
+          url_scheme: "mailto:?subject=✌%20Reading%20{{title}}&body={{wrapped_url}}"
           action: ->
             window.location.href = @url()
         }

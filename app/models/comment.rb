@@ -68,6 +68,7 @@ class Comment < ActiveRecord::Base
       :type   => "Comment",
       :id     => to_s ? id.to_s : id,
       :body   => body,
+      :url    => "http://#{DOMAIN}/#{user.username}/comments/#{id}",
       :created_at => created_at,
       :updated_at => updated_at,
       :user   => user.simple_obj,

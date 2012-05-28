@@ -2,19 +2,19 @@ define [
   "backbone"
   "handlebars"
   "app/models/post"
-], (Backbone, Handlebars, Post) ->
+  "app/models/comment"
+], (Backbone, Handlebars, Post, Comment) ->
 
   class ProviderView extends Backbone.View
-    template: Handlebars.compile "<a href=\"#\" class=\"r_share\">{{name}}</a>"
+    template: Handlebars.compile "<a href=\"#\" class=\"r_share r_{{name}}\">{{name}}</a>"
+
+    tagName: "li"
 
     events:
       "click" : "run"
 
-    tagName: "li"
-
     run: ->
-      @model.get("action")(@model.url Post::current)
-      false
+      @model.run()
 
     render: ->
       @$el.html(@template(@model.toJSON()))

@@ -1,11 +1,11 @@
-@grey: #EEE;
+@import "variables";
 
 .twitter .glyph {
-  color:#2493c4;
+  color:@twitter;
   font-size:1.25em;
 }
 .facebook .glyph {
-  color:#557b9f;
+  color:@facebook;
   background:white;
 }
 .provider {
@@ -15,22 +15,22 @@
   text-decoration:none;
 }
 .provider.twitter {
-  background-color:#d7f3ff;
+  background-color:@twitter_light;
 }
 .provider.instapaper {
-  background-color:#EEE;
+  background-color:@instapaper;
 }
 .provider.tumblr {
-  background-color:@grey;
+  background-color:@light_grey;
 }
 .tumblr .glyph {
-  color:#2C4762;
+  color:@tumblr;
 }
 .provider.readability {
   background:#f4f4ec;
 }
 .provider.readability .icon {
-  color:#9C0001;
+  color:@readability;
   font-size:20px;
   line-height:0;
 }
@@ -41,13 +41,13 @@
   background:#DDD;
 }
 a:hover .provider.twitter {
-  background-color:#e6f7ff;
+  background-color:@twitter_lightest;
 }
 .provider.facebook {
-  background-color:#d2eaff;
+  background-color:@facebook_light;
 }
 a:hover .provider.facebook {
-  background-color:#def0ff;
+  background-color:@facebook_lightest;
 }
 .disconnected, .disconnected a, .disconnected .provider {
   color:#555;
@@ -56,12 +56,12 @@ a:hover .provider.facebook {
   font-size:12px;
 }
 .disconnected .provider, .disconnected a:hover .provider {
-  background:@grey;
+  background:@light_grey;
 }
 .disconnected .glyph {
-  color:#999;
+  color:@dark_grey;
 }
 .disconnected .provider.instapaper .icon {
   background:#AAA;
-  color:#FFF;
+  color:@white;
 }

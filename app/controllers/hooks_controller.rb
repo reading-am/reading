@@ -1,15 +1,5 @@
 # encoding: utf-8
 class HooksController < ApplicationController
-  # GET /hooks
-  # GET /hooks.xml
-  def index
-    @hooks = Hook.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @hooks }
-    end
-  end
 
   # GET /hooks/1
   # GET /hooks/1.xml

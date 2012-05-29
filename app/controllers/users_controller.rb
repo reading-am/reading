@@ -1,16 +1,5 @@
 # encoding: utf-8
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.xml
-  def index
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-    end
-  end
-
   # GET /users/1
   # GET /users/1.xml
   def show
@@ -45,20 +34,11 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/new
-  # GET /users/new.xml
-  def new
-    @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @user }
-    end
-  end
 
   def settings
     redirect_to logged_in? ? "/settings/info" : "/"
   end
+
 
   # GET /users/1/edit
   def edit
@@ -69,26 +49,15 @@ class UsersController < ApplicationController
     end
   end
 
-  # POST /users
-  # POST /users.xml
-  def create
-    @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
 
   # PUT /users/1
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
+
+    if @user != current_user
+      redirect_to root_url and return
+    end
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -101,22 +70,12 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.xml
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(users_url) }
-      format.xml  { head :ok }
-    end
-  end
 
   def followingers
     @user = User.find_by_username(params[:username])
     @users = (params[:type] == 'followers') ? @user.followers : @user.following
   end
+
 
   def hooks
     redirect_to "/" if !logged_in?
@@ -130,6 +89,7 @@ class UsersController < ApplicationController
       format.rss  { render 'hooks/index' }
     end
   end
+
 
   # GET /pick_a_url
   def pick_a_url
@@ -148,10 +108,12 @@ class UsersController < ApplicationController
     end
   end
 
+
   def delete_cookies
     cookies.each do |k, v| cookies.delete k end
     redirect_to '/'
   end
+
 
   def export
     user = User.find_by_username(params[:username])
@@ -163,6 +125,7 @@ class UsersController < ApplicationController
       show_404
     end
   end
+
 
   def extras
     redirect_to "/" if !logged_in?

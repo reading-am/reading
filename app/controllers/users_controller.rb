@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    redirect_to "/" if !logged_in?
+    redirect_to "/" and return if !logged_in?
     @user = current_user
     if params[:user] and @user.update_attributes(params[:user])
       redirect_to("/settings/info", :notice => 'User was successfully updated.')
@@ -78,7 +78,7 @@ class UsersController < ApplicationController
 
 
   def hooks
-    redirect_to "/" if !logged_in?
+    redirect_to "/" and return if !logged_in?
     @user = current_user
     @new_hook = Hook.new
     @hooks = @user.hooks
@@ -128,7 +128,7 @@ class UsersController < ApplicationController
 
 
   def extras
-    redirect_to "/" if !logged_in?
+    redirect_to "/" and return if !logged_in?
     @user = current_user
   end
 end

@@ -83,6 +83,7 @@ class User < ActiveRecord::Base
     where("lower(username) = ?", username.downcase).first
   end
 
+  # TODO - consolidate most of this logic with Authorization#find_or_create
   def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
@@ -94,7 +95,6 @@ class User < ActiveRecord::Base
       ["token","secret","expires_at"].each do |prop|
         auth[prop] = auth_hash["credentials"][prop] || auth[prop]
       end
-      auth.sync_perms # make sure the permissions stay in sync
       auth.save
 
       [
@@ -118,6 +118,7 @@ class User < ActiveRecord::Base
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
         :secret     => auth_hash["credentials"]["secret"],
+        :expires_at => auth_hash["credentials"]["expires_at"],
         :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
       )
     end

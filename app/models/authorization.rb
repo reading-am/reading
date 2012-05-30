@@ -144,6 +144,7 @@ public
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
         :secret     => auth_hash["credentials"]["secret"],
+        :expires_at => auth_hash["credentials"]["expires_at"],
         :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
       )
     end

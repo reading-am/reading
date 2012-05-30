@@ -8,7 +8,7 @@ define [
     provider: "facebook"
 
     set_default_perms: (@permissions) ->
-      @permissions = _.uniq(@permissions.concat(["email","offline_access"])) if !@uid or @uid is "new"
+      @permissions = _.uniq(@permissions.concat(["email"])) if !@uid or @uid is "new"
 
     login: (params={}) ->
       success = params.success ? ->

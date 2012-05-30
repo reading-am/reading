@@ -91,22 +91,25 @@ class User < ActiveRecord::Base
       end
       # grab whatever info that came down from the credentials this time
       # and save it if we're missing it
-      # TODO - there has to be a cleaner, more concise way to do this
-      auth.token  ||= auth_hash["credentials"]["token"]
-      auth.secret ||= auth_hash["credentials"]["secret"]
+      ["token","secret","expires_at"].each do |prop|
+        auth[prop] = auth_hash["credentials"][prop] || auth[prop]
+      end
       auth.sync_perms # make sure the permissions stay in sync
       auth.save
 
-      self.name       ||= auth_hash["info"]["name"]
-      self.email      ||= auth_hash["info"]["email"]
-      self.first_name ||= auth_hash["info"]["first_name"]
-      self.last_name  ||= auth_hash["info"]["last_name"]
-      self.location   ||= auth_hash["info"]["location"]
-      self.description||= auth_hash["info"]["description"]
-      self.image      ||= auth_hash["info"]["image"]
-      self.phone      ||= auth_hash["info"]["phone"]
-      self.urls       ||= auth_hash["info"]["urls"]
+      [
+        "name",
+        "email",
+        "first_name",
+        "last_name",
+        "location",
+        "description",
+        "image",
+        "phone",
+        "urls"
+      ].each do |prop| self[prop] ||= auth_hash["info"][prop] end
       self.save
+
       raise AuthError.new("AuthPreexisting", auth)
     else
       Authorization.create(

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120508234630) do
+ActiveRecord::Schema.define(:version => 20120530032556) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20120508234630) do
     t.string   "secret"
     t.string   "permissions"
     t.text     "info"
+    t.datetime "expires_at"
   end
 
   add_index "authorizations", ["provider", "uid"], :name => "index_authorizations_on_provider_and_uid"

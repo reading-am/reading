@@ -16,7 +16,7 @@ private
 public
 
   def sync_perms
-    case self.provider
+    case provider
     when 'facebook'
       # TODO - add error checking here
       perms = api.get_object('/me/permissions').first rescue {}
@@ -24,6 +24,26 @@ public
       self.permissions = perms.blank? ? "[]" : "[\"#{perms}\"]"
     else
       self.permissions = '["read","write"]'
+    end
+  end
+
+  def refresh_token
+    case provider
+    when 'facebook'
+      # exchange short lived token or expiring token for long lived
+      # per: https://developers.facebook.com/roadmap/offline-access-removal/
+      url = "https://graph.facebook.com/oauth/access_token"
+      params = {
+        :client_id      => ENV['READING_FACEBOOK_KEY'],
+        :client_secret  => ENV['READING_FACEBOOK_SECRET'],
+        :grant_type     => "fb_exchange_token",
+        :fb_exchange_token => self.token
+      }
+      response = Typhoeus::Request.get url, :params => params
+      response = CGI::parse(response.body)
+
+      self.token = response["access_token"][0]
+      self.expires_at = Time.now + response["expires"][0].to_i
     end
   end
 
@@ -87,12 +107,11 @@ public
 
   def self.find_or_create(auth_hash)
     if auth = find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
-      # fill in any missing info
-      # There was a point where we weren't collecting
-      # tokens and secrets. This backfills them
-      auth.token  ||= auth_hash["credentials"]["token"]
-      auth.secret ||= auth_hash["credentials"]["secret"]
-      auth.save if auth.changed?
+      # fill in any changed info
+      ["token","secret","expires_at"].each do |prop|
+        auth[prop] = auth_hash["credentials"][prop] || auth[prop]
+      end
+      auth.save
     else
       username = auth_hash["info"]["nickname"]
       username = (username.nil? or username == '') ? nil : username.gsub(/[^A-Z0-9_]/i, '')
@@ -125,6 +144,7 @@ public
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
         :secret     => auth_hash["credentials"]["secret"],
+        :expires_at => auth_hash["credentials"]["expires_at"],
         :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
       )
     end

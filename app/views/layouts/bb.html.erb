@@ -26,9 +26,10 @@
   <%= render :partial => 'layouts/ga_embed' if Rails.env == 'production' %>
 </head>
 <body id="bb">
-<%= render :partial => 'layouts/fb_api' %>
-<div id="yield"></div>
-<%= yield %>
-<%= render :partial => 'layouts/loading' %>
+  <%= render :partial => 'layouts/fb_api' %>
+  <div id="yield"></div>
+  <%= yield %>
+  <%= render :partial => 'layouts/loading' %>
+  <%= render :partial => 'layouts/quantcast' if Rails.env == 'production' %>
 </body>
 </html>

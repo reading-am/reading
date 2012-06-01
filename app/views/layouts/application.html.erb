@@ -33,5 +33,6 @@
   <%= yield %>
   </div>
   <%= render :partial => 'layouts/loading' %>
+  <%= render :partial => 'layouts/quantcast' if Rails.env == 'production' %>
 </body>
 </html>

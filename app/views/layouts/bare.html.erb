@@ -6,5 +6,6 @@
 </head>
 <body>
   <%= yield %>
+  <%= render :partial => 'layouts/quantcast' if Rails.env == 'production' %>
 </body>
 </html>

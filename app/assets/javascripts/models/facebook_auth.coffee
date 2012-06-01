@@ -1,4 +1,4 @@
-define [
+reading.define [
   "underscore"
   "app"
   "models/authorization"

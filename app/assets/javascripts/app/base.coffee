@@ -1,4 +1,4 @@
-curl [
+reading.curl [
   "jquery"
   "libs/base58"
   "libs/indian"

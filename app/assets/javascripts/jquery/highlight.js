@@ -42,7 +42,7 @@
  * Licensed under MIT license.
  *
  */
-define(["jquery"], function(jQuery){
+reading.define(["jquery"], function(jQuery){
 
   jQuery.extend({
       highlight: function (node, re, nodeName, className) {

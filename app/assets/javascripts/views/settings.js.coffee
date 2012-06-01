@@ -1,4 +1,4 @@
-define ["jquery"], ($) ->
+reading.define ["jquery"], ($) ->
 
   $ ->
     $("#signout").on "click", ->

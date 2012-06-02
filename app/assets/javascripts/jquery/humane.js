@@ -11,7 +11,7 @@
  * Licensed under the MIT license.
  */
 
-define(["jquery"], function(jQuery){
+reading.define(["jquery"], function(jQuery){
 
   function humaneDate(date, compareTo){
 

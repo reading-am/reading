@@ -1,4 +1,4 @@
-define [
+reading.define [
   "handlebars"
   "app/views/components/popover"
   "app/models/provider"

@@ -1,8 +1,9 @@
-define [
+reading.define [
+  "jquery"
   "backbone"
   "handlebars"
   "css!components/popover"
-], (Backbone, Handlebars) ->
+], ($, Backbone, Handlebars) ->
 
   class Popover extends Backbone.View
     template: Handlebars.compile "<div class=\"r_blocker\"></div>"

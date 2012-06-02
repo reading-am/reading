@@ -1,10 +1,9 @@
-define [
-  "jquery"
+reading.define [
   "backbone"
   "handlebars"
   "app/views/components/popover"
   "css!users/popover"
-], ($, Backbone, Handlebars, Popover) ->
+], (Backbone, Handlebars, Popover) ->
 
   class UserPopover extends Popover
 

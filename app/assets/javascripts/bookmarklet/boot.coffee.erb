@@ -1,15 +1,13 @@
 reading.curl [
   "jquery"
-  "underscore"
-  "backbone"
   "app/constants"
   "app/models/post"
   "app/views/bookmarklet/app"
-  "app/collections/pages"
-  "app/collections/providers"
+  "app/collections/pages" # needs to be preloaded
+  "app/collections/providers" # needs to be preloaded
   "css!bookmarklet/loader"
   "css!components/mentionsInput"
-], ($, _, Backbone, Constants, Post, AppView) ->
+], ($, Constants, Post, AppView) ->
 
   #-----------------------------------------
   # Config Vars

@@ -1,4 +1,4 @@
-define [
+reading.define [
   "app"
   "models/authorization"
   "models/instapaper_prov"

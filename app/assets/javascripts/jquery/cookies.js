@@ -7,7 +7,7 @@
  * http://www.gnu.org/licenses/gpl.html
  *
  */
-define(["jquery"], function(jQuery){
+reading.define(["jquery"], function(jQuery){
   jQuery.cookie = function (key, value, options) {
 
       // key and at least value given, set cookie...

@@ -1,4 +1,4 @@
-define(["jquery"], function($, undefined){
+reading.define(["jquery"], function($, undefined){
 
 /**
  * Unobtrusive scripting adapter for jQuery

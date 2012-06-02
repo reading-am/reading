@@ -11,7 +11,7 @@
 *	@licence						MIT License - http://www.opensource.org/licenses/mit-license.php
 */
 
-define(["jquery"], function(jQuery){ 
+reading.define(["jquery"], function(jQuery){ 
 	jQuery.fn.extend({  
 		elastic: function() {
 		

@@ -1,4 +1,4 @@
-define [
+reading.define [
   "jquery"
   "plugins/color.min"
 ], ($) ->

@@ -1,4 +1,4 @@
-define ["jquery"], ($) ->
+reading.define ["jquery"], ($) ->
 
   field: (param, scope, add_label=true) ->
     param.name = param.text.toLowerCase().replace(RegExp(" ", "g"), "_")  unless param.name

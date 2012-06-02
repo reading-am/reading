@@ -1,8 +1,9 @@
-define [
+reading.define [
+  "jquery"
   "backbone"
   "app/models/comment"
   "app/views/comments/show"
-], (Backbone, Comment, ShowView) ->
+], ($, Backbone, Comment, ShowView) ->
 
   class CommentsRouter extends Backbone.Router
     initialize: (options) ->

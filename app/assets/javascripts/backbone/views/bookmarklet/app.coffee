@@ -1,15 +1,13 @@
-define [
+reading.define [
   "jquery"
   "underscore"
   "backbone"
   "handlebars"
   "app/models/post"
-  "app/collections/providers"
-  "app/views/providers/providers"
   "app/views/comments/comments"
   "app/views/users/users"
   "app/views/components/share_popover"
-], ($, _, Backbone, Handlebars, Post, Providers, ProvidersView, CommentsView, UsersView, SharePopover) ->
+], ($, _, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover) ->
 
   active = "r_active"
   inactive = "r_inactive"

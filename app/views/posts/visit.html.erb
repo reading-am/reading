@@ -1,11 +1,10 @@
 <script>
-reading = {
-  token: "<%= @token %>",
-  referrer_id: <%= @referrer_id %>
-};
+if(typeof reading == "undefined") reading = {};
+reading.token = "<%= @token %>";
+reading.referrer_id = <%= @referrer_id %>;
 </script>
 
-<%= javascript_include_tag 'bookmarklet/loader' %>
+<%= javascript_include_tag 'bookmarklet/boot' %>
 
 <div id="visit">
   <h2>Loading <span><%= params[:url] %></span><% if logged_in? %> and adding it to your reading list<% end %>.</h2>

@@ -47,11 +47,11 @@ reading.define [
     createOnEnter: (e) ->
         if e.keyCode is 13 and !Key.alt
           @collection.create
-            body: @$("textarea").val(),
+            body: @textarea.val(),
             post: Post::current
             user: Post::current.get("user")
             page: Post::current.get("page")
-          @$("textarea")
+          @textarea
             .val("")
             .mentionsInput("reset")
           @$("ul").animate
@@ -65,20 +65,20 @@ reading.define [
         addClass: false
         opacity: 0.5
         zIndex: 9999999999
-      @$("textarea").droppable
+      @textarea.droppable
         accept: "img"
         tolerance: "pointer"
         addClasses: false
         activeClass: "r_drag_active"
         hoverClass: "r_drag_hover"
         drop: (event, ui) =>
-          @$("textarea").insertAtCaret ui.draggable.attr("src")
+          @textarea.insertAtCaret ui.draggable.attr("src")
 
     attach_autocomplete: ->
       following = false
 
       # this should only be called after it's been attached to the DOM
-      @$("textarea").mentionsInput
+      @textarea.mentionsInput
         schema:
           name: "username"
           alt_name: "full_name"
@@ -108,6 +108,8 @@ reading.define [
               finish following
 
     render: =>
-      $(@el).html(@template())
+      @$el.html(@template())
+      @textarea = @$("textarea")
       @addAll()
+
       return this

@@ -1,13 +1,12 @@
 reading.define [
   "jquery"
-  "underscore"
   "backbone"
   "handlebars"
   "app/models/post"
   "app/views/comments/comments"
   "app/views/users/users"
   "app/views/components/share_popover"
-], ($, _, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover) ->
+], ($, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -47,6 +46,24 @@ reading.define [
       # can't bind in events because of conflicts
       @$el.on "click", "a[href=#]", -> false
 
+      # if the page has a frameset, create a body and reload the page in an iframe
+      $frameset = $("frameset")
+      if $frameset.length
+        $iframe = $("<iframe>").attr(
+          id: "r_iframe"
+          src: window.location.href
+        ).load =>
+          $frameset.remove()
+          $body.show()
+          @insert()
+
+        $body = $("<body>").attr(id: "r_body").hide().append $iframe
+        $("html").append $body
+
+      else
+        @insert()
+
+    insert: ->
       @$el.prependTo("body").fadeIn 500
 
       @$("#r_wrp").delay(500).animate

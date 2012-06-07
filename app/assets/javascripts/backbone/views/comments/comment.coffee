@@ -2,14 +2,18 @@ reading.define [
   "jquery"
   "backbone"
   "handlebars"
+  "app"
   "app/models/post"
+  "app/models/uri"
   "app/models/uris/tweet"
+  "app/views/uris/uri"
+  "app/views/uris/tweet"
   "app/views/users/user"
   "app/views/components/share_popover"
   "plugins/humane"
   "plugins/highlight"
   "css!comments/comment"
-], ($, Backbone, Handlebars, Post, Tweet, UserView, SharePopover) ->
+], ($, Backbone, Handlebars, App, Post, URI, Tweet, URIView, TweetView, UserView, SharePopover) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "
@@ -45,6 +49,7 @@ reading.define [
       @model.bind "destroy", @remove, this
 
       @size = options.size ? "small"
+      @uri_views = []
 
     share: ->
       @share_view = new SharePopover subject: @model
@@ -93,6 +98,15 @@ reading.define [
       # this is being shared between the main site and the bookmarklet
       json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
       @$el.html(@template(json))
+
+      uri_views = @uri_views
+      @$("a.r_url").each ->
+        model = URI::factory @href
+        if model?
+          model.fetch()
+          view = URIView::factory model
+          $(this).replaceWith view.render().el
+          uri_views.push view
 
       @$("time").humaneDates()
 

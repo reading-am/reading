@@ -3,12 +3,13 @@ reading.define [
   "backbone"
   "handlebars"
   "app/models/post"
+  "app/models/uris/tweet"
   "app/views/users/user"
   "app/views/components/share_popover"
   "plugins/humane"
   "plugins/highlight"
   "css!comments/comment"
-], ($, Backbone, Handlebars, Post, UserView, SharePopover) ->
+], ($, Backbone, Handlebars, Post, Tweet, UserView, SharePopover) ->
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "

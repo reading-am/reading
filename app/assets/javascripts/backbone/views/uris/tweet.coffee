@@ -14,7 +14,7 @@ reading.define [
         (@<a src=\"https://twitter.com/{{user.screen_name}}\" class=\"r_tweet_screen_name\">{{user.screen_name}}</a>)
       </div>
     {{else}}
-      Loading Tweet
+      Loading Tweet...
     {{/if}}
     "
 

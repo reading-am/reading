@@ -18,13 +18,6 @@ reading.define [
         listUrlBase:    "//#{Constants.domain}/",
         hashtagUrlBase: "//#{Constants.domain}/search?q="
 
-  Handlebars.registerHelper "render_tweets", (context, fn) ->
-    $context = $("<div>#{context}</div>")
-    $context.find("a[href*='twitter.com']").filter(-> /twitter\.com\/.+\/status\/([0-9]+)/.test(this.href)).each ->
-      $this = $(this)
-      $this.addClass "r_tweet"
-      $this.html("This is a tweet")
-    new Handlebars.SafeString $context.html()
 
   Handlebars.registerHelper "embed_images", (context, fn) ->
     $context = $("<div>#{context}</div>")
@@ -73,7 +66,6 @@ reading.define [
     context = Handlebars.helpers.wrap_code.call this, context.string, fn
     context = Handlebars.helpers.autolink.call this, context.string, fn
     context = Handlebars.helpers.embed_images.call this, context.string, fn
-    context = Handlebars.helpers.render_tweets.call this, context.string, fn
     context
 
   return Handlebars

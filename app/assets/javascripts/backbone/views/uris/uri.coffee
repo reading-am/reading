@@ -15,7 +15,6 @@ reading.define [
       href: @model.get("string")
 
     render: ->
-      console.log "uriview render", @model
       @$el.html(@template(@model.toJSON()))
       return this
 

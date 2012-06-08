@@ -18,11 +18,12 @@ reading.define [
         listUrlBase:    "//#{Constants.domain}/",
         hashtagUrlBase: "//#{Constants.domain}/search?q="
 
+
   Handlebars.registerHelper "embed_images", (context, fn) ->
     $context = $("<div>#{context}</div>")
     $context.find("a[href*=\\.#{["jpg","jpeg","png","gif"].join("],a[href*=\\.")}]").each ->
       $this = $(this)
-      $this.html("<img src=\"#{$this.attr("href")}\">")
+      $this.addClass("r_image").html("<img src=\"#{$this.attr("href")}\">")
     new Handlebars.SafeString $context.html()
 
   Handlebars.registerHelper "link_emails", (context, fn) ->

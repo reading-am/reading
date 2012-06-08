@@ -125,7 +125,7 @@
   }
   a.r_tagalong {
     padding:0 5px;
-    background:#00FBFF;
+    background:@blue;
     border-right:1px solid @light_blue;
     &:hover {
       background:@light_blue;
@@ -136,7 +136,7 @@
   }
   .r_quoted {
     color:@black !important;
-    background:#E9E9E9;
+    background:@ghost_grey;
     &:hover {
       text-decoration:underline;
     }
@@ -153,6 +153,52 @@
     .r_comment:hover {
       .r_comment_header time { display:none; }
       .r_comment_actions { display:block; }
+    }
+    .r_uri {
+      display:block;
+      text-decoration:none;
+      margin:5px 0;
+      padding:10px;
+      .border-radius(3px);
+      .r_icon {
+        width:16px;
+        height:16px;
+        vertical-align:middle;
+      }
+    }
+    .r_tweet {
+      .box-shadow(inset 0 0 10px lighten(@twitter, 40%));
+      background: lighten(@twitter, 50%);
+      &:hover {
+        .box-shadow(inset 0 0 10px lighten(@twitter, 35%));
+        background: lighten(@twitter, 45%);
+      }
+      .r_tweet_info {
+        margin:5px 0 0;
+        &, span, a { color: darken(@twitter, 15%) !important; }
+      }
+      .r_tweet_screen_name {
+        text-decoration:underlined;
+      }
+    }
+    .r_github_repo {
+      .box-shadow(inset 0 0 10px lighten(@github, 10%));
+      background: lighten(@github, 15%);
+      &:hover {
+        .box-shadow(inset 0 0 10px lighten(@github, 5%));
+        background: lighten(@github, 10%);
+      }
+      .r_github_repo_description {
+        margin-top:3px;
+        color:#888 !important;
+      }
+    }
+    .r_youtube_video, .r_vimeo_video {
+      padding:0;
+      iframe {
+        width:297px;
+        height:190px;
+      }
     }
   }
 }

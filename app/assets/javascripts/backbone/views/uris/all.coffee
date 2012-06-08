@@ -3,4 +3,5 @@ reading.define [
   "app/views/uris/tweet"
   "app/views/uris/github_repo"
   "app/views/uris/youtube_video"
+  "app/views/uris/vimeo_video"
 ], ->

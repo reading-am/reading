@@ -100,7 +100,7 @@ reading.define [
       @$el.html(@template(json))
 
       uri_views = @uri_views
-      @$("a.r_url").each ->
+      @$("a.r_url:not(.r_mention, .r_tag, .r_email, .r_image, .r_quoted)").each ->
         model = URI::factory @href
         if model?
           model.fetch()

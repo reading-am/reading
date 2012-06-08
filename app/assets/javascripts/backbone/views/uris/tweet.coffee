@@ -9,7 +9,7 @@ reading.define [
     {{#if text}}
       <div class=\"r_tweet_text\">{{text}}</div>
       <div class=\"r_tweet_info\">
-        <img class=\"r_icon\" src=\"https://api.twitter.com/1/users/profile_image/{{user.screen_name}}?size=mini\">
+        <img class=\"r_icon\" src=\"https://twitter.com/favicon.ico\">
         <span class=\"r_tweet_name\">{{user.name}}</span>
         (@<a src=\"https://twitter.com/{{user.screen_name}}\" class=\"r_tweet_screen_name\">{{user.screen_name}}</a>)
       </div>

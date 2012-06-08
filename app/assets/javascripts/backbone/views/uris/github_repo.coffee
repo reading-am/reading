@@ -8,7 +8,7 @@ reading.define [
     template: Handlebars.compile "
     {{#if id}}
       <div class=\"r_github_repo_name\">
-        <img class=\"r_icon\" src=\"{{owner.avatar_url}}\">
+        <img class=\"r_icon\" src=\"https://github.com/favicon.ico\">
         {{full_name}}
       </div>
       <div class=\"r_github_repo_description\">{{description}}</div>

@@ -7,7 +7,7 @@ reading.define [
 
   class GitHubRepo extends URI
     type: "GitHubRepo"
-    regex: /github\.com\/(.+)\/(.+)/
+    regex: /github\.com\/(.+)\/(.+)(?:\/.*)/
 
     initialize: (options) ->
       bits = @regex.exec(options.string)

@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/users/user", [
   "backbone"
   "handlebars"
   "app/constants"

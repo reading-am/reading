@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/uris/instagram_image", [
   "app/views/uris/uri"
   "handlebars"
   "app"

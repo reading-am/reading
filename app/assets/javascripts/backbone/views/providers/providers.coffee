@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/providers/providers", [
   "backbone"
   "app/views/providers/provider"
 ], (Backbone, ProviderView) ->

@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/uris/github_repo", [
   "app/views/uris/uri"
   "handlebars"
   "app"

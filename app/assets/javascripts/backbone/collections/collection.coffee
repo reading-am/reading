@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/collections/collection", [
   "underscore",
   "libs/backbone"
 ], (_, Backbone) ->

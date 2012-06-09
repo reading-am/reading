@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/uris/twitter_tweet", [
   "jquery"
   "app"
   "app/models/uri"

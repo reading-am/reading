@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/collections/users", [
   "backbone"
   "app"
   "app/models/user"

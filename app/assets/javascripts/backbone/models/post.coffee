@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/post", [
   "jquery"
   "backbone"
   "app"

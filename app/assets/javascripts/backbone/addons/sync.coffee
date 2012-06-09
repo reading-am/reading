@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/addons/sync", [
   "jquery"
   "underscore"
   "libs/backbone"

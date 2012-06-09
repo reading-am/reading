@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/uris/vimeo_video", [
   "jquery"
   "app"
   "app/models/uri"

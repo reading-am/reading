@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/providers/provider", [
   "backbone"
   "handlebars"
   "app/models/post"

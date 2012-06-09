@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/comment", [
   "backbone"
   "app"
   "app/constants"

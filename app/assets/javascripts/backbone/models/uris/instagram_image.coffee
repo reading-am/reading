@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/uris/instagram_image", [
   "underscore"
   "jquery"
   "app"

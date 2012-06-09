@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/components/popover", [
   "jquery"
   "backbone"
   "handlebars"

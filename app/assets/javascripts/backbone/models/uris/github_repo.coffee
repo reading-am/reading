@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/uris/github_repo", [
   "underscore"
   "jquery"
   "app"

@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/routers/comments", [
   "jquery"
   "backbone"
   "app/models/comment"

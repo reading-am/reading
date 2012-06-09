@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/users/users", [
   "underscore"
   "backbone"
   "app/views/users/user"

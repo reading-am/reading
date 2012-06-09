@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/bookmarklet/app", [
   "jquery"
   "backbone"
   "handlebars"

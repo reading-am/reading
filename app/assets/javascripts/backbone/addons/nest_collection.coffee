@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/addons/nest_collection", [
   "underscore",
   "libs/backbone"
 ], (_, Backbone) ->

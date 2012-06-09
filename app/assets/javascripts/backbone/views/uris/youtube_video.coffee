@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/uris/youtube_video", [
   "app/views/uris/uri"
   "handlebars"
   "app"

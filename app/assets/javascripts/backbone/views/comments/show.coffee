@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/comments/show", [
   "backbone"
   "handlebars"
   "app/views/comments/popover"

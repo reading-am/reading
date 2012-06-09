@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/model", [
   "underscore"
   "libs/backbone"
   "app"

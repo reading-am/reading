@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/uris/amazon_product", [
   "app"
   "app/constants"
   "app/models/uri"

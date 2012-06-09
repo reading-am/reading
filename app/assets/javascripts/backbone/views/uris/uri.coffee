@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/uris/uri", [
   "backbone"
   "app"
 ], (Backbone, App) ->

@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/uris/amazon_product", [
   "jquery"
   "app/views/uris/uri"
   "handlebars"

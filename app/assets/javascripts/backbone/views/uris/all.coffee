@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/uris/all", [
   "app/views/uris/uri"
   "app/views/uris/twitter_tweet"
   "app/views/uris/github_repo"

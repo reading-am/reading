@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/comments/comment", [
   "jquery"
   "backbone"
   "handlebars"

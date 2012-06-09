@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/models/provider", [
   "backbone"
   "app"
   "app/models/post"

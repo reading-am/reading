@@ -1,4 +1,4 @@
-reading.define [
+reading.define "app/views/components/share_popover", [
   "handlebars"
   "app/views/components/popover"
   "app/models/provider"

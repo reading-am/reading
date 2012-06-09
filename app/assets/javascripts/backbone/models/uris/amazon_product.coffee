@@ -9,8 +9,9 @@ reading.define [
     regex: /amazon\.[A-Za-z\.]+(?:\/.+)?\/..(?:\/product)?\/([^\/?]+)/
 
     initialize: (options) ->
+      super
+
       # image path hacked from: http://aaugh.com/imageabuse.html
-      @set "id", @regex.exec(options.string)[1]
       @set "image", "http://ec2.images-amazon.com/images/P/#{@get("id")}.01._SCMZZZZZZZ_.jpg"
 
       # from: http://stackoverflow.com/questions/7640270/adding-modify-query-string-get-variables-in-a-url-with-javascript

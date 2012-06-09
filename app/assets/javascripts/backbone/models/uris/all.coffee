@@ -5,4 +5,5 @@ reading.define [
   "app/models/uris/youtube_video"
   "app/models/uris/vimeo_video"
   "app/models/uris/instagram_image"
+  "app/models/uris/amazon_product"
 ], ->

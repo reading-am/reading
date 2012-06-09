@@ -9,3 +9,5 @@ when 'staging'
 when 'development'
   DOMAIN = '0.0.0.0:3000'
 end
+
+AMAZON_ASSOC_ID = 'reading048-20'

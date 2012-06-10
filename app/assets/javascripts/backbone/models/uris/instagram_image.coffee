@@ -1,9 +1,8 @@
 reading.define [
-  "underscore"
   "jquery"
   "app"
   "app/models/uri"
-], (_, $, App, URI) ->
+], ($, App, URI) ->
 
   class InstagramImage extends URI
     type: "InstagramImage"

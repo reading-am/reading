@@ -9,6 +9,10 @@ reading.curl [
 
   describe "GitHubRepo", ->
 
+    describe "#regex", ->
+      it "should successfully identify github.com urls", ->
+        GitHubRepo::regex.test(url).should.be.true
+
     describe "#initialize()", ->
       it "should return the correct full_name after initialization", ->
         model = new GitHubRepo string: url
@@ -22,7 +26,8 @@ reading.curl [
       it "should get data from the github.com API", (done) ->
         model = new GitHubRepo string: url
         model.fetch 
-          success: ->
+          success: (model) ->
+            model.get("description").should.equal("Reading Message Server")
             done()
           error: (model, response) ->
             throw response.responseText.data.message

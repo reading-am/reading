@@ -2,7 +2,7 @@ reading.define [
   "jquery"
   "app"
   "app/constants"
-  "app/models/uri"
+  "app/models/uris/uri"
 ], ($, App, Constants, URI) ->
 
   class VimeoVideo extends URI

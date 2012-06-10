@@ -2,7 +2,7 @@ reading.define [
   "underscore"
   "jquery"
   "app"
-  "app/models/uri"
+  "app/models/uris/uri"
 ], (_, $, App, URI) ->
 
   class GitHubRepo extends URI

@@ -1,7 +1,7 @@
 reading.define [
   "jquery"
   "app"
-  "app/models/uri"
+  "app/models/uris/uri"
 ], ($, App, URI) ->
 
   class TwitterTweet extends URI

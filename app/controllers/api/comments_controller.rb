@@ -62,7 +62,15 @@ class Api::CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      format.json { render json: @comment }
+      format.json { render :json => {
+        :meta => {
+          :status => 200,
+          :msg => 'OK'
+        },
+        :response => {
+          :comment => @comment
+        }
+      }, :callback => params[:callback] }
     end
   end
 

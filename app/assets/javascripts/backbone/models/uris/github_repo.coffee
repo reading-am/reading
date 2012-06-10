@@ -2,7 +2,7 @@ reading.define [
   "underscore"
   "jquery"
   "app"
-  "app/models/uri"
+  "app/models/uris/uri"
 ], (_, $, App, URI) ->
 
   class GitHubRepo extends URI
@@ -17,9 +17,16 @@ reading.define [
       options.dataType = "jsonp"
       options.url = "https://api.github.com/repos/#{@get "full_name"}"
 
+      options.error = if options.error? then options.error else _.log
+
       _success = if options.success? then options.success else _.log
       options.success = (data, textStatus, jqXHR) ->
-        _success data.data, textStatus, jqXHR
+        if data.meta.status < 400
+          _success data.data, textStatus, jqXHR
+        else
+          jqXHR.status = data.meta.status
+          jqXHR.responseText = data
+          options.error jqXHR, textStatus, data.data.message
 
       $.ajax options
 

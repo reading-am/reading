@@ -4,7 +4,7 @@ reading.define [
   "handlebars"
   "app"
   "app/models/post"
-  "app/models/uri"
+  "app/models/uris/uri"
   "app/views/uris/uri"
   "app/views/users/user"
   "app/views/components/share_popover"

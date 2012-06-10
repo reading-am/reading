@@ -10,7 +10,7 @@ reading.curl [
   describe "GitHubRepo", ->
 
     describe "#regex", ->
-      it "should successfully identify github.com urls", ->
+      it "should successfully identify urls", ->
         GitHubRepo::regex.test(url).should.be.true
 
     describe "#initialize()", ->
@@ -23,7 +23,7 @@ reading.curl [
         model.get("full_name").should.equal("leppert/RMSN")
 
     describe "#fetch()", ->
-      it "should get data from the github.com API", (done) ->
+      it "should get data from the API", (done) ->
         model = new GitHubRepo string: url
         model.fetch 
           success: (model) ->

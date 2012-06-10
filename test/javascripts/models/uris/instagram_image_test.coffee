@@ -10,7 +10,7 @@ reading.curl [
   describe "InstagramImage", ->
 
     describe "#regex", ->
-      it "should successfully identify instagr.am urls", ->
+      it "should successfully identify urls", ->
         InstagramImage::regex.test(url).should.be.true
 
     describe "#initialize()", ->
@@ -19,7 +19,7 @@ reading.curl [
         model.get("id").should.equal("Lq8xzYBvXC")
 
     describe "#fetch()", ->
-      it "should get data from the api.instagr.am API", (done) ->
+      it "should get data from the API", (done) ->
         model = new InstagramImage string: url
         model.fetch 
           success: (model) ->

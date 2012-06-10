@@ -10,6 +10,7 @@ window.shared = ->
           throw response.responseText.meta.msg
 
     it "should throw a 404 for a nonexistent entity", (done) ->
+      @model.set("id", "should_not_exist", silent: true)
       @model.fetch 
         success: (model, response) ->
           throw response.responseText.meta.msg

@@ -1,4 +1,4 @@
-window.shared = ->
+reading.define "test/models/shared", -> ->
 
   describe "#fetch()", ->
     it "should get data from the API", (done) ->

@@ -1,10 +1,11 @@
 #= require curl_config
 #= require libs/curl
-#= require ./shared_helper
+#= require ./shared
 
 reading.curl [
+  "test/models/shared"
   "app/models/page"
-], (Page) ->
+], (shared, Page) ->
 
   describe "Model", ->
     describe "Page", ->

@@ -11,6 +11,9 @@ class Api::UsersController < ApplicationController
       @users = User.who_posted_to(@page)
       # this is disabled until we get more users on the site
       # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
+    else
+      @users = User.order("created_at DESC")
+                   .paginate(:page => params[:page])
     end
 
     respond_to do |format|

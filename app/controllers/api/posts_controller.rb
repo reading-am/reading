@@ -14,7 +14,20 @@ class Api::PostsController < ApplicationController
     @posts =  Post.order("created_at DESC")
                   .includes([:user, :page, :domain, {:referrer_post => :user}])
                   .paginate(:page => params[:page])
-    @channels = 'everybody'
+
+    respond_to do |format|
+      format.json { render :json => {
+        :meta => {
+          :status => 200,
+          :msg => 'OK'
+        },
+        :response => {
+          :posts => @posts.collect { |post|
+            post.simple_obj
+          }
+        }
+      }, :callback => params[:callback] }
+    end
   end
 
   # GET /posts/1

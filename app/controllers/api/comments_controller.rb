@@ -30,7 +30,8 @@ class Api::CommentsController < ApplicationController
       end
       @comments = Comment.from_users_followed_by(User.find(1)).where(where[:cond], where[:params])
     else
-      @comments = Comment.order("created_at DESC").limit(30)
+      @comments = Comment.order("created_at DESC")
+                  .paginate(:page => params[:page])
     end
 
     respond_to do |format|

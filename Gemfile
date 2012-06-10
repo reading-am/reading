@@ -66,5 +66,9 @@ gem 'fog'
 group :development do
   gem 'ruby-debug19'
   gem 'sunspot_solr'
+  gem 'konacha'
 end
 
+group :test do
+  gem 'konacha'
+end

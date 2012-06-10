@@ -15,18 +15,11 @@ reading.define [
   Backbone.sync = (method, model, options) ->
     _.log method, model, options
 
-    type = methodMap[method]
-    options.dataType = "jsonp"
-    options.data = {_method: type}
-    options.data.token = reading.token if reading? and reading.token?
-
-    if model && (method == 'create' || method == 'update')
-      options.data.model = model.toJSON()
-
-    if !options.url
-      options.url = _.result(model, 'url') || urlError()
-
-    options.error = if options.error? then options.error else (jqXHR, textStatus, errorThrown) ->
+    options.type    ?= methodMap[method]
+    options.url     ?= _.result(model, 'url') || urlError()
+    options.data    ?= {}
+    options.success ?= _.log
+    options.error   ?= (jqXHR, textStatus, errorThrown) ->
       _.log jqXHR, textStatus, errorThrown
       switch errorThrown
         when "Bad Request"
@@ -34,14 +27,25 @@ reading.define [
         when "Forbidden"
           alert Constants.errors.forbidden
 
-    _success = if options.success? then options.success else _.log
-    options.success = (data, textStatus, jqXHR) ->
-      if data.meta.status < 400
-        _success data, textStatus, jqXHR
-      else
-        jqXHR.status = data.meta.status
-        jqXHR.responseText = data
-        options.error jqXHR, textStatus, data.meta.msg
+    if reading? and reading.token?
+      options.data.token = reading.token
+
+    if model && (method == 'create' || method == 'update')
+      options.data.model = model.toJSON()
+
+    is_xdr = /\/\/([A-Za-z0-9\-\.:]+)/.exec(options.url)[1] isnt window.location.host
+    if is_xdr
+      options.dataType = "jsonp"
+      options.data._method = options.type
+
+      _success = options.success
+      options.success = (data, textStatus, jqXHR) ->
+        if data.meta.status < 400
+          _success data, textStatus, jqXHR
+        else
+          jqXHR.status = data.meta.status
+          jqXHR.responseText = data
+          options.error jqXHR, textStatus, data.meta.msg
 
     $.ajax options
 

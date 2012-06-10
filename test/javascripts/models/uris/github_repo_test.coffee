@@ -1,34 +1,37 @@
 #= require curl_config
 #= require libs/curl
+#= require ./shared
 
 reading.curl [
+  "test/models/uris/shared"
   "app/models/uris/github_repo"
-], (GitHubRepo) ->
-
-  url = "https://github.com/leppert/RMSN"
+], (shared, GitHubRepo) ->
 
   describe "Model", ->
     describe "URI", ->
       describe "GitHubRepo", ->
 
-        describe "#regex", ->
-          it "should successfully identify urls", ->
-            GitHubRepo::regex.test(url).should.be.true
+        beforeEach ->
+          @urls = [
+            "https://github.com/leppert/RMSN"
+            "https://github.com/leppert/RMSN/"
+          ]
+          @model = new GitHubRepo string: @urls[0]
+
+        shared()
 
         describe "#initialize()", ->
           it "should return the correct full_name after initialization", ->
-            model = new GitHubRepo string: url
-            model.get("full_name").should.equal("leppert/RMSN")
+            @model.get("full_name").should.equal("leppert/RMSN")
 
           it "should return the correct full_name after initialization with trailing slash", ->
-            model = new GitHubRepo string: "#{url}/"
-            model.get("full_name").should.equal("leppert/RMSN")
+            @model = new GitHubRepo string: @urls[1]
+            @model.get("full_name").should.equal("leppert/RMSN")
 
         describe "#fetch()", ->
           it "should get data from the API", (done) ->
-            model = new GitHubRepo string: url
-            model.fetch 
-              success: (model) ->
+            @model.fetch 
+              success: (model, response) ->
                 model.get("description").should.equal("Reading Message Server")
                 done()
               error: (model, response) ->

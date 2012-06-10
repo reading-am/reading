@@ -1,30 +1,34 @@
 #= require curl_config
 #= require libs/curl
+#= require ./shared
 
 reading.curl [
+  "test/models/uris/shared"
   "app/models/uris/vimeo_video"
-], (VimeoVideo) ->
-
-  url = "http://vimeo.com/7470754"
+], (shared, VimeoVideo) ->
 
   describe "Model", ->
     describe "URI", ->
       describe "VimeoVideo", ->
 
-        describe "#regex", ->
-          it "should successfully identify urls", ->
-            VimeoVideo::regex.test(url).should.be.true
+        beforeEach ->
+          @id = "7470754"
+          @urls = [
+            "http://vimeo.com/#{@id}"
+            "http://vimeo.com/31809461"
+          ]
+          @model = new VimeoVideo string: @urls[0]
+
+        shared()
 
         describe "#initialize()", ->
           it "should return the correct id after initialization", ->
-            model = new VimeoVideo string: url
-            model.get("id").should.equal("7470754")
+            @model.get("id").should.equal(@id)
 
         describe "#fetch()", ->
           it "should get data from the API", (done) ->
-            model = new VimeoVideo string: url
-            model.fetch 
-              success: (model) ->
+            @model.fetch 
+              success: (model, response) ->
                 model.get("title").should.equal("HRMI #1")
                 done()
               error: (model, response) ->

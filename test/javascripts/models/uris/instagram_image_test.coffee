@@ -1,30 +1,34 @@
 #= require curl_config
 #= require libs/curl
+#= require ./shared
 
 reading.curl [
+  "test/models/uris/shared"
   "app/models/uris/instagram_image"
-], (InstagramImage) ->
-
-  url = "http://instagr.am/p/Lq8xzYBvXC/"
+], (shared, InstagramImage) ->
 
   describe "Model", ->
     describe "URI", ->
       describe "InstagramImage", ->
 
-        describe "#regex", ->
-          it "should successfully identify urls", ->
-            InstagramImage::regex.test(url).should.be.true
+        beforeEach ->
+          @id = "Lq8xzYBvXC"
+          @urls = [
+            "http://instagr.am/p/#{@id}/"
+            "http://instagr.am/p/LmGhlTMo88"
+          ]
+          @model = new InstagramImage string: @urls[0]
+
+        shared() 
 
         describe "#initialize()", ->
           it "should return the correct id after initialization", ->
-            model = new InstagramImage string: url
-            model.get("id").should.equal("Lq8xzYBvXC")
+            @model.get("id").should.equal(@id)
 
         describe "#fetch()", ->
           it "should get data from the API", (done) ->
-            model = new InstagramImage string: url
-            model.fetch 
-              success: (model) ->
+            @model.fetch 
+              success: (model, response) ->
                 model.get("title").should.equal("Mint Julip in Louisville.")
                 done()
               error: (model, response) ->

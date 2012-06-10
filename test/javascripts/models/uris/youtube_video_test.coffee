@@ -29,7 +29,7 @@ reading.curl [
         describe "#fetch()", ->
           it "should get data from the API", (done) ->
             @model.fetch 
-              success: (model) ->
+              success: (model, response) ->
                 model.get("entry").should.exist
                 done()
               error: (model, response) ->

@@ -1,20 +1,13 @@
 #= require curl_config
 #= require libs/curl
+#= require ./shared_helper
 
 reading.curl [
   "app/models/comment"
 ], (Comment) ->
 
-  id = "333"
-
   describe "Comment", ->
+    beforeEach ->
+      @model = new Comment id: 200
 
-    describe "#fetch()", ->
-      it "should get data from the API", (done) ->
-        model = new Comment id: id
-        model.fetch 
-          success: (model) ->
-            model.get("description").should.equal("Reading Message Server")
-            done()
-          error: (model, response) ->
-            throw response.responseText.data.message
+    shared()

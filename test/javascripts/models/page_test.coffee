@@ -6,8 +6,10 @@ reading.curl [
   "app/models/page"
 ], (Page) ->
 
-  describe "Page", ->
-    beforeEach ->
-      @model = new Page id: 201
+  describe "Model", ->
+    describe "Page", ->
 
-    shared()
+      beforeEach ->
+        @model = new Page id: 201
+
+      shared()

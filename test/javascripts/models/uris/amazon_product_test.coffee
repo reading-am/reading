@@ -16,38 +16,40 @@ reading.curl [
     "http://www.amazon.co.jp/Eye-Ai-Japan-August-2012-%E5%8D%98%E5%8F%B7/dp/B0084VR9LU/ref=sr_1_1?s=english-books&ie=UTF8&qid=1339202081&sr=1-1"
   ]
 
-  describe "AmazonProduct", ->
+  describe "Model", ->
+    describe "URI", ->
+      describe "AmazonProduct", ->
 
-    describe "#regex", ->
-      it "should successfully identify urls", ->
-        _.each urls, (url) ->
-          AmazonProduct::regex.test(url).should.be.true
+        describe "#regex", ->
+          it "should successfully identify urls", ->
+            _.each urls, (url) ->
+              AmazonProduct::regex.test(url).should.be.true
 
-    describe "#initialize()", ->
-      it "should return the correct id after initialization", ->
-        model = new AmazonProduct string: urls[0]
-        model.get("id").should.equal(id)
+        describe "#initialize()", ->
+          it "should return the correct id after initialization", ->
+            model = new AmazonProduct string: urls[0]
+            model.get("id").should.equal(id)
 
-      it "should return the correct image after initialization", ->
-        model = new AmazonProduct string: urls[0]
-        model.get("image").should.equal("http://ec2.images-amazon.com/images/P/#{id}.01._SCMZZZZZZZ_.jpg")
+          it "should return the correct image after initialization", ->
+            model = new AmazonProduct string: urls[0]
+            model.get("image").should.equal("http://ec2.images-amazon.com/images/P/#{id}.01._SCMZZZZZZZ_.jpg")
 
-      it "should not return Amazon's dummy 1px x 1px image", (done) ->
-        model = new AmazonProduct string: urls[0]
+          it "should not return Amazon's dummy 1px x 1px image", (done) ->
+            model = new AmazonProduct string: urls[0]
 
-        $img = $("<img>").attr(src: model.get("image")).load ->
-          $(this).width().should.be.above(1)
-          $(this).height().should.be.above(1)
-          done()
+            $img = $("<img>").attr(src: model.get("image")).load ->
+              $(this).width().should.be.above(1)
+              $(this).height().should.be.above(1)
+              done()
 
-        $("#konacha").append $img
+            $("#konacha").append $img
 
-      it "Amazon should still be returning dummy 1px x 1px images for some products", (done) ->
-        model = new AmazonProduct string: urls[1]
+          it "Amazon should still be returning dummy 1px x 1px images for some products", (done) ->
+            model = new AmazonProduct string: urls[1]
 
-        $img = $("<img>").attr(src: model.get("image")).load ->
-          $(this).width().should.equal(1)
-          $(this).height().should.equal(1)
-          done()
+            $img = $("<img>").attr(src: model.get("image")).load ->
+              $(this).width().should.equal(1)
+              $(this).height().should.equal(1)
+              done()
 
-        $("#konacha").append $img
+            $("#konacha").append $img

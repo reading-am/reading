@@ -6,8 +6,10 @@ reading.curl [
   "app/models/comment"
 ], (Comment) ->
 
-  describe "Comment", ->
-    beforeEach ->
-      @model = new Comment id: 200
+  describe "Model", ->
+    describe "Comment", ->
 
-    shared()
+      beforeEach ->
+        @model = new Comment id: 200
+
+      shared()

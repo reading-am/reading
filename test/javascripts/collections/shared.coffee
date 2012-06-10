@@ -2,7 +2,7 @@ reading.define "test/collections/shared", -> ->
 
   describe "#fetch()", ->
     it "should get data from the API", (done) ->
-      @collection.fetch 
+      @collection.fetch
         success: (collection, response) ->
           collection.length.should.not.be.empty
           done()

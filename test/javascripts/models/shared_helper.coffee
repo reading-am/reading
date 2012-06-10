@@ -4,7 +4,7 @@ window.shared = ->
     it "should get data from the API", (done) ->
       @model.fetch 
         success: (model, response) ->
-          model.get("body").should.equal("me me me")
+          model.get("created_at").should.exist
           done()
         error: (model, response) ->
           throw response.responseText.meta.msg

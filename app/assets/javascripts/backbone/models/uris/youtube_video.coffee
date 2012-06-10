@@ -1,15 +1,16 @@
 reading.define [
   "jquery"
   "app"
+  "app/constants"
   "app/models/uri"
-], ($, App, URI) ->
+], ($, App, Constants, URI) ->
 
   class YouTubeVideo extends URI
     type: "YouTubeVideo"
-    regex: /youtube\.com\/watch.*(?:\?|&)v=([A-Za-z0-9]+)/
+    regex: /(?:(?:youtube\.com\/watch.*(?:\?|&)v=)|(?:youtu.be\/))([A-Za-z0-9_]+)/
 
     sync: (method, model, options) ->
-      return # disabled at the moment
+      return if Constants.env is "production" # disabled at the moment
       options.dataType = "jsonp"
       options.url = "https://gdata.youtube.com/feeds/api/videos/#{@id}?v=2&alt=json"
       $.ajax options

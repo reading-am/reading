@@ -1,7 +1,10 @@
 reading.define [
-  "underscore",
+  "underscore"
+  "app/constants"
   "libs/backbone"
-], (_, Backbone) ->
+], (_, Constants, Backbone) ->
+
+  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{@type.toLowerCase()}"
 
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses

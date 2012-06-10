@@ -29,6 +29,8 @@ class Api::CommentsController < ApplicationController
         where[:params][:after_id] = params[:after_id]
       end
       @comments = Comment.from_users_followed_by(User.find(1)).where(where[:cond], where[:params])
+    else
+      @comments = Comment.order("created_at DESC").limit(30)
     end
 
     respond_to do |format|

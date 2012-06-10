@@ -16,7 +16,7 @@ reading.define [
     _.log method, model, options
 
     options.type    ?= methodMap[method]
-    options.url     ?= _.result(model, 'url') || urlError()
+    options.url     ?= _.result(model, 'url') || throw new Error('A "url" property or function must be specified');
     options.data    ?= {}
     options.success ?= _.log
     options.error   ?= (jqXHR, textStatus, errorThrown) ->

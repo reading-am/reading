@@ -21,5 +21,8 @@ reading.curl [
     describe "#fetch()", ->
       it "should get data from the github.com API", (done) ->
         model = new GitHubRepo string: url
-        model.fetch success: ->
-          done()
+        model.fetch 
+          success: ->
+            done()
+          error: (model, response) ->
+            throw response.responseText.data.message

@@ -27,7 +27,7 @@ reading.curl [
   # Helpers
 
   parse_url = ->
-    url = window.location.href.split(window.location.host)[1].substring(1)
+    url = window.location.pathname.substring(1)
     while url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/'
       url = url.substring(url.indexOf('/', 2) + 1)
     url = "http://#{url}" if url.indexOf('://') is -1

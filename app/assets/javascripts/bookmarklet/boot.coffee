@@ -51,14 +51,19 @@ reading.curl [
     reading.ready = true
 
     if platform is "redirect" or platform is "bookmarklet"
+
+      url = Post::parse_url window.location.href
+
       if platform is "redirect"
-        title = null
-        return window.location = url if token is "-" or !token
+        if token is "-" or !token
+          return window.location = url
+        else
+          title = null
       else
         title = window.document.title
 
       submit
-        url: Post::parse_url window.location.href
+        url: url
         title: title
         referrer_id: reading.referrer_id ? 0
 

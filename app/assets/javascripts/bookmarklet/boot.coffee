@@ -50,10 +50,6 @@ reading.curl [
     document.dispatchEvent e
     reading.ready = true
 
-    win_focus = true
-    $(window).focus(-> win_focus = true).blur(-> win_focus = false)
-    $.fn.hasFocus = -> win_focus
-
     if platform is "redirect" or platform is "bookmarklet"
       if platform is "redirect"
         title = null

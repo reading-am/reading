@@ -4,6 +4,7 @@ reading.define [
   "app"
   "app/constants"
   "libs/base58"
+  "plugins/win_focus"
 ], ($, Backbone, App, Constants, Base58) ->
 
   class Post extends Backbone.Model

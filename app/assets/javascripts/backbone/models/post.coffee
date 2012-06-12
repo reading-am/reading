@@ -9,7 +9,7 @@ reading.define [
   class Post extends Backbone.Model
     type: "Post"
 
-    initialize: ->
+    initialize: (options) ->
       @bind "destroy", => @intervals "clear"
 
     validate: (attr) ->
@@ -28,6 +28,12 @@ reading.define [
         if $(window).hasFocus() and not loading and now - @get("updated_at") >= 15000
           loading = true
           @save "updated_at", now, success: -> loading = false
+
+  Post::parse_url = (url) ->
+    regex = new RegExp "(?:https?:\/\/#{Constants.domain.replace(/\./g,"\\.")}\/(?:(?:p|t)\/[^\/]+\/)*)?(.+)"
+    url = regex.exec(url)[1]
+    url = "http://#{url}" if url.indexOf('://') is -1
+    return url
 
   App.Models.Post = Post
   return Post

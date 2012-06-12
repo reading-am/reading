@@ -20,19 +20,6 @@ reading.curl [
   platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
   version = reading.version ? "0.0.0"
 
-  latest_versions =
-    bookmarklet: "<%= BOOKMARKLET_VERSION %>"
-
-  #-----------------------------------------
-  # Helpers
-
-  parse_url = ->
-    url = window.location.pathname.substring(1)
-    while url.substring(0, 2) is 't/' or url.substring(0, 2) is 'p/'
-      url = url.substring(url.indexOf('/', 2) + 1)
-    url = "http://#{url}" if url.indexOf('://') is -1
-    url
-
   #-----------------------------------------
   # Submit the post
 
@@ -50,7 +37,6 @@ reading.curl [
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
         model.keep_fresh()
-
 
   #-----------------------------------------
   # Initialize!
@@ -70,15 +56,13 @@ reading.curl [
 
     if platform is "redirect" or platform is "bookmarklet"
       if platform is "redirect"
-        url   = parse_url()
         title = null
         return window.location = url if token is "-" or !token
       else
-        url   = window.location.href
         title = window.document.title
 
       submit
-        url: url
+        url: Post::parse_url window.location.href
         title: title
         referrer_id: reading.referrer_id ? 0
 
@@ -87,7 +71,7 @@ reading.curl [
   # Check the bookmarklet version
 
   up_to_date = ->
-    !latest_versions[platform]? || String(version).replace(/\./g,'') >= String(latest_versions[platform]).replace(/\./g,'')
+    !Constants.latest_versions[platform]? || String(version).replace(/\./g,'') >= String(Constants.latest_versions[platform]).replace(/\./g,'')
 
   #-----------------------------------------
   # Prompt to upgrade

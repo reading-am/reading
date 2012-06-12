@@ -36,6 +36,8 @@ reading.curl [
         "http://home.pipeline.com/~hbaker1/Iterator.html"
         "http://alexobenauer.com/blog/2012/06/11/the-new-retina-display-macbook-pro-a-downgrade-from-my-current-macbook-pro/"
         "http://www.amazon.com/dp/393956611X/?tag=svpply01-20"
+        "https://twitter.com/#!/tw1tt3rart"
+        "http://www.youtube.com/watch?v=4-kJZGC7_9Q&feature=youtu.be&t=29s"
       ]
 
       it "should correctly identify the posting url", ->

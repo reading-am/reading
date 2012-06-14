@@ -14,11 +14,10 @@ reading.define [
       options.dataType = "jsonp"
       options.url = "https://vimeo.com/api/v2/video/#{@id}.json"
 
-      _success = if options.success? then options.success else _.log
-      options.success = (data, textStatus, jqXHR) ->
-        _success data[0], textStatus, jqXHR
-
       $.ajax options
+
+    parse: (response) ->
+      return response[0]
 
   App.Models.URIs.VimeoVideo = VimeoVideo
   return VimeoVideo

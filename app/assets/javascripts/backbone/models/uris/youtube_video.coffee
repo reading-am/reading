@@ -15,5 +15,10 @@ reading.define [
       options.url = "https://gdata.youtube.com/feeds/api/videos/#{@id}?v=2&alt=json"
       $.ajax options
 
+    parse: (response) ->
+      # youtube has some screwy data formats
+      # this is simply a TODO
+      return response
+
   App.Models.URIs.YouTubeVideo = YouTubeVideo
   return YouTubeVideo

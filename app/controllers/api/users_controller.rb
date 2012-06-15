@@ -60,4 +60,23 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def following
+    @user = User.find(params[:user_id])
+    auth = @user.authorizations
+                .where(:provider => params[:provider])
+                .order("created_at ASC")
+                .first
+    respond_to do |format|
+      format.json { render :json => {
+        :meta => {
+          :status => 200,
+          :msg => 'OK'
+        },
+        :response => {
+          :users => auth.following.collect{|u| u.simple_obj}
+        }
+      }, :callback => params[:callback] }
+    end
+  end
+
 end

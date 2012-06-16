@@ -71,5 +71,6 @@ end
 group :development, :test do
   gem 'konacha'
   gem 'rspec-rails'
+  gem 'spork-rails'
   gem 'watchr'
 end

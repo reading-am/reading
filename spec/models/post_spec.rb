@@ -3,7 +3,7 @@ require "spec_helper"
 describe Post do
   context "with 2 or more comments" do
     it "orders them in reverse" do
-      return
+      return true
       post = Post.create
       comment1 = post.comment("first")
       comment2 = post.comment("second")

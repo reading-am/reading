@@ -28,7 +28,7 @@ reading.define [
     "#{@type.toLowerCase()}s"
 
   Backbone.Model::parse = (response) ->
-    obj = if response.response? then response.response[@type.toLowerCase()] else response
+    obj = if response? then response[@type.toLowerCase()] else response
     Backbone.Model::factory obj
 
   Backbone.Model::toJSON = ->

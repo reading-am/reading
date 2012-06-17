@@ -47,6 +47,7 @@ reading.define [
         _success = options.success
         options.success = (data, textStatus, jqXHR) ->
           if data.meta.status < 400
+            data = if data.response? then data.response else {}
             _success data, textStatus, jqXHR
           else
             jqXHR.status = data.meta.status

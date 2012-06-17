@@ -70,7 +70,7 @@ class Api::PostsController < ApplicationController
 
     @post       = Post.new
     @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @post.page  = Page.find_by_url(url) || Page.new(:url => url, :title => title)
+    @post.page  = Page.find_or_create_by_url(:url => url, :title => title)
     @post.yn    = params[:yn]
 
     if !@post.user.blank?

@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Api::UsersController < ApplicationController
+class Api::UsersController < Api::APIController
   # GET /users
   # GET /users.xml
   def index

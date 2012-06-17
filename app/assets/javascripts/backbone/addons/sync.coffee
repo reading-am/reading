@@ -16,7 +16,7 @@ reading.define [
     _.log method, model, options
 
     options.type    ?= methodMap[method]
-    options.url     ?= _.result(model, 'url') || throw new Error('A "url" property or function must be specified');
+    options.url     ?= _.result(model, 'url') || throw new Error 'A "url" property or function must be specified'
     options.data    ?= {}
     options.success ?= _.log
     options.error   ?= (jqXHR, textStatus, errorThrown) ->
@@ -33,19 +33,25 @@ reading.define [
     if model && (method == 'create' || method == 'update')
       options.data.model = model.toJSON()
 
-    is_xdr = /\/\/([A-Za-z0-9\-\.:]+)/.exec(options.url)[1] isnt window.location.host
-    if is_xdr
-      options.dataType = "jsonp"
-      options.data._method = options.type
+    domain = /\/\/([A-Za-z0-9\-\.:]+)/.exec(options.url)[1]
+    is_xdr = domain isnt window.location.host
+    domain_cors = domain is Constants.domain
 
-      _success = options.success
-      options.success = (data, textStatus, jqXHR) ->
-        if data.meta.status < 400
-          _success data, textStatus, jqXHR
-        else
-          jqXHR.status = data.meta.status
-          jqXHR.responseText = data
-          options.error jqXHR, textStatus, data.meta.msg
+    if is_xdr
+      if $.support.cors and domain_cors
+        options.xhrFields ?= withCredentials: true
+      else
+        options.dataType = "jsonp"
+        options.data._method = options.type
+
+        _success = options.success
+        options.success = (data, textStatus, jqXHR) ->
+          if data.meta.status < 400
+            _success data, textStatus, jqXHR
+          else
+            jqXHR.status = data.meta.status
+            jqXHR.responseText = data
+            options.error jqXHR, textStatus, data.meta.msg
 
     $.ajax options
 

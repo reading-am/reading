@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Api::PagesController < ApplicationController
+class Api::PagesController < Api::APIController
 
   def index
    @pages = Page.order("created_at DESC")

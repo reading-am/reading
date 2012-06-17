@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Api::CommentsController < ApplicationController
+class Api::CommentsController < Api::APIController
   # GET /comments
   # GET /comments.json
   def index

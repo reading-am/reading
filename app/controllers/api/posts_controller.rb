@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Api::PostsController < ApplicationController
+class Api::PostsController < Api::APIController
   # GET /posts
   # GET /posts.xml
   def index
@@ -16,17 +16,7 @@ class Api::PostsController < ApplicationController
                   .paginate(:page => params[:page])
 
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :posts => @posts.collect { |post|
-            post.simple_obj
-          }
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :posts => @posts.collect { |post| post.simple_obj } }
     end
   end
 
@@ -46,17 +36,7 @@ class Api::PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @post }
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :post => @post.simple_obj
-        }
-      },:callback => params[:callback] }
+      format.json { render_json :post => @post.simple_obj }
     end
   end
 
@@ -104,12 +84,7 @@ class Api::PostsController < ApplicationController
 
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
-        format.json { render :json => {
-          :meta => {
-            :status => 200,
-            :msg => 'OK'
-          },
-          :response => {
+        format.json { render_json({
             :post => @post.simple_obj,
             :readers => User.who_posted_to(@post.page).collect { |user|
               if user != @post.user # don't show the person posting
@@ -126,16 +101,12 @@ class Api::PostsController < ApplicationController
             }.compact
             # this is disabled until we get more users on the site
             # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
-          }
-        }, :callback => params[:callback] }
+          })
+        }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        if @post.user.blank? # TODO clean up this auth hack. Ugh.
-          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
-        else
-          format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@post.errors.to_yaml}"}}, :callback => params[:callback] }
-        end
+        # TODO clean up this auth hack. Ugh.
+        status = @post.user.blank? ? :forbidden : :bad_request
+        format.json { render_json status }
       end
     end
   end
@@ -160,39 +131,11 @@ class Api::PostsController < ApplicationController
           Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@post, event)
           @post.user.hooks.each do |hook| hook.run(@post, event) end
         end
-
-        format.html { redirect_to(@post, :notice => 'Post was successfully updated.') }
-        format.xml  { head :ok }
-        format.json { render :json => {
-          :meta => {
-            :status => 200,
-            :msg => 'OK'
-          },
-          :response => {}
-        }, :callback => params[:callback] }
+        status = :ok
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        if !allowed # TODO clean up this auth hack. Ugh.
-          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}}, :callback => params[:callback] }
-        else
-          format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@post.errors.to_yaml}"}}, :callback => params[:callback] }
-        end
+        status = allowed ? :bad_request : :forbidden
       end
-    end
-  end
-
-  # DELETE /posts/1
-  # DELETE /posts/1.xml
-  def destroy
-    @post = Post.find(params[:id])
-    if @post.user == current_user
-      @post.destroy
-    end
-
-    respond_to do |format|
-      format.html { redirect_to("/#{current_user.username}") }
-      format.xml  { head :ok }
+      format.json { render_json status }
     end
   end
 

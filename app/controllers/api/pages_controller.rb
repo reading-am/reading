@@ -14,17 +14,7 @@ class Api::PagesController < ApplicationController
                 .paginate(:page => params[:page])
 
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :pages => @pages.collect { |page|
-            page.simple_obj
-          }
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :pages => @pages.collect { |page| page.simple_obj } }
     end
   end
 
@@ -42,32 +32,14 @@ class Api::PagesController < ApplicationController
     @page = Page.find(params[:id])
 
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :page => @page.simple_obj
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :page => @page.simple_obj }
     end
   end
 
   def comments
     @page = Page.find(params[:id])
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :comments => @page.comments.collect { |comment|
-            comment.simple_obj
-          }
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :comments => @page.comments.collect { |comment| comment.simple_obj } }
     end
   end
 

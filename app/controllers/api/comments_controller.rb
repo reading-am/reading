@@ -35,17 +35,7 @@ class Api::CommentsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :comments => @comments.collect { |comment|
-            comment.simple_obj
-          }
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :comments => @comments.collect { |comment| comment.simple_obj } }
     end
   end
 
@@ -65,15 +55,7 @@ class Api::CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :comment => @comment
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :comment => @comment }
     end
   end
 
@@ -100,23 +82,11 @@ class Api::CommentsController < ApplicationController
             UserMailer.mentioned(@comment, user).deliver
         end
 
-        format.html { redirect_to(@comment, :notice => 'Comment was successfully created.') }
-        format.xml  { render :xml => @comment, :status => :created, :location => @comment }
-        format.json { render :json => {
-          :meta => {
-            :status => 201,
-            :msg => 'Created'
-          },
-          :response => {
-            :comment => @comment.simple_obj
-          }
-        }, :callback => params[:callback] }
+        format.json { render_json({:comment => @comment.simple_obj}, :created) }
       else
-        if @comment.user.blank? # TODO clean up this auth hack. Ugh.
-          format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}, :response => {}}, :callback => params[:callback] }
-        else
-          format.json { render :json => {:meta => {:status => 400, :msg => "Bad Request #{@comment.errors.to_yaml}"}}, :callback => params[:callback] }
-        end
+        # TODO clean up this auth hack. Ugh.
+        status = @comment.user.blank? ? :forbidden : :bad_request
+        format.json { render_json status }
       end
     end
   end
@@ -129,19 +99,13 @@ class Api::CommentsController < ApplicationController
 
     respond_to do |format|
       if @user != @comment.user
-        format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}, :response => {}}, :callback => params[:callback] }
+        status = :forbidden
       elsif @comment.update_attributes(params[:model])
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
-        format.json { render :json => {
-          :meta => {
-            :status => 200,
-            :msg => 'OK'
-          },
-          :response => {}
-        },:callback => params[:callback] }
+        status = :ok
       else
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        status = :unprocessable_entity
       end
+      format.json { render_json status }
     end
   end
 
@@ -154,17 +118,8 @@ class Api::CommentsController < ApplicationController
     @comment.destroy if @user == @comment.user
 
     respond_to do |format|
-      if !@comment.destroyed?
-        format.json { render :json => {:meta => {:status => 403, :msg => "Forbidden"}, :response => {}}, :callback => params[:callback] }
-      else
-        format.json { render :json => {
-          :meta => {
-            :status => 200,
-            :msg => 'OK'
-          },
-          :response => {}
-        },:callback => params[:callback] }
-      end
+      status = @comment.destroyed? ? :ok : :forbidden
+      format.json { render_json status }
     end
   end
 end

@@ -3,14 +3,6 @@ class Api::PostsController < Api::APIController
   # GET /posts
   # GET /posts.xml
   def index
-    # for JSONP requests
-    if !params[:_method].blank?
-      case params[:_method]
-      when 'POST'
-        return create()
-      end
-    end
-
     @posts =  Post.order("created_at DESC")
                   .includes([:user, :page, :domain, {:referrer_post => :user}])
                   .paginate(:page => params[:page])
@@ -23,16 +15,6 @@ class Api::PostsController < Api::APIController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    # for JSONP requests
-    if !params[:_method].blank?
-      case params[:_method]
-      when 'PUT'
-        return update()
-      when 'DELETE'
-        return destroy()
-      end
-    end
-
     @post = Post.find(params[:id])
 
     respond_to do |format|

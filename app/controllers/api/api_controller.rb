@@ -1,6 +1,23 @@
 # encoding: utf-8
 class Api::APIController < ApplicationController
 
+  before_filter :map_method
+
+  private
+
+  def map_method
+    # for JSONP requests
+    map = {
+      'index#POST'  => 'create',
+      'show#PUT'    => 'update',
+      'show#DELETE' => 'destroy'
+    }
+    if !params[:_method].blank?
+      key = "#{action_name}##{params[:_method].upcase}"
+      send map[key] if !map[key].blank? and respond_to? map[key]
+    end
+  end
+
   def show_404
     respond_to do |format|
       format.json { render_json 404 }

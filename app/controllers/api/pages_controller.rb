@@ -2,14 +2,6 @@
 class Api::PagesController < ApplicationController
 
   def index
-    # for JSONP requests
-    if !params[:_method].blank?
-      case params[:_method]
-      when 'POST'
-        return create()
-      end
-    end
-
    @pages = Page.order("created_at DESC")
                 .paginate(:page => params[:page])
 
@@ -19,16 +11,6 @@ class Api::PagesController < ApplicationController
   end
 
   def show
-    # for JSONP requests
-    if !params[:_method].blank?
-      case params[:_method]
-      when 'PUT'
-        return update()
-      when 'DELETE'
-        return destroy()
-      end
-    end
-
     @page = Page.find(params[:id])
 
     respond_to do |format|

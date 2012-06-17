@@ -9,7 +9,7 @@ reading.define [
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses
     # they'll get factoried in model.parse
-    response.response[@type.toLowerCase()]
+    if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
 
   Backbone.Collection::poll = (attr, secs) ->
     polling = false

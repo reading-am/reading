@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
     :foreign_key => 'referrer_post_id'
   belongs_to  :referrer_post, :class_name => 'Post', :counter_cache => :referring_posts_count
 
-  validates_presence_of :user, :page
+  validates_presence_of :user_id, :page_id
 
   # Feed logic from: http://ruby.railstutorial.org/chapters/following-users#sec:the_status_feed
   default_scope :order => 'posts.created_at DESC'

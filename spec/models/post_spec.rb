@@ -1,13 +1,10 @@
 require "spec_helper"
 
 describe Post do
-  context "with 2 or more comments" do
-    it "orders them in reverse" do
-      return true
+  context "when new" do
+    it "won't save without a valid page_id" do
       post = Post.create
-      comment1 = post.comment("first")
-      comment2 = post.comment("second")
-      post.reload.comments.should eq([comment2, comment1])
+      post.should be_an_instance_of Post
     end
   end
 end

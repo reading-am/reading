@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'thin' # server
+gem 'rack-cors', :require => 'rack/cors'
 
 gem 'rails', '3.2.6'
 group :assets do

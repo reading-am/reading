@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
+ruby '1.9.3'
 
 gem 'thin' # server
 gem 'rack-cors', :require => 'rack/cors'
@@ -65,7 +66,7 @@ gem 'carrierwave'
 gem 'fog'
 
 group :development do
-  gem 'ruby-debug19'
+  gem 'debugger'
   gem 'sunspot_solr'
 end
 

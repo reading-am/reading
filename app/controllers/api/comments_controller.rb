@@ -44,7 +44,6 @@ class Api::CommentsController < Api::APIController
   # POST /comments
   # POST /comments.json
   def create
-    # OPT - we don't need to make all of these selections
     @comment       = Comment.new
     @comment.post  = Post.find(params[:model][:post_id])
     @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user

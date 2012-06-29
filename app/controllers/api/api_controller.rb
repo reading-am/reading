@@ -1,6 +1,6 @@
 # encoding: utf-8
 class Api::APIController < ApplicationController
-
+  skip_before_filter :verify_authenticity_token
   before_filter :map_method
 
   private

@@ -11,6 +11,7 @@ reading.curl [
     describe "Page", ->
 
       beforeEach ->
+        @methods = ["read"]
         @model = new Page id: 201
 
       shared()

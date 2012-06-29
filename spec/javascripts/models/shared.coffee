@@ -49,3 +49,5 @@ reading.define "test/models/shared", ["jquery","underscore"], ($,_) -> ->
 
               error: (model, response) ->
                 throw response
+
+          it "should successfully update"

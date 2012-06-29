@@ -52,3 +52,16 @@ reading.curl [
           url = trim_protocol.exec(url)[1]
           _.each scenarios, (s) ->
             Post::parse_url(s+url).should.equal("http://#{url}")
+
+    describe "#save()", ->
+      it "should successfully save and delete", (done) ->
+        model = new Post
+        model.save {url: "http://www.google.com", title: "Google"},
+          success: (model, response) ->
+            model.get("id").should.be.ok
+            model.destroy
+              success: (model, response) -> done()
+              error: (model, response) -> throw response
+
+          error: (model, response) ->
+            throw response

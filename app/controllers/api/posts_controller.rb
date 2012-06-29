@@ -121,4 +121,17 @@ class Api::PostsController < Api::APIController
     end
   end
 
+  # DELETE /posts/1
+  # DELETE /posts/1.json
+  def destroy
+    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @post = Post.find(params[:id])
+
+    @post.destroy if @user == @post.user
+
+    respond_to do |format|
+      status = @post.destroyed? ? :ok : :forbidden
+      format.json { render_json status }
+    end
+  end
 end

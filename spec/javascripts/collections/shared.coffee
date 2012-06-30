@@ -1,4 +1,4 @@
-reading.define "test/collections/shared", ["jquery"], ($) -> ->
+reading.define "spec/collections/shared", ["jquery"], ($) -> ->
 
   cors_support = $.support.cors
 

@@ -41,6 +41,9 @@ reading.define [
     @[name] = @nestCollection(name, App.Collections[type], @get(name))
     @[name].url = => "#{@url()}/#{name}"
 
+    @_has_many = [] unless @_has_many?
+    @_has_many.push name
+
   # converts nested Backbone objects to simply an id reference
   Backbone.Model::deconstruct = (input) ->
     if _.isFunction input

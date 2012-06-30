@@ -3,19 +3,19 @@
 #= require ./shared
 
 reading.curl [
-  "test/models/shared"
+  "spec/models/shared"
   "app/models/comment"
 ], (shared, Comment) ->
 
   describe "Model", ->
     describe "Comment", ->
 
-      beforeEach ->
-        @type = Comment
-        @attrs = {body: "This is a test comment", post_id: 71214, page_id: 1140}
-        @model = new Comment id: 200
+      model = new Comment id: 200
 
-      shared()
+      shared
+        type: Comment
+        model: model
+        attrs: {body: "This is a test comment", post_id: 71214, page_id: 1140}
 
       describe "#save()", ->
 

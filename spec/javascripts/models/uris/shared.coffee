@@ -1,4 +1,4 @@
-reading.define "test/models/uris/shared", [
+reading.define "spec/models/uris/shared", [
   "underscore"
 ], (_) -> ->
 

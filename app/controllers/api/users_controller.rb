@@ -49,12 +49,20 @@ class Api::UsersController < Api::APIController
 
   def following
     @user = User.find(params[:user_id])
-    auth = @user.authorizations
-                .where(:provider => params[:provider])
-                .order("created_at ASC")
-                .first
+
+    if params[:provider] == "external"
+      auth = @user.authorizations.first
+    else
+      auth = @user.authorizations
+                  .where(:provider => params[:provider])
+                  .order("created_at ASC")
+                  .first
+    end
+
+    @users = auth.following
+
     respond_to do |format|
-      format.json { render_json :users => auth.following.collect{ |u| u.simple_obj } }
+      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
     end
   end
 

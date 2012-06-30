@@ -4,15 +4,16 @@
 
 reading.curl [
   "spec/models/shared"
-  "app/models/page"
-], (shared, Page) ->
+  "app/models/user"
+  "app/collections/users"
+], (shared, User, Users) ->
 
   describe "Model", ->
-    describe "Page", ->
+    describe "User", ->
 
-      model = new Page id: 201
+      model = new User id: 2
 
       shared
         methods: ["read"]
-        type: Page
+        type: User
         model: model

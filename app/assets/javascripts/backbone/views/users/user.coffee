@@ -5,6 +5,8 @@ reading.define [
   "app/views/users/popover"
 ], (Backbone, Handlebars, Constants, UserPopoverView) ->
 
+  is_retina = window.devicePixelRatio > 1
+
   class UserView extends Backbone.View
     template: Handlebars.compile "
       <a href=\"{{url}}\">
@@ -36,7 +38,7 @@ reading.define [
 
       switch @size
         when "small"
-          json.avatar = json.avatar_mini
+          json.avatar = if is_retina then json.avatar_thumb else json.avatar_mini
         when "medium"
           json.avatar = json.avatar_thumb
 

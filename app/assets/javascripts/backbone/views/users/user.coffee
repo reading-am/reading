@@ -40,7 +40,7 @@ reading.define [
         when "small"
           json.avatar = if is_retina then json.avatar_thumb else json.avatar_mini
         when "medium"
-          json.avatar = json.avatar_thumb
+          json.avatar = if is_retina then json.avatar_medium else json.avatar_thumb
 
       @$el.html(@template(json))
       return this

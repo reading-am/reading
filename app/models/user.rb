@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
     :styles => {
       :mini => "25x25>",
       :thumb => "70x70>",
+      :medium => "140x140>",
       :large => "500x500>"
     },
     :default_url => "//#{DOMAIN}/assets/users/:attachment/default_:style.png",
@@ -177,6 +178,7 @@ class User < ActiveRecord::Base
       :full_name  => name,
       :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
+      :avatar_medium => avatar.url(:medium),
       :avatar_thumb => avatar.url(:thumb),
       :avatar_mini  => avatar.url(:mini),
       :following_count => following.size,

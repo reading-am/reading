@@ -37,7 +37,7 @@ reading.define "spec/models/shared", [
               error: (model, response) ->
                 done()
 
-        if model._has_many? then context "has_many", ->
+        if model._has_many? then context "Has Many", ->
 
           _.each model._has_many, (v) ->
 
@@ -45,7 +45,7 @@ reading.define "spec/models/shared", [
 
               it "should get data from the API", (done) ->
 
-                model.following.fetch
+                model[v].fetch
                   success: (collection, response) ->
                     collection.length.should.not.be.empty
                     done()

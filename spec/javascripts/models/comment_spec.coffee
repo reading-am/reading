@@ -10,11 +10,11 @@ reading.curl [
   describe "Model", ->
     describe "Comment", ->
 
-      model = new Comment id: 200
+      beforeEach ->
+        @model = new Comment id: 200
 
       shared
         type: Comment
-        model: model
         attrs: {body: "This is a test comment", post_id: 71214, page_id: 1140}
 
       describe "#save()", ->

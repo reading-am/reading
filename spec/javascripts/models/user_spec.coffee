@@ -11,9 +11,9 @@ reading.curl [
   describe "Model", ->
     describe "User", ->
 
-      model = new User id: 2
+      beforeEach ->
+        @model = new User id: 2
 
       shared
         methods: ["read"]
         type: User
-        model: model

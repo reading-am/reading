@@ -10,9 +10,9 @@ reading.curl [
   describe "Model", ->
     describe "Page", ->
 
-      model = new Page id: 1140
+      beforeEach ->
+        @model = new Page id: 1140
 
       shared
         methods: ["read"]
         type: Page
-        model: model

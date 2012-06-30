@@ -12,11 +12,11 @@ reading.curl [
   describe "Model", ->
     describe "Post", ->
 
-      model = new Post id: 200
+      beforeEach ->
+        @model = new Post id: 200
 
       shared
         type: Post
-        model: model
         attrs: {url: "http://www.google.com", title: "Google"}
 
       describe "#parse_url()", ->

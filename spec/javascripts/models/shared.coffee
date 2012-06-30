@@ -6,7 +6,8 @@ reading.define "spec/models/shared", [
   methods = vals.methods ? ["create","read","update","destroy"]
   type = vals.type
   attrs = vals.attrs
-  model = vals.model
+
+  test_model = new type
 
   cors_support = $.support.cors
 
@@ -22,7 +23,7 @@ reading.define "spec/models/shared", [
         describe "#fetch()", ->
 
           it "should get data from the API", (done) ->
-            model.fetch
+            @model.fetch
               success: (model, response) ->
                 model.get("created_at").should.exist
                 done()
@@ -37,15 +38,15 @@ reading.define "spec/models/shared", [
               error: (model, response) ->
                 done()
 
-        if model._has_many? then context "Has Many", ->
+        if test_model._has_many? then context "Has Many", ->
 
-          _.each model._has_many, (v) ->
+          _.each test_model._has_many, (v) ->
 
             describe "##{v}()", (done) ->
 
               it "should get data from the API", (done) ->
 
-                model[v].fetch
+                @model[v].fetch
                   success: (collection, response) ->
                     collection.length.should.not.be.empty
                     done()

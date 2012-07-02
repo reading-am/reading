@@ -4,7 +4,7 @@
 
 reading.curl [
   "underscore"
-  "test/models/uris/shared"
+  "spec/models/uris/shared"
   "app/models/uris/youtube_video"
 ], (_, shared, YouTubeVideo) ->
 

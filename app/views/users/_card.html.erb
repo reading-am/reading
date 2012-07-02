@@ -5,7 +5,7 @@
 %>
 <div id="user_card" class="row">
   <%= link_to avatar_url, :id => "avatar", :class => "span1", :target => avatar_target do %>
-    <%= image_tag user.avatar.url :thumb %>
+    <%= image_tag user.avatar.url :medium %>
   <% end %>
   <div class="span7">
     <h1><%= user.display_name %></h1>
@@ -17,17 +17,17 @@
       <% follow_text = current_user.following?(user) ? 'unfollow' : 'follow' %>
       - <a rel="tooltip" data-title="Add what <%= user.first_name %> reads to your following feed" href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
     <% end %>
-    </nav>
-    <% unless user.location.blank? and user.link.blank? %>
-      <div id="user_places" class="span7 offset1">
-        <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
-      </div>
-    <% end %>
-    <div id="user_bio" class="span7 offset1">
-    <% if !user.bio.nil? %>
-        <%= user.bio %>
-    <% elsif user == current_user %>
-      <%= link_to "Click here to add a bio.", "/settings/info" %>
-    <% end %>
+  </nav>
+  <% unless user.location.blank? and user.link.blank? %>
+    <div id="user_places" class="span7 offset1">
+      <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
     </div>
+  <% end %>
+  <div id="user_bio" class="span7 offset1">
+  <% if !user.bio.nil? %>
+      <%= user.bio %>
+  <% elsif user == current_user %>
+    <%= link_to "Click here to add a bio.", "/settings/info" %>
+  <% end %>
+  </div>
 </div>

@@ -5,7 +5,7 @@
 reading.curl [
   "underscore"
   "jquery"
-  "test/models/uris/shared"
+  "spec/models/uris/shared"
   "app/models/uris/amazon_product"
 ], (_, $, shared, AmazonProduct) ->
 

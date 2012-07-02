@@ -3,7 +3,7 @@
 #= require ./shared
 
 reading.curl [
-  "test/collections/shared"
+  "spec/collections/shared"
   "app/collections/users"
 ], (shared, Users) ->
 

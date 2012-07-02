@@ -3,7 +3,7 @@
 #= require ./shared
 
 reading.curl [
-  "test/models/uris/shared"
+  "spec/models/uris/shared"
   "app/models/uris/wikipedia_article"
 ], (shared, WikipediaArticle) ->
 

@@ -11,6 +11,7 @@ Reading::Application.routes.draw do
     resources :users do
       resources :posts
       resources :comments
+      match "/following/:provider" => "users#following"
       resources :following, :controller => "users", :defaults => { :type => "following" }
       resources :followers, :controller => "users", :defaults => { :type => "followers" }
     end

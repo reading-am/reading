@@ -99,18 +99,9 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html {
         render :file => "#{Rails.root}/public/404.html",
-        :layout => false, 
+        :layout => false,
         :status => :not_found
       }
-
-      format.json { render :json => {
-        :meta => {
-          :status => 404,
-          :msg => 'Not Found'
-        }, :response => {}
-      }, :callback => params[:callback] }
-
-      format.xml { head :not_found }
       format.any { head :not_found }
     end
   end

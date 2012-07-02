@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Api::UsersController < ApplicationController
+class Api::UsersController < Api::APIController
   # GET /users
   # GET /users.xml
   def index
@@ -17,12 +17,7 @@ class Api::UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
+      format.json { render_json({
           :users => @users.collect { |user|
             obj = user.simple_obj
 
@@ -38,8 +33,8 @@ class Api::UsersController < ApplicationController
 
             obj
           }
-        }
-      }, :callback => params[:callback] }
+        })
+      }
     end
   end
 
@@ -48,15 +43,26 @@ class Api::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     respond_to do |format|
-      format.json { render :json => {
-        :meta => {
-          :status => 200,
-          :msg => 'OK'
-        },
-        :response => {
-          :user => @user.simple_obj
-        }
-      }, :callback => params[:callback] }
+      format.json { render_json :user => @user.simple_obj }
+    end
+  end
+
+  def following
+    @user = User.find(params[:user_id])
+
+    if params[:provider] == "external"
+      auth = @user.authorizations.first
+    else
+      auth = @user.authorizations
+                  .where(:provider => params[:provider])
+                  .order("created_at ASC")
+                  .first
+    end
+
+    @users = auth.following
+
+    respond_to do |format|
+      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
     end
   end
 

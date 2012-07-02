@@ -8,4 +8,4 @@ reading.curl [
   describe "Model", ->
     describe "Provider", ->
 
-      it "should get some tests written", ->
+      it "should get some tests written"

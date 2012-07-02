@@ -9,7 +9,8 @@ class Comment < ActiveRecord::Base
   has_many   :children, :class_name => 'Comment',
     :foreign_key => :parent_id
 
-  validates_presence_of :user, :page, :body
+  validates_presence_of :user_id, :page_id, :body
+  validate :post_belongs_to_user
 
   attr_accessible :body
 
@@ -17,6 +18,12 @@ class Comment < ActiveRecord::Base
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
   private
+
+  def post_belongs_to_user
+    if !post.blank? and post.user != user
+      errors.add(:post, "must belong to the user")
+    end
+  end
 
   def self.followed_by(user)
     following_ids = %(SELECT followed_id FROM relationships

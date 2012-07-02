@@ -3,14 +3,17 @@
 #= require ./shared
 
 reading.curl [
-  "test/models/shared"
+  "spec/models/shared"
   "app/models/user"
-], (shared, User) ->
+  "app/collections/users"
+], (shared, User, Users) ->
 
   describe "Model", ->
     describe "User", ->
 
       beforeEach ->
-        @model = new User id: 201
+        @model = new User id: 2
 
-      shared()
+      shared
+        methods: ["read"]
+        type: User

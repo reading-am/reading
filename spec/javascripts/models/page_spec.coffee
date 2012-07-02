@@ -3,7 +3,7 @@
 #= require ./shared
 
 reading.curl [
-  "test/models/shared"
+  "spec/models/shared"
   "app/models/page"
 ], (shared, Page) ->
 
@@ -11,6 +11,8 @@ reading.curl [
     describe "Page", ->
 
       beforeEach ->
-        @model = new Page id: 201
+        @model = new Page id: 1140
 
-      shared()
+      shared
+        methods: ["read"]
+        type: Page

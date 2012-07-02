@@ -152,6 +152,18 @@ public
     auth
   end
 
+  def following
+    case provider
+    when 'twitter'
+      uids = api.friend_ids.ids
+    when 'facebook'
+      uids = api.get_connections("me","friends").collect{|i| i["id"] }
+    end
+    # the DB expects strings rather than ints
+    uids = uids.collect{|i| i.to_s}
+    User.where("id IN (SELECT user_id FROM authorizations WHERE provider = :provider AND uid IN (:uids))", { :provider => provider, :uids => uids })
+  end
+
   def simple_obj to_s=false
     {
       :type         => 'Authorization',

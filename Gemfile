@@ -1,6 +1,8 @@
 source 'http://rubygems.org'
+ruby '1.9.3'
 
 gem 'thin' # server
+gem 'rack-cors', :require => 'rack/cors'
 
 gem 'rails', '3.2.6'
 group :assets do
@@ -47,7 +49,7 @@ gem "twitter-bootstrap-rails", :git => 'git://github.com/seyhunak/twitter-bootst
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'
-gem 'paperclip', '2.7.0'
+gem 'paperclip'
 gem 'browser'
 gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
@@ -64,7 +66,7 @@ gem 'carrierwave'
 gem 'fog'
 
 group :development do
-  gem 'ruby-debug19'
+  gem 'debugger'
   gem 'sunspot_solr'
 end
 

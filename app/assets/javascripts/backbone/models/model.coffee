@@ -28,7 +28,7 @@ reading.define [
     "#{@type.toLowerCase()}s"
 
   Backbone.Model::parse = (response) ->
-    obj = if response.response? then response.response[@type.toLowerCase()] else response
+    obj = if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
     Backbone.Model::factory obj
 
   Backbone.Model::toJSON = ->
@@ -40,6 +40,9 @@ reading.define [
     name = name.toLowerCase()
     @[name] = @nestCollection(name, App.Collections[type], @get(name))
     @[name].url = => "#{@url()}/#{name}"
+
+    @_has_many = [] unless @_has_many?
+    @_has_many.push name
 
   # converts nested Backbone objects to simply an id reference
   Backbone.Model::deconstruct = (input) ->

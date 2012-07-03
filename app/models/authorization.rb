@@ -147,6 +147,11 @@ public
         :expires_at => auth_hash["credentials"]["expires_at"],
         :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
       )
+
+      # Auto-follow everyone from their social network
+      auth.following.each do |u|
+        user.follow!(u)
+      end
     end
 
     auth

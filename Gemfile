@@ -16,10 +16,9 @@ end
 gem 'rails-backbone'
 gem 'jquery-rails'
 
-gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
-
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
+gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-37signals'

@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/29decibel/readit.git
+  revision: 19135ba4eede2009432669e47d6eadee14705976
+  specs:
+    readit (0.0.7)
+      hashie
+      multi_json
+      oauth
+
+GIT
   remote: git://github.com/Sija/premailer-rails3.git
   revision: d44d70686f803b9af706c71436ecfff8b859f40d
   specs:
@@ -29,15 +38,6 @@ GIT
     twitter_bootstrap_form_for (1.0.7)
       actionpack (~> 3)
       railties (~> 3)
-
-GIT
-  remote: git@github.com:29decibel/readit.git
-  revision: 19135ba4eede2009432669e47d6eadee14705976
-  specs:
-    readit (0.0.7)
-      hashie
-      multi_json
-      oauth
 
 GEM
   remote: http://rubygems.org/

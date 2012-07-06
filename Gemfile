@@ -57,7 +57,7 @@ gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper'
 gem 'tumblr-ruby', require: 'tumblr'
-gem 'readit', :git=>'git@github.com:29decibel/readit.git'
+gem 'readit', :git => 'git@github.com:29decibel/readit.git'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 gem 'twitter-text' # for comment parsing

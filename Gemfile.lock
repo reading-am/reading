@@ -7,6 +7,12 @@ GIT
       rails (~> 3)
 
 GIT
+  remote: git://github.com/oauth/oauth-ruby.git
+  revision: 5e646b70e4a662e1958dfd3fc37f3b9bcc75d183
+  specs:
+    oauth (0.4.6)
+
+GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: cbd406f540424a3638ac436e699f803ed0b85e2b
   specs:
@@ -23,6 +29,15 @@ GIT
     twitter_bootstrap_form_for (1.0.7)
       actionpack (~> 3)
       railties (~> 3)
+
+GIT
+  remote: git@github.com:29decibel/readit.git
+  revision: 19135ba4eede2009432669e47d6eadee14705976
+  specs:
+    readit (0.0.7)
+      hashie
+      multi_json
+      oauth
 
 GEM
   remote: http://rubygems.org/
@@ -189,7 +204,6 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.5.2)
     nokogiri (1.5.5)
-    oauth (0.4.6)
     oauth2 (0.6.1)
       faraday (~> 0.7)
       httpauth (~> 0.1)
@@ -271,10 +285,6 @@ GEM
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
-    readit (0.0.7)
-      hashie
-      multi_json
-      oauth
     rsolr (1.0.8)
       builder (>= 2.1.2)
     rspec (2.10.0)
@@ -402,6 +412,7 @@ DEPENDENCIES
   konacha
   less-rails
   nokogiri
+  oauth!
   omniauth-37signals
   omniauth-facebook
   omniauth-instapaper
@@ -415,7 +426,7 @@ DEPENDENCIES
   rack-cors
   rails (= 3.2.6)
   rails-backbone
-  readit
+  readit!
   rspec-rails
   sanitize
   sass-rails

@@ -16,6 +16,8 @@ end
 gem 'rails-backbone'
 gem 'jquery-rails'
 
+gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
+
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
 gem 'omniauth-twitter'
@@ -25,7 +27,7 @@ gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
 gem 'omniauth-readability'
 gem 'hipchat'
-gem "curb", "~> 0.8.0"
+gem 'curb', '~> 0.8.0'
 gem 'nokogiri'
 gem 'addressable'
 gem 'base58'
@@ -55,7 +57,7 @@ gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper'
 gem 'tumblr-ruby', require: 'tumblr'
-gem 'readit'
+gem 'readit', :git=>'git@github.com:29decibel/readit.git'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 gem 'twitter-text' # for comment parsing

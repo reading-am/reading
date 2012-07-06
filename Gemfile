@@ -35,7 +35,7 @@ gem 'pusher', '~> 0.8.3'
 gem 'em-http-request' # needed for async pusher calls
 gem 'crack' # required by the hipchat gem
 gem 'yajl-ruby' # JSON parser recommended by twitter gem
-gem 'twitter', '~> 2.4.0'
+gem 'twitter'
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
 gem 'sunspot_rails'

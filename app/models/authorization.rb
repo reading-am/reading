@@ -105,58 +105,6 @@ public
     @api_user
   end
 
-  def self.find_or_create(auth_hash)
-    if auth = find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
-      # fill in any changed info
-      ["token","secret","expires_at"].each do |prop|
-        auth[prop] = auth_hash["credentials"][prop] || auth[prop]
-      end
-      auth.save
-    else
-      username = auth_hash["info"]["nickname"]
-      username = (username.nil? or username == '') ? nil : username.gsub(/[^A-Z0-9_]/i, '')
-      user = User.create(
-        :name       => auth_hash["info"]["name"],
-        :email      => auth_hash["info"]["email"],
-        # check to make sure a user doesn't already have that nickname
-        :username   => (username.nil? or User.find_by_username(username)) ? nil : username,
-        :first_name => auth_hash["info"]["first_name"],
-        :last_name  => auth_hash["info"]["last_name"],
-        :location   => auth_hash["info"]["location"],
-        :description=> auth_hash["info"]["description"],
-        :image      => auth_hash["info"]["image"],
-        :phone      => auth_hash["info"]["phone"],
-        :urls       => auth_hash["info"]["urls"]
-      )
-      # account for facebook usernames with periods and the like
-      unless user.errors.messages[:username].nil?
-        user.username = nil
-        user.save
-      end
-      # account for bad email addresses coming from provider
-      unless user.errors.messages[:email].nil?
-        user.email = nil
-        user.save
-      end
-      auth = create(
-        :user       => user,
-        :provider   => auth_hash["provider"],
-        :uid        => auth_hash["uid"],
-        :token      => auth_hash["credentials"]["token"],
-        :secret     => auth_hash["credentials"]["secret"],
-        :expires_at => auth_hash["credentials"]["expires_at"],
-        :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
-      )
-
-      # Auto-follow everyone from their social network
-      auth.following.each do |u|
-        user.follow!(u)
-      end
-    end
-
-    auth
-  end
-
   def following
     case provider
     when 'twitter'

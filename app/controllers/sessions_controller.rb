@@ -21,31 +21,20 @@ class SessionsController < ApplicationController
         end
         auth.save
       else
+        # NEW USER
         username = auth_hash["info"]["nickname"]
         username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
-        user = User.create(
-          :name       => auth_hash["info"]["name"],
-          :email      => auth_hash["info"]["email"],
-          # check to make sure a user doesn't already have that nickname
-          :username   => (username.blank? or User.find_by_username(username)) ? nil : username,
-          :first_name => auth_hash["info"]["first_name"],
-          :last_name  => auth_hash["info"]["last_name"],
-          :location   => auth_hash["info"]["location"],
-          :description=> auth_hash["info"]["description"],
-          :image      => auth_hash["info"]["image"],
-          :phone      => auth_hash["info"]["phone"],
-          :urls       => auth_hash["info"]["urls"]
-        )
+        auth_hash["info"]["username"] = (username.blank? or User.find_by_username(username)) ? nil : username
+        auth_hash["info"].delete("nickname")
+
+        user = User.create(auth_hash["info"])
+
         # account for facebook usernames with periods and the like
-        unless user.errors.messages[:username].nil?
-          user.username = nil
-          user.save
-        end
+        user.username = nil if !user.errors.messages[:username].blank?
         # account for bad email addresses coming from provider
-        unless user.errors.messages[:email].nil?
-          user.email = nil
-          user.save
-        end
+        user.email = nil if !user.errors.messages[:email].blank?
+        user.save if user.changed?
+
         auth = Authorization.create(
           :user       => user,
           :provider   => auth_hash["provider"],

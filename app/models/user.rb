@@ -175,6 +175,7 @@ class User < ActiveRecord::Base
       :id         => to_s ? id.to_s : id,
       :username   => username,
       :display_name => display_name,
+      :first_name => first_name,
       :full_name  => name,
       :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,

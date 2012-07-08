@@ -1,33 +1,15 @@
 <%= render :partial => 'users/card', :locals => {:user => @user} %>
 
-<div id="subnav" class="row">
-  <nav class="span1">
-    <%= link_to '« read', "/#{@user.username}" %>
-  </nav>
-  <div class="span7">
-    <h3>
-      <% if params[:type] == 'followers' %>
-        People Following <%= @user.first_name %>
-      <% else %>
-        People <%= @user.first_name %> is Following
-      <% end %>
-    </h3>
-  </div>
-</div>
-<div class="user_list">
-<% if @users.blank? %>
-<div class="row">
-  <div class="span7 offset1">
-    <h4>Nobody's here yet.</h4>
-  </div>
-</div>
-<% else %>
-<% @users.each do |user| %>
-<div class="row">
-  <div class="span7 offset1">
-    <%= render :partial => 'users/user', :locals => { :user => user } %>
-  </div>
-</div>
-<% end %>
-<% end %>
-</div>
+<div id="yield"></div>
+
+<script type="text/javascript">
+
+  reading.curl(["backbone", "app/routers/users"], function(Backbone, Router){
+    new Router({
+      model: Backbone.Model.prototype.factory(<%= @user.simple_obj.to_json.html_safe -%>),
+      collection: Backbone.Model.prototype.factory(<%= @users.collect{|u| u.simple_obj}.to_json.html_safe -%>)
+    });
+    Backbone.history.start({pushState: true});
+  });
+
+</script>

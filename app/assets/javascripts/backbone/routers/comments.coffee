@@ -8,11 +8,11 @@ reading.define [
   class CommentsRouter extends Backbone.Router
     initialize: (options) ->
       if options.model?
-        @model = new Comment(options.model)
+        @model = new Comment options.model
 
     routes:
       ":username/comments/:id" : "show"
 
     show: (id) ->
-      @view = new ShowView(model: @model)
-      $("#yield").html(@view.render().el)
+      @view = new ShowView model: @model
+      $("#yield").html @view.render().el

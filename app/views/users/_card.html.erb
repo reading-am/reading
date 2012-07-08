@@ -13,9 +13,13 @@
   <nav class="span7">
     <a href="/<%= user.username %>/following"<% if params[:type] == 'following' %> class="active"<% end %>><%= user.following.size %> Following</a>
     - <a href="/<%= user.username %>/followers"<% if params[:type] == 'followers' %> class="active"<% end %>><%= user.followers.size %> Followers</a>
-    <% if logged_in? and user != current_user %>
-      <% follow_text = current_user.following?(user) ? 'unfollow' : 'follow' %>
-      - <a rel="tooltip" data-title="Add what <%= user.first_name %> reads to your following feed" href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
+    <% if logged_in? %>
+      <% if user == current_user %>
+        <%# - <a href="#" class="follow">Find People<div class="new_badge">new</div></a> %>
+      <% else %>
+        <% follow_text = current_user.following?(user) ? 'unfollow' : 'follow' %>
+        - <a rel="tooltip" data-title="Add what <%= user.first_name %> reads to your following feed" href="<%= "/#{user.username}/#{follow_text}" %>" class="follow"><span><%= follow_text.capitalize %></span> <%= user.first_name %></a>
+      <% end %>
     <% end %>
   </nav>
   <% unless user.location.blank? and user.link.blank? %>

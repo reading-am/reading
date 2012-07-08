@@ -1,0 +1,16 @@
+@import "variables";
+@import "twitter/bootstrap/mixins";
+
+#blank_slate {
+  .span7 {
+    #gradient > .vertical(lighten(@lightest_yellow, 20%), @lightest_yellow);
+    padding:10px 15px;
+    width:510px;
+  }
+  .well {
+    text-align:center;
+    background-color:@lightest_yellow;
+    .box-shadow(inset 0 1px 1px @light_yellow);
+    border-color: darken(@light_yellow, 5%);
+  }
+}

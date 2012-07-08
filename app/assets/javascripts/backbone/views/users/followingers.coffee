@@ -8,7 +8,7 @@ reading.define [
     template: Handlebars.compile "
       <div id=\"subnav\" class=\"row\">
         <nav class=\"span1\">
-          <a href=\"{{user.username}}\">« read</a>
+          <a href=\"/{{user.username}}\">« read</a>
         </nav>
         <div class=\"span7\">
           <h3>
@@ -20,13 +20,18 @@ reading.define [
           </h3>
         </div>
       </div>
+      <div class=\"row\">
+        <div id=\"users\" class=\"span7 offset1\"></div>
+      </div>
     "
 
     initialize: (options) ->
       @followers = options.followers
-      @users_view = new UsersView options
+      @users_view = new UsersView
+        collection: options.collection
+        className: "r_users"
 
     render: ->
       @$el.html(@template(followers: @followers, user: @model.toJSON()))
-      @$el.append(@users_view.render().el)
+      @$("#users").html(@users_view.render().el)
       return this

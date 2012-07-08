@@ -1,16 +1,25 @@
-.user_list .user {
-  display:block;
+@import "variables";
+
+.r_user {
   margin-bottom:15px;
+  .r_avatar {
+    display:inline-block;
+    width:25px;
+    margin-right:3px;
+    img {
+      text-align:center;
+      vertical-align:middle;
+    }
+  }
+  .r_name {
+    margin-right:3px;
+  }
 }
-.user .avatar {
-  display:inline-block;
-  width:25px;
-  margin-right:3px;
-}
-.user img {
-  text-align:center;
-  vertical-align:middle;
-}
-.user .name {
-  margin-right:3px;
+
+.r_bio {
+  font-family:'Georgia', serif;
+  font-style:italic;
+  -webkit-font-smoothing: subpixel-antialiased;
+  color:@medium_grey;
+  font-weight:normal;
 }

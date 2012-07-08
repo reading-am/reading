@@ -177,6 +177,7 @@ class User < ActiveRecord::Base
       :display_name => display_name,
       :first_name => first_name,
       :full_name  => name,
+      :bio        => bio,
       :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
       :avatar_medium => avatar.url(:medium),

@@ -27,7 +27,7 @@
       <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
     </div>
   <% end %>
-  <div id="user_bio" class="span7 offset1">
+  <div id="user_bio" class="r_bio span7 offset1">
   <% if !user.bio.nil? %>
       <%= user.bio %>
   <% elsif user == current_user %>

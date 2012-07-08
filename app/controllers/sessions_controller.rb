@@ -14,7 +14,43 @@ class SessionsController < ApplicationController
       end
     else
       # Log him in or sign him up
-      auth = Authorization.find_or_create(auth_hash)
+      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+        # fill in any changed info
+        ["token","secret","expires_at"].each do |prop|
+          auth[prop] = auth_hash["credentials"][prop] || auth[prop]
+        end
+        auth.save
+      else
+        # NEW USER
+        username = auth_hash["info"]["nickname"]
+        username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
+        auth_hash["info"]["username"] = (username.blank? or User.find_by_username(username)) ? nil : username
+        auth_hash["info"].delete("nickname")
+
+        user = User.create(auth_hash["info"])
+
+        # account for facebook usernames with periods and the like
+        user.username = nil if !user.errors.messages[:username].blank?
+        # account for bad email addresses coming from provider
+        user.email = nil if !user.errors.messages[:email].blank?
+        user.save if user.changed?
+
+        auth = Authorization.create(
+          :user       => user,
+          :provider   => auth_hash["provider"],
+          :uid        => auth_hash["uid"],
+          :token      => auth_hash["credentials"]["token"],
+          :secret     => auth_hash["credentials"]["secret"],
+          :expires_at => auth_hash["credentials"]["expires_at"],
+          :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
+        )
+
+        # Auto-follow everyone from their social network
+        auth.following.each do |u|
+          user.follow!(u)
+        end
+      end
+
       cookies.permanent[:auth_token] = auth.user.auth_token
       status = "AuthLoginCreate"
     end

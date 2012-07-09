@@ -34,11 +34,9 @@ class UsersController < ApplicationController
     end
   end
 
-
   def settings
     redirect_to logged_in? ? "/settings/info" : "/"
   end
-
 
   # GET /users/1/edit
   def edit
@@ -48,7 +46,6 @@ class UsersController < ApplicationController
       redirect_to("/settings/info", :notice => 'User was successfully updated.')
     end
   end
-
 
   # PUT /users/1
   # PUT /users/1.xml
@@ -70,12 +67,10 @@ class UsersController < ApplicationController
     end
   end
 
-
   def followingers
     @user = User.find_by_username(params[:username])
     @users = (params[:type] == 'followers') ? @user.followers : @user.following
   end
-
 
   def hooks
     redirect_to "/" and return if !logged_in?
@@ -89,7 +84,6 @@ class UsersController < ApplicationController
       format.rss  { render 'hooks/index' }
     end
   end
-
 
   # GET /pick_a_url
   def pick_a_url
@@ -108,12 +102,10 @@ class UsersController < ApplicationController
     end
   end
 
-
   def delete_cookies
     cookies.each do |k, v| cookies.delete k end
     redirect_to '/'
   end
-
 
   def export
     user = User.find_by_username(params[:username])
@@ -125,7 +117,6 @@ class UsersController < ApplicationController
       show_404
     end
   end
-
 
   def extras
     redirect_to "/" and return if !logged_in?

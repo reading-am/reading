@@ -9,6 +9,7 @@ Reading::Application.routes.draw do
     resources :posts
     resources :comments
     resources :users do
+      get 'search', :on => :collection
       resources :posts
       resources :comments
       match "/following/:provider" => "users#following"

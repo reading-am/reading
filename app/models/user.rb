@@ -55,6 +55,11 @@ class User < ActiveRecord::Base
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
   scope :mentioned_in, lambda { |comment| mentioned(comment) }
 
+  searchable do
+    text :name, :username, :email, :link
+  end
+  handle_asynchronously :solr_index
+
   private
 
   def self.posted_to page

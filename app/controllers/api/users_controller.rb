@@ -66,4 +66,13 @@ class Api::UsersController < Api::APIController
     end
   end
 
+  def search
+    search = User.search do fulltext params[:q] end
+    @users = search.results
+
+    respond_to do |format|
+      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
+    end
+  end
+
 end

@@ -17,6 +17,7 @@ Reading::Application.routes.draw do
       resources :followers, :controller => "users", :defaults => { :type => "followers" }
     end
     resources :pages do
+      get 'search', :on => :collection
       resources :users
       resources :comments
     end

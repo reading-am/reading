@@ -23,4 +23,10 @@ reading.define [
             add: true
             success: -> polling = false
 
+  Backbone.Collection::search = (query) ->
+    collection = new this.constructor
+    collection._url = collection.url
+    collection.url = -> "#{_.result(this, '_url')}/search?q=#{query}"
+    return collection
+
   return Backbone

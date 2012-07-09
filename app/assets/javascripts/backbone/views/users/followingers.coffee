@@ -33,5 +33,9 @@ reading.define [
 
     render: ->
       @$el.html(@template(followers: @followers, user: @model.toJSON()))
-      @$("#users").html(@users_view.render().el)
+      @$("#users").html(
+        if @users_view.collection.length
+        then @users_view.render().el
+        else "<h4>Nobody's here yet.</h4>"
+      )
       return this

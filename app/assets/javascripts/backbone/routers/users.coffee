@@ -4,7 +4,8 @@ reading.define [
   "app/models/user"
   "app/collections/users"
   "app/views/users/followingers"
-], ($, Backbone, User, Users, FollowingersView) ->
+  "app/views/users/find_people"
+], ($, Backbone, User, Users, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -16,6 +17,7 @@ reading.define [
     routes:
       ":username/followers" : "followers"
       ":username/following" : "following"
+      "users/recommended" : "recommended"
 
     followers: -> @followingers true
     following: -> @followingers false
@@ -25,4 +27,8 @@ reading.define [
         followers: followers
         model: @model
         collection: @collection
+      $("#yield").html @view.render().el
+
+    recommended: ->
+      @view = new FindPeopleView collection: @collection
       $("#yield").html @view.render().el

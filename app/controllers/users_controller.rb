@@ -122,5 +122,10 @@ class UsersController < ApplicationController
     redirect_to "/" and return if !logged_in?
     @user = current_user
   end
+
+  def recommended
+    @users = User.limit(10)
+    render :find_people
+  end
 end
 

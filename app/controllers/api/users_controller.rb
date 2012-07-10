@@ -64,7 +64,7 @@ class Api::UsersController < Api::APIController
   end
 
   def recommended
-    @users = User.order("followers_count DESC").limit(20)
+    @users = User.where("posts_count > ?", 300).order("followers_count DESC").limit(20)
 
     respond_to do |format|
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }

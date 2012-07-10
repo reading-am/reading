@@ -19,7 +19,7 @@ reading.define [
           <a href=\"/users/recommended\" {{#recommended}}class=\"active\"{{/recommended}}>Recommended</a>
           <a href=\"/users/friends\" {{#friends}}class=\"active\"{{/friends}}>Friends</a>
           <form class=\"search\" action=\"/users/search\" {{#search}}class=\"active\"{{/search}}>
-            <input type=\"text\" name=\"q\" value=\"{{query}}\" placeholder=\"Search\">
+            <input type=\"text\" name=\"q\" value=\"{{query}}\" placeholder=\"Search names and alter egos\">
           </form>
         </nav>
       </div>

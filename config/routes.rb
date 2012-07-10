@@ -10,9 +10,10 @@ Reading::Application.routes.draw do
     resources :comments
     resources :users do
       get 'search', :on => :collection
+      get 'recommended', :on => :collection
       resources :posts
       resources :comments
-      match "/following/:provider" => "users#following"
+      get 'expats', :on => :member
       resources :following, :controller => "users", :defaults => { :type => "following" }
       resources :followers, :controller => "users", :defaults => { :type => "followers" }
     end

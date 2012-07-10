@@ -3,9 +3,10 @@ reading.define [
   "backbone"
   "app/models/user"
   "app/collections/users"
+  "models/current_user"
   "app/views/users/followingers"
   "app/views/users/find_people"
-], ($, Backbone, User, Users, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, current_user, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -33,31 +34,23 @@ reading.define [
       $("#yield").html @view.render().el
 
     recommended: ->
-      @collection = Users::search "jon"
-      @collection.fetch()
-
-      @view = new FindPeopleView
-        section: "recommended"
-        collection: @collection
-
-      $("#yield").html @view.render().el
+      @collection = Users::recommended()
+      @find_people "recommended"
 
     friends: ->
-      @collection = Users::search "sam"
-      @collection.fetch()
-
-      @view = new FindPeopleView
-        section: "friends"
-        collection: @collection
-
-      $("#yield").html @view.render().el
+      @collection = current_user.expats
+      @find_people "friends"
 
     search: (query) ->
       @collection = Users::search query
+      @find_people "search"
+
+    find_people: (section) ->
       @collection.fetch()
 
       @view = new FindPeopleView
-        section: "search"
+        section: section
         collection: @collection
 
       $("#yield").html @view.render().el
+

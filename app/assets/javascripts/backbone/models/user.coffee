@@ -11,6 +11,7 @@ reading.define [
       @has_many "Posts"
       @has_many "Following", "Users"
       @has_many "Followers", "Users"
+      @has_many "Expats", "Users"
 
     logged_in: ->
       return Boolean @get "id"

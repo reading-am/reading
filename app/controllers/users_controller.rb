@@ -123,9 +123,7 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
-  def recommended
-    @users = User.limit(10)
-    render :find_people
+  def find_people
   end
 end
 

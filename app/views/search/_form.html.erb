@@ -1,1 +1,1 @@
-<form id="search" action="/search"><input type="text" name="q" placeholder="Search" value="<%= params[:q] %>"></form>
+<form id="search" action="/search"><input type="text" name="q" placeholder="Search" value="<%= params[:q] if controller.controller_name == 'SearchController' %>"></form>

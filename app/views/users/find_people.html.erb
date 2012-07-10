@@ -3,9 +3,7 @@
 <script type="text/javascript">
 
   reading.curl(["backbone", "app/routers/users"], function(Backbone, Router){
-    new Router({
-      collection: Backbone.Model.prototype.factory(<%= @users.collect{|u| u.simple_obj}.to_json.html_safe -%>)
-    });
+    new Router
     Backbone.history.start({pushState: true});
   });
 

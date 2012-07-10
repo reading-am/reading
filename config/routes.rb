@@ -58,12 +58,12 @@ Reading::Application.routes.draw do
 
   match '/extensions/safari/update' => 'extras#safari_update'
 
-  match '/pick_a_url' => 'users#pick_a_url'
-  match "/users" => redirect("/")
+  match '/pick_a_url'         => 'users#pick_a_url'
+  match "/users"              => redirect("/")
+  match '/users/recommended'  => 'users#find_people'
+  match '/users/friends'      => 'users#find_people'
+  match '/users/search'       => 'users#find_people'
   resources :users do
-    get 'recommended', :on => :collection
-    get 'friends', :on => :collection
-    get 'search', :on => :collection
     resources :posts
   end
 

@@ -6,17 +6,20 @@ reading.define [
 
   class FindPeopleView extends Backbone.View
     template: Handlebars.compile "
-      <div class=\"row\">
+      <div id=\"header_card\" class=\"row\">
         <div class=\"span7 offset1\">
           <h1>Find People</h1>
+        </div>
+        <div class=\"span7 offset1\">
+          Following good people on Reading makes you smarter, it's a fact.
         </div>
       </div>
       <div id=\"subnav\" class=\"row\">
         <nav class=\"span7 offset1\">
-          <a href=\"/users/recommended\" class=\"active\">Recommended</a>
-          <a href=\"/users/friends\">Friends</a>
-          <form id=\"search\" action=\"/users/search\">
-            <input type=\"text\" name=\"q\" placeholder=\"Search\">
+          <a href=\"/users/recommended\" {{#recommended}}class=\"active\"{{/recommended}}>Recommended</a>
+          <a href=\"/users/friends\" {{#friends}}class=\"active\"{{/friends}}>Friends</a>
+          <form class=\"search\" action=\"/users/search\" {{#search}}class=\"active\"{{/search}}>
+            <input type=\"text\" name=\"q\" value=\"{{query}}\" placeholder=\"Search\">
           </form>
         </nav>
       </div>
@@ -26,15 +29,16 @@ reading.define [
     "
 
     initialize: (options) ->
+      @section = options.section
       @users_view = new UsersView
         collection: options.collection
         className: "r_users"
 
     render: ->
-      @$el.html(@template())
-      @$("#users").html(
-        if @users_view.collection.length
-        then @users_view.render().el
-        else "<h4>Nobody's here yet.</h4>"
-      )
+      data = query: @users_view.collection.query
+      data[@section] = true
+
+      @$el.html(@template(data))
+      @$("#users").html(@users_view.render().el)
+
       return this

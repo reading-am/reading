@@ -31,6 +31,7 @@ reading.define [
         followers: followers
         model: @model
         collection: @collection
+
       $("#yield").html @view.render().el
 
     recommended: ->
@@ -53,4 +54,4 @@ reading.define [
         collection: @collection
 
       $("#yield").html @view.render().el
-
+      @view.after_insert()

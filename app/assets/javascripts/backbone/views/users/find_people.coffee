@@ -34,6 +34,9 @@ reading.define [
         collection: options.collection
         className: "r_users"
 
+    after_insert: ->
+      @$("input").focus() if @section is "search"
+
     render: ->
       data = query: @users_view.collection.query
       data[@section] = true

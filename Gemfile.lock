@@ -142,6 +142,7 @@ GEM
       multi_json (~> 1.0)
     faraday (0.8.1)
       multipart-post (~> 1.1)
+    fattr (2.2.1)
     ffi (1.0.11)
     fog (1.4.0)
       builder
@@ -159,6 +160,7 @@ GEM
       sprockets (>= 2.0.3)
       tilt
     hashie (1.2.0)
+    highline (1.6.13)
     hike (1.2.1)
     hipchat (0.4.1)
       httparty
@@ -238,6 +240,8 @@ GEM
     omniauth-xauth (0.0.2)
       oauth
       omniauth (~> 1.0)
+    options (2.3.0)
+      fattr
     paperclip (3.1.2)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
@@ -250,6 +254,9 @@ GEM
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
+    progress_bar (0.4.0)
+      highline (~> 1.6.1)
+      options (~> 2.3.0)
     pusher (0.8.5)
       multi_json (~> 1.0)
       ruby-hmac (~> 0.4.0)
@@ -422,6 +429,7 @@ DEPENDENCIES
   paperclip
   pg
   premailer-rails3!
+  progress_bar
   pusher (~> 0.8.3)
   rack-cors
   rails (= 3.2.6)

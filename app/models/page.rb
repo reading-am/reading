@@ -74,6 +74,7 @@ public
       :id     => to_s ? id.to_s : id,
       :url    => url,
       :title  => title,
+      :excerpt => excerpt,
       :created_at => created_at,
       :updated_at => updated_at
     }

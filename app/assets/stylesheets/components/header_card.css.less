@@ -1,16 +1,9 @@
-@yellow: #FFFBCC;
-@dark_yellow: #FFF461;
-@blue: #cdfeff;
-@dark_blue: #00FBFF;
-@green: #38ff7E;
-@dark_green: #79ff30;
-@grey: #EEE;
-@dark_grey: #777;
+@import "variables";
 
-#user_card {
+#header_card {
   margin-bottom:36px;
   h1 {
-    color:#000;
+    color:@black;
     margin-top:-8px;
     margin-bottom:3px;
   }
@@ -24,16 +17,16 @@
     }
     a:hover {
       text-decoration:none;
-      border-color:#000;
+      border-color:@black;
     }
     a.active {
-      color:@dark_grey;
+      color:@medium_grey;
     }
   }
-  .follow {
+  .button {
     position:relative;
     border-radius:3px;
-    background-color:@green;
+    background-color:@bright_green;
     padding:3px 5px;
     border:0;
     &:hover {
@@ -50,16 +43,9 @@
     max-height:70px;
   }
 }
-#user_bio, .user .bio {
-  font-family:'Georgia', serif;
-  font-style:italic;
-  -webkit-font-smoothing: subpixel-antialiased;
-  color:@dark_grey;
-  font-weight:normal;
-}
 #user_places {
   -webkit-font-smoothing: subpixel-antialiased;
-  color:#000;
+  color:@black;
   margin-bottom:3px;
   a {
     background:none;

@@ -55,6 +55,11 @@ class User < ActiveRecord::Base
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
   scope :mentioned_in, lambda { |comment| mentioned(comment) }
 
+  searchable do
+    text :name, :username, :email, :link
+  end
+  handle_asynchronously :solr_index
+
   private
 
   def self.posted_to page
@@ -175,7 +180,9 @@ class User < ActiveRecord::Base
       :id         => to_s ? id.to_s : id,
       :username   => username,
       :display_name => display_name,
+      :first_name => first_name,
       :full_name  => name,
+      :bio        => bio,
       :url        => "http://#{DOMAIN}/#{username}",
       :avatar     => avatar.url,
       :avatar_medium => avatar.url(:medium),

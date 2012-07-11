@@ -50,13 +50,12 @@ class Api::UsersController < Api::APIController
   def expats
     @user = User.find(params[:id])
 
-    auth = @user.authorizations.first
-    #auth = @user.authorizations
-                #.where(:provider => params[:provider])
-                #.order("created_at ASC")
-                #.first
-
-    @users = auth.following
+    @users = []
+    @user.authorizations.each do |a|
+      @users |= a.following
+    end
+    # don't include the user being queried on
+    @users.delete @user
 
     respond_to do |format|
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }

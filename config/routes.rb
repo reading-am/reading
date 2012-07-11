@@ -9,13 +9,16 @@ Reading::Application.routes.draw do
     resources :posts
     resources :comments
     resources :users do
+      get 'search', :on => :collection
+      get 'recommended', :on => :collection
       resources :posts
       resources :comments
-      match "/following/:provider" => "users#following"
+      get 'expats', :on => :member
       resources :following, :controller => "users", :defaults => { :type => "following" }
       resources :followers, :controller => "users", :defaults => { :type => "followers" }
     end
     resources :pages do
+      get 'search', :on => :collection
       resources :users
       resources :comments
     end
@@ -56,8 +59,11 @@ Reading::Application.routes.draw do
 
   match '/extensions/safari/update' => 'extras#safari_update'
 
-  match '/pick_a_url' => 'users#pick_a_url'
-  match "/users" => redirect("/")
+  match '/pick_a_url'         => 'users#pick_a_url'
+  match "/users"              => redirect("/")
+  match '/users/recommended'  => 'users#find_people'
+  match '/users/friends'      => 'users#find_people'
+  match '/users/search'       => 'users#find_people'
   resources :users do
     resources :posts
   end

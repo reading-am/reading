@@ -69,6 +69,7 @@ gem 'fog'
 group :development do
   gem 'debugger'
   gem 'sunspot_solr'
+  gem 'progress_bar'
 end
 
 group :development, :test do

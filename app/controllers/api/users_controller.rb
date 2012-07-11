@@ -47,19 +47,32 @@ class Api::UsersController < Api::APIController
     end
   end
 
-  def following
-    @user = User.find(params[:user_id])
+  def expats
+    @user = User.find(params[:id])
 
-    if params[:provider] == "external"
-      auth = @user.authorizations.first
-    else
-      auth = @user.authorizations
-                  .where(:provider => params[:provider])
-                  .order("created_at ASC")
-                  .first
+    @users = []
+    @user.authorizations.each do |a|
+      @users |= a.following
     end
+    # don't include the user being queried on
+    @users.delete @user
 
-    @users = auth.following
+    respond_to do |format|
+      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
+    end
+  end
+
+  def recommended
+    @users = User.where("posts_count > ?", 300).order("followers_count DESC").limit(20)
+
+    respond_to do |format|
+      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
+    end
+  end
+
+  def search
+    search = User.search do fulltext params[:q] end
+    @users = search.results
 
     respond_to do |format|
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }

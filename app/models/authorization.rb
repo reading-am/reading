@@ -111,6 +111,8 @@ public
       uids = api.friend_ids.ids
     when 'facebook'
       uids = api.get_connections("me","friends").collect{|i| i["id"] }
+    else
+      uids = []
     end
     # the DB expects strings rather than ints
     uids = uids.collect{|i| i.to_s}

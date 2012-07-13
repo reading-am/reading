@@ -1,7 +1,7 @@
 reading.define "spec/models/shared", [
   "jquery"
   "underscore"
-], ($,_) -> (vals) ->
+], ($, _) -> (vals) ->
 
   methods = vals.methods ? ["create","read","update","destroy"]
   type = vals.type

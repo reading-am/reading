@@ -13,4 +13,6 @@ reading.curl [
       beforeEach ->
         @collection = new Pages
 
-      shared()
+      shared
+        type: Pages
+        search_term: "test"

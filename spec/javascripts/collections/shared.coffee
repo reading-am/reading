@@ -1,15 +1,21 @@
-reading.define "spec/collections/shared", ["jquery"], ($) -> ->
+reading.define "spec/collections/shared", [
+  "jquery"
+  "underscore"
+], ($, _) -> (vals) ->
+
+  type = vals.type
+  search_term = vals.search_term
 
   cors_support = $.support.cors
 
-  describe "#fetch()", ->
+  _.each ["with JSONP", "with JSON"], (v, k) ->
 
-    $.each ["with JSONP", "with JSON"], (k, v) ->
+    context v, ->
 
-      context v, ->
+      before -> $.support.cors = k
+      after  -> $.support.cors = cors_support
 
-        before -> $.support.cors = k
-        after  -> $.support.cors = cors_support
+      describe "#fetch()", ->
 
         it "should get data from the API", (done) ->
           @collection.fetch
@@ -26,3 +32,16 @@ reading.define "spec/collections/shared", ["jquery"], ($) -> ->
               done()
             error: (collection, response) ->
               throw response.responseText.meta.msg
+
+      if search_term
+
+        describe "#search()", ->
+
+          it "should get data from the API", (done) ->
+            search = type::search search_term
+            search.fetch
+              success: (collection, response) ->
+                collection.length.should.not.be.empty
+                done()
+              error: (collection, response) ->
+                throw response.responseText.meta.msg

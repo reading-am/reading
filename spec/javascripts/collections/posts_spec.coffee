@@ -13,4 +13,4 @@ reading.curl [
       beforeEach ->
         @collection = new Posts
 
-      shared()
+      shared type: Posts

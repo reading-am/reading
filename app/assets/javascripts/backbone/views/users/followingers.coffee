@@ -29,6 +29,7 @@ reading.define [
       @followers = options.followers
       @users_view = new UsersView
         collection: options.collection
+        size: "medium"
         className: "r_users"
 
     render: ->

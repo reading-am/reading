@@ -10,9 +10,14 @@ reading.define [
   class UserView extends Backbone.View
     template: Handlebars.compile "
       <a href=\"{{url}}\">
-        <span class=\"r_avatar\"><img src=\"{{avatar}}\"></span>
-        <span class=\"r_name\">{{display_name}}</span>
-        {{#if bio}}<span class=\"r_bio\">{{bio}}</span>{{/if}}
+        <div class=\"r_avatar\">
+          <img src=\"{{avatar}}\">
+        </div>
+        <div class=\"r_info\">
+          <span class=\"r_name\">{{display_name}}</span>
+          {{#if username}}<span class=\"r_username\">@{{username}}</span>{{/if}}
+          {{#if bio}}<br><span class=\"r_bio\">{{bio}}</span>{{/if}}
+        </div>
       </a>
       {{#post_before}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_before\" title=\"{{title}}\">&laquo;</a>{{/post_before}}{{#post_after}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_after\" title=\"{{title}}\">&raquo;</a>{{/post_after}}
     "
@@ -41,8 +46,13 @@ reading.define [
       switch @size
         when "small"
           json.avatar = if is_retina then json.avatar_thumb else json.avatar_mini
+          delete json.bio
+          delete json.username
         when "medium"
           json.avatar = if is_retina then json.avatar_medium else json.avatar_thumb
 
-      @$el.html(@template(json))
+      @$el
+        .addClass("r_size_#{@size}")
+        .html(@template(json))
+
       return this

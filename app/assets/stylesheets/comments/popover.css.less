@@ -27,12 +27,27 @@
     }
   }
   .r_user {
-    font-size: 18px;
-    font-weight: bold;
-    img {
-      max-width:50px;
-      max-height:50px;
-      margin:0 5px 0 0;
+    .r_avatar {
+      width:50px;
+      img {
+        max-width:50px;
+        max-height:50px;
+        margin:0 5px 0 0;
+      }
+    }
+    .r_info { width:200px; }
+    .r_name {
+      font-size: 18px;
+      font-weight: bold;
+      display:block;
+      margin-bottom:5px;
+    }
+    .r_bio { display:none; }
+    a {
+      &:hover {
+        background:none;
+        .r_name { text-decoration:underline; }
+      }
     }
   }
 }

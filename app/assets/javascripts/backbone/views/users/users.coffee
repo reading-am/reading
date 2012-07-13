@@ -7,7 +7,8 @@ reading.define [
   class UsersView extends Backbone.View
     tagName: "ul"
 
-    initialize: ->
+    initialize: (options) ->
+      @size = options.size ? "small"
       @subviews = []
       @collection.bind "reset", @addAll
       @collection.bind "remove", @removeOne
@@ -16,7 +17,7 @@ reading.define [
       @collection.each(@addOne)
 
     addOne: (user) =>
-      view = new UserView model: user, size: "small"
+      view = new UserView model: user, size: @size
       @subviews.push(view)
       @$el.append(view.render().el)
  

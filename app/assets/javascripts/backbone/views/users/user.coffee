@@ -19,12 +19,7 @@ reading.define [
           {{#if bio}}<br><span class=\"r_bio\">{{bio}}</span>{{/if}}
         </div>
       </a>
-      {{#post_before}}
-        <a href=\"{{wrapped_url}}\" class=\"r_tagalong r_before\" title=\"{{title}}\">&laquo;</a>
-      {{/post_before}}
-      {{#post_after}}
-        <a href=\"{{wrapped_url}}\" class=\"r_tagalong r_after\" title=\"{{title}}\">&raquo;</a>
-      {{/post_after}}
+      {{#post_before}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_before\" title=\"{{title}}\">&laquo;</a>{{/post_before}}{{#post_after}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_after\" title=\"{{title}}\">&raquo;</a>{{/post_after}}
     "
 
     tagName: "li"

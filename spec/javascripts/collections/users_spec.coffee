@@ -13,4 +13,6 @@ reading.curl [
       beforeEach ->
         @collection = new Users
 
-      shared()
+      shared
+        type: Users
+        search_term: "greg"

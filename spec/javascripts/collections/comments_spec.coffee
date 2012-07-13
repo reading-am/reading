@@ -13,4 +13,4 @@ reading.curl [
       beforeEach ->
         @collection = new Comments
 
-      shared()
+      shared type: Comments

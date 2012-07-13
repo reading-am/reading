@@ -1,4 +1,5 @@
 @import "variables";
+@import "twitter/bootstrap/mixins";
 
 /*
  * Fonts and Mixins
@@ -32,9 +33,7 @@
   border-radius:2px;
   font-size:12px;
   opacity: 0;
-  transition: opacity .25s ease-in-out;
-  -moz-transition: opacity .25s ease-in-out;
-  -webkit-transition: opacity .25s ease-in-out;
+  .transition(opacity .25s ease-in-out);
 }
 .row:hover .admin.action, .row:hover li:hover .admin.action {
   opacity: 1;

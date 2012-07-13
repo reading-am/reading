@@ -1,25 +1,47 @@
-@import "variables";
+@import "twitter/bootstrap/variables";
+@import "twitter/bootstrap/mixins";
+@import "variables"; // order is important here
 
 .r_user {
-  margin-bottom:15px;
-  .r_avatar {
-    display:inline-block;
-    width:25px;
-    margin-right:3px;
-    img {
-      text-align:center;
-      vertical-align:middle;
+  &.r_size_small {
+    .r_avatar {
+      display:inline-block;
+      width:25px;
+      margin-right:3px;
+      img {
+        text-align:center;
+        vertical-align:middle;
+      }
     }
+    .r_info { display:inline; }
+    .r_name { margin-right:3px; }
   }
-  .r_name {
-    margin-right:3px;
+  &.r_size_medium {
+    a {
+      .makeRow();
+      display:block;
+      padding:10px 0;
+      .border-radius(3px);
+      &:hover { background: lighten(@ghost_grey, 5%); }
+    }
+    .r_avatar {
+      float:left;
+      width:40px;
+      margin-left:@gridGutterWidth;
+    }
+    .r_info {
+      float:left;
+      width:480px;
+      margin-left:@gridGutterWidth;
+    }
+    .r_name { font-weight:bold; }
+    .r_username { color:@medium_grey; }
   }
-}
-
-.r_bio {
-  font-family:'Georgia', serif;
-  font-style:italic;
-  -webkit-font-smoothing: subpixel-antialiased;
-  color:@medium_grey;
-  font-weight:normal;
+  .r_bio {
+    font-family:'Georgia', serif;
+    font-style:italic;
+    -webkit-font-smoothing: subpixel-antialiased;
+    color:@medium_grey;
+    font-weight:normal;
+  }
 }

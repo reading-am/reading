@@ -1,8 +1,9 @@
 reading.define [
   "backbone"
   "handlebars"
+  "models/current_user"
   "app/views/users/users"
-], (Backbone, Handlebars, UsersView) ->
+], (Backbone, Handlebars, current_user, UsersView) ->
 
   class FindPeopleView extends Backbone.View
     template: Handlebars.compile "
@@ -17,7 +18,7 @@ reading.define [
       <div id=\"subnav\" class=\"row\">
         <nav class=\"span7 offset1\">
           <a href=\"/users/recommended\" {{#recommended}}class=\"active\"{{/recommended}}>Recommended</a>
-          <a href=\"/users/friends\" {{#friends}}class=\"active\"{{/friends}}>Outside Friends</a>
+          {{#logged_in}}<a href=\"/users/friends\" {{#friends}}class=\"active\"{{/friends}}>Outside Friends</a>{{/logged_in}}
           <form class=\"search\" action=\"/users/search\" {{#search}}class=\"active\"{{/search}}>
             <input type=\"text\" name=\"q\" value=\"{{query}}\" placeholder=\"Search names and alter egos\">
           </form>
@@ -51,7 +52,10 @@ reading.define [
       @search.focus() if @section is "search"
 
     render: ->
-      data = query: @collection.query
+      data =
+        query:     @collection.query
+        logged_in: current_user.logged_in()
+
       data[@section] = true
 
       @$el.html(@template(data))

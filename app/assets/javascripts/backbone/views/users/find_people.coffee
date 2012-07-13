@@ -36,6 +36,7 @@ reading.define [
       @section = options.section
       @users_view = new UsersView
         collection: @collection
+        size: "medium"
         className: "r_users"
 
     reset: =>

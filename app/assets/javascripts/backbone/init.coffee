@@ -1,4 +1,4 @@
-reading.define {
+define {
   Models: {}
   Collections: {}
   Routers: {}

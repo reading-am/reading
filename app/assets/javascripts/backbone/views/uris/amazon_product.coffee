@@ -1,4 +1,4 @@
-reading.define [
+define [
   "jquery"
   "app/views/uris/uri"
   "handlebars"

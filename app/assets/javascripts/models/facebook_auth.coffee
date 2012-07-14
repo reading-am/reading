@@ -1,4 +1,4 @@
-reading.define [
+define [
   "require"
   "underscore"
   "jquery"

@@ -1,4 +1,4 @@
-reading.define(["jquery"], function ($) {
+define(["jquery"], function ($) {
 
   // workaround for Firefox CORS bug - see http://bugs.jquery.com/ticket/10338#comment:14
 

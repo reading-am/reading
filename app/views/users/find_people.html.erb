@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 
-  reading.curl(["backbone", "app/routers/users"], function(Backbone, Router){
+  require(["backbone", "app/routers/users"], function(Backbone, Router){
     new Router
     Backbone.history.start({pushState: true});
   });

@@ -9,7 +9,7 @@
  * Licensed under the GPL license:
  * http://www.gnu.org/licenses/gpl.html
  */
-reading.define(["jquery"], function(jQuery){
+define(["jquery"], function(jQuery){
 
 ;(function($) {
 

@@ -1,4 +1,4 @@
-reading.define [
+define [
   "app/views/uris/uri"
   "handlebars"
   "app/init"

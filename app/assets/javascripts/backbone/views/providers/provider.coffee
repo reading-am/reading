@@ -1,4 +1,4 @@
-reading.define [
+define [
   "backbone"
   "handlebars"
   "app/models/post"

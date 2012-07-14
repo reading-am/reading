@@ -1,4 +1,4 @@
-reading.curl [
+require [
   "jquery"
   "app/constants"
   "app/models/post"

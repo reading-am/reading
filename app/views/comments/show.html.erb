@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-  reading.curl(["backbone", "app/routers/comments"], function(Backbone, Router){
+  require(["backbone", "app/routers/comments"], function(Backbone, Router){
     new Router({model: Backbone.Model.prototype.factory(<%= @comment.simple_obj.to_json.html_safe -%>)});
     Backbone.history.start({pushState: true});
   });

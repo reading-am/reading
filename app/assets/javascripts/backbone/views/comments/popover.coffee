@@ -1,4 +1,4 @@
-reading.define [
+define [
   "backbone"
   "app/views/components/popover"
   "app/views/comments/comment"

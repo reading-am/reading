@@ -1,4 +1,4 @@
-reading.define [
+define [
   "app/init"
   "models/authorization"
   "models/readability_prov"

@@ -1,4 +1,4 @@
-reading.define [
+define [
   "backbone"
   "app/init"
   "app/collections/users"

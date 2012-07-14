@@ -1,12 +1,4 @@
-window.reading ||= {
-    curl: require
-    define: define
-  }
-
-#require.config
-reading.curl.config
-  apiContext: window.reading
-  defineContext: window.reading
+require.config
   baseUrl: "//<%= DOMAIN %>/assets"
   paths:
     app:        "backbone"

@@ -3,7 +3,7 @@
 // Free to modify and redistribute with credit.
 // http://henrik.nyh.se/2008/02/jquery-html-truncate
 
-reading.define(["jquery"], function($) {
+define(["jquery"], function($) {
 
   var trailing_whitespace = true;
 

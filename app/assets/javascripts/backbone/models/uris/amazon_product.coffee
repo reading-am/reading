@@ -1,4 +1,4 @@
-reading.define [
+define [
   "app/init"
   "app/constants"
   "app/models/uris/uri"

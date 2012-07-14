@@ -1,4 +1,4 @@
-reading.define [
+define [
   "app/addons/nest_collection"
   "app/addons/sync"
   "app/models/model"

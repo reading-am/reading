@@ -1,4 +1,4 @@
-reading.define [
+define [
   "jquery"
   "app/init"
   "app/models/uris/uri"

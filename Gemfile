@@ -54,7 +54,7 @@ gem 'paperclip'
 gem 'browser'
 gem 'sanitize'
 gem 'yajl-ruby', require: 'yajl' # fast JSON parser
-gem 'instapaper'
+gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
 gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit', :git => 'git://github.com/29decibel/readit.git'
 gem 'bitmask_attributes'

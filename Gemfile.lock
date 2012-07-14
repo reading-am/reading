@@ -17,11 +17,11 @@ GIT
 
 GIT
   remote: git://github.com/leppert/instapaper.git
-  revision: 2e343d06cc0fc8382f6d24ab8cd82363ee239494
+  revision: e4570ab9caa6bb6adeefc5f52261cd0da914167e
   specs:
     instapaper (0.2.1)
       faraday_middleware (~> 0.7)
-      multi_json
+      multi_json (>= 1.0.3)
       rash (~> 0.3)
       simple_oauth (~> 0.1)
 

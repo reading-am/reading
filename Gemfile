@@ -13,6 +13,7 @@ group :assets do
   gem 'handlebars_assets'
 end
 
+gem 'requirejs-rails'
 gem 'rails-backbone'
 gem 'jquery-rails'
 

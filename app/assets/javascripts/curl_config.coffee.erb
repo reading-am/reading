@@ -1,18 +1,17 @@
-window.reading ||= {}
+window.reading ||= {
+    curl: require
+    define: define
+  }
 
-reading.curl =
+#require.config
+reading.curl.config
   apiContext: window.reading
   defineContext: window.reading
   baseUrl: "//<%= DOMAIN %>/assets"
-  packages:
-    app:
-      path: "backbone"
-      main: "reading"
-    extend:
-      path: "libs/extend"
-    plugins:
-      path: "jquery"
   paths:
+    app:        "backbone"
+    extend:     "libs/extend"
+    plugins:    "jquery"
     jquery:     "libs/jquery"
     jquery_ui:  "libs/jquery_ui"
     underscore: "libs/lodash_extended"

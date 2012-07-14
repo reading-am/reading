@@ -1,7 +1,7 @@
 reading.define [
   "app/views/uris/uri"
   "handlebars"
-  "app"
+  "app/init"
 ], (URIView, Handlebars, App) ->
 
   class InstagramImageView extends URIView

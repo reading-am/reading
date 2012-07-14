@@ -2,7 +2,7 @@ reading.define [
   "jquery"
   "app/views/uris/uri"
   "handlebars"
-  "app"
+  "app/init"
 ], ($, URIView, Handlebars, App) ->
 
   class AmazonProductView extends URIView

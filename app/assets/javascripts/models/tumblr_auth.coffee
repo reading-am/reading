@@ -1,5 +1,5 @@
 reading.define [
-  "app"
+  "app/init"
   "models/authorization"
   "models/tumblr_prov"
 ], (App, Authorization, TumblrProv) ->

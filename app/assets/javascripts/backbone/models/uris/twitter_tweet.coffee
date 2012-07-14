@@ -1,6 +1,6 @@
 reading.define [
   "jquery"
-  "app"
+  "app/init"
   "app/models/uris/uri"
 ], ($, App, URI) ->
 

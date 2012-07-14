@@ -1,6 +1,6 @@
 reading.define [
   "backbone"
-  "app"
+  "app/init"
   "app/models/page"
 ], (Backbone, App, Page) ->
 

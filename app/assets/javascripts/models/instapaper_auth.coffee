@@ -1,5 +1,5 @@
 reading.define [
-  "app"
+  "app/init"
   "models/authorization"
   "models/instapaper_prov"
 ], (App, Authorization, InstapaperProv) ->

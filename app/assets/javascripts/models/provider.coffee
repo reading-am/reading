@@ -1,5 +1,5 @@
 reading.define [
-  "app"
+  "app/init"
 ], (App) ->
 
   class Provider

@@ -1,7 +1,7 @@
 reading.define [
   "underscore"
   "jquery"
-  "app"
+  "app/init"
   "app/models/uris/uri"
 ], (_, $, App, URI) ->
 

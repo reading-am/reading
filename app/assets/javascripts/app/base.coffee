@@ -2,7 +2,7 @@ reading.curl [
   "jquery"
   "libs/base58"
   "libs/indian"
-  "app"
+  "app/init"
   "app/models/post"
   "app/constants"
   "models/current_user"

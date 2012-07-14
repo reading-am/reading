@@ -2,7 +2,7 @@ reading.define [
   "jquery"
   "backbone"
   "handlebars"
-  "app"
+  "app/init"
   "app/models/post"
   "app/models/uris/uri"
   "app/views/uris/uri"

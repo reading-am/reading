@@ -1,6 +1,6 @@
 reading.define [
   "backbone"
-  "app"
+  "app/init"
   "app/collections/posts"
 ], (Backbone, App) ->
 

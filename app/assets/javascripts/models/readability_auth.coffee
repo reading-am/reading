@@ -1,5 +1,5 @@
 reading.define [
-  "app"
+  "app/init"
   "models/authorization"
   "models/readability_prov"
 ], (App, Authorization, ReadabilityProv) ->

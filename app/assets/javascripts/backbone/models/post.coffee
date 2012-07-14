@@ -1,7 +1,7 @@
 reading.define [
   "jquery"
   "backbone"
-  "app"
+  "app/init"
   "app/constants"
   "libs/base58"
   "plugins/win_focus"

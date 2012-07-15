@@ -13,7 +13,7 @@ group :assets do
   gem 'handlebars_assets'
 end
 
-gem 'requirejs-rails'
+gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git'
 gem 'rails-backbone'
 gem 'jquery-rails'
 

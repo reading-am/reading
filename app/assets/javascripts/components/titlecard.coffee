@@ -1,6 +1,6 @@
 define [
   "jquery"
-  "plugins/waypoints.min"
+  "extend/jquery/waypoints.min"
 ], ($) ->
 
   $ ->

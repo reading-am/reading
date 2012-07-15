@@ -3,7 +3,7 @@ define [
   "underscore"
   "libs/backbone"
   "app/constants"
-  "plugins/xhr_cors_patch"
+  "extend/jquery/xhr_cors_patch"
 ], ($, _, Backbone, Constants) ->
 
   methodMap =

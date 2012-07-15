@@ -1,6 +1,6 @@
 define [
   "jquery"
-  "plugins/color.min"
+  "extend/jquery/color.min"
 ], ($) ->
 
   $ ->

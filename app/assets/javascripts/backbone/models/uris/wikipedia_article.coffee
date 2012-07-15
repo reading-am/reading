@@ -2,7 +2,7 @@ define [
   "jquery"
   "app/init"
   "app/models/uris/uri"
-  "plugins/truncate"
+  "extend/jquery/truncate"
 ], ($, App, URI) ->
 
   class WikipediaArticle extends URI

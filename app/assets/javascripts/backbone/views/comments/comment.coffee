@@ -10,8 +10,8 @@ define [
   "app/views/components/share_popover"
   "app/models/uris/all"
   "app/views/uris/all"
-  "plugins/humane"
-  "plugins/highlight"
+  "extend/jquery/humane"
+  "extend/jquery/highlight"
   "css!comments/comment"
 ], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover) ->
 

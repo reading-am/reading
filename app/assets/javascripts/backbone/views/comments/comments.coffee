@@ -9,10 +9,10 @@ define [
   "app/models/user"
   "app/models/post"
   "jquery_ui"
-  "plugins/mentionsInput"
-  "plugins/events.input"
-  "plugins/elastic"
-  "plugins/insert_at_caret"
+  "extend/jquery/mentionsInput"
+  "extend/jquery/events.input"
+  "extend/jquery/elastic"
+  "extend/jquery/insert_at_caret"
 ], ($, _, Backbone, Handlebars, Key, CommentView, UserPopoverView, User, Post) ->
 
   class CommentsView extends Backbone.View

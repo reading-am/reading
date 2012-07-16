@@ -52,6 +52,9 @@ module Reading
         resource %r{api/.*},
           :headers => :any,
           :methods => [:get, :post, :put, :delete]
+        resource '/assets/*',
+          :headers => :any,
+          :methods => :get
       end
     end
   end

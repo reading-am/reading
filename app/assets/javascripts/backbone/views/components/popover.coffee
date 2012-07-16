@@ -2,8 +2,10 @@ define [
   "jquery"
   "backbone"
   "handlebars"
-  #"css!components/popover"
-], ($, Backbone, Handlebars) ->
+  "text!components/popover.css"
+], ($, Backbone, Handlebars, css) ->
+
+  $("<style>").html(css).appendTo("head")
 
   class Popover extends Backbone.View
     template: Handlebars.compile "<div class=\"r_blocker\"></div>"

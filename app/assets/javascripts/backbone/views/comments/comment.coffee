@@ -8,12 +8,14 @@ define [
   "app/views/uris/uri"
   "app/views/users/user"
   "app/views/components/share_popover"
+  "text!comments/comment.css"
   "app/models/uris/all"
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-  #"css!comments/comment"
-], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover) ->
+], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover, css) ->
+
+  $("<style>").html(css).appendTo("head")
 
   class CommentView extends Backbone.View
     template: Handlebars.compile "

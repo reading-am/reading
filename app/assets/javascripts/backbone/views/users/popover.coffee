@@ -1,9 +1,12 @@
 define [
+  "jquery"
   "backbone"
   "handlebars"
   "app/views/components/popover"
-  #"css!users/popover"
-], (Backbone, Handlebars, Popover) ->
+  "text!users/popover.css"
+], ($, Backbone, Handlebars, Popover, css) ->
+	
+  $("<style>").html(css).appendTo("head")
 
   class UserPopover extends Popover
 

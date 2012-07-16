@@ -12,5 +12,5 @@ paths:
 
 modules:
   - name: 'reading'
-    include: ['requireLib', 'application']
+    include: ['requireLib', 'web/init']
     create: true

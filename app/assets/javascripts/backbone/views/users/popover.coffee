@@ -2,7 +2,7 @@ define [
   "backbone"
   "handlebars"
   "app/views/components/popover"
-  "css!users/popover"
+  #"css!users/popover"
 ], (Backbone, Handlebars, Popover) ->
 
   class UserPopover extends Popover

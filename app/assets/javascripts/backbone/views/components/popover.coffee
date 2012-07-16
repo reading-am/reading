@@ -2,7 +2,7 @@ define [
   "jquery"
   "backbone"
   "handlebars"
-  "css!components/popover"
+  #"css!components/popover"
 ], ($, Backbone, Handlebars) ->
 
   class Popover extends Backbone.View

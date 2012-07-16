@@ -2,7 +2,7 @@ define [
   "backbone"
   "app/views/components/popover"
   "app/views/comments/comment"
-  "css!comments/popover"
+  #"css!comments/popover"
 ], (Backbone, Popover, CommentView) ->
 
   class CommentPopover extends Popover

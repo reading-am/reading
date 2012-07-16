@@ -12,7 +12,7 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-  "css!comments/comment"
+  #"css!comments/comment"
 ], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover) ->
 
   class CommentView extends Backbone.View

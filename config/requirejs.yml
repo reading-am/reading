@@ -1,4 +1,4 @@
-namespace: 'reading'
+namespace: 'r_require'
 
 paths:
   requireLib: 'require'
@@ -11,7 +11,7 @@ paths:
   handlebars: 'libs/handlebars_extended'
 
 modules:
-  - name: 'reading'
+  - name: 'web/loader'
     include: ['requireLib', 'web/init']
     create: true
   - name: 'bookmarklet/loader'

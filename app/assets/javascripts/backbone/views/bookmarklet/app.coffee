@@ -6,23 +6,14 @@ define [
   "app/views/comments/comments"
   "app/views/users/users"
   "app/views/components/share_popover"
-], ($, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover) ->
+  "text!app/templates/bookmarklet/app.hbs"
+], ($, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
 
   class BookmarkletAppView extends Backbone.View
-    template: Handlebars.compile "
-      <div id=\"r_wrp\">
-        <div id=\"r_icon\">&#9996;</div>
-        <div id=\"r_subtext\">Loading</div>
-        <div id=\"r_actions\">
-          <a href=\"#\" id=\"r_yep\">Yep</a> .
-          <a href=\"#\" id=\"r_nope\">Nope</a>
-          <a href=\"#\" id=\"r_share\">Share</a>
-          <a href=\"#\" id=\"r_close\">&#10005;</a>
-        </div>
-      </div>"
+    template: Handlebars.compile template
 
     tagName: "div"
 

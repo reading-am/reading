@@ -199,10 +199,6 @@ GEM
       nokogiri (~> 1.5.0)
       ruby-hmac
     formatador (0.2.3)
-    handlebars_assets (0.4.4)
-      execjs (>= 1.2.9)
-      sprockets (>= 2.0.3)
-      tilt
     hashie (1.2.0)
     highline (1.6.13)
     hike (1.2.1)
@@ -464,7 +460,6 @@ DEPENDENCIES
   delayed_job_active_record
   em-http-request
   fog
-  handlebars_assets
   hipchat
   hirefireapp
   instapaper!

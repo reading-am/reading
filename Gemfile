@@ -10,7 +10,6 @@ group :assets do
   gem 'less-rails'
   gem 'coffee-rails'
   gem 'uglifier'
-  gem 'handlebars_assets'
 end
 
 gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git'

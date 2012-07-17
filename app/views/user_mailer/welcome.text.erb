@@ -1,38 +1,52 @@
 Hi <%= @user.first_name %>,
 
 Max and I wanted to welcome you to Reading. We're a small community here
-and we'd love to get to know you - just respond to this email and tell us what's on your mind.
+and we'd love to get to know you - just respond to this email and say hello.
 
-To help you get started Reading, here are a few high points:
+Reading is a feed of all the things that you're, well, reading. It's not just
+for the best stuff, it's for anything that you might ask a friend "Hey, did
+you read that? Wasn't it great / weird / crazy / funny / stupid / ... ?".
 
-* Posting
-.why
-.bookmarklet
-.extensions
-http://<%= DOMAIN %>/settings/extras
+To help you get started, here are the high points:
 
-* Your Posts
-.show up in section
-http://<%= DOMAIN %>/<%= @user.username %>
+* Posting *
+Posting to your Reading account is a simple one click operation.
+Just install the bookmarklet, or one of our browser extensions
+(available for Chrome, Safar, and Firefox), and you're ready to go.
+You can find them here: http://<%= DOMAIN %>/settings/extras
+When you post, you'll notice two buttons: "Yep" and "Nope".
+They're a quick way to say what you think about the page.
 
-* Following
-.why
-.find people
+* Your Profile *
+Everything you post to Reading will show up on your profile,
+located here: http://<%= DOMAIN %>/<%= @user.username %>
+Posts you've "Yep"'d will have a green checkmark next to them
+and posts you've "Nope"'d will be crossed out in red.
+If you'd like to delete a post, simply hover over it to see
+a red delete button. You can't miss it.
+
+* Following *
+The best part about Reading is seeing what other people are reading,
+and "following" makes that easy. When you visit a user's profile,
+you'll see a green "Follow" button. Click it, and that user's posts
+will show up in your "Following Posts" here:
+http://<%= DOMAIN %>/<%= @user.username %>/list 
+
+To get you started, you can find some great people to follow here:
 http://<%= DOMAIN %>/users/recommended
 
-* Following Posts
-.show up in section
-http://<%= DOMAIN %>/<%= @user.username %>/list
-
-* Hooks
-.why
+* Hooks *
+Hooks perform an action each time you do something on Reading,
+like posting to Twitter or Facebook when you read a page or saving
+all of your "Yep"'s to Instapaper for offline reading. They're a
+great way to plug what you read into your other favorite sites.
 http://<%= DOMAIN %>/settings/hooks
 
-That's about it for now. We hope you have a good time.
+That's about it for now. We hope you have a good time and remember, say hello!
 
 -✌- Greg & Max
 http://<%= DOMAIN %>/greg
 http://<%= DOMAIN %>/maxfenton
 
-twitter: http://twitter.com/reading
-blog: http://writing.<%= DOMAIN %>
+Twitter: http://twitter.com/reading
+Blog: http://writing.<%= DOMAIN %>

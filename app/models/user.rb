@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
 
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true, :case_sensitive => false
-  validates :email, :email => {:allow_blank => true}
-  validates_uniqueness_of :email, :allow_blank => true, :case_sensitive => false
+  validates :email, :email => {:allow_nil => true}
+  validates_uniqueness_of :email, :allow_nil => true, :case_sensitive => false
   validates :bio, :length => { :maximum => 255 }
   validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
 
@@ -172,6 +172,11 @@ class User < ActiveRecord::Base
 
   def following_who_posted_to page
     User.who_posted_to(page).only_follows(self)
+  end
+
+  # is an original user who didn't require an email address to register
+  def is_og?
+    created_at < Date.parse('2012-07-17')
   end
 
   def simple_obj to_s=false

@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
   def check_login
     if logged_in?
-      if request.path_info != '/almost_ready' and (current_user.username.blank? or current_user.email.blank?)
+      if !['/almost_ready','/signout'].include? request.path_info and (current_user.username.blank? or current_user.email.blank?)
         redirect_to '/almost_ready'
       elsif request.path_info == '/'
         redirect_to "/#{current_user.username}/list"

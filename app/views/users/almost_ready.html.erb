@@ -1,8 +1,22 @@
+<% og = current_user.created_at < Date.parse('2012-07-17') %>
+
 <div class="row" id="almost_ready">
   <div class="span7 offset1">
 <%= twitter_bootstrap_form_for current_user, :html => {:class => "form-horizontal"}, :url => '/almost_ready' do |f| %>
   <fieldset>
-    <h3>Almost done, we just need a little bit of info.</h3>
+    <div id="almost_ready_header">
+    <% if !og %>
+      <h3>Almost done, we just need a little bit of info.</h3>
+    <% else %>
+      <h3>So, we're adding email addresses to Reading.</h3>
+      <blockquote>We have some cool features in the works and it'd be helpful
+        if we were able to email you about them. We're a small community here,
+        there are only a handful of us (okay, big handfuls, but still), and I hope
+        we can stick together. Questions? <%= mail_to "greg@reading.am", 'Email me', :subject => 'About the emails', :encode => 'javascript' %>.
+        <small>Greg (p.s. you're my favorite)</small>
+      </blockquote>
+    <% end %>
+    </div>
     <% if current_user.username_was.blank? %>
       <%= f.text_field :username, "#{DOMAIN}/", :placeholder => 'your_pithy_username' do %>
         <p class="help-block">This is where people can find you on Reading</p>
@@ -10,7 +24,7 @@
     <% end %>
     <% if current_user.email_was.blank? %>
       <%= f.email_field :email, :placeholder => 'your_dated_hs_email@aol.com', :class => 'input-xlarge' do %>
-        <p class="help-block">We're totally going to spam you. (Not really)</p>
+        <% if !og %><p class="help-block">We're totally going to spam you. (Not really)</p><% end %>
       <% end %>
     <% end %>
     <%= f.actions do %>

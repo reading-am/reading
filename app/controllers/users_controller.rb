@@ -85,11 +85,11 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /pick_a_url
-  def pick_a_url
+  # GET /almost_ready
+  def almost_ready
     if !logged_in?
       redirect_to root_url and return
-    elsif current_user.username
+    elsif current_user.username and current_user.email
       redirect_to "/settings/info" and return
     end
 

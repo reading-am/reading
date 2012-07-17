@@ -57,10 +57,10 @@ class ApplicationController < ActionController::Base
 
   def check_login
     if logged_in? and request.path_info == '/'
-      if current_user.username
+      if current_user.username and current_user.email
         redirect_to "/#{current_user.username}/list"
       else
-        redirect_to '/pick_a_url'
+        redirect_to '/almost_ready'
       end
     end
   end

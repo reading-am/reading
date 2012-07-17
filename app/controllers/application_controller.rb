@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   http_basic_authenticate_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
 
-  before_filter :check_domain, :set_user_device, :set_headers
+  before_filter :check_domain, :set_user_device, :set_headers, :check_login
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
@@ -56,11 +56,11 @@ class ApplicationController < ActionController::Base
   end
 
   def check_login
-    if logged_in? and request.path_info == '/'
-      if current_user.username and current_user.email
-        redirect_to "/#{current_user.username}/list"
-      else
+    if logged_in?
+      if request.path_info != '/almost_ready' and (current_user.username.blank? or current_user.email.blank?)
         redirect_to '/almost_ready'
+      elsif request.path_info == '/'
+        redirect_to "/#{current_user.username}/list"
       end
     end
   end

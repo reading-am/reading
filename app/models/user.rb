@@ -174,6 +174,11 @@ class User < ActiveRecord::Base
     User.who_posted_to(page).only_follows(self)
   end
 
+  # is an original user who didn't require an email address to register
+  def is_og?
+    created_at < Date.parse('2012-07-17')
+  end
+
   def simple_obj to_s=false
     {
       :type       => 'User',

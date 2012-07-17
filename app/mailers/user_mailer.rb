@@ -25,7 +25,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(
       :to       => @user.email,
-      :from     => "Greg Leppert <greg@reading.am>",
+      :from     => "Greg & Max <greg-and-max@reading.am>",
       :subject  => "Welcome to Reading!"
     )
   end

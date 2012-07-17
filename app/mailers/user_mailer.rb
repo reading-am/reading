@@ -21,6 +21,15 @@ class UserMailer < ActionMailer::Base
     )
   end
 
+  def welcome(user)
+    @user = user
+    mail(
+      :to       => @user.email,
+      :from     => "Greg & Max <greg-and-max@reading.am>",
+      :subject  => "Welcome to Reading!"
+    )
+  end
+
   def digest(user)
     @user   = user
     @posts  = @user.unread_since(@user.mail_digest.days.ago).limit(50)

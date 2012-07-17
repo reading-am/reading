@@ -59,7 +59,7 @@ Reading::Application.routes.draw do
 
   match '/extensions/safari/update' => 'extras#safari_update'
 
-  match '/pick_a_url'         => 'users#pick_a_url'
+  match '/almost_ready'       => 'users#almost_ready'
   match "/users"              => redirect("/")
   match '/users/recommended'  => 'users#find_people'
   match '/users/friends'      => 'users#find_people'

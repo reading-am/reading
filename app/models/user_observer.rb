@@ -5,7 +5,7 @@ class UserObserver < ActiveRecord::Observer
     if (user.username_was.blank? or user.email_was.blank?) and !user.username.blank? and !user.email.blank?
 
       # Tweet to ReadingArrivals
-      if Rails.env == 'production'
+      if !user.is_og? and Rails.env == 'production'
         tweet = "Everyone welcome #{user.username}! http://#{DOMAIN}/#{user.username}"
         Twitter::Client.new(:oauth_token => "***REMOVED***", :oauth_token_secret => "***REMOVED***").delay.update tweet rescue nil
       end

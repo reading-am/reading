@@ -89,7 +89,7 @@ class UsersController < ApplicationController
   def almost_ready
     if !logged_in?
       redirect_to root_url and return
-    elsif current_user.username and current_user.email
+    elsif !current_user.username.blank? and !current_user.email.blank?
       redirect_to "/settings/info" and return
     end
 

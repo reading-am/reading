@@ -60,7 +60,7 @@ class Api::CommentsController < Api::APIController
 
         User.mentioned_in(@comment)
           .where('id != ? AND email IS NOT NULL AND email_when_mentioned = ?', @comment.user.id, true).each do |user|
-            UserMailer.mentioned(@comment, user).deliver
+            UserMailer.delay.mentioned(@comment, user)
         end
 
         format.json { render_json({:comment => @comment.simple_obj}, :created) }

@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   end
 
   def self.mentioned comment
-    where("username IN (:mentions)", { :mentions => comment.mentions })
+    where("lower(username) IN (:mentions)", { :mentions => comment.mentions.map{|u| u.downcase }})
   end
 
   public

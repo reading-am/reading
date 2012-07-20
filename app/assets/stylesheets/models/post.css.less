@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .row .posts_group { // .row is needed so the responsive stylesheet doesn't override it
   margin-bottom:46px;
@@ -21,21 +22,35 @@
   color:@black;
 }
 .post.yep .yn:before {
-  color:@green;
+  color:@eli_blue;
   content:@check;
 }
-h3.yep:before {
-  color:@green;
+/*h3.yep:before {*/
+  /*color:@eli_blue;*/
+  /*content:@check;*/
+  /*font-size:19px;*/
+/*}*/
+/*h3.nope {*/
+  /*line-height:21px;*/
+/*}*/
+/*h3.nope:before {*/
+  /*color:red;*/
+  /*content:@x;*/
+  /*font-size:24px;*/
+/*}*/
+h3.yep {
+  float:right;
   content:@check;
-  font-size:19px;
+  color:@white;
+  line-height:17px;
+  font-size:11px;
+  margin-top:5px;
+  .badge(@eli_blue, 17px);
 }
 h3.nope {
-  line-height:21px;
-}
-h3.nope:before {
   color:red;
-  content:@x;
-  font-size:24px;
+  font-size:26px;
+  line-height:21px;
 }
 .post.nope .yn_wrap, .posts_group .nope .page {
   text-decoration:line-through;

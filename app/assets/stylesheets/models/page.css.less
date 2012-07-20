@@ -1,14 +1,16 @@
 @import "twitter/bootstrap/variables";
 @import "variables";
+@import "mixins";
 
 .page {
   h2 {
+    font-size:21px;
     font-family:'Palatino', 'Georgia', serif;
     font-weight:normal;
     line-height:29px;
     margin-bottom:@baseLineHeight / 2;
   }
-  a, &.nope a span {
+  &.nope a span {
     color:@darkest_grey;
     background:none;
   }
@@ -21,7 +23,7 @@
   }
   .excerpt {
     color:#AAA;
-    font-family:'Palatino', 'Georgia', serif;
+    font-family:'Georgia', serif;
     font-style:italic;
     overflow:hidden;
     text-overflow: ellipsis;

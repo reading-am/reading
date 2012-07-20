@@ -1,23 +1,32 @@
+@import "twitter/bootstrap/variables";
 @import "variables";
 
-.page a, .page.nope a span {
-  color:@darkest_grey;
-  background:none;
-}
-.page.yep a span {
-  color:@black;
-}
-.page.nope a {
-  color:red;
-  text-decoration:line-through;
-}
-.page .excerpt {
-  color:@medium_grey;
-  font-family:'Georgia', serif;
-  font-style:italic;
-  overflow:hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.page {
+  h2 {
+    font-family:'Palatino', 'Georgia', serif;
+    font-weight:normal;
+    line-height:29px;
+    margin-bottom:@baseLineHeight / 2;
+  }
+  a, &.nope a span {
+    color:@darkest_grey;
+    background:none;
+  }
+  &.yep a span {
+    color:@black;
+  }
+  &.nope a {
+    color:red;
+    text-decoration:line-through;
+  }
+  .excerpt {
+    color:#AAA;
+    font-family:'Palatino', 'Georgia', serif;
+    font-style:italic;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .has_comments {
   background:@purple;
@@ -32,21 +41,21 @@
   text-align:center;
   font-size:11px;
   -webkit-font-smoothing: subpixel-antialiased;
-}
-.has_comments:hover {
-  text-decoration:none;
-  color:@white;
-  background:@dark_purple;
-}
-.has_comments .triangle {
-  border-color: @purple transparent transparent transparent;
-  border-style: solid;
-  border-width: 5px 5px 0 0;
-  height:0; width:0;
-  position:absolute;
-  bottom:-5px;
-  left:5px;
-}
-.has_comments:hover .triangle {
-  border-color: @dark_purple transparent transparent transparent;
+  &:hover {
+    text-decoration:none;
+    color:@white;
+    background:@dark_purple;
+    .triangle {
+      border-color: @dark_purple transparent transparent transparent;
+    }
+  }
+  .triangle {
+    border-color: @purple transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px 5px 0 0;
+    height:0; width:0;
+    position:absolute;
+    bottom:-5px;
+    left:5px;
+  }
 }

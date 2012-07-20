@@ -3,11 +3,11 @@
   wrap_url = false unless defined? wrap_url
 %>
 <div data-class="Page" data-id="<%= page.id %>" class="page <%= yn_class if defined? yn_class %>">
-  <h3>
+  <h2>
     <%= link_to wrap_url ? post.wrapped_url : page.url, :class => 'external', :data => {:base58_id => if post then Base58.encode(post.id) else nil end } do %>
       <span><%= page.display_title %></span>
     <% end %>
-  </h3>
+  </h2>
 <% 
 #  <span class="plusnav" style="display:none;">
 #    |<%= link_to "+", "http://#{DOMAIN}/domains/#{page.domain.name}/pages/#{page.id}", :class => 'info'

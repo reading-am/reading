@@ -2,7 +2,7 @@
     time = ''
     wrap_urls = false unless defined? wrap_urls
 %>
-<% posts.group_by(&:page).each do |page, subposts| %>
+<% posts.group_by(&:page).each_with_index do |(page, subposts), i| %>
   <%
     subposts.reverse!
     post = subposts.first
@@ -17,12 +17,12 @@
       yn_class = ""
     end
   %>
-  <div class="row">
+  <div class="row w_rule<%= " first" if i == 0 %>">
     <div class="span1 date">
     <% if time != subposts.last.created_at.strftime("%m/%d") %>
       <%= time = subposts.last.created_at.strftime("%m/%d") %>
     <% elsif !yn_class.blank? %>
-      <h3 class="<%= yn_class %>"></h3>
+      <h3 class="<%= yn_class %>"><%= yn_avg > 0 ? '✔' : '×' %></h3>
     <% else %>
       &nbsp;
     <% end %>

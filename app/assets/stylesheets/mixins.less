@@ -1,0 +1,21 @@
+@import "twitter/bootstrap/mixins";
+
+.badge(@color, @size){
+    background: @color;
+    width: @size;
+    height: @size;
+    position: relative;
+    text-align: center;
+    &:before, &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: @size;
+        width: @size;
+        background: @color;
+        z-index:-1;
+    }
+    &:before { .rotate(30deg); }
+    &:after { .rotate(60deg); }
+}

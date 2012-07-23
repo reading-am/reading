@@ -1,8 +1,9 @@
 <%
   post = false unless defined? post
   wrap_url = false unless defined? wrap_url
+  yn_class = false unless defined? yn_class and !yn_class.blank?
 %>
-<div data-class="Page" data-id="<%= page.id %>" class="page <%= yn_class if defined? yn_class %>">
+<div data-class="Page" data-id="<%= page.id %>" class="page<%= " #{yn_class}" if yn_class %>">
   <h2>
     <%= link_to wrap_url ? post.wrapped_url : page.url, :class => 'external', :data => {:base58_id => if post then Base58.encode(post.id) else nil end } do %>
       <span><%= page.display_title %></span>
@@ -19,7 +20,7 @@
     excluded_domains = [10, 64]
     if !excluded_domains.include? page.domain_id and !page.excerpt.blank?
   %>
-  <p class="excerpt subtext" title="<%= page.excerpt.html_safe %>">
+  <p class="excerpt" title="<%= page.excerpt.html_safe %>">
     <%= page.excerpt.html_safe %>
   </p>
   <% end %>

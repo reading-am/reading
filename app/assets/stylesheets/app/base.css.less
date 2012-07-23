@@ -1,11 +1,10 @@
+@import "twitter/bootstrap/variables";
 @import "variables";
 
 body {
-  width:100%;
   height:100%;
   margin-top:16px;
   margin-bottom:50px;
-  -webkit-font-smoothing: antialiased;
 }
 h1 {
   font-size:28px;
@@ -22,4 +21,8 @@ a:hover {
 .user, .hook a {
   font-weight:bold;
 }
-
+.row.w_rule {
+  border-top:1px solid @light_grey;
+  padding-top:@baseLineHeight;
+  &.first { border:none; }
+}

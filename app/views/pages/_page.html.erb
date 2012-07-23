@@ -19,7 +19,7 @@
     excluded_domains = [10, 64]
     if !excluded_domains.include? page.domain_id and !page.excerpt.blank?
   %>
-  <p class="excerpt" title="<%= page.excerpt.html_safe %>">
+  <p class="excerpt subtext" title="<%= page.excerpt.html_safe %>">
     <%= page.excerpt.html_safe %>
   </p>
   <% end %>

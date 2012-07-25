@@ -1,5 +1,15 @@
 # encoding: utf-8
 class AuthorizationsController < ApplicationController
+  before_filter :map_37signals
+
+  private
+
+  def map_37signals
+    params[:provider] = '37signals' if params[:provider] == 'tssignals'
+  end
+
+  public
+
   # PUT /authorizations/1
   # PUT /authorizations/1.xml
   def update
@@ -33,7 +43,6 @@ class AuthorizationsController < ApplicationController
   end
 
   def places
-    params[:provider] = '37signals' if params[:provider] == 'tssignals'
     @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
 
     if allowed = @auth.user == current_user

@@ -56,7 +56,12 @@ public
   end
 
   def display_name
-    (info.blank? or info['username'].blank?) ? uid : info['username']
+    case provider
+    when '37signals'
+      accounts.first["name"]
+    else
+      (info.blank? or info['username'].blank?) ? uid : info['username']
+    end
   end
 
   def accounts

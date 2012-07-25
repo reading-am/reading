@@ -101,19 +101,15 @@ reading.define [
     set_yn: (e) ->
       $tar = $(e.target)
       @model.save
-        yn: (if $tar.hasClass(active) then null else $tar.is("#r_yep"))
+        yn: (if @$el.hasClass($tar.attr("id")) then null else $tar.is("#r_yep"))
 
     render_yn: ->
       $this  = (if @model.get("yn") then @$("#r_yep") else @$("#r_nope"))
-      $other = (if @model.get("yn") then @$("#r_nope") else @$("#r_yep"))
 
       # set the UI
-      if @model.get("yn") is null
-        $this.removeClass "#{active} #{inactive}"
-        $other.removeClass "#{active} #{inactive}"
-      else
-        $this.removeClass(inactive).addClass active
-        $other.removeClass(active).addClass inactive
+      @$el.removeClass("r_yep r_nope")
+      if @model.get("yn") isnt null
+        @$el.addClass(if @model.get("yn") then "r_yep" else "r_nope")
 
     showShare: ->
       @share_view = new SharePopover subject: Post::current

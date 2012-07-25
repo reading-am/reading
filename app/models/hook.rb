@@ -34,7 +34,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run
+  #handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -127,7 +127,7 @@ class Hook < ActiveRecord::Base
     client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
-  def campfire post, event_fired
+  def tssignals post, event_fired
     post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
     when :new
@@ -137,8 +137,7 @@ class Hook < ActiveRecord::Base
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 
-    campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
-    room = campfire.find_or_create_room_by_name(self.params['room'])
+    room = authorization.api.find_or_create_room_by_id(self.params['room'])
     room.speak output if !room.nil?
   end
 

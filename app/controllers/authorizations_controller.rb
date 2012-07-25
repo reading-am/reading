@@ -36,7 +36,13 @@ class AuthorizationsController < ApplicationController
     @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
 
     if allowed = @auth.user == current_user
-      places = @auth.api.user_info.response.user.blogs
+      case @auth.provider
+      when 'tumblr'
+        places = @auth.api.user_info.response.user.blogs
+      when '37signals'
+        account = @auth.info["accounts"].find{|a| a["product"] == "campfire"}
+        domain = URI.parse(account['href']).domain.split('.')[0]
+      end
     end
     respond_to do |format|
       if places.nil?

@@ -122,7 +122,7 @@ public
   def simple_obj to_s=false
     {
       :type         => 'Authorization',
-      :provider     => provider,
+      :provider     => provider == '37signals' ? 'tssignals' : provider,
       :uid          => to_s ? uid.to_s : uid,
       :permissions  => permissions,
       :info         => info,

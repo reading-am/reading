@@ -84,10 +84,10 @@
       display:inline-block;
     }
   }
-  a:hover, .r_active {
+  a:hover, .r_active, &.r_yep #r_yep, &.r_nope #r_nope {
     background:@white;
   }
-  #r_actions .r_inactive {
+  #r_actions .r_inactive, &.r_yep #r_nope, &.r_nope #r_yep {
     text-decoration:line-through;
   }
   ul {

@@ -33,6 +33,7 @@ class AuthorizationsController < ApplicationController
   end
 
   def places
+    params[:provider] = '37signals' if params[:provider] == 'tssignals'
     @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
 
     if allowed = @auth.user == current_user
@@ -40,8 +41,7 @@ class AuthorizationsController < ApplicationController
       when 'tumblr'
         places = @auth.api.user_info.response.user.blogs
       when '37signals'
-        account = @auth.info["accounts"].find{|a| a["product"] == "campfire"}
-        domain = URI.parse(account['href']).domain.split('.')[0]
+        places = @auth.api.rooms
       end
     end
     respond_to do |format|

@@ -59,6 +59,13 @@ public
     (info.blank? or info['username'].blank?) ? uid : info['username']
   end
 
+  def accounts
+    case provider
+    when "37signals"
+      info["accounts"].find_all{|a| a["product"] == "campfire"}
+    end
+  end
+
   def can perm
     permissions.include? perm.to_s
   end
@@ -99,6 +106,9 @@ public
         end
       when 'readability'
         @api_user = Readit::API.new token, secret
+      when '37signals'
+        account = accounts.first
+        @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
       end
     end
 

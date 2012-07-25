@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter','facebook','instapaper','readability','tumblr']
+  PROVIDERS = ['twitter','facebook','instapaper','readability','tumblr','tssignals']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -57,7 +57,7 @@ public
 
   def display_name
     case provider
-    when '37signals'
+    when 'tssignals'
       accounts.first["name"]
     else
       (info.blank? or info['username'].blank?) ? uid : info['username']
@@ -66,7 +66,7 @@ public
 
   def accounts
     case provider
-    when "37signals"
+    when "tssignals"
       info["accounts"].find_all{|a| a["product"] == "campfire"}
     end
   end
@@ -111,7 +111,7 @@ public
         end
       when 'readability'
         @api_user = Readit::API.new token, secret
-      when '37signals'
+      when 'tssignals'
         account = accounts.first
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
       end
@@ -137,10 +137,10 @@ public
   def simple_obj to_s=false
     {
       :type         => 'Authorization',
-      :provider     => provider == '37signals' ? 'tssignals' : provider,
+      :provider     => provider,
       :uid          => to_s ? uid.to_s : uid,
       :permissions  => permissions,
-      :info         => provider == '37signals' ? accounts.first : info,
+      :info         => provider == 'tssignals' ? accounts.first : info,
       :created_at   => created_at,
       :updated_at   => updated_at
     }

@@ -1,15 +1,5 @@
 # encoding: utf-8
 class AuthorizationsController < ApplicationController
-  before_filter :map_37signals
-
-  private
-
-  def map_37signals
-    params[:provider] = '37signals' if params[:provider] == 'tssignals'
-  end
-
-  public
-
   # PUT /authorizations/1
   # PUT /authorizations/1.xml
   def update
@@ -49,7 +39,7 @@ class AuthorizationsController < ApplicationController
       case @auth.provider
       when 'tumblr'
         places = @auth.api.user_info.response.user.blogs
-      when '37signals'
+      when 'tssignals'
         places = @auth.api.rooms
       end
     end

@@ -3,6 +3,12 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env['omniauth.auth']
+
+    # mapped so as to avoid problems with variables starting with numbers
+    if auth_hash.provider == '37signals'
+      auth_hash.provider = 'tssignals'
+    end
+
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
       begin

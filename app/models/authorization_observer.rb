@@ -9,7 +9,7 @@ class AuthorizationObserver < ActiveRecord::Observer
 
   def before_create(auth)
     case auth.provider
-    when "37signals"
+    when "tssignals"
       info = auth.info
       indexes = info["accounts"].collect.with_index{|a,i| i if a["product"] == "campfire"}.compact
       indexes.each do |i|

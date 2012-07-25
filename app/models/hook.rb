@@ -34,7 +34,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  #handle_asynchronously :run
+  handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -137,7 +137,7 @@ class Hook < ActiveRecord::Base
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 
-    room = authorization.api.find_or_create_room_by_id(self.params['room'])
+    room = authorization.api.find_room_by_id(self.params['room'].to_i)
     room.speak output if !room.nil?
   end
 

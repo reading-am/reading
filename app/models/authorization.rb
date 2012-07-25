@@ -135,7 +135,7 @@ public
       :provider     => provider == '37signals' ? 'tssignals' : provider,
       :uid          => to_s ? uid.to_s : uid,
       :permissions  => permissions,
-      :info         => info,
+      :info         => provider == '37signals' ? accounts.first : info,
       :created_at   => created_at,
       :updated_at   => updated_at
     }

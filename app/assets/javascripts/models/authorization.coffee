@@ -6,7 +6,14 @@ reading.define [
 
   class Authorization
     constructor: (@uid, @permissions = [], @info) ->
-      @name = if @info? and @info.username? then @info.username else @uid
+      if @info?
+        if @info.username?
+          @name = @info.username
+        else if @info.name?
+          @name = @info.name
+
+      @name ?= @uid
+
       @set_default_perms @permissions
 
     # make sure you grab certain default permissions on a new authorization

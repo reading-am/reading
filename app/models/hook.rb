@@ -127,7 +127,15 @@ class Hook < ActiveRecord::Base
     client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
+  # For legacy support. If you finally remove this, also remove
+  # the room param from tssignals and the ||= assignment
   def campfire post, event_fired
+    campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
+    room = campfire.find_or_create_room_by_name(self.params['room'])
+    self.tssignals post, event_fired, room
+  end
+
+  def tssignals post, event_fired, room=nil
     post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
     when :new
@@ -137,8 +145,7 @@ class Hook < ActiveRecord::Base
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 
-    campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
-    room = campfire.find_or_create_room_by_name(self.params['room'])
+    room ||= authorization.api.find_room_by_id(self.params['room'].to_i)
     room.speak output if !room.nil?
   end
 

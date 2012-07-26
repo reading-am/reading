@@ -123,6 +123,7 @@ class User < ActiveRecord::Base
         :provider   => auth_hash["provider"],
         :uid        => auth_hash["uid"],
         :token      => auth_hash["credentials"]["token"],
+        :refresh_token => auth_hash["credentials"]["refresh_token"],
         :secret     => auth_hash["credentials"]["secret"],
         :expires_at => auth_hash["credentials"]["expires_at"],
         :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json

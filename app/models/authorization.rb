@@ -3,7 +3,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  PROVIDERS = ['twitter','facebook','instapaper','readability','tumblr']
+  PROVIDERS = ['twitter','facebook','instapaper','readability','tumblr','tssignals']
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms
 
@@ -56,7 +56,19 @@ public
   end
 
   def display_name
-    (info.blank? or info['username'].blank?) ? uid : info['username']
+    case provider
+    when 'tssignals'
+      accounts.first["name"]
+    else
+      (info.blank? or info['username'].blank?) ? uid : info['username']
+    end
+  end
+
+  def accounts
+    case provider
+    when "tssignals"
+      info["accounts"].find_all{|a| a["product"] == "campfire"}
+    end
   end
 
   def can perm
@@ -99,6 +111,9 @@ public
         end
       when 'readability'
         @api_user = Readit::API.new token, secret
+      when 'tssignals'
+        account = accounts.first
+        @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
       end
     end
 
@@ -125,7 +140,7 @@ public
       :provider     => provider,
       :uid          => to_s ? uid.to_s : uid,
       :permissions  => permissions,
-      :info         => info,
+      :info         => provider == 'tssignals' ? accounts.first : info,
       :created_at   => created_at,
       :updated_at   => updated_at
     }

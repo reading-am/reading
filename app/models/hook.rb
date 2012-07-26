@@ -135,7 +135,7 @@ class Hook < ActiveRecord::Base
     self.tssignals post, event_fired, room
   end
 
-  def tssignals post, event_fired, room
+  def tssignals post, event_fired, room=nil
     post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
     when :new

@@ -45,10 +45,10 @@ reading.define [
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
     ]},
-    {"text":"Campfire", "params":[
-      {"text":"room", "placeholder": "My Room Name"},
-      {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345abcdefg6789"},
-      {"text":"subdomain", "placeholder": "example"}
+    {"text":"Campfire", "value":"tssignals", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.get("authorizations").tssignals.accounts(), "datatype":"account"}
+      {"text":"room", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
     ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},

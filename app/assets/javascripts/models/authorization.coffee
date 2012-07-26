@@ -6,7 +6,14 @@ reading.define [
 
   class Authorization
     constructor: (@uid, @permissions = [], @info) ->
-      @name = if @info? and @info.username? then @info.username else @uid
+      @name = @uid
+
+      if @info?
+        if @info.username?
+          @name = @info.username
+        else if @info.name?
+          @name = @info.name
+
       @set_default_perms @permissions
 
     # make sure you grab certain default permissions on a new authorization
@@ -34,7 +41,7 @@ reading.define [
     assign_params_from_auth_response: (response) ->
       unless !response.auth
         # rerun the constructor
-        @constructor response.auth.uid, response.auth.permissions
+        @constructor response.auth.uid, response.auth.permissions, response.auth.info
         current_user.get("authorizations")[@provider][@uid] = this
 
     save: (params) ->

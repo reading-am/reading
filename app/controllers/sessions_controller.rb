@@ -3,6 +3,12 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env['omniauth.auth']
+
+    # mapped so as to avoid problems with variables starting with numbers
+    if auth_hash.provider == '37signals'
+      auth_hash.provider = 'tssignals'
+    end
+
     if logged_in?
       # Means our user is signed in. Add the authorization to the user
       begin
@@ -40,6 +46,7 @@ class SessionsController < ApplicationController
           :provider   => auth_hash["provider"],
           :uid        => auth_hash["uid"],
           :token      => auth_hash["credentials"]["token"],
+          :refresh_token => auth_hash["credentials"]["refresh_token"],
           :secret     => auth_hash["credentials"]["secret"],
           :expires_at => auth_hash["credentials"]["expires_at"],
           :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json

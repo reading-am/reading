@@ -27,12 +27,14 @@ module ApplicationHelper
         output = content_tag :span, provider[0], :class => 'glyph icon'
       when 'tumblr'
         output = content_tag :span, 'k', :class => 'glyph icon'
-      when '37signals'
+      when 'tssignals'
         output = content_tag :span, '✣', :class => 'icon'
       when 'instapaper'
         output = content_tag :span, 'I', :class => 'icon'
       when 'readability'
         output = content_tag :span, '♣', :class => 'icon'
+      else
+        output = content_tag :span
       end
       output << ' ' << text
     end

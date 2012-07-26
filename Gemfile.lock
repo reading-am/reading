@@ -234,7 +234,7 @@ GEM
       omniauth-oauth2 (~> 1.0)
     omniauth-facebook (1.4.0)
       omniauth-oauth2 (~> 1.0.2)
-    omniauth-instapaper (0.1.0)
+    omniauth-instapaper (0.2.0)
       multi_json
       omniauth-xauth (~> 0.0.2)
     omniauth-oauth (1.0.1)

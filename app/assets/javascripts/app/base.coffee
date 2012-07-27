@@ -4,6 +4,7 @@ reading.curl [
   "libs/indian"
   "app"
   "app/models/post"
+  "app/constants"
   "models/current_user"
   "plugins/rails"
   "plugins/cookies"
@@ -12,7 +13,7 @@ reading.curl [
   "views/post"
   "views/user"
   "views/hooks/init"
-], ($, base58, Indian, App, Post, current_user) ->
+], ($, base58, Indian, App, Post, Constants, current_user) ->
 
   window.current_user = current_user
 

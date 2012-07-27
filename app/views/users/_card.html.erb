@@ -24,7 +24,7 @@
   </nav>
   <% unless user.location.blank? and user.link.blank? %>
     <div id="user_places" class="span7 offset1">
-      <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :class => 'external' unless user.link.blank? %>
+      <%= user.location unless user.location.blank? %> <%= "-" unless user.location.blank? or user.link.blank? %> <%= link_to user.link, user.link, :target => '_blank' unless user.link.blank? %>
     </div>
   <% end %>
   <div id="user_bio" class="r_bio span7 offset1">

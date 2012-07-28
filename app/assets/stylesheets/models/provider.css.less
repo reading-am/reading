@@ -1,67 +1,73 @@
 @import "variables";
 
-.twitter .glyph {
-  color:@twitter;
-  font-size:1.25em;
-}
-.facebook .glyph {
-  color:@facebook;
-  background:white;
-}
 .provider {
   font-style:normal;
-}
-.provider, a:hover .provider {
+  display:inline-block;
   text-decoration:none;
+  &.twitter {
+    background-color:@twitter_light;
+    .glyph {
+      color:@twitter;
+      font-size:1.25em;
+    }
+  }
+  &.facebook {
+    background-color:@facebook_light;
+    .glyph {
+      color:@facebook;
+      background:white;
+    }
+  }
+  &.instapaper {
+    background-color:@instapaper;
+    .icon {
+      padding:0 5px;
+      font-family:Georgia, serif;
+      font-weight:bold;
+      background:#DDD;
+    }
+  }
+  &.tumblr {
+    background-color:@light_grey;
+    .glyph {
+      color:@tumblr;
+    }
+  }
+  &.readability {
+    background:#f4f4ec;
+    .icon {
+      color:@readability;
+      font-size:20px;
+      line-height:0;
+    }
+  }
 }
-.provider.twitter {
-  background-color:@twitter_light;
+a:hover {
+  .provider {
+    text-decoration:none;
+    &.twitter {
+      background-color:@twitter_lightest;
+    }
+    &.facebook {
+      background-color:@facebook_lightest;
+    }
+  }
 }
-.provider.instapaper {
-  background-color:@instapaper;
-}
-.provider.tumblr {
-  background-color:@light_grey;
-}
-.tumblr .glyph {
-  color:@tumblr;
-}
-.provider.readability {
-  background:#f4f4ec;
-}
-.provider.readability .icon {
-  color:@readability;
-  font-size:20px;
-  line-height:0;
-}
-.provider.instapaper .icon {
-  padding:0 5px;
-  font-family:Georgia, serif;
-  font-weight:bold;
-  background:#DDD;
-}
-a:hover .provider.twitter {
-  background-color:@twitter_lightest;
-}
-.provider.facebook {
-  background-color:@facebook_light;
-}
-a:hover .provider.facebook {
-  background-color:@facebook_lightest;
-}
-.disconnected, .disconnected a, .disconnected .provider {
-  color:#555;
-}
-.disconnected .admin {
-  font-size:12px;
-}
-.disconnected .provider, .disconnected a:hover .provider {
-  background:@light_grey;
-}
-.disconnected .glyph {
-  color:@dark_grey;
-}
-.disconnected .provider.instapaper .icon {
-  background:#AAA;
-  color:@white;
+.disconnected {
+  &, a, .provider {
+    color:#555;
+  }
+ .admin {
+    font-size:12px;
+  }
+  .provider, a:hover .provider {
+    background:@light_grey;
+  }
+  .glyph {
+    color:@dark_grey;
+  }
+  .provider.instapaper .icon {
+    background:#AAA;
+    color:@white;
+  }
 }

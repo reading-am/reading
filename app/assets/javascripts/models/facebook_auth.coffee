@@ -50,6 +50,6 @@ reading.define [
 
       return error_status
 
-  
+
   App.Models.FacebookAuth = FacebookAuth
   return FacebookAuth

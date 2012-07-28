@@ -15,8 +15,6 @@ reading.curl [
   "views/hooks/init"
 ], ($, base58, Indian, App, Post, Constants, current_user) ->
 
-  window.current_user = current_user
-
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"
     current_time = new Date()

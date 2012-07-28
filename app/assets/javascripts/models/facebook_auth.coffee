@@ -1,8 +1,9 @@
 reading.define [
+  "require"
   "underscore"
   "app"
   "models/authorization"
-], (_, App, Authorization) ->
+], (require, _, App, Authorization) ->
 
   class FacebookAuth extends Authorization
     provider: "facebook"
@@ -17,7 +18,7 @@ reading.define [
 
       FB.getLoginStatus (response) =>
         if response.status is "connected" and @uid
-          if @uid is "new" and current_user.get("authorizations")[@provider][response.authResponse.userID]
+          if @uid is "new" and require("models/current_user").get("authorizations")[@provider][response.authResponse.userID]
             error_status = "AuthPreexisting"
           else if @uid isnt "new" and String(response.authResponse.userID) isnt @uid
             error_status = "AuthWrongAccount"

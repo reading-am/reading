@@ -16,7 +16,7 @@ reading.define [
   "app/collections/users" # needed from within models/user
 ], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, TssignalsProv) ->
 
-  current_user = new User window.current_user
+  current_user = new User window.current_user_seed
 
   auths =
     twitter:    new TwitterProv
@@ -26,7 +26,9 @@ reading.define [
     readability:new ReadabilityProv
     tssignals:  new TssignalsProv
 
-  auths[auth.provider][auth.uid] = Authorization::factory auth for auth in window.authorizations
+  auths[auth.provider][auth.uid] = Authorization::factory auth for auth in window.authorizations_seed
   current_user.set "authorizations", auths
+
+  window.current_user_seed = window.authorizations_seed = null
 
   return current_user

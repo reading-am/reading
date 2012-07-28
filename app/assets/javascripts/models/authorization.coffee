@@ -1,8 +1,9 @@
 reading.define [
+  "require"
   "jquery"
   "underscore"
   "app"
-], ($, _, App) ->
+], (require, $, _, App) ->
 
   class Authorization
     constructor: (@uid, @permissions = [], @info) ->
@@ -42,7 +43,7 @@ reading.define [
       unless !response.auth
         # rerun the constructor
         @constructor response.auth.uid, response.auth.permissions, response.auth.info
-        current_user.get("authorizations")[@provider][@uid] = this
+        require("models/current_user").get("authorizations")[@provider][@uid] = this
 
     save: (params) ->
       data =

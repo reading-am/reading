@@ -1,8 +1,8 @@
-var current_user = {
+var current_user_seed = {
   id: '<%= current_user.id if logged_in? %>',
   username: '<%= current_user.username if logged_in? %>',
   display_name: '<%= current_user.display_name if logged_in? %>',
   can_comment: <%= current_user.access?(:comments) ? 'true' : 'false' %><%# # TODO remove once comments are public %>
 };
 
-var authorizations = <%= logged_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;
+var authorizations_seed = <%= logged_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;

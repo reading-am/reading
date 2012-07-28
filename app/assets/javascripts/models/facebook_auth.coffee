@@ -6,6 +6,15 @@ reading.define [
   "models/authorization"
 ], (require, _, $, App, Authorization) ->
 
+  # A NOTE ON THE FACEBOOK JS SDK:
+  # The version of this file before this note was added worked well.
+  # We checked getLoginStatus and then, in the callback, called login
+  # if we needed additional auth. But Safari's popup blocker is
+  # aggressive and wouldn't open the login popup from a callback.
+  # So now we have to try guessing when the loginStatus should be refeshed
+
+  # if there's been an error with login, start checking login status
+  # when the user leaves the window (to switch accounts) and then returns
   check_login_on_focus = false
   $(window).focus ->
     FB.getLoginStatus $.noop, true if check_login_on_focus

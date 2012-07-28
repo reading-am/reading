@@ -1,9 +1,14 @@
 reading.define [
   "require"
   "underscore"
+  "jquery"
   "app"
   "models/authorization"
-], (require, _, App, Authorization) ->
+], (require, _, $, App, Authorization) ->
+
+  check_login_on_focus = false
+  $(window).focus ->
+    FB.getLoginStatus $.noop, true if check_login_on_focus
 
   class FacebookAuth extends Authorization
     provider: "facebook"
@@ -12,9 +17,13 @@ reading.define [
       @permissions = _.uniq(@permissions.concat(["email"])) if !@uid or @uid is "new"
 
     login: (params={}) ->
-      success = params.success ? ->
-      error   = params.error ? ->
       perms   = params.permissions ? []
+      success = (response) ->
+        check_login_on_focus = false
+        params.success response if params.success?
+      error   = (response) ->
+        check_login_on_focus = true
+        params.error response if params.error?
 
       authResponse = FB.getAuthResponse()
 

@@ -21,8 +21,15 @@
         mentioned you at <em><%= link_to @comment.page.display_title, @comment.post.wrapped_url, :class => 'page' %></em>:
       </p>
       <blockquote cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
-        <p><%= @comment.body_html.html_safe %></p>
+        <p>
+          <%= @comment.body_html.html_safe %>
+        </p>
       </blockquote>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6">
+      <%= link_to "Respond", "#", :class => "btn btn-success" %>
     </div>
   </div>
   <div id="footer" class="row w_rule">

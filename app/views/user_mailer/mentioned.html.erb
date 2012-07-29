@@ -27,18 +27,14 @@
       </blockquote>
     </div>
   </div>
+
   <div class="row">
     <div class="span6">
       <%= link_to "Respond", "#", :class => "btn btn-success" %>
     </div>
   </div>
-  <div id="footer" class="row w_rule">
-    <div class="span6">
-      <p>
-        Prefer to not get emails when mentioned? <%= link_to "Change your settings", "http://#{DOMAIN}/settings/info" %>.
-      </p>
-    </div>
-  </div>
+
+  <%= render :partial => 'footer' %>
 
 </body>
 </html>

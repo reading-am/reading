@@ -13,5 +13,12 @@ body {
 #footer {
   margin-top:@baseLineHeight*2;
   &, a { color:@medium_grey; }
-  a { text-decoration:underline; }
+  a, a:hover {
+    text-decoration:none;
+    border-bottom:1px solid #CCC;
+  }
+  .home {
+    color:@black;
+    border:0;
+  }
 }

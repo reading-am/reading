@@ -1,7 +1,13 @@
 <div id="footer" class="row w_rule">
   <div class="span6">
     <p>
-      ✌ Reading | Want fewer emails? <%= link_to "Change your settings", "http://#{DOMAIN}/settings/info" %>.
+      Want fewer emails? <%= link_to "Change your settings", "http://#{DOMAIN}/settings/info" %>.
+    </p>
+    <p>
+      <%= link_to '✌ Reading', "http://#{DOMAIN}", :class => 'home' %> :
+      <%= mail_to "hello@#{DOMAIN}", 'Say hello', :subject => 'Well hello there Reading!', :class => 'email' %>,
+      <%= link_to "do some reading", "http://#{DOMAIN}/everybody" %>,
+      or <%= link_to "follow someone new", "http://#{DOMAIN}/users/recommended" %>.
     </p>
   </div>
 </div>

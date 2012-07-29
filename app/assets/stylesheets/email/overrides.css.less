@@ -1,3 +1,5 @@
+@import "variables";
+
 body {
   padding:0 30px;
 }
@@ -6,4 +8,8 @@ body {
 }
 .page {
   .excerpt { white-space:normal; }
+}
+#footer {
+  &, a { color:@medium_grey; }
+  a { text-decoration:underline; }
 }

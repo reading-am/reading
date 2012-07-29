@@ -3,19 +3,31 @@
 <head>
   <%= stylesheet_link_tag 'email/base' %>
   <%= stylesheet_link_tag 'app/base' %>
+  <%= stylesheet_link_tag 'models/user' %>
   <%= stylesheet_link_tag 'email/overrides' %>
+  <%= stylesheet_link_tag 'email/mentioned' %>
 </head>
 <body>
 
   <div class="row">
     <div class="span6">
-      <p><%= link_to @enactor.display_name, "http://#{DOMAIN}/#{@enactor.username}", :class => 'user' %> mentioned you:</p>
-      <blockquote cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
-        <p><%= @comment.body.html_safe %></p>
-      </blockquote>
-      <p>Respond at <em><%= link_to @comment.page.display_title, @comment.post.wrapped_url, :class => 'page' %></em></p>
       <p>
-        ------------------<br>
+        <%= link_to "http://#{DOMAIN}/#{@enactor.username}", :class => 'r_user' do %>
+          <span class="r_name"><%= @enactor.display_name %></span>
+          <% if !@enactor.name.blank? %>
+            <span class="r_username">(@<%= @enactor.username %>)</span>
+          <% end %>
+        <% end %>
+        mentioned you at <em><%= link_to @comment.page.display_title, @comment.post.wrapped_url, :class => 'page' %></em>:
+      </p>
+      <blockquote cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
+        <p><%= @comment.body_html.html_safe %></p>
+      </blockquote>
+    </div>
+  </div>
+  <div id="footer" class="row w_rule">
+    <div class="span6">
+      <p>
         Prefer to not get emails when mentioned? <%= link_to "Change your settings", "http://#{DOMAIN}/settings/info" %>.
       </p>
     </div>

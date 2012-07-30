@@ -8,12 +8,14 @@
 a.page {
   text-decoration:underline;
 }
+// NOTE: some of this should be rolled into the .comment class
 blockquote {
   position:relative;
   margin:@baseLineHeight 0 @baseLineHeight*2;
   border:0;
   background:#EFEFEF;
   padding:10px;
+  img { display:block; }
   .border-radius(3px);
   .triangle {
     // border-color-bottom is split out because the premailer

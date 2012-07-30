@@ -65,7 +65,7 @@ class Comment < ActiveRecord::Base
       :hashtag_url_base => "http://#{DOMAIN}/search?q="
     })
     # images
-    html.gsub!(/<a href="(.*\.(jpg|jpeg|png|gif).*)">.*<\/a>/, "<a href=\"\\1\"><img src=\"\\1\"></a>")
+    html.gsub!(/(<a .*>)(.*\.(jpg|jpeg|png|gif).*)<\/a>/, "\\1<img src=\"\\2\"></a>")
 
     html.html_safe
   end

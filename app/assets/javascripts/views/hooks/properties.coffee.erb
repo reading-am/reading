@@ -50,6 +50,10 @@ reading.define [
       {"text":"account", "options":current_user.get("authorizations").tssignals.accounts(), "datatype":"account"}
       {"text":"room", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
     ]},
+    {"text":"Kippt", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.get("authorizations").kippt.accounts(), "datatype":"account"}
+    ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},
       {"text":"method", "options":["POST","GET"]}

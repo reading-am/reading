@@ -59,13 +59,13 @@ class Comment < ActiveRecord::Base
     html.gsub!(/&quot;.*&quot;/, "<i>\\&</i>")
     # links and @mentions
     html = auto_link(html, {
-      :url_class => '',
+      :url_class => 'r_url',
       :username_class => 'user',
       :username_url_base => "http://#{DOMAIN}/",
       :hashtag_url_base => "http://#{DOMAIN}/search?q="
     })
     # images
-    html.gsub!(/(<a .*>)(.*\.(jpg|jpeg|png|gif).*)<\/a>/, "\\1<img src=\"\\2\"></a>")
+    html.gsub!(/(<a .*>)(.*\.(jpg|jpeg|png|gif).*)<\/a>/, "\\1<img src=\"\\2\"></a>").gsub!('class="r_url"', 'class="r_url r_image"')
 
     html.html_safe
   end

@@ -4,6 +4,7 @@
   <%= stylesheet_link_tag 'email/base' %>
   <%= stylesheet_link_tag 'app/base' %>
   <%= stylesheet_link_tag 'models/user' %>
+  <%= stylesheet_link_tag 'comments/comment' %>
   <%= stylesheet_link_tag 'email/overrides' %>
   <%= stylesheet_link_tag 'email/mentioned' %>
 </head>
@@ -20,9 +21,9 @@
         <% end %>
         mentioned you at <em><%= link_to @comment.page.display_title, @comment.post.wrapped_url, :class => 'page' %></em>:
       </p>
-      <blockquote cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
+      <blockquote class="r_comment" cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
         <div class="triangle"></div>
-        <p>
+        <p class="r_comment_body">
           <%= @comment.body_html.html_safe %>
         </p>
       </blockquote>

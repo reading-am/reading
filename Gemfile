@@ -18,6 +18,7 @@ gem 'jquery-rails'
 
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
+
 gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
@@ -25,6 +26,9 @@ gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
 gem 'omniauth-readability'
+gem 'omniauth-http-basic', :git => 'git://github.com/leppert/omniauth-http-basic.git' #required by omniauth-kippt
+gem 'omniauth-kippt', :git => 'git://github.com/leppert/omniauth-kippt.git'
+
 gem 'hipchat'
 gem 'curb', '~> 0.8.0'
 gem 'nokogiri'
@@ -57,6 +61,7 @@ gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
 gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit', :git => 'git://github.com/29decibel/readit.git'
+gem 'kippt', :git => 'git://github.com/leppert/kippt.git'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 gem 'twitter-text' # for comment parsing

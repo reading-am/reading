@@ -149,6 +149,13 @@ class Hook < ActiveRecord::Base
     room.speak output if !room.nil?
   end
 
+  def kippt post, event_fired
+    clip = authorization.api.clips.build
+    clip.url = post.page.url
+    clip.list = params['list']
+    clip.save
+  end
+
   def url post, event_fired
     url = self.params['address']
     url = "http://#{url}" if url[0, 4] != "http"

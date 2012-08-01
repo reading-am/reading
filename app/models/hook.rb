@@ -34,7 +34,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run
+  #handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -147,6 +147,13 @@ class Hook < ActiveRecord::Base
 
     room ||= authorization.api.find_room_by_id(self.params['room'].to_i)
     room.speak output if !room.nil?
+  end
+
+  def kippt post, event_fired
+    clip = authorization.api.clips.build
+    clip.url = post.page.url
+    clip.list = params['list']
+    clip.save
   end
 
   def url post, event_fired

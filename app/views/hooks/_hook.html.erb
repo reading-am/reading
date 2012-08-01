@@ -21,6 +21,8 @@ end
     account <em><%= hook.params['user'] %></em>
   <% elsif hook.params['room'] %>
     room <em><%= hook.params['room'] %></em>
+  <% elsif hook.params['list'] %>
+    room <em><%= hook.params['list'] %></em>
   <% elsif hook.params['address'] %>
     address <em><%= hook.params['address'] %></em>
   <% end %>

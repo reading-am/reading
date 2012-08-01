@@ -114,6 +114,8 @@ public
       when 'tssignals'
         account = accounts.first
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
+      when 'kippt'
+        @api_user = Kippt::Client.new(username: info['username'], token: token)
       end
     end
 

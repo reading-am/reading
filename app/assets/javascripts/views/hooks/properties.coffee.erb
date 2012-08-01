@@ -52,7 +52,8 @@ reading.define [
     ]},
     {"text":"Kippt", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.get("authorizations").kippt.accounts(), "datatype":"account"}
+      {"text":"account", "options":current_user.get("authorizations").kippt.accounts(), "datatype":"account"},
+      {"text":"list", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
     ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},

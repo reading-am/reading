@@ -26,6 +26,31 @@ GIT
       simple_oauth (~> 0.1)
 
 GIT
+  remote: git://github.com/leppert/kippt.git
+  revision: 7cbbdfce19e8bb3f14bfdf1ace83ecce99394706
+  specs:
+    kippt (1.1.0)
+      faraday
+      faraday_middleware
+      multi_json (~> 1.3.4)
+
+GIT
+  remote: git://github.com/leppert/omniauth-http-basic.git
+  revision: 23e13a439fd148fe02636ca60adc5ef68270f55d
+  specs:
+    omniauth-http-basic (1.0.0)
+      faraday
+      omniauth
+
+GIT
+  remote: git://github.com/leppert/omniauth-kippt.git
+  revision: affacb8364f7eb37a2c8de872669637714ea361b
+  specs:
+    omniauth-kippt (1.0.1)
+      multi_json
+      omniauth
+
+GIT
   remote: git://github.com/oauth/oauth-ruby.git
   revision: 5e646b70e4a662e1958dfd3fc37f3b9bcc75d183
   specs:
@@ -437,6 +462,7 @@ DEPENDENCIES
   hirefireapp
   instapaper!
   jquery-rails
+  kippt!
   koala
   konacha
   less-rails
@@ -444,7 +470,9 @@ DEPENDENCIES
   oauth!
   omniauth-37signals
   omniauth-facebook
+  omniauth-http-basic!
   omniauth-instapaper
+  omniauth-kippt!
   omniauth-readability
   omniauth-tumblr
   omniauth-twitter

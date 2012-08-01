@@ -41,6 +41,8 @@ class AuthorizationsController < ApplicationController
         places = @auth.api.user_info.response.user.blogs
       when 'tssignals'
         places = @auth.api.rooms
+      when 'kippt'
+        places = @auth.api.lists.all
       end
     end
     respond_to do |format|

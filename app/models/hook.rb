@@ -13,6 +13,8 @@ class Hook < ActiveRecord::Base
     :comment => {:perms => [:write], :text => 'comment'}
   }
 
+  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','kippt']
+
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
   end
@@ -26,7 +28,7 @@ class Hook < ActiveRecord::Base
   end
 
   def responds_to event
-    events.include? event
+    events.include?(event) and (!SINGLE_FIRE.include?(provider) or (event == :new or !events.include?(:new)))
   end
 
   def run post, event_fired

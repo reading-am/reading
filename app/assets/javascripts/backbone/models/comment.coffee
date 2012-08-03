@@ -26,7 +26,7 @@ reading.define [
 
     is_a_show: ->
       m = @mentions()
-      return (m.length and @get("body").trim() is "@#{m[0]}")
+      return (m.length > 0 and @get("body").trim() is "@#{m[0]}")
 
 
   App.Models.Comment = Comment

@@ -35,15 +35,19 @@ class Comment < ActiveRecord::Base
   public
 
   def mentions
-    extract_mentioned_screen_names body
+    @mentions ||= extract_mentioned_screen_names body
   end
 
   def hashtags
-    extract_hashtags body
+    @hashtags ||= extract_hashtags body
   end
 
   def urls
-    extract_urls body
+    @urls ||= extract_urls body
+  end
+
+  def is_a_show
+    return (mentions.length > 0 and body.strip == "@#{mentions[0]}")
   end
 
   def body_html

@@ -3,7 +3,8 @@ reading.define [
   "app"
   "app/constants"
   "libs/base58"
-], (Backbone, App, Constants, Base58) ->
+  "libs/twitter-text"
+], (Backbone, App, Constants, Base58, TwitterText) ->
 
   class Comment extends Backbone.Model
     type: "Comment"
@@ -13,6 +14,20 @@ reading.define [
 
     short_url: ->
       "#{Constants.short_domain}/c/#{Base58.encode(@id)}"
+
+    mentions: ->
+      TwitterText.extractMentions @get("body")
+
+    hashtags: ->
+      TwitterText.extractHashtags @get("body")
+
+    urls: ->
+      TwitterText.extractUrls @get("body")
+
+    is_a_show: ->
+      m = @mentions()
+      return (m.length and @get("body").trim() is "@#{m[0]}")
+
 
   App.Models.Comment = Comment
   return Comment

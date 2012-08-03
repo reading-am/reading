@@ -47,7 +47,7 @@ class Comment < ActiveRecord::Base
   end
 
   def is_a_show
-    return (mentions.length > 0 and body.strip == "@#{mentions[0]}")
+    return @is_a_show ||= (mentions.length > 0 and body.strip == "@#{mentions[0]}")
   end
 
   def body_html

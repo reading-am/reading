@@ -21,6 +21,16 @@ class UserMailer < ActionMailer::Base
     )
   end
 
+  def shown_a_page(comment, subject)
+    @enactor = comment.user
+    @subject = subject
+    @comment = comment
+    mail(
+      :to       => @subject.email,
+      :subject  => "#{@enactor.display_name} wants to show you \"#{@comment.page.display_title}\""
+    )
+  end
+
   def welcome(user)
     @user = user
     mail(

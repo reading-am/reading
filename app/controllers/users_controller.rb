@@ -102,11 +102,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def delete_cookies
-    cookies.each do |k, v| cookies.delete k end
-    redirect_to '/'
-  end
-
   def export
     user = User.find_by_username(params[:username])
     if user == current_user

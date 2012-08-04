@@ -27,7 +27,9 @@ Reading::Application.routes.draw do
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"
   match "/signout" => "sessions#destroy", :as => :signout
-  match "/support/delete_cookies" => "users#delete_cookies"
+
+  match "/support/delete_cookies" => "support#delete_cookies"
+  match "/support/204" => "support#twozerofour"
 
   match '/posts/create' => 'posts#create'
   match '/posts/:id/update' => 'posts#update'

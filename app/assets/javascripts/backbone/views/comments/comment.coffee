@@ -18,17 +18,24 @@ reading.define [
   class CommentView extends Backbone.View
     template: Handlebars.compile "
       <div class=\"r_comment_header\">
-        <div class=\"r_user\"></div>
+        <div class=\"r_author r_user\"></div>
         <time datetime=\"{{updated_at}}\"></time>
         <div class=\"r_comment_actions\">
           {{#if is_owner}}<a href=\"#\" class=\"r_destroy\">Delete</a>{{/if}}
           <a href=\"#\" class=\"r_share\">Share</a>
-          {{! <a href=\"#\" class=\"r_reply\">Reply</a> }}
           <a href=\"{{url}}\" class=\"r_permalink\">⚓</a>
         </div>
       </div>
       <div class=\"r_comment_body\">
         {{format_comment body}}
+      </div>
+    "
+
+    shown_template: Handlebars.compile "
+      <div class=\"r_comment_header\">
+        <div class=\"r_author r_user\"></div>
+        <div class=\"r_showed_this_to\">showed this to</div>
+        <div class=\"r_shown_user r_user\">{{format_comment body}}</div>
       </div>
     "
 
@@ -38,7 +45,6 @@ reading.define [
     events:
       "click .r_permalink": "new_window"
       "click .r_share"    : "share"
-      "click .r_reply"    : "reply"
       "click .r_quoted"   : "find_quote"
       "click .r_destroy"  : "destroy"
       "click a.r_url img" : "find_image"
@@ -55,10 +61,6 @@ reading.define [
       @share_view = new SharePopover subject: @model
       @share_view.render()
 
-    reply: ->
-      alert "reply will go here"
-      false
-
     find_quote: (e) ->
       cname = "r_quote"
       text = $(e.currentTarget).text()
@@ -74,7 +76,6 @@ reading.define [
       false
 
     find_image: (e) ->
-      console.log "hit", e.currentTarget.src
       $img = $("body > *:not(#r_am)").find("img[src='#{e.currentTarget.src}']")
       if $img.length
         offset = $img.offset().top + $img.height()/2 - $(window).height()/2
@@ -97,23 +98,26 @@ reading.define [
       # TODO there has to be a better current_user solution here
       # this is being shared between the main site and the bookmarklet
       json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
-      @$el.html(@template(json))
 
-      uri_views = @uri_views
-      @$("a.r_url:not(.r_mention, .r_tag, .r_email, .r_image, .r_quoted)").each ->
-        model = URI::factory @href
+      if @model.is_a_show()
+        @$el.html(@shown_template(json))
+      else
+        @$el.html(@template(json))
+
+      @$("a.r_url:not(.r_mention, .r_tag, .r_email, .r_image, .r_quoted)").each (i, el) =>
+        model = URI::factory el.href
         if model?
           model.fetch()
           view = URIView::factory model
-          $(this).replaceWith view.render().el
-          uri_views.push view
+          $(el).replaceWith view.render().el
+          @uri_views.push view
 
       @$("time").humaneDates()
 
-      child_view = new UserView
-        el:     @$(".r_user")
+      author_view = new UserView
+        el:     @$(".r_author")
         size:   @size
         model:  @model.get('user')
-      child_view.render()
+      author_view.render()
 
       return this

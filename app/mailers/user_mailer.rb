@@ -38,7 +38,7 @@ class UserMailer < ActionMailer::Base
     mail(
       :to       => @user.email,
       :from     => "Greg & Max <greg-and-max@reading.am>",
-      :subject  => "Alpha Invite: Help us Test Comments!"
+      :subject  => "Help Us Test Comments!"
     )
   end
 

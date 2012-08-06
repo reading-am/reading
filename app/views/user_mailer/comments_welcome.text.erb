@@ -1,50 +1,39 @@
-Hi <%= @user.first_name %>,
+Hey <%= @user.first_name %>,
 
-COMMENTS!
+<%= @comment.user.display_name %> invited you to help us kick the
+tires on a new feature --> comments!
 
-Max and I wanted to welcome you to Reading. We're a small community here
-and we'd love to get to know you - just respond to this email and say hello.
+## The Short Of It ##
+The next time you use Reading on any page, you'll see a comment box.
+Type something in, hit return and we'll pin it to the page. You can
+also @mention (ala Twitter) the username of any user you follow and
+they'll receive an email invite just like the one you're reading now.
 
-http://<%= DOMAIN %>/settings/extras
+For best results, install one of our browser extensions (http://<%= DOMAIN %>/settings/extras)
+and remember, you'll only see comments once you've used Reading on the page.
 
-When you post, you'll notice two buttons: "Yep" and "Nope".
-They're a quick way to say what you think about the page.
+## The Long Of It ##
+Max and I think there's a lot to talk about in the things we read
+and we're slowly figuring out how to help those conversations along.
+Reading Comments are in alpha and, as such, there are plenty of things
+that still need a little love. As an alpha tester, it's your responsibility
+to help us make this the best thing ever. Email us, call us, mention us in
+comments and give us an all around hard time.
 
-** Your Profile **
-Everything you post to Reading will show up on your profile:
+But enough about the things that don't work, here are a few that do.
+Within the comment box you can:
 
-http://<%= DOMAIN %>/<%= @user.username %>
+-- Put "quotes" around any text from the page and it'll be auto linked on the page.
 
-Posts you've "Yep"d will have a green checkmark next to them
-and posts you've "Nope"d will be crossed out in red.
-If you'd like to delete a post, simply hover over it to see
-a red delete button. You can't miss it.
+-- If you paste in an image url, or drag an image from the page onto the comment box, the image will appear within your comment.
 
-** Following **
-The best part about Reading is seeing what other people are reading,
-and "following" makes that easy. When you visit a user's profile,
-you'll see a green "Follow" button. Click it, and that user's posts
-will show up in your "Following Posts" here:
+-- Put `backticks` around code and it'll show up in a monospaced font.
 
-http://<%= DOMAIN %>/<%= @user.username %>/list 
+-- Hitting return will post your comment, but if you'd like a new line you can use alt + return.
 
-To get you started, you can find some great people to follow here:
+-- For bonus points, try pasting in a URL to a Tweet or a Wikipedia page.
 
-http://<%= DOMAIN %>/users/recommended
+Thats it for now. Thanks for jumping in and if you have any feedback,
+just respond to this email. We're excited to see how it all pans out.
 
-** Hooks **
-Hooks plug into your favorite sites and perform actions each time you
-do something on Reading, like posting to Twitter or Facebook when you
-read a page or saving all of your "Yep"s to Instapaper for offline reading.
-They're a great way to share your posts with friends outside of Reading.
-
-http://<%= DOMAIN %>/settings/hooks
-
-That's about it for now. We hope you have a good time and remember, say hello!
-
--✌- Greg & Max
-http://<%= DOMAIN %>/greg
-http://<%= DOMAIN %>/maxfenton
-
-Twitter: http://twitter.com/reading
-Blog: http://writing.<%= DOMAIN %>
+<%= render :partial => 'greg_max_footer' %>

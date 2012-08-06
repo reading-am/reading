@@ -1,0 +1,39 @@
+Hey <%= @user.first_name %>,
+
+<%= @comment.user.display_name %> invited you to help us kick the
+tires on a new feature --> comments!
+
+## The Short Of It ##
+The next time you use Reading on any page, you'll see a comment box.
+Type something in, hit return and we'll pin it to the page. You can
+also @mention (ala Twitter) the username of any user you follow and
+they'll receive an email invite just like the one you're reading now.
+
+For best results, install one of our browser extensions (http://<%= DOMAIN %>/settings/extras)
+and remember, you'll only see comments once you've used Reading on the page.
+
+## The Long Of It ##
+Max and I think there's a lot to talk about in the things we read
+and we're slowly figuring out how to help those conversations along.
+Reading Comments are in alpha and, as such, there are plenty of things
+that still need a little love. As an alpha tester, it's your responsibility
+to help us make this the best thing ever. Email us, call us, mention us in
+comments and give us an all around hard time.
+
+But enough about the things that don't work, here are a few that do.
+Within the comment box you can:
+
+-- Put "quotes" around any text from the page and it'll be auto linked on the page.
+
+-- If you paste in an image url, or drag an image from the page onto the comment box, the image will appear within your comment.
+
+-- Put `backticks` around code and it'll show up in a monospaced font.
+
+-- Hitting return will post your comment, but if you'd like a new line you can use alt + return.
+
+-- For bonus points, try pasting in a URL to a Tweet or a Wikipedia page.
+
+Thats it for now. Thanks for jumping in and if you have any feedback,
+just respond to this email. We're excited to see how it all pans out.
+
+<%= render :partial => 'greg_max_footer' %>

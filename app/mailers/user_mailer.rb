@@ -31,6 +31,17 @@ class UserMailer < ActionMailer::Base
     )
   end
 
+  def comments_welcome(user, comment)
+    @user = user
+    @comment = comment
+
+    mail(
+      :to       => @user.email,
+      :from     => "Greg & Max <greg-and-max@reading.am>",
+      :subject  => "Help Us Test Comments!"
+    )
+  end
+
   def welcome(user)
     @user = user
     mail(

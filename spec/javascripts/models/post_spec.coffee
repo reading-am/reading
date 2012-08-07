@@ -40,6 +40,7 @@ reading.curl [
           "http://www.amazon.com/dp/393956611X/?tag=svpply01-20"
           "https://twitter.com/#!/tw1tt3rart"
           "http://www.youtube.com/watch?v=4-kJZGC7_9Q&feature=youtu.be&t=29s"
+          "http://#{Constants.domain}/greg"
         ]
 
         it "should correctly identify the posting url", ->

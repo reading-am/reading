@@ -53,9 +53,9 @@ class SessionsController < ApplicationController
         )
 
         # Auto-follow everyone from their social network
-        auth.following.each do |u|
-          user.follow!(u)
-        end
+        #auth.following.each do |u|
+          #user.follow!(u)
+        #end
       end
 
       cookies.permanent[:auth_token] = auth.user.auth_token

@@ -12,8 +12,21 @@ paths:
 
 modules:
   - name: 'web/loader'
-    include: ['requireLib', 'web/init']
+    include: ['requireLib', 'baseUrl', 'web/init']
+    exclude: ['jquery','jquery_ui','underscore','backbone','handlebars']
     create: true
   - name: 'bookmarklet/loader'
-    include: ['requireLib', 'bookmarklet/init']
+    include: ['requireLib', 'baseUrl', 'bookmarklet/init']
+    exclude: ['jquery','jquery_ui','underscore','backbone','handlebars']
     create: true
+  - name: 'jquery'
+  - name: 'jquery_ui'
+  - name: 'underscore'
+    include: ['libs/lodash_extended']
+  - name: 'handlebars'
+    include: ['libs/handlebars_extended']
+  - name: 'backbone'
+    include: ['libs/backbone_extended']
+    exclude: ['jquery','underscore']
+
+priority: ['jquery','jquery_ui','underscore','backbone','handlebars']

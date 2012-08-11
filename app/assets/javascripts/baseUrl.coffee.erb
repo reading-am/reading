@@ -1,0 +1,3 @@
+c = <%= Rails.application.config.requirejs.run_config.merge({:baseUrl => "//0.0.0.0:3000/assets"}).to_json %>
+c.config = text: useXhr: -> true
+require.config c

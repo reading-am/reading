@@ -1,5 +1,5 @@
 define [
-  "app"
+  "app/init"
   "models/authorization"
   "models/tssignals_prov"
 ], (App, Authorization, TssignalsProv) ->

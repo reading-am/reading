@@ -1,5 +1,5 @@
 define [
-  "app"
+  "app/init"
   "models/authorization"
   "models/kippt_prov"
 ], (App, Authorization, KipptProv) ->

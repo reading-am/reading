@@ -1,5 +1,5 @@
 define [
-  "app"
+  "app/init"
   "models/provider"
 ], (App, Provider) ->
 

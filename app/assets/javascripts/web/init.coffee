@@ -1,3 +1,5 @@
+#= require baseUrl
+
 require [
   "jquery"
   "libs/base58"

@@ -1,10 +1,4 @@
-<% if Rails.env == 'development' %>
-(->
-  c = <%= Rails.application.config.requirejs.run_config.merge({:baseUrl => "//#{DOMAIN}/assets"}).to_json %>
-  c.config = text: useXhr: -> true
-  require.config c
-)()
-<% end %>
+#= require baseUrl
 
 require [
   "jquery"

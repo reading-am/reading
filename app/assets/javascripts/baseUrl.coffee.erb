@@ -1,3 +1,8 @@
-c = <%= Rails.application.config.requirejs.run_config.merge({:baseUrl => "//0.0.0.0:3000/assets"}).to_json %>
-c.config = text: useXhr: -> true
-require.config c
+<%
+  config = Rails.application.config.requirejs.run_config
+  config['baseUrl'] = "//0.0.0.0:3000/assets"
+  #config['baseUrl'] = "//#{DOMAIN}/assets"
+  config['config'] = {'text' => {'userXhr' => true}} unless Rails.env == 'production'
+%>
+
+require.config <%= config.to_json %>

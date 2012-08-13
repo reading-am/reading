@@ -1,4 +1,8 @@
 namespace: 'r_require'
+preserveLicenseComments: false
+
+uglify:
+  max_line_length: 1000
 
 paths:
   requireLib: 'require'
@@ -12,21 +16,23 @@ paths:
 
 modules:
   - name: 'web/loader'
-    include: ['requireLib', 'baseUrl', 'web/init']
+    include: ['requireLib','web/init']
     exclude: ['jquery','jquery_ui','underscore','backbone','handlebars']
     create: true
   - name: 'bookmarklet/loader'
-    include: ['requireLib', 'baseUrl', 'bookmarklet/init']
+    include: ['requireLib','bookmarklet/init']
     exclude: ['jquery','jquery_ui','underscore','backbone','handlebars']
     create: true
-  - name: 'jquery'
-  - name: 'jquery_ui'
-  - name: 'underscore'
-    include: ['libs/lodash_extended']
-  - name: 'handlebars'
-    include: ['libs/handlebars_extended']
-  - name: 'backbone'
-    include: ['libs/backbone_extended']
-    exclude: ['jquery','underscore']
+  - name: 'libs/jquery'
+  - name: 'libs/jquery_ui'
+  - name: 'libs/lodash_extended'
+    include: ['extend/underscore/log','extend/underscore/iso_date_string']
+  - name: 'libs/backbone_extended'
+    include: ['app/addons/nest_collection','app/addons/sync','app/models/model','app/collections/collection']
+    exclude: ['jquery','underscore','handlebars']
+  - name: 'libs/handlebars_extended'
+    include: ['extend/handlebars/helpers']
+    exclude: ['jquery','underscore','backbone']
+  - name: 'ie/html5'
 
 priority: ['jquery','jquery_ui','underscore','backbone','handlebars']

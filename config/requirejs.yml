@@ -1,5 +1,6 @@
 namespace: 'r_require'
 preserveLicenseComments: false
+#optimize: 'none'
 
 uglify:
   max_line_length: 1000

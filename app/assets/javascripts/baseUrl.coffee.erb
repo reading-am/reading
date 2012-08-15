@@ -1,8 +1,9 @@
-<%
-  config = Rails.application.config.requirejs.run_config
-  #config['baseUrl'] = "//0.0.0.0:3000/assets"
-  config['baseUrl'] = "//#{DOMAIN}/assets"
-  config['config'] = {'text' => {'userXhr' => true}} unless Rails.env == 'production'
-%>
+c = <%= Rails.application.config.requirejs.run_config.to_json %>
+c.baseUrl = "<%= "//#{DOMAIN}/assets" %>"
+#c.baseUrl = "//0.0.0.0:3000/assets"
 
-require.config <%= config.to_json %>
+<% if Rails.env != 'production' %>
+c.config = text: useXhr: -> true
+<% end %>
+
+require.config c

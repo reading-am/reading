@@ -13,13 +13,10 @@ paths:
 
 modules:
   - name: 'web/loader'
-    include: ['requireLib','web/init']
     exclude: ['libs/jquery','libs/jquery_ui','libs/lodash','libs/backbone','libs/handlebars']
-    create: true
   - name: 'bookmarklet/loader'
-    include: ['requireLib','bookmarklet/init']
+    include: ['requireLib']
     exclude: ['libs/jquery','libs/jquery_ui','libs/lodash','libs/backbone','libs/handlebars']
-    create: true
   - name: 'libs/jquery'
   - name: 'libs/jquery_ui'
   - name: 'libs/lodash'

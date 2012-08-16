@@ -30,12 +30,12 @@ class SessionsController < ApplicationController
         # NEW USER
         username = auth_hash["info"]["nickname"]
         username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
-        auth_hash["info"]["username"] = (username.blank? or User.find_by_username(username)) ? nil : username
+        auth_hash["info"]["username"] = username.blank? ? nil : username
         auth_hash["info"].delete("nickname")
 
         user = User.create(auth_hash["info"])
 
-        # account for facebook usernames with periods and the like
+        # account for taken usernames and facebook usernames with periods and the like
         user.username = nil if !user.errors.messages[:username].blank?
         # account for bad email addresses coming from provider
         user.email = nil if !user.errors.messages[:email].blank?

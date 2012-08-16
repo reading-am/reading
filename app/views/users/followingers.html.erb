@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 
-  require(["backbone", "app/routers/users"], function(Backbone, Router){
+  <%= requirejs %>require(["backbone", "app/routers/users"], function(Backbone, Router){
     new Router({
       model: Backbone.Model.prototype.factory(<%= @user.simple_obj.to_json.html_safe -%>),
       collection: Backbone.Model.prototype.factory(<%= @users.collect{|u| u.simple_obj}.to_json.html_safe -%>)

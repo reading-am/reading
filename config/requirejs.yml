@@ -1,34 +1,63 @@
-namespace: 'r_require'
+namespace: r_require
 preserveLicenseComments: false
 
 paths:
-  requireLib: 'require'
-  app:        'backbone'
-  extend:     'libs/extend'
-  jquery:     'libs/jquery'
-  jquery_ui:  'libs/jquery_ui'
-  underscore: 'libs/lodash_extended'
-  backbone:   'libs/backbone_extended'
-  handlebars: 'libs/handlebars_extended'
+  requireLib: require
+  app:        backbone
+  extend:     libs/extend
+  jquery:     libs/jquery
+  jquery_ui:  libs/jquery_ui
+  underscore: libs/lodash_extended
+  backbone:   libs/backbone_extended
+  handlebars: libs/handlebars_extended
 
 modules:
-  - name: 'web/loader'
-    exclude: ['libs/jquery','libs/jquery_ui','libs/lodash','libs/backbone','libs/handlebars']
-  - name: 'bookmarklet/loader'
-    include: ['requireLib']
-    exclude: ['libs/jquery','libs/jquery_ui','libs/lodash','libs/backbone','libs/handlebars']
-  - name: 'libs/jquery'
-  - name: 'libs/jquery_ui'
-  - name: 'libs/lodash'
-  - name: 'libs/backbone'
-    exclude: ['jquery','underscore']
-  - name: 'libs/handlebars'
-  - name: 'ie/html5'
+  - name: web/loader
+    include:
+      - requireLib
+      - app/routers/comments
+      - app/routers/users
+    exclude:
+      - libs/jquery
+      - libs/jquery_ui
+      - libs/lodash
+      - libs/backbone
+      - libs/handlebars
 
-priority: ['jquery','jquery_ui','underscore','backbone','handlebars']
+  - name: bookmarklet/loader
+    include:
+      - requireLib
+    exclude: 
+      - libs/jquery
+      - libs/jquery_ui
+      - libs/lodash
+      - libs/backbone
+      - libs/handlebars
+
+  - name: libs/jquery
+
+  - name: libs/jquery_ui
+
+  - name: libs/lodash
+
+  - name: libs/backbone
+    exclude:
+      - jquery
+      - underscore
+
+  - name: libs/handlebars
+
+  - name: ie/html5
+
+priority:
+  - jquery
+  - jquery_ui
+  - underscore
+  - backbone
+  - handlebars
 
 ## for testing
-#optimize: 'none'
+#optimize: none
 #uglify:
   #max_line_length: 1000
 

@@ -59,4 +59,8 @@ module ApplicationHelper
     end
     link_to text, link, :class => "btn #{browser}-install"
   end
+
+  def requirejs
+    Rails.env == 'production' ? 'r_require.' : ''
+  end
 end

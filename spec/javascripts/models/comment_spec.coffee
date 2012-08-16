@@ -1,8 +1,8 @@
-#= require curl_config
-#= require libs/curl
+#= require require
+#= require baseUrl
 #= require ./shared
 
-reading.curl [
+require [
   "spec/models/shared"
   "app/models/comment"
 ], (shared, Comment) ->

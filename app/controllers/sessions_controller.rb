@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env['omniauth.auth']
+    DevMailer.delay.dump(auth_hash)
 
     # mapped so as to avoid problems with variables starting with numbers
     if auth_hash.provider == '37signals'

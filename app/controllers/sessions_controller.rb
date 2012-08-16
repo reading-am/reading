@@ -3,7 +3,6 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env['omniauth.auth']
-    DevMailer.delay.dump(auth_hash)
 
     # mapped so as to avoid problems with variables starting with numbers
     if auth_hash.provider == '37signals'
@@ -31,10 +30,20 @@ class SessionsController < ApplicationController
         # NEW USER
         username = auth_hash["info"]["nickname"]
         username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
-        auth_hash["info"]["username"] = username.blank? ? nil : username
-        auth_hash["info"].delete("nickname")
+        username = username.blank? ? nil : username
 
-        user = User.create(auth_hash["info"])
+        user = User.create(
+          :username   => username,
+          :name       => auth_hash["info"]["name"],
+          :email      => auth_hash["info"]["email"],
+          :first_name => auth_hash["info"]["first_name"],
+          :last_name  => auth_hash["info"]["last_name"],
+          :location   => auth_hash["info"]["location"],
+          :description=> auth_hash["info"]["description"],
+          :image      => auth_hash["info"]["image"],
+          :phone      => auth_hash["info"]["phone"],
+          :urls       => auth_hash["info"]["urls"]
+        )
 
         # account for taken usernames and facebook usernames with periods and the like
         user.username = nil if !user.errors.messages[:username].blank?

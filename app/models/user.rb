@@ -177,7 +177,7 @@ class User < ActiveRecord::Base
 
   # is an original user who didn't require an email address to register
   def is_og?
-    created_at < Date.parse('2012-07-17')
+    !created_at.blank? && created_at < Date.parse('2012-07-17')
   end
 
   def simple_obj to_s=false

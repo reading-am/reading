@@ -4,13 +4,11 @@ define [
   "app/models/provider"
   "app/collections/providers"
   "app/views/providers/providers"
-], (Handlebars, Popover, Provider, Providers, ProvidersView) ->
+  "text!app/templates/components/share_popover.hbs"
+], (Handlebars, Popover, Provider, Providers, ProvidersView, template) ->
 
   class SharePopover extends Popover
-    template: Handlebars.compile "
-      <ul id=\"r_share_menu\"></ul>
-      <div class=\"r_blocker\"></div>
-    "
+    template: Handlebars.compile template
 
     id: "r_share_popover"
     className: "r_popover"

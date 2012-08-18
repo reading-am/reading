@@ -2,17 +2,11 @@ define [
   "app/views/uris/uri"
   "handlebars"
   "app/init"
-], (URIView, Handlebars, App) ->
+  "text!app/templates/uris/wikipedia_article.hbs"
+], (URIView, Handlebars, App, template) ->
 
   class WikipediaArticleView extends URIView
-    template: Handlebars.compile "
-    {{#if id}}
-      <h3 class=\"r_wikipedia_article_title\"><img src=\"https://wikipedia.org/favicon.ico\" class=\"r_icon\"> {{title}}</h3>
-      <div class=\"r_wikipedia_article_extract\">{{{short_extract}}}</div>
-    {{else}}
-      Loading Wikipedia Article...
-    {{/if}}
-    "
+    template: Handlebars.compile template
 
     className: "r_url r_uri r_wikipedia_article"
 

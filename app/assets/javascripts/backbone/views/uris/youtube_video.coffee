@@ -2,12 +2,11 @@ define [
   "app/views/uris/uri"
   "handlebars"
   "app/init"
-], (URIView, Handlebars, App) ->
+  "text!app/templates/uris/youtube_video.hbs"
+], (URIView, Handlebars, App, template) ->
 
   class YouTubeVideoView extends URIView
-    template: Handlebars.compile "
-      <iframe src=\"http://www.youtube.com/embed/{{id}}\" frameborder=\"0\" allowfullscreen></iframe>
-    "
+    template: Handlebars.compile template
 
     tagName: "div"
     className: "r_url r_uri r_youtube_video"

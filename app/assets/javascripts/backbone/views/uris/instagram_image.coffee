@@ -2,21 +2,11 @@ define [
   "app/views/uris/uri"
   "handlebars"
   "app/init"
-], (URIView, Handlebars, App) ->
+  "text!app/templates/uris/instagram_image.hbs"
+], (URIView, Handlebars, App, template) ->
 
   class InstagramImageView extends URIView
-    template: Handlebars.compile "
-    {{#if url}}
-      <img src=\"{{url}}\">
-      <div class=\"r_instagram_image_info\">
-        <img class=\"r_icon\" src=\"https://instagr.am/favicon.ico\">
-        <span>{{author_name}}</span>
-        : <span class=\"r_instagram_image_title\">{{title}}</span>
-      </div>
-    {{else}}
-      Loading Instagram image...
-    {{/if}}
-    "
+    template: Handlebars.compile template
 
     className: "r_url r_uri r_instagram_image"
 

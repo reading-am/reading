@@ -61,6 +61,6 @@ module ApplicationHelper
   end
 
   def requirejs
-    Rails.env == 'production' ? 'r_require.' : ''
+    ['production','staging'].include? Rails.env ? 'r_require.' : ''
   end
 end

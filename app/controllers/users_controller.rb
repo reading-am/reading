@@ -67,6 +67,20 @@ class UsersController < ApplicationController
     end
   end
 
+  # DELETE /users/1
+  # DELETE /users/1.xml
+  def destroy
+    @user = User.find(params[:id])
+    if @user == current_user
+      @user.destroy
+    end
+
+    respond_to do |format|
+      format.html { redirect_to('/signout') }
+      format.xml  { head :ok }
+    end
+  end
+
   def followingers
     @user = User.find_by_username(params[:username])
     @users = (params[:type] == 'followers') ? @user.followers : @user.following

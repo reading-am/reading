@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
   belongs_to :post, :counter_cache => true
   belongs_to :parent, :class_name => 'Comment'
   has_many   :children, :class_name => 'Comment',
-    :foreign_key => :parent_id
+             :foreign_key => :parent_id
 
   validates_presence_of :user_id, :page_id, :body
   validate :post_belongs_to_user

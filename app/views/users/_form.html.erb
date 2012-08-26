@@ -40,6 +40,6 @@
 </div>
 <div id="user_delete" class="row">
   <div class="span7 offset2">
-    <%= link_to 'I respectfully request to be destroyed.', @user, :method => :delete %>
+    <%= link_to 'I respectfully request to be destroyed.', @user, :confirm => 'Are you sure you want to completely delete your account and destroy all your user data?', :method => :delete %>
   </div>
 </div>

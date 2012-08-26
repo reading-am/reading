@@ -70,7 +70,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
-    @user = User.find(params[:id])
+    @user = User.find_by_username(params[:id])
     if @user == current_user
       @user.destroy
     end

@@ -51,6 +51,15 @@ class UserMailer < ActionMailer::Base
     )
   end
 
+  def destroyed(user)
+    @user = user
+    mail(
+      :to       => @user.email,
+      :from     => "Greg & Max <greg-and-max@reading.am>",
+      :subject  => "Here lies @#{@user.username}, may he / she / it rest in peace."
+    )
+  end
+
   def digest(user)
     @user   = user
     @posts  = @user.unread_since(@user.mail_digest.days.ago).limit(50)

@@ -44,11 +44,21 @@ class Api::CommentsController < Api::APIController
   # POST /comments
   # POST /comments.json
   def create
-    @comment       = Comment.new
-    @comment.post  = Post.find(params[:model][:post_id])
-    @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @comment.page  = Page.find(params[:model][:page_id])
-    @comment.body  = params[:model][:body]
+    @comment = Comment.new
+
+    if params[:recipient]
+      @comment.body = params['stripped-text'] # this comes from mailgun
+      if bits = decode_mail_recipient(params[:recipient])
+        @comment.user   = bits[:user]
+        @comment.parent = bits[:subject]
+        @comment.page   = @comment.parent.page
+      end
+    else
+      @comment.post  = Post.find(params[:model][:post_id])
+      @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      @comment.page  = Page.find(params[:model][:page_id])
+      @comment.body  = params[:model][:body]
+    end
 
     respond_to do |format|
       if @comment.save

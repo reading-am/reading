@@ -1,5 +1,5 @@
-class DevMailer < ActionMailer::Base
-  default from: "dev@reading.am", to: "dev@reading.am"
+class DevMailer < ApplicationMailer
+  default from: "dev@#{DOMAIN}", to: "dev@#{DOMAIN}"
 
   def dump(var)
     @var = var

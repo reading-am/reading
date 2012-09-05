@@ -1,6 +1,5 @@
-class UserMailer < ActionMailer::Base
-  helper :posts, :mail
-  default from: "Reading <mailman@reading.am>"
+class UserMailer < ApplicationMailer
+  helper :posts
 
   def new_follower(subject, enactor)
     @enactor = enactor
@@ -17,6 +16,7 @@ class UserMailer < ActionMailer::Base
     @comment = comment
     mail(
       :to       => @subject.email,
+      :reply_to => "reply+#{encode_mail_recipient(@subject, @comment)}@mailman.#{DOMAIN}",
       :subject  => "#{@enactor.display_name} mentioned you in a comment at \"#{@comment.page.display_title}\""
     )
   end

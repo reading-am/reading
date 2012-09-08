@@ -33,6 +33,29 @@ private
 
 public
 
+  def self.normalize_url(url)
+    url = Addressable::URI.parse(url)
+
+    # Get rid of trailing
+    url.fragment = nil if url.fragment.blank?
+
+    # Consider removing trailing slashes
+    # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
+    # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
+
+    url.to_s
+  end
+
+  def self.find_by_url(url)
+    where(:url => self.normalize_url(url)).limit(1).first
+  end
+
+  def self.find_or_create_by_url(attributes)
+    attributes[:url] = self.normalize_url(attributes[:url])
+
+    self.find_by_url(attributes[:url]) || self.create(attributes)
+  end
+
   def wrapped_url
     "http://#{DOMAIN}/#{self.url}"
   end

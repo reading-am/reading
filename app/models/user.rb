@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_username(username)
-    where("lower(username) = ?", username.downcase).first
+    where("lower(username) = ?", username.downcase).limit(1).first
   end
 
   # TODO - consolidate most of this logic with Authorization#find_or_create

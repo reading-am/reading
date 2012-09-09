@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-reading.define [
+define [
   "jquery"
   "app/constants"
 ], ($, Constants) ->
-=======
-define ["jquery"], ($) ->
->>>>>>> removing scoping
 
   $ ->
 

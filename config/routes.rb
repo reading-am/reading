@@ -21,6 +21,7 @@ Reading::Application.routes.draw do
       get 'search', :on => :collection
       resources :users
       resources :comments
+      resources :posts
     end
   end
 

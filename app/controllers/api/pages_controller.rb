@@ -18,6 +18,13 @@ class Api::PagesController < Api::APIController
     end
   end
 
+  def posts
+    @page = Page.find(params[:id])
+    respond_to do |format|
+      format.json { render_json :comments => @page.posts.collect { |post| post.simple_obj } }
+    end
+  end
+
   def comments
     @page = Page.find(params[:id])
     respond_to do |format|

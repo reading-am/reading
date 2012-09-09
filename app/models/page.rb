@@ -36,7 +36,7 @@ public
   def self.normalize_url(url)
     url = Addressable::URI.parse(url)
 
-    # Get rid of trailing
+    # Get rid of trailing hash
     url.fragment = nil if url.fragment.blank?
 
     # Consider removing trailing slashes

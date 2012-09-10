@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/requirejs-rails.git
-  revision: 8e58c5368b4e1b21b209acf21ab677da4ec94de2
+  revision: e4412792734023cd30805dd47ecf748519cf11f0
   specs:
     requirejs-rails (0.9.0)
       railties (>= 3.1.1, < 3.3)

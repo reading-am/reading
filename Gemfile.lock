@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/requirejs-rails.git
-  revision: 8e58c5368b4e1b21b209acf21ab677da4ec94de2
+  revision: 55de29e520a3c1c5933b7278cca57a77d311f438
   specs:
     requirejs-rails (0.9.0)
       railties (>= 3.1.1, < 3.3)
@@ -124,7 +124,7 @@ GEM
     bootstrap-will_paginate (0.0.7)
       will_paginate
     browser (0.1.4)
-    builder (3.0.0)
+    builder (3.0.3)
     capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -212,7 +212,7 @@ GEM
       multi_json (~> 1.0)
       multi_xml
     httpauth (0.1)
-    i18n (0.6.0)
+    i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.0.2)
       railties (>= 3.2.0, < 5.0)

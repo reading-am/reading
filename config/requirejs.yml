@@ -15,10 +15,7 @@ modules:
   - name: web/loader
     include:
       - requireLib
-      # These routers are maintained manually because they are include in footer script tags.
-      # I'd like to modify requirejs-rails to accept a wildcard so these don't need to be maintained
-      - app/routers/comments
-      - app/routers/users
+      - app/routers/all
     exclude:
       - libs/jquery
       - libs/jquery_ui
@@ -29,7 +26,7 @@ modules:
   - name: bookmarklet/loader
     include:
       - requireLib
-    exclude: 
+    exclude:
       - libs/jquery
       - libs/jquery_ui
       - libs/lodash

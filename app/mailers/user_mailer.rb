@@ -37,7 +37,7 @@ class UserMailer < ApplicationMailer
 
     mail(
       :to       => @user.email,
-      :from     => "Greg & Max <greg-and-max@reading.am>",
+      :from     => "Greg <greg@#{DOMAIN}>",
       :subject  => "Help Us Test Comments!"
     )
   end
@@ -46,7 +46,7 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(
       :to       => @user.email,
-      :from     => "Greg & Max <greg-and-max@reading.am>",
+      :from     => "Greg <greg@#{DOMAIN}>",
       :subject  => "Welcome to Reading, #{@user.first_name}!"
     )
   end
@@ -55,7 +55,7 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(
       :to       => @user.email,
-      :from     => "Greg & Max <greg-and-max@reading.am>",
+      :from     => "Greg <greg@#{DOMAIN}>",
       :subject  => "Here lies @#{@user.username}, may he / she / it rest in peace."
     )
   end

@@ -36,6 +36,8 @@ modules:
   - name: libs/jquery
 
   - name: libs/jquery_ui
+    exclude:
+      - libs/jquery
 
   - name: libs/lodash
 

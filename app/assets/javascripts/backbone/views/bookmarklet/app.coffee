@@ -81,8 +81,9 @@ reading.define [
           id: "r_comments"
           collection: @model.get("page").comments
 
-        @comments_view.collection.fetch()
         @$el.append(@comments_view.render().el)
+        @comments_view.collection.fetch success: =>
+          @comments_view.$el.css opacity:1 # fade in CSS transition
 
         @comments_view.attach_autocomplete()
         @comments_view.make_images_draggable()

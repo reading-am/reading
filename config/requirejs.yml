@@ -33,6 +33,7 @@ modules:
     create: true
     include:
       - requireLib
+      - bookmarklet/real_loader
     excludeShallow:
       - libs/jquery
       - libs/jquery_ui

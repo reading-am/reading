@@ -16,7 +16,7 @@ modules:
     include:
       - requireLib
       - app/routers/all
-    exclude:
+    excludeShallow:
       - libs/jquery
       - libs/jquery_ui
       - libs/lodash
@@ -26,7 +26,7 @@ modules:
   - name: bookmarklet/loader
     include:
       - requireLib
-    exclude:
+    excludeShallow:
       - libs/jquery
       - libs/jquery_ui
       - libs/lodash
@@ -37,7 +37,7 @@ modules:
 
   - name: libs/jquery_ui
     exclude:
-      - libs/jquery
+      - jquery
 
   - name: libs/lodash
 
@@ -49,13 +49,6 @@ modules:
   - name: libs/handlebars
 
   - name: ie/html5
-
-priority:
-  - jquery
-  - jquery_ui
-  - underscore
-  - backbone
-  - handlebars
 
 ## for testing
 #optimize: none

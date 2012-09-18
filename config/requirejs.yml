@@ -10,7 +10,7 @@ paths:
   requireLib: require
   app:        backbone
   extend:     libs/extend
-  jquery:     libs/jquery
+  jquery:     libs/jquery_extended
   jquery_ui:  libs/jquery_ui
   underscore: libs/lodash_extended
   backbone:   libs/backbone_extended

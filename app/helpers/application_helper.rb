@@ -61,6 +61,7 @@ module ApplicationHelper
   end
 
   def requirejs
-    ['production','staging'].include? Rails.env ? 'r_require.' : ''
+    # this namespace must mirror what's in requirejs.yml
+    ['production','staging'].include?(Rails.env) ? 'r_require.' : ''
   end
 end

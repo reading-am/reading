@@ -1,3 +1,8 @@
+# NOTE
+# For whatever reason, if you don't add `create: true` to the
+# second module that's built (bookmarklet/loader, here), requireLib
+# will be included out of order and the JS will fail
+
 namespace: r_require
 preserveLicenseComments: false
 
@@ -13,6 +18,7 @@ paths:
 
 modules:
   - name: web/loader
+    create: true
     include:
       - requireLib
       - app/routers/all
@@ -24,6 +30,7 @@ modules:
       - libs/handlebars
 
   - name: bookmarklet/loader
+    create: true
     include:
       - requireLib
     excludeShallow:
@@ -54,4 +61,3 @@ modules:
 #optimize: none
 #uglify:
   #max_line_length: 1000
-

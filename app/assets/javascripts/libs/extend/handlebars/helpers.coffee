@@ -1,4 +1,4 @@
-reading.define [
+define [
   "jquery"
   "underscore"
   "app/constants"

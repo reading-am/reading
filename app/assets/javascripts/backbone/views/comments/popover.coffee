@@ -1,9 +1,12 @@
-reading.define [
+define [
+  "jquery"
   "backbone"
   "app/views/components/popover"
   "app/views/comments/comment"
-  "css!comments/popover"
-], (Backbone, Popover, CommentView) ->
+  "text!comments/popover.css"
+], ($, Backbone, Popover, CommentView, css) ->
+	
+  $("<style>").html(css).appendTo("head")
 
   class CommentPopover extends Popover
     id: "r_comment_popover"

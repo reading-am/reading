@@ -12,7 +12,8 @@ Reading::Application.configure do
   config.serve_static_assets = true
 
   # Compress JavaScripts and CSS
-  config.assets.compress = true
+  # requirejs namespacing needs it to be false
+  config.assets.compress = false
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
@@ -43,7 +44,7 @@ Reading::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += ['*.js*', '*.css*']
+  config.assets.precompile += ['*.css*']
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

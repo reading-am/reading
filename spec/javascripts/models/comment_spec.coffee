@@ -1,8 +1,8 @@
-#= require curl_config
-#= require libs/curl
+#= require require
+#= require baseUrl
 #= require ./shared
 
-reading.curl [
+require [
   "spec/models/shared"
   "app/models/comment"
 ], (shared, Comment) ->
@@ -15,12 +15,12 @@ reading.curl [
 
       shared
         type: Comment
-        attrs: {body: "This is a test comment", post_id: 71214, page_id: 1140}
+        attrs: {body: "This is a test comment", post_id: 55465, page_id: 1140}
 
       describe "#save()", ->
 
         it "should check to make sure the post belongs to the user", (done) ->
           model = new Comment
-          model.save {body: "This is a test comment", post_id: 200, page_id: 91},
+          model.save {body: "This is a test comment", post_id: 201, page_id: 91},
             success: (model, response) -> throw response
             error: (model, response) -> done()

@@ -1,15 +1,16 @@
-reading.define [
+define [
+  "jquery"
   "backbone"
   "handlebars"
   "app/views/components/popover"
-  "css!users/popover"
-], (Backbone, Handlebars, Popover) ->
+  "text!app/templates/users/popover.hbs"
+  "text!users/popover.css"
+], ($, Backbone, Handlebars, Popover, template, css) ->
+	
+  $("<style>").html(css).appendTo("head")
 
   class UserPopover extends Popover
 
-    template: Handlebars.compile "
-      <div class=\"r_blocker\"></div>
-      <iframe class=\"r_content\" src=\"{{url}}\"></iframe>
-    "
+    template: Handlebars.compile template
 
     id: "r_user_popover"

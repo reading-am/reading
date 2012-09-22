@@ -59,4 +59,9 @@ module ApplicationHelper
     end
     link_to text, link, :class => "btn #{browser}-install"
   end
+
+  def requirejs
+    # this namespace must mirror what's in requirejs.yml
+    ['production','staging'].include?(Rails.env) ? 'r_require.' : ''
+  end
 end

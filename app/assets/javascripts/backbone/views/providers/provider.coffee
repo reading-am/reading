@@ -1,12 +1,13 @@
-reading.define [
+define [
   "backbone"
   "handlebars"
   "app/models/post"
   "app/models/comment"
-], (Backbone, Handlebars, Post, Comment) ->
+  "text!app/templates/providers/provider.hbs"
+], (Backbone, Handlebars, Post, Comment, template) ->
 
   class ProviderView extends Backbone.View
-    template: Handlebars.compile "<a href=\"#\" class=\"r_share r_{{name}}\">{{name}}</a>"
+    template: Handlebars.compile template
 
     tagName: "li"
 

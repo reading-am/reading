@@ -20,7 +20,11 @@
   <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? and ["posts","list"].include? params[:type] %>
   <%= stylesheet_link_tag 'application' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
-  <%= javascript_include_tag 'application' %>
+  <% if ['production','staging'].include? Rails.env %>
+    <%= javascript_include_tag "web/loader" %>
+  <% else %>
+    <%= requirejs_include_tag "web/loader" %>
+  <% end %>
   <!--[if IE]><%= javascript_include_tag 'ie/html5' %><![endif]-->
   <%= csrf_meta_tag %>
   <%= render :partial => 'layouts/ga_embed' if Rails.env == 'production' %>

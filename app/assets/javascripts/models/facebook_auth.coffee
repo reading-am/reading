@@ -1,8 +1,8 @@
-reading.define [
+define [
   "require"
   "underscore"
   "jquery"
-  "app"
+  "app/init"
   "models/authorization"
 ], (require, _, $, App, Authorization) ->
 

@@ -1,6 +1,6 @@
-reading.define [
+define [
   "backbone"
-  "app"
+  "app/init"
   "app/models/comment"
 ], (Backbone, App, Comment) ->
 

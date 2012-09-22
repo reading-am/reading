@@ -1,8 +1,8 @@
-#= require curl_config
-#= require libs/curl
+#= require require
+#= require baseUrl
 #= require ./shared
 
-reading.curl [
+require [
   "spec/models/uris/shared"
   "app/models/uris/twitter_tweet"
 ], (shared, TwitterTweet) ->

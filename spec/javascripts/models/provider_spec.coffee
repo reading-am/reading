@@ -1,7 +1,7 @@
-#= require curl_config
-#= require libs/curl
+#= require require
+#= require baseUrl
 
-reading.curl [
+require [
   "app/models/provider"
 ], (Provider) ->
 

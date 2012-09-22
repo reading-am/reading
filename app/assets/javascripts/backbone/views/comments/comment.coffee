@@ -1,43 +1,27 @@
-reading.define [
+define [
   "jquery"
   "backbone"
   "handlebars"
-  "app"
+  "app/init"
   "app/models/post"
   "app/models/uris/uri"
   "app/views/uris/uri"
   "app/views/users/user"
   "app/views/components/share_popover"
+  "text!app/templates/comments/comment.hbs"
+  "text!app/templates/comments/comment_shown.hbs"
+  "text!comments/comment.css"
   "app/models/uris/all"
   "app/views/uris/all"
-  "plugins/humane"
-  "plugins/highlight"
-  "css!comments/comment"
-], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover) ->
+  "extend/jquery/humane"
+  "extend/jquery/highlight"
+], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover, template, shown_template, css) ->
+
+  $("<style>").html(css).appendTo("head")
 
   class CommentView extends Backbone.View
-    template: Handlebars.compile "
-      <div class=\"r_comment_header\">
-        <div class=\"r_author r_user\"></div>
-        <time datetime=\"{{updated_at}}\"></time>
-        <div class=\"r_comment_actions\">
-          {{#if is_owner}}<a href=\"#\" class=\"r_destroy\">Delete</a>{{/if}}
-          <a href=\"#\" class=\"r_share\">Share</a>
-          <a href=\"{{url}}\" class=\"r_permalink\">⚓</a>
-        </div>
-      </div>
-      <div class=\"r_comment_body\">
-        {{format_comment body}}
-      </div>
-    "
-
-    shown_template: Handlebars.compile "
-      <div class=\"r_comment_header\">
-        <div class=\"r_author r_user\"></div>
-        <div class=\"r_showed_this_to\">showed this to</div>
-        <div class=\"r_shown_user r_user\">{{format_comment body}}</div>
-      </div>
-    "
+    template: Handlebars.compile template
+    shown_template: Handlebars.compile shown_template
 
     tagName: "li"
     className: "r_comment"

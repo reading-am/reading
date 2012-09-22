@@ -1,4 +1,4 @@
-reading.define [
+define [
   "app/models/user"
   "models/authorization"
   "models/twitter_prov"

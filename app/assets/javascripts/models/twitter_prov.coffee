@@ -1,5 +1,5 @@
-reading.define [
-  "app"
+define [
+  "app/init"
   "models/provider"
 ], (App, Provider) ->
 

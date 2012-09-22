@@ -1,4 +1,4 @@
-reading.define [
+define [
   "underscore"
   "app/constants"
   "libs/backbone"

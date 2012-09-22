@@ -1,5 +1,5 @@
-reading.define [
-  "app"
+define [
+  "app/init"
   "models/authorization"
   "models/twitter_prov"
 ], (App, Authorization, TwitterProv) ->

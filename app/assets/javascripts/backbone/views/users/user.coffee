@@ -1,26 +1,15 @@
-reading.define [
+define [
   "backbone"
   "handlebars"
   "app/constants"
   "app/views/users/popover"
-], (Backbone, Handlebars, Constants, UserPopoverView) ->
+  "text!app/templates/users/user.hbs"
+], (Backbone, Handlebars, Constants, UserPopoverView, template) ->
 
   is_retina = window.devicePixelRatio > 1
 
   class UserView extends Backbone.View
-    template: Handlebars.compile "
-      <a href=\"{{url}}\">
-        <div class=\"r_avatar\">
-          <img src=\"{{avatar}}\">
-        </div>
-        <div class=\"r_info\">
-          <span class=\"r_name\">{{display_name}}</span>
-          {{#if username}}<span class=\"r_username\">@{{username}}</span>{{/if}}
-          {{#if bio}}<br><span class=\"r_bio\">{{bio}}</span>{{/if}}
-        </div>
-      </a>
-      {{#post_before}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_before\" title=\"{{title}}\">&laquo;</a>{{/post_before}}{{#post_after}}<a href=\"{{wrapped_url}}\" class=\"r_tagalong r_after\" title=\"{{title}}\">&raquo;</a>{{/post_after}}
-    "
+    template: Handlebars.compile template
 
     tagName: "li"
     className: "r_user"

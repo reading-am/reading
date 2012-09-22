@@ -1,7 +1,7 @@
-reading.define [
+define [
   "underscore"
   "libs/backbone"
-  "app"
+  "app/init"
   "app/constants"
 ], (_, Backbone, App, Constants) ->
 

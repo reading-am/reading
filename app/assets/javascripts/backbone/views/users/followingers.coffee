@@ -1,29 +1,12 @@
-reading.define [
+define [
   "backbone"
   "handlebars"
   "app/views/users/users"
-], (Backbone, Handlebars, UsersView) ->
+  "text!app/templates/users/followingers.hbs"
+], (Backbone, Handlebars, UsersView, template) ->
 
   class FollowingersView extends Backbone.View
-    template: Handlebars.compile "
-      <div id=\"subnav\" class=\"row\">
-        <nav class=\"span1\">
-          <a href=\"/{{user.username}}\">« read</a>
-        </nav>
-        <div class=\"span7\">
-          <h3>
-            {{#if followers}}
-              People Following {{user.first_name}}
-            {{else}}
-              People {{user.first_name}} is Following
-            {{/if}}
-          </h3>
-        </div>
-      </div>
-      <div class=\"row\">
-        <div id=\"users\" class=\"span7 offset1\"></div>
-      </div>
-    "
+    template: Handlebars.compile template
 
     initialize: (options) ->
       @followers = options.followers

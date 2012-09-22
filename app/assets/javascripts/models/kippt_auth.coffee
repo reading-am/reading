@@ -1,5 +1,5 @@
-reading.define [
-  "app"
+define [
+  "app/init"
   "models/authorization"
   "models/kippt_prov"
 ], (App, Authorization, KipptProv) ->

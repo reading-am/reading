@@ -1,18 +1,13 @@
-reading.define [
+define [
   "jquery"
   "app/views/uris/uri"
   "handlebars"
-  "app"
-], ($, URIView, Handlebars, App) ->
+  "app/init"
+  "text!app/templates/uris/amazon_product.hbs"
+], ($, URIView, Handlebars, App, template) ->
 
   class AmazonProductView extends URIView
-    template: Handlebars.compile "
-      {{#if image}}
-        <img src=\"{{image}}\">
-      {{else}}
-        Loading Amazon product...
-      {{/if}}
-    "
+    template: Handlebars.compile template
 
     className: "r_url r_uri r_amazon_product"
 

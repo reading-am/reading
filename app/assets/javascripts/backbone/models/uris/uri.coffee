@@ -1,7 +1,7 @@
-reading.define [
+define [
   "underscore"
   "backbone"
-  "app"
+  "app/init"
 ], (_, Backbone, App) ->
 
   class URI extends Backbone.Model

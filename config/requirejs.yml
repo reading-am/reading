@@ -1,0 +1,63 @@
+# NOTE
+# For whatever reason, if you don't add `create: true` to the
+# second module that's built, requireLib will be included out
+# of order and the JS will fail
+
+namespace: r_require
+preserveLicenseComments: false
+
+paths:
+  requireLib: require
+  app:        backbone
+  extend:     libs/extend
+  jquery:     libs/jquery_extended
+  jquery_ui:  libs/jquery_ui
+  underscore: libs/lodash_extended
+  backbone:   libs/backbone_extended
+  handlebars: libs/handlebars_extended
+
+modules:
+  - name: web/loader
+    include:
+      - requireLib
+      - app/routers/all
+    excludeShallow:
+      - libs/jquery
+      - libs/jquery_ui
+      - libs/lodash
+      - libs/backbone
+      - libs/handlebars
+
+  - name: bookmarklet/loader
+    create: true
+    include:
+      - requireLib
+      - bookmarklet/real_loader
+    excludeShallow:
+      - libs/jquery
+      - libs/jquery_ui
+      - libs/lodash
+      - libs/backbone
+      - libs/handlebars
+
+  - name: libs/jquery
+
+  - name: libs/jquery_ui
+    exclude:
+      - jquery
+
+  - name: libs/lodash
+
+  - name: libs/backbone
+    exclude:
+      - jquery
+      - underscore
+
+  - name: libs/handlebars
+
+  - name: ie/html5
+
+## for testing
+#optimize: none
+#uglify:
+  #max_line_length: 1000

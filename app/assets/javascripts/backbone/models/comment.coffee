@@ -1,6 +1,6 @@
-reading.define [
+define [
   "backbone"
-  "app"
+  "app/init"
   "app/constants"
   "libs/base58"
   "libs/twitter-text"

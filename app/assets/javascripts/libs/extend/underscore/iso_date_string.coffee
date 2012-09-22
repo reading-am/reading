@@ -1,4 +1,4 @@
-reading.define ["libs/lodash"], (_) ->
+define ["libs/lodash"], (_) ->
 
   _.mixin
     ISODateString: (d) ->

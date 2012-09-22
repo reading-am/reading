@@ -1,7 +1,7 @@
 # From: https://github.com/ianoxley/encdec
 # translated at: http://js2coffee.org
 
-reading.define ->
+define ->
 
   encdec = (alphabet) ->
     BASE_58 = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"

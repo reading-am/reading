@@ -1,9 +1,9 @@
-reading.define [
+define [
   "jquery"
   "underscore"
   "libs/backbone"
   "app/constants"
-  "plugins/xhr_cors_patch"
+  "extend/jquery/xhr_cors_patch"
 ], ($, _, Backbone, Constants) ->
 
   methodMap =

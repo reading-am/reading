@@ -1,10 +1,10 @@
-reading.define [
+define [
   "jquery"
   "backbone"
-  "app"
+  "app/init"
   "app/constants"
   "libs/base58"
-  "plugins/win_focus"
+  "extend/jquery/win_focus"
 ], ($, Backbone, App, Constants, Base58) ->
 
   class Post extends Backbone.Model

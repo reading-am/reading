@@ -1,5 +1,5 @@
-reading.define [
-  "app"
+define [
+  "app/init"
   "models/authorization"
   "models/tssignals_prov"
 ], (App, Authorization, TssignalsProv) ->

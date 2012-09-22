@@ -1,5 +1,5 @@
-reading.define [
-  "app"
+define [
+  "app/init"
   "app/constants"
   "app/models/uris/uri"
 ], (App, Constants, URI) ->

@@ -1,4 +1,4 @@
-reading.define "spec/collections/shared", [
+define "spec/collections/shared", [
   "jquery"
   "underscore"
 ], ($, _) -> (vals) ->

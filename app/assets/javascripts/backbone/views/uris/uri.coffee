@@ -1,6 +1,6 @@
-reading.define [
+define [
   "backbone"
-  "app"
+  "app/init"
 ], (Backbone, App) ->
 
   class URIView extends Backbone.View

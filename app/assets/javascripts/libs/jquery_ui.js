@@ -1,4 +1,4 @@
-reading.define(["jquery"], function(jQuery){
+define(["jquery"], function(jQuery){
 /*! jQuery UI - v1.8.20 - 2012-04-30
 * https://github.com/jquery/jquery-ui
 * Includes: jquery.ui.core.js

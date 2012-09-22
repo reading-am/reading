@@ -1,4 +1,4 @@
-reading.define [
+define [
   "jquery"
   "backbone"
   "app/models/comment"

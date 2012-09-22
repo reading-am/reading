@@ -1,11 +1,12 @@
-reading.define [
+define [
   "backbone"
   "handlebars"
   "app/views/comments/popover"
-], (Backbone, Handlebars, CommentPopover) ->
+  "text!app/templates/comments/show.hbs"
+], (Backbone, Handlebars, CommentPopover, template) ->
 
   class ShowView extends Backbone.View
-    template: Handlebars.compile "<iframe id=\"page_frame\" src=\"{{page.url}}\"></iframe>"
+    template: Handlebars.compile template
 
     render: ->
       @popover = new CommentPopover model: @model

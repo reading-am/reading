@@ -1,4 +1,4 @@
-reading.define ["libs/lodash"], (_) ->
+define ["libs/lodash"], (_) ->
 
   _.mixin
     log: -> console.log.apply console, arguments if console? and console.log? and <%= Rails.env != 'production' %>

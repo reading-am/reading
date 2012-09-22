@@ -4,15 +4,15 @@ ruby '1.9.3'
 gem 'thin' # server
 gem 'rack-cors', :require => 'rack/cors'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.8'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'
   gem 'coffee-rails'
   gem 'uglifier'
-  gem 'handlebars_assets'
 end
 
+gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git'
 gem 'rails-backbone'
 gem 'jquery-rails'
 

@@ -1,5 +1,5 @@
 @import "variables";
-@import "twitter/bootstrap/mixins";
+@import "mixins";
 
 /*
  * Fonts and Mixins
@@ -53,7 +53,10 @@ a.back, .actions {
 
 #visit {
   margin-top:150px;
-  span { text-decoration:underline; }
+  span {
+    .word-wrap;
+    text-decoration:underline;
+  }
 }
 
 footer a, a.user.you {

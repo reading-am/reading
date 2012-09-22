@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .r_comment, #r_am .r_comment {
   max-width:360px;
@@ -47,6 +48,7 @@
     }
   }
   .r_comment_body {
+    .word-wrap;
     background:@white;
     margin:0 0 0 25px;
     padding:7px 14px;

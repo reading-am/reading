@@ -106,21 +106,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def decode_mail_recipient recipient
-    bits = recipient.match(/reply\+(.*)@/)[1].split('-')
-
-    hash = bits[2]
-    user = User.find(bits[3])
-
-    if Digest::SHA1.hexdigest(bits[0]+bits[1]+user.token) == hash
-      {
-        :user => user,
-        :subject => Comment.find(bits[1])
-      }
-    else
-      false
-    end
-
-  end
-
 end

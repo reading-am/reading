@@ -30,8 +30,8 @@ class Api::PostsController < Api::APIController
     if params[:recipient]
       url = Twitter::Extractor::extract_urls(params['stripped-text'])[0] # this comes from mailgun
       title = nil
-      if bits = MailPipe::decode_mail_recipient(params[:recipient]) && bits[:user] == bits[:subject]
-        @post.user = bits[:user]
+      if bits = MailPipe::decode_mail_recipient(params[:recipient])
+        @post.user = bits[:user] if bits[:user] == bits[:subject] # make sure the user is posting to their own account
       end
     else
       url   = params[:model][:url]

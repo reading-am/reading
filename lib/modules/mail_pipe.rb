@@ -18,11 +18,11 @@ module MailPipe
     end
   end
 
-  def self.encode_mail_recipient user, subject
+  def self.encode_mail_recipient action, user, subject
     type = class_to_letter(subject)
 
     hash = Digest::SHA1.hexdigest("#{type}#{subject.id}#{user.token}")
-    "#{type}-#{subject.id}-#{hash}-#{user.id}"
+    "#{action}+#{type}-#{subject.id}-#{hash}-#{user.id}@mailman.#{DOMAIN}"
   end
 
   def self.decode_mail_recipient recipient

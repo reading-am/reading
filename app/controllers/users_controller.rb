@@ -135,7 +135,7 @@ class UsersController < ApplicationController
   def extras
     redirect_to "/" and return if !logged_in?
     @user = current_user
-    @post_email = "post+#{MailPipe::encode_mail_recipient(current_user, current_user)}@mailman.#{DOMAIN}"
+    @post_email = MailPipe::encode_mail_recipient('post', current_user, current_user)
   end
 
   def find_people

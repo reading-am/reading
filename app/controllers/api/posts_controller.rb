@@ -25,15 +25,25 @@ class Api::PostsController < Api::APIController
   # POST /posts
   # POST /posts.xml
   def create
-    url   = params[:model][:url]
-    title = params[:model][:title] == 'null' ? nil : params[:model][:title]
-    yn    = params[:model][:yn]
-    ref_id= params[:model][:referrer_id]
+    @post = Post.new
 
-    @post       = Post.new
-    @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    if params[:recipient]
+      url = Twitter::Extractor::extract_urls(params['stripped-text'])[0] # this comes from mailgun
+      title = nil
+      if bits = MailPipe::decode_mail_recipient(params[:recipient]) && bits[:user] == bits[:subject]
+        @post.user = bits[:user]
+      end
+    else
+      url   = params[:model][:url]
+      title = params[:model][:title] == 'null' ? nil : params[:model][:title]
+      yn    = params[:model][:yn]
+      ref_id= params[:model][:referrer_id]
+
+      @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      @post.yn    = params[:yn]
+    end
+
     @post.page  = Page.find_or_create_by_url(:url => url, :title => title)
-    @post.yn    = params[:yn]
 
     if !@post.user.blank?
       # A post is a duplicate if it's the exact same page and within 1hr of the last post

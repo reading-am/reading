@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
     @comment = comment
     mail(
       :to       => @subject.email,
-      :reply_to => "reply+#{encode_mail_recipient(@subject, @comment)}@mailman.#{DOMAIN}",
+      :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),
       :subject  => "#{@enactor.display_name} mentioned you in a comment at \"#{@comment.page.display_title}\""
     )
   end

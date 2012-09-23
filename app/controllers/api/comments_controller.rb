@@ -48,7 +48,7 @@ class Api::CommentsController < Api::APIController
 
     if params[:recipient]
       @comment.body = params['stripped-text'] # this comes from mailgun
-      if bits = decode_mail_recipient(params[:recipient])
+      if bits = MailPipe::decode_mail_recipient(params[:recipient])
         @comment.user   = bits[:user]
         @comment.parent = bits[:subject]
         @comment.page   = @comment.parent.page

@@ -4,10 +4,10 @@ define [
   "handlebars"
   "app/models/post"
   "app/views/comments/comments"
-  "app/views/users/users"
+  "app/views/posts/posts"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
-], ($, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover, template) ->
+], ($, Backbone, Handlebars, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -80,9 +80,9 @@ define [
         @comments_view.make_images_draggable()
 
     get_readers: ->
-      @readers_view = new UsersView
+      @readers_view = new PostsView
         id: "r_readers"
-        collection: @model.get("page").users
+        collection: @model.get("page").posts
 
       @readers_view.collection.fetch success: (collection) =>
         collection.remove Post::current.get("user")

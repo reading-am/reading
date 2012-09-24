@@ -4,8 +4,6 @@ class Api::CommentsController < Api::APIController
   # GET /comments.json
   def index
     if params[:page_id]
-      #@page = Page.find(params[:page_id])
-      #@comments = @page.comments()
       where = {
         :cond => "page_id = :page_id",
         :params => {
@@ -22,8 +20,8 @@ class Api::CommentsController < Api::APIController
       end
       @comments = Comment.where(where[:cond], where[:params])
     else
-      @comments = Comment.order("created_at DESC")
-                  .paginate(:page => params[:page])
+      @comments =  Comment.order("created_at DESC")
+                          .paginate(:page => params[:page])
     end
 
     respond_to do |format|

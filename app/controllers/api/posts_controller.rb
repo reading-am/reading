@@ -7,6 +7,10 @@ class Api::PostsController < Api::APIController
                   .includes([:user, :page, :domain, {:referrer_post => :user}])
                   .paginate(:page => params[:page])
 
+    if params[:page_id]
+      @posts = @posts.where(:page_id => params[:page_id])
+    end
+
     respond_to do |format|
       format.json { render_json :posts => @posts.collect { |post| post.simple_obj } }
     end

@@ -11,7 +11,6 @@ define [
   class UserView extends Backbone.View
     template: Handlebars.compile template
 
-    tagName: "li"
     className: "r_user"
 
     events:

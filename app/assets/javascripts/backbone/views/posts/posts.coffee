@@ -9,6 +9,9 @@ define [
 
     initialize: (options) ->
       @subviews = []
+      @user_ids = []
+      @grouped_co = {}
+
       @collection.bind "reset", @addAll
       @collection.bind "remove", @removeOne
 
@@ -16,9 +19,18 @@ define [
       @collection.each(@addOne)
 
     addOne: (post) =>
-      view = new PostView model: post
-      @subviews.push(view)
-      @$el.append(view.render().el)
+      uid = post.get("user").id
+
+      if !_.include @user_ids, uid
+        @user_ids.push uid
+        @grouped_co[uid] = []
+
+        view = new PostView model: post
+        @subviews.push(view)
+        @$el.append(view.render().el)
+
+      @grouped_co[uid].push post
+
  
     removeOne: (model) =>
       view = _(@subviews).select((v) -> v.model is model)[0]

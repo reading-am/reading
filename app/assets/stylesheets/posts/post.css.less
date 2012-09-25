@@ -1,0 +1,26 @@
+@import "variables";
+@import "mixins";
+
+#r_am {
+  .r_post {
+    background:@yellow;
+    &.r_yep {
+      background:@eli_blue;
+    }
+    &.r_nope {
+      background:@red;
+    }
+    .r_user {
+      display:inline-block;
+    }
+    .r_tagalong {
+      padding:0 5px;
+      line-height:25px;
+      background:@blue;
+      border-right:1px solid @light_blue;
+      &:hover {
+        background:@light_blue;
+      }
+    }
+  }
+}

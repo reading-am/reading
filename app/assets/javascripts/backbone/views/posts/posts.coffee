@@ -10,7 +10,7 @@ define [
     initialize: (options) ->
       @subviews = []
       @user_ids = []
-      @grouped_co = {}
+      @grouped_posts = {}
 
       @collection.bind "reset", @addAll
       @collection.bind "remove", @removeOne
@@ -23,13 +23,13 @@ define [
 
       if !_.include @user_ids, uid
         @user_ids.push uid
-        @grouped_co[uid] = []
+        @grouped_posts[uid] = []
 
         view = new PostView model: post
         @subviews.push(view)
         @$el.append(view.render().el)
 
-      @grouped_co[uid].push post
+      @grouped_posts[uid].push post
 
  
     removeOne: (model) =>

@@ -28,9 +28,6 @@ define [
     render: =>
       json = @model.toJSON()
 
-      json.post_before = json.posts[0] if json.posts[0]? and json.posts[0].id > -1
-      json.post_after = json.posts[1] if json.posts[1]? and json.posts[1].id > -1
-
       switch @size
         when "small"
           json.avatar = if is_retina then json.avatar_thumb else json.avatar_mini

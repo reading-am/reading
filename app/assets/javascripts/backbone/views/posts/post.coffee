@@ -28,6 +28,6 @@ define [
 
       @user_view = new UserView model: @model.get("user"), size: "small"
       @$el.html(@template(json))
-          .prepend(@user_view.render().el)
+          .find(".r_yep_nope").after(@user_view.render().el)
 
       return this

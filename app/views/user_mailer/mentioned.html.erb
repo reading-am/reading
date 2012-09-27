@@ -22,7 +22,7 @@
         mentioned you at <em><%= link_to @comment.page.display_title, @comment.post.wrapped_url, :class => 'page' %></em>:
       </p>
       <blockquote class="r_comment" cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
-        <div class="triangle"></div>
+        <div class="r_tri"></div>
         <p class="r_comment_body">
           <%= @comment.body_html.html_safe %>
         </p>

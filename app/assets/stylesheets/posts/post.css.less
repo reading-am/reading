@@ -3,14 +3,30 @@
 
 #r_am {
   .r_post {
-    background:@yellow;
+    .r_yep_nope {
+      display:none;
+      font-size:9px;
+      padding:2px 3px;
+      margin-right:5px;
+    }
     &.r_yep {
-      background:@eli_blue;
+      .r_yep_nope {
+        .speech_bubble(@eli_blue, @white, bottom-right);
+        &:before {
+          content:"Yep";
+        }
+      }
     }
     &.r_nope {
-      background:@red;
+      .r_yep_nope {
+        .speech_bubble(@red, @white, bottom-right);
+        &:before {
+          content:"Nope";
+        }
+      }
     }
     .r_user {
+      background:@yellow;
       display:inline-block;
     }
     .r_tagalong {
@@ -20,6 +36,11 @@
       border-right:1px solid @light_blue;
       &:hover {
         background:@light_blue;
+      }
+      &.r_disabled {
+        opacity:0.5 !important;
+        border-color:@dark_grey;
+        background:lightgrey;
       }
     }
   }

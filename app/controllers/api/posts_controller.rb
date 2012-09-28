@@ -80,25 +80,7 @@ class Api::PostsController < Api::APIController
 
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
-        format.json { render_json({
-            :post => @post.simple_obj,
-            :readers => User.who_posted_to(@post.page).collect { |user|
-              if user != @post.user # don't show the person posting
-                obj = user.simple_obj
-                cur_post = user.posts.where('page_id = ?', @post.page.id).last
-                before =  user.posts.where('id < ?', cur_post.id).first
-                after = user.posts.where('id > ?', cur_post.id).last
-                obj[:posts] = {
-                  :before => before.blank? ? nil : before.simple_obj,
-                  :after => after.blank? ? nil : after.simple_obj
-                }
-                obj
-              end
-            }.compact
-            # this is disabled until we get more users on the site
-            # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
-          })
-        }
+        format.json { render_json :post => @post.simple_obj }
       else
         # TODO clean up this auth hack. Ugh.
         status = @post.user.blank? ? :forbidden : :bad_request

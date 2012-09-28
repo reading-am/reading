@@ -2,10 +2,11 @@ define [
   "jquery"
   "backbone"
   "handlebars"
+  "app/constants"
   "app/views/users/user"
   "text!app/templates/posts/post.hbs"
   "text!posts/post.css"
-], ($, Backbone, Handlebars, UserView, template, css) ->
+], ($, Backbone, Handlebars, Constants, UserView, template, css) ->
   $("<style>").html(css).appendTo("head")
 
   class PostView extends Backbone.View
@@ -16,10 +17,7 @@ define [
 
     render: =>
       json = @model.toJSON()
-
-      if json.posts?
-        json.post_before = json.posts[0] if json.posts[0]? and json.posts[0].id > -1
-        json.post_after = json.posts[1] if json.posts[1]? and json.posts[1].id > -1
+      json.domain = Constants.domain
 
       if @model.get("yn") is true
         @$el.addClass("r_yep")

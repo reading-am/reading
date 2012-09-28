@@ -22,7 +22,7 @@ class UsersController < ApplicationController
         # add the user to the channels since it's not in .following()
         @channels.push @user.username
       else
-        @posts = @user.posts.paginate(:page => params[:page])
+        @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page])
         @channels = @user.username
       end
     end
@@ -136,6 +136,19 @@ class UsersController < ApplicationController
     redirect_to "/" and return if !logged_in?
     @user = current_user
     @post_email = MailPipe::encode_mail_recipient('post', current_user, current_user)
+  end
+
+  def tagalong
+    @user = User.find(params[:user_id])
+
+    case params[:dir]
+    when "forward"
+      @post = @user.posts.where("id > ?", params[:post_id]).order("id ASC").limit(1).first
+    when "backward"
+      @post = @user.posts.where("id < ?", params[:post_id]).order("id DESC").limit(1).first
+    end
+
+    redirect_to @post.wrapped_url unless @post.blank?
   end
 
   def find_people

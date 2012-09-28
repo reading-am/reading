@@ -66,6 +66,7 @@ Reading::Application.routes.draw do
   match '/users/friends'      => 'users#find_people'
   match '/users/search'       => 'users#find_people'
   resources :users do
+    get 'tagalong'
     resources :posts
   end
 

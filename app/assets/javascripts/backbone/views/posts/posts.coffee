@@ -34,8 +34,10 @@ define [
  
     removeOne: (model) =>
       view = _(@subviews).select((v) -> v.model is model)[0]
-      @subviews = _(@subviews).without(view)
-      view.remove()
+
+      if view # because of the grouping, we need to check to make sure we found a view
+        @subviews = _(@subviews).without(view)
+        view.remove()
 
     render: =>
       @addAll()

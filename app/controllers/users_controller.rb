@@ -142,9 +142,9 @@ class UsersController < ApplicationController
     @user = User.find(params[:user_id])
 
     case params[:dir]
-    when "forward"
+    when "next"
       @post = @user.posts.where("id > ?", params[:post_id]).order("id ASC").limit(1).first
-    when "backward"
+    when "prev"
       @post = @user.posts.where("id < ?", params[:post_id]).order("id DESC").limit(1).first
     end
 

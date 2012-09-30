@@ -85,7 +85,9 @@ define [
         collection: @model.get("page").posts
 
       @readers_view.collection.fetch success: (collection) =>
+        # remove the current user from the other readers list
         collection.remove(collection.filter((post) -> post.get("user").id is Post::current.get("user").id))
+
         if collection.length > 0
           @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
           @readers_view.$el.slideDown()

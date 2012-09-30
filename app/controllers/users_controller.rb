@@ -148,7 +148,11 @@ class UsersController < ApplicationController
       @post = @user.posts.where("id < ?", params[:post_id]).order("id DESC").limit(1).first
     end
 
-    redirect_to @post.wrapped_url unless @post.blank?
+    if @post.blank?
+      redirect_to "/#{@user.username}", :notice => "You've reached the end of #{@user.first_name}'s posts. Thanks for tagging along!"
+    else
+      redirect_to @post.wrapped_url
+    end
   end
 
   def find_people

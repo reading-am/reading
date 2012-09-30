@@ -6,8 +6,9 @@ define [
 ], (_, Backbone, App, Constants) ->
 
   # Override the url method to append the absolute API route
-  Backbone.Model::_url = Backbone.Model::url
-  Backbone.Model::url = -> "//#{Constants.domain}/api/#{@_url()}"
+  Backbone.Model::endpoint = Backbone.Model::url
+  Backbone.Model::url = -> "//#{Constants.domain}/api/#{@endpoint()}"
+  Backbone.Model::channel_name = -> @endpoint().replace(/\//g,".")
 
   Backbone.Model::factory = (input) ->
     if _.isArray input
@@ -39,7 +40,7 @@ define [
     type = name if !type?
     name = name.toLowerCase()
     @[name] = @nestCollection(name, App.Collections[type], @get(name))
-    @[name].url = => "#{@url()}/#{name}"
+    @[name].endpoint = => "#{@endpoint()}/#{name}"
 
     @_has_many = [] unless @_has_many?
     @_has_many.push name

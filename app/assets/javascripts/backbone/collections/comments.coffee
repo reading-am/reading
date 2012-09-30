@@ -11,4 +11,4 @@ define [
     comparator: (comment) -> comment.get("id")
 
     initialize: ->
-      @poll "id", 5
+      @monitor()

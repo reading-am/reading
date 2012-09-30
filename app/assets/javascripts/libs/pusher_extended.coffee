@@ -9,6 +9,8 @@ define [
       if window.console and window.console.log
         window.console.log(message)
 
+    window.WEB_SOCKET_DEBUG = true # Flash fallback debug flag
+
     Pusher.host    = "localhost"
     Pusher.ws_port = 8080
 

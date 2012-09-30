@@ -15,6 +15,7 @@ paths:
   underscore: libs/lodash_extended
   backbone:   libs/backbone_extended
   handlebars: libs/handlebars_extended
+  pusher:     libs/pusher_extended
 
 modules:
   - name: web/loader

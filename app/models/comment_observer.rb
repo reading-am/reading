@@ -1,6 +1,6 @@
 class CommentObserver < ActiveRecord::Observer
 
-  def after_save(comment)
+  def after_save comment
     Broadcaster::signal :create, comment
     comment.user.hooks.each do |hook| hook.run(comment, :comment) end
 
@@ -19,7 +19,11 @@ class CommentObserver < ActiveRecord::Observer
     end
   end
 
-  def after_destroy(comment)
+  def after_update comment
+    Broadcaster::signal :update, comment
+  end
+
+  def after_destroy comment
     Broadcaster::signal :destroy, comment
   end
 

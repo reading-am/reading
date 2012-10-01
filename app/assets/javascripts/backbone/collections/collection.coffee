@@ -28,6 +28,11 @@ define [
 
         @add Backbone.Model::factory data
 
+      @channel.bind "update", (data) =>
+        obj = Backbone.Model::factory data
+        @remove obj
+        @add obj
+
       @channel.bind "destroy", (data) =>
         @remove Backbone.Model::factory data
 

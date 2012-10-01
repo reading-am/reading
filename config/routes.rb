@@ -24,6 +24,7 @@ Reading::Application.routes.draw do
     end
   end
 
+  match "/pusher/auth" => "pusher#auth"
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"
   match "/signout" => "sessions#destroy", :as => :signout

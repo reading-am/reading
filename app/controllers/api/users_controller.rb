@@ -17,24 +17,7 @@ class Api::UsersController < Api::APIController
     end
 
     respond_to do |format|
-      format.json { render_json({
-          :users => @users.collect { |user|
-            obj = user.simple_obj
-
-            if !@page.blank?
-              cur_post = user.posts.where('page_id = ?', @page.id).last
-              before =  user.posts.where('id < ?', cur_post.id).first
-              after = user.posts.where('id > ?', cur_post.id).last
-              obj[:posts] = [
-                before.blank? ? {:type => 'Post', :id => -1} : before.simple_obj,
-                after.blank? ? {:type => 'Post', :id => -1} : after.simple_obj
-              ]
-            end
-
-            obj
-          }
-        })
-      }
+      format.json { render_json :users => @users.collect { |user| user.simple_obj } }
     end
   end
 

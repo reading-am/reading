@@ -18,13 +18,6 @@ class Api::PagesController < Api::APIController
     end
   end
 
-  def comments
-    @page = Page.find(params[:id])
-    respond_to do |format|
-      format.json { render_json :comments => @page.comments.collect { |comment| comment.simple_obj } }
-    end
-  end
-
   def search
     search = Page.search do
       fulltext params[:q] do boost_fields :title => 3.0 end

@@ -57,7 +57,7 @@
     float:right;
     clear:both;
   }
-  #r_wrp, #r_readers li {
+  #r_wrp, #r_other {
     background:@yellow;
   }
   #r_icon, #r_subtext {
@@ -98,6 +98,8 @@
   }
   #r_readers {
     display:none;
+    max-height:230px;
+    overflow:scroll;
   }
   #r_nope {
     margin:0 3px 0 0;
@@ -123,14 +125,6 @@
       vertical-align:middle;
       max-width:25px;
       max-height:25px;
-    }
-  }
-  a.r_tagalong {
-    padding:0 5px;
-    background:@blue;
-    border-right:1px solid @light_blue;
-    &:hover {
-      background:@light_blue;
     }
   }
   .r_popped_over {

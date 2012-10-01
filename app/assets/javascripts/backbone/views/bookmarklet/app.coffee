@@ -5,10 +5,10 @@ define [
   "pusher"
   "app/models/post"
   "app/views/comments/comments"
-  "app/views/users/users"
+  "app/views/posts/posts"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
-], ($, Backbone, Handlebars, pusher, Post, CommentsView, UsersView, SharePopover, template) ->
+], ($, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -85,12 +85,14 @@ define [
         @comments_view.make_images_draggable()
 
     get_readers: ->
-      @readers_view = new UsersView
+      @readers_view = new PostsView
         id: "r_readers"
-        collection: @model.get("page").users
+        collection: @model.get("page").posts
 
       @readers_view.collection.fetch success: (collection) =>
-        collection.remove Post::current.get("user")
+        # remove the current user from the other readers list
+        collection.remove(collection.filter((post) -> post.get("user").id is Post::current.get("user").id))
+
         if collection.length > 0
           @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
           @readers_view.$el.slideDown()

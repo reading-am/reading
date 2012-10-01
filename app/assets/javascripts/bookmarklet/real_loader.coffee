@@ -17,8 +17,8 @@ require [
   # Config Vars
 
   reading.ready = false
-  on_reading = window.location.host.indexOf("reading.am") is 0 or
-               window.location.host.indexOf("staging.reading.am") is 0 or
+  on_reading = window.location.host.indexOf(Constants.domain) is 0 or
+               window.location.host.indexOf("staging.#{Constants.domain}") is 0 or
                window.location.host.indexOf("0.0.0.0") is 0
   token = reading.token ? null
   platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")

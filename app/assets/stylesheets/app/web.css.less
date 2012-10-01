@@ -27,7 +27,7 @@
 
 .admin.action, .row:hover li .admin.action {
   -webkit-font-smoothing: subpixel-antialiased;
-  background:red;
+  background:@red;
   padding:1px 3px;
   color:@white;
   border-radius:2px;
@@ -40,10 +40,10 @@
 }
 
 .edit_user .field_with_errors {
-  color:red;
+  color:@red;
 }
 .edit_user .field_with_errors input {
-  border:2px solid red;
+  border:2px solid @red;
 }
 
 a.back, .actions {
@@ -89,6 +89,13 @@ a.rss .glyph {
 
 #notice {
   margin-bottom:20px;
+  &.tagalong_end {
+    background:@light_blue;
+    .border-radius(5px);
+    padding:20px;
+    margin-bottom:40px;
+    font-size:18px;
+  }
 }
 
 #new_hook.loading {

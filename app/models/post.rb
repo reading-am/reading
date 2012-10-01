@@ -13,9 +13,6 @@ class Post < ActiveRecord::Base
 
   validates_presence_of :user_id, :page_id
 
-  # Feed logic from: http://ruby.railstutorial.org/chapters/following-users#sec:the_status_feed
-  default_scope :order => 'posts.created_at DESC'
-
   # Return posts from the users being followed by the given user.
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
   # For digest. All posts from a users feed that they haven't read
@@ -50,6 +47,7 @@ class Post < ActiveRecord::Base
                       WHERE follower_id = :user_id)
     where("user_id IN (#{following_ids}) OR user_id = :user_id",
           { :user_id => user })
+    .order("created_at DESC")
   end
 
   def self.unread_since(user, datetime)
@@ -59,6 +57,7 @@ class Post < ActiveRecord::Base
                       WHERE user_id = :user_id AND created_at >= :datetime)
     where("user_id IN (#{following_ids}) AND created_at >= :datetime AND page_id NOT IN (#{read_page_ids})",
           { :user_id => user, :datetime => datetime })
+    .order("created_at DESC")
   end
 
   public

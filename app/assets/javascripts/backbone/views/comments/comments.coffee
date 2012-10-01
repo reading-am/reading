@@ -36,7 +36,16 @@ define [
 
     addOne: (comment) =>
       view = new CommentView({model : comment})
-      @$("ul").prepend(view.render().el)
+
+      i = @collection.length-1 - @collection.indexOf(comment)
+      li_len = @$("ul li").length
+
+      # add comments in order if we're only adding one of them
+      if li_len is @collection.length-1 and i
+        @$("ul li:eq(#{i-1})").after(view.render().el)
+      else
+        @$("ul").prepend(view.render().el)
+
 
     showUser: (e) ->
       popover = new UserPopoverView

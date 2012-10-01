@@ -5,7 +5,7 @@ define [
   "pusher"
   "app/models/post"
   "app/views/comments/comments"
-  "app/views/posts/posts"
+  "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
 ], ($, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->

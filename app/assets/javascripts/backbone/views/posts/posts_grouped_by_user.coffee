@@ -4,7 +4,7 @@ define [
   "app/views/posts/post"
 ], (_, Backbone, PostView) ->
 
-  class PostsView extends Backbone.View
+  class PostsGroupedByUserView extends Backbone.View
     tagName: "ul"
 
     initialize: (options) ->

@@ -1,10 +1,3 @@
-<% if notice %>
-<div id="notice" class="row section tagalong_end">
-  <div class="span8">
-    <%= notice %>
-  </div>
-</div>
-<% end %>
 <% if @user %>
   <%= render :partial => 'users/card', :locals => {:user => @user} %>
   <%= render :partial => 'users/you_subnav', :locals => {:user => @user} %>

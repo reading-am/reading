@@ -8,7 +8,7 @@ class CommentObserver < ActiveRecord::Observer
     comment.user.hooks.each do |hook| hook.run(comment, event) end
 
     # These are has_many relationships
-    Pusher["pages.#{comment.page_id}.comments"].trigger('create', comment.simple_obj)
+    Pusher["pages.#{comment.page_id}.comments"].trigger_async('create', comment.simple_obj)
 
     # Send mention emails
     User.mentioned_in(comment).where('id != ?', comment.user_id).each do |user|

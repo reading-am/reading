@@ -19,6 +19,13 @@ define [
       @channel = pusher.subscribe @channel_name()
 
       @channel.bind "create", (data) =>
+        # since we're using optimistic creation of models,
+        # there might already be an item in the collection from this user
+        # that doesn't yet have an id from the POST response. Remove it1
+        no_id = @find (obj) -> !obj.id?
+        if no_id? and data.user?.id? and no_id.get("user")?.id? and no_id.get("user").id is data.user.id
+          @remove no_id
+
         @add Backbone.Model::factory data
 
       @channel.bind "destroy", (data) =>

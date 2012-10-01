@@ -4,12 +4,12 @@ class PusherController < ApplicationController
   protect_from_forgery :except => :auth # stop rails CSRF protection for this action
 
   def auth
-    if current_user
+    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
+    if !@user.blank?
       response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
-        :user_id => current_user.id, # => required
+        :user_id => @user.id, # => required
         #:user_info => { # => optional - for example
-          #:name => current_user.name,
-          #:email => current_user.email
+          #:name => @user.name
         #}
       })
       render :json => response, :callback => params[:callback]

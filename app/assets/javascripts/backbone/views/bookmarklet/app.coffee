@@ -2,12 +2,13 @@ define [
   "jquery"
   "backbone"
   "handlebars"
+  "pusher"
   "app/models/post"
   "app/views/comments/comments"
   "app/views/users/users"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
-], ($, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover, template) ->
+], ($, Backbone, Handlebars, pusher, Post, CommentsView, UsersView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -26,6 +27,7 @@ define [
 
     initialize: ->
       @model.bind "change:yn", @render_yn, this
+      @model.bind "change:id", @sub_presence, this
       @model.bind "change:id", @get_comments, this
       @model.bind "change:id", @get_readers, this
 
@@ -65,6 +67,9 @@ define [
         width: @$("#r_actions").width()
 
       @$("#r_icon").delay(500).animate "margin-top": "-56px"
+
+    sub_presence: ->
+      @presence = pusher.subscribe "presence-pages.#{@model.get("page").id}"
 
     get_comments: ->
       if @model.get("user").get("can_comment") # TODO remove once comments are public

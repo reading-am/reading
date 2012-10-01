@@ -4,6 +4,8 @@ define [
 ], (Pusher, Constants) ->
 
   Pusher.channel_auth_endpoint = "//#{Constants.domain}/pusher/auth"
+  # Add the user's token if it's on the page, otherwise the endpoint defaults to current_user
+  Pusher.channel_auth_endpoint += "?token=#{reading.token}" if reading?.token?
 
   if Constants.env is "development"
 

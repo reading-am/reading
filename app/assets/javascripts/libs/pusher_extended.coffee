@@ -4,7 +4,6 @@ define [
 ], (Pusher, Constants) ->
 
   Pusher.channel_auth_endpoint = "//#{Constants.domain}/pusher/auth"
-  Pusher.channel_auth_transport = "jsonp"
 
   if Constants.env is "development"
 

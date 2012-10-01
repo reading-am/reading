@@ -55,6 +55,9 @@ module Reading
         resource %r{api/.*},
           :headers => :any,
           :methods => [:get, :post, :put, :delete]
+        resource '/pusher/auth',
+          :headers => :any,
+          :methods => [:get, :post]
         resource %r{assets/.*},
           :headers => :any,
           :methods => :get

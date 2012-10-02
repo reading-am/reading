@@ -9,6 +9,3 @@ define [
     model: Comment
 
     comparator: (comment) -> comment.get("id")
-
-    initialize: ->
-      @monitor()

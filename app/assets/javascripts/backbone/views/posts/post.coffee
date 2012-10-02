@@ -15,6 +15,10 @@ define [
     tagName: "li"
     className: "r_post"
 
+    initialize: (options) ->
+      @model.bind "change", @render, this
+      @model.bind "remove", @remove, this
+
     render: =>
       json = @model.toJSON()
       json.domain = Constants.domain

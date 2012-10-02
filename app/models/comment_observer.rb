@@ -1,6 +1,6 @@
 class CommentObserver < ActiveRecord::Observer
 
-  def after_save comment
+  def after_create comment
     Broadcaster::signal :create, comment
     comment.user.hooks.each do |hook| hook.run(comment, :comment) end
 

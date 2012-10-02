@@ -73,9 +73,7 @@ class Api::PostsController < Api::APIController
 
     respond_to do |format|
       if (!@post.new_record? and !@post.changed?) or @post.save
-        # We treat Pusher just like any other hook except that we don't store it
-        # with the user so we go ahead and construct one here
-        Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@post, event)
+        # TODO move this to the post observer
         @post.user.hooks.each do |hook| hook.run(@post, event) end
 
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

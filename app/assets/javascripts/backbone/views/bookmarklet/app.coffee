@@ -79,6 +79,7 @@ define [
 
         @$el.append(@comments_view.render().el)
         @comments_view.collection.fetch success: =>
+          @comments_view.collection.monitor()
           @comments_view.$el.css opacity:1 # fade in CSS transition
 
         @comments_view.attach_autocomplete()
@@ -90,6 +91,7 @@ define [
         collection: @model.get("page").posts
 
       @readers_view.collection.fetch success: (collection) =>
+        @readers_view.collection.monitor()
         # remove the current user from the other readers list
         collection.remove(collection.filter((post) -> post.get("user").id is Post::current.get("user").id))
 

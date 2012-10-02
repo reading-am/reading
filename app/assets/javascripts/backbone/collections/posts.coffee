@@ -9,6 +9,3 @@ define [
     model: Post
 
     comparator: (post) -> post.get("id")
-
-    initialize: ->
-      @monitor()

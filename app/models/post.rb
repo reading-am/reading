@@ -73,6 +73,12 @@ class Post < ActiveRecord::Base
     "#{SHORT_DOMAIN}/p/#{Base58.encode(self.id)}"
   end
 
+  def channels
+    [
+      "pages.#{page_id}.posts"
+    ]
+  end
+
   def simple_obj to_s=false
     has_ref = !referrer_post.nil?
     {

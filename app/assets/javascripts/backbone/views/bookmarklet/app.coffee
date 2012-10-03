@@ -92,11 +92,13 @@ define [
 
       @readers_view.collection.fetch success: (collection) =>
         @readers_view.collection.monitor()
-        # remove the current user from the other readers list
-        collection.remove(collection.filter((post) -> post.get("user").id is Post::current.get("user").id))
 
-        if collection.length > 0
-          @$("#r_wrp").after(@readers_view.$el.before("<div id=\"r_other\">&#8258; Other Readers</div>"))
+        @presence.members.each (member) => @readers_view.is_online Number(member.id), true
+        @presence.bind "pusher:member_added", (member) => @readers_view.is_online Number(member.id), true
+        @presence.bind "pusher:member_removed", (member) => @readers_view.is_online Number(member.id), false
+
+        if collection.length > 1
+          @$("#r_wrp").after(@readers_view.$el.before("<div id=\"r_other\">&#8258; Readers</div>"))
           @readers_view.$el.slideDown()
 
     set_yn: (e) ->

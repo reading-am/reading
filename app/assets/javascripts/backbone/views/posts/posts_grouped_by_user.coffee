@@ -1,9 +1,10 @@
 define [
   "underscore"
   "backbone"
+  "app/models/post"
   "app/collections/posts"
   "app/views/posts/post"
-], (_, Backbone, Posts, PostView) ->
+], (_, Backbone, Post, Posts, PostView) ->
 
   class PostsGroupedByUserView extends Backbone.View
     tagName: "ul"
@@ -13,6 +14,13 @@ define [
 
       @collection.bind "reset", @addAll
       @collection.bind "add", @addOne
+
+    is_online: (ids, status) =>
+      ids = [ids] unless _.isArray ids
+
+      @filtered.each (post, i) =>
+        if _.contains ids, post.get("user").id
+          @$("li:eq(#{@filtered.length - i - 1})").toggleClass("r_online", status)
 
     addAll: =>
       @collection.each (post) => @addOne post, false
@@ -29,6 +37,8 @@ define [
         i = @filtered.length-1 - @filtered.indexOf(post)
         li_len = @$("ul li").length
         $el = view.render().$el
+
+        $el.addClass("r_current_post") if post.id is Post::current.id
         $el.hide() if slide
 
         # add posts in order if we're only adding one of them

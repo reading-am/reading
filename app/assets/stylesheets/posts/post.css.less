@@ -3,6 +3,11 @@
 
 #r_am {
   .r_post {
+    .transition(opacity .2s ease-in-out);
+    opacity:0.7;
+    &.r_online {
+      opacity:1;
+    }
     .r_yep_nope {
       display:none;
       font-size:9px;

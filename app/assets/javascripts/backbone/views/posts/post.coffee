@@ -17,7 +17,10 @@ define [
 
     initialize: (options) ->
       @model.bind "change", @render, this
-      @model.bind "remove", @remove, this
+      @model.bind "remove", @remove
+
+    remove: =>
+      @$el.slideUp => @$el.remove()
 
     render: =>
       json = @model.toJSON()

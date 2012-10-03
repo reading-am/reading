@@ -15,9 +15,9 @@ define [
       @collection.bind "add", @addOne
 
     addAll: =>
-      @collection.each(@addOne)
+      @collection.each (post) => @addOne post, false
 
-    addOne: (post) =>
+    addOne: (post, slide) =>
       old = @filtered.find (p) -> post.get("user").id is p.get("user").id
 
       if !old or old.id < post.id
@@ -28,12 +28,16 @@ define [
 
         i = @filtered.length-1 - @filtered.indexOf(post)
         li_len = @$("ul li").length
+        $el = view.render().$el
+        $el.hide() if slide
 
         # add posts in order if we're only adding one of them
         if li_len is @filtered.length-1 and i
-          @$("li:eq(#{i-1})").after(view.render().el)
+          @$("li:eq(#{i-1})").after($el)
         else
-          @$el.prepend(view.render().el)
+          @$el.prepend($el)
+
+        $el.slideDown() if slide
 
     render: =>
       @addAll()

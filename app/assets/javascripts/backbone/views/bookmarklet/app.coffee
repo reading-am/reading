@@ -96,7 +96,7 @@ define [
         collection.remove(collection.filter((post) -> post.get("user").id is Post::current.get("user").id))
 
         if collection.length > 0
-          @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
+          @$("#r_wrp").after(@readers_view.$el.before("<div id=\"r_other\">&#8258; Other Readers</div>"))
           @readers_view.$el.slideDown()
 
     set_yn: (e) ->

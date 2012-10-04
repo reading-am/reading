@@ -28,6 +28,7 @@ modules:
       - libs/lodash
       - libs/backbone
       - libs/handlebars
+      - libs/pusher
 
   - name: bookmarklet/loader
     create: true
@@ -40,6 +41,7 @@ modules:
       - libs/lodash
       - libs/backbone
       - libs/handlebars
+      - libs/pusher
 
   - name: libs/jquery
 
@@ -55,6 +57,8 @@ modules:
       - underscore
 
   - name: libs/handlebars
+
+  - name: libs/pusher
 
   - name: ie/html5
 

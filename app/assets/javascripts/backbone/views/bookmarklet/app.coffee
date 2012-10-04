@@ -97,9 +97,10 @@ define [
         @presence.bind "pusher:member_added", (member) => @readers_view.is_online Number(member.id), true
         @presence.bind "pusher:member_removed", (member) => @readers_view.is_online Number(member.id), false
 
-        if collection.length > 1
-          @$("#r_wrp").after(@readers_view.$el.before("<div id=\"r_other\">&#8258; Readers</div>"))
-          @readers_view.$el.slideDown()
+        @$("#r_other")
+          .after(@readers_view.el)
+          .slideDown()
+        @readers_view.$el.slideDown()
 
     set_yn: (e) ->
       $tar = $(e.target)

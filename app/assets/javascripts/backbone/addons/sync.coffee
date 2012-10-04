@@ -28,7 +28,7 @@ define [
         when "Forbidden"
           alert Constants.errors.forbidden
 
-    if reading? and reading.token?
+    if reading?.token?
       options.data.token = reading.token
 
     if model && (method == 'create' || method == 'update')

@@ -29,7 +29,8 @@ define [
       @add Backbone.Model::factory data
 
     @channel.bind "update", (data) =>
-      @get(data.id).set(Backbone.Model::factory(data).attributes)
+      obj = Backbone.Model::factory data
+      @get(obj.id).set(obj.attributes)
 
     @channel.bind "destroy", (data) =>
       @remove Backbone.Model::factory data

@@ -26,6 +26,9 @@ define [
       json = @model.toJSON()
       json.domain = Constants.domain
 
+      # reset for re-renders on update
+      @$el.removeClass("r_yep r_nope")
+
       if @model.get("yn") is true
         @$el.addClass("r_yep")
       else if @model.get("yn") is false

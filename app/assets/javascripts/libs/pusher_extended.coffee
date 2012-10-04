@@ -7,7 +7,7 @@ define [
   # Add the user's token if it's on the page, otherwise the endpoint defaults to current_user
   Pusher.channel_auth_endpoint += "?token=#{reading.token}" if reading?.token?
 
-  if Constants.env is "development"
+  unless Constants.env is "production"
 
     Pusher.log = (message) ->
       if window.console and window.console.log
@@ -15,8 +15,9 @@ define [
 
     window.WEB_SOCKET_DEBUG = true # Flash fallback debug flag
 
-    Pusher.host    = "localhost"
-    Pusher.ws_port = 8080
+    if Constants.env is "development"
+      Pusher.host    = "localhost"
+      Pusher.ws_port = 8080
 
   # duplicated from bookmarklet/real_loader
   # This is a hack to prevent consumption of connections on the main site

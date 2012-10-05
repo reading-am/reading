@@ -10,7 +10,11 @@ class ApplicationController < ActionController::Base
   private
 
   def protect_staging
-    http_basic_authenticate_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
+    if Rails.env == 'staging'
+      authenticate_or_request_with_http_basic do |user_name, password|
+        user_name == 'reading' && password == 'issomuchfun'
+      end
+    end
   end
 
   def set_time_zone

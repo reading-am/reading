@@ -2,6 +2,7 @@
 # Using https://github.com/pusher/pusher-gem
 class PusherController < ApplicationController
   protect_from_forgery :except => :auth # stop rails CSRF protection for this action
+  skip_before_filter :protect_staging # for some reason, http auth prevents this endpoint from working
 
   def auth
     @user = params[:token] ? User.find_by_token(params[:token]) : current_user

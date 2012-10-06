@@ -2,12 +2,13 @@ define [
   "jquery"
   "backbone"
   "handlebars"
+  "pusher"
   "app/models/post"
   "app/views/comments/comments"
-  "app/views/users/users"
+  "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
-], ($, Backbone, Handlebars, Post, CommentsView, UsersView, SharePopover, template) ->
+], ($, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -26,6 +27,7 @@ define [
 
     initialize: ->
       @model.bind "change:yn", @render_yn, this
+      @model.bind "change:id", @sub_presence, this
       @model.bind "change:id", @get_comments, this
       @model.bind "change:id", @get_readers, this
 
@@ -66,6 +68,9 @@ define [
 
       @$("#r_icon").delay(500).animate "margin-top": "-56px"
 
+    sub_presence: ->
+      @presence = pusher.subscribe "presence-pages.#{@model.get("page").id}"
+
     get_comments: ->
       if @model.get("user").get("can_comment") # TODO remove once comments are public
         @comments_view = new CommentsView
@@ -74,21 +79,28 @@ define [
 
         @$el.append(@comments_view.render().el)
         @comments_view.collection.fetch success: =>
+          @comments_view.collection.monitor()
           @comments_view.$el.css opacity:1 # fade in CSS transition
 
         @comments_view.attach_autocomplete()
         @comments_view.make_images_draggable()
 
     get_readers: ->
-      @readers_view = new UsersView
+      @readers_view = new PostsView
         id: "r_readers"
-        collection: @model.get("page").users
+        collection: @model.get("page").posts
 
       @readers_view.collection.fetch success: (collection) =>
-        collection.remove Post::current.get("user")
-        if collection.length > 0
-          @$("#r_wrp").after(@readers_view.$el.prepend("<li id=\"r_other\">&#8258; Other Readers</li>"))
-          @readers_view.$el.slideDown()
+        @readers_view.collection.monitor()
+
+        @presence.members.each (member) => @readers_view.is_online Number(member.id), true
+        @presence.bind "pusher:member_added", (member) => @readers_view.is_online Number(member.id), true
+        @presence.bind "pusher:member_removed", (member) => @readers_view.is_online Number(member.id), false
+
+        @$("#r_other")
+          .after(@readers_view.el)
+          .slideDown()
+        @readers_view.$el.slideDown()
 
     set_yn: (e) ->
       $tar = $(e.target)

@@ -11,7 +11,6 @@ define [
   class UserView extends Backbone.View
     template: Handlebars.compile template
 
-    tagName: "li"
     className: "r_user"
 
     events:
@@ -28,9 +27,6 @@ define [
 
     render: =>
       json = @model.toJSON()
-
-      json.post_before = json.posts[0] if json.posts[0]? and json.posts[0].id > -1
-      json.post_after = json.posts[1] if json.posts[1]? and json.posts[1].id > -1
 
       switch @size
         when "small"

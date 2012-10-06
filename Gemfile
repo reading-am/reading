@@ -36,7 +36,7 @@ gem 'addressable'
 gem 'base58'
 gem 'will_paginate'
 gem 'tinder' # campfire
-gem 'pusher', '~> 0.8.3'
+gem 'pusher'
 gem 'em-http-request' # needed for async pusher calls
 gem 'crack' # required by the hipchat gem
 gem 'yajl-ruby' # JSON parser recommended by twitter gem

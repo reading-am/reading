@@ -53,12 +53,16 @@
     width:50px;
     padding:0 10px;
   }
-  #r_wrp, #r_readers, #r_readers li, .r_comment {
+  #r_wrp, #r_other, #r_readers, #r_readers li, .r_comment {
     float:right;
     clear:both;
   }
-  #r_wrp, #r_readers li {
+  #r_wrp, #r_other {
     background:@yellow;
+  }
+  #r_other {
+    display:none;
+  	margin-top: 6px;
   }
   #r_icon, #r_subtext {
     text-align:center;
@@ -123,14 +127,6 @@
       vertical-align:middle;
       max-width:25px;
       max-height:25px;
-    }
-  }
-  a.r_tagalong {
-    padding:0 5px;
-    background:@blue;
-    border-right:1px solid @light_blue;
-    &:hover {
-      background:@light_blue;
     }
   }
   .r_popped_over {

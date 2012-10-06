@@ -24,7 +24,7 @@ module Reading
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-    config.active_record.observers = :user_observer, :authorization_observer, :relationship_observer
+    config.active_record.observers = :user_observer, :authorization_observer, :relationship_observer, :comment_observer, :post_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -55,6 +55,9 @@ module Reading
         resource %r{api/.*},
           :headers => :any,
           :methods => [:get, :post, :put, :delete]
+        resource '/pusher/auth',
+          :headers => :any,
+          :methods => [:get, :post]
         resource %r{assets/.*},
           :headers => :any,
           :methods => :get

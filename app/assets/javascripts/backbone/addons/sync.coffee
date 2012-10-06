@@ -8,9 +8,9 @@ define [
 
   methodMap =
     create: 'POST',
+    read:   'GET',
     update: 'PUT',
-    delete: 'DELETE',
-    read:   'GET'
+    delete: 'DELETE'
 
   Backbone._sync = Backbone.sync
   Backbone.sync = (method, model, options) ->
@@ -28,7 +28,7 @@ define [
         when "Forbidden"
           alert Constants.errors.forbidden
 
-    if reading? and reading.token?
+    if reading?.token?
       options.data.token = reading.token
 
     if model && (method == 'create' || method == 'update')

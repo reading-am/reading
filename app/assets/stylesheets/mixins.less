@@ -24,3 +24,65 @@
   overflow-wrap:break-word;
   word-wrap:break-word; /* legacy */
 }
+
+// Triangle code from: https://github.com/stijnj/less-triangle/blob/master/less-triangle.less
+.triangle-base(@size){
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+}
+.triangle(@direction, @size, @color) when (@direction = up){
+  .triangle-base(@size);
+  border-left: @size solid transparent;
+  border-right: @size solid transparent;
+  border-bottom: @size solid @color;
+}
+.triangle(@direction, @size, @color) when (@direction = down){
+  .triangle-base(@size);
+  border-left: @size solid transparent;
+  border-right: @size solid transparent;
+  border-top: @size solid @color;
+}
+.triangle(@direction, @size, @color) when (@direction = left){
+  .triangle-base(@size);
+  border-top: @size solid transparent;
+  border-bottom: @size solid transparent;
+  border-right: @size solid @color;
+}
+.triangle(@direction, @size, @color) when (@direction = right){
+  .triangle-base(@size);
+  border-top: @size solid transparent;
+  border-bottom: @size solid transparent;
+  border-left: @size solid @color;
+}
+
+.speech_bubble_base(@bg_color, @color, @radius, @angle, @side){
+  background:@bg_color;
+  color:@color !important;
+  .border-radius(@radius);
+  float:left;
+  position:relative;
+  display:block;
+  -webkit-font-smoothing: subpixel-antialiased;
+  .r_tri {
+    .triangle(@side, @angle, @bg_color);
+    position:absolute;
+  }
+}
+.speech_bubble(@bg_color, @color, @direction, @radius:2px, @angle:5px) when (@direction = top-left){
+  .speech_bubble_base(@bg_color, @color, @radius, @angle, left);
+  .r_tri { top:-@angle; left:@angle; }
+}
+.speech_bubble(@bg_color, @color, @direction, @radius:2px, @angle:5px) when (@direction = top-right){
+  .speech_bubble_base(@bg_color, @color, @radius, @angle, right);
+  .r_tri { top:-@angle; right:@angle; }
+}
+.speech_bubble(@bg_color, @color, @direction, @radius:2px, @angle:5px) when (@direction = bottom-right){
+  .speech_bubble_base(@bg_color, @color, @radius, @angle, left);
+  .r_tri { bottom:-@angle; right:@angle; }
+}
+.speech_bubble(@bg_color, @color, @direction, @radius:2px, @angle:5px) when (@direction = bottom-left){
+  .speech_bubble_base(@bg_color, @color, @radius, @angle, right);
+  .r_tri { bottom:-@angle; left:@angle; }
+}

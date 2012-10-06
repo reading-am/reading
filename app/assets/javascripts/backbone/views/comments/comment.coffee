@@ -37,6 +37,7 @@ define [
     initialize: (options) ->
       @model.bind "change", @render, this
       @model.bind "destroy", @remove, this
+      @model.bind "remove", @remove, this
 
       @size = options.size ? "small"
       @uri_views = []

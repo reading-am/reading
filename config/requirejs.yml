@@ -15,6 +15,7 @@ paths:
   underscore: libs/lodash_extended
   backbone:   libs/backbone_extended
   handlebars: libs/handlebars_extended
+  pusher:     libs/pusher_extended
 
 modules:
   - name: web/loader
@@ -27,6 +28,7 @@ modules:
       - libs/lodash
       - libs/backbone
       - libs/handlebars
+      - libs/pusher
 
   - name: bookmarklet/loader
     create: true
@@ -39,6 +41,7 @@ modules:
       - libs/lodash
       - libs/backbone
       - libs/handlebars
+      - libs/pusher
 
   - name: libs/jquery
 
@@ -54,6 +57,8 @@ modules:
       - underscore
 
   - name: libs/handlebars
+
+  - name: libs/pusher
 
   - name: ie/html5
 

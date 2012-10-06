@@ -7,3 +7,5 @@ define [
   class App.Collections.Posts extends Backbone.Collection
     type: "Posts"
     model: Post
+
+    comparator: (post) -> post.get("id")

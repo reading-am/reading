@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  bitmask :roles, :as => [
+    :admin
+  ]
+
   bitmask :access, :as => [
     :digest,
     :tagalong,

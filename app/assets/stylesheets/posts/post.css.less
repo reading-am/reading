@@ -3,11 +3,6 @@
 
 #r_am {
   .r_post {
-    .transition(opacity .2s ease-in-out);
-    opacity:0.7;
-    &.r_online {
-      opacity:1;
-    }
     .r_yep_nope {
       display:none;
       font-size:9px;
@@ -36,10 +31,29 @@
         border-left:3px solid @red;
       }
     }
-    .r_user {
-      float:left;
+    .r_post_bg {
       background:@yellow;
-      display:inline-block;
+      &:hover {
+        background:@white;
+      }
+    }
+    .r_user, .r_status, .r_post_bg {
+      float:left;
+      display:block;
+    }
+    &.r_online {
+      .r_status {
+        display:block;
+      }
+    }
+    .r_status {
+      display:none;
+      .border-radius(50%);
+      width:7px;
+      height:7px;
+      margin:8px 7px 0 -4px;
+      background-color:#00C700;
+      border:1px solid @white;
     }
     .r_tagalong {
       display:none !important;

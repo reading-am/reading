@@ -51,6 +51,12 @@ class Comment < ActiveRecord::Base
     return @is_a_show ||= (mentions.length > 0 and body.strip == "@#{mentions[0]}")
   end
 
+  def channels
+    [
+      "pages.#{page_id}.comments"
+    ]
+  end
+
   def body_html
     html = html_escape(body)
     ### These methods are mirrored in the handlebars js helpers

@@ -10,6 +10,7 @@ define [
 
     initialize: ->
       @has_many "Users"
+      @has_many "Posts"
       @has_many "Comments"
 
   App.Models.Page = Page

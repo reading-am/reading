@@ -2,14 +2,20 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  http_basic_authenticate_with :name => 'reading', :password => 'issomuchfun' if Rails.env == 'staging'
-
-  before_filter :check_domain, :set_user_device, :set_headers, :check_login
+  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :check_login
   helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
   private
+
+  def protect_staging
+    if Rails.env == 'staging'
+      authenticate_or_request_with_http_basic do |user_name, password|
+        user_name == 'reading' && password == 'issomuchfun'
+      end
+    end
+  end
 
   def set_time_zone
     min = cookies[:timezone].to_i

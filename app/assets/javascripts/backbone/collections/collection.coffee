@@ -2,26 +2,38 @@ define [
   "underscore"
   "app/constants"
   "libs/backbone"
-], (_, Constants, Backbone) ->
+  "pusher"
+], (_, Constants, Backbone, pusher) ->
 
-  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{@type.toLowerCase()}"
+  Backbone.Collection::endpoint = -> "#{@type.toLowerCase()}"
+  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{@endpoint()}"
+  Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
 
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses
     # they'll get factoried in model.parse
     if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
 
-  Backbone.Collection::poll = (attr, secs) ->
-    polling = false
-    @bind "reset add", _.once =>
-      @_url = @url
-      @url = => "#{_.result(this, "_url")}?after_#{attr}=#{if @length > 0 then encodeURIComponent @last().toJSON()[attr] else ''}"
-      @intervals "add", secs, =>
-        if !polling
-          polling = true
-          @fetch
-            add: true
-            success: -> polling = false
+  Backbone.Collection::monitor = ->
+    @channel = pusher.subscribe @channel_name()
+
+    @channel.bind "create", (data) =>
+      # since we're using optimistic creation of models,
+      # there might already be an item in the collection from this user
+      # that doesn't yet have an id from the POST response. Remove it1
+      # TODO replace this with http://pusher.com/docs/server_api_guide/server_excluding_recipients
+      no_id = @find (obj) -> !obj.id?
+      if no_id? and data.user?.id? and no_id.get("user")?.id? and no_id.get("user").id is data.user.id
+        @remove no_id
+
+      @add Backbone.Model::factory data
+
+    @channel.bind "update", (data) =>
+      obj = Backbone.Model::factory data
+      @get(obj.id).set(obj.attributes)
+
+    @channel.bind "destroy", (data) =>
+      @remove Backbone.Model::factory data
 
   Backbone.Collection::search = (query) ->
     collection = new this.constructor

@@ -21,9 +21,11 @@ Reading::Application.routes.draw do
       get 'search', :on => :collection
       resources :users
       resources :comments
+      resources :posts
     end
   end
 
+  match "/pusher/auth" => "pusher#auth"
   match "/auth/:provider/callback" => "sessions#create"
   match "/auth/failure" => "sessions#failure"
   match "/signout" => "sessions#destroy", :as => :signout
@@ -65,6 +67,7 @@ Reading::Application.routes.draw do
   match '/users/friends'      => 'users#find_people'
   match '/users/search'       => 'users#find_people'
   resources :users do
+    get 'tagalong'
     resources :posts
   end
 

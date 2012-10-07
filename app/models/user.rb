@@ -184,6 +184,12 @@ class User < ActiveRecord::Base
     !created_at.blank? && created_at < Date.parse('2012-07-17')
   end
 
+  def channels
+    [
+      "users"
+    ]
+  end
+
   def simple_obj to_s=false
     {
       :type       => 'User',

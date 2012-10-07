@@ -1,6 +1,6 @@
 class UserObserver < ActiveRecord::Observer
 
-  def before_save(user)
+  def before_save user
     # when it's a new user and they have a username
     if (user.username_was.blank? or user.email_was.blank?) and !user.username.blank? and !user.email.blank?
 
@@ -15,7 +15,17 @@ class UserObserver < ActiveRecord::Observer
     end
   end
 
-  def after_destroy(user)
+  def after_create user
+    Broadcaster::signal :create, user
+  end
+
+  def after_update user
+    Broadcaster::signal :update, user
+  end
+
+  def after_destroy user
+    Broadcaster::signal :destroy, user
+
     # This email can't be delayed because the user won't exist by the time delayed_job gets to it
     UserMailer.destroyed(user).deliver unless user.email.blank?
   end

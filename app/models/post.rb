@@ -75,6 +75,7 @@ class Post < ActiveRecord::Base
 
   def channels
     [
+      "posts",
       "pages.#{page_id}.posts"
     ]
   end

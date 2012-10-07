@@ -35,6 +35,8 @@ define [
     @channel.bind "destroy", (data) =>
       @remove Backbone.Model::factory data
 
+    return this
+
   Backbone.Collection::search = (query) ->
     collection = new this.constructor
 

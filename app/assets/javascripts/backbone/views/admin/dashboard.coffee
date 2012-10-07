@@ -20,15 +20,15 @@ define [
     initialize: ->
       @users_view = new UsersView
         collection: new Users
-      @users_view.collection.fetch()
+      @users_view.collection.monitor().fetch()
 
       @posts_view = new PostsView
         collection: new Posts
-      @posts_view.collection.fetch()
+      @posts_view.collection.monitor().fetch()
 
       @comments_view = new CommentsView
         collection: new Comments
-      @comments_view.collection.fetch()
+      @comments_view.collection.monitor().fetch()
 
     render: ->
       @$el.html(@template())

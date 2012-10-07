@@ -6,9 +6,14 @@ Reading::Application.routes.draw do
 
   # api
   namespace :api, :defaults => { :format => 'json' } do
-    resources :posts
-    resources :comments
+    resources :posts do
+      get 'count', :on => :collection
+    end
+    resources :comments do
+      get 'count', :on => :collection
+    end
     resources :users do
+      get 'count', :on => :collection
       get 'search', :on => :collection
       get 'recommended', :on => :collection
       resources :posts
@@ -18,6 +23,7 @@ Reading::Application.routes.draw do
       resources :followers, :controller => "users", :defaults => { :type => "followers" }
     end
     resources :pages do
+      get 'count', :on => :collection
       get 'search', :on => :collection
       resources :users
       resources :comments

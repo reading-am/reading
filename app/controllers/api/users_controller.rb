@@ -62,4 +62,14 @@ class Api::UsersController < Api::APIController
     end
   end
 
+  def count
+    if current_user.roles? :admin
+      respond_to do |format|
+        format.json { render_json :total_users => User.count }
+      end
+    else
+      show_404
+    end
+  end
+
 end

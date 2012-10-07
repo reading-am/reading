@@ -2,15 +2,29 @@
 @import "mixins";
 
 .container {
-  margin-top:20px;
+  margin-top:18px;
 }
 
 h1 {
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
-.count {
-  font-weight:normal;
-  font-size:12px;
-  color:@medium_light_grey;
+.module {
+  h3 {
+    padding-bottom:9px;
+    margin-bottom:18px;
+    border-bottom:1px solid @light_grey;
+  }
+  .count {
+    font-weight:normal;
+    font-size:12px;
+    color:@medium_light_grey;
+  }
+  ul {
+    margin-left:0;
+  }
+  li {
+    list-style:none;
+    margin-bottom:9px;
+  }
 }

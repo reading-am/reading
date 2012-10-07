@@ -1,12 +1,9 @@
 define [
-  "underscore"
   "backbone"
-  "app/models/post"
-  "app/collections/posts"
   "app/views/posts/post"
-], (_, Backbone, Post, Posts, PostView) ->
+], (Backbone, PostView) ->
 
-  class PostsGroupedByUserView extends Backbone.View
+  class PostsView extends Backbone.View
     tagName: "ul"
 
     initialize: (options) ->
@@ -17,7 +14,7 @@ define [
       @collection.each @addOne
 
     addOne: (post) =>
-      view = new PostView({model : post})
+      view = new PostView model:post
 
       i = @collection.length-1 - @collection.indexOf(post)
       li_len = @$("ul li").length

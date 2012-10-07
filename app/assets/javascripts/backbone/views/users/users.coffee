@@ -17,7 +17,11 @@ define [
       @collection.each(@addOne)
 
     addOne: (user) =>
-      view = new UserView model: user, size: @size
+      view = new UserView
+        tagName: "li"
+        model: user
+        size: @size
+
       @subviews.push(view)
       @$el.append(view.render().el)
  

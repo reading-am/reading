@@ -76,12 +76,15 @@ Reading::Application.routes.draw do
 
   resources :hooks
   resources :footnotes
-  
+
   # Settings
   match '/settings' => 'users#settings'
   match '/settings/info' => 'users#edit'
   match '/settings/hooks'  => 'users#hooks'
   match '/settings/extras' => 'users#extras'
+
+  # Admin
+  match '/admin/dashboard' => 'admin#dashboard'
 
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }

@@ -35,7 +35,7 @@ define [
       @collection.each(@addOne)
 
     addOne: (comment) =>
-      view = new CommentView({model : comment})
+      view = new CommentView model:comment
 
       i = @collection.length-1 - @collection.indexOf(comment)
       li_len = @$("ul li").length

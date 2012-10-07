@@ -21,9 +21,9 @@ define [
 
       # add posts in order if we're only adding one of them
       if li_len is @collection.length-1 and i
-        @$("ul li:eq(#{i-1})").after(view.render().el)
+        @$("li:eq(#{i-1})").after(view.render().el)
       else
-        @$("ul").prepend(view.render().el)
+        @$el.prepend(view.render().el)
 
     render: =>
       @addAll()

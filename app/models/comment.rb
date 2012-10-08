@@ -53,6 +53,7 @@ class Comment < ActiveRecord::Base
 
   def channels
     [
+      "comments",
       "pages.#{page_id}.comments"
     ]
   end

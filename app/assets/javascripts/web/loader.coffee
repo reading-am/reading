@@ -12,7 +12,6 @@ require [
   "extend/jquery/cookies"
   "components/titlecard"
   "views/settings"
-  "views/post"
   "views/user"
   "views/hooks/init"
 ], ($, base58, Indian, App, Post, Constants, current_user) ->

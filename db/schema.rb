@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120725005509) do
+ActiveRecord::Schema.define(:version => 20121006235352) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20120725005509) do
     t.integer  "followers_count",      :default => 0
     t.integer  "comments_count",       :default => 0
     t.boolean  "email_when_mentioned", :default => true
+    t.integer  "roles"
   end
 
   add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true

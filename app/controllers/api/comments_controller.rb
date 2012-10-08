@@ -100,4 +100,15 @@ class Api::CommentsController < Api::APIController
       format.json { render_json status }
     end
   end
+
+  def count
+    if current_user.roles? :admin
+      respond_to do |format|
+        format.json { render_json :total_comments => Comment.count }
+      end
+    else
+      show_404
+    end
+  end
+
 end

@@ -29,5 +29,16 @@ class Api::PagesController < Api::APIController
       format.json { render_json :pages => @pages.collect { |page| page.simple_obj } }
     end
   end
+
+  def count
+    if current_user.roles? :admin
+      respond_to do |format|
+        format.json { render_json :total_pages => Page.count }
+      end
+    else
+      show_404
+    end
+  end
+
 end
 

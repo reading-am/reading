@@ -26,4 +26,6 @@ define [
                window.location.host.indexOf("staging.#{Constants.domain}") is 0 or
                window.location.host.indexOf("0.0.0.0") is 0
 
-  return new Pusher Constants.config.pusher.key unless on_reading
+  do_connect = !on_reading or (on_reading and window.location.pathname is "/admin/dashboard")
+
+  return new Pusher Constants.config.pusher.key if do_connect

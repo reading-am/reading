@@ -29,9 +29,12 @@ h1 {
   }
 }
 
-.r_comment {
+.r_comment, .r_post {
   border-bottom:1px solid @light_grey;
   padding-bottom:9px;
+}
+
+.r_comment {
   .r_comment_header {
     background:none;
     time {
@@ -46,8 +49,20 @@ h1 {
 }
 
 .r_post {
-  clear:both;
-  .r_post_bg {
-    background:none;
+  .r_user {
+    float:none;
+    margin-bottom:12px;
+  }
+  .r_page {
+    a {
+      display:block;
+      font-family:@palatino;
+      margin-bottom:9px;
+    }
+    span {
+      color:@medium_light_grey;
+      font-family:@georgia;
+      font-style:italic;
+    }
   }
 }

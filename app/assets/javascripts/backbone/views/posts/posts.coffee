@@ -1,6 +1,6 @@
 define [
   "app/views/base/collection"
-  "app/views/posts/post_alt"
+  "app/views/posts/post"
 ], (CollectionView, PostView) ->
 
   class PostsView extends CollectionView

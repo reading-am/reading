@@ -8,8 +8,8 @@ define [
     tagName: "ul"
 
     initialize: ->
-      @collection.bind "reset", @addAll
-      @collection.bind "add", @addOne
+      @collection.on "reset", @addAll
+      @collection.on "add", @addOne
 
     addAll: =>
       @collection.each @addOne

@@ -2,73 +2,73 @@
 @import "mixins";
 
 .r_post, #r_am .r_post {
-.r_yep_nope {
-  display:none;
-  font-size:9px;
-  padding:2px 3px;
-  margin-right:3px;
-}
-&.r_yep {
   .r_yep_nope {
-    .speech_bubble(@eli_blue, @white, bottom-right);
-    &:before {
-      content:"Yep";
+    display:none;
+    font-size:9px;
+    padding:2px 3px;
+    margin-right:3px;
+  }
+  &.r_yep {
+    .r_yep_nope {
+      .speech_bubble(@eli_blue, @white, bottom-right);
+      &:before {
+        content:"Yep";
+      }
+    }
+    .r_user {
+      border-left:3px solid @eli_blue;
     }
   }
-  .r_user {
-    border-left:3px solid @eli_blue;
-  }
-}
-&.r_nope {
-  .r_yep_nope {
-    .speech_bubble(@red, @white, bottom-right);
-    &:before {
-      content:"Nope";
+  &.r_nope {
+    .r_yep_nope {
+      .speech_bubble(@red, @white, bottom-right);
+      &:before {
+        content:"Nope";
+      }
+    }
+    .r_user {
+      border-left:3px solid @red;
     }
   }
-  .r_user {
-    border-left:3px solid @red;
+  .r_post_bg {
+    background:@yellow;
+    &:hover {
+      background:@white;
+    }
   }
-}
-.r_post_bg {
-  background:@yellow;
-  &:hover {
-    background:@white;
-  }
-}
-.r_user, .r_status, .r_post_bg {
-  float:left;
-  display:block;
-}
-&.r_online {
-  .r_status {
+  .r_user, .r_status, .r_post_bg {
+    float:left;
     display:block;
   }
-}
-.r_status {
-  display:none;
-  .border-radius(50%);
-  width:7px;
-  height:7px;
-  margin:8px 7px 0 -4px;
-  background-color:#00C700;
-  border:1px solid @white;
-}
-.r_tagalong {
-  display:none !important;
-  float:left;
-  padding:0 5px;
-  line-height:25px;
-  background:@blue;
-  border-right:1px solid @light_blue;
-  &:hover {
-    background:@light_blue;
+  &.r_online {
+    .r_status {
+      display:block;
+    }
   }
-  &.r_disabled {
-    opacity:1 !important;
-    color:@medium_light_grey !important;
-    border-color:#DDD;
-    background:@ghost_grey;
+  .r_status {
+    display:none;
+    .border-radius(50%);
+    width:7px;
+    height:7px;
+    margin:8px 7px 0 -4px;
+    background-color:#00C700;
+    border:1px solid @white;
   }
-}
+  .r_tagalong {
+    display:none !important;
+    float:left;
+    padding:0 5px;
+    line-height:25px;
+    background:@blue;
+    border-right:1px solid @light_blue;
+    &:hover {
+      background:@light_blue;
+    }
+    &.r_disabled {
+      opacity:1 !important;
+      color:@medium_light_grey !important;
+      border-color:#DDD;
+      background:@ghost_grey;
+    }
+  }
 }

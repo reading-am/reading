@@ -2,30 +2,24 @@ define [
   "jquery"
   "backbone"
   "handlebars"
-  "app/constants"
   "app/views/users/user"
-  "text!app/templates/posts/post.hbs"
+  "app/views/pages/page"
   "text!posts/post.css"
-], ($, Backbone, Handlebars, Constants, UserView, template, css) ->
+], ($, Backbone, Handlebars, UserView, PageView, css) ->
   $("<style>").html(css).appendTo("head")
 
   class PostView extends Backbone.View
-    template: Handlebars.compile template
-
     tagName: "li"
     className: "r_post"
 
     initialize: (options) ->
-      @model.bind "change", @render, this
-      @model.bind "remove", @remove
+      @model.on "change", @render, this
+      @model.on "remove", @remove, this
 
-    remove: =>
-      @$el.slideUp => @$el.remove()
+      @user_view = new UserView model: @model.get("user"), size: "small"
+      @page_view = new PageView model: @model.get("page")
 
-    render: =>
-      json = @model.toJSON()
-      json.domain = Constants.domain
-
+    set_yn: =>
       # reset for re-renders on update
       @$el.removeClass("r_yep r_nope")
 
@@ -34,8 +28,10 @@ define [
       else if @model.get("yn") is false
         @$el.addClass("r_nope")
 
-      @user_view = new UserView model: @model.get("user"), size: "small"
-      @$el.html(@template(json))
-          .find(".r_post_bg").prepend(@user_view.render().el)
+    render: =>
+      @set_yn()
+
+      @$el.append(@user_view.render().el)
+      @$el.append(@page_view.render().el)
 
       return this

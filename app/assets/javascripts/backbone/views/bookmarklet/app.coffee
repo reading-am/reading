@@ -4,7 +4,7 @@ define [
   "handlebars"
   "pusher"
   "app/models/post"
-  "app/views/comments/comments"
+  "app/views/comments/comments_with_input"
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"

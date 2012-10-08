@@ -3,10 +3,12 @@ define [
   "backbone"
   "handlebars"
   "app/init"
+  "app/models/user"
   "app/models/post"
   "app/models/uris/uri"
   "app/views/uris/uri"
   "app/views/users/user"
+  "app/views/users/popover"
   "app/views/components/share_popover"
   "text!app/templates/comments/comment.hbs"
   "text!app/templates/comments/comment_shown.hbs"
@@ -15,7 +17,7 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], ($, Backbone, Handlebars, App, Post, URI, URIView, UserView, SharePopover, template, shown_template, css) ->
+], ($, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
 
   $("<style>").html(css).appendTo("head")
 
@@ -28,6 +30,7 @@ define [
 
     events:
       "click .r_permalink": "new_window"
+      "click .r_mention"  : "show_user"
       "click .r_share"    : "share"
       "click .r_quoted"   : "find_quote"
       "click .r_destroy"  : "destroy"
@@ -41,6 +44,12 @@ define [
 
       @size = options.size ? "small"
       @uri_views = []
+
+    show_user: (e) ->
+      popover = new UserPopoverView
+        model: new User(url: $(e.target).attr("href"))
+      popover.render()
+      false
 
     share: ->
       @share_view = new SharePopover subject: @model

@@ -58,7 +58,7 @@ define [
         activeClass: "r_drag_active"
         hoverClass: "r_drag_hover"
         drop: (event, ui) =>
-          # get the absolute path using .src rather than .attr('src')
+          # .src gives us the absolute path rather than the relative path from .attr('src')
           @textarea.insertAtCaret ui.draggable[0].src
 
     attach_autocomplete: ->

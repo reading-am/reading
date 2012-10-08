@@ -24,7 +24,6 @@ define [
 
     initialize: ->
       @subview = new CommentsView collection: @collection
-      @textarea = @$("textarea")
 
     createOnEnter: (e) ->
         if e.keyCode is 13 and !Key.alt
@@ -97,5 +96,7 @@ define [
     render: =>
       @$el.html(@template())
           .append(@subview.render().el)
+
+      @textarea = @$("textarea")
 
       return this

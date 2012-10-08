@@ -91,16 +91,19 @@ define [
         collection: @model.get("page").posts
 
       @readers_view.collection.fetch success: (collection) =>
-        @readers_view.collection.monitor()
+        $other = @$("#r_other")
+        $other.after(@readers_view.el)
+        # only display if there are other readers
+        $other.add(@readers_view.el).slideDown() if collection.length > 1
+
+        collection.monitor()
 
         @presence.members.each (member) => @readers_view.is_online Number(member.id), true
-        @presence.bind "pusher:member_added", (member) => @readers_view.is_online Number(member.id), true
         @presence.bind "pusher:member_removed", (member) => @readers_view.is_online Number(member.id), false
-
-        @$("#r_other")
-          .after(@readers_view.el)
-          .slideDown()
-        @readers_view.$el.slideDown()
+        @presence.bind "pusher:member_added", (member) =>
+          @readers_view.is_online Number(member.id), true
+          # display if another reader arrives
+          $other.add(@readers_view.el).slideDown() if collection.length is 2
 
     set_yn: (e) ->
       $tar = $(e.target)

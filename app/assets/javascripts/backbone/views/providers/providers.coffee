@@ -1,21 +1,7 @@
 define [
-  "backbone"
+  "app/views/base/collection"
   "app/views/providers/provider"
-], (Backbone, ProviderView) ->
+], (CollectionView, ProviderView) ->
 
-  class ProvidersView extends Backbone.View
-    tagName: "ul"
-
-    initialize: ->
-      @collection.bind "reset", @addAll
-
-    addAll: =>
-      @collection.each(@addOne)
-
-    addOne: (provider) =>
-      view = new ProviderView({model : provider})
-      @$el.append(view.render().el)
-
-    render: =>
-      @addAll()
-      return this
+  class ProvidersView extends CollectionView
+    modelView: ProviderView

@@ -1,0 +1,8 @@
+<script type="text/javascript">
+
+  <%= requirejs %>require(["backbone", "app/routers/admin"], function(Backbone, Router){
+    new Router();
+    Backbone.history.start({pushState: true});
+  });
+
+</script>

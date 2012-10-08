@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_domain
-    # redirect our url shorten to the root domain if it's not hitting the posts path
+    # redirect our url shortener to the root domain if it's not hitting the posts path
     if ['ing.am','ing.dev'].include? request.domain and request.path[0,3] != '/p/'
       redirect_to request.url.sub(/ing/,'reading')
     end

@@ -3,7 +3,7 @@ define [
   "backbone"
   "app/models/post"
   "app/collections/posts"
-  "app/views/posts/post"
+  "app/views/posts/post_on_page"
 ], (_, Backbone, Post, Posts, PostView) ->
 
   class PostsGroupedByUserView extends Backbone.View

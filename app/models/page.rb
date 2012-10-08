@@ -91,6 +91,12 @@ public
     self.save
   end
 
+  def channels
+    [
+      "pages"
+    ]
+  end
+
   def simple_obj to_s=false
     {
       :type   => 'Page',

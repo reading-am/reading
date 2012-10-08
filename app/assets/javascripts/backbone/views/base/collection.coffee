@@ -22,7 +22,11 @@ define [
         before_after = "after"
         append_prepend = "prepend"
 
-      view = new @modelView model:model
+      props = model: model
+      props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
+      props.size = @size if @size?
+
+      view = new @modelView props
 
       i = @collection.length-1 - @collection.indexOf(model)
       li_len = @$("li").length

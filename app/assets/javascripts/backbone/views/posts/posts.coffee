@@ -5,4 +5,3 @@ define [
 
   class PostsView extends CollectionView
     modelView: PostView
-    sort: "desc"

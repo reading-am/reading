@@ -18,16 +18,15 @@ define [
     template: Handlebars.compile template
 
     initialize: ->
-      @users_view = new UsersView
-        collection: new Users
+      users = new Users
+      users.comparator = (user) -> -user.get("id")
+      @users_view = new UsersView collection: users
       @users_view.collection.monitor().fetch()
 
-      @posts_view = new PostsView
-        collection: new Posts
+      @posts_view = new PostsView collection: new Posts
       @posts_view.collection.monitor().fetch()
 
-      @comments_view = new CommentsView
-        collection: new Comments
+      @comments_view = new CommentsView collection: new Comments
       @comments_view.collection.monitor().fetch()
 
     render: ->

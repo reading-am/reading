@@ -12,8 +12,8 @@ define [
     className: "r_post"
 
     initialize: (options) ->
-      @user_view = new UserView model: @model.get("user"), size: "small"
-      @page_view = new PageView model: @model.get("page")
+      @user_view = new UserView model: @model.get("user"), tagName: "div", size: "small"
+      @page_view = new PageView model: @model.get("page"), tagName: "div"
       super()
 
     set_yn: =>

@@ -20,14 +20,14 @@ define [
       view = new @modelView props
 
       i = @collection.indexOf(model)
-      li_len = @$("li").length
+      c_len = @$el.children().length
 
       # debugging
-      #console.log model.type, @collection.indexOf(model), i, li_len, @collection.length, model.get("id"), model
+      #console.log model.type, @collection.indexOf(model), i, c_len, @collection.length, model.get("id"), model
 
       # add models in order if we're only adding one of them
-      if li_len is @collection.length-1 and i < li_len
-        @$("li:eq(#{i})").before(view.render().el)
+      if c_len is @collection.length-1 and i < c_len
+        @$el.children().eq(i).before(view.render().el)
       else
         @$el.append(view.render().el)
 

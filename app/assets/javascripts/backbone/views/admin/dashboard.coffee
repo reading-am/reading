@@ -23,10 +23,13 @@ define [
       @users_view = new UsersView collection: users
       @users_view.collection.monitor().fetch()
 
-      @posts_view = new PostsView collection: new Posts
+      posts = new Posts
+      posts.comparator = (post) -> -post.get("id")
+      @posts_view = new PostsView collection: posts
       @posts_view.collection.monitor().fetch()
 
-      @comments_view = new CommentsView collection: new Comments
+      comments = new Comments
+      @comments_view = new CommentsView collection: comments
       @comments_view.collection.monitor().fetch()
 
     render: ->

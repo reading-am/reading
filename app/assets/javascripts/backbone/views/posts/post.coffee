@@ -1,23 +1,20 @@
 define [
   "jquery"
-  "backbone"
+  "app/views/base/model"
   "handlebars"
   "app/views/users/user"
   "app/views/pages/page"
   "text!posts/post.css"
-], ($, Backbone, Handlebars, UserView, PageView, css) ->
+], ($, ModelView, Handlebars, UserView, PageView, css) ->
   $("<style>").html(css).appendTo("head")
 
-  class PostView extends Backbone.View
-    tagName: "li"
+  class PostView extends ModelView
     className: "r_post"
 
     initialize: (options) ->
-      @model.on "change", @render, this
-      @model.on "remove", @remove, this
-
       @user_view = new UserView model: @model.get("user"), size: "small"
       @page_view = new PageView model: @model.get("page")
+      super()
 
     set_yn: =>
       # reset for re-renders on update

@@ -1,16 +1,17 @@
 define [
-  "backbone"
+  "app/views/base/model"
   "handlebars"
   "app/constants"
   "app/views/users/popover"
   "text!app/templates/users/user.hbs"
-], (Backbone, Handlebars, Constants, UserPopoverView, template) ->
+], (ModelView, Handlebars, Constants, UserPopoverView, template) ->
 
   is_retina = window.devicePixelRatio > 1
 
-  class UserView extends Backbone.View
+  class UserView extends ModelView
     template: Handlebars.compile template
 
+    tagName: "div"
     className: "r_user"
 
     events:
@@ -18,6 +19,7 @@ define [
 
     initialize: (options) ->
       @size = options.size ? "medium"
+      super()
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0

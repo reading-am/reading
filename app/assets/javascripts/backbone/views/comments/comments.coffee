@@ -5,5 +5,4 @@ define [
 
   class CommentsView extends CollectionView
     modelView: CommentView
-    sort: "desc"
     className: "r_comments_list"

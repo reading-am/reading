@@ -8,4 +8,4 @@ define [
     type: "Posts"
     model: Post
 
-    comparator: (post) -> post.get("id")
+    comparator: (post) -> -post.get("id")

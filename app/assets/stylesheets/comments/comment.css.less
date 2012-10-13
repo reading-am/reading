@@ -4,10 +4,6 @@
 .r_comment, #r_am .r_comment {
   max-width:360px;
   background:none;
-  .r_permalink {
-    font-size:16px;
-    line-height:0;
-  }
   .r_reply {
     color:@green !important;
   }
@@ -42,9 +38,12 @@
     display:none;
     a {
       margin:0 0 0 3px;
-      // this is ugly but necessary to avoid the anchor
+      // this is ugly but necessary to avoid the link
       // getting lost behind the OSX scrollbars
-      &.r_permalink { margin-right:5px; }
+      &.r_permalink {
+        margin:0 7px 0 0;
+        padding:0 3px;
+      }
     }
   }
   .r_comment_body {

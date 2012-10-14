@@ -181,6 +181,9 @@ GEM
     erubis (2.7.0)
     eventmachine (1.0.0.rc.4)
     evernote-thrift (1.22.0)
+    evernote_oauth (0.1.0)
+      evernote-thrift
+      oauth (>= 0.4.1)
     excon (0.14.2)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -465,6 +468,7 @@ DEPENDENCIES
   delayed_job (= 3.0.1)
   delayed_job_active_record
   em-http-request
+  evernote_oauth
   fog
   hipchat
   hirefireapp

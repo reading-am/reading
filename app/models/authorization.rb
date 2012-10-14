@@ -111,6 +111,8 @@ public
         end
       when 'readability'
         @api_user = Readit::API.new token, secret
+      when 'evernote'
+        @api_user = EvernoteOAuth::Client.new token: token
       when 'tssignals'
         account = accounts.first
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']

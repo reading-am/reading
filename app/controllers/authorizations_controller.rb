@@ -39,6 +39,9 @@ class AuthorizationsController < ApplicationController
       case @auth.provider
       when 'tumblr'
         places = @auth.api.user_info.response.user.blogs
+      when 'evernote'
+        note_store = @auth.api.note_store
+        places = note_store.listNotebooks @auth.token
       when 'tssignals'
         places = @auth.api.rooms
       when 'kippt'

@@ -33,6 +33,8 @@ module ApplicationHelper
         output = content_tag :span, 'I', :class => 'icon'
       when 'readability'
         output = content_tag :span, '♣', :class => 'icon'
+      when 'evernote'
+        output = content_tag :span, 'E', :class => 'icon'
       when 'kippt'
         output = content_tag :span, 'k', :class => 'icon'
       else

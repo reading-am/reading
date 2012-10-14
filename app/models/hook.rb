@@ -13,10 +13,28 @@ class Hook < ActiveRecord::Base
     :comment => {:perms => [:write], :text => 'comment'}
   }
 
+  PLACE_TYPES = {
+    'tumblr'  => 'blog',
+    'kippt'   => 'list',
+    'campfire'=> 'room',
+    'hipchat' => 'room',
+    'evernote'=> 'notebook'
+  }
+
   SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','evernote','kippt']
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
+  end
+
+  def place
+    unless params['place'].blank?
+      {
+        :type => PLACE_TYPES[provider],
+        :name => params['place']['name'],
+        :id => params['place']['id']
+      }
+    end
   end
 
   def events
@@ -75,7 +93,7 @@ class Hook < ActiveRecord::Base
   end
 
   def tumblr post, event_fired
-    authorization.api.link "#{self.params['blog']}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
+    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
   end
 
   def twitter post, event_fired
@@ -126,14 +144,14 @@ class Hook < ActiveRecord::Base
     }
 
     client = HipChat::Client.new(params['token'])
-    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
+    client[place[:id]].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
   # For legacy support. If you finally remove this, also remove
   # the room param from tssignals and the ||= assignment
   def campfire post, event_fired
     campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
-    room = campfire.find_or_create_room_by_name(self.params['room'])
+    room = campfire.find_or_create_room_by_name(self.place[:id])
     self.tssignals post, event_fired, room
   end
 
@@ -150,14 +168,14 @@ class Hook < ActiveRecord::Base
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 
-    room ||= authorization.api.find_room_by_id(self.params['room'].to_i)
+    room ||= authorization.api.find_room_by_id(self.params['room']['id'].to_i)
     room.speak output if !room.nil?
   end
 
   def kippt post, event_fired
     clip = authorization.api.clips.build
     clip.url = post.page.url
-    clip.list = params['list']
+    clip.list = place[:id]
     clip.save
   end
 

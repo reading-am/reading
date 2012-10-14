@@ -7,7 +7,7 @@ end
 %>
 <div class="hook">
   When I <em><%= events_text.join(', ') %></em> please post to the <em><%= hook.provider == 'tssignals' ? 'Campfire' : hook.provider.capitalize %></em>
-<% if !hook.authorization.nil? %>
+<% if !hook.authorization.blank? %>
   account <%= provider_span(hook.authorization) %>
   <% if hook.provider == "facebook" %>
     using <em>the <%= hook.params['permission'] == 'publish_actions' ? 'timeline' : 'wall' %></em>
@@ -19,12 +19,11 @@ end
     <% end %>
   <% elsif hook.params['user'] %>
     account <em><%= hook.params['user'] %></em>
-  <% elsif hook.params['room'] %>
-    room <em><%= hook.params['room'] %></em>
-  <% elsif hook.params['list'] %>
-    room <em><%= hook.params['list'] %></em>
   <% elsif hook.params['address'] %>
     address <em><%= hook.params['address'] %></em>
   <% end %>
+<% end %>
+<% if !hook.place.blank? %>
+  using <%= hook.place[:type] %> <em><%= hook.place[:name] %></em>
 <% end %>
 </div>

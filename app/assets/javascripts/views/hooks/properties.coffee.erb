@@ -27,7 +27,10 @@ define [
     {"text":"Tumblr", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").tumblr.accounts(), "datatype":"account"},
-      {"text":"blog", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      {"scope":"place", "params":[
+        {"name":"name", "type":"hidden"},
+        {"text":"blog", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      ]}
     ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
@@ -43,21 +46,34 @@ define [
     ]},
     {"text":"Evernote", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":current_user.get("authorizations").evernote.accounts(), "datatype":"account"}
+      {"text":"account", "options":current_user.get("authorizations").evernote.accounts(), "datatype":"account"},
+      {"scope":"place", "params":[
+        {"name":"name", "type":"hidden"},
+        {"text":"notebook", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      ]}
     ]},
     {"text":"HipChat", "params":[
-      {"text":"room", "placeholder":"My Room Name"},
+      {"scope":"place", "params":[
+        {"name":"name", "type":"hidden"},
+        {"text":"room", "name":"id", "placeholder":"My Room Name"}
+      ]}
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
     ]},
     {"text":"Campfire", "value":"tssignals", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").tssignals.accounts(), "datatype":"account"}
-      {"text":"room", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      {"scope":"place", "params":[
+        {"name":"name", "type":"hidden"},
+        {"text":"room", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      ]}
     ]},
     {"text":"Kippt", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").kippt.accounts(), "datatype":"account"},
-      {"text":"list", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      {"scope":"place", "params":[
+        {"name":"name", "type":"hidden"},
+        {"text":"list", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      ]}
     ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},

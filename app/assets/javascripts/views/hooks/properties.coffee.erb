@@ -28,8 +28,8 @@ define [
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").tumblr.accounts(), "datatype":"account"},
       {"scope":"place", "params":[
-        {"name":"name", "type":"hidden"},
-        {"text":"blog", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+        {"text":"blog", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
       ]}
     ]},
     {"text":"Instapaper", "params":[
@@ -48,8 +48,8 @@ define [
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").evernote.accounts(), "datatype":"account"},
       {"scope":"place", "params":[
-        {"name":"name", "type":"hidden"},
-        {"text":"notebook", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+        {"text":"notebook", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
       ]}
     ]},
     {"text":"HipChat", "params":[
@@ -63,16 +63,16 @@ define [
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").tssignals.accounts(), "datatype":"account"}
       {"scope":"place", "params":[
-        {"name":"name", "type":"hidden"},
-        {"text":"room", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+        {"text":"room", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
       ]}
     ]},
     {"text":"Kippt", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").kippt.accounts(), "datatype":"account"},
       {"scope":"place", "params":[
-        {"name":"name", "type":"hidden"},
-        {"text":"list", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+        {"text":"list", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
       ]}
     ]},
     {"text":"URL", "params":[

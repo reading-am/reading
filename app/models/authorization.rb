@@ -15,6 +15,42 @@ private
 
 public
 
+  def self.transform_auth_hash auth_hash
+    case auth_hash.provider
+    when 'evernote'
+      expires_at = Time.at(auth_hash[:extra][:access_token].params[:edam_expires].to_i)
+    else
+      expires_at = auth_hash[:credentials][:expires_at]
+    end
+
+    if auth_hash[:extra][:raw_info].nil?
+      info = nil
+    else
+      info = Yajl::Parser.parse(auth_hash[:extra][:raw_info].to_json)
+
+      case auth_hash.provider
+      when 'evernote'
+        # store these per: http://discussion.evernote.com/topic/26173-is-it-safe-to-cache-the-shard-under-oauth/
+        info[:edam] = {
+          :noteStoreUrl     => auth_hash[:extra][:access_token].params[:edam_noteStoreUrl],
+          :webApiUrlPrefix  => auth_hash[:extra][:access_token].params[:edam_webApiUrlPrefix]
+        }
+      end
+
+      info = info.to_json
+    end
+
+    {
+      :provider   => auth_hash[:provider],
+      :uid        => auth_hash[:uid],
+      :token      => auth_hash[:credentials][:token],
+      :refresh_token => auth_hash[:credentials][:refresh_token],
+      :secret     => auth_hash[:credentials][:secret],
+      :expires_at => expires_at,
+      :info       => info
+    }
+  end
+
   def sync_perms
     case provider
     when 'facebook'
@@ -112,7 +148,8 @@ public
       when 'readability'
         @api_user = Readit::API.new token, secret
       when 'evernote'
-        @api_user = EvernoteOAuth::Client.new token: token
+        client = EvernoteOAuth::Client.new token: token
+        @api_user = client.note_store :note_store_url => info['edam']['noteStoreUrl']
       when 'tssignals'
         account = accounts.first
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']

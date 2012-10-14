@@ -13,7 +13,7 @@ class Hook < ActiveRecord::Base
     :comment => {:perms => [:write], :text => 'comment'}
   }
 
-  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','kippt']
+  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','evernote','kippt']
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
@@ -135,6 +135,9 @@ class Hook < ActiveRecord::Base
     campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
     room = campfire.find_or_create_room_by_name(self.params['room'])
     self.tssignals post, event_fired, room
+  end
+
+  def evernote post, event_fired
   end
 
   def tssignals post, event_fired, room=nil

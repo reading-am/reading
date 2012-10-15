@@ -17,7 +17,6 @@ class Hook < ActiveRecord::Base
     'tumblr'  => 'blog',
     'kippt'   => 'list',
     'campfire'=> 'room',
-    'hipchat' => 'room',
     'evernote'=> 'notebook'
   }
 
@@ -144,7 +143,7 @@ class Hook < ActiveRecord::Base
     }
 
     client = HipChat::Client.new(params['token'])
-    client[place[:id]].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
+    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
   end
 
   # For legacy support. If you finally remove this, also remove

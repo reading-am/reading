@@ -75,10 +75,13 @@ define [
             .removeAttr("disabled")
             .removeClass("disabled")
             .html($("<option>").text("Loading...").val(""))
-          current_user.get("authorizations")[provider][account].places {success:(places) ->
+          current_user.get("authorizations")[provider][account].places success:(places) ->
             $places.html ""
             $places.append($("<option>").text(place.text).val(place.value)) for place in places
-          }
+            $places.change() # fire a change event so the hook_params_place_name will get set
+
+    $con.on "change", "#hook_params_place_id", ->
+      $("#hook_params_place_name").val($(this).find("option:selected").text())
 
     # populate the auth spans with real usernames
     populate_accounts "twitter", $(".provider.twitter .account")

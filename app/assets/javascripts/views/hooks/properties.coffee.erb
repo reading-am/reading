@@ -27,7 +27,10 @@ define [
     {"text":"Tumblr", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").tumblr.accounts(), "datatype":"account"},
-      {"text":"blog", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      {"scope":"place", "params":[
+        {"text":"blog", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
+      ]}
     ]},
     {"text":"Instapaper", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
@@ -41,6 +44,14 @@ define [
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").readability.accounts(), "datatype":"account"}
     ]},
+    {"text":"Evernote", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.get("authorizations").evernote.accounts(), "datatype":"account"},
+      {"scope":"place", "params":[
+        {"text":"notebook", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
+      ]}
+    ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
@@ -48,12 +59,18 @@ define [
     {"text":"Campfire", "value":"tssignals", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").tssignals.accounts(), "datatype":"account"}
-      {"text":"room", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      {"scope":"place", "params":[
+        {"text":"room", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
+      ]}
     ]},
     {"text":"Kippt", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").kippt.accounts(), "datatype":"account"},
-      {"text":"list", "src":"account.places", "options":[{"text":"Loading...","value":""}]}
+      {"scope":"place", "params":[
+        {"text":"list", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
+      ]}
     ]},
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},

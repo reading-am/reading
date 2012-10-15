@@ -5,7 +5,8 @@ class SessionsController < ApplicationController
     auth_hash = request.env['omniauth.auth']
 
     # mapped so as to avoid problems with variables starting with numbers
-    if auth_hash.provider == '37signals'
+    case auth_hash.provider
+    when '37signals'
       auth_hash.provider = 'tssignals'
     end
 
@@ -51,16 +52,9 @@ class SessionsController < ApplicationController
         user.email = nil if !user.errors.messages[:email].blank?
         user.save if user.changed?
 
-        auth = Authorization.create(
-          :user       => user,
-          :provider   => auth_hash["provider"],
-          :uid        => auth_hash["uid"],
-          :token      => auth_hash["credentials"]["token"],
-          :refresh_token => auth_hash["credentials"]["refresh_token"],
-          :secret     => auth_hash["credentials"]["secret"],
-          :expires_at => auth_hash["credentials"]["expires_at"],
-          :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
-        )
+        auth_params = Authorization::transform_auth_hash(auth_hash)
+        auth_params[:user] = user
+        auth = Authorization.create auth_params
 
         # Auto-follow everyone from their social network
         #auth.following.each do |u|

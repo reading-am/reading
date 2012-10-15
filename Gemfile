@@ -20,6 +20,7 @@ gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
 
 gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
+gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-37signals'

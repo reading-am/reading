@@ -54,7 +54,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run
+  #handle_asynchronously :run
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -156,6 +156,20 @@ class Hook < ActiveRecord::Base
   end
 
   def evernote post, event_fired
+    note = Evernote::EDAM::Type::Note.new
+    note.notebookGuid = place[:id]
+    note.title = post.page.title
+    note.content = <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
+<en-note>
+  <div style="font-family:Helvetica,Arial,sans-serif">
+    <h3>#{post.page.title}</h3>
+    <a href="#{post.page.url}">#{post.page.url}</a>
+  </div>
+</en-note>
+EOF
+    authorization.api.createNote authorization.token, note
   end
 
   def tssignals post, event_fired, room=nil

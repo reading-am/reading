@@ -62,7 +62,7 @@ gem 'yajl-ruby', require: 'yajl' # fast JSON parser
 gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
 gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit', :git => 'git://github.com/29decibel/readit.git'
-gem 'evernote_oauth'
+gem 'evernote'
 gem 'kippt', :git => 'git://github.com/leppert/kippt.git'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'

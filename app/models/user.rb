@@ -122,16 +122,9 @@ class User < ActiveRecord::Base
 
       raise AuthError.new("AuthPreexisting", auth)
     else
-      Authorization.create(
-        :user       => self,
-        :provider   => auth_hash["provider"],
-        :uid        => auth_hash["uid"],
-        :token      => auth_hash["credentials"]["token"],
-        :refresh_token => auth_hash["credentials"]["refresh_token"],
-        :secret     => auth_hash["credentials"]["secret"],
-        :expires_at => auth_hash["credentials"]["expires_at"],
-        :info       => auth_hash['extra']['raw_info'].nil? ? nil : auth_hash['extra']['raw_info'].to_json
-      )
+      auth_params = Authorization::transform_auth_hash(auth_hash)
+      auth_params[:user] = self
+      auth = Authorization.create auth_params
     end
   end
 

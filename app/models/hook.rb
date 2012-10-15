@@ -13,10 +13,27 @@ class Hook < ActiveRecord::Base
     :comment => {:perms => [:write], :text => 'comment'}
   }
 
-  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','kippt']
+  PLACE_TYPES = {
+    'tumblr'  => 'blog',
+    'kippt'   => 'list',
+    'campfire'=> 'room',
+    'evernote'=> 'notebook'
+  }
+
+  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','evernote','kippt']
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
+  end
+
+  def place
+    unless params['place'].blank?
+      {
+        :type => PLACE_TYPES[provider],
+        :name => params['place']['name'],
+        :id => params['place']['id']
+      }
+    end
   end
 
   def events
@@ -36,7 +53,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run
+  handle_asynchronously :run if Rails.env != 'development'
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -75,7 +92,7 @@ class Hook < ActiveRecord::Base
   end
 
   def tumblr post, event_fired
-    authorization.api.link "#{self.params['blog']}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
+    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
   end
 
   def twitter post, event_fired
@@ -133,8 +150,25 @@ class Hook < ActiveRecord::Base
   # the room param from tssignals and the ||= assignment
   def campfire post, event_fired
     campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
-    room = campfire.find_or_create_room_by_name(self.params['room'])
+    room = campfire.find_or_create_room_by_name(self.place[:id])
     self.tssignals post, event_fired, room
+  end
+
+  def evernote post, event_fired
+    note = Evernote::EDAM::Type::Note.new
+    note.notebookGuid = place[:id]
+    note.title = post.page.title
+    note.content = <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
+<en-note>
+  <div style="font-family:Helvetica,Arial,sans-serif">
+    <h3>#{post.page.title}</h3>
+    <a href="#{post.page.url}">#{post.page.url}</a>
+  </div>
+</en-note>
+EOF
+    authorization.api.createNote authorization.token, note
   end
 
   def tssignals post, event_fired, room=nil
@@ -147,14 +181,14 @@ class Hook < ActiveRecord::Base
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 
-    room ||= authorization.api.find_room_by_id(self.params['room'].to_i)
+    room ||= authorization.api.find_room_by_id(self.params['room']['id'].to_i)
     room.speak output if !room.nil?
   end
 
   def kippt post, event_fired
     clip = authorization.api.clips.build
     clip.url = post.page.url
-    clip.list = params['list']
+    clip.list = place[:id]
     clip.save
   end
 

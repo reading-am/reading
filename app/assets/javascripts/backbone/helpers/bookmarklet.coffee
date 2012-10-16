@@ -14,6 +14,6 @@ define [
     # let non-Reading urls pass through, accounting for http and https
     (url.indexOf(Constants.domain) isnt 7 and url.indexOf(Constants.domain) isnt 8) or
     # exclude settings sections
-    url.indexOf('/settings') is -1 and
+    url.indexOf('/settings/') is -1 and
     # exclude auth sections
     url.indexOf('/auth/') is -1

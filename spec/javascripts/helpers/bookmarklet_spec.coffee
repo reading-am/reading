@@ -30,6 +30,7 @@ require [
           urls = [
             "https://example.com/oauth/testing"
             "https://example.com/testing?oauth_token=1234"
+            "https://www.evernote.com/Login.action?targetUrl=%2FOAuth.action%3Foauth_token%3Dreading-am.13A69A3630D.687474703A2F2F72656164696E672E616D2F617574682F657665726E6F74652F63616C6C6261636B.318B3B5BC9D69B36D50198FD79A2FA05"
           ]
           Helpers.validate_post_url(url).should.be.false for url in urls
 

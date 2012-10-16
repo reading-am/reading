@@ -30,7 +30,7 @@ require [
 
   reading.submit = submit = (params) ->
     # do a quick sanity check on the url
-    return unless Helpers.validate_post_url(params.url) and (Helpers.validate_ref_url(document.referrer) or !on_reading)
+    return unless Helpers.validate_post_url(params.url) and Helpers.validate_ref_url(document.referrer)
 
     # clear old items from previous posts
     Post::current.intervals "clear" if Post::current?

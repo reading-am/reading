@@ -5,11 +5,12 @@ require [
   "app/constants"
   "app/models/post"
   "app/views/bookmarklet/app"
+  "app/helpers/bookmarklet"
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
   "text!components/mentionsInput.css"
-], ($, Constants, Post, AppView, Pages, Providers, css...) ->
+], ($, Constants, Post, AppView, Helpers, Pages, Providers, css...) ->
 
   $("<style>").html(css.join " ").appendTo("head")
 
@@ -28,6 +29,9 @@ require [
   # Submit the post
 
   reading.submit = submit = (params) ->
+    # do a quick sanity check on the url
+    return unless Helpers.validate_post_url(params.url) and (Helpers.validate_ref_url(document.referrer) or !on_reading)
+
     # clear old items from previous posts
     Post::current.intervals "clear" if Post::current?
     AppView::current.close() if AppView::current?

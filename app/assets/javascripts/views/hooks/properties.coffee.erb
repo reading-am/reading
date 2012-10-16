@@ -44,14 +44,14 @@ define [
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":current_user.get("authorizations").readability.accounts(), "datatype":"account"}
     ]},
-    <%#{"text":"Evernote", "params":[%>
-      <%#{"name":"permission", "value":"write", "type":"hidden"},%>
-      <%#{"text":"account", "options":current_user.get("authorizations").evernote.accounts(), "datatype":"account"},%>
-      <%#{"scope":"place", "params":[%>
-        <%#{"text":"notebook", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},%>
-        <%#{"name":"name", "type":"hidden"}%>
-      <%#]}%>
-    <%#]},%>
+    {"text":"Evernote", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":current_user.get("authorizations").evernote.accounts(), "datatype":"account"},
+      {"scope":"place", "params":[
+        {"text":"notebook", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
+      ]}
+    ]},
     {"text":"HipChat", "params":[
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}

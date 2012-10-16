@@ -7,7 +7,7 @@ define [
     # don't post on oauth pages
     url.indexOf('/oauth/') is -1 and
     # don't post on pages with oauth tokens
-    !url.match(/oauth_token=/i)
+    !url.match(/oauth_token/i)
 
   # for validating auto-posting via the extensions
   validate_ref_url: (url) ->

@@ -65,9 +65,9 @@ GIT
 
 GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
-  revision: a8b7a571ae09c97575ddeb54c0504c18ef3659cd
+  revision: f2ea582e5563a5f7cd3a9fa6a42380452cb59851
   specs:
-    twitter-bootstrap-rails (2.1.3)
+    twitter-bootstrap-rails (2.1.4)
       actionpack (>= 3.1)
       less-rails (~> 2.2.3)
       railties (>= 3.1)
@@ -124,7 +124,7 @@ GEM
     bootstrap-will_paginate (0.0.9)
       will_paginate
     browser (0.1.5)
-    builder (3.0.3)
+    builder (3.0.4)
     capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -155,14 +155,14 @@ GEM
       rdoc
     curb (0.8.1)
     daemons (1.1.9)
-    dalli (2.2.1)
-    debugger (1.2.0)
+    dalli (2.3.0)
+    debugger (1.2.1)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.1.1)
-      debugger-ruby_core_source (~> 1.1.3)
+      debugger-ruby_core_source (~> 1.1.4)
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
-    debugger-ruby_core_source (1.1.3)
+    debugger-ruby_core_source (1.1.4)
     delayed_job (3.0.1)
       activesupport (~> 3.0)
     delayed_job_active_record (0.3.3)
@@ -182,7 +182,7 @@ GEM
     eventmachine (1.0.0)
     evernote (1.2.1)
       thrift_client (>= 0.8.1)
-    evernote-thrift (1.22.0)
+    evernote-thrift (1.22.1)
     excon (0.16.4)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -271,15 +271,15 @@ GEM
       evernote-thrift
       multi_json (~> 1.0)
       omniauth-oauth (~> 1.0)
-    omniauth-facebook (1.4.1)
-      omniauth-oauth2 (~> 1.1.0)
+    omniauth-facebook (1.4.0)
+      omniauth-oauth2 (~> 1.0.2)
     omniauth-instapaper (0.2.0)
       multi_json
       omniauth-xauth (~> 0.0.2)
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
-    omniauth-oauth2 (1.1.1)
+    omniauth-oauth2 (1.0.3)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
     omniauth-readability (0.0.1)
@@ -487,7 +487,7 @@ DEPENDENCIES
   omniauth
   omniauth-37signals
   omniauth-evernote
-  omniauth-facebook
+  omniauth-facebook (= 1.4.0)
   omniauth-http-basic!
   omniauth-instapaper
   omniauth-kippt!

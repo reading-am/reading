@@ -20,7 +20,16 @@ class Hook < ActiveRecord::Base
     'evernote'=> 'notebook'
   }
 
-  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','evernote','kippt']
+  SINGLE_FIRE = [
+    'twitter',
+    'instapaper',
+    'readability',
+    'tumblr',
+    'pinboard',
+    'evernote',
+    'kippt',
+    'pocket'
+  ]
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
@@ -190,6 +199,10 @@ EOF
     clip.url = post.page.url
     clip.list = place[:id]
     clip.save
+  end
+
+  def pocket post, event_fired
+
   end
 
   def url post, event_fired

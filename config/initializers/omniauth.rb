@@ -7,4 +7,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :evernote,   ENV['READING_EVERNOTE_KEY'],    ENV['READING_EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
   provider "37signals", ENV['READING_SIGNALS37_KEY'],   ENV['READING_SIGNALS37_SECRET']
   provider :kippt,      "https://kippt.com/api"
+  provider :pocket,     ENV['READING_POCKET_KEY']
 end

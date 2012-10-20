@@ -207,7 +207,7 @@ EOF
         :consumer_key => ENV['READING_POCKET_KEY'],
         :access_token => authorization.token,
         :url => post.page.url,
-        :tags => 'Reading.am'
+        :tags => '✌ Reading'
       }
   end
 

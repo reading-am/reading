@@ -20,7 +20,16 @@ class Hook < ActiveRecord::Base
     'evernote'=> 'notebook'
   }
 
-  SINGLE_FIRE = ['twitter','instapaper','readability','tumblr','pinboard','evernote','kippt']
+  SINGLE_FIRE = [
+    'twitter',
+    'instapaper',
+    'readability',
+    'tumblr',
+    'pinboard',
+    'evernote',
+    'kippt',
+    'pocket'
+  ]
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
@@ -53,7 +62,7 @@ class Hook < ActiveRecord::Base
     # I should really handle all event_fired checking here
     self.send(self.provider, post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run if Rails.env != 'development'
+  handle_asynchronously :run unless Rails.env == 'development'
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -190,6 +199,16 @@ EOF
     clip.url = post.page.url
     clip.list = place[:id]
     clip.save
+  end
+
+  def pocket post, event_fired
+    Typhoeus::Request.post 'https://getpocket.com/v3/add',
+      :params => {
+        :consumer_key => ENV['READING_POCKET_KEY'],
+        :access_token => authorization.token,
+        :url => post.page.url,
+        :tags => 'Reading.am'
+      }
   end
 
   def url post, event_fired

@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .provider {
   font-style:normal;
@@ -58,6 +59,15 @@
       font-weight:bold;
       padding:0 4px;
       background:@kippt;
+    }
+  }
+  &.pocket {
+    background-color:@light_grey;
+    .icon {
+      color:@white;
+      padding:0 3px;
+      background-color:@pocket;
+      .border-radius(0 0 7px 7px);
     }
   }
 }

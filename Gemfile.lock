@@ -282,6 +282,9 @@ GEM
     omniauth-oauth2 (1.0.3)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
+    omniauth-pocket (0.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-readability (0.0.1)
       multi_json
       omniauth (~> 1.0.0.rc2)
@@ -491,6 +494,7 @@ DEPENDENCIES
   omniauth-http-basic!
   omniauth-instapaper
   omniauth-kippt!
+  omniauth-pocket
   omniauth-readability
   omniauth-tumblr
   omniauth-twitter

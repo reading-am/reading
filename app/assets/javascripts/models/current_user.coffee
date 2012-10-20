@@ -9,6 +9,7 @@ define [
   "models/evernote_prov"
   "models/tssignals_prov"
   "models/kippt_prov"
+  "models/pocket_prov"
   "models/twitter_auth"
   "models/facebook_auth"
   "models/tumblr_auth"
@@ -17,8 +18,9 @@ define [
   "models/evernote_auth"
   "models/tssignals_auth"
   "models/kippt_auth"
+  "models/pocket_auth"
   "app/collections/users" # needed from within models/user
-], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, TssignalsProv, KipptProv) ->
+], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, TssignalsProv, KipptProv, PocketProv) ->
 
   current_user = new User window.current_user_seed
 
@@ -31,6 +33,7 @@ define [
     evernote:   new EvernoteProv
     tssignals:  new TssignalsProv
     kippt:      new KipptProv
+    pocket:     new PocketProv
 
   auths[auth.provider][auth.uid] = Authorization::factory auth for auth in window.authorizations_seed
   current_user.set "authorizations", auths

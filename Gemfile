@@ -28,7 +28,7 @@ gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
 gem 'omniauth-readability'
 gem 'omniauth-evernote'
-gem 'omniauth-pocket', :path => '~/Desktop/projects/code/omniauth-pocket'
+gem 'omniauth-pocket'
 gem 'omniauth-http-basic', :git => 'git://github.com/leppert/omniauth-http-basic.git' #required by omniauth-kippt
 gem 'omniauth-kippt', :git => 'git://github.com/leppert/omniauth-kippt.git'
 

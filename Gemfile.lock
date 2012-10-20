@@ -81,15 +81,6 @@ GIT
       actionpack (~> 3)
       railties (~> 3)
 
-PATH
-  remote: /Users/leppert/Desktop/projects/code/omniauth-pocket
-  specs:
-    omniauth-pocket (0.1.0)
-      faraday (~> 0.8)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
-      rack (~> 1.2)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -291,6 +282,9 @@ GEM
     omniauth-oauth2 (1.0.3)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
+    omniauth-pocket (0.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-readability (0.0.1)
       multi_json
       omniauth (~> 1.0.0.rc2)
@@ -500,7 +494,7 @@ DEPENDENCIES
   omniauth-http-basic!
   omniauth-instapaper
   omniauth-kippt!
-  omniauth-pocket!
+  omniauth-pocket
   omniauth-readability
   omniauth-tumblr
   omniauth-twitter

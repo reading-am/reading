@@ -38,7 +38,7 @@ class UserMailer < ApplicationMailer
     mail(
       :to       => @user.email,
       :from     => "Greg <greg@#{DOMAIN}>",
-      :subject  => "Help Us Test Comments!"
+      :subject  => "Help Us Test Comments, #{@user.first_name}!"
     )
   end
 

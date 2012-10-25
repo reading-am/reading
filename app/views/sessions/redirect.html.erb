@@ -2,7 +2,7 @@
   <head><title>Reading Redirect</title></head>
 <body>
 <script type="text/javascript">
-  window.opener.provider_response({"status":"<%= status %>"<% if defined? authResponse %>, "authResponse":<%= authResponse.to_json.html_safe %><% end %><% if defined? auth %>, "auth":<%= auth.to_json.html_safe %><% end %>});
+  window.opener.provider_response({"status":"<%= status %>"<% if defined? authResponse %>, "authResponse":<%=j authResponse.to_json.html_safe %><% end %><% if defined? auth %>, "auth":<%= auth.to_json.html_safe %><% end %>});
   window.close();
 </script>
 </body>

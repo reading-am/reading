@@ -14,7 +14,7 @@
 <div id="pages"></div>
 <script type="text/javascript">
   $(function() {
-    window.router = new Reading.Routers.Pages({model: <%= @page.to_json.html_safe -%>});
+    window.router = new Reading.Routers.Pages({model: <%=j @page.to_json.html_safe -%>});
     Backbone.history.start();
   });
 </script>

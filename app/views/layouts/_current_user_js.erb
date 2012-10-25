@@ -5,4 +5,4 @@ var current_user_seed = {
   can_comment: <%= current_user.access?(:comments) ? 'true' : 'false' %><%# # TODO remove once comments are public %>
 };
 
-var authorizations_seed = <%= logged_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;
+var authorizations_seed = <%=j logged_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;

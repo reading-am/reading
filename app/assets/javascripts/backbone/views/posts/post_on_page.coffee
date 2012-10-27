@@ -19,6 +19,8 @@ define [
       @$el.slideUp => @$el.remove()
 
     render: =>
+      @set_yn()
+
       json = @model.toJSON()
       json.domain = Constants.domain
 

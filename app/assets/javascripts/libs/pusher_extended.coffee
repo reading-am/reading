@@ -7,7 +7,12 @@ define [
   # Add the user's token if it's on the page, otherwise the endpoint defaults to current_user
   Pusher.channel_auth_endpoint += "?token=#{reading.token}" if reading?.token?
 
-  unless Constants.env is "production"
+  # Override the Pusher XHR so we can force cookies to be sent with the auth request
+  Pusher.XHR = ->
+  Pusher.XHR.prototype = if window.XMLHttpRequest? then new window.XMLHttpRequest() else new ActiveXObject("Microsoft.XMLHTTP")
+  Pusher.XHR.prototype.withCredentials = true
+
+  if Constants.env is "production"
 
     Pusher.log = (message) ->
       if window.console and window.console.log

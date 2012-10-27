@@ -12,7 +12,7 @@ define [
   Pusher.XHR.prototype = if window.XMLHttpRequest? then new window.XMLHttpRequest() else new ActiveXObject("Microsoft.XMLHTTP")
   Pusher.XHR.prototype.withCredentials = true
 
-  if Constants.env is "production"
+  unless Constants.env is "production"
 
     Pusher.log = (message) ->
       if window.console and window.console.log

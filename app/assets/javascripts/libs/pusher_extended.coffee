@@ -9,8 +9,9 @@ define [
 
   # Override the Pusher XHR so we can force cookies to be sent with the auth request
   Pusher.XHR = ->
-  Pusher.XHR.prototype = if window.XMLHttpRequest? then new window.XMLHttpRequest() else new ActiveXObject("Microsoft.XMLHTTP")
-  Pusher.XHR.prototype.withCredentials = true
+    xhr = if window.XMLHttpRequest? then new window.XMLHttpRequest() else new ActiveXObject("Microsoft.XMLHTTP")
+    xhr.withCredentials = true
+    return xhr
 
   unless Constants.env is "production"
 

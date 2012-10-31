@@ -11,6 +11,10 @@ class Page < ActiveRecord::Base
   before_validation { parse_domain }
   after_create :populate_readability
 
+  before_create do |page|
+    page.title = page.remote_title if page.title.nil?
+  end
+
   # search
   searchable do
     text :title, :url

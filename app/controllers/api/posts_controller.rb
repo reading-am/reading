@@ -55,9 +55,6 @@ class Api::PostsController < Api::APIController
       # TODO - clean up these conditionals for duplicates and the same in the respond_to
       if duplicate.blank?
         event = :new
-        if @post.page.new_record?
-          @post.page.title = !title.nil? ? title : @post.page.remote_title
-        end
         @post.referrer_post ||= Post.find_by_id(ref_id)
       else
         @post = duplicate

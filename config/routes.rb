@@ -90,7 +90,9 @@ Reading::Application.routes.draw do
   match '/settings/extras' => 'users#extras'
 
   # Admin
+  match '/admin' => redirect('/admin/dashboard')
   match '/admin/dashboard' => 'admin#dashboard'
+  match '/admin/jobs' => DelayedJobWeb, :anchor => false
 
   # These routes should be cleaned up
   match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }

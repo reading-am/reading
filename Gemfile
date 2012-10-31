@@ -49,6 +49,7 @@ gem 'koala' # facebook
 gem 'sunspot_rails'
 gem 'delayed_job', "3.0.1"
 gem 'delayed_job_active_record'
+gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
 # gem 'hirefire' # has to be AFTER delayed_job
 gem 'hirefireapp' # has to be AFTER delayed_job

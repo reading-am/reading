@@ -1,8 +1,9 @@
 define [
   "jquery"
   "backbone"
+  "app/views/admin/header"
   "app/views/admin/dashboard"
-], ($, Backbone, DashboardView) ->
+], ($, Backbone, HeaderView, DashboardView) ->
 
   class AdminRouter extends Backbone.Router
 
@@ -10,5 +11,9 @@ define [
       "admin/dashboard" : "dashboard"
 
     dashboard: (id) ->
+      @header = new HeaderView section: "dashboard"
       @view = new DashboardView
-      $("#yield").html @view.render().el
+
+      $("#yield").addClass("container")
+        .append(@header.render().el)
+        .append(@view.render().el)

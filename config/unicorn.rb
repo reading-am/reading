@@ -1,3 +1,35 @@
-# from: http://michaelvanrooijen.com/articles/2011/06/01-more-concurrency-on-a-single-heroku-dyno-with-the-new-celadon-cedar-stack/
-worker_processes 4 # amount of unicorn workers to spin up
-timeout 30         # restarts workers that hang for 30 seconds
+# config/unicorn.rb
+# from: https://gist.github.com/1401792
+
+# See comment by @paulelliott
+worker_processes 3
+timeout 30
+preload_app true
+
+before_fork do |server, worker|
+  # Replace with MongoDB or whatever
+  if defined?(ActiveRecord::Base)
+    ActiveRecord::Base.connection.disconnect!
+    Rails.logger.info('Disconnected from ActiveRecord')
+  end
+
+  # If you are using Redis but not Resque, change this
+  if defined?(Resque)
+    Resque.redis.quit
+    Rails.logger.info('Disconnected from Redis')
+  end
+end
+
+after_fork do |server, worker|
+  # Replace with MongoDB or whatever
+  if defined?(ActiveRecord::Base)
+    ActiveRecord::Base.establish_connection
+    Rails.logger.info('Connected to ActiveRecord')
+  end
+
+  # If you are using Redis but not Resque, change this
+  if defined?(Resque)
+    Resque.redis = ENV['REDIS_URI']
+    Rails.logger.info('Connected to Redis')
+  end
+end

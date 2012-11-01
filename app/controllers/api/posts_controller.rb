@@ -37,9 +37,9 @@ class Api::PostsController < Api::APIController
       url = Twitter::Extractor::extract_urls(text)[0]
 
       # check to see if the body contains yep or nope
-      if !text.match(/(^|\s)yep($|\s)/i).nil?
+      if !text.match(/(^|\s)yep($|\s|:)/i).nil?
         yn = true
-      elsif !text.match(/(^|\s)nope($|\s)/i).nil?
+      elsif !text.match(/(^|\s)nope($|\s|:)/i).nil?
         yn = false
       end
 

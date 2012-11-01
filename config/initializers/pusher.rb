@@ -6,6 +6,6 @@ when 'development'
 
   # Pusher Dev Account
   Pusher.app_id = '10626'
-  Pusher.key    = '***REMOVED***'
-  Pusher.secret = 'fad1718be77fb47a5d91'
+  Pusher.key    = ENV['READING_SLANGER_KEY']
+  Pusher.secret = ENV['READING_SLANGER_SECRET']
 end

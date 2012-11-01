@@ -17,6 +17,8 @@ class Post < ActiveRecord::Base
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
   # For digest. All posts from a users feed that they haven't read
   scope :unread_by_since, lambda { |user, datetime| unread_since(user, datetime) }
+  # Used to check for duplicate entries
+  scope :recent_by_user_and_page, lambda { |user, page, time=1.day.ago| where("user_id = ? and page_id = ? and created_at > ?", user, page, time) }
 
   # for will_paginate
   self.per_page = 100

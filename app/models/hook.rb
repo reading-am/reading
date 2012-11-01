@@ -58,11 +58,15 @@ class Hook < ActiveRecord::Base
   end
 
   def run post, event_fired
-    # right now, no hooks should run on duplicate
-    # I should really handle all event_fired checking here
-    self.send(self.provider, post, event_fired) if responds_to event_fired
+    # we first check to see if the provider responds to an event type
+    # before calling trigger_method which will insert a delayed_job
+    self.trigger_method(post, event_fired) if responds_to event_fired
   end
-  handle_asynchronously :run unless Rails.env == 'development'
+
+  def trigger_method post, event_fired
+    self.send(self.provider, post, event_fired)
+  end
+  handle_asynchronously :trigger_method unless Rails.env == 'development'
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired

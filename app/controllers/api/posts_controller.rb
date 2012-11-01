@@ -29,50 +29,29 @@ class Api::PostsController < Api::APIController
   # POST /posts
   # POST /posts.xml
   def create
-    @post = Post.new
+    user, url, title, page, ref, yn = nil
 
+    # post via email
     if params[:recipient]
       url = Twitter::Extractor::extract_urls(params['stripped-text'])[0] # this comes from mailgun
-      title = nil
       if bits = MailPipe::decode_mail_recipient(params[:recipient])
-        @post.user = bits[:user] if bits[:user] == bits[:subject] # make sure the user is posting to their own account
+        user = bits[:user] if bits[:user] == bits[:subject] # make sure the user is posting to their own account
       end
+    # standard post
     else
       url   = params[:model][:url]
-      title = params[:model][:title] == 'null' ? nil : params[:model][:title]
+      title = params[:model][:title] unless params[:model][:title] == 'null'
+      user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      ref   = Post.find_by_id(params[:model][:referrer_id]) unless params[:model][:referrer_id].blank?
       yn    = params[:model][:yn]
-      ref_id= params[:model][:referrer_id]
-
-      @post.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-      @post.yn    = params[:yn]
     end
 
-    @post.page  = Page.find_or_create_by_url(:url => url, :title => title)
-
-    if !@post.user.blank?
-      # A post is a duplicate if it's the exact same page and within 1hr of the last post
-      duplicate = Post.where("user_id = ? and page_id = ? and created_at > ?", @post.user, @post.page, 1.day.ago).first
-      # TODO - clean up these conditionals for duplicates and the same in the respond_to
-      if duplicate.blank?
-        event = :new
-        @post.referrer_post ||= Post.find_by_id(ref_id)
-      else
-        @post = duplicate
-        @post.yn = yn if !yn.nil?
-        if !@post.changed?
-          event = :duplicate
-          @post.touch
-        else
-          event = @post.yn ? :yep : :nope
-        end
-      end
-    end
+    page = Page.find_or_create_by_url(:url => url, :title => title)
+    # A post is a duplicate if it's the exact same page and within 1hr of the last post
+    @post = Post.recent_by_user_and_page(user, page).first || Post.new({:user => user, :page => page, :referrer_post => ref, :yn => yn})
 
     respond_to do |format|
-      if (!@post.new_record? and !@post.changed?) or @post.save
-        # TODO move this to the post observer
-        @post.user.hooks.each do |hook| hook.run(@post, event) end
-
+      if (@post.new_record? and @post.save) or @post.touch
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render_json :post => @post.simple_obj }
@@ -96,14 +75,7 @@ class Api::PostsController < Api::APIController
     end
 
     respond_to do |format|
-      if allowed and ((changed = @post.changed? and @post.save) or @post.touch)
-        if changed
-          # We treat Pusher just like any other hook except that we don't store it
-          # with the user so we go ahead and construct one here
-          event = @post.yn ? :yep : :nope
-          Hook.new({:provider => 'pusher', :events => [:new,:yep,:nope]}).run(@post, event)
-          @post.user.hooks.each do |hook| hook.run(@post, event) end
-        end
+      if allowed and ((@post.changed? and @post.save) or @post.touch)
         status = :ok
       else
         status = allowed ? :bad_request : :forbidden

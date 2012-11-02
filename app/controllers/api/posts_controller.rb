@@ -33,7 +33,16 @@ class Api::PostsController < Api::APIController
 
     # post via email
     if params[:recipient]
-      url = Twitter::Extractor::extract_urls(params['stripped-text'])[0] # this comes from mailgun
+      text = params['stripped-text'] # this comes from mailgun
+      url = Twitter::Extractor::extract_urls(text)[0]
+
+      # check to see if the body contains yep or nope
+      if !text.match(/(^|\s)yep($|\s|:)/i).nil?
+        yn = true
+      elsif !text.match(/(^|\s)nope($|\s|:)/i).nil?
+        yn = false
+      end
+
       if bits = MailPipe::decode_mail_recipient(params[:recipient])
         user = bits[:user] if bits[:user] == bits[:subject] # make sure the user is posting to their own account
       end

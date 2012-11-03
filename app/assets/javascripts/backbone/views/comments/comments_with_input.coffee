@@ -20,29 +20,38 @@ define [
     tagName: "div"
 
     events:
-      "keypress textarea" : "createOnEnter"
+      "keypress textarea" : "delegate_keys"
 
-    initialize: ->
+    initialize:(options) ->
+      @presence = options.presence
       @subview = new CommentsView collection: @collection
 
-    createOnEnter: (e) ->
-        if e.keyCode is 13 and !Key.alt
+    delegate_keys:(e) ->
+      if e.keyCode is 13 and !Key.alt
+        @submit()
+      else
+        @show_typing()
 
-          @subview.collection.create
-            body: @textarea.val(),
-            post: Post::current
-            user: Post::current.get("user")
-            page: Post::current.get("page")
+    show_typing: _.throttle ->
+        @presence.trigger "client-typing", id: Post::current.get("user").id
+      , 2000
 
-          @textarea
-            .val("")
-            .mentionsInput("reset")
+    submit: ->
+      @subview.collection.create
+        body: @textarea.val(),
+        post: Post::current
+        user: Post::current.get("user")
+        page: Post::current.get("page")
 
-          @$("ul").animate
-            scrollTop: 0
-            duration: "fast"
+      @textarea
+        .val("")
+        .mentionsInput("reset")
 
-          false
+      @$("ul").animate
+        scrollTop: 0
+        duration: "fast"
+
+      false
 
     make_images_draggable: _.once ->
       $("img").draggable

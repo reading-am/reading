@@ -1,5 +1,6 @@
 define [
   "jquery"
+  "underscore"
   "backbone"
   "handlebars"
   "pusher"
@@ -8,7 +9,7 @@ define [
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
-], ($, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
+], ($, _, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -76,7 +77,6 @@ define [
         @comments_view = new CommentsView
           id: "r_comments"
           collection: @model.get("page").comments
-          presence: @presence
 
         @$el.append(@comments_view.render().el)
         @comments_view.collection.fetch success: =>
@@ -99,27 +99,44 @@ define [
 
         collection.monitor()
 
-        @presence.members.each (member) => @readers_view.is_online Number(member.id), true
-        @presence.bind "pusher:member_removed", (member) => @readers_view.is_online Number(member.id), false
-        @presence.bind "pusher:member_added", (member) =>
-          @readers_view.is_online Number(member.id), true
-          # display if another reader arrives
-          $other.add(@readers_view.el).slideDown() if collection.length is 2
+        @monitor_presence()
+        @monitor_typing()
 
-        typing_timeouts = {}
-        @presence.bind "client-typing", (member) =>
-          member.id = Number(member.id)
+    monitor_presence: ->
+      @presence.members.each (member) =>
+        @readers_view.is_online Number(member.id), true
 
-          if typing_timeouts[member.id]?
-            clearTimeout typing_timeouts[member.id]
-          else
-            @readers_view.is_typing member.id, true
+      @presence.bind "pusher:member_removed", (member) =>
+        @readers_view.is_online Number(member.id), false
 
-          # client-typing events are rate limited to 2 per sec
-          typing_timeouts[member.id] = setTimeout =>
-            @readers_view.is_typing(member.id, false)
-            delete typing_timeouts[member.id]
-          , 2000
+      @presence.bind "pusher:member_added", (member) =>
+        @readers_view.is_online Number(member.id), true
+        # display if another reader arrives
+        @$("#r_other").add(@readers_view.el).slideDown() if @readers_view.collection.length is 2
+
+
+    monitor_typing: ->
+      typing_delay = 2000
+      typing_timers = {}
+
+      @comments_view.bind "typing", _.throttle =>
+          @presence.trigger "client-typing", id: Post::current.get("user").id
+        , typing_delay
+
+      @comments_view.collection.bind "add", (comment) =>
+        @readers_view.is_typing comment.get("user").id, false
+        clearTimeout typing_timers[comment.get("user").id]
+
+      @presence.bind "client-typing", (member) =>
+        if typing_timers[member.id]?
+          clearTimeout typing_timers[member.id]
+        else
+          @readers_view.is_typing member.id, true
+
+        typing_timers[member.id] = setTimeout =>
+          @readers_view.is_typing member.id, false
+          delete typing_timers[member.id]
+        , typing_delay
 
     set_yn: (e) ->
       $tar = $(e.target)

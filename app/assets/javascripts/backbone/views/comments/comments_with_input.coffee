@@ -22,19 +22,18 @@ define [
     events:
       "keypress textarea" : "delegate_keys"
 
-    initialize:(options) ->
-      @presence = options.presence
+    initialize: ->
       @subview = new CommentsView collection: @collection
 
     delegate_keys:(e) ->
       if e.keyCode is 13 and !Key.alt
         @submit()
       else
-        @show_typing()
+        @typing()
 
-    show_typing: _.throttle ->
-        @presence.trigger "client-typing", id: Post::current.get("user").id
-      , 2000
+    typing: _.throttle ->
+        @trigger "typing"
+      , 500
 
     submit: ->
       @subview.collection.create

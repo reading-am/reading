@@ -31,6 +31,7 @@ define [
       else
         @typing()
 
+    # this is throttled because it was causing latency while typing
     typing: _.throttle ->
         @trigger "typing"
       , 500

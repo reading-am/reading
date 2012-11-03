@@ -40,7 +40,6 @@ gem 'base58'
 gem 'will_paginate'
 gem 'tinder' # campfire
 gem 'pusher'
-gem 'em-http-request' # needed for async pusher calls
 gem 'crack' # required by the hipchat gem
 gem 'yajl-ruby' # JSON parser recommended by twitter gem
 gem 'twitter'
@@ -51,6 +50,7 @@ gem 'delayed_job', "3.0.1"
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
+gem 'girl_friday'
 # gem 'hirefire' # has to be AFTER delayed_job
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'validate_email'

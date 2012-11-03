@@ -32,4 +32,9 @@ after_fork do |server, worker|
     Resque.redis = ENV['REDIS_URI']
     Rails.logger.info('Connected to Redis')
   end
+
+  # Config girl_friday queues
+  # needs to be here when used with unicorn and preload_app true
+  # from: https://github.com/mperham/girl_friday/issues/47
+  require "#{Rails.root}/config/girl_friday"
 end

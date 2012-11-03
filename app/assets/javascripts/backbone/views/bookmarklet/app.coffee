@@ -76,6 +76,7 @@ define [
         @comments_view = new CommentsView
           id: "r_comments"
           collection: @model.get("page").comments
+          presence: @presence
 
         @$el.append(@comments_view.render().el)
         @comments_view.collection.fetch success: =>
@@ -104,6 +105,21 @@ define [
           @readers_view.is_online Number(member.id), true
           # display if another reader arrives
           $other.add(@readers_view.el).slideDown() if collection.length is 2
+
+        typing_timeouts = {}
+        @presence.bind "client-typing", (member) =>
+          member.id = Number(member.id)
+
+          if typing_timeouts[member.id]?
+            clearTimeout typing_timeouts[member.id]
+          else
+            @readers_view.is_typing member.id, true
+
+          # client-typing events are rate limited to 2 per sec
+          typing_timeouts[member.id] = setTimeout =>
+            @readers_view.is_typing(member.id, false)
+            delete typing_timeouts[member.id]
+          , 2000
 
     set_yn: (e) ->
       $tar = $(e.target)

@@ -20,6 +20,11 @@ define [
         if _.contains ids, post.get("user").id
           @$("li:eq(#{i})").toggleClass("r_online", status)
 
+    is_typing: (id, status) ->
+      @filtered.each (post, i) =>
+        if id is post.get("user").id
+          @$("li:eq(#{i})").toggleClass("r_typing", status)
+
     addAll: =>
       @collection.each (post) => @addOne post, false
 

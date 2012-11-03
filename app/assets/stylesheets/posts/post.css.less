@@ -45,6 +45,11 @@
       display:block;
     }
   }
+  &.r_typing {
+    .r_status {
+      background-color:@purple;
+    }
+  }
   .r_status {
     display:none;
     .border-radius(50%);
@@ -52,6 +57,7 @@
     height:7px;
     margin:8px 7px 0 -4px;
     background-color:#00C700;
+    .transition(background-color .5s ease-in-out);
     border:1px solid @white;
   }
   .r_tagalong {

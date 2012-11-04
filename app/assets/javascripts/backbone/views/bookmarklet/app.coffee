@@ -100,6 +100,7 @@ define [
         collection.monitor()
 
         @monitor_presence()
+        @monitor_focus()
         @monitor_typing()
 
     monitor_presence: ->
@@ -114,6 +115,17 @@ define [
         # display if another reader arrives
         @$("#r_other").add(@readers_view.el).slideDown() if @readers_view.collection.length is 2
 
+    monitor_focus: ->
+      $(window).focus(=>
+        @presence.trigger "client-win-focus", id: Post::current.get("user").id
+      ).blur =>
+        @presence.trigger "client-win-blur", id: Post::current.get("user").id
+
+      @presence.bind "client-win-focus", (member) =>
+        @readers_view.is_blurred member.id, false
+
+      @presence.bind "client-win-blur", (member) =>
+        @readers_view.is_blurred member.id, true
 
     monitor_typing: ->
       typing_delay = 2000

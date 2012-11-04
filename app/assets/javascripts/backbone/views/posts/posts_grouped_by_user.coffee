@@ -13,17 +13,15 @@ define [
       @filtered = new Posts
       super()
 
-    is_online: (ids, status) =>
-      ids = [ids] unless _.isArray ids
+    is_online: (ids, state) -> @set_status ids, "r_online", state
+    is_blurred: (ids, state) -> @set_status ids, "r_blurred", state
+    is_typing: (ids, state) -> @set_status ids, "r_typing", state
 
+    set_status: (ids, status, state) ->
+      ids = [ids] unless _.isArray ids
       @filtered.each (post, i) =>
         if _.contains ids, post.get("user").id
-          @$("li:eq(#{i})").toggleClass("r_online", status)
-
-    is_typing: (id, status) ->
-      @filtered.each (post, i) =>
-        if id is post.get("user").id
-          @$("li:eq(#{i})").toggleClass("r_typing", status)
+          @$("li:eq(#{i})").toggleClass(status, state)
 
     addAll: =>
       @collection.each (post) => @addOne post, false

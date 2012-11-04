@@ -45,9 +45,14 @@
       display:block;
     }
   }
+  &.r_blurred {
+    .r_status {
+      background-color:@status_blurred;
+    }
+  }
   &.r_typing {
     .r_status {
-      background-color:@purple;
+      background-color:@status_typing;
     }
   }
   .r_status {
@@ -56,7 +61,7 @@
     width:7px;
     height:7px;
     margin:8px 7px 0 -4px;
-    background-color:#00C700;
+    background-color:@status_online;
     .transition(background-color .5s ease-in-out);
     border:1px solid @white;
   }

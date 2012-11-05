@@ -13,7 +13,8 @@ define [
     xhr.withCredentials = true
     return xhr
 
-  unless Constants.env is "staging"
+  #unless Constants.env is "staging"
+  if Constants.env is "development"
     Pusher.host    = Constants.config.pusher.host
     Pusher.ws_port = 8080
 

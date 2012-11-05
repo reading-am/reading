@@ -6,12 +6,6 @@ class CommentObserver < ActiveRecord::Observer
 
     # Send mention emails
     User.mentioned_in(comment).where('id != ?', comment.user_id).each do |user|
-      if !user.access? :comments
-        user.access << :comments
-        user.save
-        UserMailer.delay.comments_welcome(user, comment) if !user.email.blank?
-      end
-
       if !user.email.blank? and user.email_when_mentioned
         comment.is_a_show ? UserMailer.delay.shown_a_page(comment, user)
                            : UserMailer.delay.mentioned(comment, user)

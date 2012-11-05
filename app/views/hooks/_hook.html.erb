@@ -2,7 +2,7 @@
 # TODO - rework this logic to either be built out with or conslidated with the JS logic
 events_text = []
 hook.events.each_with_index do |event|
-  events_text << Hook::EVENTS[event][:text] unless event == :comment && !current_user.access?(:comments) # TODO remove once comments are public
+  events_text << Hook::EVENTS[event][:text] unless event == :comment && !current_user.access?(:comments) # TODO remove once comments are public and comment hooks are built out
 end
 %>
 <div class="hook">

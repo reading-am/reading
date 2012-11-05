@@ -41,9 +41,9 @@ define [
     $prov
 
   $ ->
-    # TODO remove once comments are public
+    # TODO remove once comments are public and comment hooks are built out 
     events = hook_properties.events
-    events.splice(events.length-1,1) if !current_user.get("can_comment")
+    events.splice(events.length-1,1)
 
     # build the constructor with the initial selection
     $con = $('#constructor')

@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="span1">
-    <% if current_user.access?(:comments) && comment_count > 0 %>
+	<% if comment_count > 0 %>
            <a class="has_comments" href="<%= post.wrapped_url %><%#"/domains/#{page.domain_id}/pages/#{page.id}" %>" title="There <%= comment_count == 1 ? "is" : "are" %> <%= comment_count %> recent <%= "comment".pluralize comment_count %>">
         <%= comment_count %>
         <div class="r_tri"></div>

@@ -73,18 +73,17 @@ define [
       @presence = pusher.subscribe "presence-pages.#{@model.get("page").id}"
 
     get_comments: ->
-      if @model.get("user").get("can_comment") # TODO remove once comments are public
-        @comments_view = new CommentsView
-          id: "r_comments"
-          collection: @model.get("page").comments
+      @comments_view = new CommentsView
+        id: "r_comments"
+        collection: @model.get("page").comments
 
-        @$el.append(@comments_view.render().el)
-        @comments_view.collection.fetch success: =>
-          @comments_view.collection.monitor()
-          @comments_view.$el.css opacity:1 # fade in CSS transition
+      @$el.append(@comments_view.render().el)
+      @comments_view.collection.fetch success: =>
+        @comments_view.collection.monitor()
+        @comments_view.$el.css opacity:1 # fade in CSS transition
 
-        @comments_view.attach_autocomplete()
-        @comments_view.make_images_draggable()
+      @comments_view.attach_autocomplete()
+      @comments_view.make_images_draggable()
 
     get_readers: ->
       @readers_view = new PostsView

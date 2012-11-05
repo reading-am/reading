@@ -1,11 +1,13 @@
 case Rails.env
+when 'production'
+  Pusher.host   = 'ws.reading.am'
 when 'development'
-  # Slanger Override
   Pusher.host   = 'localhost'
-  Pusher.port   = 4567
+end
 
-  # Pusher Dev Account
-  Pusher.app_id = '10626'
+case Rails.env
+when 'production', 'development'
+  Pusher.port   = 4567
   Pusher.key    = ENV['READING_SLANGER_KEY']
   Pusher.secret = ENV['READING_SLANGER_SECRET']
 end

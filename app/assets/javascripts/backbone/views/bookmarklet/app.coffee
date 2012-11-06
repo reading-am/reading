@@ -65,7 +65,7 @@ define [
 
       @$("#r_wrp").delay(500).animate
         height: "29px"
-        width: @$("#r_actions").width()
+        width: @$("#r_actions").width()-4
 
       @$("#r_icon").delay(500).animate "margin-top": "-56px"
 

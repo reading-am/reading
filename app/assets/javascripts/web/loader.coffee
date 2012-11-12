@@ -8,13 +8,13 @@ require [
   "app/models/post"
   "app/constants"
   "models/current_user"
+  "app/views/components/titlecard"
   "extend/jquery/rails"
   "extend/jquery/cookies"
-  "components/titlecard"
   "views/settings"
   "views/user"
   "views/hooks/init"
-], ($, base58, Indian, App, Post, Constants, current_user) ->
+], ($, base58, Indian, App, Post, Constants, current_user, Titlecard) ->
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"
@@ -32,6 +32,8 @@ require [
   # --------------------
   # doc ready
   $ ->
+
+    new Titlecard el: $("#titlecard")
 
     framed = window.top isnt window
     $("body").addClass("framed") if framed

@@ -12,6 +12,57 @@ The following items must be installed and running:
   *Note: Bundler will not install Slanger*  
   `gem install slanger`
 
+## Environmental Variables
+
+The app expects the following environmental variables to be set:
+
+```bash
+# Used to secure staging.reading.am
+READING_AUTH_BASIC_USER
+READING_AUTH_BASIC_PASS
+
+# Amazon Web Services
+READING_S3_KEY
+READING_S3_SECRET
+
+# Slanger Credentials
+READING_SLANGER_KEY
+READING_SLANGER_SECRET
+
+# Facebook Oauth
+READING_FACEBOOK_KEY
+READING_FACEBOOK_SECRET
+
+# Tumblr Oauth
+READING_TUMBLR_KEY
+READING_TUMBLR_SECRET
+
+# 37 Signals Oauth
+READING_SIGNALS37_KEY
+READING_SIGNALS37_SECRET
+
+# Twitter Oauth
+READING_TWITTER_KEY
+READING_TWITTER_SECRET
+
+# Readability Oauth
+READING_READABILITY_KEY
+READING_READABILITY_SECRET
+# Readability Content API
+READING_READABILITY_TOKEN
+
+# Instapaper Oauth
+READING_INSTAPAPER_KEY
+READING_INSTAPAPER_SECRET
+
+# Evernote Oauth
+READING_EVERNOTE_KEY
+READING_EVERNOTE_SECRET
+
+# Pocket / Readitlater Oauth
+READING_POCKET_KEY
+```
+
 ## Starting the app
 
 We're using [Foreman](https://github.com/ddollar/foreman) for

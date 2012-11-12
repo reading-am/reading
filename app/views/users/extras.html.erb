@@ -7,11 +7,21 @@
     <h3>Bookmarklet</h3>
     <p>
       The bookmarklet is an easy way to post to Reading from any browser.
-      Drag the link below to your bookmarks bar and click it to post the current page
-      to your Reading account.
+      <% if @user_device == :mobile %>
+        Since you're on iOS, you'll need to create a regular bookmark first,
+        and then replace it with the "javascript..." text below.
+        Confused? <%= link_to "Google to the rescue!", "https://www.google.com/search?q=adding+bookmarklets+to+ios&oq=adding+bookmarklets+to+ios&sugexp=chrome,mod=19&sourceid=chrome&ie=UTF-8" %>
+      <% else %>
+        Drag the link below to your bookmarks bar and click it to post the current page
+        to your Reading account.
+      <% end %>
     </p>
     <div class="well">
-      <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+      <% if @user_device == :mobile %>
+        <input type="text" class="input-xlarge" value="<%= bookmarklet_url(current_user) %>">
+      <% else %>
+        <%= link_to '✌ Reading', bookmarklet_url(current_user), :class => 'btn' %>
+      <% end %>
     </div>
   </div>
 </div>

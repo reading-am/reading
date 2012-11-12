@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/evernote_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/evernote"
 ], (App, Authorization, EvernoteProv) ->
 
   class EvernoteAuth extends Authorization

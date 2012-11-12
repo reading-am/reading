@@ -43,7 +43,7 @@ define [
       unless !response.auth
         # rerun the constructor
         @constructor response.auth.uid, response.auth.permissions, response.auth.info
-        require("models/current_user").get("authorizations")[@provider][@uid] = this
+        require("app/models/current_user").get("authorizations")[@provider][@uid] = this
 
     save: (params) ->
       data =

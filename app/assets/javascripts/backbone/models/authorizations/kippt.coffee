@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/kippt_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/kippt"
 ], (App, Authorization, KipptProv) ->
 
   class KipptAuth extends Authorization

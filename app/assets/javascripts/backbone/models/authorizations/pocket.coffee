@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/pocket_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/pocket"
 ], (App, Authorization, PocketProv) ->
 
   class PocketAuth extends Authorization

@@ -3,7 +3,7 @@ define [
   "backbone"
   "app/models/user"
   "app/collections/users"
-  "models/current_user"
+  "app/models/current_user"
   "app/views/users/followingers"
   "app/views/users/find_people"
 ], ($, Backbone, User, Users, current_user, FollowingersView, FindPeopleView) ->

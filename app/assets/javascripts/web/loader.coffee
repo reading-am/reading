@@ -7,7 +7,7 @@ require [
   "app/init"
   "app/models/post"
   "app/constants"
-  "models/current_user"
+  "app/models/current_user"
   "app/views/components/titlecard"
   "extend/jquery/rails"
   "extend/jquery/cookies"

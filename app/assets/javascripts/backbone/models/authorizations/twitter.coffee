@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/twitter_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/twitter"
 ], (App, Authorization, TwitterProv) ->
 
   class TwitterAuth extends Authorization

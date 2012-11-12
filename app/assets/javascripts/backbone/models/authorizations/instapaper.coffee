@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/instapaper_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/instapaper"
 ], (App, Authorization, InstapaperProv) ->
 
   class InstapaperAuth extends Authorization

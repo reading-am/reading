@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/tssignals_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/tssignals"
 ], (App, Authorization, TssignalsProv) ->
 
   class TssignalsAuth extends Authorization

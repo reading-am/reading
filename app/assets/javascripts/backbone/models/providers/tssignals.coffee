@@ -1,6 +1,6 @@
 define [
   "app/init"
-  "models/provider"
+  "app/models/providers/provider"
 ], (App, Provider) ->
 
   class TssignalsProv extends Provider

@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/readability_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/readability"
 ], (App, Authorization, ReadabilityProv) ->
 
   class ReadabilityAuth extends Authorization

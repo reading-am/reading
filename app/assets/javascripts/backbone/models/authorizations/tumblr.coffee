@@ -1,7 +1,7 @@
 define [
   "app/init"
-  "models/authorization"
-  "models/tumblr_prov"
+  "app/models/authorizations/authorization"
+  "app/models/providers/tumblr"
 ], (App, Authorization, TumblrProv) ->
 
   class TumblrAuth extends Authorization

@@ -1,6 +1,6 @@
 define [
   "app/init"
-  "models/provider"
+  "app/models/providers/provider"
 ], (App, Provider) ->
 
   class PocketProv extends Provider

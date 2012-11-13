@@ -86,3 +86,11 @@ And visit:
 
 `http://0.0.0.0:3500`
 
+## Grant Admin Access
+enter the following script in the rails console:
+```ruby
+u = User.find_by_username("someUsername")
+u.roles << :admin
+u.save!
+```
+

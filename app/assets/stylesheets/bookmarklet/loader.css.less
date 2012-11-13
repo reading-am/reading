@@ -283,3 +283,44 @@
     &:hover { background-color:darken(@yellow,20%); }
   }
 }
+/**
+ * @todo put plugin on an iPhone & iPad to determine the exact pixel sizes to adjust by
+ */
+@media only screen and (max-width: 480px) { /* @todo change this to max-device-width for production */
+  #r_am {
+    /* put everything on the bottom of the screen & closer to the edges */
+    position: fixed;
+    right: 5px !important; 
+    bottom: 5px !important;
+    #r_readers {
+      /* limit amount of readers you see at once but make it scrollable */
+      max-height: 150px !important;
+      overflow: scroll !important;
+    }
+    #r_comments_list {
+      /* only show two (one line) comments at once */
+      max-height: 136px !important;
+    }
+  }
+
+  /* sticky footer implementation 
+    @todo make the bookmarklet a sticky footer
+  */
+  @mobile_height: 400px;
+  * {
+    margin: 0;
+  }
+  html, body {
+    height: 100%;
+  }
+  .wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto (-1 * @mobile_height); /* the bottom margin is the negative value of the footer's height */
+  }
+  .footer, .push {
+    height: @mobile_height; /* .push must be the same height as .footer */
+  }
+
+}

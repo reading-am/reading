@@ -346,7 +346,6 @@
       }
       a#r_toggle { /* same treatment as Yep, Nope, Share, x */  
         display: inline-block;
-        margin:0 3px;
         padding:2px 8px 3px;
       }
 
@@ -356,8 +355,11 @@
       a {
         margin-right: 13px;
         margin-left: 13px;
-        &:first-child, &:last-child{
+        &:first-child {
           margin-left: inherit;
+        }
+        &:last-child {
+          margin-right: inherit;
         }
       }
     } 

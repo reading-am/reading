@@ -291,7 +291,9 @@
  * @todo put plugin on an iPhone & iPad to determine the exact pixel sizes to adjust by
  */
 
-
+#r_toggle_comments {
+  display: none;
+}
 @media only screen and (max-width: 480px) { /* @todo change this to max-device-width for production */
   @mobile-width: 320px;
 
@@ -323,12 +325,14 @@
       overflow: scroll !important;
     }
     #r_toggle_comments { /* same treatment as Yep, Nope, Share, x */  
+      display: inline-block;
       margin:0 3px;
       padding:2px 8px 3px;
     }
 
     #r_comments {
       max-width: @mobile-width;
+      display: none;
       ul.r_comments_list {
         /* only show two (one line) comments at once */
         max-height: 136px !important;

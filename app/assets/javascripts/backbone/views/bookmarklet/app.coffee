@@ -24,6 +24,7 @@ define [
     events:
       "click #r_yep, #r_nope" : "set_yn"
       "click #r_share" : "showShare"
+      "click #r_toggle_comments": "toggleComments"
       "click #r_close" : "close"
 
     initialize: ->
@@ -165,6 +166,13 @@ define [
     showShare: ->
       @share_view = new SharePopover subject: Post::current
       @share_view.render()
+
+    toggleComments: ->
+      display = $("#r_comments").css("display")
+      if display is "none"
+        $("#r_comments").css("display", "block")
+      else 
+        $("#r_comments").css("display", "none")
 
     close: ->
       @intervals "clear"

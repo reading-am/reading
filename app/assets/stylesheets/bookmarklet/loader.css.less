@@ -284,14 +284,11 @@
   }
 }
 
-.show_mobile {
-  display:none;
-}
 /**
  * @todo put plugin on an iPhone & iPad to determine the exact pixel sizes to adjust by
  */
 
-#r_toggle_comments {
+#r_am #r_wrp a#r_minimize {
   display: none;
 }
 @media only screen and (max-width: 480px) { /* @todo change this to max-device-width for production */
@@ -315,20 +312,16 @@
   }
   #r_am {
     /* put everything on the bottom of the screen & closer to the edges */
-    right: 5px !important; 
-    bottom: 5px !important;
+    right: 0px !important; 
+    bottom: 0px !important;
     width: @mobile-width;
-    height: 400px; /* @todo figure out how to put this on bottom of the page */
+    height: 95%; /* @todo figure out if we like the fluidity or if we want it totally fixed at the bottom */
     #r_readers {
       /* limit amount of readers you see at once but make it scrollable */
       max-height: 150px !important;
       overflow: scroll !important;
     }
-    #r_toggle_comments { /* same treatment as Yep, Nope, Share, x */  
-      display: inline-block;
-      margin:0 3px;
-      padding:2px 8px 3px;
-    }
+    
 
     #r_comments {
       max-width: @mobile-width;
@@ -347,6 +340,16 @@
       left:0;
       bottom:0;
       width: 100% !important; /* this important is to override the inline style */
+      #r_share {
+        padding: 2px 21px 3px;
+        margin: 0 !important;
+      }
+      a#r_minimize { /* same treatment as Yep, Nope, Share, x */  
+        display: inline-block;
+        margin:0 3px;
+        padding:2px 8px 3px;
+      }
+
     }
     #r_actions {
       width: @mobile-width;

@@ -24,7 +24,7 @@ define [
     events:
       "click #r_yep, #r_nope" : "set_yn"
       "click #r_share" : "showShare"
-      "click #r_toggle_comments": "toggleComments"
+      "click #r_minimize": "minimize"
       "click #r_close" : "close"
 
     initialize: ->
@@ -167,12 +167,19 @@ define [
       @share_view = new SharePopover subject: Post::current
       @share_view.render()
 
-    toggleComments: ->
-      display = $("#r_comments").css("display")
-      if display is "none"
+    minimize: ->
+      #TODO: Jeremy Ashkenas would die if he saw the truth I'm storing in the dom right now
+      cmmts_display = $("#r_comments").css("display")
+      if cmmts_display is "none"
         $("#r_comments").css("display", "block")
       else 
         $("#r_comments").css("display", "none")
+
+      rdrs_display = $("#r_readers").css("display")
+      if rdrs_display is "none"
+        $("#r_readers").css("display", "block")
+      else 
+        $("#r_readers").css("display", "none")
 
     close: ->
       @intervals "clear"

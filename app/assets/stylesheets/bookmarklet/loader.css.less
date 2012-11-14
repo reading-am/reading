@@ -288,10 +288,10 @@
  * @todo put plugin on an iPhone & iPad to determine the exact pixel sizes to adjust by
  */
 
-#r_am #r_wrp a#r_minimize {
+#r_am #r_wrp a#r_toggle {
   display: none;
 }
-@media only screen and (max-width: 480px) { /* @todo change this to max-device-width for production */
+@media only screen and (max-width: 400px) { /* @todo max-device-width doesn't work because of zoom on mobile safari. I need to make sure everything resets correctly when the window gets larger again*/
   @mobile-width: 320px;
 
   #r_share_menu {
@@ -344,7 +344,7 @@
         padding: 2px 21px 3px;
         margin: 0 !important;
       }
-      a#r_minimize { /* same treatment as Yep, Nope, Share, x */  
+      a#r_toggle { /* same treatment as Yep, Nope, Share, x */  
         display: inline-block;
         margin:0 3px;
         padding:2px 8px 3px;

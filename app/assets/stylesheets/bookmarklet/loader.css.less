@@ -283,44 +283,80 @@
     &:hover { background-color:darken(@yellow,20%); }
   }
 }
+
+.show_mobile {
+  display:none;
+}
 /**
  * @todo put plugin on an iPhone & iPad to determine the exact pixel sizes to adjust by
  */
+
+
 @media only screen and (max-width: 480px) { /* @todo change this to max-device-width for production */
+  @mobile-width: 320px;
+
+  #r_share_menu {
+      margin: 60px auto 0;
+  }
+  .r_comment {
+    .r_comment_actions {
+      /* hover state is hard todo on mobile. We'll just show the controls upfront */
+      display:block !important;
+    }
+    .r_comment_header {
+
+      time { 
+        /* we're loosing time on mobile @todo ask greg if this is ok */
+        display:none; 
+      }
+    }
+  }
   #r_am {
     /* put everything on the bottom of the screen & closer to the edges */
-    position: fixed;
     right: 5px !important; 
     bottom: 5px !important;
+    width: @mobile-width;
+    height: 400px; /* @todo figure out how to put this on bottom of the page */
     #r_readers {
       /* limit amount of readers you see at once but make it scrollable */
       max-height: 150px !important;
       overflow: scroll !important;
     }
-    #r_comments_list {
-      /* only show two (one line) comments at once */
-      max-height: 136px !important;
+    #r_toggle_comments { /* same treatment as Yep, Nope, Share, x */  
+      margin:0 3px;
+      padding:2px 8px 3px;
     }
-  }
 
-  /* sticky footer implementation 
-    @todo make the bookmarklet a sticky footer
-  */
-  @mobile_height: 400px;
-  * {
-    margin: 0;
-  }
-  html, body {
-    height: 100%;
-  }
-  .wrapper {
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto (-1 * @mobile_height); /* the bottom margin is the negative value of the footer's height */
-  }
-  .footer, .push {
-    height: @mobile_height; /* .push must be the same height as .footer */
+    #r_comments {
+      max-width: @mobile-width;
+      ul.r_comments_list {
+        /* only show two (one line) comments at once */
+        max-height: 136px !important;
+      }
+      .mentions-input-box{ max-width: @mobile-width !important; }
+    }
+    #r_other {
+      display: none !important; /* hide the other readers (I should just put a .no_iphone class on #r_other) */
+    }
+    #r_wrp {
+      position: absolute;
+      left:0;
+      bottom:0;
+      width: 100% !important; /* this important is to override the inline style */
+    }
+    #r_actions {
+      width: @mobile-width;
+      a {
+        margin-right: 13px;
+        margin-left: 13px;
+        &:first-child, &:last-child{
+          margin-left: inherit;
+        }
+      }
+    } 
+    .show_mobile {
+      display:inherit;
+    }
   }
 
 }

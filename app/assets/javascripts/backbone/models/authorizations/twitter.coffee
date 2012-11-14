@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, TwitterProv) ->
 
   class TwitterAuth extends Authorization
+    type: "TwitterAuth"
     provider: "twitter"
     _login: TwitterProv::login
 

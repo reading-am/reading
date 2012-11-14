@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class TwitterProv extends Provider
+    type: "TwitterProv"
 
   TwitterProv::login = (response, perms) ->
     super

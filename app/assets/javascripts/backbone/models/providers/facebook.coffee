@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class FacebookProv extends Provider
+    type: "FacebookProv"
 
   FacebookProv::login = (response, perms) ->
     super

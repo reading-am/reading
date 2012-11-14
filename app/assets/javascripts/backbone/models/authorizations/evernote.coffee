@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, EvernoteProv) ->
 
   class EvernoteAuth extends Authorization
+    type: "EvernoteAuth"
     provider: "evernote"
     _login: EvernoteProv::login
     places: (params) ->

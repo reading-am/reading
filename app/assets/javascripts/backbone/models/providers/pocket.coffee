@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class PocketProv extends Provider
+    type: "PocketProv"
 
   PocketProv::login = (response, perms) ->
     super

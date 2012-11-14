@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class TumblrProv extends Provider
+    type: "TumblrProv"
 
   TumblrProv::login = (response, perms) ->
     super

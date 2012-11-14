@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, PocketProv) ->
 
   class PocketAuth extends Authorization
+    type: "PocketAuth"
     provider: "pocket"
     _login: PocketProv::login
 

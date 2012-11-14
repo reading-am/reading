@@ -1,10 +1,13 @@
 define [
+  "backbone"
   "app/init"
-], (App) ->
+], (Backbone, App) ->
 
-  class Provider
+  class Provider extends Backbone.Model
+    type: "Provider"
+
     accounts: ->
-      {text:val.name, value:val.uid} for own key, val of this
+      {text:val.name, value:val.uid} for own key, val of @attributes
 
   # from: http://stackoverflow.com/questions/4358135/how-to-make-omniauth-work-with-a-popup-window
   Provider::login = (params, response) ->

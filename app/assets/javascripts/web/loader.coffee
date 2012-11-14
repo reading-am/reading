@@ -66,7 +66,7 @@ require [
 
     do_provider_method = (provider, method) ->
       uid = if method is "connect" then "new" else null
-      auth = new App.Models["#{provider}Auth"](uid)
+      auth = new App.Models["#{provider}Auth"](uid: uid)
       $('#loading').fadeIn()
 
       auth.login

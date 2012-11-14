@@ -2,11 +2,18 @@ define [
   "require"
   "jquery"
   "underscore"
+  "backbone"
   "app/init"
-], (require, $, _, App) ->
+], (require, $, _, Backbone, App) ->
 
-  class Authorization
-    constructor: (@uid, @permissions = [], @info) ->
+  class Authorization extends Backbone.Model
+    type: "Authorization"
+
+    initialize: (options) ->
+      @uid = options.uid
+      @permissions = options.permissions || []
+      @info = options.info
+
       @name = @uid
 
       if @info?
@@ -97,7 +104,10 @@ define [
 
   Authorization::factory = (params) ->
     type = params.provider[0].toUpperCase() + params.provider[1..-1].toLowerCase() + 'Auth'
-    new App.Models[type](params.uid, params.permissions, params.info)
+    new App.Models[type]
+      uid: params.uid
+      permissions: params.permissions
+      info: params.info
 
   App.Models.Authorization = Authorization
   return Authorization

@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, TumblrProv) ->
 
   class TumblrAuth extends Authorization
+    type: "TumblrAuth"
     provider: "tumblr"
     _login: TumblrProv::login
     places: (params) ->

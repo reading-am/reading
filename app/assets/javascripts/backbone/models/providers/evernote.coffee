@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class EvernoteProv extends Provider
+    type: "EvernoteProv"
 
   EvernoteProv::login = (response, perms) ->
     super

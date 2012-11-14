@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class TssignalsProv extends Provider
+    type: "TssignalsProv"
 
   TssignalsProv::login = (response, perms) ->
     super

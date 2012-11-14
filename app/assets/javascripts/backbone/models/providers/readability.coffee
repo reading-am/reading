@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class ReadabilityProv extends Provider
+    type: "ReadabilityProv"
 
   ReadabilityProv::login = (response, perms) ->
     super

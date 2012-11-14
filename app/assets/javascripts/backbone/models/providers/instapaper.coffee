@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class InstapaperProv extends Provider
+    type: "InstapaperProv"
 
   InstapaperProv::login = (response, perms) ->
     super

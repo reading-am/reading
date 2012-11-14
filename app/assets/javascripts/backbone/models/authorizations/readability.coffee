@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, ReadabilityProv) ->
 
   class ReadabilityAuth extends Authorization
+    type: "ReadabilityAuth"
     provider: "readability"
     _login: ReadabilityProv::login
 

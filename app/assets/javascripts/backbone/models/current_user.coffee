@@ -35,7 +35,7 @@ define [
     kippt:      new KipptProv
     pocket:     new PocketProv
 
-  auths[auth.provider][auth.uid] = Authorization::factory auth for auth in window.authorizations_seed
+  auths[auth.provider].set(auth.uid, Authorization::factory(auth)) for auth in window.authorizations_seed
   current_user.set "authorizations", auths
 
   window.current_user_seed = window.authorizations_seed = null

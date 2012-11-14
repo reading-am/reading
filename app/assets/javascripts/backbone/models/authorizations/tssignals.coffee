@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, TssignalsProv) ->
 
   class TssignalsAuth extends Authorization
+    type: "TssignalsAuth"
     provider: "tssignals"
     _login: TssignalsProv::login
     places: (params) ->

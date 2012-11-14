@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, KipptProv) ->
 
   class KipptAuth extends Authorization
+    type: "KipptAuth"
     provider: "kippt"
     _login: KipptProv::login
     places: (params) ->

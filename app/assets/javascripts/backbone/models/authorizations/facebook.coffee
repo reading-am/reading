@@ -20,6 +20,7 @@ define [
     FB.getLoginStatus $.noop, true if check_login_on_focus
 
   class FacebookAuth extends Authorization
+    type: "FacebookAuth"
     provider: "facebook"
 
     set_default_perms: (@permissions) ->

@@ -5,6 +5,7 @@ define [
 ], (App, Authorization, InstapaperProv) ->
 
   class InstapaperAuth extends Authorization
+    type: "InstapaperAuth"
     provider: "instapaper"
     _login: InstapaperProv::login
 

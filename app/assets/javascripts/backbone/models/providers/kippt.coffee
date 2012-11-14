@@ -4,6 +4,7 @@ define [
 ], (App, Provider) ->
 
   class KipptProv extends Provider
+    type: "KipptProv"
 
   KipptProv::login = (response, perms) ->
     super

@@ -8,6 +8,7 @@ gem 'rails', '3.2.8'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'
+  gem 'therubyracer' # Required by less-rails. Not sure why it's not included by the gem
   gem 'coffee-rails'
   gem 'uglifier'
 end

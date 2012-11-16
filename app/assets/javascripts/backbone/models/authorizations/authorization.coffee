@@ -6,6 +6,9 @@ define [
   "app/init"
 ], (require, $, _, Backbone, App) ->
 
+  # TODO - this uses its own save and sync methods
+  # it'd be better if it used the Backbone methods
+
   class Authorization extends Backbone.Model
     type: "Authorization"
 

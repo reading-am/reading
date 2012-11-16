@@ -1,29 +1,21 @@
+@import "variables";
 @import "mixins";
-
-@yellow: #FFFBCC;
-@dark_yellow: #FFF461;
-@blue: #cdfeff;
-@dark_blue: #00FBFF;
-@green: #38ff7E;
-@dark_green: #79ff30;
-@grey: #EEE;
 
 #subnav, #subhead {
   margin-bottom:23px;
 }
 #subnav a {
-  background-color:@blue;
+  background-color:@light_blue;
 }
   #subnav a.active, #subnav a:hover {
-    background-color:@dark_blue;
+    background-color:@blue;
     text-decoration:none;
   }
 #subnav a.active:hover {
-  cursor:default;
   text-decoration:none;
 }
 .follow, #subnav .follow {
-  background-color:@green;
+  background-color:@bright_green;
   :hover {
     background-color:@dark_green;
   }
@@ -31,12 +23,12 @@
 #subnav #signout {
   background:none;
   font-size:14px;
-  color:#999;
+  color:@dark_grey;
 }
 #subnav nav.span1 a {
   padding:4px;
 }
 #subhead h3 {
-  color:#000;
+  color:@black;
   text-decoration:underline;
 }

@@ -49,8 +49,8 @@ define [
     assign_params_from_auth_response: (response) ->
       unless !response.auth
         # rerun the constructor
-        @constructor response.auth.uid, response.auth.permissions, response.auth.info
-        require("app/models/current_user").get("authorizations")[@provider][@uid] = this
+        @initialize uid: response.auth.uid, permissions: response.auth.permissions, info: response.auth.info
+        require("app/models/current_user").get("authorizations")[@provider].set(@uid, this)
 
     save: (params) ->
       data =

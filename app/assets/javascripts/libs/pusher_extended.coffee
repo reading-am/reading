@@ -18,11 +18,14 @@ define [
     Pusher.host    = Constants.config.pusher.host
     Pusher.ws_port = 8080
 
-  unless Constants.env is "production"
+  if Constants.env is "production"
+    encrypted = true
+  else
+    encrypted = false
     Pusher.log = (message) ->
       if window.console and window.console.log
         window.console.log(message)
 
     window.WEB_SOCKET_DEBUG = true # Flash fallback debug flag
 
-  return new Pusher Constants.config.pusher.key
+  return new Pusher Constants.config.pusher.key, encrypted: encrypted

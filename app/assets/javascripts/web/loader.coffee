@@ -9,11 +9,10 @@ require [
   "app/constants"
   "app/models/current_user"
   "app/views/components/titlecard"
-  "app/views/users/show"
   "extend/jquery/rails"
   "extend/jquery/cookies"
   "views/hooks/init"
-], ($, base58, Indian, App, Post, Constants, current_user, Titlecard, UserShowView) ->
+], ($, base58, Indian, App, Post, Constants, current_user, Titlecard) ->
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"

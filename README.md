@@ -78,11 +78,25 @@ $READING_SLANGER_SECRET`
 
 ## Testing
 
-For Javascript, run:
+### Ruby
+
+In a terminal run:
+
+`bundle exec spork`
+
+In a different terminal run:
+
+`rake watchr`
+
+The `watchr` terminal will run and output tests as they are modified.
+
+### Javascript
+
+In a terminal run:
 
 `rake konacha:serve`
 
-And visit:
+And visit in your browser:
 
 `http://0.0.0.0:3500`
 

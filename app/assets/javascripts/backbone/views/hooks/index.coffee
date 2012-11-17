@@ -7,6 +7,8 @@ define [
   "app/views/hooks/properties"
 ], ($, App, Constants, current_user, builders, hook_properties) ->
 
+  # TODO - port this to be a true Backbone View
+
   # endpoints to get user data from each provider
   api_urls =
     twitter: "https://api.twitter.com/1/users/show.json?id="

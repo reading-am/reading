@@ -1,0 +1,21 @@
+define [
+  "app/init"
+  "app/models/authorizations/authorization"
+  "app/models/providers/kippt"
+], (App, Authorization, KipptProv) ->
+
+  class KipptAuth extends Authorization
+    type: "KipptAuth"
+    provider: "kippt"
+    _login: KipptProv::login
+    places: (params) ->
+      # transform the return val
+      if params.success?
+        success = params.success
+        params.success = (places) ->
+          success ({text:place.attributes.table.title, value:place.attributes.table.id} for place in places)
+
+      super params
+
+  App.Models.KipptAuth = KipptAuth
+  return KipptAuth

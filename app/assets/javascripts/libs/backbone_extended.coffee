@@ -1,6 +1,6 @@
 define [
-  "app/addons/nest_collection"
-  "app/addons/sync"
+  "extend/backbone/nest_collection"
+  "extend/backbone/sync"
   "app/models/model"
   "app/collections/collection"
 ], (Backbone) -> Backbone

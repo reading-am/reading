@@ -30,3 +30,14 @@
   </div>
   <% end %>
 </div>
+
+<% if @user %>
+<script type="text/javascript">
+
+  <%= requirejs %>require(["backbone", "app/routers/users"], function(Backbone, Router){
+    new Router({model: Backbone.Model.prototype.factory(<%=j @user.simple_obj.to_json.html_safe -%>)});
+    Backbone.history.start({pushState: true});
+  });
+
+</script>
+<% end %>

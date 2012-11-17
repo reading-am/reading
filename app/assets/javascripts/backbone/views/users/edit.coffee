@@ -2,13 +2,19 @@ define [
   "jquery"
   "backbone"
   "app/constants"
-], ($, Backbone, Constants) ->
+  "app/helpers/authorizations"
+], ($, Backbone, Constants, AuthorizationsHelper) ->
 
   class UserEditView extends Backbone.View
 
     events:
       "click #signout"        : "signout"
       "click #user_delete a"  : "destroy"
+
+    initialize: ->
+      # populate the auth spans with real usernames
+      AuthorizationsHelper.populate_accounts "twitter", $(".provider.twitter .account")
+      AuthorizationsHelper.populate_accounts "facebook", $(".provider.facebook .account")
 
     signout: ->
       confirm "Are you sure you want to sign out?"

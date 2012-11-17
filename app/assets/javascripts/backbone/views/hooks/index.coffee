@@ -3,31 +3,12 @@ define [
   "app/init"
   "app/constants"
   "app/models/current_user"
+  "app/helpers/authorizations"
   "app/helpers/form_builders"
   "app/views/hooks/properties"
-], ($, App, Constants, current_user, builders, hook_properties) ->
+], ($, App, Constants, current_user, AuthorizationsHelper, builders, hook_properties) ->
 
   # TODO - port this to be a true Backbone View
-
-  # endpoints to get user data from each provider
-  api_urls =
-    twitter: "https://api.twitter.com/1/users/show.json?id="
-    facebook: "https://graph.facebook.com/"
-
-  # replace external account ids with their usernames
-  populate_accounts = (provider, selection) ->
-    selection.each ->
-      $this = $(this)
-      unless isNaN $this.text()
-        $.ajax
-          url: api_urls[provider] + $this.text()
-          dataType: "jsonp"
-          success: (r) ->
-            if r.screen_name
-              $this.text (if provider is "twitter" then "@" else "") + r.screen_name
-            else if r.username
-              $this.text r.username
-            else $this.text r.name  if r.name
 
   build_provider = (prov) ->
     $prov = $("<span>").attr("id", "provider_params")
@@ -39,7 +20,7 @@ define [
       $prov.append builders.field(param, "hook[params]")
       count++ unless param.type? and param.type is "hidden"
 
-    populate_accounts $("#hook_provider").val(), $("[data-type=\"account\"] option[value!=\"new\"]", $prov)
+    AuthorizationsHelper.populate_accounts $("#hook_provider").val(), $("[data-type=\"account\"] option[value!=\"new\"]", $prov)
     $prov
 
   $ ->
@@ -86,8 +67,8 @@ define [
       $("#hook_params_place_name").val($(this).find("option:selected").text())
 
     # populate the auth spans with real usernames
-    populate_accounts "twitter", $(".provider.twitter .account")
-    populate_accounts "facebook", $(".provider.facebook .account")
+    AuthorizationsHelper.populate_accounts "twitter", $(".provider.twitter .account")
+    AuthorizationsHelper.populate_accounts "facebook", $(".provider.facebook .account")
 
     #########################
     # Process New Hook Form #

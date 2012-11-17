@@ -84,7 +84,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'konacha'
+  gem 'konacha', '~> 1.0'
   gem 'rspec-rails'
   gem 'spork-rails'
   gem 'watchr'

@@ -12,7 +12,6 @@ require [
   "app/views/users/show"
   "extend/jquery/rails"
   "extend/jquery/cookies"
-  "views/settings"
   "views/hooks/init"
 ], ($, base58, Indian, App, Post, Constants, current_user, Titlecard, UserShowView) ->
 
@@ -34,9 +33,6 @@ require [
   $ ->
 
     new Titlecard el: $("#titlecard")
-
-    $user = $("#header_card.r_user")
-    new UserShowView el: $user if $user.length
 
     framed = window.top isnt window
     $("body").addClass("framed") if framed

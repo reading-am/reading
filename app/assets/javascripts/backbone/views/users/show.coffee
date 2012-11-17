@@ -1,8 +1,7 @@
 define [
   "jquery"
   "backbone"
-  "app/constants"
-], ($, Backbone, Constants) ->
+], ($, Backbone) ->
 
   class UserShowView extends Backbone.View
 
@@ -10,11 +9,7 @@ define [
       "click a.follow": "follow"
 
     initialize: ->
-      $ -> if Constants.env is "development"
-        # replace images from production S3 account
-        $("img").error ->
-          $this = $(this)
-          $this.unbind("error").attr("src", $this.attr("src").replace("development","production"))
+      @$followers_count = @$("#followers_count")
 
     follow:(e) ->
       $target = $(e.currentTarget)
@@ -24,13 +19,17 @@ define [
       return false if $target.hasClass(disabled)
       $target.addClass disabled
 
-      $.get $target.attr("href"), (data) ->
+      $.get $target.attr("href"), (data) =>
+        $target.removeClass disabled
+
         if data is "true"
           $span = $target.find("span")
-          text = (if $span.text().indexOf(follow) is 0 then "Un" + follow.toLowerCase() else follow)
+          followed = $span.text().indexOf(follow) is 0
+          text = if followed then "Un" + follow.toLowerCase() else follow
           href = $target.attr("href")
-          $target.attr "href", href.replace($span.text().toLowerCase(), text.toLowerCase())
-          $span.text text
-        $target.removeClass disabled
+
+          $target.attr("href", href.replace($span.text().toLowerCase(), text.toLowerCase()))
+          $span.text(text)
+          @$followers_count.text(Number(@$followers_count.text()) + (if followed then 1 else -1))
 
       false

@@ -41,3 +41,12 @@
   </div>
 <% end %>
 </div>
+
+<script type="text/javascript">
+
+  <%= requirejs %>require(["backbone", "app/routers/hooks"], function(Backbone, Router){
+    new Router();
+    Backbone.history.start({pushState: true});
+  });
+
+</script>

@@ -1,7 +1,7 @@
 define [
   "backbone"
   "handlebars"
-  "models/current_user"
+  "app/models/current_user"
   "app/views/users/users"
   "text!app/templates/users/find_people.hbs"
 ], (Backbone, Handlebars, current_user, UsersView, template) ->

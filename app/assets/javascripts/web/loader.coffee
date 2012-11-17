@@ -11,7 +11,7 @@ require [
   "app/views/components/titlecard"
   "extend/jquery/rails"
   "extend/jquery/cookies"
-  "views/hooks/init"
+  "app/views/hooks/init"
 ], ($, base58, Indian, App, Post, Constants, current_user, Titlecard) ->
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails

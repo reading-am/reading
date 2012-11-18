@@ -1,11 +1,16 @@
 require "spec_helper"
 
 describe Hook do
-  fixtures :hooks
-  context "when new" do
-    it "won't save without a valid page_id" do
+  fixtures :hooks, :posts, :pages, :domains, :authorizations
+  context "when run" do
+    it "posts to Twitter" do
       hook = hooks(:twitter)
-      hook.provider.should eq("twitter")
+      hook.authorization = authorizations(:twitter)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+
+      hook.run(post, :new).should be_an_instance_of Twitter::Tweet
     end
   end
 end

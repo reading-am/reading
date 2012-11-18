@@ -1,0 +1,11 @@
+twitter:
+  provider: "twitter"
+  uid: "411780217"
+  token: "411780217-I073AhxvG5nkLah38qfqDGCkIfe0se2KHHx2Q3hI"
+  secret: "cYF6RznwAAlXthdJDttO8JH9p3uQZTT1YSj7MZc" 
+  permissions: "[\"read\",\"write\"]"
+  info: ~
+  expires_at: ~
+  refresh_token: ~
+  created_at: "2012-02-13 04:01:15"
+  updated_at: "2012-02-13 04:01:15"

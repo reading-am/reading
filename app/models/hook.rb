@@ -66,7 +66,7 @@ class Hook < ActiveRecord::Base
   def trigger_method post, event_fired
     self.send(self.provider, post, event_fired)
   end
-  handle_asynchronously :trigger_method unless Rails.env == 'development'
+  handle_asynchronously :trigger_method unless ['development','test'].include? Rails.env
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired

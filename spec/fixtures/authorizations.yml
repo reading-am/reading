@@ -42,3 +42,14 @@ readability:
   refresh_token: ~
   created_at: 2012-11-19 16:49:08
   updated_at: 2012-11-19 16:49:08
+instapaper:
+  provider: instapaper
+  uid: 2656381
+  token: nPJz4QOwoIkMC18por03drdjIZTB0rxXZjlIvOxFwjMxZc0VbF
+  secret: hsXVw7WrRj2bygTyiWXOBR2icg7Zoq1xEnIo5Z0bltXbu4gPNY
+  permissions: "[\"read\",\"write\"]"
+  info: "{\"type\":\"user\",\"user_id\":2656381,\"username\":\"test@reading.am\",\"subscription_is_active\":\"0\"}"
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2012-11-19 18:50:20
+  updated_at: 2012-11-19 18:50:20

@@ -15,7 +15,7 @@ describe Hook do
       # test
       response = hook.run(post, :new)
       response.should be_an_instance_of Twitter::Tweet
-      #cleanup
+      # cleanup
       response = hook.authorization.api.status_destroy(response.id)
       response.first.should be_an_instance_of Twitter::Tweet
     end
@@ -30,7 +30,7 @@ describe Hook do
       # test
       response = hook.run(post, :new)
       response.meta.status.should eq(201)
-      #cleanup
+      # cleanup
       response = hook.authorization.api.delete_post("#{hook.place[:id]}.tumblr.com", response.response.id)
       response.meta.status.should eq(200)
     end
@@ -45,7 +45,7 @@ describe Hook do
       # test
       response = hook.run(post, :new)
       response.should be_an_instance_of Evernote::EDAM::Type::Note
-      #cleanup
+      # cleanup
       # NOTE - our api key is "Basic access" and doesn't
       # allow note updating or deleting so there is no cleanup
     end
@@ -60,9 +60,24 @@ describe Hook do
       # test
       response = hook.run(post, :new)
       response.status.should eq("202")
-      #cleanup
+      # cleanup
       response = hook.authorization.api.delete_bookmark response.bookmark_id
       response.status.should eq("204")
+    end
+
+    it "posts to Instapaper" do
+      # setup
+      hook = hooks(:instapaper)
+      hook.authorization = authorizations(:instapaper)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      # test
+      response = hook.run(post, :new)
+      response.bookmark_id.should be_an_instance_of(Fixnum)
+      # cleanup
+      # NOTE - deleting bookmarks would require a $1/mo
+      # Instapaper subscription
     end
 
   end

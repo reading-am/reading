@@ -159,7 +159,10 @@ public
       when 'readability'
         @api_user = Readit::API.new token, secret
       when 'evernote'
-        @api_user = Evernote::NoteStore.new info['edam']['noteStoreUrl']
+        # from: https://github.com/evernote/evernote-sdk-ruby/blob/master/sample/client/EDAMTest.rb
+        noteStoreTransport = Thrift::HTTPClientTransport.new(info['edam']['noteStoreUrl'])
+        noteStoreProtocol = Thrift::BinaryProtocol.new(noteStoreTransport)
+        @api_user = Evernote::EDAM::NoteStore::NoteStore::Client.new(noteStoreProtocol)
       when 'tssignals'
         account = accounts.first
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']

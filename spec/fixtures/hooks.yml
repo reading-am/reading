@@ -1,0 +1,12 @@
+twitter:
+  provider: twitter
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\"}"
+tumblr:
+  provider: tumblr
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\",\"place\":{\"id\":\"besttest\",\"name\":\"The Best Test Blog\"}}"
+evernote:
+  provider: evernote
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\",\"place\":{\"id\":\"8d75caf8-06d3-4dc2-949c-903ed24b5304\",\"name\":\"reading's notebook\"}}"

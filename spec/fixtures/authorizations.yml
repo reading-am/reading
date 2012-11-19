@@ -1,0 +1,33 @@
+twitter:
+  provider: twitter
+  uid: 411780217
+  token: 411780217-I073AhxvG5nkLah38qfqDGCkIfe0se2KHHx2Q3hI
+  secret: cYF6RznwAAlXthdJDttO8JH9p3uQZTT1YSj7MZc
+  permissions: "[\"read\",\"write\"]"
+  info: ~
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2012-02-13 04:01:15
+  updated_at: 2012-02-13 04:01:15
+tumblr:
+  provider: tumblr
+  uid: leppert
+  token: Xa7eIGQES5544g60AxOAmY3jEm8m0jyfJdhSdcAm2Kp8OlZZLU
+  secret: mwOpbZTAPBTMTncLcPkRyxO8KgUrMQHjhHOsLuUXHmsGzKal7o
+  permissions: "[\"read\",\"write\"]"
+  info: ~ # this really should have info but it was SOOoo long
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2012-10-25 01:10:33
+  updated_at: 2012-10-25 01:10:33
+evernote: # this is an sandbox.evernote.com user
+  provider: evernote
+  uid: 210108
+  token: S=s1:U=334bc:E=141b78afec8:C=13a5fd9d2c8:P=81:A=reading-am:H=e8f25b8dec83d03c2e1a9b84c0e76f7c
+  secret: ""
+  permissions: "[\"read\",\"write\"]"
+  info: "{\"id\":210108,\"username\":\"reading\",\"privilege\":1,\"active\":true,\"shardId\":\"s1\",\"accounting\":{\"uploadLimit\":62914560,\"uploadLimitEnd\":1355472000000,\"uploadLimitNextMonth\":62914560,\"premiumServiceStatus\":0},\"edam\":{\"noteStoreUrl\":\"https://sandbox.evernote.com/shard/s1/notestore\",\"webApiUrlPrefix\":\"https://sandbox.evernote.com/shard/s1/\"}}"  
+  expires_at: 45756-05-09 01:22:16
+  refresh_token: ~
+  created_at: 2012-11-19 01:14:55
+  updated_at: 2012-11-19 01:14:55

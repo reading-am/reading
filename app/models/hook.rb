@@ -66,7 +66,7 @@ class Hook < ActiveRecord::Base
   def trigger_method post, event_fired
     self.send(self.provider, post, event_fired)
   end
-  handle_asynchronously :trigger_method unless Rails.env == 'development'
+  handle_asynchronously :trigger_method unless ['development','test'].include? Rails.env
 
   def pusher post, event_fired
     event_fired = :update if [:yep,:nope].include? event_fired
@@ -105,7 +105,8 @@ class Hook < ActiveRecord::Base
   end
 
   def tumblr post, event_fired
-    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
+    # this must use string rather than symbol keys in the options hash
+    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.display_title}", "description" => post.page.excerpt}
   end
 
   def twitter post, event_fired
@@ -176,8 +177,8 @@ class Hook < ActiveRecord::Base
 <!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
 <en-note>
   <div style="font-family:Helvetica,Arial,sans-serif">
-    <h3>#{post.page.title}</h3>
-    <a href="#{post.page.url}">#{post.page.url}</a>
+    <h3>#{CGI.escapeHTML post.page.title}</h3>
+    <a href="#{CGI.escapeHTML post.page.url}">#{CGI.escapeHTML post.page.url}</a>
   </div>
 </en-note>
 EOF

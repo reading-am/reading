@@ -78,13 +78,17 @@ $READING_SLANGER_SECRET`
 
 ## Testing
 
-For Javascript, run:
+### Ruby
 
-`rake konacha:serve`
+Test are run continually by [Watchr](https://github.com/mynyml/watchr)
+when each spec file is modified. Output is listed by [Foreman](https://github.com/ddollar/foreman)
+under the process named `testruby`.
 
-And visit:
+### Javascript
 
-`http://0.0.0.0:3500`
+Tests are run through [Mocha](http://visionmedia.github.com/mocha/)
+via [Konacha](https://github.com/jfirebaugh/konacha) by visiting
+`http://0.0.0.0:3500` in your browser.
 
 ## Grant Admin Access
 enter the following script in the rails console:
@@ -93,4 +97,3 @@ u = User.find_by_username("someUsername")
 u.roles << :admin
 u.save!
 ```
-

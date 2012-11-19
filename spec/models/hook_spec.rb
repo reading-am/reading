@@ -50,6 +50,21 @@ describe Hook do
       # allow note updating or deleting so there is no cleanup
     end
 
+    it "posts to Readability" do
+      # setup
+      hook = hooks(:readability)
+      hook.authorization = authorizations(:readability)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      # test
+      response = hook.run(post, :new)
+      response.status.should eq("202")
+      #cleanup
+      response = hook.authorization.api.delete_bookmark response.bookmark_id
+      response.status.should eq("204")
+    end
+
   end
 
 end

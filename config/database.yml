@@ -16,6 +16,7 @@ test:
   pool: 5
   username: myuser
   password: '***REMOVED***'
+  min_messages: warning
 
 production:
   adapter: postgresql

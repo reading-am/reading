@@ -18,3 +18,7 @@ instapaper:
   provider: "instapaper"
   events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
   params: "{\"permission\":\"write\"}"
+pocket:
+  provider: pocket
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\"}"

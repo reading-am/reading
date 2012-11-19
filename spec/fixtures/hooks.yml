@@ -10,3 +10,7 @@ evernote:
   provider: evernote
   events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
   params: "{\"permission\":\"write\",\"place\":{\"id\":\"8d75caf8-06d3-4dc2-949c-903ed24b5304\",\"name\":\"reading's notebook\"}}"
+readability:
+  provider: readability
+  params: "{\"permission\":\"write\"}"
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"

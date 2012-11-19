@@ -31,3 +31,14 @@ evernote: # this is an sandbox.evernote.com user
   refresh_token: ~
   created_at: 2012-11-19 01:14:55
   updated_at: 2012-11-19 01:14:55
+readability:
+  provider: readability
+  uid: reading_am
+  token: ***REMOVED***
+  secret: ***REMOVED***
+  permissions: "[\"read\",\"write\"]"
+  info: ~
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2012-11-19 16:49:08
+  updated_at: 2012-11-19 16:49:08

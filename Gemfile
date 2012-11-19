@@ -24,7 +24,7 @@ gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
-gem 'omniauth-37signals'
+gem 'omniauth-37signals', :git => 'git://github.com/leppert/omniauth-37signals.git'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
 gem 'omniauth-readability'
@@ -55,7 +55,7 @@ gem 'girl_friday'
 # gem 'hirefire' # has to be AFTER delayed_job
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'validate_email'
-gem "twitter-bootstrap-rails", :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+gem "twitter-bootstrap-rails", '2.1.4' # there's a LESS compile issue with 2.1.6
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'

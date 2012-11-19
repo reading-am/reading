@@ -35,6 +35,15 @@ GIT
       multi_json (~> 1.3.4)
 
 GIT
+  remote: git://github.com/leppert/omniauth-37signals.git
+  revision: c062fcd29d5f9440c12c1c55c2f20b93dd424ba4
+  specs:
+    omniauth-37signals (1.0.4)
+      multi_json (~> 1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+
+GIT
   remote: git://github.com/leppert/omniauth-http-basic.git
   revision: 23e13a439fd148fe02636ca60adc5ef68270f55d
   specs:
@@ -62,15 +71,6 @@ GIT
   revision: e04ce113749fce8d37660826d9530ee6058aabea
   specs:
     oauth (0.4.7)
-
-GIT
-  remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
-  revision: 9061e50deb50cfc5002c2a791ff35101e3bf8348
-  specs:
-    twitter-bootstrap-rails (2.1.6)
-      actionpack (>= 3.1)
-      execjs
-      railties (>= 3.1)
 
 GIT
   remote: git://github.com/zzip/twitter_bootstrap_form_for.git
@@ -235,7 +235,7 @@ GEM
       sprockets
     less (2.2.2)
       commonjs (~> 0.2.6)
-    less-rails (2.2.6)
+    less-rails (2.2.3)
       actionpack (>= 3.1)
       less (~> 2.2.0)
     libv8 (3.3.10.4)
@@ -246,7 +246,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.19)
-    multi_json (1.3.6)
+    multi_json (1.3.7)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
     net-scp (1.0.4)
@@ -262,10 +262,6 @@ GEM
     omniauth (1.0.3)
       hashie (~> 1.2)
       rack
-    omniauth-37signals (1.0.4)
-      multi_json (>= 1.0.0, <= 1.3.6)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
     omniauth-evernote (1.2.0)
       evernote-thrift
       multi_json (~> 1.0)
@@ -433,6 +429,11 @@ GEM
       faraday (~> 0.8)
       multi_json (~> 1.3)
       simple_oauth (~> 0.1.6)
+    twitter-bootstrap-rails (2.1.4)
+      actionpack (>= 3.1)
+      less-rails (~> 2.2.3)
+      railties (>= 3.1)
+      therubyracer (>= 0.10.2)
     twitter-stream (0.1.16)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
@@ -494,7 +495,7 @@ DEPENDENCIES
   nokogiri
   oauth!
   omniauth
-  omniauth-37signals
+  omniauth-37signals!
   omniauth-evernote
   omniauth-facebook (= 1.4.0)
   omniauth-http-basic!
@@ -526,7 +527,7 @@ DEPENDENCIES
   tinder
   tumblr-ruby
   twitter
-  twitter-bootstrap-rails!
+  twitter-bootstrap-rails (= 2.1.4)
   twitter-text
   twitter_bootstrap_form_for!
   typhoeus

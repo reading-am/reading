@@ -80,25 +80,15 @@ $READING_SLANGER_SECRET`
 
 ### Ruby
 
-In a terminal run:
-
-`bundle exec spork`
-
-In a different terminal run:
-
-`rake watchr`
-
-The `watchr` terminal will run and output tests as they are modified.
+Test are run continually by [Watchr](https://github.com/mynyml/watchr)
+when each spec file is modified. Output is listed by [Foreman](https://github.com/ddollar/foreman)
+under the process named `testruby`.
 
 ### Javascript
 
-In a terminal run:
-
-`rake konacha:serve`
-
-And visit in your browser:
-
-`http://0.0.0.0:3500`
+Tests are run through [Mocha](http://visionmedia.github.com/mocha/)
+via [Konacha](https://github.com/jfirebaugh/konacha) by visiting
+`http://0.0.0.0:3500` in your browser.
 
 ## Grant Admin Access
 enter the following script in the rails console:
@@ -107,4 +97,3 @@ u = User.find_by_username("someUsername")
 u.roles << :admin
 u.save!
 ```
-

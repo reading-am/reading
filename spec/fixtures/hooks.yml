@@ -1,3 +1,6 @@
 twitter:
   provider: twitter
   events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+tumblr:
+  provider: tumblr
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"

@@ -105,7 +105,8 @@ class Hook < ActiveRecord::Base
   end
 
   def tumblr post, event_fired
-    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {:title => "✌ #{post.page.display_title}", :description => post.page.excerpt}
+    # this must use string rather than symbol keys in the options hash
+    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.display_title}", "description" => post.page.excerpt}
   end
 
   def twitter post, event_fired

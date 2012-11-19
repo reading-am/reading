@@ -16,7 +16,8 @@ describe Hook do
       response = hook.run(post, :new)
       response.should be_an_instance_of Twitter::Tweet
       #cleanup
-      hook.authorization.api.status_destroy(response.id)
+      response = hook.authorization.api.status_destroy(response.id)
+      response.first.should be_an_instance_of Twitter::Tweet
     end
 
     it "posts to Tumblr" do
@@ -28,9 +29,10 @@ describe Hook do
       post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, :new)
-      response.should be_an_instance_of Twitter::Tweet
+      response.meta.status.should eq(201)
       #cleanup
-      hook.authorization.api.status_destroy(response.id)
+      response = hook.authorization.api.delete_post("#{hook.place[:id]}.tumblr.com", response.response.id)
+      response.meta.status.should eq(200)
     end
 
   end

@@ -1,11 +1,22 @@
 twitter:
-  provider: "twitter"
-  uid: "411780217"
-  token: "411780217-I073AhxvG5nkLah38qfqDGCkIfe0se2KHHx2Q3hI"
-  secret: "cYF6RznwAAlXthdJDttO8JH9p3uQZTT1YSj7MZc" 
+  provider: twitter
+  uid: 411780217
+  token: 411780217-I073AhxvG5nkLah38qfqDGCkIfe0se2KHHx2Q3hI
+  secret: cYF6RznwAAlXthdJDttO8JH9p3uQZTT1YSj7MZc
   permissions: "[\"read\",\"write\"]"
   info: ~
   expires_at: ~
   refresh_token: ~
-  created_at: "2012-02-13 04:01:15"
-  updated_at: "2012-02-13 04:01:15"
+  created_at: 2012-02-13 04:01:15
+  updated_at: 2012-02-13 04:01:15
+tumblr:
+  provider: tumblr
+  uid: leppert
+  token: Xa7eIGQES5544g60AxOAmY3jEm8m0jyfJdhSdcAm2Kp8OlZZLU
+  secret: mwOpbZTAPBTMTncLcPkRyxO8KgUrMQHjhHOsLuUXHmsGzKal7o
+  permissions: "[\"read\",\"write\"]"
+  info: ~ # this really should have info but it was SOOoo long
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2012-10-25 01:10:33
+  updated_at: 2012-10-25 01:10:33

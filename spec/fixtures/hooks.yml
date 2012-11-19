@@ -1,6 +1,8 @@
 twitter:
   provider: twitter
   events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\"}"
 tumblr:
   provider: tumblr
   events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\",\"place\":{\"id\":\"besttest\",\"name\":\"The Best Test Blog\"}}"

@@ -198,6 +198,7 @@ EOF
     clip.url = post.page.url
     clip.list = place[:id]
     clip.save
+    clip
   end
 
   def pocket post, event_fired

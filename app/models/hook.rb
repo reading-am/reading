@@ -68,12 +68,6 @@ class Hook < ActiveRecord::Base
   end
   handle_asynchronously :trigger_method unless ['development','test'].include? Rails.env
 
-  def pusher post, event_fired
-    event_fired = :update if [:yep,:nope].include? event_fired
-    Pusher['everybody'].trigger("#{event_fired}_obj", post.simple_obj)
-    Pusher[post.user.username].trigger("#{event_fired}_obj", post.simple_obj)
-  end
-
   def facebook post, event_fired
     case params['permission']
     when 'publish_stream' # wall

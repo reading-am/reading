@@ -60,8 +60,6 @@ modules:
 
   - name: libs/pusher
 
-  - name: ie/html5
-
 ## for testing
 #optimize: none
 #uglify:

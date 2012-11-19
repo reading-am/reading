@@ -20,7 +20,7 @@ tumblr:
   refresh_token: ~
   created_at: 2012-10-25 01:10:33
   updated_at: 2012-10-25 01:10:33
-evernote: # this is an sandbox.evernote.com user
+evernote: # this is a sandbox.evernote.com user
   provider: evernote
   uid: 210108
   token: S=s1:U=334bc:E=141b78afec8:C=13a5fd9d2c8:P=81:A=reading-am:H=e8f25b8dec83d03c2e1a9b84c0e76f7c
@@ -64,3 +64,14 @@ pocket:
   refresh_token: ~
   created_at: 2012-11-19 19:43:56
   updated_at: 2012-11-19 19:43:56
+kippt:
+  provider: kippt
+  uid: 40115
+  token: ***REMOVED***
+  secret: ~
+  permissions: "[\"read\",\"write\"]"
+  info: "{\"username\":\"reading\",\"app_url\":\"/reading\",\"lists\":\"/api/users/reading/lists/\",\"avatar_url\":\"https://secure.gravatar.com/avatar/9ea76da6ac2721230ea2d0a49b38e468/?default=https%3A%2F%2Fkippt.com%2Fstatic%2Fimg%2Fdefault-avatar.jpg&amp;s=160\",\"api_token\":\"***REMOVED***\",\"id\":40115,\"resource_uri\":\"/api/users/40115/\"}"
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2012-11-19 21:26:41
+  updated_at: 2012-11-19 21:26:41

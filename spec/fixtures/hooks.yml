@@ -22,3 +22,7 @@ pocket:
   provider: pocket
   events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
   params: "{\"permission\":\"write\"}"
+kippt:
+  provider: kippt
+  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
+  params: "{\"permission\":\"write\",\"place\":{\"id\":\"216120\",\"name\":\"Inbox\"}}"

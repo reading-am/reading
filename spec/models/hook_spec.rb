@@ -104,6 +104,21 @@ describe Hook do
       response.code.should eq(200)
     end
 
+    it "posts to Kippt" do
+      # setup
+      hook = hooks(:kippt)
+      hook.authorization = authorizations(:kippt)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      # test
+      response = hook.run(post, :new)
+      response.id.should be_an_instance_of(Fixnum)
+      # cleanup
+      response = response.destroy
+      response.should be_true
+    end
+
   end
 
 end

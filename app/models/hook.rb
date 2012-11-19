@@ -177,8 +177,8 @@ class Hook < ActiveRecord::Base
 <!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
 <en-note>
   <div style="font-family:Helvetica,Arial,sans-serif">
-    <h3>#{post.page.title}</h3>
-    <a href="#{post.page.url}">#{post.page.url}</a>
+    <h3>#{CGI.escapeHTML post.page.title}</h3>
+    <a href="#{CGI.escapeHTML post.page.url}">#{CGI.escapeHTML post.page.url}</a>
   </div>
 </en-note>
 EOF

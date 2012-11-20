@@ -189,7 +189,7 @@ EOF
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 
-    room ||= authorization.api.find_room_by_id(self.params['room']['id'].to_i)
+    room ||= authorization.api.find_room_by_id(self.params['place']['id'].to_i)
     room.speak output if !room.nil?
   end
 

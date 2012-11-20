@@ -136,6 +136,21 @@ describe Hook do
       # NOTE - It's a chat client so there is no cleanup
     end
 
+    it "posts to Campfire" do
+      # setup
+      hook = hooks(:tssignals)
+      hook.authorization = authorizations(:tssignals)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      # test
+      response = hook.run(post, :new)
+      response.message.type.should eq("TextMessage")
+      response.message.id.should be_an_instance_of(Fixnum)
+      # cleanup
+      # NOTE - It's a chat client so there is no cleanup
+    end
+
   end
 
 end

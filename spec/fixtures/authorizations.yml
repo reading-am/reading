@@ -3,8 +3,8 @@ facebook:
   uid: 100003056467686
   token: AAADbOvjUUm8BAATcdLIufx5EzZAFBZAZCqO6CWpnHX6St8kvFCgSXX5nBXgMaWezQ0WUJd0UcZA4Uh4U6fnzYxeCschb51hJlDBjbc4y5AZDZD
   secret: ~
-  permissions: "[\"installed\",\"publish_actions\"]"
-  info: "{\"id\":\"100003056467686\",\"name\":\"Auth Dialog Preview User\",\"first_name\":\"Auth\",\"middle_name\":\"Dialog Preview\",\"last_name\":\"User\",\"link\":\"http://www.facebook.com/profile.php?id=100003056467686\",\"gender\":\"female\",\"timezone\":-4,\"locale\":\"en_US\",\"updated_time\":\"2012-05-30T12:41:57+0000\"}"
+  permissions: ! '["installed","publish_actions"]'
+  info: ! '{"id":"100003056467686","name":"Auth Dialog Preview User","first_name":"Auth","middle_name":"Dialog Preview","last_name":"User","link":"http://www.facebook.com/profile.php?id=100003056467686","gender":"female","timezone":-4,"locale":"en_US","updated_time":"2012-05-30T12:41:57+0000"}'
   expires_at: 2012-07-29 12:42:47
   refresh_token: ~
   created_at: 2012-05-30 12:45:15
@@ -15,7 +15,7 @@ twitter:
   uid: 411780217
   token: 411780217-I073AhxvG5nkLah38qfqDGCkIfe0se2KHHx2Q3hI
   secret: cYF6RznwAAlXthdJDttO8JH9p3uQZTT1YSj7MZc
-  permissions: "[\"read\",\"write\"]"
+  permissions: ! '["read","write"]'
   info: ~
   expires_at: ~
   refresh_token: ~
@@ -27,7 +27,7 @@ tumblr:
   uid: leppert
   token: Xa7eIGQES5544g60AxOAmY3jEm8m0jyfJdhSdcAm2Kp8OlZZLU
   secret: mwOpbZTAPBTMTncLcPkRyxO8KgUrMQHjhHOsLuUXHmsGzKal7o
-  permissions: "[\"read\",\"write\"]"
+  permissions: ! '["read","write"]'
   info: ~ # this really should have info but it was SOOoo long
   expires_at: ~
   refresh_token: ~
@@ -39,8 +39,8 @@ evernote: # this is a sandbox.evernote.com user
   uid: 210108
   token: S=s1:U=334bc:E=141b78afec8:C=13a5fd9d2c8:P=81:A=reading-am:H=e8f25b8dec83d03c2e1a9b84c0e76f7c
   secret: ""
-  permissions: "[\"read\",\"write\"]"
-  info: "{\"id\":210108,\"username\":\"reading\",\"privilege\":1,\"active\":true,\"shardId\":\"s1\",\"accounting\":{\"uploadLimit\":62914560,\"uploadLimitEnd\":1355472000000,\"uploadLimitNextMonth\":62914560,\"premiumServiceStatus\":0},\"edam\":{\"noteStoreUrl\":\"https://sandbox.evernote.com/shard/s1/notestore\",\"webApiUrlPrefix\":\"https://sandbox.evernote.com/shard/s1/\"}}"  
+  permissions: ! '["read","write"]'
+  info: ! '{"id":210108,"username":"reading","privilege":1,"active":true,"shardId":"s1","accounting":{"uploadLimit":62914560,"uploadLimitEnd":1355472000000,"uploadLimitNextMonth":62914560,"premiumServiceStatus":0},"edam":{"noteStoreUrl":"https://sandbox.evernote.com/shard/s1/notestore","webApiUrlPrefix":"https://sandbox.evernote.com/shard/s1/"}}'
   expires_at: 45756-05-09 01:22:16
   refresh_token: ~
   created_at: 2012-11-19 01:14:55
@@ -51,7 +51,7 @@ readability:
   uid: reading_am
   token: 4sjNZNJy77vBMkrvab
   secret: nx6YTLJWvdBnHD4CGCpBBJwqxDJrcRAj
-  permissions: "[\"read\",\"write\"]"
+  permissions: ! '["read","write"]'
   info: ~
   expires_at: ~
   refresh_token: ~
@@ -63,8 +63,8 @@ instapaper:
   uid: 2656381
   token: nPJz4QOwoIkMC18por03drdjIZTB0rxXZjlIvOxFwjMxZc0VbF
   secret: hsXVw7WrRj2bygTyiWXOBR2icg7Zoq1xEnIo5Z0bltXbu4gPNY
-  permissions: "[\"read\",\"write\"]"
-  info: "{\"type\":\"user\",\"user_id\":2656381,\"username\":\"test@reading.am\",\"subscription_is_active\":\"0\"}"
+  permissions: ! '["read","write"]'
+  info: ! '{"type":"user","user_id":2656381,"username":"test@reading.am","subscription_is_active":"0"}'
   expires_at: ~
   refresh_token: ~
   created_at: 2012-11-19 18:50:20
@@ -75,8 +75,8 @@ pocket:
   uid: reading_am
   token: ec75b4b7-fecb-9275-2c5e-a9656f
   secret: ~
-  permissions: "[\"read\",\"write\"]"
-  info: "{\"username\":\"reading_am\"}"
+  permissions: ! '["read","write"]'
+  info: ! '{"username":"reading_am"}'
   expires_at: ~ 
   refresh_token: ~
   created_at: 2012-11-19 19:43:56
@@ -87,9 +87,21 @@ kippt:
   uid: 40115
   token: bbb63b9a988dc5eb6264f04441e450a4c024022e
   secret: ~
-  permissions: "[\"read\",\"write\"]"
-  info: "{\"username\":\"reading\",\"app_url\":\"/reading\",\"lists\":\"/api/users/reading/lists/\",\"avatar_url\":\"https://secure.gravatar.com/avatar/9ea76da6ac2721230ea2d0a49b38e468/?default=https%3A%2F%2Fkippt.com%2Fstatic%2Fimg%2Fdefault-avatar.jpg&amp;s=160\",\"api_token\":\"bbb63b9a988dc5eb6264f04441e450a4c024022e\",\"id\":40115,\"resource_uri\":\"/api/users/40115/\"}"
+  permissions: ! '["read","write"]'
+  info: ! '{"username":"reading","app_url":"/reading","lists":"/api/users/reading/lists/","avatar_url":"https://secure.gravatar.com/avatar/9ea76da6ac2721230ea2d0a49b38e468/?default=https%3A%2F%2Fkippt.com%2Fstatic%2Fimg%2Fdefault-avatar.jpg&amp;s=160","api_token":"bbb63b9a988dc5eb6264f04441e450a4c024022e","id":40115,"resource_uri":"/api/users/40115/"}'
   expires_at: ~
   refresh_token: ~
   created_at: 2012-11-19 21:26:41
   updated_at: 2012-11-19 21:26:41
+
+tssignals:
+  provider: tssignals
+  uid: 329528
+  token: BAhbByIB2nsiZXhwaXJlc19hdCI6IjIwMTItMDgtMDlUMDE6NTY6MTRaIiwidXNlcl9pZHMiOls1NTgyMDg5LDg1NzAwMjYsOTMxMDg1MiwxMDAzMjYxNiwxMzUxMjM4NSwxMzUxMjM5MV0sInZlcnNpb24iOjEsImNsaWVudF9pZCI6Ijg3MGZmODM4MDM3YTYyYTcwNThjMGZjOTNmNGNiMTQ2MzI2MjZiMGYiLCJhcGlfZGVhZGJvbHQiOiJhZmFmMTNkYjM5YmY1MzViNGVjMGExNDJkZDY1OTI3YSJ9dToJVGltZQ0hHRzA7bDu4A==--2989137789412f058f4153501939b2237241e29f
+  secret: 
+  permissions: ! '["read","write"]'
+  info: ! '{"expires_at":"2012-08-09T01:56:14Z","identity":{"id":329528,"last_name":"Leppert","email_address":"greg@letsbequiet.com","first_name":"Greg"},"accounts":[{"href":"https://reading.campfirenow.com","name":"Reading","id":1648312,"product":"campfire","api_auth_token":"f373362af18b80b9758fcf42cc80b3dfd1214601"}]}'
+  expires_at: 2012-08-09 01:56:14
+  refresh_token: BAhbByIB2nsiZXhwaXJlc19hdCI6IjIwMjItMDctMjZUMDE6NTY6MTRaIiwidXNlcl9pZHMiOls1NTgyMDg5LDg1NzAwMjYsOTMxMDg1MiwxMDAzMjYxNiwxMzUxMjM4NSwxMzUxMjM5MV0sInZlcnNpb24iOjEsImNsaWVudF9pZCI6Ijg3MGZmODM4MDM3YTYyYTcwNThjMGZjOTNmNGNiMTQ2MzI2MjZiMGYiLCJhcGlfZGVhZGJvbHQiOiJhZmFmMTNkYjM5YmY1MzViNGVjMGExNDJkZDY1OTI3YSJ9dToJVGltZQ1Bmx7AVL7u4A==--35480f127cbf53f470447733fb91f107d641eb23
+  created_at: 2012-07-26 01:56:15.377963
+  updated_at: 2012-07-26 01:56:15.377963

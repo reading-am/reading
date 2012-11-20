@@ -1,0 +1,30 @@
+greg:
+  name: Greg Leppert
+  username: greg
+  created_at: 2011-08-08 11:43:22
+  updated_at: 2012-11-17 18:45:01
+  token: afjkalsdfjsdklafj
+  auth_token: fjdsklafjdskal
+  email: test@reading.am
+  first_name: ~
+  last_name: ~
+  location: NYC
+  description: Design'n. Develop'n. Cofound'n Svpply.com.
+  image: http://a0.twimg.com/profile_images/1609147766/302644_10150294503584070_500384069_7411310_1065630111_n_normal.jpeg
+  phone: ~
+  urls: "--- !ruby/hash:Hashie::Mash\nWebsite: http://leppert.me\nTwitter: http://twitter.com/leppert\n"
+  email_when_followed: true
+  avatar_file_name: avatar_square.png
+  avatar_content_type: image/png
+  avatar_file_size: 258249
+  avatar_updated_at: 2012-03-24 19:26:50
+  bio: I make Reading.am and Svpply.com.
+  link: http://twitter.com/leppert
+  mail_digest: 1
+  access: 7
+  posts_count: 4982
+  following_count: 142
+  followers_count: 157
+  comments_count: 621
+  email_when_mentioned: true
+  roles: 1

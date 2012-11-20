@@ -1,3 +1,15 @@
+facebook:
+  provider: facebook
+  uid: 100003056467686
+  token: ***REMOVED***
+  secret: ~
+  permissions: "[\"installed\",\"publish_actions\"]"
+  info: "{\"id\":\"100003056467686\",\"name\":\"Auth Dialog Preview User\",\"first_name\":\"Auth\",\"middle_name\":\"Dialog Preview\",\"last_name\":\"User\",\"link\":\"http://www.facebook.com/profile.php?id=100003056467686\",\"gender\":\"female\",\"timezone\":-4,\"locale\":\"en_US\",\"updated_time\":\"2012-05-30T12:41:57+0000\"}"
+  expires_at: 2012-07-29 12:42:47
+  refresh_token: ~
+  created_at: 2012-05-30 12:45:15
+  updated_at: 2012-05-30 12:45:15
+
 twitter:
   provider: twitter
   uid: 411780217
@@ -9,6 +21,7 @@ twitter:
   refresh_token: ~
   created_at: 2012-02-13 04:01:15
   updated_at: 2012-02-13 04:01:15
+
 tumblr:
   provider: tumblr
   uid: leppert
@@ -20,6 +33,7 @@ tumblr:
   refresh_token: ~
   created_at: 2012-10-25 01:10:33
   updated_at: 2012-10-25 01:10:33
+
 evernote: # this is a sandbox.evernote.com user
   provider: evernote
   uid: 210108
@@ -31,6 +45,7 @@ evernote: # this is a sandbox.evernote.com user
   refresh_token: ~
   created_at: 2012-11-19 01:14:55
   updated_at: 2012-11-19 01:14:55
+
 readability:
   provider: readability
   uid: reading_am
@@ -42,6 +57,7 @@ readability:
   refresh_token: ~
   created_at: 2012-11-19 16:49:08
   updated_at: 2012-11-19 16:49:08
+
 instapaper:
   provider: instapaper
   uid: 2656381
@@ -53,6 +69,7 @@ instapaper:
   refresh_token: ~
   created_at: 2012-11-19 18:50:20
   updated_at: 2012-11-19 18:50:20
+
 pocket:
   provider: pocket
   uid: reading_am
@@ -64,6 +81,7 @@ pocket:
   refresh_token: ~
   created_at: 2012-11-19 19:43:56
   updated_at: 2012-11-19 19:43:56
+
 kippt:
   provider: kippt
   uid: 40115

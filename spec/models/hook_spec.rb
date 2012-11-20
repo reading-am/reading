@@ -1,9 +1,12 @@
 require "spec_helper"
 
 describe Hook do
-  fixtures :hooks, :posts, :pages, :domains, :authorizations
+  fixtures :users, :hooks, :posts, :pages, :domains, :authorizations
 
   context "when run" do
+
+    it "posts to Facebook" do
+    end
 
     it "posts to Twitter" do
       # setup
@@ -117,6 +120,20 @@ describe Hook do
       # cleanup
       response = response.destroy
       response.should be_true
+    end
+
+    it "posts to HipChat" do
+      # setup
+      hook = hooks(:hipchat)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      post.user = users(:greg)
+      # test
+      response = hook.run(post, :new)
+      response.should be_true
+      # cleanup
+      # NOTE - It's a chat client so there is no cleanup
     end
 
   end

@@ -1,44 +1,49 @@
 facebook:
   provider: facebook
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"publish_actions\"}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"publish_actions"}'
 
 twitter:
   provider: twitter
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\"}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write"}'
 
 tumblr:
   provider: tumblr
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\",\"place\":{\"id\":\"besttest\",\"name\":\"The Best Test Blog\"}}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write","place":{"id":"besttest","name":"The Best Test Blog"}}'
 
 evernote:
   provider: evernote
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\",\"place\":{\"id\":\"8d75caf8-06d3-4dc2-949c-903ed24b5304\",\"name\":\"reading's notebook\"}}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write","place":{"id":"8d75caf8-06d3-4dc2-949c-903ed24b5304","name":"reading''s notebook"}}'
 
 readability:
   provider: readability
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\"}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write"}'
 
 instapaper:
   provider: instapaper
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\"}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write"}'
 
 pocket:
   provider: pocket
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\"}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write"}'
 
 kippt:
   provider: kippt
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"permission\":\"write\",\"place\":{\"id\":\"216120\",\"name\":\"Inbox\"}}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write","place":{"id":"216120","name":"Inbox"}}'
 
 hipchat:
   provider: hipchat
-  events: "[\"new\",\"yep\",\"nope\",\"comment\"]"
-  params: "{\"room\":\"Test\",\"token\":\"bf9fd02f553e79cddec44d205e2feb\"}"
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"room":"Test","token":"bf9fd02f553e79cddec44d205e2feb"}'
+
+tssignals:
+  provider: tssignals
+  params: ! '{"permission":"write","place":{"id":"452867","name":"Room 1"}}'
+  events: ! '["new","yep","nope","comment"]'

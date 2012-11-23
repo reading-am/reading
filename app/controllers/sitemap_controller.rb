@@ -4,6 +4,6 @@
 class SitemapController < ApplicationController
   def index
     params[:partial] = '_index' if params[:partial].nil?
-    redirect_to "#{S3_BUCKET}/sitemaps/sitemap#{params[:partial]}.xml.gz"
+    redirect_to "#{ENV['READING_S3_BUCKET']}/sitemaps/sitemap#{params[:partial]}.xml.gz"
   end
 end

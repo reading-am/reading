@@ -31,8 +31,4 @@ Reading::Application.configure do
   # mailcatcher https://github.com/sj26/mailcatcher
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
-
-  Pusher.app_id = '10842'
-  Pusher.key = '2fc1c5a4912b19b862e8'
-  Pusher.secret = '4c575471553a97d9b5c4'
 end

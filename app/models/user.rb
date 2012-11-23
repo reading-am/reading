@@ -33,16 +33,11 @@ class User < ActiveRecord::Base
       :medium => "140x140>",
       :large => "500x500>"
     },
-    :default_url => "//#{DOMAIN}/assets/users/:attachment/default_:style.png",
-    :storage => :s3,
-    :s3_protocol => 'https',
-    :bucket => "reading-#{Rails.env}",
-    :s3_credentials => {
-      :access_key_id => ENV['READING_S3_KEY'],
-      :secret_access_key => ENV['READING_S3_SECRET']
-    }
-  validates_attachment_size :avatar, :less_than=>2.megabytes
-  validates_attachment_content_type :avatar, :content_type=>['image/jpeg', 'image/png', 'image/gif']
+    :default_url => "//#{DOMAIN}/assets/users/:attachment/default_:style.png"
+
+  validates_attachment :avatar,
+    :size => { :less_than => 2.megabytes },
+    :content_type => { :content_type => ['image/jpeg', 'image/png', 'image/gif'] }
 
   validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true, :case_sensitive => false

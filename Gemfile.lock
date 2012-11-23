@@ -309,7 +309,7 @@ GEM
     progress_bar (0.4.0)
       highline (~> 1.6.1)
       options (~> 2.3.0)
-    pusher (0.11.0)
+    pusher (0.10.0)
       multi_json (~> 1.0)
       signature (~> 0.1.4)
     rack (1.4.1)
@@ -509,7 +509,7 @@ DEPENDENCIES
   pg
   premailer-rails3!
   progress_bar
-  pusher
+  pusher (= 0.10.0)
   rack-cors
   rails (= 3.2.8)
   rails-backbone

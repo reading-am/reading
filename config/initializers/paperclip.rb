@@ -1,6 +1,20 @@
-# to remain compatible with version 2.x
-# via: http://stackoverflow.com/questions/10325288/paperclip-change-images-path-after-upgrade-to-rails-3-2
 Paperclip::Attachment.default_options.merge!(
-  :path => ":rails_root/public/system/:attachment/:id/:style/:basename.:extension",
-  :url => "/system/:attachment/:id/:style/:basename.:extension"
+  :storage => :s3,
+  :s3_protocol => 'https',
+  :bucket => ENV['READING_S3_BUCKET'],
+  :s3_host_alias => ENV['READING_S3_BUCKET'],
+  :s3_credentials => {
+    :access_key_id => ENV['READING_S3_KEY'],
+    :secret_access_key => ENV['READING_S3_SECRET']
+  }
 )
+
+########################
+# To switch to a CNAME #
+# add the params below #
+########################
+# Before doing so, see: https://github.com/leppert/reading/issues/339
+# NOTE :path taken from https://github.com/thoughtbot/paperclip/blob/master/lib/paperclip/attachment.rb#L27
+# For some reason it's required to specify :path when using :s3_alias_url as the :url
+#:url => ":s3_alias_url",
+#:path => ":class/:attachment/:id_partition/:style/:filename",

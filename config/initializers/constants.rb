@@ -4,7 +4,7 @@ BOOKMARKLET_VERSION = '1.0.1'
 case Rails.env
 when 'staging'
   DOMAIN = 'staging.reading.am'
-when 'development'
+when 'development', 'test'
   DOMAIN = '0.0.0.0:3000'
 else
   DOMAIN = 'reading.am'

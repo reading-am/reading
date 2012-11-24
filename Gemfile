@@ -40,7 +40,7 @@ gem 'addressable'
 gem 'base58'
 gem 'will_paginate'
 gem 'tinder' # campfire
-gem 'pusher'
+gem 'pusher', '0.10.0' # 0.11 installs gem signature 0.1.6 which throws 404s
 gem 'crack' # required by the hipchat gem
 gem 'yajl-ruby' # JSON parser recommended by twitter gem
 gem 'twitter'

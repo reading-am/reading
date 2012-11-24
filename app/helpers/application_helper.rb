@@ -57,9 +57,9 @@ module ApplicationHelper
       when 'chrome'
         link = 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk'
       when 'safari'
-        link = 'http://reading-production.s3.amazonaws.com/extensions/reading.safariextz'
+        link = "http://#{ENV['READING_S3_BUCKET']}/extensions/reading.safariextz"
       when 'firefox'
-        link = 'http://reading-production.s3.amazonaws.com/extensions/reading.xpi'
+        link = "http://#{ENV['READING_S3_BUCKET']}/extensions/reading.xpi"
     end
     link_to text, link, :class => "btn #{browser}-install"
   end

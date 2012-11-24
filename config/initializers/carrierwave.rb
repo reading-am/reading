@@ -7,5 +7,5 @@ CarrierWave.configure do |config|
     :aws_access_key_id      => ENV['READING_S3_KEY'],
     :aws_secret_access_key  => ENV['READING_S3_SECRET'],
   }
-  config.fog_directory  = "reading-#{Rails.env}"
+  config.fog_directory = ENV['READING_S3_BUCKET']
 end

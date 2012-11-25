@@ -4,11 +4,12 @@
 .r_comment, #r_am .r_comment {
   max-width:360px;
   background:none;
+  position: relative;
   .r_reply {
     color:@green !important;
   }
   .r_destroy {
-    color:@red !important;
+    color:@red !important;    
   }
   .r_comment_header {
     overflow:auto;
@@ -35,6 +36,18 @@
           padding-right: 8px;
         }
       }
+    }
+   .r_destroy_shown {
+      position: absolute;
+      right: 0;
+      padding: 5px 8px;
+      display: none;
+      &:hover {
+        display: block;
+      }
+    }
+    &:hover .r_destroy_shown {
+      display: block;
     }
     .r_showed_this_to {
       float:left;

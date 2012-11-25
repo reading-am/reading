@@ -9,11 +9,9 @@
   }
   nav {
     a, a.active:hover {
-      background:none;
-      padding:0;
       border-bottom:1px solid #CCC;
-      border-radius:0;
       margin-bottom:12px;
+      &.button { border:0; }
     }
     a:hover {
       text-decoration:none;
@@ -21,16 +19,6 @@
     }
     a.active {
       color:@medium_grey;
-    }
-  }
-  .button {
-    position:relative;
-    border-radius:3px;
-    background-color:@bright_green;
-    padding:3px 5px;
-    border:0;
-    &:hover {
-      background-color:@dark_green;
     }
   }
 }

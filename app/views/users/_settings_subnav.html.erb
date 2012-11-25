@@ -1,8 +1,8 @@
 <div id="subnav" class="row">
   <nav class="span7 offset1">
-    <a href="/settings/info"<% if params[:action] == 'edit' %> class="active"<% end %>>Info</a>
-    <a href="/settings/hooks"<% if params[:action] == 'hooks' %> class="active"<% end %>>Hooks</a>
-    <a href="/settings/extras"<% if params[:action] == 'extras' %> class="active"<% end %>>Extras</a>
+    <a href="/settings/info" class="button blue<% if params[:action] == 'edit' %> active<% end %>">Info</a>
+    <a href="/settings/hooks" class="button blue<% if params[:action] == 'hooks' %> active<% end %>">Hooks</a>
+    <a href="/settings/extras" class="button blue<% if params[:action] == 'extras' %> active<% end %>">Extras</a>
     <%= link_to "Sign Out", signout_path, :id => 'signout' %>
   </nav>
 </div>

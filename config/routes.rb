@@ -29,6 +29,8 @@ Reading::Application.routes.draw do
       resources :comments
       resources :posts
     end
+    resources :relationships do
+    end
   end
 
   match "/pusher/auth" => "pusher#auth"

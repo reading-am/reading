@@ -2,7 +2,11 @@
 @import "mixins";
 
 .r_user {
+  position:relative;
   &.r_size_small {
+    .r_profile {
+      display:inline;
+    }
     .r_avatar {
       display:inline-block;
       width:25px;
@@ -19,11 +23,12 @@
     }
   }
   &.r_size_medium {
-    a {
+    .r_profile {
       .makeRow();
       display:block;
       padding:10px 0;
       .border-radius(3px);
+      min-height:60px;
       &:hover { background: lighten(@ghost_grey, 5%); }
     }
     .r_avatar {
@@ -45,5 +50,13 @@
     -webkit-font-smoothing: subpixel-antialiased;
     color:@medium_light_grey;
     font-weight:normal;
+
+    display:inline-block;
+    width:400px;
+  }
+  .r_follow {
+    position:absolute;
+    right:10px;
+    top:10px;
   }
 }

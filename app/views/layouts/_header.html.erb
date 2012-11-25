@@ -5,9 +5,9 @@
 <div class="row">
   <nav id="mainnav" class="span7 offset1">
   <% if current_user.username_was and current_user.email_was # hides nav for /almost_ready %>
-    <%= link_to "You", "/#{current_user.username}/list", :class => ((request.path.split('/')[1] == current_user.username and !in_settings) ? 'active' : '') %>
-    <span class="hide_iphone">-</span> <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'search' && params[:username] != current_user.username && !in_settings ? 'active' : '') %>
-    <span class="hide_iphone">-</span> <%= link_to "Settings", "/settings/info", :class => (in_settings ? 'active' : '') %>
+    <%= link_to "You", "/#{current_user.username}/list", :class => ['button', ((request.path.split('/')[1] == current_user.username and !in_settings) ? 'active' : '')] %>
+    <span class="hide_iphone">-</span> <%= link_to "Everybody", '/everybody', :class => ['button', (params[:controller] != 'search' && params[:username] != current_user.username && !in_settings ? 'active' : '')] %>
+    <span class="hide_iphone">-</span> <%= link_to "Settings", "/settings/info", :class => ['button', (in_settings ? 'active' : '')] %>
     <span class="hide_iphone">-</span> <%= render :partial => 'search/form' %>
   <% end %>
   </nav>

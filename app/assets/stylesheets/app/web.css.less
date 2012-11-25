@@ -113,11 +113,32 @@ a.rss .glyph {
 
 nav a {
   display:inline-block;
-  border-radius:3px;
-  padding:3px 5px;
   margin-right:2px;
   font-size:16px;
 }
+
+.button {
+  border-radius:3px;
+  padding:3px 5px;
+  border:0;
+  position:relative;
+  &:hover {
+    text-decoration:none;
+  }
+  &.green {
+    background-color:@bright_green;
+    &:hover, &.active {
+      background-color:@dark_green;
+    }
+  }
+  &.blue {
+    background-color:@light_blue;
+    &:hover, &.active {
+      background-color:@blue;
+    }
+  }
+}
+
 .form-actions {
   background:none;
   border:none;

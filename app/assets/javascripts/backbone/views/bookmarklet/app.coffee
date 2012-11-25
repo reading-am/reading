@@ -61,7 +61,7 @@ define [
         @insert()
 
     insert: ->
-      @$el.prependTo("body").fadeIn 500
+      @$el.appendTo("body").fadeIn 500
 
       @$("#r_wrp").delay(500).animate
         height: "29px"

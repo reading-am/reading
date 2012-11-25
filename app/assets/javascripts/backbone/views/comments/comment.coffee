@@ -12,18 +12,20 @@ define [
   "app/views/components/share_popover"
   "text!app/templates/comments/comment.hbs"
   "text!app/templates/comments/comment_shown.hbs"
+  "text!app/templates/comments/comment_shown_to_many.hbs"
   "text!comments/comment.css"
   "app/models/uris/all"
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], ($, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
+], ($, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, multi_show_template, css) ->
 
   $("<style>").html(css).appendTo("head")
 
   class CommentView extends Backbone.View
     template: Handlebars.compile template
     shown_template: Handlebars.compile shown_template
+    multi_show_template: Handlebars.compile multi_show_template
 
     tagName: "li"
     className: "r_comment"
@@ -95,6 +97,8 @@ define [
 
       if @model.is_a_show()
         @$el.html(@shown_template(json))
+      else if @model.is_a_multi_show()
+        @$el.html(@multi_show_template(json))
       else
         @$el.html(@template(json))
 

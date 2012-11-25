@@ -9,6 +9,8 @@ class CommentObserver < ActiveRecord::Observer
       if !user.email.blank? and user.email_when_mentioned
         comment.is_a_show ? UserMailer.delay.shown_a_page(comment, user)
                            : UserMailer.delay.mentioned(comment, user)
+        #@todo: if comment is a multi show email everyone involved
+        #although, I'll have to edit the mentioned you in a comment Observer
       end
     end
   end

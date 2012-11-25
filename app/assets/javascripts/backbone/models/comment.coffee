@@ -8,7 +8,7 @@ define [
 
   class Comment extends Backbone.Model
     type: "Comment"
-    
+
     validate: (attr) ->
       if !attr.body || (!attr.page and !attr.page_id)
         return Constants.errors.general
@@ -30,9 +30,16 @@ define [
       return (m.length > 0 and @get("body").trim() is "@#{m[0]}")
 
     is_a_multi_show: ->
+      ###
       mention_count = @mentions().length
       word_count = @get("body").trim().split(' ').length 
       return (word_count is mention_count and mention_count > 1) 
+      ###
+      m = @mentions()
+      b = @get("body").trim().split(' ')
+      for index, word of b
+        if word is not "@#{m[index]}" then return false
+      return true
 
   App.Models.Comment = Comment
   return Comment

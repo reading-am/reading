@@ -59,6 +59,31 @@ define [
 
     new Handlebars.SafeString context
 
+  Handlebars.registerHelper 'multi_show', (context, fn) ->
+    #TODO i could probably just make the formatting a Handlebars Helper
+    # On second thought I think this is a lot slower so I'll let Greg choose
+    ###
+      @<a class="r_url r_mention" data-screen-name="two" href="//0.0.0.0:3000/two" rel="nofollow">two</a> 
+      @<a class="r_url r_mention" data-screen-name="three" href="//0.0.0.0:3000/three" rel="nofollow">three</a> 
+      @<a class="r_url r_mention" data-screen-name="four" href="//0.0.0.0:3000/four" rel="nofollow">four</a>
+    ###
+
+
+
+    $context = $("<div>#{context}</div>")
+    mentions = $context.children('.r_mention').length
+    words = $context.children().length
+    new_context = ""
+    if $context.children().length == $context.children('.r_mention').length
+      for index, mention in mentions
+        if index is mentions.length-1 
+          new_context += "and #{mention}"
+        else
+          new_context += "#{mention},"
+
+      
+    context = $context.html()
+
   Handlebars.registerHelper 'format_comment', (context, fn) ->
     context = Handlebars.helpers.nl2br.call this, context, fn
     context = Handlebars.helpers.link_emails.call this, context.string, fn
@@ -66,6 +91,7 @@ define [
     context = Handlebars.helpers.wrap_code.call this, context.string, fn
     context = Handlebars.helpers.autolink.call this, context.string, fn
     context = Handlebars.helpers.embed_images.call this, context.string, fn
+    context = Handlebars.helpers.multi_show.call this, context.string, fn
     context
 
   return Handlebars

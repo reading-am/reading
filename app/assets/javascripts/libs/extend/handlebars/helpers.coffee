@@ -60,29 +60,15 @@ define [
     new Handlebars.SafeString context
 
   Handlebars.registerHelper 'multi_show', (context, fn) ->
-    #TODO i could probably just make the formatting a Handlebars Helper
-    # On second thought I think this is a lot slower so I'll let Greg choose
-    ###
-      @<a class="r_url r_mention" data-screen-name="two" href="//0.0.0.0:3000/two" rel="nofollow">two</a> 
-      @<a class="r_url r_mention" data-screen-name="three" href="//0.0.0.0:3000/three" rel="nofollow">three</a> 
-      @<a class="r_url r_mention" data-screen-name="four" href="//0.0.0.0:3000/four" rel="nofollow">four</a>
-    ###
-
-
-
-    $context = $("<div>#{context}</div>")
-    mentions = $context.children('.r_mention').length
-    words = $context.children().length
+    mentions = $("<div>#{context}</div>").children('.r_mention').map -> this.innerHTML
     new_context = ""
-    if $context.children().length == $context.children('.r_mention').length
-      for index, mention in mentions
-        if index is mentions.length-1 
-          new_context += "and #{mention}"
-        else
-          new_context += "#{mention},"
+    for mention, index in mentions
+      new_context += "@<a class=\"r_url r_mention\" data-screen-name=\"#{mention}\" href=\"//#{Constants.domain}/#{mention}\" rel=\"nofollow\">#{mention}</a>"
+      new_context += ', ' if (index != mentions.length - 1) and mentions.length > 2
+      new_context += ' ' if index == 0 and mentions.length == 2
+      new_context += '<span class="r_and">and</span> ' if index == mentions.length - 2
 
-      
-    context = $context.html()
+    new Handlebars.SafeString new_context
 
   Handlebars.registerHelper 'format_comment', (context, fn) ->
     context = Handlebars.helpers.nl2br.call this, context, fn
@@ -91,7 +77,7 @@ define [
     context = Handlebars.helpers.wrap_code.call this, context.string, fn
     context = Handlebars.helpers.autolink.call this, context.string, fn
     context = Handlebars.helpers.embed_images.call this, context.string, fn
-    context = Handlebars.helpers.multi_show.call this, context.string, fn
+    context = Handlebars.helpers.multi_show.call(this, context.string, fn) if fn == "multi"
     context
 
   return Handlebars

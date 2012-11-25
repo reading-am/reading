@@ -27,6 +27,15 @@
     .r_shown_user {
       font-weight:bold;
     }
+    .r_shown_users.r_user {
+      .r_and { color: @dark_yellow !important; }
+      a.r_mention {
+        padding: 0;
+        &:last-child {
+          padding-right: 8px;
+        }
+      }
+    }
     .r_showed_this_to {
       float:left;
       margin:0 5px 0 -5px;

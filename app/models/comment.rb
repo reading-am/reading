@@ -51,6 +51,19 @@ class Comment < ActiveRecord::Base
     return @is_a_show ||= (mentions.length > 0 and body.strip == "@#{mentions[0]}")
   end
 
+  def is_a_multi_show
+    words = body.strip.split(' ')
+    return false if mentions.length <= 1
+    words.each_with_index do |word, index|
+      return false if word != "@#{mentions[index]}"
+    end
+    true
+  end
+
+  def self.find_most_recent_by_user_id(id)
+    where("user_id = #{id}").order("updated_at DESC").limit(1).first
+  end
+
   def channels
     [
       "comments",

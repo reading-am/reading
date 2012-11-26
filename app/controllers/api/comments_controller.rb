@@ -43,6 +43,7 @@ class Api::CommentsController < Api::APIController
   # POST /comments.json
   def create
     @comment = Comment.new
+    @recent_comment = Comment.find_most_recent_by_user_id(params[:model][:user_id])
 
     if params[:recipient]
       @comment.body = params['stripped-text'] # this comes from mailgun
@@ -56,6 +57,11 @@ class Api::CommentsController < Api::APIController
       @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
       @comment.page  = Page.find(params[:model][:page_id])
       @comment.body  = params[:model][:body]
+    end
+
+    if !@recent_comment.nil? and (@comment.is_a_show or @comment.is_a_multi_show)
+      @comment = @recent_comment
+      @comment.body = @recent_comment.body + ' ' + params[:model][:body]
     end
 
     respond_to do |format|

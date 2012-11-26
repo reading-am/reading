@@ -59,6 +59,8 @@ class Api::PostsController < Api::APIController
     # A post is a duplicate if it's the exact same page and within 1hr of the last post
     @post = Post.recent_by_user_and_page(user, page).first || Post.new({:user => user, :page => page, :referrer_post => ref, :yn => yn})
 
+    # @todo: If Post has comment made in the last hour that is_shown by the same user as another is_shown, combine the bodies of the comments seperated by a space
+    logger.debug "Updated Post: #{@post}" 
     respond_to do |format|
       if (@post.new_record? and @post.save) or @post.touch
         format.html { redirect_to(@post, :notice => 'Post was successfully created.') }

@@ -195,7 +195,7 @@ class User < ActiveRecord::Base
       :following_count => following.size,
       :followers_count => followers.size,
       :created_at => created_at,
-      :udpated_at => updated_at
+      :updated_at => updated_at
     }
   end
 end

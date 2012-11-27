@@ -1,12 +1,16 @@
 # encoding: utf-8
 class Api::UsersController < Api::APIController
-  # GET /users
-  # GET /users.xml
+
   def index
     if params[:user_id]
+      # list followers or following of a user
+      # users/1/followers
+      # users/1/following
       @user = User.find(params[:user_id])
       @users = @user.send(params[:type])
     elsif params[:page_id]
+      # list users who have visited a page
+      # pages/1/users
       @page = Page.find(params[:page_id])
       @users = User.who_posted_to(@page)
       # this is disabled until we get more users on the site
@@ -21,12 +25,24 @@ class Api::UsersController < Api::APIController
     end
   end
 
-  # GET /users/1
-  # GET /users/1.xml
   def show
-    @user = User.find(params[:id])
-    respond_to do |format|
-      format.json { render_json :user => @user.simple_obj }
+    if params[:user_id]
+      # check if a user is following or follows another user
+      # users/1/followers/2
+      # users/2/following/1
+      @base_user = User.find(params[:user_id])
+      @user = @base_user.send(params[:type]).where(:id => params[:id]).first
+    else
+      # show user
+      # users/1
+      @user = User.find(params[:id])
+    end
+    if !@user.blank?
+      respond_to do |format|
+        format.json { render_json :user => @user.simple_obj }
+      end
+    else
+      show_404
     end
   end
 

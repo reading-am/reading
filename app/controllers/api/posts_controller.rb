@@ -1,15 +1,36 @@
 # encoding: utf-8
 class Api::PostsController < Api::APIController
-  # GET /posts
-  # GET /posts.xml
-  def index
-    @posts =  Post.order("created_at DESC")
-                  .includes([:user, :page, :domain, {:referrer_post => :user}])
-                  .paginate(:page => params[:page])
 
-    if params[:page_id]
-      @posts = @posts.where(:page_id => params[:page_id])
+  # NOTE - this is also being used for events as
+  # the only events we have right now are posts.
+  # Will spin out when we aggregate in comments.
+
+  def index
+    if params[:user_id]
+      if params[:type] == "following"
+        # list events from users the user is following
+        # users/1/following/events
+        @user = User.find(params[:user_id])
+        @posts = @user.feed
+      else
+        # list a user's posts
+        # users/1/posts
+        @posts = Post.where(:user_id => params[:user_id])
+      end
+    elsif params[:page_id]
+      # list a page's posts
+      # pages/1/posts
+      @posts = Post.where(:page_id => params[:page_id])
+    else
+      # list all posts
+      # posts
+      @posts = Post.all
     end
+
+    @posts = @posts
+      .includes([:user, :page, :domain, {:referrer_post => :user}])
+      .order("created_at DESC")
+      .paginate(:page => params[:page])
 
     respond_to do |format|
       format.json { render_json :posts => @posts.collect { |post| post.simple_obj } }

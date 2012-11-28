@@ -18,9 +18,12 @@ Reading::Application.routes.draw do
       get 'recommended', :on => :collection
       resources :posts
       resources :comments
+      resources :events, :controller => 'posts'
       get 'expats', :on => :member
-      resources :following, :controller => "users", :defaults => { :type => "following" }
-      resources :followers, :controller => "users", :defaults => { :type => "followers" }
+      resources :following, :controller => 'users', :defaults => { :type => 'following' } do
+        get 'events', :on => :collection, :controller => 'posts', :action => 'index'
+      end
+      resources :followers, :controller => 'users', :defaults => { :type => 'followers' }
     end
     resources :pages do
       get 'count', :on => :collection

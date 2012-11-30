@@ -1,7 +1,10 @@
 # encoding: utf-8
 class Api::APIController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_filter :map_method
+  before_filter :map_method, :limit_count
+
+  DEFAULT_COUNT = 20
+  MAX_COUNT = 200
 
   private
 
@@ -15,6 +18,17 @@ class Api::APIController < ApplicationController
     if !params[:_method].blank?
       key = "#{action_name}##{params[:_method].upcase}"
       send map[key] if !map[key].blank? and respond_to? map[key]
+    end
+  end
+
+  def limit_count
+    if params[:count].blank?
+      params[:count] = DEFAULT_COUNT
+    else
+      params[:count] = params[:count].to_i
+      if params[:count] > MAX_COUNT
+        params[:count] = MAX_COUNT
+      end
     end
   end
 

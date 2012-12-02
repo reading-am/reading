@@ -66,7 +66,7 @@ class AuthorizationsController < ApplicationController
   # DELETE /authorizations/1.xml
   def destroy
     @authorization = Authorization.find(params[:id])
-    if !logged_in?
+    if !user_signed_in?
       redirect_to "/"
     elsif @authorization.user != current_user
       redirect_to "/#{current_user.username}/list"

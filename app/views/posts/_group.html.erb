@@ -42,7 +42,7 @@
         <div class="r_tri"></div>
       </a>
     <% end %>
-    <% if logged_in? and post.user.id == current_user.id %>
+    <% if user_signed_in? and post.user.id == current_user.id %>
       <%= link_to 'Delete', post, :class => 'admin action', :confirm => 'Are you sure?', :method => :delete %>
     <% end %>
     </div>

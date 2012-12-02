@@ -35,12 +35,12 @@ class UsersController < ApplicationController
   end
 
   def settings
-    redirect_to logged_in? ? "/settings/info" : "/"
+    redirect_to user_signed_in? ? "/settings/info" : "/"
   end
 
   # GET /users/1/edit
   def edit
-    redirect_to "/" and return if !logged_in?
+    redirect_to "/" and return if !user_signed_in?
     @user = current_user
     if params[:user] and @user.update_attributes(params[:user])
       redirect_to("/settings/info", :notice => 'User was successfully updated.')
@@ -87,7 +87,7 @@ class UsersController < ApplicationController
   end
 
   def hooks
-    redirect_to "/" and return if !logged_in?
+    redirect_to "/" and return if !user_signed_in?
     @user = current_user
     @new_hook = Hook.new
     @hooks = @user.hooks
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
 
   # GET /almost_ready
   def almost_ready
-    if !logged_in?
+    if !user_signed_in?
       redirect_to root_url and return
     elsif !current_user.username.blank? and !current_user.email.blank?
       redirect_to "/settings/info" and return
@@ -133,7 +133,7 @@ class UsersController < ApplicationController
   end
 
   def extras
-    redirect_to "/" and return if !logged_in?
+    redirect_to "/" and return if !user_signed_in?
     @user = current_user
     @post_email = MailPipe::encode_mail_recipient('post', current_user, current_user)
   end

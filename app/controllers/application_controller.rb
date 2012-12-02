@@ -2,8 +2,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :check_login
-  helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
+  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :authenticate_user! # :check_login
+  helper_method :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
@@ -31,25 +31,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user
-    if cookies[:auth_token]
-      begin
-        @current_user ||= User.find_by_auth_token!(cookies[:auth_token])
-      rescue
-        cookies.delete(:auth_token)
-      end
-    end
-    @current_user ||= User.new
-  end
-
-  def logged_in?
-    !current_user.id.nil?
-  end
-
   def authenticate
     # This should probably be throwing some sort of error
     # instead of simply redirecting, especially for AJAX requests
-    if !logged_in?
+    if !user_signed_in?
       redirect_to root_path
     end
   end
@@ -61,13 +46,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def check_login
-    if logged_in?
-      if !['/almost_ready','/signout'].include? request.path_info and (current_user.username.blank? or current_user.email.blank?)
-        redirect_to '/almost_ready'
-      elsif request.path_info == '/'
-        redirect_to "/#{current_user.username}/list"
-      end
+  def after_sign_in_path_for user
+    if !['/almost_ready','/signout'].include? request.path_info and (user.username.blank? or user.email.blank?)
+      '/almost_ready'
+    elsif request.path_info == '/'
+      "/#{user.username}/list"
+    else
+      '/'
     end
   end
 

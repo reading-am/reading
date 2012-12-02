@@ -5,7 +5,7 @@ class HooksController < ApplicationController
   # GET /hooks/1.xml
   def show
     @hook = Hook.find(params[:id])
-    if !logged_in?
+    if !user_signed_in?
       redirect_to "/"
     elsif @hook.user != current_user
       redirect_to "/settings/hooks"
@@ -20,7 +20,7 @@ class HooksController < ApplicationController
   # GET /hooks/new
   # GET /hooks/new.xml
   def new
-    if !logged_in?
+    if !user_signed_in?
       redirect_to "/"
     end
     @hook = Hook.new
@@ -34,7 +34,7 @@ class HooksController < ApplicationController
   # GET /hooks/1/edit
   def edit
     @hook = Hook.find(params[:id])
-    if !logged_in?
+    if !user_signed_in?
       redirect_to "/"
     elsif @hook.user != current_user
       redirect_to "/settings/hooks"
@@ -44,7 +44,7 @@ class HooksController < ApplicationController
   # POST /hooks
   # POST /hooks.xml
   def create
-    redirect_to '/' if !logged_in?
+    redirect_to '/' if !user_signed_in?
 
     if Authorization::PROVIDERS.include? params[:hook][:provider]
       auth = Authorization.find_by_provider_and_uid(params[:hook][:provider], params[:hook][:params][:account])
@@ -73,7 +73,7 @@ class HooksController < ApplicationController
   # PUT /hooks/1.xml
   def update
     @hook = Hook.find(params[:id])
-    if !logged_in?
+    if !user_signed_in?
       redirect_to "/"
     elsif @hook.user != current_user
       redirect_to "/settings/hooks"
@@ -94,7 +94,7 @@ class HooksController < ApplicationController
   # DELETE /hooks/1.xml
   def destroy
     @hook = Hook.find(params[:id])
-    if !logged_in?
+    if !user_signed_in?
       redirect_to "/"
     elsif @hook.user != current_user
       redirect_to "/#{current_user.username}/list"

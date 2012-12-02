@@ -1,7 +1,7 @@
 <div id="header">
 
 <% in_settings = request.fullpath[0..8] == '/settings' %>
-<% if logged_in? %>
+<% if user_signed_in? %>
 <div class="row">
   <nav id="mainnav" class="span7 offset1">
   <% if current_user.username_was and current_user.email_was # hides nav for /almost_ready %>
@@ -14,7 +14,7 @@
 </div>
 <% else %>
 <%
-  if @user.nil? or (logged_in? && current_user.id == @user.id)
+  if @user.nil? or (user_signed_in? && current_user.id == @user.id)
     you = "you"
     youre = "you're"
   else

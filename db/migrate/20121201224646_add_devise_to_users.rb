@@ -1,7 +1,7 @@
 class AddDeviseToUsers < ActiveRecord::Migration
   def change
     ## Database authenticatable
-    change_column :users, :email, :null => false, :default => ""
+    change_column :users, :email, :string, :null => false, :default => ""
     add_column :users, :encrypted_password, :string, :null => false, :default => ""
 
     ## Recoverable
@@ -33,7 +33,7 @@ class AddDeviseToUsers < ActiveRecord::Migration
     # add_column :users, :authentication_token, :string
 
     ## Add Indexes
-    add_index :users, :email,                :unique => true
+    add_index :users, :email                #:unique => true leaving this off since we have a bunch of old nil emails
     add_index :users, :reset_password_token, :unique => true
     # add_index :users, :confirmation_token,   :unique => true
     # add_index :users, :unlock_token,         :unique => true

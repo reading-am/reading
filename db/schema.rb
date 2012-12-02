@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014184235) do
+ActiveRecord::Schema.define(:version => 20121201224646) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -145,7 +145,7 @@ ActiveRecord::Schema.define(:version => 20121014184235) do
     t.datetime "updated_at"
     t.string   "token"
     t.string   "auth_token"
-    t.string   "email"
+    t.string   "email",                  :default => "",   :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "location"
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(:version => 20121014184235) do
     t.string   "image"
     t.string   "phone"
     t.string   "urls"
-    t.boolean  "email_when_followed",  :default => true
+    t.boolean  "email_when_followed",    :default => true
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
@@ -162,15 +162,26 @@ ActiveRecord::Schema.define(:version => 20121014184235) do
     t.string   "link"
     t.integer  "mail_digest"
     t.integer  "access"
-    t.integer  "posts_count",          :default => 0
-    t.integer  "following_count",      :default => 0
-    t.integer  "followers_count",      :default => 0
-    t.integer  "comments_count",       :default => 0
-    t.boolean  "email_when_mentioned", :default => true
+    t.integer  "posts_count",            :default => 0
+    t.integer  "following_count",        :default => 0
+    t.integer  "followers_count",        :default => 0
+    t.integer  "comments_count",         :default => 0
+    t.boolean  "email_when_mentioned",   :default => true
     t.integer  "roles"
+    t.string   "encrypted_password",     :default => "",   :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
   end
 
   add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["token"], :name => "index_users_on_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 

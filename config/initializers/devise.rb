@@ -207,6 +207,16 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
+  config.omniauth :twitter,    ENV['READING_TWITTER_KEY'],     ENV['READING_TWITTER_SECRET']
+  config.omniauth :facebook,   ENV['READING_FACEBOOK_KEY'],    ENV['READING_FACEBOOK_SECRET'], {:scope => 'email'}
+  config.omniauth :instapaper, ENV['READING_INSTAPAPER_KEY'],  ENV['READING_INSTAPAPER_SECRET']
+  config.omniauth :tumblr,     ENV['READING_TUMBLR_KEY'],      ENV['READING_TUMBLR_SECRET']
+  config.omniauth :readability,ENV['READING_READABILITY_KEY'], ENV['READING_READABILITY_SECRET']
+  config.omniauth :evernote,   ENV['READING_EVERNOTE_KEY'],    ENV['READING_EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
+  config.omniauth "37signals", ENV['READING_SIGNALS37_KEY'],   ENV['READING_SIGNALS37_SECRET']
+  config.omniauth :kippt,      "https://kippt.com/api"
+  config.omniauth :pocket,     ENV['READING_POCKET_KEY']
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

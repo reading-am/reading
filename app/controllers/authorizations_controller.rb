@@ -1,5 +1,7 @@
 # encoding: utf-8
 class AuthorizationsController < ApplicationController
+  before_filter :authenticate_user!
+
   # PUT /authorizations/1
   # PUT /authorizations/1.xml
   def update
@@ -35,7 +37,7 @@ class AuthorizationsController < ApplicationController
   def places
     @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
 
-    if allowed = @auth.user == current_user
+    if @auth.user == current_user
       case @auth.provider
       when 'tumblr'
         places = @auth.api.user_info.response.user.blogs
@@ -66,9 +68,7 @@ class AuthorizationsController < ApplicationController
   # DELETE /authorizations/1.xml
   def destroy
     @authorization = Authorization.find(params[:id])
-    if !user_signed_in?
-      redirect_to "/"
-    elsif @authorization.user != current_user
+    if @authorization.user != current_user
       redirect_to "/#{current_user.username}/list"
     end
     @authorization.destroy

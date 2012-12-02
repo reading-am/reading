@@ -1,6 +1,5 @@
 class AdminController < ApplicationController
-
-  before_filter :check_for_admin_role
+  before_filter :authenticate_user!, :check_for_admin_role
 
   private
 

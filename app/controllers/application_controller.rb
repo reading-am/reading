@@ -2,7 +2,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :authenticate_user! # :check_login
+  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers
   helper_method :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404

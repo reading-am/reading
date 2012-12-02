@@ -1,6 +1,6 @@
 # encoding: utf-8
 class RelationshipsController < ApplicationController
-  before_filter :authenticate
+  before_filter :authenticate_user!
 
   def create
     @user = User.find_by_username(params[:username])

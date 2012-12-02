@@ -1,5 +1,7 @@
 # encoding: utf-8
 class UsersController < ApplicationController
+  before_filter :authenticate_user!, :except => [:show, :followingers, :delete_cookies, :tagalong, :find_people]
+
   # GET /users/1
   # GET /users/1.xml
   def show
@@ -40,7 +42,6 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    redirect_to "/" and return if !user_signed_in?
     @user = current_user
     if params[:user] and @user.update_attributes(params[:user])
       redirect_to("/settings/info", :notice => 'User was successfully updated.')
@@ -87,7 +88,6 @@ class UsersController < ApplicationController
   end
 
   def hooks
-    redirect_to "/" and return if !user_signed_in?
     @user = current_user
     @new_hook = Hook.new
     @hooks = @user.hooks
@@ -133,7 +133,6 @@ class UsersController < ApplicationController
   end
 
   def extras
-    redirect_to "/" and return if !user_signed_in?
     @user = current_user
     @post_email = MailPipe::encode_mail_recipient('post', current_user, current_user)
   end
@@ -158,4 +157,3 @@ class UsersController < ApplicationController
   def find_people
   end
 end
-

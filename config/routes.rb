@@ -1,7 +1,16 @@
 Reading::Application.routes.draw do
-  devise_for :users
-
   root :to => "posts#index"
+
+  devise_for :users,
+    :controllers => { :omniauth_callbacks => "omniauth_callbacks" },
+    :skip => [:sessions]
+  # via: https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes/8c1825a5ba0b2fbe2f91a1c39aea0808a168800a
+  as :user do
+    get 'signin' => 'devise/sessions#new', :as => :new_user_session
+    post 'signin' => 'devise/sessions#create', :as => :user_session
+    match 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session,
+      :via => Devise.mappings[:user].sign_out_via
+  end
 
   # sitemap
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
@@ -37,9 +46,6 @@ Reading::Application.routes.draw do
   end
 
   match "/pusher/auth" => "pusher#auth"
-  match "/auth/:provider/callback" => "sessions#create"
-  match "/auth/failure" => "sessions#failure"
-  match "/signout" => "sessions#destroy", :as => :signout
   match "/support/delete_cookies" => "users#delete_cookies"
 
   match '/posts/create' => 'posts#create'

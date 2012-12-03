@@ -57,7 +57,6 @@ class User < ActiveRecord::Base
   validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
 
   before_create { generate_token(:token) }
-  before_create { generate_token(:auth_token) }
 
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }

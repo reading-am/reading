@@ -1,6 +1,6 @@
 # encoding: utf-8
 class AuthorizationsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:loading]
 
   # PUT /authorizations/1
   # PUT /authorizations/1.xml

@@ -1,8 +1,11 @@
 # encoding: utf-8
 class ApplicationController < ActionController::Base
+  # needed for migrate_auth_token
+  include Devise::Controllers::Rememberable
+
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers
+  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :migrate_auth_token
   helper_method :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
@@ -31,11 +34,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticate
-    # This should probably be throwing some sort of error
-    # instead of simply redirecting, especially for AJAX requests
-    if !user_signed_in?
-      redirect_to root_path
+  def migrate_auth_token
+    token = cookies.delete(:auth_token)
+    if !token.blank? and user = User.find_by_auth_token(token) rescue false
+      sign_in user
+      remember_me user
     end
   end
 

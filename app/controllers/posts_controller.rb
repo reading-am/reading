@@ -1,6 +1,6 @@
 # encoding: utf-8
 class PostsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:destroy, :visit]
+  before_filter :authenticate_user!, :except => [:index, :visit]
 
   # GET /posts
   # GET /posts.xml

@@ -11,6 +11,9 @@ The following items must be installed and running:
 * [Slanger](https://github.com/stevegraham/slanger)
   *Note: Bundler will not install Slanger*  
   `gem install slanger`
+* [Mailcatcher](http://mailcatcher.me)
+  Note: This is run by foreman. Don't start manually.
+  `gem install mailcatcher`
 
 ## Environmental Variables
 
@@ -89,7 +92,12 @@ under the process named `testruby`.
 
 Tests are run through [Mocha](http://visionmedia.github.com/mocha/)
 via [Konacha](https://github.com/jfirebaugh/konacha) by visiting
-`http://0.0.0.0:3500` in your browser.
+<http://0.0.0.0:3500> in your browser.
+
+### Mail
+
+Mail sent in the dev environment is intercepted by Mailcatcher
+and can be read at <http://127.0.0.1:1080>
 
 ## Grant Admin Access
 enter the following script in the rails console:

@@ -4,7 +4,7 @@
 %>
 <div id="blank_slate" class="row section">
   <div class="span7 offset1">
-    <% if user_signed_in? && @user == current_user %>
+    <% if signed_in? && @user == current_user %>
       <% if params[:type] == 'posts' and no_posts %>
       <p>
         <h3>

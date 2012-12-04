@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
       auth_hash.provider = 'tssignals'
     end
 
-    if user_signed_in?
+    if signed_in?
       # Means our user is signed in. Add the authorization to the user
       begin
         auth = current_user.add_provider(auth_hash)

@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def settings
-    redirect_to user_signed_in? ? "/settings/info" : "/"
+    redirect_to signed_in? ? "/settings/info" : "/"
   end
 
   # GET /users/1/edit
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
 
   # GET /almost_ready
   def almost_ready
-    if !user_signed_in?
+    if !signed_in?
       redirect_to root_url and return
     elsif !current_user.username.blank? and !current_user.email.blank?
       redirect_to "/settings/info" and return

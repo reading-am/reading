@@ -30,9 +30,7 @@ class HooksController < ApplicationController
   # GET /hooks/1/edit
   def edit
     @hook = Hook.find(params[:id])
-    if !user_signed_in?
-      redirect_to "/"
-    elsif @hook.user != current_user
+    if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
   end

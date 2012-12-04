@@ -1,7 +1,7 @@
 var current_user_seed = {
-  id: '<%= current_user.id if user_signed_in? %>',
-  username: '<%= current_user.username if user_signed_in? %>',
-  display_name: '<%= current_user.display_name if user_signed_in? %>'
+  id: '<%= current_user.id if signed_in? %>',
+  username: '<%= current_user.username if signed_in? %>',
+  display_name: '<%= current_user.display_name if signed_in? %>'
 };
 
-var authorizations_seed = <%=j user_signed_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;
+var authorizations_seed = <%=j signed_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;

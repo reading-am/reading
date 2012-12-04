@@ -59,16 +59,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def after_sign_in_path_for user
-    if !['/almost_ready','/signout'].include? request.path_info and (user.username.blank? or user.email.blank?)
-      '/almost_ready'
-    elsif request.path_info == '/'
-      "/#{user.username}/list"
-    else
-      '/'
-    end
-  end
-
   def is_mobile_safari_request? # from: http://www.ibm.com/developerworks/opensource/library/os-eclipse-iphoneruby1/
     request.user_agent =~ /(Mobile\/.+Safari)/
   end

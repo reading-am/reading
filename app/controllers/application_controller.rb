@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :migrate_auth_token
+  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :migrate_auth_token, :check_signed_in
   helper_method :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
@@ -39,6 +39,16 @@ class ApplicationController < ActionController::Base
     if !token.blank? and user = User.find_by_auth_token(token) rescue false
       sign_in user
       remember_me user
+    end
+  end
+
+  def check_signed_in
+    if signed_in?
+      if !['/almost_ready','/signout'].include? request.path_info and (current_user.username.blank? or current_user.email.blank?)
+        redirect_to '/almost_ready'
+      elsif request.path_info == '/'
+        redirect_to "/#{current_user.username}/list"
+      end
     end
   end
 

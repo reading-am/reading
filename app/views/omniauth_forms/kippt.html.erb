@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="span8">
+  <%= twitter_bootstrap_form_for User.new, :html => {:class => "form-horizontal"}, :url => "/users/auth/kippt/callback" do |f| %>
+  <fieldset>
+    <%= f.text_field :email, :name => :username, :placeholder => 'my@email.com', :class => 'input-xlarge' %>
+    <%= f.password_field :password, :name => :password, :placeholder => 'my_super_strong_password', :class => 'input-xlarge' %>
+    <%= f.actions do %>
+      <%= f.submit 'Submit', :class => 'btn btn-success' %>
+    <% end %>
+  </fieldset>
+  <% end %>
+  </div>
+</div>

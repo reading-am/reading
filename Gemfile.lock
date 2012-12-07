@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/omniauth-kippt.git
-  revision: d9508690ec51b0b63ffd548065edf6a59b995841
+  revision: 4cedf110660ad254ff0ed65cbd758777c134db54
   specs:
     omniauth-kippt (1.0.1)
       multi_json

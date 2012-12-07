@@ -80,6 +80,6 @@ class AuthorizationsController < ApplicationController
   end
 
   def loading
-    render "loading", :layout => false
+    render :layout => false
   end
 end

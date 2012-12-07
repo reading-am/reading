@@ -2,7 +2,7 @@ Reading::Application.routes.draw do
   root :to => "posts#index"
 
   devise_for :users,
-    :controllers => { :omniauth_callbacks => "omniauth_callbacks" },
+    :controllers => { :omniauth_callbacks => "omniauth" },
     :skip => [:sessions]
   # via: https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes/8c1825a5ba0b2fbe2f91a1c39aea0808a168800a
   as :user do

@@ -214,7 +214,7 @@ Devise.setup do |config|
   config.omniauth :readability,ENV['READING_READABILITY_KEY'], ENV['READING_READABILITY_SECRET']
   config.omniauth :evernote,   ENV['READING_EVERNOTE_KEY'],    ENV['READING_EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
   config.omniauth "37signals", ENV['READING_SIGNALS37_KEY'],   ENV['READING_SIGNALS37_SECRET']
-  config.omniauth :kippt,      "https://kippt.com/api"
+  config.omniauth :kippt,      "https://kippt.com/api", :form => OmniauthFormsController.action(:kippt)
   config.omniauth :pocket,     ENV['READING_POCKET_KEY']
 
   # ==> Warden configuration

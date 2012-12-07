@@ -1,5 +1,5 @@
 # encoding: utf-8
-class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+class OmniauthController < Devise::OmniauthCallbacksController
   # via: https://github.com/plataformatec/devise/wiki/Omniauthable,-sign-out-action-and-rememberable
   include Devise::Controllers::Rememberable
 

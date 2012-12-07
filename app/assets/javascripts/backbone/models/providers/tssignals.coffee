@@ -8,7 +8,7 @@ define [
 
   TssignalsProv::login = (response, perms) ->
     super
-      url: '/auth/loading/37signals'
+      url: '/users/auth/loading/37signals'
       width: 700
       height: 430,
       response

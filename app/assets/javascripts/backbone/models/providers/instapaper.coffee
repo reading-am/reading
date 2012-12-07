@@ -8,7 +8,7 @@ define [
 
   InstapaperProv::login = (response, perms) ->
     super
-      url: '/auth/loading/instapaper'
+      url: '/users/auth/loading/instapaper'
       width: 430
       height: 360,
       response

@@ -10,6 +10,8 @@ Reading::Application.routes.draw do
     post 'signin' => 'devise/sessions#create', :as => :user_session
     match 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session,
       :via => Devise.mappings[:user].sign_out_via
+
+    match '/users/auth/loading/:provider' => 'authorizations#loading'
   end
 
   # sitemap
@@ -64,7 +66,6 @@ Reading::Application.routes.draw do
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
   match '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
-  match '/auth/loading/:provider' => 'authorizations#loading'
   match '/authorizations/:provider/:uid/update' => 'authorizations#update'
   match '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations

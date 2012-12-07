@@ -8,7 +8,7 @@ define [
 
   EvernoteProv::login = (response, perms) ->
     super
-      url: '/auth/loading/evernote'
+      url: '/users/auth/loading/evernote'
       width: 600
       height: 450,
       response

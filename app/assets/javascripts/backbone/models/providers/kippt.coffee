@@ -8,7 +8,7 @@ define [
 
   KipptProv::login = (response, perms) ->
     super
-      url: '/auth/loading/kippt'
+      url: '/users/auth/loading/kippt'
       width: 430
       height: 360,
       response

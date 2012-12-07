@@ -8,7 +8,7 @@ define [
 
   PocketProv::login = (response, perms) ->
     super
-      url: '/auth/loading/pocket'
+      url: '/users/auth/loading/pocket'
       width: 1024
       height: 568,
       response

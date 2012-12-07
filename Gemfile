@@ -4,11 +4,12 @@ ruby '1.9.3'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.9'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'
   gem 'therubyracer' # Required by less-rails. Not sure why it's not included by the gem
+  gem 'libv8', '3.11.8.3' # Required by therubyracer: https://github.com/cowboyd/therubyracer/issues/215
   gem 'coffee-rails'
   gem 'uglifier'
 end

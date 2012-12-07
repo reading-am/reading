@@ -5,7 +5,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # Devise sends all providers to different methods
   # This globs them up and sends them to create()
-  def method_missing(*args)
+  def action_missing(*args)
     create
   end
 
@@ -29,7 +29,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
     else
       # Log him in or sign him up
-      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
         # fill in any changed info
         ["token","secret","expires_at"].each do |prop|
           auth[prop] = auth_hash["credentials"][prop] || auth[prop]

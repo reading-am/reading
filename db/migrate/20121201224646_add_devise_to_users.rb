@@ -1,6 +1,7 @@
 class AddDeviseToUsers < ActiveRecord::Migration
   def change
     ## Database authenticatable
+    # You'll get a salt error if you try to allow null on the encrypted_password field
     add_column :users, :encrypted_password, :string, :null => false, :default => ""
     # change_column :users, :email, :string, :null => false, :default => ""
 

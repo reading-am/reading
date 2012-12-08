@@ -20,6 +20,7 @@ gem 'jquery-rails'
 
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
+gem 'sunspot_rails' # Solr
 
 gem 'devise'
 gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
@@ -48,7 +49,7 @@ gem 'yajl-ruby' # JSON parser recommended by twitter gem
 gem 'twitter'
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
-gem 'sunspot_rails'
+
 gem 'delayed_job', "3.0.1"
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
@@ -56,8 +57,10 @@ gem 'daemons' # for delayed_job
 gem 'girl_friday'
 # gem 'hirefire' # has to be AFTER delayed_job
 gem 'hirefireapp' # has to be AFTER delayed_job
+
+gem 'nilify_blanks'
 gem 'validate_email'
-gem "twitter-bootstrap-rails", '2.1.4' # there's a LESS compile issue with 2.1.6
+gem 'twitter-bootstrap-rails', '2.1.4' # there's a LESS compile issue with 2.1.6
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'

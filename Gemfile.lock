@@ -262,6 +262,9 @@ GEM
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.6.2)
+    nilify_blanks (1.0.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
     nokogiri (1.5.5)
     oauth2 (0.8.0)
       faraday (~> 0.8)
@@ -512,6 +515,7 @@ DEPENDENCIES
   konacha (~> 1.0)
   less-rails
   libv8 (= 3.11.8.3)
+  nilify_blanks
   nokogiri
   oauth!
   omniauth

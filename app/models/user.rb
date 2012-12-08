@@ -56,6 +56,8 @@ class User < ActiveRecord::Base
   validates :bio, :length => { :maximum => 255 }
   validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
 
+  nilify_blanks :only => [:email]
+
   before_create { generate_token(:token) }
 
   scope :only_follows, lambda { |user| follows(user) }

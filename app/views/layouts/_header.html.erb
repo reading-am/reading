@@ -29,9 +29,10 @@
 </div>
 <div class="row">
   <div id="signup" class="span7 offset1">
-    Sign up or in with
-    <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %> or
-    <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>.
+    Sign up or in using:
+    <%= link_to provider_span(:email), "#", :data => {:provider => 'Email', :method => 'login'} %>
+    <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %>
+    <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>
   </div>
 </div>
 <% end %>

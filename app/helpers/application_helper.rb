@@ -23,6 +23,8 @@ module ApplicationHelper
     end
     content_tag :span, :class => ['provider', provider] do
       case provider.to_s
+      when 'email'
+        output = content_tag :span, '@', :class => 'glyph icon'
       when 'twitter', 'facebook'
         output = content_tag :span, provider[0], :class => 'glyph icon'
       when 'tumblr'

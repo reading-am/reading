@@ -209,7 +209,7 @@ Devise.setup do |config|
 
   config.omniauth :twitter,    ENV['READING_TWITTER_KEY'],     ENV['READING_TWITTER_SECRET']
   config.omniauth :facebook,   ENV['READING_FACEBOOK_KEY'],    ENV['READING_FACEBOOK_SECRET'], {:scope => 'email'}
-  config.omniauth :instapaper, ENV['READING_INSTAPAPER_KEY'],  ENV['READING_INSTAPAPER_SECRET']
+  config.omniauth :instapaper, ENV['READING_INSTAPAPER_KEY'],  ENV['READING_INSTAPAPER_SECRET'], :form => OmniauthFormsController.action(:instapaper)
   config.omniauth :tumblr,     ENV['READING_TUMBLR_KEY'],      ENV['READING_TUMBLR_SECRET']
   config.omniauth :readability,ENV['READING_READABILITY_KEY'], ENV['READING_READABILITY_SECRET']
   config.omniauth :evernote,   ENV['READING_EVERNOTE_KEY'],    ENV['READING_EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }

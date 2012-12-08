@@ -58,7 +58,7 @@ class OmniauthController < Devise::OmniauthCallbacksController
         user.username = nil if !user.errors.messages[:username].blank?
         # account for bad email addresses coming from provider
         user.email = nil if !user.errors.messages[:email].blank?
-        user.save if user.changed?
+        user.save
 
         auth_params = Authorization::transform_auth_hash(auth_hash)
         auth_params[:user] = user

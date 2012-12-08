@@ -89,11 +89,14 @@ class User < ActiveRecord::Base
     where("lower(username) IN (:mentions)", { :mentions => comment.mentions.map{|u| u.downcase }})
   end
 
+  # For Devise so that we can register people via Omniauth,
+  # save their Auth and User, then ask for additional info.
+  def email_required?; false; end
+  def password_required?; false; end
+
   public
 
-  def to_param
-    username
-  end
+  def to_param; username; end
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'

@@ -1,4 +1,4 @@
-<div id="user_/info" class="row">
+<div id="user_info" class="row">
   <div class="span8">
   <%= twitter_bootstrap_form_for @user, :html => {:class => "form-horizontal"}, :url => "/settings/info" do |f| %>
   <fieldset>
@@ -11,6 +11,12 @@
     <%= f.text_field :username, :class => 'input-xlarge' %>
 
     <%= f.email_field :email, :placeholder => 'your_dated_hs_email@aol.com', :class => 'input-xlarge' %>
+
+    <%= f.password_field :password, :autocomplete => "off" %>
+    <div id="confirm_password_fields">
+      <%= f.password_field :password_confirmation %>
+      <%= f.password_field :current_password %>
+    </div>
 
     <%= f.toggles 'Email me when' do %>
       <%= f.check_box :email_when_followed, "someone follows me" %>

@@ -8,6 +8,7 @@ define [
   class UserEditView extends Backbone.View
 
     events:
+      "keyup #user_password" : "toggle_password_fields"
       "click #signout"        : "signout"
       "click #user_delete a"  : "destroy"
 
@@ -15,6 +16,15 @@ define [
       # populate the auth spans with real usernames
       AuthorizationsHelper.populate_accounts "twitter", $(".provider.twitter .account")
       AuthorizationsHelper.populate_accounts "facebook", $(".provider.facebook .account")
+
+    toggle_password_fields: ->
+      @$user_password ?= $("#user_password")
+      @$password_fields ?= $("#confirm_password_fields")
+
+      if @$user_password.val()
+        @$password_fields.slideDown()
+      else
+        @$password_fields.slideUp()
 
     signout: ->
       confirm "Are you sure you want to sign out?"

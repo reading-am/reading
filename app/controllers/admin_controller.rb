@@ -11,7 +11,7 @@ class AdminController < ApplicationController
 
   def dashboard
     respond_to do |format|
-      format.html { render :layout => 'bb' }
+      format.html { render :layout => 'backbone' }
       format.xml  { render :xml => @comment }
     end
   end

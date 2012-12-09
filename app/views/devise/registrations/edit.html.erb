@@ -1,13 +1,7 @@
 <%= render :partial => 'users/settings_subnav' if @user == current_user %>
 
 <%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+
 <%= render 'users/form' %>
 
-<script type="text/javascript">
-
-  <%= requirejs %>require(["backbone", "app/routers/users"], function(Backbone, Router){
-    new Router({model: Backbone.Model.prototype.factory(<%=j resource.simple_obj.to_json.html_safe -%>)});
-    Backbone.history.start({pushState: true});
-  });
-
-</script>
+<%= render :partial => 'backbone/router', :locals => {:model => resource} %>

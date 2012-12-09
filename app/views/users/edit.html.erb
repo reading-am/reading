@@ -3,11 +3,4 @@
 <%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
 <%= render 'form' %>
 
-<script type="text/javascript">
-
-  <%= requirejs %>require(["backbone", "app/routers/users"], function(Backbone, Router){
-    new Router({model: Backbone.Model.prototype.factory(<%=j @user.simple_obj.to_json.html_safe -%>)});
-    Backbone.history.start({pushState: true});
-  });
-
-</script>
+<%= render :partial => 'backbone/router', :locals => {:model => @user} %>

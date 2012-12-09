@@ -8,7 +8,7 @@ define [
   class UserEditView extends Backbone.View
 
     events:
-      "keyup #user_password" : "toggle_password_fields"
+      "keyup #user_password"  : "toggle_password_fields"
       "click #signout"        : "signout"
       "click #user_delete a"  : "destroy"
 

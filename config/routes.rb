@@ -12,6 +12,8 @@ Reading::Application.routes.draw do
       :via => Devise.mappings[:user].sign_out_via
 
     match '/users/auth/loading/:provider' => 'authorizations#loading'
+
+    match '/settings/info' => 'devise/registrations#edit', :as => :edit_user_registration
   end
 
   # sitemap
@@ -97,7 +99,6 @@ Reading::Application.routes.draw do
 
   # Settings
   match '/settings' => 'users#settings'
-  match '/settings/info' => 'users#edit'
   match '/settings/hooks'  => 'users#hooks'
   match '/settings/extras' => 'users#extras'
 

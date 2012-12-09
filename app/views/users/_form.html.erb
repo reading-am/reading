@@ -1,9 +1,10 @@
 <div id="user_info" class="row">
   <div class="span8">
-  <%= twitter_bootstrap_form_for @user, :html => {:class => "form-horizontal"}, :url => "/settings/info" do |f| %>
+  <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "form-horizontal" }) do |f| %>
   <fieldset>
-    <%= f.file_field :avatar, :class => 'input-xlarge' do %>
-      <p class="help-block">JPG, PNG or GIF under 2mb. <strong>Note:</strong> no preview is shown.</p>
+    <%= f.file_field :avatar, false, :class => 'input-xlarge' do %>
+      <p class="help-block">JPG, PNG or GIF under 2mb.</p>
+      <div id="avatar"><%= image_tag resource.avatar.url :medium %></div>
     <% end %>
 
     <%= f.text_field :name, :class => 'input-xlarge' %>
@@ -12,10 +13,13 @@
 
     <%= f.email_field :email, :placeholder => 'your_dated_hs_email@aol.com', :class => 'input-xlarge' %>
 
-    <%= f.password_field :password, :autocomplete => "off" %>
-    <div id="confirm_password_fields">
-      <%= f.password_field :password_confirmation %>
-      <%= f.password_field :current_password %>
+    <%= f.password_field :password, 'New Password', :autocomplete => "off", :class => 'input-xlarge' do %>
+      <p class="help-block">Leave blank if you'd like to keep the same password</p>
+    <% end %>
+    <% pass_display = resource.errors[:password_confirmation].blank? && resource.errors[:current_password].blank? ? 'none' : 'block' %>
+    <div id="confirm_password_fields" style="display:<%= pass_display %>;">
+      <%= f.password_field :password_confirmation, :class => 'input-xlarge' %>
+      <%= f.password_field :current_password, :class => 'input-xlarge' %>
     </div>
 
     <%= f.toggles 'Email me when' do %>
@@ -46,6 +50,6 @@
 </div>
 <div id="user_delete" class="row">
   <div class="span7 offset2">
-    <%= link_to 'I respectfully request to be destroyed.', @user, :confirm => 'Are you sure you want to completely delete your account and destroy all your user data?', :method => :delete %>
+    <%= link_to 'I respectfully request to be destroyed.', registration_path(resource_name), :confirm => 'Are you sure you want to completely delete your account and destroy all your user data?', :method => :delete %>
   </div>
 </div>

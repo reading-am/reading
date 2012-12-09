@@ -11,3 +11,5 @@ define [
         @_intervals = []
       when "add"
         @_intervals.push setInterval fn, secs*1000
+
+  return Backbone

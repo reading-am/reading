@@ -118,6 +118,10 @@ GEM
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
     base58 (0.1.0)
+    better_errors (0.0.7)
+      coderay
+      erubis
+    binding_of_caller (0.6.8)
     bitmask_attributes (0.3.0)
       activerecord (~> 3.0)
     bootstrap-will_paginate (0.0.9)
@@ -137,6 +141,7 @@ GEM
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
     cocaine (0.4.2)
+    coderay (1.0.8)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -468,6 +473,8 @@ DEPENDENCIES
   addressable
   aws-sdk
   base58
+  better_errors
+  binding_of_caller
   bitmask_attributes
   bootstrap-will_paginate
   browser

@@ -32,6 +32,7 @@ define [
       @model.bind "change:id", @get_comments, this
       @model.bind "change:id", @get_readers, this
 
+      @prep_page()
       @render()
 
       @intervals "add", 15, => @$("time").humaneDates()
@@ -172,6 +173,10 @@ define [
       @$el.fadeOut 400, =>
         @$el.remove()
       false
+
+    prep_page: ->
+      # Disable annoying clipboard hijackers
+      delete window.Tynt
 
     render: =>
       @$el.html(@template(@model.toJSON()))

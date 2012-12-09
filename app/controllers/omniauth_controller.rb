@@ -32,7 +32,7 @@ class OmniauthController < Devise::OmniauthCallbacksController
       if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
         # fill in any changed info
         ["token","secret","expires_at"].each do |prop|
-          auth[prop] = auth_hash["credentials"][prop] || auth[prop]
+          auth.attributes = {prop => auth_hash["credentials"][prop] || auth[prop]}
         end
         auth.save
       else

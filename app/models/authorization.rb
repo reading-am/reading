@@ -94,6 +94,10 @@ public
     end
   end
 
+  def expires_at=(time)
+    write_attribute :expires_at, Time.at(time) rescue nil
+  end
+
   def permissions
     Yajl::Parser.parse(read_attribute(:permissions)) unless read_attribute(:permissions).nil?
   end

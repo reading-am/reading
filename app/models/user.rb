@@ -208,6 +208,30 @@ class User < ActiveRecord::Base
     ]
   end
 
+  # Modified from Devise to allow for modification of empty passwords
+  # https://github.com/plataformatec/devise/blob/master/lib/devise/models/database_authenticatable.rb#L56
+  def update_with_password(params, *options)
+    current_password = params.delete(:current_password)
+
+    if params[:password].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation) if params[:password_confirmation].blank?
+    end
+
+    result = if valid_password?(current_password) || self.password.blank?
+      update_attributes(params, *options)
+    else
+      params.delete(:password)
+      self.assign_attributes(params, *options)
+      self.valid?
+      self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+      false
+    end
+
+    clean_up_passwords
+    result
+  end
+
   def simple_obj to_s=false
     {
       :type       => 'User',

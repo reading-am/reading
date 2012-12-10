@@ -2,21 +2,24 @@ Reading::Application.routes.draw do
   root :to => "posts#index"
 
   devise_for :users,
-    :skip => [:sessions],
+    :skip => [:sessions,:registrations],
     :controllers => {
       :registrations => 'registrations',
       :omniauth_callbacks => 'omniauth'
     }
   # via: https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes/8c1825a5ba0b2fbe2f91a1c39aea0808a168800a
   as :user do
-    get 'signin' => 'devise/sessions#new', :as => :new_user_session
-    post 'signin' => 'devise/sessions#create', :as => :user_session
-    match 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session,
+    get   '/signin'  => 'devise/sessions#new',     :as => :new_user_session
+    post  '/signin'  => 'devise/sessions#create',  :as => :user_session
+    match '/signout' => 'devise/sessions#destroy', :as => :destroy_user_session,
       :via => Devise.mappings[:user].sign_out_via
 
-    match '/users/auth/loading/:provider' => 'authorizations#loading'
-
-    match '/settings/info' => 'devise/registrations#edit', :as => :edit_user_registration
+    get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
+    post    '/users'          => 'registrations#create',  :as => :user_registration
+    get     '/users/sign_up'  => 'registrations#new',     :as => :new_user_registration
+    get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
+    put     '/settings/info'  => 'registrations#update'
+    delete  '/settings/info'  => 'registrations#destroy'
   end
 
   # sitemap
@@ -71,6 +74,7 @@ Reading::Application.routes.draw do
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
   match '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
+  match '/users/auth/loading/:provider'         => 'authorizations#loading'
   match '/authorizations/:provider/:uid/update' => 'authorizations#update'
   match '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations

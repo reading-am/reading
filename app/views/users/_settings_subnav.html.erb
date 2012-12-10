@@ -1,6 +1,6 @@
 <div id="subnav" class="row">
   <nav class="span7 offset1">
-    <a href="/settings/info"<% if params[:action] == 'edit' %> class="active"<% end %>>Info</a>
+    <a href="/settings/info"<% if ['edit','update'].include? params[:action] %> class="active"<% end %>>Info</a>
     <a href="/settings/hooks"<% if params[:action] == 'hooks' %> class="active"<% end %>>Hooks</a>
     <a href="/settings/extras"<% if params[:action] == 'extras' %> class="active"<% end %>>Extras</a>
     <%= link_to "Sign Out", destroy_user_session_path, :id => 'signout', :method => :delete %>

@@ -1,6 +1,6 @@
 <div id="user_info" class="row">
   <div class="span8">
-  <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "form-horizontal" }) do |f| %>
+  <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => edit_registration_path(resource_name), :html => { :method => :put, :class => "form-horizontal" }) do |f| %>
   <fieldset>
     <%= f.file_field :avatar, false, :class => 'input-xlarge' do %>
       <p class="help-block">JPG, PNG or GIF under 2mb.</p>

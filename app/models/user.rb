@@ -202,6 +202,10 @@ class User < ActiveRecord::Base
     !created_at.blank? && created_at < Date.parse('2012-07-17')
   end
 
+  def has_pass?
+    !encrypted_password.blank?
+  end
+
   def channels
     [
       "users"
@@ -218,7 +222,7 @@ class User < ActiveRecord::Base
       params.delete(:password_confirmation) if params[:password_confirmation].blank?
     end
 
-    result = if valid_password?(current_password) || self.password.blank?
+    result = if valid_password?(current_password) || !has_pass?
       update_attributes(params, *options)
     else
       params.delete(:password)

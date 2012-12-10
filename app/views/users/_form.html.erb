@@ -19,7 +19,7 @@
     <% pass_display = resource.errors[:password_confirmation].blank? && resource.errors[:current_password].blank? ? 'none' : 'block' %>
     <div id="confirm_password_fields" style="display:<%= pass_display %>;">
       <%= f.password_field :password_confirmation, :class => 'input-xlarge' %>
-      <%= f.password_field :current_password, :class => 'input-xlarge' %>
+      <%= f.password_field :current_password, :class => 'input-xlarge' if resource.has_pass? %>
     </div>
 
     <%= f.toggles 'Email me when' do %>

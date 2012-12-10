@@ -1,3 +1,5 @@
+DOMAIN = '0.0.0.0:3000'
+
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -28,6 +30,8 @@ Reading::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  # Needed by Devise
+  config.action_mailer.default_url_options = { :host => DOMAIN }
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,

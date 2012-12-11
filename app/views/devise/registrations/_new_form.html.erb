@@ -1,0 +1,9 @@
+<%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= f.text_field :name, false, :placeholder => 'Full name' %>
+  <%= f.email_field :email, false, :placeholder => 'Email' %>
+  <%= f.password_field :password, false, :placeholder => 'Password' %>
+  <%# f.password_field :password_confirmation, false, :placeholder => 'Password confirmation' %>
+  <%= f.actions do %>
+    <%= f.submit "Sign up", :class => 'btn btn-success' %>
+  <% end %>
+<% end %>

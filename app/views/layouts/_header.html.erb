@@ -30,9 +30,9 @@
 <div class="row">
   <div id="signup" class="span7 offset1">
     Sign up or in using:
-    <%= link_to provider_span(:email), new_user_session_path %>
     <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %>
     <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>
+    <%= link_to provider_span(:email), new_user_session_path %>
   </div>
 </div>
 <% end %>

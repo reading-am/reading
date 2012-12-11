@@ -2,10 +2,12 @@
 
 <div class="row">
   <div class="span3 offset1">
-    <%= render :partial => 'new_form' %>
-    <%= link_to "Forgot your password?", new_password_path(resource_name), {:class => 'help-block'} %>
+    <h4>Sign up</h4>
+    <%= render :partial => 'devise/registrations/new_form' %>
   </div>
   <div class="span3 offset1">
-    <%= render :partial => 'devise/registrations/new_form' %>
+    <h4>Sign in</h4>
+    <%= render :partial => 'new_form' %>
+    <%= link_to "Forgot your password?", new_password_path(resource_name), {:class => 'help-block'} %>
   </div>
 </div>

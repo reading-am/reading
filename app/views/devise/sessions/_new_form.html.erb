@@ -3,7 +3,7 @@
   <%= f.password_field :password, false, :placeholder => 'Password' %>
 
   <%= f.actions do %>
-    <%= f.submit 'Sign in', :class => 'btn btn-success' %>
+    <%= f.submit 'Sign in', :class => 'btn' %>
     <%= f.check_box :remember_me, 'Remember Me' if devise_mapping.rememberable? %>
   <% end %>
 <% end %>

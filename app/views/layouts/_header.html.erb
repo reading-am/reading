@@ -14,7 +14,9 @@
 </div>
 <% else %>
 <%
-  if @user.nil? or (signed_in? && current_user.id == @user.id)
+  if request[:controller] == 'devise/sessions'
+    headline = "This is going to be so awesome."
+  elsif @user.nil? or (signed_in? && current_user.id == @user.id)
     you = "you"
     youre = "you're"
   else
@@ -24,15 +26,24 @@
 %>
 <div class="row">
   <div class="span7 offset1">
-    <h3><span id="lead_in"><% if you == "you" %>Share what<% else %>What<% end %> <%= youre %> reading. </span>Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.</h3>
+    <h3>
+    <% if !headline.blank? %>
+      <br><br><%= headline %>
+    <% else %>
+      <span id="lead_in"><% if you == "you" %>Share what<% else %>What<% end %> <%= youre %> reading. </span>
+      Not what <%= you %> like<%= 's' if @user and @user != current_user %>. Not what <%= you %> find<%= 's' if @user and @user != current_user %> interesting. Just what <%= youre %> reading.
+    <% end %>
+    </h3>
   </div>
 </div>
 <div class="row">
   <div id="signup" class="span7 offset1">
-    Sign up or in using:
+    <%= request[:action] == 'new' ? "Fill out the info below or s" : "S" %>ign up or in using:
     <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %>
     <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>
-    <%= link_to provider_span(:email), new_user_session_path %>
+    <% unless request[:action] == 'new' # put this in the footer %>
+      <%= link_to provider_span(:email), new_user_session_path %>
+    <% end %>
   </div>
 </div>
 <% end %>

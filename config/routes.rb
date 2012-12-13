@@ -9,9 +9,9 @@ Reading::Application.routes.draw do
     }
   # via: https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes/8c1825a5ba0b2fbe2f91a1c39aea0808a168800a
   as :user do
-    get   '/signin'  => 'devise/sessions#new',     :as => :new_user_session
-    post  '/signin'  => 'devise/sessions#create',  :as => :user_session
-    match '/signout' => 'devise/sessions#destroy', :as => :destroy_user_session,
+    get   '/sign_in'  => 'devise/sessions#new',     :as => :new_user_session
+    post  '/sign_in'  => 'devise/sessions#create',  :as => :user_session
+    match '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session,
       :via => Devise.mappings[:user].sign_out_via
 
     get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration

@@ -1,7 +1,7 @@
 <%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
 
-<div class="row">
-  <div class="span3 offset1">
+<div class="row" id="email_signup_signin">
+  <div class="span3 offset1" id="signup_form">
     <h4>Sign up</h4>
     <%= render :partial => 'devise/registrations/new_form' %>
   </div>

@@ -29,6 +29,13 @@ a:hover {
   &.first { border:none; }
 }
 
+.offset1.w_vert_rule {
+  @offset: @gridColumnWidth + @gridGutterWidth*2;
+  margin-left:@offset/2;
+  padding-left:@offset/2-1;
+  border-left:1px solid @light_grey;
+}
+
 .help-block, .help-inline {
   color:@medium_light_grey;
 }

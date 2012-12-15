@@ -44,11 +44,10 @@ class RegistrationsController < Devise::RegistrationsController
 
     if resource.send("update_with#{email_changed || password_changed ? '' : 'out'}_password", resource_params)
       sign_in resource_name, resource, :bypass => true
-      respond_with resource, :location => after_update_path_for(resource)
+      redirect_to("/#{resource.username}/list", :notice => 'User was successfully updated.')
     else
       clean_up_passwords resource
       render :almost_ready
-      #respond_with resource
     end
 
   end

@@ -20,6 +20,8 @@ Reading::Application.routes.draw do
     get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
     put     '/settings/info'  => 'registrations#update'
     delete  '/settings/info'  => 'registrations#destroy'
+    get     '/almost_ready'   => 'registrations#almost_ready'
+    put     '/almost_ready'   => 'registrations#almost_ready_update'
   end
 
   # sitemap
@@ -88,7 +90,6 @@ Reading::Application.routes.draw do
 
   match '/extensions/safari/update' => 'extras#safari_update'
 
-  match '/almost_ready'       => 'users#almost_ready'
   match "/users"              => redirect("/")
   match '/users/recommended'  => 'users#find_people'
   match '/users/friends'      => 'users#find_people'

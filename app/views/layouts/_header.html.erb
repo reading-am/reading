@@ -14,7 +14,9 @@
 </div>
 <% else %>
 <%
-  if request[:controller] == 'devise/sessions'
+  signup_page = ['devise/sessions','registrations'].include? request[:controller] 
+
+  if signup_page
     headline = "This is going to be so awesome."
   elsif @user.nil? or (signed_in? && current_user.id == @user.id)
     you = "you"
@@ -38,10 +40,10 @@
 </div>
 <div class="row">
   <div id="signup" class="span7 offset1">
-    <%= request[:action] == 'new' ? "Fill out the info below or s" : "S" %>ign up or in using:
+    <%= signup_page ? "Fill out the info below or s" : "S" %>ign up or in using:
     <%= link_to provider_span(:twitter), "#", :data => {:provider => 'Twitter', :method => 'login'} %>
     <%= link_to provider_span(:facebook), "#", :data => {:provider => 'Facebook', :method => 'login'} %>
-    <% unless request[:action] == 'new' # put this in the footer %>
+    <% unless signup_page # put this in the footer %>
       <%= link_to provider_span(:email), new_user_session_path %>
     <% end %>
   </div>

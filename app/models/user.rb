@@ -93,8 +93,15 @@ class User < ActiveRecord::Base
 
   # For Devise so that we can register people via Omniauth,
   # save their Auth and User, then ask for additional info.
-  def email_required?; false; end
-  def password_required?; false; end
+  attr_accessor :email_required
+  def email_required?
+    if email_required.nil? then super else email_required end
+  end
+
+  attr_accessor :password_required
+  def password_required?
+    if password_required.nil? then super else password_required end
+  end
 
   public
 
@@ -198,12 +205,16 @@ class User < ActiveRecord::Base
   end
 
   # is an original user who didn't require an email address to register
-  def is_og?
+  def joined_before_email?
     !created_at.blank? && created_at < Date.parse('2012-07-17')
   end
 
+  def joined_before_passwords?
+    !created_at.blank? && created_at < Date.parse('2012-12-17')
+  end
+
   def has_pass?
-    !encrypted_password.blank?
+    !encrypted_password_was.blank?
   end
 
   def channels

@@ -3,7 +3,7 @@
 <div class="row" id="email_signup_signin">
   <div class="span3 offset1" id="signup_form">
     <h4>Sign up</h4>
-    <%= render :partial => 'devise/registrations/new_form' %>
+    <%= render :partial => 'devise/registrations/new_form', :locals => {:abbrv => true} %>
   </div>
   <div class="span3 offset1">
     <h4>Sign in</h4>

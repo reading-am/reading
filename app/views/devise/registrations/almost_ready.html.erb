@@ -1,0 +1,43 @@
+<div class="row" id="almost_ready">
+  <div class="span7 offset1">
+<%= twitter_bootstrap_form_for resource, :as => resource_name, :html => {:class => "form-horizontal"}, :url => '/almost_ready' do |f| %>
+  <fieldset>
+    <div id="almost_ready_header">
+    <% if !resource.joined_before_email? %>
+      <h3>Almost done, we just need a bit more info.</h3>
+    <% elsif resource.email_was.blank? %>
+      <h3>So, we're adding email addresses <% if !resource.has_pass? %>and passwords<% end %> to Reading.</h3>
+      <blockquote>We have some cool features in the works and it'd be helpful
+        if we were able to email you about them. We're a small community here,
+        there are only a handful of us (okay, big handfuls, but still), and I hope
+        we can stick together. Questions? <%= mail_to "greg@#{DOMAIN}", 'Email me', :subject => 'About the emails', :encode => 'javascript' %>.
+        <small>Greg (p.s. you're my favorite)</small>
+      </blockquote>
+    <% elsif !resource.has_pass? and resource.joined_before_passwords? %>
+      <h3>Good news! Passwords!</h3>
+      <blockquote>You can now log in to your Reading account using your username and a password.
+        But first, you're going to need to set your password.
+      </blockquote>
+    <% end %>
+    </div>
+    <% if resource.username_was.blank? %>
+      <%= f.text_field :username, "#{DOMAIN}/", :placeholder => 'your_pithy_username' do %>
+        <p class="help-block">This is where people can find you on Reading</p>
+      <% end %>
+    <% end %>
+    <% if resource.email_was.blank? %>
+      <%= f.email_field :email, :placeholder => 'your_dated_hs_email@aol.com', :class => 'input-xlarge' do %>
+        <% if !resource.joined_before_email? %><p class="help-block">We're totally going to spam you. (Not really)</p><% end %>
+      <% end %>
+    <% end %>
+    <% if !resource.has_pass? %>
+      <%= f.password_field :password, :placeholder => 'something_hackerz_wont_guess', :class => 'input-xlarge' %>
+      <%= f.password_field :password_confirmation, 'Password Confirm', :placeholder => 'make sure they match!', :class => 'input-xlarge' %>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.submit 'All done', :class => 'btn btn-success' %>
+    <% end %>
+  </fieldset>
+<% end %>
+</div>
+</div>

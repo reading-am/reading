@@ -57,23 +57,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /almost_ready
-  def almost_ready
-    if !signed_in?
-      redirect_to root_url and return
-    elsif !current_user.username.blank? and !current_user.email.blank?
-      redirect_to "/settings/info" and return
-    end
-
-    respond_to do |format|
-      if params[:user] and current_user.update_attributes(params[:user])
-        format.html { redirect_to("/#{current_user.username}/list", :notice => 'User was successfully updated.') }
-      else
-        format.html
-      end
-    end
-  end
-
   def delete_cookies
     cookies.each do |k, v| cookies.delete k end
     redirect_to '/'

@@ -8,8 +8,8 @@ class RegistrationsController < Devise::RegistrationsController
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
 
-    email_changed = resource.email != resource_params[:email]
-    password_changed = !resource_params[:password].empty?
+    email_changed = resource_params.has_key?(:email) && resource.email != resource_params[:email]
+    password_changed = !resource_params[:password].blank?
 
     if resource.send("update_with#{email_changed || password_changed ? '' : 'out'}_password", resource_params)
       if is_navigational_format?
@@ -24,6 +24,33 @@ class RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       respond_with resource
     end
+  end
+
+  def almost_ready
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+
+    if !signed_in?
+      redirect_to root_url and return
+    elsif !resource.username.blank? and !resource.email.blank? and resource.has_pass?
+      redirect_to "/settings/info" and return
+    end
+  end
+
+  def almost_ready_update
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+
+    email_changed = resource_params.has_key?(:email) && resource.email != resource_params[:email]
+    password_changed = !resource_params[:password].blank?
+
+    if resource.send("update_with#{email_changed || password_changed ? '' : 'out'}_password", resource_params)
+      sign_in resource_name, resource, :bypass => true
+      respond_with resource, :location => after_update_path_for(resource)
+    else
+      clean_up_passwords resource
+      render :almost_ready
+      #respond_with resource
+    end
+
   end
 
   protected

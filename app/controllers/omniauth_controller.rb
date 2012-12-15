@@ -41,7 +41,7 @@ class OmniauthController < Devise::OmniauthCallbacksController
         username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
         username = username.blank? ? nil : username
 
-        user = User.create(
+        user = User.new(
           :username   => username,
           :name       => auth_hash["info"]["name"],
           :email      => auth_hash["info"]["email"],
@@ -53,6 +53,9 @@ class OmniauthController < Devise::OmniauthCallbacksController
           :phone      => auth_hash["info"]["phone"],
           :urls       => auth_hash["info"]["urls"]
         )
+        # skip required check on email and password
+        user.email_required = user.password_required = false
+        user.save
 
         # account for taken usernames and facebook usernames with periods and the like
         user.username = nil if !user.errors.messages[:username].blank?

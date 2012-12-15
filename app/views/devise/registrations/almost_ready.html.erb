@@ -21,7 +21,7 @@
     <% end %>
     </div>
     <% if resource.username_was.blank? %>
-      <%= f.text_field :username, "#{DOMAIN}/", :placeholder => 'your_pithy_username' do %>
+      <%= f.text_field :username, :placeholder => 'your_pithy_username' do %>
         <p class="help-block">This is where people can find you on Reading</p>
       <% end %>
     <% end %>

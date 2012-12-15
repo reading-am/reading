@@ -14,12 +14,12 @@ Reading::Application.routes.draw do
     match '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session,
       :via => Devise.mappings[:user].sign_out_via
 
-    get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
     post    '/users'          => 'registrations#create',  :as => :user_registration
+    delete  '/users'          => 'registrations#destroy'
     get     '/users/sign_up'  => 'registrations#new',     :as => :new_user_registration
+    get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
     get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
     put     '/settings/info'  => 'registrations#update'
-    delete  '/settings/info'  => 'registrations#destroy'
     get     '/almost_ready'   => 'registrations#almost_ready'
     put     '/almost_ready'   => 'registrations#almost_ready_update'
   end

@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
                   :bio, :link, :phone, :urls, :description, :mail_digest,
                   :email_when_followed, :email_when_mentioned, :avatar
 
+  attr_accessor :email_required, :password_required
+
   bitmask :roles, :as => [
     :admin
   ]
@@ -93,12 +95,10 @@ class User < ActiveRecord::Base
 
   # For Devise so that we can register people via Omniauth,
   # save their Auth and User, then ask for additional info.
-  attr_accessor :email_required
   def email_required?
     if email_required.nil? then super else email_required end
   end
 
-  attr_accessor :password_required
   def password_required?
     if password_required.nil? then super else password_required end
   end

@@ -1,4 +1,4 @@
-<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+<%= render :partial => 'layouts/notice', :locals => {:notice => flash[:alert] || notice} %>
 
 <div class="row" id="email_signup_signin">
   <div class="span3 offset1" id="signup_form">

@@ -210,7 +210,7 @@ class User < ActiveRecord::Base
   end
 
   def joined_before_passwords?
-    !created_at.blank? && created_at < Date.parse('2012-12-17')
+    !created_at.blank? && created_at < Date.parse('2012-12-16')
   end
 
   def has_pass?

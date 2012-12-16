@@ -42,7 +42,7 @@
 </div>
 </div>
 
-<% if resource.posts.size == 0 and !resource.has_pass? and !resource.joined_before_passwords? or resource.username_was.blank? %>
+<% if resource.posts.size == 0 and !resource.has_pass? and (!resource.joined_before_passwords? or resource.username_was.blank?) %>
 <%# only show for people in the process of registering, not being asked for missing info %>
 <div id="user_delete" class="row">
   <div class="span7 offset3">

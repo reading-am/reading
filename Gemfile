@@ -8,8 +8,9 @@ gem 'rails', '3.2.9'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'
-  gem 'therubyracer' # Required by less-rails. Not sure why it's not included by the gem
-  gem 'libv8', '3.11.8.3' # Required by therubyracer: https://github.com/cowboyd/therubyracer/issues/215
+  # Required by less-rails. Not sure why it's not included by the gem. 0.11.0 has trouble with libv8
+  # https://github.com/cowboyd/therubyracer/issues/215
+  gem 'therubyracer', '~> 0.10.2'
   gem 'coffee-rails'
   gem 'uglifier'
 end

@@ -4,5 +4,6 @@
   <%= f.password_field :password, false, :placeholder => 'Password' %>
   <%= f.actions do %>
     <%= f.submit "Make me a Reader!", :class => 'btn btn-success' %>
+    <%= f.hidden_field :remember_me, :value => 1 if devise_mapping.rememberable? %>
   <% end %>
 <% end %>

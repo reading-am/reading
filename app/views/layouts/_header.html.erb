@@ -14,10 +14,11 @@
 </div>
 <% else %>
 <%
-  signup_page = ['devise/sessions','registrations'].include? request[:controller] 
-
-  if signup_page
+  if signup_page = ['devise/sessions','registrations'].include?(request[:controller])
     headline = "This is going to be so awesome."
+  elsif request[:controller] == 'devise/passwords'
+    signup_page = true
+    headline = "Forgot your password? DON'T PANIC."
   elsif @user.nil? or (signed_in? && current_user.id == @user.id)
     you = "you"
     youre = "you're"

@@ -1,12 +1,14 @@
-<h2>Forgot your password?</h2>
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
+<div class="row">
+  <div class="span7 offset1">
 
-  <div><%= f.label :login %><br />
-  <%= f.text_field :login %></div>
+    <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
 
-  <div><%= f.submit "Send me reset password instructions" %></div>
-<% end %>
+      <%= f.text_field :login, false, :placeholder => 'the_email_I_registered_with@hotmail.com', :class => 'input-xlarge' %>
 
-<%= render "devise/shared/links" %>
+      <%= f.submit "Send me reset password instructions", :class => 'btn btn-success' %>
+    <% end %>
+
+  </div>
+</div>

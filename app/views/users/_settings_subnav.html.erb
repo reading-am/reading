@@ -3,6 +3,6 @@
     <a href="/settings/info"<% if ['edit','update'].include? params[:action] %> class="active"<% end %>>Info</a>
     <a href="/settings/hooks"<% if params[:action] == 'hooks' %> class="active"<% end %>>Hooks</a>
     <a href="/settings/extras"<% if params[:action] == 'extras' %> class="active"<% end %>>Extras</a>
-    <%= link_to "Sign Out", destroy_user_session_path, :id => 'signout', :method => :delete %>
+    <%= link_to "Sign Out", destroy_user_session_path, :id => 'signout' %>
   </nav>
 </div>

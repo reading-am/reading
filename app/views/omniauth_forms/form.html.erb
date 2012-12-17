@@ -1,0 +1,10 @@
+<%# Using User.new here as a hack to use the bootstrap form generator %>
+<%= twitter_bootstrap_form_for User.new, :html => {:id => "omniauth_form"}, :url => @url || '' do |f| %>
+<fieldset>
+  <%= f.text_field :username, @username_label, :name => :username, :placeholder => 'my@email.com', :class => 'input-xlarge' %>
+  <%= f.password_field :password, @password_label, :name => :password, :placeholder => 'my_super_strong_password', :class => 'input-xlarge' %>
+  <%= f.actions do %>
+    <%= f.submit 'Submit', :class => 'btn btn-success' %>
+  <% end %>
+</fieldset>
+<% end %>

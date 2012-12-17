@@ -4,9 +4,21 @@
 .provider {
   font-style:normal;
   display:inline-block;
+  padding:0 5px;
+  .border-radius(3px);
   text-decoration:none;
+  &:hover { text-decoration:none; }
+  &.email {
+    background-color:@light_grey;
+    &:hover { background-color: lighten(@light_grey, 3%); }
+    .glyph {
+      background:@white;
+      font-size:0.75em;
+    }
+  }
   &.twitter {
     background-color:@twitter_light;
+    &:hover { background-color:@twitter_lightest; }
     .glyph {
       color:@twitter;
       font-size:1.25em;
@@ -14,6 +26,7 @@
   }
   &.facebook {
     background-color:@facebook_light;
+    &:hover { background-color:@facebook_lightest; }
     .glyph {
       color:@facebook;
       background:@white;
@@ -71,17 +84,7 @@
     }
   }
 }
-a:hover {
-  .provider {
-    text-decoration:none;
-    &.twitter {
-      background-color:@twitter_lightest;
-    }
-    &.facebook {
-      background-color:@facebook_lightest;
-    }
-  }
-}
+
 .disconnected {
   &, a, .provider {
     color:#555;

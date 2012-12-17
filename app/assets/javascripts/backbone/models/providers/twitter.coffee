@@ -8,7 +8,7 @@ define [
 
   TwitterProv::login = (response, perms) ->
     super
-      url: '/auth/loading/twitter'
+      url: '/users/auth/loading/twitter'
       width: 700
       height: 700,
       response

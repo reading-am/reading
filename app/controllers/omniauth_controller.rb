@@ -1,5 +1,13 @@
 # encoding: utf-8
-class SessionsController < ApplicationController
+class OmniauthController < Devise::OmniauthCallbacksController
+  # via: https://github.com/plataformatec/devise/wiki/Omniauthable,-sign-out-action-and-rememberable
+  include Devise::Controllers::Rememberable
+
+  # Devise sends all providers to different methods
+  # This globs them up and sends them to create()
+  def action_missing(*args)
+    create
+  end
 
   def create
     auth_hash = request.env['omniauth.auth']
@@ -10,7 +18,7 @@ class SessionsController < ApplicationController
       auth_hash.provider = 'tssignals'
     end
 
-    if logged_in?
+    if signed_in?
       # Means our user is signed in. Add the authorization to the user
       begin
         auth = current_user.add_provider(auth_hash)
@@ -21,10 +29,10 @@ class SessionsController < ApplicationController
       end
     else
       # Log him in or sign him up
-      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
         # fill in any changed info
         ["token","secret","expires_at"].each do |prop|
-          auth[prop] = auth_hash["credentials"][prop] || auth[prop]
+          auth.attributes = {prop => auth_hash["credentials"][prop] || auth[prop]}
         end
         auth.save
       else
@@ -33,7 +41,7 @@ class SessionsController < ApplicationController
         username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
         username = username.blank? ? nil : username
 
-        user = User.create(
+        user = User.new(
           :username   => username,
           :name       => auth_hash["info"]["name"],
           :email      => auth_hash["info"]["email"],
@@ -45,12 +53,15 @@ class SessionsController < ApplicationController
           :phone      => auth_hash["info"]["phone"],
           :urls       => auth_hash["info"]["urls"]
         )
+        # skip required check on email and password
+        user.email_required = user.password_required = false
+        user.save
 
         # account for taken usernames and facebook usernames with periods and the like
         user.username = nil if !user.errors.messages[:username].blank?
         # account for bad email addresses coming from provider
         user.email = nil if !user.errors.messages[:email].blank?
-        user.save if user.changed?
+        user.save
 
         auth_params = Authorization::transform_auth_hash(auth_hash)
         auth_params[:user] = user
@@ -62,7 +73,8 @@ class SessionsController < ApplicationController
         #end
       end
 
-      cookies.permanent[:auth_token] = auth.user.auth_token
+      sign_in auth.user
+      remember_me auth.user
       status = "AuthLoginCreate"
     end
 
@@ -81,11 +93,6 @@ class SessionsController < ApplicationController
     else
       render "redirect", :locals => data, :layout => false
     end
-  end
-
-  def destroy
-    cookies.delete(:auth_token)
-    redirect_to root_url, :notice => "Signed out!"
   end
 
 end

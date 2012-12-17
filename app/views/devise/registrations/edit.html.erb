@@ -1,0 +1,7 @@
+<%= render :partial => 'users/settings_subnav' if @user == current_user %>
+
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+
+<%= render 'users/form' %>
+
+<%= render :partial => 'backbone/router', :locals => {:model => resource} %>

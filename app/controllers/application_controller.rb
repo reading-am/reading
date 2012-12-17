@@ -1,9 +1,12 @@
 # encoding: utf-8
 class ApplicationController < ActionController::Base
+  # needed for migrate_auth_token
+  include Devise::Controllers::Rememberable
+
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :check_login
-  helper_method :current_user, :logged_in?, :mobile_device?, :desktop_device?
+  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :migrate_auth_token, :check_signed_in
+  helper_method :mobile_device?, :desktop_device?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
@@ -31,26 +34,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user
-    if cookies[:auth_token]
-      begin
-        @current_user ||= User.find_by_auth_token!(cookies[:auth_token])
-      rescue
-        cookies.delete(:auth_token)
-      end
+  def migrate_auth_token
+    token = cookies.delete(:auth_token)
+    if !token.blank? and user = User.find_by_auth_token(token) rescue false
+      sign_in user
+      remember_me user
     end
-    @current_user ||= User.new
   end
 
-  def logged_in?
-    !current_user.id.nil?
-  end
-
-  def authenticate
-    # This should probably be throwing some sort of error
-    # instead of simply redirecting, especially for AJAX requests
-    if !logged_in?
-      redirect_to root_path
+  def check_signed_in
+    if signed_in?
+      # check for 'destroy' so the user can delete themselves if need be
+      if !['/almost_ready','/signout'].include? request.path_info and action_name != 'destroy' and (current_user.username.blank? or current_user.email.blank? or !current_user.has_pass?)
+        redirect_to '/almost_ready'
+      elsif request.path_info == '/'
+        redirect_to "/#{current_user.username}/list"
+      end
     end
   end
 
@@ -58,16 +57,6 @@ class ApplicationController < ActionController::Base
     # redirect our url shortener to the root domain if it's not hitting the posts path
     if ['ing.am','ing.dev'].include? request.domain and request.path[0,3] != '/p/'
       redirect_to request.url.sub(/ing/,'reading')
-    end
-  end
-
-  def check_login
-    if logged_in?
-      if !['/almost_ready','/signout'].include? request.path_info and (current_user.username.blank? or current_user.email.blank?)
-        redirect_to '/almost_ready'
-      elsif request.path_info == '/'
-        redirect_to "/#{current_user.username}/list"
-      end
     end
   end
 

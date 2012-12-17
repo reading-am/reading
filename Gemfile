@@ -4,11 +4,13 @@ ruby '1.9.3'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.9'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'
-  gem 'therubyracer' # Required by less-rails. Not sure why it's not included by the gem
+  # Required by less-rails. Not sure why it's not included by the gem. 0.11.0 has trouble with libv8
+  # https://github.com/cowboyd/therubyracer/issues/215
+  gem 'therubyracer', '~> 0.10.2'
   gem 'coffee-rails'
   gem 'uglifier'
 end
@@ -19,7 +21,9 @@ gem 'jquery-rails'
 
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcache
+gem 'sunspot_rails' # Solr
 
+gem 'devise'
 gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
 gem 'omniauth'
 gem 'omniauth-twitter'
@@ -46,7 +50,7 @@ gem 'yajl-ruby' # JSON parser recommended by twitter gem
 gem 'twitter'
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'koala' # facebook
-gem 'sunspot_rails'
+
 gem 'delayed_job', "3.0.1"
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
@@ -54,8 +58,10 @@ gem 'daemons' # for delayed_job
 gem 'girl_friday'
 # gem 'hirefire' # has to be AFTER delayed_job
 gem 'hirefireapp' # has to be AFTER delayed_job
+
+gem 'nilify_blanks'
 gem 'validate_email'
-gem "twitter-bootstrap-rails", '2.1.4' # there's a LESS compile issue with 2.1.6
+gem 'twitter-bootstrap-rails', '2.1.4' # there's a LESS compile issue with 2.1.6
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'aws-sdk'

@@ -1,4 +1,18 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable
+
+  attr_accessible :username, :email, :password, :password_confirmation,
+                  :remember_me, :name, :first_name, :last_name, :location,
+                  :bio, :link, :phone, :urls, :description, :mail_digest,
+                  :email_when_followed, :email_when_mentioned, :avatar
+
+  attr_accessor :email_required, :password_required
+
   bitmask :roles, :as => [
     :admin
   ]
@@ -46,8 +60,9 @@ class User < ActiveRecord::Base
   validates :bio, :length => { :maximum => 255 }
   validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
 
+  nilify_blanks :only => [:email]
+
   before_create { generate_token(:token) }
-  before_create { generate_token(:auth_token) }
 
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
@@ -78,10 +93,32 @@ class User < ActiveRecord::Base
     where("lower(username) IN (:mentions)", { :mentions => comment.mentions.map{|u| u.downcase }})
   end
 
+  # For Devise so that we can register people via Omniauth,
+  # save their Auth and User, then ask for additional info.
+  def email_required?
+    if email_required.nil? then super else email_required end
+  end
+
+  def password_required?
+    if password_required.nil? then super else password_required end
+  end
+
   public
 
-  def to_param
-    username
+  def to_param; username; end
+
+  # Virtual attribute for authenticating by either username or email
+  # This is in addition to a real persisted field like 'username'
+  # via: https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
+  attr_accessor :login
+  attr_accessible :login
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    else
+      where(conditions).first
+    end
   end
 
   def self.find_by_username(username)
@@ -168,14 +205,46 @@ class User < ActiveRecord::Base
   end
 
   # is an original user who didn't require an email address to register
-  def is_og?
+  def joined_before_email?
     !created_at.blank? && created_at < Date.parse('2012-07-17')
+  end
+
+  def joined_before_passwords?
+    !created_at.blank? && created_at < Date.parse('2012-12-16')
+  end
+
+  def has_pass?
+    !encrypted_password_was.blank?
   end
 
   def channels
     [
       "users"
     ]
+  end
+
+  # Modified from Devise to allow for modification of empty passwords
+  # https://github.com/plataformatec/devise/blob/master/lib/devise/models/database_authenticatable.rb#L56
+  def update_with_password(params, *options)
+    current_password = params.delete(:current_password)
+
+    if params[:password].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation) if params[:password_confirmation].blank?
+    end
+
+    result = if valid_password?(current_password) || !has_pass?
+      update_attributes(params, *options)
+    else
+      params.delete(:password)
+      self.assign_attributes(params, *options)
+      self.valid?
+      self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+      false
+    end
+
+    clean_up_passwords
+    result
   end
 
   def simple_obj to_s=false

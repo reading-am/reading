@@ -8,6 +8,6 @@ reading.referrer_id = <%= @referrer_id %>;
 
 <div id="visit" class="row">
   <div class="span6 offset1">
-    <h3>Loading <span><%= params[:url] %></span><% if logged_in? %> and adding it to your reading list<% end %>.</h3>
+    <h3>Loading <span><%= params[:url] %></span><% if signed_in? %> and adding it to your reading list<% end %>.</h3>
   </div>
 </div>

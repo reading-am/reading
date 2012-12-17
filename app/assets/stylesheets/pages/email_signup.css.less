@@ -1,0 +1,20 @@
+@import "variables";
+@import "mixins";
+
+@offset: @gridColumnWidth + @gridGutterWidth*2;
+@padding: 30px;
+
+#email_signup_signin {
+  .offset1 {
+    margin-left:@offset - @padding;
+  }
+  .help-block {
+    padding-top:5px;
+  }
+}
+
+#signup_form {
+  #gradient > .vertical(lighten(@lightest_yellow, 20%), @lightest_yellow);
+  padding:0 @padding;
+  .border-radius(5px);
+}

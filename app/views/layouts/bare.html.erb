@@ -4,7 +4,7 @@
   <title>✌ Reading</title>
   <%= stylesheet_link_tag 'application' %>
 </head>
-<body>
+<body id="bare_layout">
   <%= yield %>
   <%= render :partial => 'layouts/ga_embed' if Rails.env == 'production' %>
   <%= render :partial => 'layouts/quantcast' if Rails.env == 'production' %>

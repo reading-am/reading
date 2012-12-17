@@ -36,7 +36,7 @@ define [
 
     sync_to_current_session: (success, error) ->
       $.ajax # hit the omniauth endpointk
-        url: "/auth/#{@provider}/callback"
+        url: "/users/auth/#{@provider}/callback"
         dataType: "json"
         data:
           return_type: "json",

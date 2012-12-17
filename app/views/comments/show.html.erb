@@ -1,8 +1,1 @@
-<script type="text/javascript">
-
-  <%= requirejs %>require(["backbone", "app/routers/comments"], function(Backbone, Router){
-    new Router({model: Backbone.Model.prototype.factory(<%=j @comment.simple_obj.to_json.html_safe -%>)});
-    Backbone.history.start({pushState: true});
-  });
-
-</script>
+<%= render :partial => 'backbone/router', :locals => {:model => @comment} %>

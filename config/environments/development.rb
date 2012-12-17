@@ -1,3 +1,5 @@
+DOMAIN = '0.0.0.0:3000'
+
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -28,7 +30,9 @@ Reading::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  # mailcatcher https://github.com/sj26/mailcatcher
+  # Mailcatcher https://github.com/sj26/mailcatcher
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  # Needed by Devise
+  config.action_mailer.default_url_options = { :host => DOMAIN }
 end

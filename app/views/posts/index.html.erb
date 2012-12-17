@@ -7,7 +7,7 @@
     <div class="span7 offset1">
     <% if @domain %>
       <h3>Stuff people are reading on <%= @domain.name %></h3>
-    <% elsif logged_in? %>
+    <% elsif signed_in? %>
       <h3>Posts from everyone on Reading</h3>
     <% else %>
       <h3>Some people are reading this stuff</h3>
@@ -31,13 +31,4 @@
   <% end %>
 </div>
 
-<% if @user %>
-<script type="text/javascript">
-
-  <%= requirejs %>require(["backbone", "app/routers/users"], function(Backbone, Router){
-    new Router({model: Backbone.Model.prototype.factory(<%=j @user.simple_obj.to_json.html_safe -%>)});
-    Backbone.history.start({pushState: true});
-  });
-
-</script>
-<% end %>
+<%= render :partial => 'backbone/router', :locals => {:model => @user} if @user %>

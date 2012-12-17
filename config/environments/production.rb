@@ -1,3 +1,6 @@
+DOMAIN = 'reading.am'
+#DOMAIN = '0.0.0.0:3000' # for testing
+
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -67,8 +70,10 @@ Reading::Application.configure do
     :port           => ENV['MAILGUN_SMTP_PORT'],
     :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
     :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => 'reading.am',
+    :domain         => DOMAIN,
     :authentication => :plain,
     :enable_starttls_auto => true
   }
+  # Needed by Devise
+  config.action_mailer.default_url_options = { :host => DOMAIN }
 end

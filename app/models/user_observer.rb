@@ -7,12 +7,12 @@ class UserObserver < ActiveRecord::Observer
       Broadcaster::signal :create, user
 
       # Tweet to ReadingArrivals
-      if !user.is_og? and Rails.env == 'production'
+      if !user.joined_before_email? and Rails.env == 'production'
         tweet = "Everyone welcome #{user.username}! http://#{DOMAIN}/#{user.username}"
         Twitter::Client.new(:oauth_token => "***REMOVED***", :oauth_token_secret => "***REMOVED***").delay.update tweet rescue nil
       end
 
-      UserMailer.delay.welcome(user) unless user.is_og?
+      UserMailer.delay.welcome(user) unless user.joined_before_email?
 
     end
   end

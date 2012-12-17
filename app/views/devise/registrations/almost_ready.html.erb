@@ -14,9 +14,10 @@
         <small>Greg (p.s. you're my favorite)</small>
       </blockquote>
     <% elsif !resource.has_pass? and resource.joined_before_passwords? %>
-      <h3>Good news! Passwords!</h3>
-      <blockquote>You can now log in to your Reading account using your username and a password.
-        But first, you're going to need to set your password.
+      <h3>Good news <%= resource.username %>, we now have passwords!</h3>
+      <blockquote>We've added the ability to log into your Reading account using your username and a password.
+        Since you don't have a password yet, we'll need you to set one using the form below.
+        Once that's done, you can get right back to your regularly scheduled reading.
       </blockquote>
     <% end %>
     </div>

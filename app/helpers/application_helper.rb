@@ -23,6 +23,8 @@ module ApplicationHelper
     end
     content_tag :span, :class => ['provider', provider] do
       case provider.to_s
+      when 'email'
+        output = content_tag :span, '@', :class => 'glyph icon'
       when 'twitter', 'facebook'
         output = content_tag :span, provider[0], :class => 'glyph icon'
       when 'tumblr'
@@ -66,6 +68,6 @@ module ApplicationHelper
 
   def requirejs
     # this namespace must mirror what's in requirejs.yml
-    ['production','staging'].include?(Rails.env) ? 'r_require.' : ''
+    "#{['production','staging'].include?(Rails.env) ? 'r_require.' : ''}require"
   end
 end

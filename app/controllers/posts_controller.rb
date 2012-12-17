@@ -1,6 +1,6 @@
 # encoding: utf-8
 class PostsController < ApplicationController
-  before_filter :check_login
+  before_filter :authenticate_user!, :except => [:index, :visit]
 
   # GET /posts
   # GET /posts.xml
@@ -36,8 +36,8 @@ class PostsController < ApplicationController
   # a pain in the ass
   def visit
     # this is disabled while I look for some funny business
-    #@token = if params[:token] then params[:token] elsif logged_in? then current_user.token else '' end
-    @token = if params[:token] == '-' then params[:token] elsif logged_in? then current_user.token else '' end
+    #@token = if params[:token] then params[:token] elsif signed_in? then current_user.token else '' end
+    @token = if params[:token] == '-' then params[:token] elsif signed_in? then current_user.token else '' end
     @referrer_id = 0 # default
 
     if !params[:id]

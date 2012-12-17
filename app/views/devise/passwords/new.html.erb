@@ -1,0 +1,14 @@
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+
+<div class="row">
+  <div class="span7 offset1">
+
+    <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+
+      <%= f.text_field :login, false, :placeholder => 'the_email_I_registered_with@hotmail.com', :class => 'input-xlarge' %>
+
+      <%= f.submit "Send me password reset instructions", :class => 'btn btn-success' %>
+    <% end %>
+
+  </div>
+</div>

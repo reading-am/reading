@@ -1,3 +1,5 @@
+DOMAIN = 'staging.reading.am'
+
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -48,6 +50,9 @@ Reading::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
+
+  # Needed by Devise
+  config.action_mailer.default_url_options = { :host => DOMAIN }
 
   # Enable threaded mode
   # config.threadsafe!

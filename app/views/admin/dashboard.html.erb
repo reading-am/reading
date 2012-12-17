@@ -1,8 +1,1 @@
-<script type="text/javascript">
-
-  <%= requirejs %>require(["backbone", "app/routers/admin"], function(Backbone, Router){
-    new Router();
-    Backbone.history.start({pushState: true});
-  });
-
-</script>
+<%= render :partial => 'backbone/router', :locals => {:router => :admin} %>

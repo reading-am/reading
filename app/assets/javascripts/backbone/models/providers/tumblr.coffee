@@ -8,7 +8,7 @@ define [
 
   TumblrProv::login = (response, perms) ->
     super
-      url: '/auth/loading/tumblr'
+      url: '/users/auth/loading/tumblr'
       width: 700
       height: 700,
       response

@@ -17,7 +17,7 @@
     <a href="/<%= user.username %>/followers"<% if params[:type] == 'followers' %> class="active"<% end %>>
       <span id="followers_count"><%= user.followers.size %></span> Followers
     </a>
-    <% if logged_in? %>
+    <% if signed_in? %>
       <% if user == current_user %>
         - <a href="/users/recommended" class="button">Find People<div class="new_badge">new</div></a>
       <% else %>

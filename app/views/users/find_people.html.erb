@@ -1,10 +1,3 @@
 <div id="yield"></div>
 
-<script type="text/javascript">
-
-  <%= requirejs %>require(["backbone", "app/routers/users"], function(Backbone, Router){
-    new Router
-    Backbone.history.start({pushState: true});
-  });
-
-</script>
+<%= render :partial => 'backbone/router', :locals => {:router => :users} %>

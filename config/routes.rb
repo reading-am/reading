@@ -1,6 +1,29 @@
 Reading::Application.routes.draw do
   root :to => "posts#index"
 
+  devise_for :users,
+    :skip => [:sessions,:registrations],
+    :controllers => {
+      :registrations => 'registrations',
+      :omniauth_callbacks => 'omniauth'
+    }
+  # via: https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes/8c1825a5ba0b2fbe2f91a1c39aea0808a168800a
+  as :user do
+    get   '/sign_in'  => 'devise/sessions#new',     :as => :new_user_session
+    post  '/sign_in'  => 'devise/sessions#create',  :as => :user_session
+    match '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session,
+      :via => Devise.mappings[:user].sign_out_via
+
+    post    '/users'          => 'registrations#create',  :as => :user_registration
+    delete  '/users'          => 'registrations#destroy'
+    get     '/users/sign_up'  => 'registrations#new',     :as => :new_user_registration
+    get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
+    get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
+    put     '/settings/info'  => 'registrations#update'
+    get     '/almost_ready'   => 'registrations#almost_ready'
+    put     '/almost_ready'   => 'registrations#almost_ready_update'
+  end
+
   # sitemap
   match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
 
@@ -35,9 +58,6 @@ Reading::Application.routes.draw do
   end
 
   match "/pusher/auth" => "pusher#auth"
-  match "/auth/:provider/callback" => "sessions#create"
-  match "/auth/failure" => "sessions#failure"
-  match "/signout" => "sessions#destroy", :as => :signout
   match "/support/delete_cookies" => "users#delete_cookies"
 
   match '/posts/create' => 'posts#create'
@@ -56,7 +76,7 @@ Reading::Application.routes.draw do
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
   match '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
-  match '/auth/loading/:provider' => 'authorizations#loading'
+  match '/users/auth/loading/:provider'         => 'authorizations#loading'
   match '/authorizations/:provider/:uid/update' => 'authorizations#update'
   match '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations
@@ -70,7 +90,6 @@ Reading::Application.routes.draw do
 
   match '/extensions/safari/update' => 'extras#safari_update'
 
-  match '/almost_ready'       => 'users#almost_ready'
   match "/users"              => redirect("/")
   match '/users/recommended'  => 'users#find_people'
   match '/users/friends'      => 'users#find_people'
@@ -88,7 +107,6 @@ Reading::Application.routes.draw do
 
   # Settings
   match '/settings' => 'users#settings'
-  match '/settings/info' => 'users#edit'
   match '/settings/hooks'  => 'users#hooks'
   match '/settings/extras' => 'users#extras'
 

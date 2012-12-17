@@ -8,7 +8,7 @@ define [
 
   ReadabilityProv::login = (response, perms) ->
     super
-      url: '/auth/loading/readability'
+      url: '/users/auth/loading/readability'
       width: 600
       height: 450,
       response

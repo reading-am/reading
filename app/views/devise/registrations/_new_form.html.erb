@@ -1,0 +1,9 @@
+<%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= f.text_field :name, false, :placeholder => 'Full name' %>
+  <%= f.email_field :email, false, :placeholder => 'Email' %>
+  <%= f.password_field :password, false, :placeholder => 'Password' %>
+  <%= f.actions do %>
+    <%= f.submit "Make me a Reader!", :class => 'btn btn-success' %>
+    <%= f.hidden_field :remember_me, :value => 1 if devise_mapping.rememberable? %>
+  <% end %>
+<% end %>

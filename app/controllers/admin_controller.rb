@@ -1,6 +1,5 @@
 class AdminController < ApplicationController
-
-  before_filter :check_for_admin_role
+  before_filter :authenticate_user!, :check_for_admin_role
 
   private
 
@@ -12,7 +11,7 @@ class AdminController < ApplicationController
 
   def dashboard
     respond_to do |format|
-      format.html { render :layout => 'bb' }
+      format.html { render :layout => 'backbone' }
       format.xml  { render :xml => @comment }
     end
   end

@@ -1,12 +1,27 @@
 @import "variables";
 @import "mixins";
 
+#user_avatar_controls {
+  position:relative;
+  #avatar {
+    position:absolute;
+    top:0; left:100px;
+    width:60px; height:60px;
+    text-align:right;
+    img {
+      max-width:100%;
+      max-height:100%;
+    }
+  }
+}
+
 #user_delete {
   margin-top:20px;
   a {
     display:block;
     float:left;
     padding:5px 10px;
+    margin-left:20px;
     .border-radius(3px);
     color:#DDD;
     background:#F9F9F9;

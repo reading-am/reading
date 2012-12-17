@@ -8,9 +8,9 @@ define [
 
   KipptProv::login = (response, perms) ->
     super
-      url: '/auth/loading/kippt'
-      width: 430
-      height: 360,
+      url: '/users/auth/loading/kippt'
+      width: 360
+      height: 250,
       response
 
   App.Models.KipptProv = KipptProv

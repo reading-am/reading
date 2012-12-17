@@ -1,5 +1,5 @@
 <% # TODO spin user links out into a helper %>
-<% because_of_you = (logged_in? and !post.referrer_post.nil? and post.referrer_post.user == current_user) %>
+<% because_of_you = (signed_in? and !post.referrer_post.nil? and post.referrer_post.user == current_user) %>
 <div data-class="Post" data-id="<%= post.id %>" class="post <%= 'referred_post' if post.referrer_post %> <%= if post.yn === true then 'yep' elsif post.yn === false then 'nope' end %> <%= 'active' if (Time.now - post.updated_at) < 30 %>">
   <span class="yn"></span>
   <span class="yn_wrap">

@@ -44,7 +44,6 @@ class ApplicationController < ActionController::Base
 
   def check_signed_in
     if signed_in?
-      # check for 'destroy' so the user can delete themselves if need be
       if (controller_path == 'users' or (controller_path == 'posts' and action_name == 'index')) and (current_user.username.blank? or current_user.email.blank? or !current_user.has_pass?)
         redirect_to '/almost_ready'
       elsif request.path_info == '/'

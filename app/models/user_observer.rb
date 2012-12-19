@@ -25,7 +25,7 @@ class UserObserver < ActiveRecord::Observer
     Broadcaster::signal :destroy, user
 
     # This email can't be delayed because the user won't exist by the time delayed_job gets to it
-    UserMailer.destroyed(user).deliver unless user.email.blank?
+    UserMailer.destroyed(user).deliver unless user.email.blank? or user.username.blank?
   end
 
 end

@@ -1,0 +1,5 @@
+single_show:
+  body: "@greg"
+
+multiple_show:
+  body: "@greg   \t\n @howard,@foxhole , @richard"

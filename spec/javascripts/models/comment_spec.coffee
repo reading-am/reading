@@ -24,3 +24,13 @@ require [
           model.save {body: "This is a test comment", post_id: 201, page_id: 91},
             success: (model, response) -> throw response
             error: (model, response) -> done()
+
+      describe "#is_a_show()", ->
+
+        it "should recognize a single 'show'", ->
+          model = new Comment body: "@greg"
+          model.is_a_show().should.be.true
+
+        it "should recognize a multiple 'show'", ->
+          model = new Comment body: "@greg   \t\n @howard,@foxhole , @richard"
+          model.is_a_show().should.be.true

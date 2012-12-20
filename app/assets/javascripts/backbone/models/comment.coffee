@@ -26,7 +26,7 @@ define [
 
     is_a_show: ->
       m = @mentions()
-      return (m.length > 0 and @get("body").trim() is "@#{m[0]}")
+      return (m.length > 0 and @get("body").replace(/\s|,/g,"").length is "@#{m.join("@")}".length)
 
 
   App.Models.Comment = Comment

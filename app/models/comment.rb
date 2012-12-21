@@ -48,7 +48,7 @@ class Comment < ActiveRecord::Base
   end
 
   def is_a_show
-    return @is_a_show ||= (mentions.length > 0 and body.strip == "@#{mentions[0]}")
+    return @is_a_show ||= (mentions.length > 0 and body.gsub(/\s|,/, '').length == "@#{mentions.join("@")}".length)
   end
 
   def channels

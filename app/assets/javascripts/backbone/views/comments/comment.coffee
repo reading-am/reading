@@ -94,6 +94,8 @@ define [
       json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
 
       if @model.is_a_show()
+        if (m = @model.mentions().length) > 1
+          json.body = "#{m} people"
         @$el.html(@shown_template(json))
       else
         @$el.html(@template(json))

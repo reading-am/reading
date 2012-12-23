@@ -58,7 +58,7 @@ define [
         helper:'clone'
         addClass: false
         opacity: 0.5
-        zIndex: 9999999999
+        zIndex: 2147483647
 
       @textarea.droppable
         accept: "img"

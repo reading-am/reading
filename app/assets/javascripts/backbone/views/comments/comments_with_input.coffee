@@ -20,12 +20,24 @@ define [
     tagName: "div"
 
     events:
+      "keydown textarea"  : "stop_propagation"
       "keypress textarea" : "delegate_keys"
 
     initialize: ->
       @subview = new CommentsView collection: @collection
 
+    stop_propagation:(e) ->
+      # this prevents the page's existing events
+      # from intercepting the keydown and returning false,
+      # thereby preventing a character from being entered
+      # and preventing keydown from being fired.
+      # ex: The spacebar on Google Image Search
+      e.stopPropagation()
+
     delegate_keys:(e) ->
+      # prevent preexisting handlers from firing
+      e.stopPropagation()
+
       if e.keyCode is 13 and !Key.alt
         @submit()
       else

@@ -19,3 +19,5 @@ define
     AuthAdded: "Your {provider} account was added but you didn't give us the permissions we need to do what we need to do. Please try again."
     AuthTaken: "That {provider} account is connected to a different Reading account. If you remove it from the other Reading account, you'll be able to add it to this one."
     AuthSaveFail: "There was an error saving your account. Sorry. You should try again and if you continue to have problems, contact me at hello@reading.am."
+  regexes:
+    email: /((?:[a-z0-9*._+]){1,}\@(?:(?:[a-z0-9]+[-]?){1,}[a-z0-9]+\.){1,}(?:museum|travel|[a-z]{2,4})(?![\w\s?&.\/;#~%"=-]*>))/ig

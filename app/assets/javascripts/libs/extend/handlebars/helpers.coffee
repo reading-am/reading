@@ -27,8 +27,7 @@ define [
     new Handlebars.SafeString $context.html()
 
   Handlebars.registerHelper "link_emails", (context, fn) ->
-    re = /(([a-z0-9*._+]){1,}\@(([a-z0-9]+[-]?){1,}[a-z0-9]+\.){1,}([a-z]{2,4}|museum)(?![\w\s?&.\/;#~%"=-]*>))/g
-    new Handlebars.SafeString context.replace re,'<a href="mailto:$1" class="r_email">$1</a>'
+    new Handlebars.SafeString context.replace Constants.regexes.email,'<a href="mailto:$1" class="r_email">$1</a>'
 
   Handlebars.registerHelper "wrap_code", (context, fn) ->
     re = /`((?:[^`]+|\\.)*)`/g

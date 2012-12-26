@@ -18,6 +18,9 @@ define [
     mentions: ->
       TwitterText.extractMentions @get("body")
 
+    emails: ->
+      @get("body").match(Constants.regexes.email)
+
     hashtags: ->
       TwitterText.extractHashtags @get("body")
 

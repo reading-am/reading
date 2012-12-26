@@ -34,3 +34,15 @@ require [
         it "should recognize a multiple 'show'", ->
           model = new Comment body: "@greg   \t\n @howard,@foxhole , @richard"
           model.is_a_show().should.be.true
+
+      describe "#emails()", ->
+
+        it "should recognize a single email addresss", ->
+          email = "greg@reading.am"
+          model = new Comment body: email
+          model.emails()[0].should.equal email
+
+        it "should recognize multiple email addressses", ->
+          emails = ["greg@reading.am","test@example.com","heyo@fun.travel"]
+          model = new Comment body: "This is an email for #{emails[0]} and #{emails[1]},#{emails[2]}"
+          model.emails().toString().should.equal emails.toString()

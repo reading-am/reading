@@ -20,4 +20,6 @@ define
     AuthTaken: "That {provider} account is connected to a different Reading account. If you remove it from the other Reading account, you'll be able to add it to this one."
     AuthSaveFail: "There was an error saving your account. Sorry. You should try again and if you continue to have problems, contact me at hello@reading.am."
   regexes:
-    email: /((?:[a-z0-9*._+]){1,}\@(?:(?:[a-z0-9]+[-]?){1,}[a-z0-9]+\.){1,}(?:museum|travel|[a-z]{2,4})(?![\w\s?&.\/;#~%"=-]*>))/ig
+    # Taken from: http://www.regular-expressions.info/email.html
+    # This has a ruby companion
+    email: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/ig

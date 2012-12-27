@@ -43,6 +43,6 @@ require [
           model.emails()[0].should.equal email
 
         it "should recognize multiple email addressses", ->
-          emails = ["greg@reading.am","test@example.com","heyo@fun.travel"]
+          emails = ["greg@reading.am","test@example.com","heyo@fun.vg"]
           model = new Comment body: "This is an email for #{emails[0]} and #{emails[1]},#{emails[2]}"
           model.emails().toString().should.equal emails.toString()

@@ -7,7 +7,7 @@ define [
 
   class NotificationView extends Backbone.View
 
-    id: "r_am"
+    className: "r_notification"
     tagName: 'div'
     template: Handlebars.compile template
 
@@ -43,4 +43,3 @@ define [
       console.log "close!!!"
       @$el.fadeOut 400, =>
         @$el.remove()
-      false

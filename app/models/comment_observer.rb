@@ -5,7 +5,7 @@ class CommentObserver < ActiveRecord::Observer
     comment.user.hooks.each do |hook| hook.run(comment, :comment) end
 
     # hey steve, try this:
-    Broadcaster::signal :notify, comment
+    # Broadcaster::signal :notify, comment
 
     # Send mention emails
     User.mentioned_in(comment).where('id != ?', comment.user_id).each do |user|

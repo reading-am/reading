@@ -16,4 +16,9 @@ require [
     action: "commented on"
     page: "Google"
     page_url: "http://www.google.com"
-  new Notification(model: model)
+
+  pusher.subscribe("comments").bind_all (e, data) ->
+    console.log '---------------------------------------------'
+    console.log e
+    console.log data
+    new Notification(model: model)

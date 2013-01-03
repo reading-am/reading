@@ -16,4 +16,4 @@ require [
     action: "commented on"
     page: "Google"
     page_url: "http://www.google.com"
-  n = new Notification(model: model)
+  new Notification(model: model)

@@ -1,0 +1,84 @@
+@import "variables";
+@import "mixins";
+
+@font-face {
+    font-family: 'WebSymbolsRegular';
+    src: font-url('websymbols-regular-webfont.eot');
+    src: font-url('websymbols-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         font-url('websymbols-regular-webfont.woff') format('woff'),
+         font-url('websymbols-regular-webfont.ttf') format('truetype'),
+         font-url('websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#r_am {
+    display: none;
+  .r_notification {
+    z-index:2147483647;
+    position:fixed;
+    top:15px;
+    right:15px;
+    background:@yellow !important;
+
+    .r_user, .r_page{
+      display: inline;
+    }
+
+    .r_user { padding-left:10px; }
+
+    .r_close { 
+      padding:0 10px; 
+      color:@dark_yellow;
+    }
+
+    a {
+      display:inline;
+      line-height:26px;
+      margin:0;
+      color:@black;
+      text-decoration:none;
+      &:hover {
+        background:@white;
+        color:@black !important;
+      }
+    }
+    
+    .r_action {
+      color:@dark_yellow;
+    }
+
+  }
+  .r_close { 
+    margin:0 0 0 3px; 
+  }
+}
+.r_reset {
+  padding:0;
+  margin:0;
+  color:@black !important;
+  background:none;
+  border:none;
+  height:auto;
+  width:auto;
+  font-family:"Helvetica Neue", helvetica, arial, sans-serif;
+  font-weight:normal;
+  font-style:normal;
+  font-size:12px;
+  line-height:normal;
+  text-align:left;
+  text-decoration:none;
+  text-shadow:none;
+  text-transform:none;
+  font-variant:normal;
+  letter-spacing:normal;
+  list-style:none;
+}
+
+#r_iframe, #r_body {
+  width:100%;
+  height:100%;
+  border:0;
+  margin:0;
+  padding:0;
+}

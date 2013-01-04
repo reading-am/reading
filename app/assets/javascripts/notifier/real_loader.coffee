@@ -11,14 +11,15 @@ require [
 
   # Eventually I'll swap this out with the pusher listener
   # Right now I'm keeping it fixed while I work on the visual stuff
-  model =
-    username: "davidbyrd11"
-    action: "commented on"
-    page: "Google"
-    page_url: "http://www.google.com"
+  
 
-  pusher.subscribe("comments").bind_all (e, data) ->
-    console.log '---------------------------------------------'
-    console.log e
+  channel = pusher.subscribe("comments")
+  channel.bind 'create', (data) ->
+    console.log '----------------------------------------------'
     console.log data
+    model =
+      username: data.user.username
+      action: "commented on"
+      page: data.page.title
+      page_url: data.page.url
     new Notification(model: model)

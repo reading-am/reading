@@ -5,6 +5,7 @@ module Broadcaster
     simple_obj = obj.simple_obj
 
     obj.channels.each do |channel|
+      Rails.logger.debug(action.to_s + '-------------------------')
       msg = {:channel => channel.to_s, :action => action.to_s, :msg => simple_obj}
       if async
         PUSHER_QUEUE << msg

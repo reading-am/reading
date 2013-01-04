@@ -3,3 +3,9 @@ single_show:
 
 multiple_show:
   body: "@greg   \t\n @howard,@foxhole , @richard"
+
+single_email:
+  body: "greg@reading.am"
+
+multiple_email:
+  body: "This is an email for greg@reading.am and test@example.com,heyo@fun.vg"

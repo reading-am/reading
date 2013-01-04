@@ -39,6 +39,12 @@ class Comment < ActiveRecord::Base
     @mentions ||= extract_mentioned_screen_names body
   end
 
+  def emails
+    # Taken from: http://www.regular-expressions.info/email.html
+    # This has a ruby companion in constants.coffee.rb
+    @emails ||= body.scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i)
+  end
+
   def hashtags
     @hashtags ||= extract_hashtags body
   end

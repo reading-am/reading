@@ -9,7 +9,7 @@ require [
   $("<style>").html(css).appendTo("head")  
 
   channel = pusher.subscribe("comments")
-  channel.bind 'create', (data) ->
+  channel.bind 'notify', (data) ->
     model =
       username: data.user.username
       action: "commented on"

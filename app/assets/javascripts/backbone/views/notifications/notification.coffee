@@ -35,11 +35,25 @@ define [
     render: ->
       @$el.html(@template(@model))
       @$el.appendTo("body").fadeIn 500
-      cb = => @close()
-      setTimeout cb, 5000
-          
+
+      # Toggle page title with notification.
+      count = 0
+      title = document.title
+      username = @model.username
+      interval = setInterval ->
+        mod = count % 2
+        if mod == 0
+          document.title = username + ' mentioned you'
+        else
+          document.title = title
+
+        if ++count == 6
+          clearInterval interval
+          @close()
+      , 1000
+
+      closeNotification = => @close()
 
     close: ->
-      console.log "close!!!"
       @$el.fadeOut 400, =>
         @$el.remove()

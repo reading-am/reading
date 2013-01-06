@@ -57,6 +57,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def notifications
+    @user = current_user
+
+    respond_to do |format|
+      format.html { render 'notifications/index' }
+      format.xml  { render 'notifications/index' }
+      format.rss  { render 'notifications/index' }
+    end
+  end
+
   def delete_cookies
     cookies.each do |k, v| cookies.delete k end
     redirect_to '/'

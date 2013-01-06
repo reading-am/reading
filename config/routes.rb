@@ -109,6 +109,7 @@ Reading::Application.routes.draw do
   match '/settings' => 'users#settings'
   match '/settings/hooks'  => 'users#hooks'
   match '/settings/extras' => 'users#extras'
+  match '/settings/notifications' => 'users#notifications'
 
   # Admin
   match '/admin' => redirect('/admin/dashboard')

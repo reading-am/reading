@@ -14,4 +14,17 @@ describe Comment do
       comment.is_a_show.should be_true
     end
   end
+
+  context "when body contains emails " do
+    it "should recognize a single email address" do
+      comment = comments(:single_email)
+      comment.emails[0].should eq(comment.body)
+    end
+
+    it "should recognize multiple email addresses" do
+      emails = ["greg@reading.am","test@example.com","heyo@fun.vg"]
+      comment = Comment.new :body => "This is an email for #{emails[0]} and #{emails[1]},#{emails[2]}"
+      (comment.emails - emails).should eq([])
+    end
+  end
 end

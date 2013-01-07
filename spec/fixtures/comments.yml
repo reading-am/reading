@@ -6,6 +6,3 @@ multiple_show:
 
 single_email:
   body: "greg@reading.am"
-
-multiple_email:
-  body: "This is an email for greg@reading.am and test@example.com,heyo@fun.vg"

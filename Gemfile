@@ -4,7 +4,7 @@ ruby '1.9.3'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.11'
 group :assets do
   gem 'sass-rails'
   gem 'less-rails'

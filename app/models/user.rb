@@ -75,7 +75,6 @@ class User < ActiveRecord::Base
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
-  scope :mentioned_in, lambda { |comment| mentioned(comment) }
 
   searchable do
     text :name, :username, :email, :link
@@ -95,10 +94,6 @@ class User < ActiveRecord::Base
 
   def self.digesting freq
     where("email IS NOT NULL AND mail_digest IN (:freq)", { :freq => freq })
-  end
-
-  def self.mentioned comment
-    where("lower(username) IN (:mentions)", { :mentions => comment.mentions.map{|u| u.downcase }})
   end
 
   # For Devise so that we can register people via Omniauth,

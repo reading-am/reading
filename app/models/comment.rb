@@ -36,14 +36,21 @@ class Comment < ActiveRecord::Base
 
   public
 
-  def mentions
-    @mentions ||= extract_mentioned_screen_names body
+  def mentioned_usernames
+    @mentioned_usernames ||= extract_mentioned_screen_names body
   end
 
-  def emails
+  def mentioned_emails
     # Taken from: http://www.regular-expressions.info/email.html
     # This has a ruby companion in constants.coffee.rb
-    @emails ||= body.scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i)
+    @mentioned_emails ||= body.scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i)
+  end
+
+  def mentioned_users
+    User.where("lower(username) IN (:usernames) OR lower(email) IN (:emails)", {
+      :usernames => mentioned_usernames.map{|u| u.downcase },
+      :emails => mentioned_emails.map{|u| u.downcase }
+    })
   end
 
   def hashtags
@@ -55,7 +62,8 @@ class Comment < ActiveRecord::Base
   end
 
   def is_a_show
-    return @is_a_show ||= (mentions.length > 0 and body.gsub(/\s|,/, '').length == "@#{mentions.join("@")}".length)
+    m = mentioned_usernames.join("@") + mentioned_emails.join('')
+    return @is_a_show ||= (m.length > 0 and body.gsub(/\s|,/, '').length == m.length)
   end
 
   def channels

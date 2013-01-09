@@ -18,7 +18,7 @@
     <div class="span6">
       <p>
         <%= link_to "#{ROOT_URL}/#{@enactor.username}", :class => 'r_user' do %>
-          <span class="r_name"><%= @enactor.display_name %></span>
+          <span class="r_name"><%= @subject.is_adhoc? ? @enactor.first_name : @enactor.display_name %></span>
           <% if !@enactor.name.blank? %>
             <span class="r_username">(@<%= @enactor.username %>)</span>
           <% end %>

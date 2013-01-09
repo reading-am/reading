@@ -4,6 +4,13 @@ class CommentObserver < ActiveRecord::Observer
     Broadcaster::signal :create, comment
     comment.user.hooks.each do |hook| hook.run(comment, :comment) end
 
+    # Create adhoc users from the emails
+    comment.mentioned_emails.each do |email|
+      u = User.new :email => email
+      u.password_required = false
+      u.save
+    end
+
     # Send mention emails
     comment.mentioned_users.where('id != ?', comment.user_id).each do |user|
       if !user.email.blank? and user.email_when_mentioned

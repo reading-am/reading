@@ -229,6 +229,10 @@ class User < ActiveRecord::Base
     !encrypted_password_was.blank?
   end
 
+  def is_adhoc?
+    username.blank?
+  end
+
   def channels
     [
       "users"

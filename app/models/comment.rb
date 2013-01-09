@@ -37,13 +37,13 @@ class Comment < ActiveRecord::Base
   public
 
   def mentioned_usernames
-    @mentioned_usernames ||= extract_mentioned_screen_names body
+    @mentioned_usernames ||= extract_mentioned_screen_names body || []
   end
 
   def mentioned_emails
     # Taken from: http://www.regular-expressions.info/email.html
     # This has a ruby companion in constants.coffee.rb
-    @mentioned_emails ||= body.scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i)
+    @mentioned_emails ||= body.scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i) || []
   end
 
   def mentioned_users
@@ -51,6 +51,10 @@ class Comment < ActiveRecord::Base
       :usernames => mentioned_usernames.map{|u| u.downcase },
       :emails => mentioned_emails.map{|u| u.downcase }
     })
+  end
+
+  def mentions
+    mentioned_usernames + mentioned_emails
   end
 
   def hashtags

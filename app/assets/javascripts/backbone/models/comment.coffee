@@ -21,6 +21,9 @@ define [
     mentioned_emails: ->
       @get("body").match(Constants.regexes.email) || []
 
+    mentions: ->
+      @mentioned_usernames().concat @mentioned_emails()
+
     hashtags: ->
       TwitterText.extractHashtags @get("body")
 

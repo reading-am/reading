@@ -36,7 +36,7 @@ require [
           model = new Comment Fixtures.multiple_show
           model.is_a_show().should.be.true
 
-      describe "#emails()", ->
+      describe "#mentioned_emails()", ->
 
         it "should recognize a single email addresss", ->
           model = new Comment Fixtures.single_email

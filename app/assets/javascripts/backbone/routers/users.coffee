@@ -5,10 +5,12 @@ define [
   "app/collections/users"
   "app/models/current_user"
   "app/views/users/show"
+  "app/views/users/subnav"
+  "app/views/posts/new"
   "app/views/users/edit"
   "app/views/users/followingers"
   "app/views/users/find_people"
-], ($, Backbone, User, Users, current_user, UserShowView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, current_user, UserShowView, UserSubnavView, PostNewView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -19,7 +21,7 @@ define [
           @collection = new Users options.collection
 
     routes:
-      ":username"             : "show"
+      ":username(/list)"      : "show"
       "settings/info"         : "edit"
       ":username/followers"   : "followers"
       ":username/following"   : "following"
@@ -27,10 +29,18 @@ define [
       "users/friends"         : "friends"
       "users/search?q=:query" : "search"
 
-    show: ->
-      @view = new UserShowView
+    show: (username) ->
+      debugger
+      @user_show_view = new UserShowView
         el: $("#header_card.r_user")
         model: @model
+
+      @user_subnav_view = new UserSubnavView
+        el: $("#subnav")
+
+      if username is current_user.get("username")
+        @post_new_view = new PostNewView
+          el: $("#new_post_row")
 
     edit: ->
       @view = new UserEditView

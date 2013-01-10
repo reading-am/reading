@@ -1,9 +1,10 @@
 <% name = user == current_user ? 'you' : user.first_name %>
 <div id="subnav" class="row">
   <nav class="span7 offset1">
-  <a rel="tooltip" data-title="What <%= user == current_user ? "you've" : "#{user.first_name} has" %> read" href="/<%= user.username %>"<% if params[:type] == 'posts' %> class="active"<% end %>>
+    <a rel="tooltip" data-title="What <%= user == current_user ? "you've" : "#{user.first_name} has" %> read" href="/<%= user.username %>"<% if params[:type] == 'posts' %> class="active"<% end %>>
       <%= "Your" if user == current_user %> Posts <span class="count"> › <%= user.posts.size %></span>
     </a>
     <a rel="tooltip" data-title="What <%= name %> and people <%= name %> follow<%= "s" if user != current_user %> have read" href="/<%= user.username %>/list"<% if params[:type] == 'list' %> class="active"<% end %>>Following Posts</a>
+    <a href="#" id="new_post_button">Post a Link</a>
   </nav>
 </div>

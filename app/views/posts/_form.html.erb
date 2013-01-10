@@ -1,26 +1,13 @@
-<%= form_for(@post) do |f| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-      <% @post.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+<div id="new_post_row" class="row">
+  <div class="span7 offset1">
+    <%= twitter_bootstrap_form_for(Post.new) do |f| %>
+      <%= f.text_field :user_id, false, :placeholder => 'Enter the url you\'d like to post', :class => 'input-xlarge' %>
+      <%= f.actions do %>
+        <%= f.submit 'Add Post', :class => 'btn' %>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :url %><br />
-    <%= f.text_field :url %>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
+  <div class="span7 offset1">
+    Even better, post using our <%= link_to 'extension', '/settings/extras' %> or <%= link_to 'bookmarklet', '/settings/extras' %>
   </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

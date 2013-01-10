@@ -30,7 +30,6 @@ define [
       "users/search?q=:query" : "search"
 
     show: (username) ->
-      debugger
       @user_show_view = new UserShowView
         el: $("#header_card.r_user")
         model: @model

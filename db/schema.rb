@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.string   "provider"
     t.string   "uid"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.text     "token"
     t.text     "secret"
     t.string   "permissions"
@@ -53,16 +53,16 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.string   "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "domains", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "verb"
     t.integer  "pages_count", :default => 0
   end
@@ -72,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
   create_table "hooks", :force => true do |t|
     t.string   "provider"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "params"
     t.string   "events"
     t.integer  "authorization_id"
@@ -85,8 +85,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.text     "url"
     t.text     "title"
     t.integer  "domain_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.text     "r_title"
     t.string   "r_excerpt"
     t.integer  "posts_count",    :default => 0
@@ -98,8 +98,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
 
   create_table "posts", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "referrer_post_id"
     t.integer  "page_id"
     t.boolean  "yn"
@@ -131,19 +131,24 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
   add_index "relationships", ["follower_id", "followed_id"], :name => "index_relationships_on_follower_id_and_followed_id", :unique => true
   add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
 
+  create_table "subscriptions", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "username"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.string   "token"
     t.string   "auth_token"
     t.string   "email"

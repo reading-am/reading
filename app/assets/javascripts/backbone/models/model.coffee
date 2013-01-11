@@ -30,9 +30,17 @@ define [
         input = new App.Models[input.type](input)
     input
 
+  # this reinstates a check in set() that was removed in 0.9.9
+  # found here: https://github.com/documentcloud/backbone/blob/863814e519e630806096aa3ddeef520afbb263ff/backbone.js#L275
+  Backbone.Model::_set = Backbone.Model::set
+  Backbone.Model::set = (key, value, options) ->
+    if key instanceof Backbone.Model
+      key = key.attributes
+    @_set key, value, options
+
   Backbone.Model::parse = (response) ->
     obj = if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
-    Backbone.Model::factory(obj).attributes
+    Backbone.Model::factory obj
 
   Backbone.Model::toJSON = ->
     obj = _.clone @attributes

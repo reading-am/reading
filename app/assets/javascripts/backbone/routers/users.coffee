@@ -27,7 +27,7 @@ define [
       ":username/following"   : "following"
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
-      "users/search?q=:query" : "search"
+      "users/search"          : "search"
 
     show: (username) ->
       @user_show_view = new UserShowView
@@ -65,8 +65,8 @@ define [
       @collection = current_user.expats
       @find_people "friends"
 
-    search: (query) ->
-      @collection = Users::search query
+    search: ->
+      @collection = Users::search @query_params().q
       @find_people "search"
 
     find_people: (section) ->

@@ -17,7 +17,7 @@
       yn_class = ""
     end
   %>
-  <div class="row w_rule<%= " first" if i == 0 %>">
+  <div class="row w_rule">
     <div class="span1 date">
     <% if time != subposts.last.created_at.strftime("%m/%d") %>
       <%= time = subposts.last.created_at.strftime("%m/%d") %>

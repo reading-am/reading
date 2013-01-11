@@ -1,7 +1,7 @@
-<div id="new_post_row" class="row">
+<div id="new_post_row" class="row w_rule">
   <div class="span7 offset1">
-    <%= twitter_bootstrap_form_for(Post.new) do |f| %>
-      <%= f.text_field :user_id, false, :placeholder => 'Enter the url you\'d like to post', :class => 'input-xlarge' %>
+    <%= twitter_bootstrap_form_for(Page.new, :as => 'model', :url => '/api/posts') do |f| %>
+      <%= f.text_field :url, false, :placeholder => 'Enter the url you\'d like to post', :class => 'input-xlarge' %>
       <%= f.actions do %>
         <%= f.submit 'Add Post', :class => 'btn' %>
       <% end %>

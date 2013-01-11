@@ -66,8 +66,8 @@ define [
       input = _.ISODateString input
     else if _.isObject input
       for prop, val of input
-        if val instanceof Backbone.Model
-          input["#{prop}_id"] = val.get("id") if val.get("id")
+        if val instanceof Backbone.Model or (_.isObject(val) and val.type? and val.id?)
+          input["#{prop}_id"] = val.id if val.id?
           delete input[prop]
         else
           input[prop] = Backbone.Model::deconstruct val

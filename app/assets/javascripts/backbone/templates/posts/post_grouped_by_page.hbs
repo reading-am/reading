@@ -17,7 +17,10 @@
       <span class="yn"></span>
       <span class="yn_wrap">
         <span class="body">
-          <a href="/{{user.username}}">{{user.display_name}}</a> is reading this
+          <a href="/{{user.username}}" class="user">{{user.display_name}}</a>
+          {{#is_current_user}}are{{/is_current_user}}
+          {{^is_current_user}}is{{/is_current_user}}
+          reading this
         </span>
       </span>
     </div>

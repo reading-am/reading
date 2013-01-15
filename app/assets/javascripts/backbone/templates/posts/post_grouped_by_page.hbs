@@ -4,7 +4,7 @@
 <div class="span6 posts_group">
   <div class="page">
     <h2>
-      <a href="{{wrapped_url}}">
+      <a href="{{wrapped_url}}" class="external">
         <span>{{page.title}}</span>
       </a>
     </h2>
@@ -13,7 +13,8 @@
     </p>
   </div>
   <div class="posts">
-    <div class="post">
+    <div class="post {{#yep}}yep{{/yep}}
+      {{#nope}}nope{{/nope}}">
       <span class="yn"></span>
       <span class="yn_wrap">
         <span class="body">

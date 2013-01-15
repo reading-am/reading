@@ -18,8 +18,8 @@
       <span class="yn_wrap">
         <span class="body">
           <a href="/{{user.username}}" class="user">{{user.display_name}}</a>
-          {{#is_current_user}}are{{/is_current_user}}
-          {{^is_current_user}}is{{/is_current_user}}
+          {{#user.is_current}}are{{/user.is_current}}
+          {{^user.is_current}}is{{/user.is_current}}
           reading this
         </span>
       </span>

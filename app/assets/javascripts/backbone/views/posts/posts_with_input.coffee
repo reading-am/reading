@@ -20,8 +20,8 @@ define [
       @subview = new PostsGroupedByPageView collection: @collection
 
     toggle_loading: ->
-      msg = "Loading..."
-      @input.val if @input.val() is msg then "" else msg 
+      msg = "Posting..."
+      @input.val if @input.val() is msg then "" else msg
       @row.toggleClass "disabled"
       @$("input").each -> @disabled = !@disabled
 

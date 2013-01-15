@@ -12,7 +12,7 @@ The following items must be installed and running:
   *Note: Bundler will not install Slanger*  
   `gem install slanger`
 * [Mailcatcher](http://mailcatcher.me)
-  Note: This is run by foreman. Don't start manually.
+  Note: This is run by foreman. Don't start manually.  
   `gem install mailcatcher`
 
 ## Environmental Variables

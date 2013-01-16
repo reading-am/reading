@@ -2,15 +2,21 @@
 @import "mixins";
 
 .r_post, #r_am .r_post {
+  position:relative;
   .r_yep_nope {
     display:none;
     font-size:9px;
     padding:2px 3px;
     margin-right:3px;
+    line-height:normal;
+    // !important needed to override .speech_bubble()
+    position:absolute !important;
+    top:0;
   }
   &.r_yep {
     .r_yep_nope {
       .speech_bubble(@eli_blue, @white, bottom-right);
+      left:-24px;
       &:before {
         content:"Yep";
       }
@@ -22,6 +28,7 @@
   &.r_nope {
     .r_yep_nope {
       .speech_bubble(@red, @white, bottom-right);
+      left:-29px;
       &:before {
         content:"Nope";
       }

@@ -21,7 +21,7 @@ define [
     render: =>
       @set_yn()
 
-      json = @model.toJSON()
+      json = @model.toJSON(false)
       json.domain = Constants.domain
 
       @$el.html(@template(json))

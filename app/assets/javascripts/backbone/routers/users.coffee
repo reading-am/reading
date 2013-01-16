@@ -4,14 +4,14 @@ define [
   "app/models/user"
   "app/collections/users"
   "app/models/current_user"
-  "app/collections/posts"
+  "app/collections/pages"
   "app/views/users/show"
   "app/views/users/subnav"
-  "app/views/posts/posts_with_input"
+  "app/views/pages/pages_with_input"
   "app/views/users/edit"
   "app/views/users/followingers"
   "app/views/users/find_people"
-], ($, Backbone, User, Users, current_user, Posts, UserShowView, UserSubnavView, PostsWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, current_user, Pages, UserShowView, UserSubnavView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -39,8 +39,8 @@ define [
         el: $("#subnav")
 
       if username is current_user.get("username")
-        @posts_with_input_view = new PostsWithInputView
-          collection: new Posts
+        @posts_with_input_view = new PagesWithInputView
+          collection: new Pages
 
         $("#subnav").after @posts_with_input_view.render().el
 

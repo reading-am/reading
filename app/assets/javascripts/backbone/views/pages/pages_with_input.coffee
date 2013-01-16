@@ -4,11 +4,11 @@ define [
   "backbone"
   "handlebars"
   "app/models/post"
-  "app/views/posts/posts_grouped_by_page"
-  "text!app/templates/posts/posts_with_input.hbs"
-], ($, _, Backbone, Handlebars, Post, PostsGroupedByPageView, template) ->
+  "app/views/pages/pages"
+  "text!app/templates/pages/pages_with_input.hbs"
+], ($, _, Backbone, Handlebars, Post, PagesView, template) ->
 
-  class PostsWithInputView extends Backbone.View
+  class PagesWithInputView extends Backbone.View
     template: Handlebars.compile template
 
     tagName: "div"
@@ -17,7 +17,7 @@ define [
       "submit form": "submit"
 
     initialize: ->
-      @subview = new PostsGroupedByPageView collection: @collection
+      @subview = new PagesView collection: @collection
 
     toggle_loading: ->
       msg = "Posting..."

@@ -106,7 +106,7 @@ public
       :type   => 'Page',
       :id     => to_s ? id.to_s : id,
       :url    => url,
-      :title  => title,
+      :title  => display_title,
       :excerpt => excerpt,
       :created_at => created_at,
       :updated_at => updated_at

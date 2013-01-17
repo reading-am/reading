@@ -23,7 +23,11 @@ define [
       msg = "Posting..."
       @input.val if @input.val() is msg then "" else msg
       @row.toggleClass "disabled"
-      @$("input").each -> @disabled = !@disabled
+      @$("input").attr disabled: @row.hasClass "disabled"
+      # The line above used to read like this:
+      # @$("input").each -> @disabled = !@disabled
+      # It worked fine for adding disabled but would only remove
+      # disabled for one of the two elements. Why? WHY!?
 
 
     submit: ->

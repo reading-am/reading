@@ -38,6 +38,16 @@ private
 public
 
   def self.normalize_url(url)
+    # if it doesn't start with a protocol
+    # it's most likely just a TLD, manually entered
+    if url[0..3] != 'http'
+      c = Curl::Easy.new
+      c.follow_location = true
+      c.url = url
+      c.perform
+      url = c.last_effective_url
+    end
+
     url = Addressable::URI.parse(url)
 
     # Get rid of trailing hash
@@ -106,7 +116,7 @@ public
       :type   => 'Page',
       :id     => to_s ? id.to_s : id,
       :url    => url,
-      :title  => title,
+      :title  => display_title,
       :excerpt => excerpt,
       :created_at => created_at,
       :updated_at => updated_at

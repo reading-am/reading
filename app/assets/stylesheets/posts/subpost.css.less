@@ -1,0 +1,26 @@
+.r_subpost {
+  list-style:none;
+  position:relative;
+  .r_yep_nope {
+    position:absolute;
+    top:0;
+  }
+  &.r_yep .r_yep_nope {
+    left:-24px;
+  }
+  &.r_nope .r_yep_nope {
+    left:-29px;
+  }
+  .r_post_bg {
+    background:none;
+  }
+  .r_user {
+    .r_avatar {
+      display:none;
+    }
+    .r_name {
+      margin-right:6px;
+      font-weight:bold;
+    }
+  }
+}

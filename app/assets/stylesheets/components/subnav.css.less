@@ -4,29 +4,37 @@
 #subnav, #subhead {
   margin-bottom:23px;
 }
-#subnav a {
-  background-color:@light_blue;
-}
-  #subnav a.active, #subnav a:hover {
-    background-color:@blue;
-    text-decoration:none;
-  }
-#subnav a.active:hover {
-  text-decoration:none;
-}
 .follow, #subnav .follow {
   background-color:@bright_green;
   :hover {
     background-color:@dark_green;
   }
 }
-#subnav #signout {
-  background:none;
-  font-size:14px;
-  color:@dark_grey;
-}
-#subnav nav.span1 a {
-  padding:4px;
+#subnav {
+  a {
+    background-color:@light_blue;
+  }
+  a.active, a:hover {
+    background-color:@blue;
+    text-decoration:none;
+  }
+  a.active:hover {
+    text-decoration:none;
+  }
+  #new_post_button {
+    background:none;
+    &:hover {
+      background:@light_grey;
+    }
+  }
+  #signout {
+    background:none;
+    font-size:14px;
+    color:@dark_grey;
+  }
+  nav.span1 a {
+    padding:4px;
+  }
 }
 #subhead h3 {
   color:@black;

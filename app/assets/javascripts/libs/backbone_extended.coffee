@@ -4,4 +4,5 @@ define [
   "extend/backbone/intervals"
   "app/models/model"
   "app/collections/collection"
+  "app/routers/router"
 ], (Backbone) -> Backbone

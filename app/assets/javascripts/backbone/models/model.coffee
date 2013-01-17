@@ -30,13 +30,20 @@ define [
         input = new App.Models[input.type](input)
     input
 
+  # this reinstates a check in set() that was removed in 0.9.9
+  # found here: https://github.com/documentcloud/backbone/blob/863814e519e630806096aa3ddeef520afbb263ff/backbone.js#L275
+  Backbone.Model::_set = Backbone.Model::set
+  Backbone.Model::set = (key, value, options) ->
+    if key instanceof Backbone.Model
+      key = key.attributes
+    @_set key, value, options
+
   Backbone.Model::parse = (response) ->
     obj = if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
     Backbone.Model::factory obj
 
-  Backbone.Model::toJSON = ->
-    obj = _.clone @attributes
-    Backbone.Model::deconstruct obj
+  Backbone.Model::toJSON = (nested_to_id=true) ->
+    Backbone.Model::deconstruct this, nested_to_id
 
   Backbone.Model::has_many = (name, type) ->
     type = name if !type?
@@ -47,8 +54,7 @@ define [
     @_has_many = [] unless @_has_many?
     @_has_many.push name
 
-  # converts nested Backbone objects to simply an id reference
-  Backbone.Model::deconstruct = (input) ->
+  Backbone.Model::deconstruct = (input, nested_to_id) ->
     if _.isFunction input
       # Don't do anything here, just pass through.
       # For whatever reason, _.isObject(function(){}) == true
@@ -57,12 +63,15 @@ define [
     else if _.isDate input
       input = _.ISODateString input
     else if _.isObject input
-      for prop, val of input
-        if val instanceof Backbone.Model
-          input["#{prop}_id"] = val.get("id") if val.get("id")
-          delete input[prop]
-        else
-          input[prop] = Backbone.Model::deconstruct val
+      if input instanceof Backbone.Model
+        input = Backbone.Model::deconstruct _.clone(input.attributes), nested_to_id
+      else
+        for prop, val of input
+          if nested_to_id and (val instanceof Backbone.Model or (_.isObject(val) and val.type? and val.id?))
+            input["#{prop}_id"] = val.id if val.id?
+            delete input[prop]
+          else
+            input[prop] = Backbone.Model::deconstruct val, nested_to_id
     input
 
   return Backbone

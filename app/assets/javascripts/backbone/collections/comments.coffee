@@ -9,12 +9,13 @@ define [
     model: Comment
 
     comparator: (comment) ->
-      # -999... is a hack so that new comments appear at the top
       if comment.get("id")?
         id = comment.get("id")
       else if @first().get("id")?
         id = @first().get("id")+1
       else
+        # 999... is a hack so that the first new comment
+        # without an id will appear at the top
         id = 9999999999
 
       return -id

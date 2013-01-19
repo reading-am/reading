@@ -1,11 +1,8 @@
 <div class="footnote">
-  Posts will include the tag 'Reading.am'<br><br>
-  <strong>PLEASE NOTE:</strong> Because of how the Pinboard <a href="http://pinboard.in/api/">developer API</a>
-  works, we'll have to store your Pinboard password in our database.
-  This is less than ideal and if you'd like to see it improved, email
-  <%= mail_to "support@pinboard.in", "support@pinboard.in",
-    :encode => "javascript",
-    :subject => "Oauth Support for Reading.am",
-    :body => "I'm a Reading.am user and I'd like to see Oauth support added to Pinboard."
-  %>.
+  Your API token looks like this:
+  <pre>your_username:123456</pre>
+  and can be found on your Pinboard settings page, located here:<br>
+  <%= link_to 'http://pinboard.in/settings/password', 'http://pinboard.in/settings/password' %>
+  <br><br>
+  Posts will include the tag 'Reading.am'
 </div>

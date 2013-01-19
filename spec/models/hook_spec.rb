@@ -162,8 +162,10 @@ describe Hook do
       response.should be_true
       # cleanup
       response = Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/delete',
-        :userpwd => "#{hook.params['user']}:#{hook.params['password']}",
-        :params => { :url => post.page.url }
+        :params => {
+          :auth_token => hook.params['token'],
+          :url => post.page.url
+        }
       response.code.should eq(200)
     end
 

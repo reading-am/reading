@@ -89,8 +89,8 @@ class Hook < ActiveRecord::Base
 
   def pinboard post, event_fired
     Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/add',
-      :userpwd => "#{self.params['user']}:#{self.params['password']}",
       :params => {
+        :auth_token => self.params['token'],
         :url => post.page.url,
         :description => post.page.display_title,
         :tags => 'Reading.am'

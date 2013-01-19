@@ -1,5 +1,5 @@
 var current_user_seed = {
-  id: <%= current_user.id if signed_in? %>,
+  id: <%= signed_in? ? current_user.id : "null" %>,
   username: '<%= current_user.username if signed_in? %>',
   display_name: '<%= current_user.display_name if signed_in? %>'
 };

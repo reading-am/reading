@@ -1,4 +1,5 @@
 define [
+  "underscore"
   "jquery"
   "backbone"
   "handlebars"
@@ -10,14 +11,15 @@ define [
   "app/views/comments/comments"
   "text!app/templates/admin/dashboard.hbs"
   "text!admin/dashboard.css"
-], ($, Backbone, Handlebars, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
-
-  $("<style>").html(css).appendTo("head")
+], (_, $, Backbone, Handlebars, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class DashboardView extends Backbone.View
     template: Handlebars.compile template
 
     initialize: ->
+      load_css()
+
       users = new Users
       users.comparator = (user) -> -user.get("id")
       @users_view = new UsersView collection: users

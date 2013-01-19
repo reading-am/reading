@@ -1,4 +1,5 @@
 define [
+  "underscore"
   "jquery"
   "backbone"
   "handlebars"
@@ -17,9 +18,8 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], ($, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
-
-  $("<style>").html(css).appendTo("head")
+], (_, $, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentView extends Backbone.View
     template: Handlebars.compile template
@@ -38,6 +38,8 @@ define [
       "click a.r_url:not(.r_mention)": "new_window"
 
     initialize: (options) ->
+      load_css()
+
       @model.bind "change", @render, this
       @model.bind "destroy", @remove, this
       @model.bind "remove", @remove, this

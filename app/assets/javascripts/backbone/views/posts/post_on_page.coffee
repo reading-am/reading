@@ -1,15 +1,21 @@
 define [
+  "underscore"
+  "jquery"
   "app/views/posts/post"
   "handlebars"
   "app/constants"
   "app/views/users/user"
   "text!app/templates/posts/post_on_page.hbs"
-], (PostView, Handlebars, Constants, UserView, template) ->
+  "text!posts/post.css"
+], (_, $, PostView, Handlebars, Constants, UserView, template, css) ->
 
   class PostOnPageView extends PostView
     template: Handlebars.compile template
 
     initialize: (options) ->
+      # because we don't call super(), this CSS needs to be loaded
+      _.once(=>$("<style>").html(css).appendTo("head"))()
+
       @model.on "change", @render, this
       @model.on "remove", @remove
 

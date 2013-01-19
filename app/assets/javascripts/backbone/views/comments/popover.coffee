@@ -1,15 +1,19 @@
 define [
+  "underscore"
   "jquery"
   "backbone"
   "app/views/components/popover"
   "app/views/comments/comment"
   "text!comments/popover.css"
-], ($, Backbone, Popover, CommentView, css) ->
-	
-  $("<style>").html(css).appendTo("head")
+], (_, $, Backbone, Popover, CommentView, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentPopover extends Popover
     id: "r_comment_popover"
+
+    initialize: ->
+      load_css()
+      super()
 
     render: =>
       @$el.html(@template())

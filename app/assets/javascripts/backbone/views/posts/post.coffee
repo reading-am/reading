@@ -1,17 +1,20 @@
 define [
+  "underscore"
   "jquery"
   "app/views/base/model"
   "handlebars"
   "app/views/users/user"
   "app/views/pages/page"
   "text!posts/post.css"
-], ($, ModelView, Handlebars, UserView, PageView, css) ->
-  $("<style>").html(css).appendTo("head")
+], (_, $, ModelView, Handlebars, UserView, PageView, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class PostView extends ModelView
     className: "r_post"
 
     initialize: (options) ->
+      load_css()
+
       @user_view = new UserView model: @model.get("user"), tagName: "div", size: "small"
       @page_view = new PageView model: @model.get("page"), tagName: "div"
       super()

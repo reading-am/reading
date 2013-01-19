@@ -163,7 +163,7 @@ describe Hook do
       # cleanup
       response = Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/delete',
         :params => {
-          :auth_token => hook.params['token'],
+          :auth_token => "#{hook.params['user']}:#{hook.params['token']}",
           :url => post.page.url
         }
       response.code.should eq(200)

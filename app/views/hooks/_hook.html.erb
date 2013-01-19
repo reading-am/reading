@@ -13,9 +13,7 @@ end
     using <em>the <%= hook.params['permission'] == 'publish_actions' ? 'timeline' : 'wall' %></em>
   <% end %>
 <% elsif !hook.params.nil? %>
-  <% if hook.provider == 'pinboard' %>
-    account <em><%= hook.params['token'].split(':')[0] %></em>
-  <% elsif hook.params.length == 1 %>
+  <% if hook.params.length == 1 %>
     <% hook.params.each do |k,v| %>
       <%= k %> <em><%= v %></em>
     <% end %>

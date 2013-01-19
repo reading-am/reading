@@ -24,7 +24,7 @@ define [
     $prov
 
   $ ->
-    # TODO remove once comments are public and comment hooks are built out 
+    # TODO remove once comments are public and comment hooks are built out
     events = hook_properties.events
     events.splice(events.length-1,1)
 

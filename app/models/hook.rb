@@ -5,6 +5,7 @@ class Hook < ActiveRecord::Base
   belongs_to :user
   belongs_to :authorization
   validates_presence_of :events, :provider
+  before_save :parse_pinboard_token
 
   EVENTS = {
     :new  => {:perms => [:write], :text => 'read a page'},
@@ -30,6 +31,17 @@ class Hook < ActiveRecord::Base
     'kippt',
     'pocket'
   ]
+
+private
+
+  def parse_pinboard_token
+    if provider == 'pinboard' and !self.params['auth_token'].blank?
+      bits = self.params['auth_token'].split(':')
+      self.params = {:user => bits[0], :token => bits[1]}.to_json
+    end
+  end
+
+public
 
   def params
     Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
@@ -90,7 +102,7 @@ class Hook < ActiveRecord::Base
   def pinboard post, event_fired
     Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/add',
       :params => {
-        :auth_token => self.params['token'],
+        :auth_token => "#{self.params['user']}:#{self.params['token']}",
         :url => post.page.url,
         :description => post.page.display_title,
         :tags => 'Reading.am'

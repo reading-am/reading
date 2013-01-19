@@ -45,5 +45,10 @@ hipchat:
 
 tssignals:
   provider: tssignals
-  params: ! '{"permission":"write","place":{"id":"452867","name":"Room 1"}}'
   events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission":"write","place":{"id":"452867","name":"Room 1"}}'
+
+pinboard:
+  provider: pinboard
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"user":"leppert", "password":"RnwgarVRC2ndsm39dBhLcvWdBU3why"}'

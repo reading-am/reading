@@ -151,6 +151,22 @@ describe Hook do
       # NOTE - It's a chat client so there is no cleanup
     end
 
+    it "posts to Pinboard" do
+      # setup
+      hook = hooks(:pinboard)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      # test
+      response = hook.run(post, :new)
+      response.should be_true
+      # cleanup
+      response = Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/add',
+        :userpwd => "#{hook.params['user']}:#{hook.params['password']}",
+        :params => { :url => post.page.url }
+      response.code.should eq(200)
+    end
+
   end
 
 end

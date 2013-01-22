@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.integer  "followers_count",        :default => 0
     t.integer  "comments_count",         :default => 0
     t.boolean  "email_when_mentioned",   :default => true
+    t.boolean  "notify_when_mentioned"   :default => true
     t.integer  "roles"
     t.string   "encrypted_password",     :default => "",   :null => false
     t.string   "reset_password_token"

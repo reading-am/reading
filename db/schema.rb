@@ -173,7 +173,6 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.integer  "followers_count",        :default => 0
     t.integer  "comments_count",         :default => 0
     t.boolean  "email_when_mentioned",   :default => true
-    t.boolean  "notify_when_mentioned"   :default => true
     t.integer  "roles"
     t.string   "encrypted_password",     :default => "",   :null => false
     t.string   "reset_password_token"
@@ -184,6 +183,7 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "notify_when_mentioned",  :default => true
   end
 
   add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true

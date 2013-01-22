@@ -6,6 +6,14 @@
   <div class="span7 offset1">
     <strong>Notifications</strong> will alert you when another user <strong>mentions you</strong> or wants to <strong>show you</strong> a page. A tiny alert will pop up on whatever page you're viewing, letting you know.
   </div>
+
+  <div class="span7 offset1">
+    <form>
+      <input type="radio" name="notification" value="true" />On<br />
+      <input type="radio" name="notification" value="false" />Off
+    </form>
+  </div>
+
 </div>
 
 <%= render :partial => 'backbone/router', :locals => {:router => :hooks} %>

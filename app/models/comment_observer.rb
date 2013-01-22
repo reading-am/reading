@@ -12,7 +12,16 @@ class CommentObserver < ActiveRecord::Observer
       if !user.email.blank? and user.email_when_mentioned
         comment.is_a_show ? UserMailer.delay.shown_a_page(comment, user)
                            : UserMailer.delay.mentioned(comment, user)
+<<<<<<< HEAD
       end    
+=======
+      end
+
+      # Send notifications.
+      if user.notify_when_mentioned
+        Broadcaster::signal :notify, comment
+      end
+>>>>>>> properly migrate
 
     end
   end

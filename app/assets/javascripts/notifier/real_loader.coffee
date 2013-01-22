@@ -10,7 +10,7 @@ require [
   subscribe = (id) ->
     channel = pusher.subscribe("users.#{id}.notifications")
     channel.bind "create", (data) ->
-
+    
       model =
         username: data.user.username
         action: "commented on"

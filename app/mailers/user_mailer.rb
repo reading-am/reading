@@ -27,6 +27,7 @@ class UserMailer < ApplicationMailer
     @comment = comment
     mail(
       :to       => @subject.email,
+      :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),
       :subject  => "#{@enactor.display_name} wants to show you \"#{@comment.page.display_title}\""
     )
   end

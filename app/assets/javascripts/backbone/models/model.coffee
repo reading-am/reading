@@ -50,12 +50,15 @@ define [
     @_has_many = [] unless @_has_many?
     @_has_many.push name
 
+  Backbone.Model::is_model = (input) ->
+    input instanceof Backbone.Model or (_.isObject(input) and input.type? and input.id?)
+
   Backbone.Model::deconstruct = (input, nested_to_id) ->
     if _.isFunction input
       # Don't do anything here, just pass through
       # to account for _.isObject(function(){}) == true
     else if _.isArray input
-      if nested_to_id and input[0] instanceof Backbone.Model
+      if nested_to_id and Backbone.Model::is_model input[0]
         # decondstruct has_many
         input = (val.id for val in input)
       else
@@ -67,7 +70,7 @@ define [
         input = Backbone.Model::deconstruct _.clone(input.attributes), nested_to_id
       else
         for prop, val of input
-          if nested_to_id and (val instanceof Backbone.Model or (_.isObject(val) and val.type? and val.id?))
+          if nested_to_id and Backbone.Model::is_model input
             input["#{prop}_id"] = val.id if val.id?
             delete input[prop]
           else

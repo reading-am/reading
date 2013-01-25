@@ -41,8 +41,8 @@ define [
       config = className: cname
       $body = $("body > *:not(#r_am)")
 
-      matches = _(matches).map (text) -> text.substring(1, text.length-1)
-      matches = _(matches).filter (text) ->
+      matches = _.map matches, (text) -> text.substring(1, text.length-1)
+      matches = _.filter matches, (text) ->
         $body.highlight text, config
         if $body.find(".#{cname}").length
           $body.unhighlight config

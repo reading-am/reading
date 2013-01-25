@@ -62,11 +62,7 @@ define [
       # Don't do anything here, just pass through
       # to account for _.isObject(function(){}) == true
     else if _.isArray input
-      if nested_to_id and Backbone.Model::is_model input[0]
-        # decondstruct has_many
-        input = (val.id for val in input)
-      else
-        input = (Backbone.Model::deconstruct(val, nested_to_id) for val in input)
+      input = (Backbone.Model::deconstruct(val, nested_to_id) for val in input)
     else if _.isDate input
       input = _.ISODateString input
     else if _.isObject input
@@ -74,9 +70,15 @@ define [
         input = Backbone.Model::deconstruct _.clone(input.attributes), nested_to_id
       else
         for prop, val of input
-          if nested_to_id and Backbone.Model::is_model input
-            input["#{prop}_id"] = val.id if val.id?
-            delete input[prop]
+          if nested_to_id
+            if Backbone.Model::is_model val
+              # has_one
+              input["#{prop}_id"] = val.id if val.id?
+              delete input[prop]
+            else if _.isArray(val) and Backbone.Model::is_model(val[0])
+              # has_many
+              input["#{prop.slice(0,-1)}_ids"] = (i.id for i in val)
+              delete input[prop]
           else
             input[prop] = Backbone.Model::deconstruct val, nested_to_id
     input

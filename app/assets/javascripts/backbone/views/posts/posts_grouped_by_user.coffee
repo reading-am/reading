@@ -4,10 +4,10 @@ define [
   "app/models/post"
   "app/collections/posts"
   "app/views/posts/post_on_page"
-], (_, CollectionView, Post, Posts, PostView) ->
+], (_, CollectionView, Post, Posts, PostOnPageView) ->
 
   class PostsGroupedByUserView extends CollectionView
-    modelView: PostView
+    modelView: PostOnPageView
 
     initialize: (options) ->
       @filtered = new Posts

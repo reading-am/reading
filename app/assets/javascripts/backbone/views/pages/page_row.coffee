@@ -16,8 +16,8 @@ define [
     className: "row w_rule"
 
     initialize: ->
-      @page_view = new PageView model: @model.get("page"), tagName: "div"
-      @posts_view = new SubPostsView collection: new Posts [@model]
+      @page_view = new PageView model: @model, tagName: "div"
+      @posts_view = new SubPostsView collection: @model.posts
 
     render: =>
       @$el.append(@template())

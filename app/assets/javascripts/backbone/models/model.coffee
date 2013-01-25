@@ -56,10 +56,14 @@ define [
 
   Backbone.Model::deconstruct = (input, nested_to_id) ->
     if _.isFunction input
-      # Don't do anything here, just pass through.
-      # For whatever reason, _.isObject(function(){}) == true
+      # Don't do anything here, just pass through
+      # to account for _.isObject(function(){}) == true
     else if _.isArray input
-      input = (Backbone.Model::deconstruct val for val in input)
+      if nested_to_id and input[0] instanceof Backbone.Model
+        # decondstruct has_many
+        input = (val.id for val in input)
+      else
+        input = (Backbone.Model::deconstruct(val, nested_to_id) for val in input)
     else if _.isDate input
       input = _.ISODateString input
     else if _.isObject input

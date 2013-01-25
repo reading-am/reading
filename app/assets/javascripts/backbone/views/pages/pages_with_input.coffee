@@ -36,7 +36,10 @@ define [
 
       post = new Post
       post.save {url: val}, success: =>
-        @subview.collection.add post
+        page = post.get("page")
+        page.posts.add post
+        post.unset("page")
+        @subview.collection.add page
         @subview.$el.find('div:first').hide().slideDown()
         @row.slideUp complete: => @toggle_loading()
 

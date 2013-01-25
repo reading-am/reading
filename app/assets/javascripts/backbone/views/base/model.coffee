@@ -11,5 +11,5 @@ define [
       @model.on "remove", @remove, this
 
     render: =>
-      @$el.html(@template(@model.toJSON(false))) if @template?
+      @$el.html(@template(@model.toJSON())) if @template?
       return this

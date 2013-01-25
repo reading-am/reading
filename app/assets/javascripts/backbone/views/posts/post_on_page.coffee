@@ -8,13 +8,14 @@ define [
   "text!app/templates/posts/post_on_page.mustache"
   "text!posts/post.css"
 ], (_, $, PostView, Mustache, Constants, UserView, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class PostOnPageView extends PostView
     template: Mustache.compile template
 
-    initialize: (options) ->
+    initialize: ->
       # because we don't call super(), this CSS needs to be loaded
-      _.once(=>$("<style>").html(css).appendTo("head"))()
+      load_css()
 
       @model.on "change", @render, this
       @model.on "remove", @remove
@@ -27,7 +28,7 @@ define [
     render: =>
       @set_yn()
 
-      json = @model.toJSON(false)
+      json = @model.toJSON()
       json.domain = Constants.domain
 
       @$el.html(@template(json))

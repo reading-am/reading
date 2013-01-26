@@ -1,23 +1,28 @@
-.r_subposts .r_subpost {
+.r_subposts .r_subpost.r_post {
   list-style:none;
   position:relative;
+  float:left;
+  clear:both;
+  margin-bottom:5px;
   .r_yep_nope {
     position:absolute;
     top:0;
   }
+  &.r_yep, &.r_nope {
+    .r_user {
+      margin-left:-3px;
+    }
+  }
   &.r_yep .r_yep_nope {
-    left:-24px;
+    left:-28px;
   }
   &.r_nope .r_yep_nope {
-    left:-29px;
+    left:-33px;
   }
   .r_post_bg {
     background:none;
   }
   .r_user {
-    .r_avatar {
-      display:none;
-    }
     .r_name {
       margin-right:6px;
       font-weight:bold;

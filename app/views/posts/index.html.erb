@@ -16,7 +16,7 @@
   </div>
 <% end %>
 
-<%= render :partial => 'posts/group', :locals => {:posts => @posts} %>
+<%# render :partial => 'posts/group', :locals => {:posts => @posts} %>
 
 <div id="posts_footer" class="row">
   <div class="span5 offset1">
@@ -31,4 +31,4 @@
   <% end %>
 </div>
 
-<%= render :partial => 'backbone/router', :locals => {:model => @user} if @user %>
+<%= render :partial => 'backbone/router', :locals => {:model => @user, :collection => @posts} if @user %>

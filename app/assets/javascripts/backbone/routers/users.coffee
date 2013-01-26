@@ -19,10 +19,17 @@ define [
         if options.model?
           @model = new User options.model
         if options.collection?
-          @collection = new Users options.collection
+          switch options.collection[0].type
+            when "User"
+              @collection = new Users options.collection
+            when "Post"
+              @collection = new Pages
+              for val in options.collection
+                @collection.add val.get("page")
+                @collection.get(val.get("page").id).posts.add val
 
     routes:
-      ":username(/list)"      : "show"
+      ":username(/list)(/page/:page)" : "show"
       "settings/info"         : "edit"
       ":username/followers"   : "followers"
       ":username/following"   : "following"
@@ -40,7 +47,7 @@ define [
 
       if username is current_user.get("username")
         @posts_with_input_view = new PagesWithInputView
-          collection: new Pages
+          collection: @collection
 
         $("#subnav").after @posts_with_input_view.render().el
 

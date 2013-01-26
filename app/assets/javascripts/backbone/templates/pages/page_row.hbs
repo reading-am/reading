@@ -4,4 +4,10 @@
 <div class="span6 posts_group">
 </div>
 <div class="span1 comment">
+  {{#has_comments}}
+  <a class="has_comments" href="#">
+    {{comments_count}}
+    <div class="r_tri"></div>
+  </a>
+  {{/has_comments}}
 </div>

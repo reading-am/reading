@@ -20,7 +20,11 @@ define [
       @posts_view = new SubPostsView collection: @model.posts
 
     render: =>
-      @$el.append(@template())
+      json =
+        has_comments: !!@model.get("comments_count")
+        comments_count: @model.get("comments_count")
+
+      @$el.append(@template(json))
       @$(".posts_group")
         .append(@page_view.render().el)
         .append(@posts_view.render().el)

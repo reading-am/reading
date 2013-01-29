@@ -25,6 +25,16 @@
   word-wrap:break-word; /* legacy */
 }
 
+.circle(@size, @color){
+  display:block;
+	width: @size;
+	height: @size;
+	background: @color;
+  line-height:@size;
+  text-align:center;
+  .border-radius(@size/2);
+}
+
 // Triangle code from: https://github.com/stijnj/less-triangle/blob/master/less-triangle.less
 .triangle-base(@size){
   content: '';

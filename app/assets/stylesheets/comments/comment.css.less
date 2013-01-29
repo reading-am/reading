@@ -90,3 +90,36 @@
     }
   }
 }
+
+.posts_group {
+  .r_comments_list {
+    list-style:none;
+    margin:0;
+  }
+  .r_comment {
+    max-width:none;
+    margin-bottom:20px;
+  }
+  .r_comment_header {
+    background:none;
+    margin-bottom:10px;
+  }
+  .r_comment_body {
+    position:relative;
+    border:0;
+    background:#EFEFEF;
+    .border-radius(3px);
+    .r_mention {
+      background:@white;
+    }
+    .r_tri {
+      .triangle(right, 10px, @light_grey);
+      position:absolute;
+      top:-10px;
+      left:8px;
+    }
+  }
+  .r_comment_actions {
+    display:none;
+  }
+}

@@ -30,10 +30,14 @@
     white-space: nowrap;
   }
 }
+.post_icon {
+  float:left;
+  margin-right:5px;
+}
 .has_comments {
   .speech_bubble(@purple, @white, bottom-left);
   padding:0 6px;
-  margin:0 0 10px;
+  margin-bottom:10px;
   min-width:10px;
   text-align:center;
   font-size:11px;
@@ -42,5 +46,17 @@
     color:@white;
     background:@dark_purple;
     .r_tri { border-left-color:@dark_purple; }
+  }
+}
+.has_posts {
+  .circle(22px, @eli_blue);
+  color:@white;
+  font-size:11px;
+  margin-top:-1px;
+  display:none;
+  &:hover {
+    text-decoration:none;
+    color:@white;
+    background: darken(@eli_blue, 10%);
   }
 }

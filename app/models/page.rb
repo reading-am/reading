@@ -346,6 +346,7 @@ public
       :image  => image,
       :media_type   => media_type,
       :description => description,
+      :posts_count => posts_count,
       :comments_count => comments_count,
       :created_at => created_at,
       :updated_at => updated_at

@@ -1,6 +1,14 @@
 @import "variables";
 @import "mixins";
 
+#r_am .r_comment {
+  .r_comment_header {
+    time, .r_comment_actions {
+      margin:5px;
+    }
+  }
+}
+
 .r_comment, #r_am .r_comment {
   max-width:360px;
   background:none;
@@ -18,7 +26,6 @@
     }
     time, .r_comment_actions {
       float:right;
-      margin:5px;
     }
     time {
       font-size:10px;
@@ -179,7 +186,8 @@
     background:#EFEFEF;
     .border-radius(3px);
     .r_mention {
-      background:@white;
+      background:none;
+      text-decoration:underline;
     }
     .r_tri {
       .triangle(right, 10px, @light_grey);
@@ -187,8 +195,5 @@
       top:-10px;
       left:8px;
     }
-  }
-  .r_comment_actions {
-    display:none;
   }
 }

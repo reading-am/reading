@@ -1,14 +1,6 @@
 @import "variables";
 @import "mixins";
 
-#r_am .r_comment {
-  .r_comment_header {
-    time, .r_comment_actions {
-      margin:5px;
-    }
-  }
-}
-
 .r_comment, #r_am .r_comment {
   max-width:360px;
   background:none;
@@ -26,10 +18,6 @@
     }
     time, .r_comment_actions {
       float:right;
-    }
-    time {
-      font-size:10px;
-      color:@dark_yellow !important;
     }
     .r_shown_user, .r_showed_this_to {
       line-height:25px;
@@ -50,12 +38,6 @@
     display:none;
     a {
       margin:0 0 0 3px;
-      // this is ugly but necessary to avoid the link
-      // getting lost behind the OSX scrollbars
-      &.r_permalink {
-        margin:0 7px 0 0;
-        padding:0 3px;
-      }
     }
   }
   &:hover {
@@ -171,6 +153,26 @@
   }
 }
 
+#r_am .r_comment {
+  .r_comment_header {
+    time, .r_comment_actions {
+      margin:5px;
+    }
+    time {
+      color:@dark_yellow !important;
+      font-size:10px;
+    }
+    .r_comment_actions {
+      // this is ugly but necessary to avoid the link
+      // getting lost behind the OSX scrollbars
+      .r_permalink {
+        margin:0 7px 0 0;
+        padding:0 3px;
+      }
+    }
+  }
+}
+
 .posts_group {
   .r_comment {
     max-width:none;
@@ -179,6 +181,11 @@
   .r_comment_header {
     background:none;
     margin-bottom:10px;
+    font-size:13px;
+    time {
+      color:@medium_light_grey;
+      font-size:11px;
+    }
   }
   .r_comment_body {
     position:relative;

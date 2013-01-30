@@ -12,9 +12,9 @@ require [
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
   "text!components/mentionsInput.css"
-], (_, $, Constants, Post, Page, AppView, Helpers, Pages, Providers, css...) ->
+], (_, $, Constants, Post, Page, AppView, Helpers, Pages, Providers, css) ->
 
-  $("<style>").html(css.join " ").appendTo("head")
+  $("<style>").html(css).appendTo("head")
 
   #-----------------------------------------
   # Config Vars

@@ -5,10 +5,11 @@ define [
   "app/views/pages/page"
   "app/views/posts/subposts"
   "app/collections/posts"
-  "app/views/comments/comments"
+  "app/models/current_user"
+  "app/views/comments/comments_with_input"
   "text!app/templates/pages/page_row.hbs"
   "app/models/page" # this needs preloading
-], ($, ModelView, Handlebars, PageView, SubPostsView, Posts, CommentsView, template) ->
+], ($, ModelView, Handlebars, PageView, SubPostsView, Posts, current_user, CommentsWithInputView, template) ->
 
   class PageRowView extends ModelView
     template: Handlebars.compile template
@@ -23,7 +24,10 @@ define [
     initialize: ->
       @page_view = new PageView model: @model, tagName: "div"
       @posts_view = new SubPostsView collection: @model.posts
-      @comments_view = new CommentsView collection: @model.comments
+      @comments_view = new CommentsWithInputView
+        collection: @model.comments
+        user: current_user
+        page: @model
 
     show_posts: ->
       @show_many "posts"
@@ -65,5 +69,7 @@ define [
         .append(@page_view.render().el)
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
+
+      @comments_view.attach_autocomplete()
 
       return this

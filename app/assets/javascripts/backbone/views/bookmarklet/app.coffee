@@ -9,7 +9,7 @@ define [
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.hbs"
-], ($, _, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
+], ($, _, Backbone, Handlebars, pusher, Post, CommentsWithInputView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -74,9 +74,11 @@ define [
       @presence = pusher.subscribe "presence-pages.#{@model.get("page").id}"
 
     get_comments: ->
-      @comments_view = new CommentsView
-        id: "r_comments"
+      @comments_view = new CommentsWithInputView
         collection: @model.get("page").comments
+        post: Post::current
+        user: Post::current.get("user")
+        page: Post::current.get("page")
 
       @$el.append(@comments_view.render().el)
       @comments_view.collection.fetch success: =>

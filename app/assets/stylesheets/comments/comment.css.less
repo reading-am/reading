@@ -51,6 +51,10 @@
       }
     }
   }
+  &:hover {
+    .r_comment_header time { display:none; }
+    .r_comment_actions { display:block; }
+  }
   .r_comment_body {
     .word-wrap();
     background:@white;
@@ -90,12 +94,77 @@
     }
   }
 }
+.r_uri {
+  display:block;
+  text-decoration:none;
+  margin:5px 0;
+  padding:10px;
+  .border-radius(3px);
+  .r_icon {
+    width:16px;
+    height:16px;
+    vertical-align:middle;
+  }
+}
+.r_twitter_tweet {
+  .box-shadow(inset 0 0 10px lighten(@twitter, 40%));
+  background: lighten(@twitter, 50%);
+  &:hover {
+    .box-shadow(inset 0 0 10px lighten(@twitter, 35%));
+    background: lighten(@twitter, 45%);
+  }
+  .r_twitter_tweet_info {
+    margin:5px 0 0;
+    &, span, a { color: darken(@twitter, 15%) !important; }
+  }
+  .r_twitter_tweet_screen_name {
+    text-decoration:underlined;
+  }
+}
+.r_github_repo, .r_wikipedia_article {
+  .box-shadow(inset 0 0 10px lighten(@github, 10%));
+  background: lighten(@github, 15%);
+  &:hover {
+    .box-shadow(inset 0 0 10px lighten(@github, 5%));
+    background: lighten(@github, 10%);
+  }
+  .r_github_repo_description, .r_wikipedia_article_extract * {
+    margin-top:3px;
+    color:#888 !important;
+  }
+}
+.r_youtube_video, .r_vimeo_video {
+  padding:0;
+  iframe {
+    width:297px;
+    height:190px;
+  }
+}
+.r_instagram_image {
+  text-align:center;
+  .box-shadow(inset 0 0 10px lighten(@instagram, 50%));
+  background: lighten(@instagram, 60%);
+  &:hover {
+    .box-shadow(inset 0 0 10px lighten(@instagram, 40%));
+    background: lighten(@instagram, 50%);
+  }
+  .r_instagram_image_info {
+    margin-top:10px;
+    .r_instagram_image_title {
+      color:@instagram !important;
+    }
+  }
+}
+.r_amazon_product {
+  .box-shadow(inset 0 0 10px lighten(@amazon_orange, 35%));
+  background: lighten(@amazon_orange, 50%);
+  &:hover {
+    .box-shadow(inset 0 0 10px lighten(@amazon_orange, 30%));
+    background: lighten(@amazon_orange, 45%);
+  }
+}
 
 .posts_group {
-  .r_comments_list {
-    list-style:none;
-    margin:0;
-  }
   .r_comment {
     max-width:none;
     margin-bottom:20px;

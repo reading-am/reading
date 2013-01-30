@@ -66,15 +66,14 @@ define [
         input = Backbone.Model::deconstruct _.clone(input.attributes), nested_to_id
       else
         for prop, val of input
-          if nested_to_id
-            if Backbone.Model::is_model val
-              # has_one
-              input["#{prop}_id"] = val.id if val.id?
-              delete input[prop]
-            else if _.isArray(val) and Backbone.Model::is_model(val[0])
-              # has_many
-              input["#{prop.slice(0,-1)}_ids"] = (i.id for i in val)
-              delete input[prop]
+          if nested_to_id and Backbone.Model::is_model val
+            # has_one
+            input["#{prop}_id"] = val.id if val.id?
+            delete input[prop]
+          else if nested_to_id and _.isArray(val) and Backbone.Model::is_model(val[0])
+            # has_many
+            input["#{prop.slice(0,-1)}_ids"] = (i.id for i in val)
+            delete input[prop]
           else
             input[prop] = Backbone.Model::deconstruct val, nested_to_id
     input

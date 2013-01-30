@@ -7,24 +7,31 @@ define [
   "app/views/comments/comments"
   "app/models/post"
   "text!app/templates/comments/comments_with_input.mustache"
+  "text!comments/comments_with_input.css"
   "jquery_ui"
   "extend/jquery/mentionsInput"
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], ($, _, Backbone, Mustache, Key, CommentsView, Post, template) ->
+], ($, _, Backbone, Mustache, Key, CommentsView, Post, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentsWithInputView extends Backbone.View
     template: Mustache.compile template
 
     tagName: "div"
+    className: "r_comments_with_input"
 
     events:
       "keydown textarea"  : "stop_propagation"
       "keypress textarea" : "delegate_keys"
 
-    initialize: ->
+    initialize: (options) ->
+      load_css()
       @subview = new CommentsView collection: @collection
+      @user = options.user
+      @post = options.post
+      @page = options.page
 
     stop_propagation:(e) ->
       # this prevents the page's existing events
@@ -53,9 +60,9 @@ define [
     submit: ->
       @subview.collection.create
         body: @textarea.val(),
-        post: Post::current
-        user: Post::current.get("user")
-        page: Post::current.get("page")
+        post: @post
+        user: @user
+        page: @page
 
       @textarea
         .val("")
@@ -97,7 +104,7 @@ define [
         classes:
           autoCompleteItemActive : "r_active"
 
-        onDataRequest: (mode, query, callback) ->
+        onDataRequest: (mode, query, callback) =>
           finish = (collection) =>
             data = collection.filter (user) ->
               "#{user.get("username")} #{user.get("display_name")}".toLowerCase().indexOf(query.toLowerCase()) > -1
@@ -110,9 +117,8 @@ define [
           if following
             finish following
           else
-            user = Post::current.get("user")
-            following = user.following
-            if user.get("following_count") > 0
+            following = @user.following
+            if @user.get("following_count") > 0
               following.fetch success: finish
             else
               finish following

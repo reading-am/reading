@@ -1,2 +1,2 @@
-var current_user_seed = <%=j (signed_in? ? current_user.simple_obj : {id => nil, username => '', display_name => ''}).to_json.html_safe %>
+var current_user_seed = <%=j (signed_in? ? current_user.simple_obj : {:id => nil, :username => '', :display_name => ''}).to_json.html_safe %>
 var authorizations_seed = <%=j signed_in? ? current_user.authorizations.map { |auth| auth.simple_obj }.to_json.html_safe : '[]' %>;

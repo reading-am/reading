@@ -1,0 +1,149 @@
+@import "variables";
+@import "mixins";
+
+#r_am .r_comments_with_input {
+  opacity:0;
+  .transition(opacity .2s ease-in-out);
+  float:right;
+  clear:both;
+  .mentions-input-box {
+    width:335px;
+    float:right;
+    textarea {
+      outline: 0;
+      border:5px solid @blue;
+      height:15px;
+      padding: 5px;
+    }
+  }
+}
+
+.posts_group {
+  .r_comments_with_input {
+    textarea {
+      height:30px;
+      margin:15px 0;
+    }
+  }
+}
+
+.r_comments_with_input, #r_am .r_comments_with_input {
+  .mentions-input-box {
+    position: relative;
+    background: @white;
+    margin-top:3px;
+
+    textarea {
+      width: 100%;
+      display: block;
+      overflow: hidden;
+      background: transparent;
+      position: relative;
+      resize: none;
+      .transition(border-color .25s ease-in-out);
+      .transition(border-color .25s ease-in-out);
+      .box-sizing(border-box);
+      &.r_drag_active {
+        border-color:@dark_blue;
+      }
+      &.r_drag_hover {
+        border-color:@dark_green;
+      }
+    }
+
+    .mentions {
+      position: absolute;
+      left: 5px; // sync with border
+      top: 5px; // sync with border
+      right: 0;
+      bottom: 0;
+      padding: 5px;
+      color: @white !important;
+      overflow: hidden;
+
+      white-space: pre-wrap;
+      word-wrap: break-word;
+
+      & > div {
+        color: @white !important;
+        white-space: pre-wrap;
+        width: 100%;
+
+        & > strong {
+          font-weight:normal;
+          background: @light_blue;
+
+          & > span {
+            .opacity(0);
+          }
+        }
+      }
+    }
+    & .mentions-autocomplete-list {
+      display: none;
+      background: @white;
+      border: 1px solid @blue;
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 10000;
+
+      .border-radius(5px);
+      border-top-right-radius:0;
+      border-top-left-radius:0;
+      .box-shadow(0 2px 5px rgba(0, 0, 0, 0.148438));
+
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        background-color: @white;
+        padding: 0 5px;
+        margin: 0;
+        width: auto;
+        border-bottom: 1px solid @light_grey;
+        height: 26px;
+        line-height: 26px;
+        overflow: hidden;
+        cursor: pointer;
+        list-style: none;
+        white-space: nowrap;
+
+        &:last-child {
+          .border-radius(5px);
+        }
+
+        & > img,
+        & > div.icon {
+          width: 16px;
+          height: 16px;
+          float: left;
+          margin-top:5px;
+          margin-right: 5px;
+        }
+
+        .alt_name {
+          color:@dark_grey !important;
+          margin-left:5px;
+        }
+
+        em {
+          font-weight: bold;
+          font-style: none;
+        }
+
+        &:hover,
+        &.r_active {
+          background-color: @light_blue;
+          border-color: @blue;
+        }
+
+        b {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}

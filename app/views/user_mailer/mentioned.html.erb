@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
             <span class="r_username">(@<%= @enactor.username %>)</span>
           <% end %>
         <% end %>
-        mentioned you at <em><%= link_to @comment.page.display_title, @comment.post.wrapped_url, :class => 'r_page' %></em>:
+        mentioned you at <em><%= link_to @comment.page.display_title, @url, :class => 'r_page' %></em>:
       </p>
       <blockquote class="r_comment" cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
         <div class="r_tri"></div>
@@ -32,7 +33,7 @@
 
   <div class="row">
     <div class="span6">
-      <%= link_to "Click to respond", @comment.post.wrapped_url, :class => "btn btn-success" %>
+      <%= link_to "Click to respond", @url, :class => "btn btn-success" %>
       or simply reply to this email.
     </div>
   </div>

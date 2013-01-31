@@ -14,6 +14,8 @@ class UserMailer < ApplicationMailer
     @enactor = comment.user
     @subject = subject
     @comment = comment
+    @url = @comment.post.blank? ? @comment.page.wrapped_url : @comment.post.wrapped_url
+
     mail(
       :to       => @subject.email,
       :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),

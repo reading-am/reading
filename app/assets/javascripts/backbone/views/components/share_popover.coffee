@@ -1,11 +1,15 @@
 define [
+  "underscore"
+  "jquery"
   "mustache"
   "app/views/components/popover"
   "app/models/provider"
   "app/collections/providers"
   "app/views/providers/providers"
   "text!app/templates/components/share_popover.mustache"
-], (Mustache, Popover, Provider, Providers, ProvidersView, template) ->
+  "text!components/share_popover.css"
+], (_, $, Mustache, Popover, Provider, Providers, ProvidersView, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class SharePopover extends Popover
     template: Mustache.compile template
@@ -18,6 +22,7 @@ define [
 
     initialize: (options) ->
       super()
+      load_css()
 
       popup = (url, width, height) ->
         window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"

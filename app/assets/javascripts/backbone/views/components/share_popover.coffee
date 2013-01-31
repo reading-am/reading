@@ -1,11 +1,15 @@
 define [
+  "underscore"
+  "jquery"
   "handlebars"
   "app/views/components/popover"
   "app/models/provider"
   "app/collections/providers"
   "app/views/providers/providers"
   "text!app/templates/components/share_popover.hbs"
-], (Handlebars, Popover, Provider, Providers, ProvidersView, template) ->
+  "text!components/share_popover.css"
+], (_, $, Handlebars, Popover, Provider, Providers, ProvidersView, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class SharePopover extends Popover
     template: Handlebars.compile template
@@ -17,6 +21,9 @@ define [
       "click" : "close"
 
     initialize: (options) ->
+      super()
+      load_css()
+
       popup = (url, width, height) ->
         window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"
 
@@ -73,7 +80,7 @@ define [
       ]
 
     render: ->
-      super
+      super()
 
       @providers_view = new ProvidersView
         el: @$("#r_share_menu")

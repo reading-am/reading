@@ -56,6 +56,7 @@ define [
     share: ->
       @share_view = new SharePopover subject: @model
       @share_view.render()
+      false
 
     find_quote: (e) ->
       cname = "r_quote"

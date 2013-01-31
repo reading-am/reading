@@ -1,27 +1,7 @@
 @import "variables";
 @import "mixins";
 
-.r_reset {
-  padding:0;
-  margin:0;
-  color:@black !important;
-  background:none;
-  border:none;
-  height:auto;
-  width:auto;
-  font-family:"Helvetica Neue", helvetica, arial, sans-serif;
-  font-weight:normal;
-  font-style:normal;
-  font-size:12px;
-  line-height:normal;
-  text-align:left;
-  text-decoration:none;
-  text-shadow:none;
-  text-transform:none;
-  font-variant:normal;
-  letter-spacing:normal;
-  list-style:none;
-}
+.r_reset { .minimal_reset(); }
 
 #r_iframe, #r_body {
   width:100%;
@@ -29,11 +9,6 @@
   border:0;
   margin:0;
   padding:0;
-}
-
-.r_disabled {
-  .transition(opacity .2s ease-in-out);
-  opacity:.1 !important;
 }
 
 #r_am {
@@ -143,58 +118,4 @@
 .r_quote {
   color: @black !important;
   background-color: rgba(255,255,0,.5) !important;
-}
-
-#r_share_menu { &, * { .r_reset; } }
-#r_share_menu {
-  position:relative;
-  z-index:1;
-  width:125px;
-  margin:150px auto 0;
-  li {
-    float:left;
-    clear:both;
-    background:@yellow;
-    margin:3px 0;
-  }
-  a {
-    display:inline-block;
-    padding:4px 8px;
-    line-height:25px;
-    color:@white !important;
-    font-size:19px;
-  }
-  .r_Twitter {
-    background-color:@twitter;
-    &:hover { background-color:darken(@twitter,10%); }
-  }
-  .r_Facebook {
-    background-color:@facebook;
-    &:hover { background-color:darken(@facebook,10%); }
-  }
-  .r_Tumblr {
-    background-color:@tumblr;
-    &:hover { background-color:darken(@tumblr,10%); }
-  }
-  .r_Instapaper {
-    color:@black !important;
-    background-color:@instapaper;
-    &:hover { background-color:darken(@instapaper,10%); }
-  }
-  .r_Readability {
-    background-color:@readability;
-    &:hover { background-color:darken(@readability,10%); }
-  }
-  .r_Pocket {
-    background-color:@pocket;
-    &:hover { background-color:darken(@pocket,10%); }
-  }
-  .r_Pinboard {
-    background-color:@pinboard;
-    &:hover { background-color:darken(@pinboard,10%); }
-  }
-  .r_Email {
-    color:@black !important;
-    &:hover { background-color:darken(@yellow,20%); }
-  }
 }

@@ -1,11 +1,12 @@
 <%
-  post = false unless defined? post
+  post = false unless defined? post and !post.blank?
   wrap_url = false unless defined? wrap_url
   yn_class = false unless defined? yn_class and !yn_class.blank?
+  url = wrap_url ? post ? post.wrapped_url : page.wrapped_url : page.url
 %>
 <div data-class="Page" data-id="<%= page.id %>" class="r_page<%= " #{yn_class}" if yn_class %>">
   <h2>
-    <%= link_to wrap_url ? post.wrapped_url : page.url, :class => 'external', :data => {:base58_id => if post then Base58.encode(post.id) else nil end } do %>
+    <%= link_to url, :class => 'external', :data => {:base58_id => if post then Base58.encode(post.id) else nil end } do %>
       <span><%= page.display_title %></span>
     <% end %>
   </h2>

@@ -77,7 +77,11 @@ public
   end
 
   def display_title
-    if !title.blank?
+    if (!meta_tags["og"]["title"].blank? rescue false)
+      meta_tags["og"]["title"]
+    elsif (!meta_tags["twitter"]["title"].blank? rescue false)
+      meta_tags["twitter"]["title"]
+    elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
       r_title
@@ -91,6 +95,7 @@ public
   end
 
   def remote_title
+    # TODO - grab open graph and twitter meta tag titles
     c = Curl::Easy.new
     c.follow_location = true
     c.url = self.url

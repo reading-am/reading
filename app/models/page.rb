@@ -14,7 +14,7 @@ class Page < ActiveRecord::Base
   after_create :populate_readability
 
   before_create do |page|
-    page.title = page.remote_title if page.title.nil?
+    page.populate_remote_data if page.title.nil?
   end
 
   # search
@@ -94,15 +94,24 @@ public
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
-  def remote_title
-    # TODO - grab open graph and twitter meta tag titles
+  def populate_remote_data
     c = Curl::Easy.new
     c.follow_location = true
     c.url = self.url
     c.perform
     doc = Nokogiri::HTML(c.body_str)
-    title = doc.search('title').first
-    title.nil? ? '' : title.text
+
+    doc_title = doc.search('title').first
+    self.title = doc_title.nil? ? '' : doc_title.text
+
+    meta_tag_namespaces = ['og','twitter']
+    doc.css('meta').each do |m|
+      if m.attribute('property') && m.attribute('property').to_s.match(/^(og|twitter):(.+)$/i)
+        self.meta_tags = {} if self.meta_tags.blank?
+        self.meta_tags[$1] = {} if self.meta_tags[$1].blank?
+        self.meta_tags[$1][$2] = m.attribute('content').to_s
+      end
+    end
   end
 
   def populate_readability

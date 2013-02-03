@@ -30,6 +30,31 @@ define [
           loading = true
           @save "updated_at", now, success: -> loading = false
 
+  Post::parse_canonical = (canonical, host, protocol) ->
+    domain = host.split(".")
+    domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
+
+    # twitter doesn't update the canonical on push state
+    excluded_domains = ["twitter.com"]
+
+    if !canonical or
+    excluded_domains.indexOf(domain) > -1
+      canonical = false
+    # protocol relative url
+    else if canonical.substr(0,2) is "//"
+      canonical = "#{protocol}#{canonical}"
+    # relative url
+    else if canonical.substr(0,1) is "/"
+      canonical = "#{protocol}//#{host}#{canonical}"
+    # sniff test for mangled urls
+    else if canonical.indexOf("//") is -1 or
+    # sniff test for urls on a different root domain
+    canonical.indexOf(domain) is -1
+      canonical = false
+
+    canonical
+
+
   Post::parse_url = (url) ->
     regex = new RegExp "(?:https?:\/\/#{Constants.domain.replace(/\./g,"\\.")}\/(?:(?:p|t)\/[^\/]+\/)*)?(.+)"
     reg_url = regex.exec(url)[1]

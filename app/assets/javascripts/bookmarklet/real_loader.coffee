@@ -1,6 +1,7 @@
 #= require baseUrl
 
 require [
+  "underscore"
   "jquery"
   "app/constants"
   "app/models/post"
@@ -10,7 +11,7 @@ require [
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
   "text!components/mentionsInput.css"
-], ($, Constants, Post, AppView, Helpers, Pages, Providers, css...) ->
+], (_, $, Constants, Post, AppView, Helpers, Pages, Providers, css...) ->
 
   $("<style>").html(css.join " ").appendTo("head")
 
@@ -46,6 +47,40 @@ require [
       else
         model.keep_fresh()
 
+  meta_tag_namespaces = [
+    "og"
+    "twitter"
+  ]
+
+  get_url = ->
+    selector = _.map(meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:url']").join(",")
+
+    if url = Post::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
+    else if url = Post::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
+    else
+      url = window.location.href
+
+    Post::parse_url(url)
+
+  get_title = ->
+    window.document.title
+
+  get_meta_tags = ->
+    meta_tags = null
+    selector = _.map(meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:']").join(",")
+
+    $(selector).each ->
+      $this = $(this)
+
+      meta_tags = {} unless meta_tags?
+      prop = $this.attr("property")
+      namespace = prop.split(":")[0]
+      meta_tags[namespace] = {} unless meta_tags[namespace]?
+
+      meta_tags[namespace][prop.substr(namespace.length+1)] = $this.attr("content")
+
+    meta_tags
+
   #-----------------------------------------
   # Initialize!
 
@@ -60,20 +95,19 @@ require [
 
     if platform is "redirect" or platform is "bookmarklet"
 
-      url = Post::parse_url window.location.href
-
       if platform is "redirect"
         if token is "-" or !token
           return window.location = url
         else
           title = null
       else
-        title = window.document.title
+        title = get_title()
 
       submit
-        url: url
+        url: get_url()
         title: title
         referrer_id: reading.referrer_id ? 0
+        meta_tags: get_meta_tags()
 
 
   #-----------------------------------------

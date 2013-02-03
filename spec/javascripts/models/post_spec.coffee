@@ -19,6 +19,31 @@ require [
         type: Post
         attrs: {url: "http://www.google.com", title: "Google"}
 
+      describe "#parse_canonical", ->
+
+        url = "/test/path"
+        host = "example.com"
+        protocol = "https:"
+        href = "#{protocol}//#{host}#{url}" # what window.location.href would be
+
+        it "should return false for an undefined canonical property", ->
+          Post::parse_canonical(undefined, host, protocol).should.be.false
+
+        it "should return false for excluded domains", ->
+          Post::parse_canonical(url, "twitter.com", protocol).should.be.false
+
+        it "should add the protocol for protocol agnostic urls", ->
+          Post::parse_canonical("//#{host}#{url}", host, protocol).should.equal(href)
+
+        it "should add the protocol and host for relative urls", ->
+          Post::parse_canonical(url, host, protocol).should.equal(href)
+
+        it "should return false for strings that aren't urls", ->
+          Post::parse_canonical("this isnt a proper url", host, protocol).should.be.false
+
+        it "should return false for canonical urls that point to a different root domain", ->
+          Post::parse_canonical("http://google.com/test", host, protocol).should.be.false
+
       describe "#parse_url()", ->
 
         scenarios = [

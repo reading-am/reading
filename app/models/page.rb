@@ -5,6 +5,8 @@ class Page < ActiveRecord::Base
   has_many :users, :through => :posts
   has_many :comments, :dependent => :destroy
 
+  serialize :meta_tags
+
   validates_presence_of :url, :domain
   validates_uniqueness_of :url
 

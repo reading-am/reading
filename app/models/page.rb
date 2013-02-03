@@ -28,6 +28,8 @@ class Page < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
+  META_TAG_NAMESPACES = ['og','twitter']
+
   # NOTE - properties prefixed with r_ (r_title, r_excerpt)
   # are from readability_data
 
@@ -104,9 +106,9 @@ public
     doc_title = doc.search('title').first
     self.title = doc_title.nil? ? '' : doc_title.text
 
-    meta_tag_namespaces = ['og','twitter']
+    regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
     doc.css('meta').each do |m|
-      if m.attribute('property') && m.attribute('property').to_s.match(/^(og|twitter):(.+)$/i)
+      if m.attribute('property') && m.attribute('property').to_s.match(regex)
         self.meta_tags = {} if self.meta_tags.blank?
         self.meta_tags[$1] = {} if self.meta_tags[$1].blank?
         self.meta_tags[$1][$2] = m.attribute('content').to_s

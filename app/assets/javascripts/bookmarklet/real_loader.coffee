@@ -5,13 +5,14 @@ require [
   "jquery"
   "app/constants"
   "app/models/post"
+  "app/models/page"
   "app/views/bookmarklet/app"
   "app/helpers/bookmarklet"
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
   "text!components/mentionsInput.css"
-], (_, $, Constants, Post, AppView, Helpers, Pages, Providers, css...) ->
+], (_, $, Constants, Post, Page, AppView, Helpers, Pages, Providers, css...) ->
 
   $("<style>").html(css.join " ").appendTo("head")
 
@@ -47,13 +48,8 @@ require [
       else
         model.keep_fresh()
 
-  meta_tag_namespaces = [
-    "og"
-    "twitter"
-  ]
-
   get_url = ->
-    selector = _.map(meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:url']").join(",")
+    selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:url']").join(",")
 
     if url = Post::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
     else if url = Post::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
@@ -67,7 +63,7 @@ require [
 
   get_meta_tags = ->
     meta_tags = null
-    selector = _.map(meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:']").join(",")
+    selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:']").join(",")
 
     $(selector).each ->
       $this = $(this)

@@ -13,5 +13,7 @@ define [
       @has_many "Posts"
       @has_many "Comments"
 
+  Page::meta_tag_namespaces = <%= Page::META_TAG_NAMESPACES.to_json %>
+
   App.Models.Page = Page
   return Page

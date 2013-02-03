@@ -61,6 +61,7 @@ require [
   get_title = ->
     window.document.title
 
+  # this has a Ruby companion in models/page.rb#populate_remote_data()
   get_meta_tags = ->
     meta_tags = null
     selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:']").join(",")

@@ -106,6 +106,7 @@ public
     doc_title = doc.search('title').first
     self.title = doc_title.nil? ? '' : doc_title.text
 
+    # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
     regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
     doc.css('meta').each do |m|
       if m.attribute('property') && m.attribute('property').to_s.match(regex)

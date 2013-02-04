@@ -14,6 +14,7 @@ class Page < ActiveRecord::Base
   after_create :populate_readability
 
   before_create do |page|
+    # this is a sniff test for links submitted raw, as just a url
     page.populate_remote_data if page.title.nil?
   end
 
@@ -36,7 +37,7 @@ class Page < ActiveRecord::Base
 private
 
   def parse_domain
-    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(self.url).host)
+    self.domain = Domain.find_or_create_by_name(parsed_url.host)
   end
 
 public
@@ -96,25 +97,88 @@ public
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
-  def populate_remote_data
-    c = Curl::Easy.new
-    c.follow_location = true
-    c.url = self.url
-    c.perform
-    doc = Nokogiri::HTML(c.body_str)
+  def curl
+    if @curl.blank?
+      @curl = Curl::Easy.new url
+      @curl.follow_location = true
+      @curl.perform
+    end
+    @curl
+  end
 
-    doc_title = doc.search('title').first
-    self.title = doc_title.nil? ? '' : doc_title.text
+  def html
+    @html ||= Nokogiri::HTML(curl.body_str)
+  end
 
+  def resolved_url
+    curl.last_effective_url
+  end
+
+  def defacto_url
+    !@curl.blank? && !@curl.body_str.nil? ? resolved_url : url
+  end
+
+  def parsed_url
+    @parsed_url ||= Addressable::URI.parse defacto_url
+  end
+
+  def remote_title
+    doc_title = html.search('title').first
+    doc_title.nil? ? '' : doc_title.text
+  end
+
+  def remote_canonical
+    domain = parsed_url.host.split(".")
+    domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
+    protocol = "#{parsed_url.scheme}:"
+
+    search = html.search('link[rel=canonical]')
+    if search.length
+      canonical = search.attr('href').to_s
+    elsif remote_meta_tags && !remote_meta_tags["og"].blank? && !remote_meta_tags["og"]["url"].blank?
+      canonical = remote_meta_tags["og"]["url"] 
+    elsif remote_meta_tags && !remote_meta_tags["twitter"].blank? && !remote_meta_tags["twitter"]["url"].blank?
+      canonical = remote_meta_tags["twitter"]["url"] 
+    else
+      canonical = false
+    end
+
+    if canonical.blank?
+      canonical = false
+    # protocol relative url
+    elsif canonical[0..1] == "//"
+      canonical = "#{protocol}#{canonical}"
+    # relative url
+    elsif canonical[0] == "/"
+      canonical = "#{protocol}//#{parsed_url.host}#{canonical}"
+    # sniff test for mangled urls
+    elsif !canonical.include?("//") or
+    # sniff test for urls on a different root domain
+    !canonical.include?(domain)
+      canonical = false
+    end
+
+    canonical
+  end
+
+  def remote_meta_tags
     # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
+    meta_tags = nil
     regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
-    doc.css('meta').each do |m|
+    html.css('meta').each do |m|
       if m.attribute('property') && m.attribute('property').to_s.match(regex)
-        self.meta_tags = {} if self.meta_tags.blank?
-        self.meta_tags[$1] = {} if self.meta_tags[$1].blank?
-        self.meta_tags[$1][$2] = m.attribute('content').to_s
+        meta_tags = {} if meta_tags.blank?
+        meta_tags[$1] = {} if meta_tags[$1].blank?
+        meta_tags[$1][$2] = m.attribute('content').to_s
       end
     end
+    meta_tags
+  end
+
+  def populate_remote_data
+    self.url = remote_canonical unless remote_canonical.blank?
+    self.title = remote_title
+    self.meta_tags = remote_meta_tags
   end
 
   def populate_readability

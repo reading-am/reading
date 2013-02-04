@@ -51,12 +51,12 @@ require [
   get_url = ->
     selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:url']").join(",")
 
-    if url = Post::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
-    else if url = Post::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
+    if url = Page::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
+    else if url = Page::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
     else
       url = window.location.href
 
-    Post::parse_url(url)
+    Page::parse_url(url)
 
   get_title = ->
     window.document.title

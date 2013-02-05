@@ -94,7 +94,20 @@ public
   end
 
   def normalized_url
-    remote_canonical ? remote_canonical : resolved_url
+    if remote_canonical
+      remote_canonical
+    else
+      parsed_url = Addressable::URI.parse(resolved_url)
+
+      # Get rid of trailing hash
+      parsed_url.fragment = nil if parsed_url.fragment.blank?
+
+      # Consider removing trailing slashes
+      # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
+      # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
+
+      parsed_url.to_s
+    end
   end
 
   def resolved_url

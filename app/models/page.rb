@@ -11,12 +11,8 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation { parse_domain }
+  before_create :populate_remote_data
   after_create :populate_readability
-
-  before_create do |page|
-    # this is a sniff test for links submitted raw, as just a url
-    page.populate_remote_data if page.title.nil?
-  end
 
   # search
   searchable do
@@ -37,42 +33,29 @@ class Page < ActiveRecord::Base
 private
 
   def parse_domain
-    self.domain = Domain.find_or_create_by_name(parsed_url.host)
+    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(url).host)
   end
 
 public
 
-  def self.normalize_url(url)
-    # if it doesn't start with a protocol
-    # it's most likely just a TLD, manually entered
-    if url[0..3] != 'http'
-      c = Curl::Easy.new
-      c.follow_location = true
-      c.url = url
-      c.perform
-      url = c.last_effective_url
+  def self.find_by_url(url, return_new=false)
+    if page = where(:url => url).limit(1).first
+      page
+    else
+      page = self.new :url => url
+      page.url = page.normalized_url
+      found = where(:url => page.url).limit(1).first
+      # if the page isn't found, we return a new instance so
+      # we don't have to make another round trip for remote data
+      # when we find_or_create
+      found || !return_new ? found : page
     end
-
-    url = Addressable::URI.parse(url)
-
-    # Get rid of trailing hash
-    url.fragment = nil if url.fragment.blank?
-
-    # Consider removing trailing slashes
-    # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
-    # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
-
-    url.to_s
-  end
-
-  def self.find_by_url(url)
-    where(:url => self.normalize_url(url)).limit(1).first
   end
 
   def self.find_or_create_by_url(attributes)
-    attributes[:url] = self.normalize_url(attributes[:url])
-
-    self.find_by_url(attributes[:url]) || self.create(attributes)
+    page = self.find_by_url(attributes[:url], true)
+    page.save if page.new_record?
+    page
   end
 
   def wrapped_url
@@ -107,19 +90,15 @@ public
   end
 
   def html
-    @html ||= Nokogiri::HTML(curl.body_str)
+    @html ||= Nokogiri::HTML curl.body_str
+  end
+
+  def normalized_url
+    remote_canonical ? remote_canonical : resolved_url
   end
 
   def resolved_url
     curl.last_effective_url
-  end
-
-  def defacto_url
-    !@curl.blank? && !@curl.body_str.nil? ? resolved_url : url
-  end
-
-  def parsed_url
-    @parsed_url ||= Addressable::URI.parse defacto_url
   end
 
   def remote_title
@@ -128,17 +107,18 @@ public
   end
 
   def remote_canonical
+    parsed_url = Addressable::URI.parse resolved_url
     domain = parsed_url.host.split(".")
     domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
     protocol = "#{parsed_url.scheme}:"
 
     search = html.search('link[rel=canonical]')
-    if search.length
+    if search.length > 0
       canonical = search.attr('href').to_s
     elsif remote_meta_tags && !remote_meta_tags["og"].blank? && !remote_meta_tags["og"]["url"].blank?
       canonical = remote_meta_tags["og"]["url"] 
     elsif remote_meta_tags && !remote_meta_tags["twitter"].blank? && !remote_meta_tags["twitter"]["url"].blank?
-      canonical = remote_meta_tags["twitter"]["url"] 
+      canonical = remote_meta_tags["twitter"]["url"]
     else
       canonical = false
     end
@@ -176,7 +156,7 @@ public
   end
 
   def populate_remote_data
-    self.url = remote_canonical unless remote_canonical.blank?
+    self.url = normalized_url
     self.title = remote_title
     self.meta_tags = remote_meta_tags
   end

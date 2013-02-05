@@ -38,7 +38,21 @@ private
 
 public
 
+  def self.cleanup_url(url)
+    parsed_url = Addressable::URI.parse(url)
+
+    # Get rid of trailing hash
+    parsed_url.fragment = nil if parsed_url.fragment.blank?
+
+    # Consider removing trailing slashes
+    # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
+    # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
+
+    parsed_url.to_s
+  end
+
   def self.find_by_url(url, return_new=false)
+    url = self.cleanup_url url
     if page = where(:url => url).limit(1).first
       page
     else
@@ -94,20 +108,7 @@ public
   end
 
   def normalized_url
-    if remote_canonical
-      remote_canonical
-    else
-      parsed_url = Addressable::URI.parse(resolved_url)
-
-      # Get rid of trailing hash
-      parsed_url.fragment = nil if parsed_url.fragment.blank?
-
-      # Consider removing trailing slashes
-      # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
-      # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
-
-      parsed_url.to_s
-    end
+    remote_canonical ? remote_canonical : self.class.cleanup_url(resolved_url)
   end
 
   def resolved_url
@@ -194,6 +195,7 @@ public
       :url    => url,
       :title  => display_title,
       :excerpt => excerpt,
+      :meta_tags => meta_tags,
       :created_at => created_at,
       :updated_at => updated_at
     }

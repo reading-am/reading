@@ -125,6 +125,7 @@ public
     domain = parsed_url.host.split(".")
     domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
     protocol = "#{parsed_url.scheme}:"
+    host = parsed_url.host
 
     search = html.search('link[rel=canonical]')
     if search.length > 0
@@ -137,6 +138,7 @@ public
       canonical = false
     end
 
+    # this has a JS companion in app/models/page.coffee#parse_canonical()
     if canonical.blank?
       canonical = false
     # protocol relative url
@@ -144,7 +146,7 @@ public
       canonical = "#{protocol}#{canonical}"
     # relative url
     elsif canonical[0] == "/"
-      canonical = "#{protocol}//#{parsed_url.host}#{canonical}"
+      canonical = "#{protocol}//#{host}#{canonical}"
     # sniff test for mangled urls
     elsif !canonical.include?("//") or
     # sniff test for urls on a different root domain

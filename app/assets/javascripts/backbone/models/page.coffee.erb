@@ -23,6 +23,7 @@ define [
     # twitter doesn't update the canonical on push state
     excluded_domains = ["twitter.com"]
 
+    # this has a Ruby companion in app/models/page.rb#remote_canonical()
     if !canonical or
     excluded_domains.indexOf(domain) > -1
       canonical = false

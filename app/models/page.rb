@@ -94,6 +94,11 @@ public
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
+  def curl=(obj)
+    # this setter is used during testing
+    @curl = obj
+  end
+
   def curl
     if @curl.blank?
       @curl = Curl::Easy.new url

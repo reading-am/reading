@@ -6,3 +6,24 @@ daringfireball:
   r_excerpt: "Walter Isaacson&#8217;s &#8216;Steve&#160;Jobs&#8217; What is Apple at heart: a software company, or hardware company? This is a perennial question. The truth, of course, is that Apple is neither.&hellip;"
   posts_count: 54
   comments_count: 85
+
+youtube_short:
+  url: http://youtu.be/sIy4KsWq-FA?t=1m36s
+  meta_tags: <%= {
+    "og" => {
+      "url" => "http://www.youtube.com/watch?v=sIy4KsWq-FA",
+      "title" => "Slint - \"Nosferatu Man\"",
+      "description" => "Slint plays \"Nosferatu Man\" on February 22 2005 at the Brown Theatre in Louisville, Kentucky.",
+      "type" => "video",
+      "image" => "http://i4.ytimg.com/vi/sIy4KsWq-FA/mqdefault.jpg",
+      "video" => "http://www.youtube.com/v/sIy4KsWq-FA?version=3&autohide=1",
+      "video:type" => "application/x-shockwave-flash",
+      "video:width" => "480",
+      "video:height" => "360",
+      "site_name" => "YouTube"
+    },
+    "twitter" => {
+      "player:width" => "480",
+      "player:height" => "360"
+    }
+  }.to_yaml.inspect %>

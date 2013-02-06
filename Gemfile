@@ -90,6 +90,8 @@ group :development do
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors
+  gem 'irbtools', :require => false
+  gem 'terminal-notifier', :require => false # or else irbtools will complain
 end
 
 group :development, :test do

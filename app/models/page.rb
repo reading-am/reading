@@ -75,11 +75,14 @@ public
     page
   end
 
+  # this has a JS companion in bookmarklet/real_loader.rb#get_title()
   def display_title
     if !meta_tags["og"]["title"].blank?
       meta_tags["og"]["title"]
     elsif !meta_tags["twitter"]["title"].blank?
       meta_tags["twitter"]["title"]
+    elsif !meta_tags["title"].blank?
+      meta_tags["title"]
     elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
@@ -171,6 +174,7 @@ public
     remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
   end
 
+  # this has a JS companion in bookmarklet/real_loader.coffee#get_head_tags()
   def remote_head_tags
     remote_html.search('title,meta,link:not([rel=stylesheet])')
   end
@@ -182,6 +186,7 @@ public
     protocol = "#{parsed_url.scheme}:"
     host = parsed_url.host
 
+    # this has a JS companion in bookmarklet/real_loader.coffee#get_url()
     search = remote_html.search("link[rel=canonical][href!='']")
     if search.length > 0
       canonical = search.attr('href').to_s

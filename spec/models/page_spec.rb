@@ -10,18 +10,18 @@ describe Page do
     before do
     end
 
-    it "resolves the canonical url" do
+    it "resolves the canonical url when present" do
       page = pages(:youtube_short)
       page.curl = ShimCurl.new 'http://www.youtube.com/watch?v=sIy4KsWq-FA&feature=youtu.be&t=1m36s', page.head_tags.to_s
       page.remote_canonical_url.should eq("http://www.youtube.com/watch?v=sIy4KsWq-FA")
     end
 
-    it "accurately parses the title tag" do
+    it "accurately parses the title tag when present" do
       page = pages(:youtube_short)
       page.title_tag.should eq("Slint - \"Nosferatu Man\" - YouTube")
     end
 
-    it "accurately parses the meta tags" do
+    it "accurately parses the meta tags when present" do
       page = pages(:youtube_short)
       page.meta_tags.should eq({
         "og" => {
@@ -59,7 +59,7 @@ describe Page do
       })
     end
 
-    it "accurately parses the link tags" do
+    it "accurately parses the link tags when present" do
       page = pages(:youtube_short)
       page.link_tags.should eq({
         "search" => "http://www.youtube.com/opensearch?locale=en_US",

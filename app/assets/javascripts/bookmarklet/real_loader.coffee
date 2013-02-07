@@ -46,8 +46,10 @@ require [
         # forward back through to Reading so that the user's token doesn't show up in the referrer
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
+        console.log "hit", model
         model.keep_fresh()
 
+  # this has a Ruby companion in models/page.rb#remote_canonical_url()
   get_url = ->
     selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:url']").join(",")
 
@@ -58,25 +60,19 @@ require [
 
     Page::parse_url(url)
 
+  # this has a Ruby companion in models/page.rb#display_title()
   get_title = ->
-    window.document.title
+    if title = $("meta[property='og:title']").attr("content")
+    else if title = $("meta[property='twitter:title']").attr("content")
+    else if title = $("meta[name='title']").attr("content")
+    else
+      title = window.document.title
 
-  # this has a Ruby companion in models/page.rb#populate_remote_data()
+    title
+
+  # this has a Ruby companion in models/page.rb#remote_head_tags()
   get_head_tags = ->
-    head_tags = null
-    selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:']").join(",")
-
-    $(selector).each ->
-      $this = $(this)
-
-      head_tags = {} unless head_tags?
-      prop = $this.attr("property")
-      namespace = prop.split(":")[0]
-      head_tags[namespace] = {} unless head_tags[namespace]?
-
-      head_tags[namespace][prop.substr(namespace.length+1)] = $this.attr("content")
-
-    head_tags
+    $("<div>").append($("title,meta,link:not([rel=stylesheet])")).html()
 
   #-----------------------------------------
   # Initialize!

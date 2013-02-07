@@ -46,7 +46,6 @@ require [
         # forward back through to Reading so that the user's token doesn't show up in the referrer
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
-        console.log "hit", model
         model.keep_fresh()
 
   # this has a Ruby companion in models/page.rb#remote_canonical_url()

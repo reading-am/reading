@@ -77,12 +77,8 @@ public
 
   # this has a JS companion in bookmarklet/real_loader.rb#get_title()
   def display_title
-    if !meta_tags["og"]["title"].blank?
-      meta_tags["og"]["title"]
-    elsif !meta_tags["twitter"]["title"].blank?
-      meta_tags["twitter"]["title"]
-    elsif !meta_tags["title"].blank?
-      meta_tags["title"]
+    if !og_twitter_or_native_tag("title").blank?
+      og_twitter_or_native_tag("title")
     elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
@@ -91,13 +87,18 @@ public
       url
     end
   end
+  
+  def excerpt
+    if !og_twitter_or_native_tag("description").blank?
+      e = og_twitter_or_native_tag("description")
+    else
+      e = r_excerpt
+    end
+    e.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless e.blank?
+  end
 
   def wrapped_url
     "http://#{DOMAIN}/#{self.url}"
-  end
-
-  def excerpt
-    r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
   def head_tags=(str_or_nodes)
@@ -113,6 +114,16 @@ public
 
   def title_tag
     @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
+  end
+
+  def og_twitter_or_native_tag name
+    if !meta_tags["og"][name].blank?
+      meta_tags["og"][name]
+    elsif !meta_tags["twitter"][name].blank?
+      meta_tags["twitter"][name]
+    else !meta_tags[name].blank?
+      meta_tags[name]
+    end
   end
 
   def meta_tags

@@ -62,21 +62,21 @@ require [
     window.document.title
 
   # this has a Ruby companion in models/page.rb#populate_remote_data()
-  get_meta_tags = ->
-    meta_tags = null
+  get_head_tags = ->
+    head_tags = null
     selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:']").join(",")
 
     $(selector).each ->
       $this = $(this)
 
-      meta_tags = {} unless meta_tags?
+      head_tags = {} unless head_tags?
       prop = $this.attr("property")
       namespace = prop.split(":")[0]
-      meta_tags[namespace] = {} unless meta_tags[namespace]?
+      head_tags[namespace] = {} unless head_tags[namespace]?
 
-      meta_tags[namespace][prop.substr(namespace.length+1)] = $this.attr("content")
+      head_tags[namespace][prop.substr(namespace.length+1)] = $this.attr("content")
 
-    meta_tags
+    head_tags
 
   #-----------------------------------------
   # Initialize!
@@ -104,7 +104,7 @@ require [
         url: get_url()
         title: title
         referrer_id: reading.referrer_id ? 0
-        meta_tags: get_meta_tags()
+        head_tags: get_head_tags()
 
 
   #-----------------------------------------

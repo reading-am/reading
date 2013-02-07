@@ -5,8 +5,6 @@ class Page < ActiveRecord::Base
   has_many :users, :through => :posts
   has_many :comments, :dependent => :destroy
 
-  serialize :meta_tags
-
   validates_presence_of :url, :domain
   validates_uniqueness_of :url
 
@@ -77,9 +75,9 @@ public
   end
 
   def display_title
-    if (!meta_tags["og"]["title"].blank? rescue false)
+    if !meta_tags["og"]["title"].blank?
       meta_tags["og"]["title"]
-    elsif (!meta_tags["twitter"]["title"].blank? rescue false)
+    elsif !meta_tags["twitter"]["title"].blank?
       meta_tags["twitter"]["title"]
     elsif !title.blank?
       title
@@ -92,6 +90,33 @@ public
 
   def excerpt
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
+  end
+
+  def meta_tags
+    # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
+    if @meta_tags.blank?
+      @meta_tags = {'og'=>{},'twitter'=>{}}
+      regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
+      Nokogiri::HTML(head_tags).search('meta').each do |m|
+        if m.attribute('property') && m.attribute('property').to_s.match(regex)
+          @meta_tags[$1][$2] = m.attribute('content').to_s
+        end
+      end
+    end
+    @meta_tags
+  end
+
+  def link_tags
+    if @link_tags.blank?
+      @link_tags = {}
+      Nokogiri::HTML(head_tags).search('link').each do |m|
+        name = m.attribute('rel') ? m.attribute('rel').to_s : m.attribute('itemprop').to_s
+        if name != ''
+          @link_tags[name] = m.attribute('href').to_s
+        end
+      end
+    end
+    @link_tags
   end
 
   def curl=(obj)
@@ -113,10 +138,10 @@ public
   end
 
   def normalized_url
-    remote_canonical ? remote_canonical : self.class.cleanup_url(resolved_url)
+    remote_canonical ? remote_canonical : self.class.cleanup_url(remote_resolved_url)
   end
 
-  def resolved_url
+  def remote_resolved_url
     curl.last_effective_url
   end
 
@@ -126,7 +151,7 @@ public
   end
 
   def remote_canonical
-    parsed_url = Addressable::URI.parse resolved_url
+    parsed_url = Addressable::URI.parse remote_resolved_url
     domain = parsed_url.host.split(".")
     domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
     protocol = "#{parsed_url.scheme}:"
@@ -135,10 +160,10 @@ public
     search = html.search('link[rel=canonical]')
     if search.length > 0
       canonical = search.attr('href').to_s
-    elsif remote_meta_tags && !remote_meta_tags["og"].blank? && !remote_meta_tags["og"]["url"].blank?
-      canonical = remote_meta_tags["og"]["url"] 
-    elsif remote_meta_tags && !remote_meta_tags["twitter"].blank? && !remote_meta_tags["twitter"]["url"].blank?
-      canonical = remote_meta_tags["twitter"]["url"]
+    elsif remote_head_tags && remote_head_tags["meta"] && !remote_head_tags["meta"]["og"].blank? && !remote_head_tags["meta"]["og"]["url"].blank?
+      canonical = remote_head_tags["meta"]["og"]["url"] 
+    elsif remote_head_tags && remote_head_tags["meta"] && !remote_head_tags["meta"]["twitter"].blank? && !remote_head_tags["meta"]["twitter"]["url"].blank?
+      canonical = remote_head_tags["meta"]["twitter"]["url"]
     else
       canonical = false
     end
@@ -162,24 +187,14 @@ public
     canonical
   end
 
-  def remote_meta_tags
-    # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
-    meta_tags = nil
-    regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
-    html.css('meta').each do |m|
-      if m.attribute('property') && m.attribute('property').to_s.match(regex)
-        meta_tags = {} if meta_tags.blank?
-        meta_tags[$1] = {} if meta_tags[$1].blank?
-        meta_tags[$1][$2] = m.attribute('content').to_s
-      end
-    end
-    meta_tags
+  def remote_head_tags
+    html.search('title,meta,link:not([rel=stylesheet])').to_s
   end
 
   def populate_remote_data
     self.url = normalized_url
     self.title = remote_title
-    self.meta_tags = remote_meta_tags
+    self.head_tags = remote_head_tags
   end
 
   def populate_readability
@@ -203,6 +218,7 @@ public
       :title  => display_title,
       :excerpt => excerpt,
       :meta_tags => meta_tags,
+      :link_tags => link_tags,
       :created_at => created_at,
       :updated_at => updated_at
     }

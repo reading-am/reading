@@ -118,8 +118,14 @@ public
       @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
       regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
       head_tags.search('meta').each do |m|
-        if m.attribute('property') && m.attribute('property').to_s.match(regex)
-          @tag_cache[:meta_tags][$1][$2] = m.attribute('content').to_s
+        if m.attribute('property') || m.attribute('name') || m.attribute('itemprop')
+          key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
+          val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
+          if key.match(regex)
+            @tag_cache[:meta_tags][$1][$2] = val 
+          else
+            @tag_cache[:meta_tags][key] = val
+          end
         end
       end
     end
@@ -137,6 +143,11 @@ public
       end
     end
     @tag_cache[:link_tags]
+  end
+
+  def curl=(obj)
+    # this setter is used during testing
+    @curl = obj
   end
 
   def curl

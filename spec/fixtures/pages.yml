@@ -19,7 +19,7 @@ youtube_short:
     <meta property="og:description" content='Slint plays "Nosferatu Man" on February 22 2005 at the Brown Theatre in Louisville, Kentucky.'>
     <meta property="og:type" content="video">
     <meta property="og:image" content="http://i4.ytimg.com/vi/sIy4KsWq-FA/mqdefault.jpg">
-    <meta property="og:video" content="http://www.youtube.com/v/sIy4KsWq-FA?version=3&amp;autohide=1">
+    <meta property="og:video" content="http://www.youtube.com/v/sIy4KsWq-FA?autohide=1&amp;version=3">
     <meta property="og:video:type" content="application/x-shockwave-flash">
     <meta property="og:video:width" content="480">
     <meta property="og:video:height" content="360">
@@ -53,4 +53,4 @@ youtube_short:
     <link itemprop="url" href="http://www.youtube.com/watch?v=sIy4KsWq-FA">
     <link itemprop="url" href="http://www.youtube.com/user/olderthanyou"><link itemprop="thumbnailUrl" href="http://i4.ytimg.com/vi/sIy4KsWq-FA/hqdefault.jpg">
     <link itemprop="url" href="http://i4.ytimg.com/vi/sIy4KsWq-FA/mqdefault.jpg">
-    <link itemprop="embedURL" href="http://www.youtube.com/v/sIy4KsWq-FA?version=3&amp;autohide=1">
+    <link itemprop="embedURL" href="http://www.youtube.com/v/sIy4KsWq-FA?autohide=1&amp;version=3">

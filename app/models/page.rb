@@ -36,6 +36,11 @@ private
 
 public
 
+  # initialize the parsed tag cache
+  after_initialize do |page|
+    page.head_tags = page.head_tags
+  end
+
   def self.cleanup_url(url)
     parsed_url = Addressable::URI.parse(url)
 
@@ -55,7 +60,7 @@ public
       page
     else
       page = self.new :url => url
-      page.url = page.normalized_url
+      page.url = page.remote_normalized_url
       found = where(:url => page.url).limit(1).first
       # if the page isn't found, we return a new instance so
       # we don't have to make another round trip for remote data
@@ -68,10 +73,6 @@ public
     page = self.find_by_url(attributes[:url], true)
     page.save if page.new_record?
     page
-  end
-
-  def wrapped_url
-    "http://#{DOMAIN}/#{self.url}"
   end
 
   def display_title
@@ -88,40 +89,54 @@ public
     end
   end
 
+  def wrapped_url
+    "http://#{DOMAIN}/#{self.url}"
+  end
+
   def excerpt
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
+  def head_tags=(str_or_nodes)
+    # clear the parsed tags
+    @tag_cache = {}
+    self[:head_tags] = str_or_nodes.to_s
+  end
+
+  def head_tags
+    @tag_cache ||= {}
+    @tag_cache[:head_tags] ||= Nokogiri::HTML self[:head_tags]
+  end
+
+  def title_tag
+    @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
+  end
+
   def meta_tags
     # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
-    if @meta_tags.blank?
-      @meta_tags = {'og'=>{},'twitter'=>{}}
+    if @tag_cache[:meta_tags].blank?
+      @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
       regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
-      Nokogiri::HTML(head_tags).search('meta').each do |m|
+      head_tags.search('meta').each do |m|
         if m.attribute('property') && m.attribute('property').to_s.match(regex)
-          @meta_tags[$1][$2] = m.attribute('content').to_s
+          @tag_cache[:meta_tags][$1][$2] = m.attribute('content').to_s
         end
       end
     end
-    @meta_tags
+    @tag_cache[:meta_tags]
   end
 
   def link_tags
-    if @link_tags.blank?
-      @link_tags = {}
-      Nokogiri::HTML(head_tags).search('link').each do |m|
+    if @tag_cache[:link_tags].blank?
+      @tag_cache[:link_tags] = {}
+      head_tags.search('link').each do |m|
         name = m.attribute('rel') ? m.attribute('rel').to_s : m.attribute('itemprop').to_s
         if name != ''
-          @link_tags[name] = m.attribute('href').to_s
+          @tag_cache[:link_tags][name] = m.attribute('href').to_s
         end
       end
     end
-    @link_tags
-  end
-
-  def curl=(obj)
-    # this setter is used during testing
-    @curl = obj
+    @tag_cache[:link_tags]
   end
 
   def curl
@@ -133,39 +148,39 @@ public
     @curl
   end
 
-  def html
-    @html ||= Nokogiri::HTML curl.body_str
-  end
-
-  def normalized_url
-    remote_canonical ? remote_canonical : self.class.cleanup_url(remote_resolved_url)
+  def remote_html
+    @remote_html ||= Nokogiri::HTML curl.body_str
   end
 
   def remote_resolved_url
     curl.last_effective_url
   end
 
-  def remote_title
-    doc_title = html.search('title').first
-    doc_title.nil? ? '' : doc_title.text
+  def remote_normalized_url
+    remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
   end
 
-  def remote_canonical
-    parsed_url = Addressable::URI.parse remote_resolved_url
+  def remote_head_tags
+    remote_html.search('title,meta,link:not([rel=stylesheet])')
+  end
+
+  def remote_canonical_url
+    parsed_url = Addressable::URI.parse(remote_resolved_url)
     domain = parsed_url.host.split(".")
     domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
     protocol = "#{parsed_url.scheme}:"
     host = parsed_url.host
 
-    search = html.search('link[rel=canonical]')
+    search = remote_html.search("link[rel=canonical][href!='']")
     if search.length > 0
       canonical = search.attr('href').to_s
-    elsif remote_head_tags && remote_head_tags["meta"] && !remote_head_tags["meta"]["og"].blank? && !remote_head_tags["meta"]["og"]["url"].blank?
-      canonical = remote_head_tags["meta"]["og"]["url"] 
-    elsif remote_head_tags && remote_head_tags["meta"] && !remote_head_tags["meta"]["twitter"].blank? && !remote_head_tags["meta"]["twitter"]["url"].blank?
-      canonical = remote_head_tags["meta"]["twitter"]["url"]
     else
-      canonical = false
+      search = remote_html.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
+      if search.length > 0
+        canonical = search.attr('value').to_s
+      else
+        canonical = false
+      end
     end
 
     # this has a JS companion in app/models/page.coffee#parse_canonical()
@@ -187,14 +202,10 @@ public
     canonical
   end
 
-  def remote_head_tags
-    html.search('title,meta,link:not([rel=stylesheet])').to_s
-  end
-
   def populate_remote_data
-    self.url = normalized_url
-    self.title = remote_title
+    self.url = remote_normalized_url
     self.head_tags = remote_head_tags
+    self.title = title_tag
   end
 
   def populate_readability

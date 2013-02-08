@@ -21,7 +21,7 @@ define [
     domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
 
     # twitter doesn't update the canonical on push state
-    excluded_domains = ["twitter.com"]
+    excluded_domains = ["twitter.com","instagram.com"]
 
     # this has a Ruby companion in app/models/page.rb#remote_canonical()
     if !canonical or

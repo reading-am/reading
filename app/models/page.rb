@@ -126,6 +126,9 @@ public
     end
   end
 
+  # Relevant
+  # http://www.metatags.org/all_metatags
+  # http://en.wikipedia.org/wiki/Meta_element
   def meta_tags
     # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
     if @tag_cache[:meta_tags].blank?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119192015) do
+ActiveRecord::Schema.define(:version => 20130206195529) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20130119192015) do
     t.string   "r_excerpt"
     t.integer  "posts_count",    :default => 0
     t.integer  "comments_count", :default => 0
+    t.text     "head_tags"
   end
 
   add_index "pages", ["url"], :name => "index_pages_on_url", :unique => true

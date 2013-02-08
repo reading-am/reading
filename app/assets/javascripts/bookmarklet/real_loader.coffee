@@ -1,16 +1,18 @@
 #= require baseUrl
 
 require [
+  "underscore"
   "jquery"
   "app/constants"
   "app/models/post"
+  "app/models/page"
   "app/views/bookmarklet/app"
   "app/helpers/bookmarklet"
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
   "text!components/mentionsInput.css"
-], ($, Constants, Post, AppView, Helpers, Pages, Providers, css...) ->
+], (_, $, Constants, Post, Page, AppView, Helpers, Pages, Providers, css...) ->
 
   $("<style>").html(css.join " ").appendTo("head")
 
@@ -46,6 +48,31 @@ require [
       else
         model.keep_fresh()
 
+  # this has a Ruby companion in models/page.rb#remote_canonical_url()
+  get_url = ->
+    selector = _.map(Page::meta_tag_namespaces, (namespace) -> "meta[property^='#{namespace}:url']").join(",")
+
+    if url = Page::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
+    else if url = Page::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
+    else
+      url = window.location.href
+
+    Page::parse_url(url)
+
+  # this has a Ruby companion in models/page.rb#display_title()
+  get_title = ->
+    if title = $("meta[property='og:title']").attr("content")
+    else if title = $("meta[property='twitter:title']").attr("content")
+    else if title = $("meta[name='title']").attr("content")
+    else
+      title = window.document.title
+
+    title
+
+  # this has a Ruby companion in models/page.rb#remote_head_tags()
+  get_head_tags = ->
+    $("<div>").append($("title,meta,link:not([rel=stylesheet])")).html()
+
   #-----------------------------------------
   # Initialize!
 
@@ -60,20 +87,19 @@ require [
 
     if platform is "redirect" or platform is "bookmarklet"
 
-      url = Post::parse_url window.location.href
-
       if platform is "redirect"
         if token is "-" or !token
           return window.location = url
         else
           title = null
       else
-        title = window.document.title
+        title = get_title()
 
       submit
-        url: url
+        url: get_url()
         title: title
         referrer_id: reading.referrer_id ? 0
+        head_tags: get_head_tags()
 
 
   #-----------------------------------------

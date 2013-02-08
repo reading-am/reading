@@ -9,11 +9,8 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation { parse_domain }
+  before_create :populate_remote_data
   after_create :populate_readability
-
-  before_create do |page|
-    page.title = page.remote_title if page.title.nil?
-  end
 
   # search
   searchable do
@@ -26,56 +23,63 @@ class Page < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
+  META_TAG_NAMESPACES = ['og','twitter']
+
   # NOTE - properties prefixed with r_ (r_title, r_excerpt)
   # are from readability_data
 
 private
 
   def parse_domain
-    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(self.url).host)
+    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(url).host)
   end
 
 public
 
-  def self.normalize_url(url)
-    # if it doesn't start with a protocol
-    # it's most likely just a TLD, manually entered
-    if url[0..3] != 'http'
-      c = Curl::Easy.new
-      c.follow_location = true
-      c.url = url
-      c.perform
-      url = c.last_effective_url
-    end
+  # initialize the parsed tag cache
+  after_initialize do |page|
+    page.head_tags = page.head_tags
+  end
 
-    url = Addressable::URI.parse(url)
+  def self.cleanup_url(url)
+    parsed_url = Addressable::URI.parse(url)
 
     # Get rid of trailing hash
-    url.fragment = nil if url.fragment.blank?
+    parsed_url.fragment = nil if parsed_url.fragment.blank?
 
     # Consider removing trailing slashes
     # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
     # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
 
-    url.to_s
+    parsed_url.to_s
   end
 
-  def self.find_by_url(url)
-    where(:url => self.normalize_url(url)).limit(1).first
+  def self.find_by_url(url, return_new=false)
+    url = self.cleanup_url url
+    if page = where(:url => url).limit(1).first
+      page
+    else
+      page = self.new :url => url
+      page.url = page.remote_normalized_url
+      found = where(:url => page.url).limit(1).first
+      # if the page isn't found, we return a new instance so
+      # we don't have to make another round trip for remote data
+      # when we find_or_create
+      found || !return_new ? found : page
+    end
   end
 
   def self.find_or_create_by_url(attributes)
-    attributes[:url] = self.normalize_url(attributes[:url])
-
-    self.find_by_url(attributes[:url]) || self.create(attributes)
+    page = self.find_by_url(attributes[:url], true)
+    page.save if page.new_record?
+    page
   end
 
-  def wrapped_url
-    "http://#{DOMAIN}/#{self.url}"
-  end
-
+  # this has a JS companion in bookmarklet/real_loader.rb#get_title()
   def display_title
-    if !title.blank?
+    if !og_twitter_or_native_tag("title").blank?
+      og_twitter_or_native_tag("title")
+    elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
       r_title
@@ -83,19 +87,155 @@ public
       url
     end
   end
-
+  
   def excerpt
-    r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
+    if !og_twitter_or_native_tag("description").blank?
+      e = og_twitter_or_native_tag("description")
+    else
+      e = r_excerpt
+    end
+    e.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless e.blank?
   end
 
-  def remote_title
-    c = Curl::Easy.new
-    c.follow_location = true
-    c.url = self.url
-    c.perform
-    doc = Nokogiri::HTML(c.body_str)
-    title = doc.search('title').first
-    title.nil? ? '' : title.text
+  def wrapped_url
+    "http://#{DOMAIN}/#{self.url}"
+  end
+
+  def head_tags=(str_or_nodes)
+    # clear the parsed tags
+    @tag_cache = {}
+    self[:head_tags] = str_or_nodes.to_s
+  end
+
+  def head_tags
+    @tag_cache ||= {}
+    @tag_cache[:head_tags] ||= Nokogiri::HTML self[:head_tags]
+  end
+
+  def title_tag
+    @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
+  end
+
+  def og_twitter_or_native_tag name
+    if !meta_tags["og"][name].blank?
+      meta_tags["og"][name]
+    elsif !meta_tags["twitter"][name].blank?
+      meta_tags["twitter"][name]
+    else !meta_tags[name].blank?
+      meta_tags[name]
+    end
+  end
+
+  # Relevant
+  # http://www.metatags.org/all_metatags
+  # http://en.wikipedia.org/wiki/Meta_element
+  def meta_tags
+    # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
+    if @tag_cache[:meta_tags].blank?
+      @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
+      regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
+      head_tags.search('meta').each do |m|
+        if m.attribute('property') || m.attribute('name') || m.attribute('itemprop')
+          key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
+          val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
+          if key.match(regex)
+            @tag_cache[:meta_tags][$1][$2] = val 
+          else
+            @tag_cache[:meta_tags][key] = val
+          end
+        end
+      end
+    end
+    @tag_cache[:meta_tags]
+  end
+
+  def link_tags
+    if @tag_cache[:link_tags].blank?
+      @tag_cache[:link_tags] = {}
+      head_tags.search('link').each do |m|
+        name = m.attribute('rel') ? m.attribute('rel').to_s : m.attribute('itemprop').to_s
+        if name != ''
+          @tag_cache[:link_tags][name] = m.attribute('href').to_s
+        end
+      end
+    end
+    @tag_cache[:link_tags]
+  end
+
+  def curl=(obj)
+    # this setter is used during testing
+    @curl = obj
+  end
+
+  def curl
+    if @curl.blank?
+      @curl = Curl::Easy.new url
+      @curl.follow_location = true
+      @curl.perform
+    end
+    @curl
+  end
+
+  def remote_html
+    @remote_html ||= Nokogiri::HTML curl.body_str
+  end
+
+  def remote_resolved_url
+    curl.last_effective_url
+  end
+
+  def remote_normalized_url
+    remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
+  end
+
+  # this has a JS companion in bookmarklet/real_loader.coffee#get_head_tags()
+  def remote_head_tags
+    remote_html.search('title,meta,link:not([rel=stylesheet])')
+  end
+
+  def remote_canonical_url
+    parsed_url = Addressable::URI.parse(remote_resolved_url)
+    domain = parsed_url.host.split(".")
+    domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
+    protocol = "#{parsed_url.scheme}:"
+    host = parsed_url.host
+
+    # this has a JS companion in bookmarklet/real_loader.coffee#get_url()
+    search = remote_html.search("link[rel=canonical][href!='']")
+    if search.length > 0
+      canonical = search.attr('href').to_s
+    else
+      search = remote_html.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
+      if search.length > 0
+        canonical = search.attr('value').to_s
+      else
+        canonical = false
+      end
+    end
+
+    # this has a JS companion in app/models/page.coffee#parse_canonical()
+    if canonical.blank?
+      canonical = false
+    # protocol relative url
+    elsif canonical[0..1] == "//"
+      canonical = "#{protocol}#{canonical}"
+    # relative url
+    elsif canonical[0] == "/"
+      canonical = "#{protocol}//#{host}#{canonical}"
+    # sniff test for mangled urls
+    elsif !canonical.include?("//") or
+    # sniff test for urls on a different root domain
+    !canonical.include?(domain)
+      canonical = false
+    end
+
+    canonical
+  end
+
+  def populate_remote_data
+    self.url = remote_normalized_url
+    self.head_tags = remote_head_tags
+    self.title = title_tag
   end
 
   def populate_readability

@@ -30,15 +30,5 @@ define [
           loading = true
           @save "updated_at", now, success: -> loading = false
 
-  Post::parse_url = (url) ->
-    regex = new RegExp "(?:https?:\/\/#{Constants.domain.replace(/\./g,"\\.")}\/(?:(?:p|t)\/[^\/]+\/)*)?(.+)"
-    reg_url = regex.exec(url)[1]
-
-    # don't lob off reading.am if they're reading a Reading page (a user profile, for instance)
-    url = reg_url unless reg_url.indexOf('.') is -1
-    url = "http://#{url}" if url.indexOf('://') is -1
-
-    return url
-
   App.Models.Post = Post
   return Post

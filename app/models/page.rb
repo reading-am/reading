@@ -4,7 +4,6 @@ class Page < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
   has_many :comments, :dependent => :destroy
-  has_many :subscriptions, :dependent => :destroy
 
   validates_presence_of :url, :domain
   validates_uniqueness_of :url
@@ -94,27 +93,7 @@ public
       url
     end
   end
-<<<<<<< HEAD
-
-  def media_type
-    if !meta_tags['og']['type'].blank?
-      # http://ogp.me/#types
-      # colon denotes a namespace, period a sub property
-      meta_tags['og']['type'].split(':').last.split('.').first
-    elsif !meta_tags['medium'].blank? # flickr uses this
-      meta_tags['medium'].blank?
-    else
-      false
-    end
-  end
-
-  def image
-    og_twitter_or_native_tag("image")
-  end
-
-=======
   
->>>>>>> Merging 321-store-og-and-twitter-tags
   def excerpt
     if !og_twitter_or_native_tag("description").blank?
       e = og_twitter_or_native_tag("description")
@@ -128,150 +107,6 @@ public
     "http://#{DOMAIN}/#{self.url}"
   end
 
-  def head_tags=(str_or_nodes)
-    # clear the parsed tags
-    @tag_cache = {}
-    self[:head_tags] = str_or_nodes.to_s
-  end
-
-  def head_tags
-    @tag_cache ||= {}
-    @tag_cache[:head_tags] ||= Nokogiri::HTML self[:head_tags]
-  end
-
-  def title_tag
-    @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
-  end
-
-  def og_twitter_or_native_tag name
-    if !meta_tags["og"][name].blank?
-      meta_tags["og"][name]
-    elsif !meta_tags["twitter"][name].blank?
-      meta_tags["twitter"][name]
-    else !meta_tags[name].blank?
-      meta_tags[name]
-    end
-  end
-
-  # Relevant
-  # http://www.metatags.org/all_metatags
-  # http://en.wikipedia.org/wiki/Meta_element
-  def meta_tags
-    # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
-    if @tag_cache[:meta_tags].blank?
-      @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
-      regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
-      head_tags.search('meta').each do |m|
-        if m.attribute('property') || m.attribute('name') || m.attribute('itemprop')
-          key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
-          val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
-          if key.match(regex)
-            @tag_cache[:meta_tags][$1][$2] = val 
-          else
-            @tag_cache[:meta_tags][key] = val
-          end
-        end
-      end
-    end
-    @tag_cache[:meta_tags]
-  end
-
-  def link_tags
-    if @tag_cache[:link_tags].blank?
-      @tag_cache[:link_tags] = {}
-      head_tags.search('link').each do |m|
-        name = m.attribute('rel') ? m.attribute('rel').to_s : m.attribute('itemprop').to_s
-        if name != ''
-          @tag_cache[:link_tags][name] = m.attribute('href').to_s
-        end
-      end
-    end
-    @tag_cache[:link_tags]
-  end
-
-  def curl=(obj)
-    # this setter is used during testing
-    @curl = obj
-  end
-
-  def curl
-    if @curl.blank?
-      @curl = Curl::Easy.new url
-      @curl.follow_location = true
-      @curl.perform
-    end
-    @curl
-  end
-
-  def remote_html
-    @remote_html ||= Nokogiri::HTML curl.body_str
-  end
-
-  def remote_resolved_url
-    curl.last_effective_url
-  end
-
-  def remote_normalized_url
-    remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
-  end
-
-  # this has a JS companion in bookmarklet/real_loader.coffee#get_head_tags()
-  def remote_head_tags
-    remote_html.search('title,meta,link:not([rel=stylesheet])')
-  end
-
-  def remote_canonical_url
-    parsed_url = Addressable::URI.parse(remote_resolved_url)
-    domain = parsed_url.host.split(".")
-    domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
-    protocol = "#{parsed_url.scheme}:"
-    host = parsed_url.host
-
-    # this has a JS companion in bookmarklet/real_loader.coffee#get_url()
-    search = remote_html.search("link[rel=canonical][href!='']")
-    if search.length > 0
-      canonical = search.attr('href').to_s
-    else
-      search = remote_html.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
-      if search.length > 0
-        canonical = search.attr('value').to_s
-      else
-        canonical = false
-      end
-    end
-
-    # this has a JS companion in app/models/page.coffee#parse_canonical()
-    if canonical.blank?
-      canonical = false
-    # protocol relative url
-    elsif canonical[0..1] == "//"
-      canonical = "#{protocol}#{canonical}"
-    # relative url
-    elsif canonical[0] == "/"
-      canonical = "#{protocol}//#{host}#{canonical}"
-    # sniff test for mangled urls
-    elsif !canonical.include?("//") or
-    # sniff test for urls on a different root domain
-    !canonical.include?(domain)
-      canonical = false
-    end
-
-    canonical
-  end
-
-<<<<<<< HEAD
-  def description
-    if !og_twitter_or_native_tag("description").blank?
-      og_twitter_or_native_tag("description")
-    else
-      excerpt
-    end
-  end
-
-  def wrapped_url
-    "http://#{DOMAIN}/#{self.url}"
-  end
-
   def keywords
     if !meta_tags['keywords'].blank?
       delimiter = meta_tags['keywords'].include?(',') ? ',' : ' '
@@ -279,6 +114,18 @@ public
       k.collect{|x| x.strip}
     else
       []
+    end
+  end
+
+  def media_type
+    if !meta_tags['og']['type'].blank?
+      # http://ogp.me/#types
+      # colon denotes a namespace, period a sub property
+      meta_tags['og']['type'].split(':').last.split('.').first
+    elsif !meta_tags['medium'].blank? # flickr uses this
+      meta_tags['medium'].blank?
+    else
+      false
     end
   end
 
@@ -440,16 +287,11 @@ public
     canonical
   end
 
-=======
->>>>>>> Merging 321-store-og-and-twitter-tags
   def populate_remote_data
     self.url = remote_normalized_url
     self.head_tags = remote_head_tags
     self.title = title_tag
-<<<<<<< HEAD
     return self
-=======
->>>>>>> Merging 321-store-og-and-twitter-tags
   end
 
   def populate_readability
@@ -471,11 +313,9 @@ public
       :id     => to_s ? id.to_s : id,
       :url    => url,
       :title  => display_title,
-      :image  => image,
-      :media_type   => media_type,
-      :description  => description,
-      :created_at   => created_at,
-      :updated_at   => updated_at
+      :excerpt => excerpt,
+      :created_at => created_at,
+      :updated_at => updated_at
     }
   end
 end

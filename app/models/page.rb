@@ -255,8 +255,6 @@ public
       :url    => url,
       :title  => display_title,
       :excerpt => excerpt,
-      :meta_tags => meta_tags,
-      :link_tags => link_tags,
       :created_at => created_at,
       :updated_at => updated_at
     }

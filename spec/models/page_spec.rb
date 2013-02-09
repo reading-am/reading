@@ -23,7 +23,7 @@ describe Page do
 
     it "accurately parses the media type when present" do
       page = pages(:youtube_short)
-      page.type.should eq("video")
+      page.media_type.should eq("video")
     end
 
     it "accurately parses the keywords into an array when present" do

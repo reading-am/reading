@@ -111,7 +111,7 @@ public
     end
   end
 
-  def type
+  def media_type
     if !meta_tags['og']['type'].blank?
       # http://ogp.me/#types
       # colon denotes a namespace, period a sub property

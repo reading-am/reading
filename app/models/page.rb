@@ -124,7 +124,7 @@ public
   end
 
   def verb
-    case type
+    case media_type
     when 'article','book'
       'reading'
     when 'music'
@@ -134,8 +134,16 @@ public
     when 'profile','photo'
       'looking at'
     else
-      false
+      if association(:domain).loaded? && !domain.blank?
+        domain.verb
+      else
+        'reading'
+      end
     end
+  end
+
+  def imperative
+    verb.split(' ')[0][0..-4]
   end
 
   def head_tags=(str_or_nodes)

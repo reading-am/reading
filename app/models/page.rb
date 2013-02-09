@@ -134,6 +134,7 @@ public
     when 'profile','photo'
       'looking at'
     else
+      # TODO it's janky to check for the domain. Architect this better.
       if association(:domain).loaded? && !domain.blank?
         domain.verb
       else

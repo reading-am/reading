@@ -87,7 +87,7 @@ public
       url
     end
   end
-  
+
   def excerpt
     if !og_twitter_or_native_tag("description").blank?
       e = og_twitter_or_native_tag("description")
@@ -99,6 +99,43 @@ public
 
   def wrapped_url
     "http://#{DOMAIN}/#{self.url}"
+  end
+
+  def keywords
+    if !meta_tags['keywords'].blank?
+      delimiter = meta_tags['keywords'].include?(',') ? ',' : ' '
+      k = meta_tags['keywords'].split(delimiter)
+      k.collect{|x| x.strip}
+    else
+      []
+    end
+  end
+
+  def type
+    if !meta_tags['og']['type'].blank?
+      # http://ogp.me/#types
+      # colon denotes a namespace, period a sub property
+      meta_tags['og']['type'].split(':').last.split('.').first
+    elsif !meta_tags['medium'].blank? # flickr uses this
+      meta_tags['medium'].blank?
+    else
+      false
+    end
+  end
+
+  def verb
+    case type
+    when 'article','book'
+      'reading'
+    when 'music'
+      'listening to'
+    when 'video'
+      'watching'
+    when 'profile','photo'
+      'looking at'
+    else
+      false
+    end
   end
 
   def head_tags=(str_or_nodes)

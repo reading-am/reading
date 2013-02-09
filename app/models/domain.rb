@@ -15,7 +15,4 @@ class Domain < ActiveRecord::Base
     read_attribute(:verb) || 'reading'
   end
 
-  def imperative
-    self.verb.split(' ')[0][0..-4]
-  end
 end

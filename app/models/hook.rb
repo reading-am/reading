@@ -83,9 +83,9 @@ public
   def facebook post, event_fired
     case params['permission']
     when 'publish_stream' # wall
-      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.domain.verb.capitalize} \"#{post.page.display_title}\"") rescue nil
+      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.verb.capitalize} \"#{post.page.display_title}\"") rescue nil
     when 'publish_actions' # timeline
-      action = post.domain.imperative
+      action = post.page.imperative
       action = "read" if action == "listen" # we didn't get approved for listen
       authorization.api.put_connections("me", "reading-am:#{action}", :website => post.wrapped_url.gsub('0.0.0.0:3000', 'reading.am'))
     end
@@ -116,7 +116,7 @@ public
 
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
-    tweet = "✌ #{post.page.domain.verb.capitalize} \"#{post.page.display_title}\""
+    tweet = "✌ #{post.page.verb.capitalize} \"#{post.page.display_title}\""
     tweet_len = tweet.unpack('c*').length
     full_len = tweet_len + post.short_url.unpack('c*').length + 1 # plus one is the space
     buffer = 10 # 10 for good measure and because twitter drove me batty about being over the character limit
@@ -146,7 +146,7 @@ public
 
     case event_fired
     when :new
-      output = "✌ #{user_link} is #{!post.page.domain.nil? ? post.page.domain.verb : 'reading'} #{post_link}"
+      output = "✌ #{user_link} is #{post.page.verb} #{post_link}"
       output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
     when :yep, :nope
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
@@ -194,7 +194,7 @@ EOF
     post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
     when :new
-      output = "✌ #{post.page.domain.verb.capitalize} #{post_link}"
+      output = "✌ #{post.page.verb.capitalize} #{post_link}"
       output += " because of #{post.referrer_post.user.display_name} (http://#{DOMAIN}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
     when :yep, :nope
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"

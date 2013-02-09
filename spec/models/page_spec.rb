@@ -21,6 +21,21 @@ describe Page do
       page.title_tag.should eq("Slint - \"Nosferatu Man\" - YouTube")
     end
 
+    it "accurately parses the media type when present" do
+      page = pages(:youtube_short)
+      page.type.should eq("video")
+    end
+
+    it "accurately parses the keywords into an array when present" do
+      page = pages(:youtube_short)
+      page.keywords.should eq([
+        'slint','louisville','indie',
+        'punk','rock','hardcore',
+        'kentucky','reunion','pajo',
+        'walford','nosferatu'
+      ])
+    end
+
     it "accurately parses the meta tags when present" do
       page = pages(:youtube_short)
       page.meta_tags.should eq({

@@ -89,7 +89,7 @@ require [
 
       if platform is "redirect"
         if token is "-" or !token
-          return window.location = url
+          return window.location = get_url()
         else
           title = null
       else

@@ -12,7 +12,12 @@ describe Page do
         "file:///Users/apple/Desktop/Site%20Practice/index.html",
         "javascript:reading={};(function(){reading.token='0dRF3d-er_31llmGUT-AKA';var otherlib=(typeof jQuery=='undefined'&&typeof $=='function');function getScript(url,success){var script=document.createElement('script');script.src=url;var head=document.getElementsByTagName('head')[0],done=false;script.onload=script.onreadystatechange=function(){if(!done&&(!this.readyState||this.readyState=='loaded'||this.readyState=='complete')){done=true;success();script.onload=script.onreadystatechange=null;head.removeChild(script);}};head.appendChild(script);}getScript('http://code.jquery.com/jquery-latest.min.js',function(){if(typeof jQuery=='undefined'){alert('There was an error loading Reading');}else{jQuery.getScript('http://reading.am/javascripts/reading.js');}});})();",
         "mailto:alasdair.monk+hello@gmail.com",
-        "chrome://newtab/"
+        "chrome://newtab/",
+        "http:///javascripts/application.js?1312820486",
+        "about:swappedout",
+        "feed://feeds.feedburner.com/mediaredef",
+        "chrome-extension://mfgdmpfihlmdekaclngibpjhdebndhdj/newtab.html",
+        "chrome-devtools://devtools/devtools.html?docked=true&toolbarColor=rgba(230,230,230,1)&textColor=rgba(0,0,0,1)"
       ]
       bad_urls.each do |url|
         page = Page.new :url => url

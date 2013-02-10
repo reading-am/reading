@@ -31,10 +31,12 @@ class Page < ActiveRecord::Base
 private
 
   def parse_domain
-    host = Addressable::URI.parse(url).host
+    a = Addressable::URI.parse(url)
     # make sure the domain at least includes a period
-    if !host.blank? && host.include?('.')
-      self.domain = Domain.find_or_create_by_name(host)
+    # and that it uses a valid protocol
+    # TODO - move these checks into a validation
+    if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
+      self.domain = Domain.find_or_create_by_name(a.host)
     end
   end
 

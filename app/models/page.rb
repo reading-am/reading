@@ -150,7 +150,10 @@ public
   def head_tags=(str_or_nodes)
     # clear the parsed tags
     @tag_cache = {}
-    self[:head_tags] = str_or_nodes.to_s
+    # PG will throw an error on some pages if you don't explicitly encode UTF-8
+    # example: http://www-nc.nytimes.com/2009/09/11/world/americas/11hippo.html
+    # fix from: http://robots.thoughtbot.com/post/42664369166/fight-back-utf-8-invalid-byte-sequences
+    self[:head_tags] = str_or_nodes.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   end
 
   def head_tags
@@ -282,6 +285,7 @@ public
     self.url = remote_normalized_url
     self.head_tags = remote_head_tags
     self.title = title_tag
+    return self
   end
 
   def populate_readability

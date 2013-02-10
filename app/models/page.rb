@@ -194,7 +194,7 @@ public
           key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
           val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
           if key.match(regex)
-            @tag_cache[:meta_tags][$1][$2] = val 
+            @tag_cache[:meta_tags][$1][$2] = val
           else
             @tag_cache[:meta_tags][key] = val
           end

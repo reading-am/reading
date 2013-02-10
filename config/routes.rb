@@ -22,6 +22,7 @@ Reading::Application.routes.draw do
     put     '/settings/info'  => 'registrations#update'
     get     '/almost_ready'   => 'registrations#almost_ready'
     put     '/almost_ready'   => 'registrations#almost_ready_update'
+    get     '/api/me'         => 'api::users#me',         :defaults => { :format => 'json' }
   end
 
   # sitemap

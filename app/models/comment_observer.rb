@@ -3,6 +3,7 @@ class CommentObserver < ActiveRecord::Observer
   def after_create comment
 
     Broadcaster::signal :create, comment
+
     comment.user.hooks.each do |hook| hook.run(comment, :comment) end
 
     # Send mention emails.
@@ -13,10 +14,16 @@ class CommentObserver < ActiveRecord::Observer
                            : UserMailer.delay.mentioned(comment, user)
       end
 
-      # Send notifications.
-      if user.notify_when_mentioned
-        Broadcaster::signal :notify, comment
+      user.id
+
+      notification = comment
+      notification.channels = []
+      notification.mentions.each do |m|
+        notification.channels << 'user.#{m.id}.notifications'
       end
+      
+
+      Broadcaster::signal :notify, comment      
 
     end
   end

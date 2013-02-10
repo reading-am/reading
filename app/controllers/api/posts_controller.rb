@@ -60,6 +60,9 @@ class Api::PostsController < Api::APIController
   def create
     user, url, title, page, ref, yn = nil
 
+    Rails.logger.debug '___________________________________________________'
+    Rails.logger.debug current_user.id
+
     # post via email
     if params[:recipient]
       text = params['stripped-text'] # this comes from mailgun

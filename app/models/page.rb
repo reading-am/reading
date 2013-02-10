@@ -31,7 +31,11 @@ class Page < ActiveRecord::Base
 private
 
   def parse_domain
-    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(url).host)
+    host = Addressable::URI.parse(url).host
+    # make sure the domain at least includes a period
+    if !host.blank? && host.include?('.')
+      self.domain = Domain.find_or_create_by_name(host)
+    end
   end
 
 public
@@ -220,11 +224,7 @@ public
     if @curl.blank?
       @curl = Curl::Easy.new url
       @curl.follow_location = true
-      begin
-        @curl.perform
-      rescue Curl::Err::UnsupportedProtocolError
-        nil
-      end
+      @curl.perform
     end
     @curl
   end

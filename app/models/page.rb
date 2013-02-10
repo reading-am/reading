@@ -220,7 +220,11 @@ public
     if @curl.blank?
       @curl = Curl::Easy.new url
       @curl.follow_location = true
-      @curl.perform
+      begin
+        @curl.perform
+      rescue Curl::Err::UnsupportedProtocolError
+        nil
+      end
     end
     @curl
   end

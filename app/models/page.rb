@@ -31,7 +31,13 @@ class Page < ActiveRecord::Base
 private
 
   def parse_domain
-    self.domain = Domain.find_or_create_by_name(Addressable::URI.parse(url).host)
+    a = Addressable::URI.parse(url)
+    # make sure the domain at least includes a period
+    # and that it uses a valid protocol
+    # TODO - move these checks into a validation
+    if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
+      self.domain = Domain.find_or_create_by_name(a.host)
+    end
   end
 
 public
@@ -135,7 +141,7 @@ public
       'looking at'
     else
       # TODO it's janky to check for the domain. Architect this better.
-      if association(:domain).loaded? && !domain.blank?
+      if association(:domain).loaded?
         domain.verb
       else
         'reading'
@@ -150,7 +156,10 @@ public
   def head_tags=(str_or_nodes)
     # clear the parsed tags
     @tag_cache = {}
-    self[:head_tags] = str_or_nodes.to_s
+    # PG will throw an error on some pages if you don't explicitly encode UTF-8
+    # example: http://www-nc.nytimes.com/2009/09/11/world/americas/11hippo.html
+    # fix from: http://robots.thoughtbot.com/post/42664369166/fight-back-utf-8-invalid-byte-sequences
+    self[:head_tags] = str_or_nodes.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   end
 
   def head_tags
@@ -282,6 +291,7 @@ public
     self.url = remote_normalized_url
     self.head_tags = remote_head_tags
     self.title = title_tag
+    return self
   end
 
   def populate_readability

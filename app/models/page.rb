@@ -139,7 +139,7 @@ public
       'looking at'
     else
       # TODO it's janky to check for the domain. Architect this better.
-      if association(:domain).loaded? && !domain.blank?
+      if association(:domain).loaded?
         domain.verb
       else
         'reading'

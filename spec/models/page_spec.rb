@@ -7,7 +7,19 @@ describe Page do
 
   context "when saved" do
 
-    before do
+    it "rejects non-web / http urls" do
+      bad_urls = [
+        "file:///Users/apple/Desktop/Site%20Practice/index.html",
+        "javascript:reading={};(function(){reading.token='0dRF3d-er_31llmGUT-AKA';var otherlib=(typeof jQuery=='undefined'&&typeof $=='function');function getScript(url,success){var script=document.createElement('script');script.src=url;var head=document.getElementsByTagName('head')[0],done=false;script.onload=script.onreadystatechange=function(){if(!done&&(!this.readyState||this.readyState=='loaded'||this.readyState=='complete')){done=true;success();script.onload=script.onreadystatechange=null;head.removeChild(script);}};head.appendChild(script);}getScript('http://code.jquery.com/jquery-latest.min.js',function(){if(typeof jQuery=='undefined'){alert('There was an error loading Reading');}else{jQuery.getScript('http://reading.am/javascripts/reading.js');}});})();",
+        "mailto:alasdair.monk+hello@gmail.com",
+        "chrome://newtab/"
+      ]
+      bad_urls.each do |url|
+        page = Page.new :url => url
+        page.save
+        page.new_record?.should be_true
+        page.errors.messages[:domain].should be_true
+      end
     end
 
     it "resolves the canonical url when present" do

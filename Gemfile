@@ -34,6 +34,7 @@ gem 'omniauth-tumblr'
 gem 'omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
+gem 'omniauth-flattr'
 gem 'omniauth-http-basic', :git => 'git://github.com/leppert/omniauth-http-basic.git' #required by omniauth-kippt
 gem 'omniauth-kippt', :git => 'git://github.com/leppert/omniauth-kippt.git'
 
@@ -75,6 +76,7 @@ gem 'readit', :git => 'git://github.com/29decibel/readit.git'
 gem 'evernote-thrift'
 gem 'thrift' # added to force 0.9.0 install to fix evernote encoding issues
 gem 'kippt', :git => 'git://github.com/leppert/kippt.git'
+gem 'flattr'
 gem 'bitmask_attributes'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 gem 'twitter-text' # for comment parsing

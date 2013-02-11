@@ -15,7 +15,8 @@ class Authorization < ActiveRecord::Base
     'evernote',
     'tssignals',
     'kippt',
-    'pocket'
+    'pocket',
+    'flattr'
   ]
 
 private
@@ -172,6 +173,8 @@ public
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
       when 'kippt'
         @api_user = Kippt::Client.new(username: info['username'], token: token)
+      when 'flattr'
+        @api_user = Flattr.new :access_token => token
       end
     end
 

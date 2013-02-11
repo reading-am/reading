@@ -169,6 +169,25 @@ describe Hook do
       response.code.should eq(200)
     end
 
+    it "posts to Flattr" do
+      # setup
+      hook = hooks(:flattr)
+      hook.authorization = authorizations(:flattr)
+      post = posts(:one)
+      post.page = pages(:daringfireball)
+      post.page.domain = domains(:daringfireball)
+      # test
+      # NOTE - it's kind of screwy that we want this to throw an error
+      # but I don't know of a better way to test it without adding funds
+      # to flattr.com. A funds error at least means we made a round trip
+      begin
+        hook.run(post, :new)
+        raise Flattr::Error::BadRequest.new
+      rescue Flattr::Error::Unauthorized => e
+        e.message.should eq("You don't have any money to flattr with")
+      end
+    end
+
   end
 
 end

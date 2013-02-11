@@ -208,6 +208,9 @@ GEM
       faraday (>= 0.7.4, < 0.9)
     fattr (2.2.1)
     ffi (1.2.0)
+    flattr (0.3.7)
+      faraday (~> 0.7)
+      multi_json (~> 1.3.2)
     fog (1.8.0)
       builder
       excon (~> 0.14)
@@ -317,6 +320,9 @@ GEM
       omniauth-oauth (~> 1.0)
     omniauth-facebook (1.4.0)
       omniauth-oauth2 (~> 1.0.2)
+    omniauth-flattr (0.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-instapaper (0.2.0)
       multi_json
       omniauth-xauth (~> 0.0.2)
@@ -546,6 +552,7 @@ DEPENDENCIES
   delayed_job_web
   devise
   evernote-thrift
+  flattr
   fog
   girl_friday
   hipchat
@@ -564,6 +571,7 @@ DEPENDENCIES
   omniauth-37signals!
   omniauth-evernote
   omniauth-facebook (= 1.4.0)
+  omniauth-flattr
   omniauth-http-basic!
   omniauth-instapaper
   omniauth-kippt!

@@ -29,7 +29,8 @@ class Hook < ActiveRecord::Base
     'pinboard',
     'evernote',
     'kippt',
-    'pocket'
+    'pocket',
+    'flattr'
   ]
 
 private
@@ -223,7 +224,7 @@ EOF
   end
 
   def flattr post, event_fired
-
+    authorization.api.flattr post.page.url
   end
 
   def url post, event_fired

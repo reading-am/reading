@@ -216,7 +216,7 @@ Devise.setup do |config|
   config.omniauth "37signals",  ENV['READING_SIGNALS37_KEY'],   ENV['READING_SIGNALS37_SECRET']
   config.omniauth :kippt,       "https://kippt.com/api", :form => OmniauthFormsController.action(:kippt)
   config.omniauth :pocket,      ENV['READING_POCKET_KEY']
-  config.omniauth :flattr,      ENV['READING_FLATTR_KEY'], ENV['READING_FLATTR_SECRET'], scope: 'flattr,email,thing'
+  config.omniauth :flattr,      ENV['READING_FLATTR_KEY'], ENV['READING_FLATTR_SECRET'], scope: ['flattr']
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

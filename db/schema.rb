@@ -11,14 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130206195529) do
+=======
+ActiveRecord::Schema.define(:version => 20121208181853) do
+>>>>>>> cleaned up schema.rb
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
     t.string   "uid"
     t.integer  "user_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "token"
     t.text     "secret"
     t.string   "permissions"
@@ -34,8 +38,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.integer  "post_id"
     t.text     "body"
     t.integer  "comment_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "page_id"
   end
 
@@ -53,16 +57,16 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.string   "locked_by"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at"                
+    t.datetime "updated_at"           
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "domains", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at"                 
+    t.datetime "updated_at"                
     t.string   "verb"
     t.integer  "pages_count", :default => 0
   end
@@ -72,8 +76,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
   create_table "hooks", :force => true do |t|
     t.string   "provider"
     t.integer  "user_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"       
+    t.datetime "updated_at"       
     t.string   "params"
     t.string   "events"
     t.integer  "authorization_id"
@@ -85,8 +89,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.text     "url"
     t.text     "title"
     t.integer  "domain_id"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at"                    
+    t.datetime "updated_at"                    
     t.text     "r_title"
     t.string   "r_excerpt"
     t.integer  "posts_count",    :default => 0
@@ -98,8 +102,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
 
   create_table "posts", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at"                           
+    t.datetime "updated_at"                           
     t.integer  "referrer_post_id"
     t.integer  "page_id"
     t.boolean  "yn"
@@ -120,8 +124,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.integer  "page_id"
     t.integer  "next_page_id"
     t.integer  "rendered_pages"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at"   
+    t.datetime "updated_at"     
     t.string   "excerpt"
     t.string   "direction"
     t.text     "dek"
@@ -131,8 +135,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at"  
+    t.datetime "updated_at"  
   end
 
   add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
@@ -147,8 +151,8 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "username"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at"                               
+    t.datetime "updated_at"                               
     t.string   "token"
     t.string   "auth_token"
     t.string   "email"
@@ -174,7 +178,7 @@ ActiveRecord::Schema.define(:version => 20130206195529) do
     t.integer  "comments_count",         :default => 0
     t.boolean  "email_when_mentioned",   :default => true
     t.integer  "roles"
-    t.string   "encrypted_password",     :default => "",   :null => false
+    t.string   "encrypted_password",     :default => ""  
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

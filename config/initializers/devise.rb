@@ -207,15 +207,16 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
-  config.omniauth :twitter,    ENV['READING_TWITTER_KEY'],     ENV['READING_TWITTER_SECRET']
-  config.omniauth :facebook,   ENV['READING_FACEBOOK_KEY'],    ENV['READING_FACEBOOK_SECRET'], {:scope => 'email'}
-  config.omniauth :instapaper, ENV['READING_INSTAPAPER_KEY'],  ENV['READING_INSTAPAPER_SECRET'], :form => OmniauthFormsController.action(:instapaper)
-  config.omniauth :tumblr,     ENV['READING_TUMBLR_KEY'],      ENV['READING_TUMBLR_SECRET']
-  config.omniauth :readability,ENV['READING_READABILITY_KEY'], ENV['READING_READABILITY_SECRET']
-  config.omniauth :evernote,   ENV['READING_EVERNOTE_KEY'],    ENV['READING_EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
-  config.omniauth "37signals", ENV['READING_SIGNALS37_KEY'],   ENV['READING_SIGNALS37_SECRET']
-  config.omniauth :kippt,      "https://kippt.com/api", :form => OmniauthFormsController.action(:kippt)
-  config.omniauth :pocket,     ENV['READING_POCKET_KEY']
+  config.omniauth :twitter,     ENV['READING_TWITTER_KEY'],     ENV['READING_TWITTER_SECRET']
+  config.omniauth :facebook,    ENV['READING_FACEBOOK_KEY'],    ENV['READING_FACEBOOK_SECRET'], {:scope => 'email'}
+  config.omniauth :instapaper,  ENV['READING_INSTAPAPER_KEY'],  ENV['READING_INSTAPAPER_SECRET'], :form => OmniauthFormsController.action(:instapaper)
+  config.omniauth :tumblr,      ENV['READING_TUMBLR_KEY'],      ENV['READING_TUMBLR_SECRET']
+  config.omniauth :readability, ENV['READING_READABILITY_KEY'], ENV['READING_READABILITY_SECRET']
+  config.omniauth :evernote,    ENV['READING_EVERNOTE_KEY'],    ENV['READING_EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
+  config.omniauth "37signals",  ENV['READING_SIGNALS37_KEY'],   ENV['READING_SIGNALS37_SECRET']
+  config.omniauth :kippt,       "https://kippt.com/api", :form => OmniauthFormsController.action(:kippt)
+  config.omniauth :pocket,      ENV['READING_POCKET_KEY']
+  config.omniauth :flattr,      ENV['READING_FLATTR_KEY'], ENV['READING_FLATTR_SECRET'], scope: 'flattr,email,thing'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

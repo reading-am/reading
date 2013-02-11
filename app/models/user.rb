@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   attr_accessible :username, :email, :password, :password_confirmation,
                   :remember_me, :name, :first_name, :last_name, :location,
                   :bio, :link, :phone, :urls, :description, :mail_digest,
-                  :email_when_followed, :email_when_mentioned, :notify_when_mentioned, :avatar
+                  :email_when_followed, :email_when_mentioned, :avatar
 
   attr_accessor :email_required, :password_required
 

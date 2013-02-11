@@ -58,10 +58,15 @@ class Comment < ActiveRecord::Base
   end
 
   def channels
-    [
-      "comments",
-      "pages.#{page_id}.comments"
-    ]
+    c = ["comments", "pages.#{page_id}.comments"]
+    
+    mentions.each do |m|
+      u = User.find_by_username(m)
+      c << "users.#{u.id}.notifications"
+    end
+
+    return c
+
   end
 
   def body_html

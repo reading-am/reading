@@ -59,9 +59,10 @@ class PostsController < ApplicationController
         # for the timeline
         @page_title = "✌ #{@ref.page.display_title}"
         @og_props = {
+          :type => @ref.page.media_type,
           :title => @page_title,
-          :image => "http://#{@ref.page.domain.name}/apple-touch-icon.png",
-          :description => false
+          :image => @ref.page.image,
+          :description => @ref.page.description
         }
       end
     end

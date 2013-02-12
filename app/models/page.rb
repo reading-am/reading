@@ -319,12 +319,12 @@ public
       :type   => 'Page',
       :id     => to_s ? id.to_s : id,
       :url    => url,
-      :type   => media_type,
       :title  => display_title,
       :image  => image,
-      :description => description,
-      :created_at => created_at,
-      :updated_at => updated_at
+      :media_type   => media_type,
+      :description  => description,
+      :created_at   => created_at,
+      :updated_at   => updated_at
     }
   end
 end

@@ -112,7 +112,7 @@ public
 
   def tumblr post, event_fired
     # this must use string rather than symbol keys in the options hash
-    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.display_title}", "description" => post.page.excerpt}
+    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.display_title}", "description" => post.page.description}
   end
 
   def twitter post, event_fired

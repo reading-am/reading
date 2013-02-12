@@ -94,13 +94,32 @@ public
     end
   end
 
-  def excerpt
-    if !og_twitter_or_native_tag("description").blank?
-      e = og_twitter_or_native_tag("description")
+  def media_type
+    if !meta_tags['og']['type'].blank?
+      # http://ogp.me/#types
+      # colon denotes a namespace, period a sub property
+      meta_tags['og']['type'].split(':').last.split('.').first
+    elsif !meta_tags['medium'].blank? # flickr uses this
+      meta_tags['medium'].blank?
     else
-      e = r_excerpt
+      false
     end
-    e.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless e.blank?
+  end
+
+  def image
+    og_twitter_or_native_tag("image")
+  end
+
+  def excerpt
+    r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
+  end
+
+  def description
+    if !og_twitter_or_native_tag("description").blank?
+      og_twitter_or_native_tag("description")
+    else
+      excerpt
+    end
   end
 
   def wrapped_url
@@ -114,18 +133,6 @@ public
       k.collect{|x| x.strip}
     else
       []
-    end
-  end
-
-  def media_type
-    if !meta_tags['og']['type'].blank?
-      # http://ogp.me/#types
-      # colon denotes a namespace, period a sub property
-      meta_tags['og']['type'].split(':').last.split('.').first
-    elsif !meta_tags['medium'].blank? # flickr uses this
-      meta_tags['medium'].blank?
-    else
-      false
     end
   end
 
@@ -312,8 +319,10 @@ public
       :type   => 'Page',
       :id     => to_s ? id.to_s : id,
       :url    => url,
+      :type   => media_type,
       :title  => display_title,
-      :excerpt => excerpt,
+      :image  => image,
+      :description => description,
       :created_at => created_at,
       :updated_at => updated_at
     }

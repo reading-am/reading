@@ -344,12 +344,12 @@ public
       :url    => url,
       :title  => display_title,
       :image  => image,
-      :media_type   => media_type,
-      :description => description,
-      :posts_count => posts_count,
+      :media_type     => media_type,
+      :description    => description,
+      :posts_count    => posts_count,
       :comments_count => comments_count,
-      :created_at => created_at,
-      :updated_at => updated_at
+      :created_at     => created_at,
+      :updated_at     => updated_at
     }
   end
 end

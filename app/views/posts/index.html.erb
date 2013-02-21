@@ -30,5 +30,8 @@
   </div>
   <% end %>
 </div>
-
+<% call %>
+<%= render :partial =>'test', :locals => {:name => "world"} %>
+<!-- 
 <%= render :partial => 'backbone/router', :locals => {:model => @user, :collection => @posts} if @user %>
+ -->

@@ -85,6 +85,8 @@ gem 'twitter-text' # for comment parsing
 gem 'sitemap_generator'
 gem 'carrierwave'
 gem 'fog'
+gem 'handlebars'
+gem 'tilt'
 
 group :development do
   gem 'debugger'

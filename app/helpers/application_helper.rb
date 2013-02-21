@@ -1,4 +1,6 @@
 # encoding: utf-8
+# require 'handlebars'
+
 module ApplicationHelper
   include Twitter::Autolink
 
@@ -72,4 +74,13 @@ module ApplicationHelper
     # this namespace must mirror what's in requirejs.yml
     "#{['production','staging'].include?(Rails.env) ? 'r_require.' : ''}require"
   end
+
+  # # partial looks in app/assets/javascripts/backbone/templates for a template to render
+  # # locals are variables that will be passed to the template
+  # def render_handlebars partial = {}, locals = {}
+  #   handlebars = Handlebars::Context.new
+  #   template = handlebars.compile("{{say}}{{what}}")
+  #   return template.call(:say => "Hey", :what => "Yuh!") #=> "Hey Yuh!"
+
+  # end
 end

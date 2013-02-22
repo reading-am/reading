@@ -1,10 +1,12 @@
 # encoding: utf-8
 class UsersController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :followingers, :delete_cookies, :tagalong, :find_people]
+  before_filter :load_templates
 
   # GET /users/1
   # GET /users/1.xml
   def show
+    @name = "David"
     if params[:username] == 'everybody'
       @posts  = Post.order("created_at DESC")
                     .includes([:user, :page, :domain, {:referrer_post => :user}])
@@ -28,7 +30,6 @@ class UsersController < ApplicationController
         @channels = @user.username
       end
     end
-
     respond_to do |format|
       format.html { render 'posts/index' }
       format.xml  { render 'posts/index', :xml => @posts }
@@ -96,5 +97,9 @@ class UsersController < ApplicationController
   end
 
   def find_people
+  end
+
+  def load_templates
+    self.append_view_path('app/assets/javascripts/backbone/templates') #It worked!!!
   end
 end

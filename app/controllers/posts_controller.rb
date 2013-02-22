@@ -1,7 +1,7 @@
 # encoding: utf-8
 class PostsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :visit]
-
+  
   # GET /posts
   # GET /posts.xml
   def index
@@ -66,6 +66,13 @@ class PostsController < ApplicationController
         }
       end
     end
+  end
+
+  def test
+    respond_to do |format|
+      format.html { render locals: { name: 'David' }, template: Rails.root.join('app', 'assets', 'javascripts', 'backbone', 'templates', 'test.html.hbs').to_s, layout: false }
+    end
+    
   end
 
 end

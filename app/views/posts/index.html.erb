@@ -31,4 +31,4 @@
   <% end %>
 </div>
 
-<%= render :partial => 'backbone/router', :locals => {:model => @user, :collection => @posts} if @user %>
+<%= render :template => 'test.html.hbs', :locals => {:model => @user, :collection => @posts} if @user %>

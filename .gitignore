@@ -7,3 +7,5 @@ solr/
 .sass-cache/
 public/assets/
 .reading_env
+
+dump.rdb

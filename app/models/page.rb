@@ -9,7 +9,7 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation { parse_domain }
-  before_create :populate_remote_data
+  before_create {|page| page.populate_remote_data unless page.loads_via_js }
   after_create :populate_readability
 
   # search
@@ -77,13 +77,22 @@ public
 
   def self.find_or_create_by_url(attributes)
     page = self.find_by_url(attributes[:url], true)
-    page.save if page.new_record?
+    if page.new_record?
+      page.attributes = attributes.merge(page.attributes)
+      page.save
+    end
     page
+  end
+
+  def loads_via_js
+    url.include? "#!"
   end
 
   # this has a JS companion in bookmarklet/real_loader.rb#get_title()
   def display_title
-    if !og_twitter_or_native_tag("title").blank?
+    if loads_via_js
+      title
+    elsif !og_twitter_or_native_tag("title").blank?
       og_twitter_or_native_tag("title")
     elsif !title.blank?
       title

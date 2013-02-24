@@ -174,8 +174,8 @@ public
     @tag_cache = {}
     # PG will throw an error on some pages if you don't explicitly encode UTF-8
     # example: http://www-nc.nytimes.com/2009/09/11/world/americas/11hippo.html
-    # fix from: http://robots.thoughtbot.com/post/42664369166/fight-back-utf-8-invalid-byte-sequences
-    self[:head_tags] = str_or_nodes.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+    # fix from: http://stackoverflow.com/a/8873922/313561
+    self[:head_tags] = str_or_nodes.to_s.encode('UTF-16', 'UTF-8', :invalid => :replace, :replace => '').encode('UTF-8', 'UTF-16')
   end
 
   def head_tags

@@ -12,7 +12,7 @@ group :assets do
   # https://github.com/cowboyd/therubyracer/issues/215
   gem 'therubyracer', '~> 0.10.2'
   gem 'coffee-rails'
-  gem 'uglifier'
+  gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 end
 
 gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git'

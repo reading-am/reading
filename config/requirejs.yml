@@ -1,3 +1,6 @@
+# Config options can be found here:
+# https://github.com/jrburke/r.js/blob/master/build/example.build.js
+
 # NOTE
 # For whatever reason, if you don't add `create: true` to the
 # second module that's built, requireLib will be included out
@@ -60,7 +63,8 @@ modules:
 
   - name: libs/pusher
 
-## for testing
-#optimize: none
-#uglify:
-  #max_line_length: 1000
+optimize: uglify2 # set to none for testing
+
+# NOTE uglify2 config is namespaced under uglify2, though many docs show just uglify
+#uglify2:
+  #sequences: false

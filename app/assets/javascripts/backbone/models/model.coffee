@@ -5,12 +5,8 @@ define [
   "app/constants"
 ], (_, Backbone, App, Constants) ->
 
-  # This is copied from Backbone's Model.prototype.url
-  # Had trouble with recursion after minification when aliasing and overriding it
-  Backbone.Model::endpoint = ->
-    base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || throw new Error('A "url" property or function must be specified')
-    if @isNew() then base else "#{base}#{if base.charAt(base.length-1) is "/" then "" else "/"}#{encodeURIComponent(@id)}"
   # Override the url method to append the absolute API route
+  Backbone.Model::endpoint = Backbone.Model::url
   Backbone.Model::url = -> "//#{Constants.domain}/api/#{@endpoint()}"
   Backbone.Model::urlRoot = -> "#{@type.toLowerCase()}s"
   Backbone.Model::channel_name = -> @endpoint().replace(/\//g,".")

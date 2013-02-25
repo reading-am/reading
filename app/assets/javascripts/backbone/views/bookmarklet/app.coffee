@@ -5,11 +5,12 @@ define [
   "mustache"
   "pusher"
   "app/models/post"
+  "app/models/user"
   "app/views/comments/comments_with_input"
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.mustache"
-], ($, _, Backbone, Mustache, pusher, Post, CommentsWithInputView, PostsView, SharePopover, template) ->
+], ($, _, Backbone, Mustache, pusher, Post, User, CommentsWithInputView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -77,7 +78,7 @@ define [
       @comments_view = new CommentsWithInputView
         collection: @model.get("page").comments
         post: Post::current
-        user: Post::current.get("user")
+        user: User::current
         page: Post::current.get("page")
 
       @$el.append(@comments_view.render().el)
@@ -119,9 +120,9 @@ define [
 
     monitor_focus: ->
       $(window).focus(=>
-        @presence.trigger "client-win-focus", id: Post::current.get("user").id
+        @presence.trigger "client-win-focus", id: User::current.get("id")
       ).blur =>
-        @presence.trigger "client-win-blur", id: Post::current.get("user").id
+        @presence.trigger "client-win-blur", id: User::current.get("id")
 
       @presence.bind "client-win-focus", (member) =>
         @readers_view.is_blurred member.id, false
@@ -134,7 +135,7 @@ define [
       typing_timers = {}
 
       @comments_view.bind "typing", _.throttle =>
-          @presence.trigger "client-typing", id: Post::current.get("user").id
+          @presence.trigger "client-typing", id: User::current.get("id")
         , typing_delay
 
       @comments_view.collection.bind "add", (comment) =>

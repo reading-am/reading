@@ -117,9 +117,7 @@ define [
 
     render: =>
       json = @model.toJSON()
-      # TODO there has to be a better current_user solution here
-      # this is being shared between the main site and the bookmarklet
-      json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
+      json.is_owner = (@model.get("user").get("id") == User::current.get("id"))
       json.body_html = @model.body_html()
 
       if @model.is_a_show()

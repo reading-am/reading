@@ -24,7 +24,11 @@ define [
   "app/collections/users" # needed from within models/user
 ], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, TssignalsProv, KipptProv, PocketProv, FlattrProv) ->
 
-  current_user = new User window.current_user_seed
+  if window.current_user_seed?
+    User::current = new User window.current_user_seed
+    window.current_user_seed = null
+  else
+    User::current = new User
 
   auths =
     twitter:    new TwitterProv
@@ -38,9 +42,10 @@ define [
     pocket:     new PocketProv
     flattr:     new FlattrProv
 
-  auths[auth.provider].set(auth.uid, Authorization::factory(auth)) for auth in window.authorizations_seed
-  current_user.set "authorizations", auths
+  if window.authorizations_seed?
+    auths[auth.provider].set(auth.uid, Authorization::factory(auth)) for auth in window.authorizations_seed
+    window.authorizations_seed = null
 
-  window.current_user_seed = window.authorizations_seed = null
+  User::current.set "authorizations", auths
 
-  return current_user
+  return User

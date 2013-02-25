@@ -6,12 +6,12 @@ require [
   "libs/indian"
   "app/init"
   "app/models/post"
+  "app/models/user_with_current"
   "app/constants"
-  "app/models/current_user"
   "app/views/components/titlecard"
   "extend/jquery/rails"
   "extend/jquery/cookies"
-], ($, base58, Indian, App, Post, Constants, current_user, Titlecard) ->
+], ($, base58, Indian, App, Post, User, Constants, Titlecard) ->
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"
@@ -45,7 +45,7 @@ require [
           pre = "//#{document_host}/"+(if base58_id then "p/#{base58_id}/" else "")
           window.top.location = pre+@href
         else
-          if current_user.logged_in()
+          if User::current.logged_in()
             post = new Post
               url: @href
               referrer_id: (if base58_id then base58.decode(base58_id) else "")

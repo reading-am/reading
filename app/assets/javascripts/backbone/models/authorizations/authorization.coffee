@@ -4,7 +4,8 @@ define [
   "underscore"
   "backbone"
   "app/init"
-], (require, $, _, Backbone, App) ->
+  "app/models/user"
+], (require, $, _, Backbone, App, User) ->
 
   # TODO - this uses its own save and sync methods
   # it'd be better if it used the Backbone methods
@@ -53,7 +54,7 @@ define [
       unless !response.auth
         # rerun the constructor
         @initialize uid: response.auth.uid, permissions: response.auth.permissions, info: response.auth.info
-        require("app/models/current_user").get("authorizations")[@provider].set(@uid, this)
+        User::current.get("authorizations")[@provider].set(@uid, this)
 
     save: (params) ->
       data =

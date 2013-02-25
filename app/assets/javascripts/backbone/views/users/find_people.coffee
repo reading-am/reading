@@ -1,10 +1,10 @@
 define [
   "backbone"
   "mustache"
-  "app/models/current_user"
+  "app/models/user"
   "app/views/users/users"
   "text!app/templates/users/find_people.mustache"
-], (Backbone, Mustache, current_user, UsersView, template) ->
+], (Backbone, Mustache, User, UsersView, template) ->
 
   class FindPeopleView extends Backbone.View
     template: Mustache.compile template
@@ -32,7 +32,7 @@ define [
     render: ->
       data =
         query:     @collection.query
-        logged_in: current_user.logged_in()
+        logged_in: User::current.logged_in()
 
       data[@section] = true
 

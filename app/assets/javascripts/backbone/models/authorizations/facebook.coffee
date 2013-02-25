@@ -62,7 +62,7 @@ define [
 
     _check_authResponse: (authResponse) ->
       if authResponse and @uid
-        if @uid is "new" and require("app/models/current_user").get("authorizations")[@provider].get(authResponse.userID)
+        if @uid is "new" and User::current.get("authorizations")[@provider].get(authResponse.userID)
           error_status = "AuthPreexisting"
         else if @uid isnt "new" and String(authResponse.userID) isnt @uid
           error_status = "AuthWrongAccount"

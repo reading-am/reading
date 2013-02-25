@@ -5,6 +5,7 @@ require [
   "jquery"
   "app/constants"
   "app/models/post"
+  "app/models/user"
   "app/models/page"
   "app/views/bookmarklet/app"
   "app/helpers/bookmarklet"
@@ -12,7 +13,7 @@ require [
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
   "text!components/mentionsInput.css"
-], (_, $, Constants, Post, Page, AppView, Helpers, Pages, Providers, css) ->
+], (_, $, Constants, Post, User, Page, BookmarkletAppView, Helpers, Pages, Providers, css) ->
 
   $("<style>").html(css).appendTo("head")
 
@@ -36,12 +37,14 @@ require [
 
     # clear old items from previous posts
     Post::current.intervals "clear" if Post::current?
-    AppView::current.close() if AppView::current?
+    BookmarkletAppView::current.close() if BookmarkletAppView::current?
 
     Post::current = new Post
-    AppView::current = new AppView model: Post::current if platform isnt "redirect"
+    BookmarkletAppView::current = new BookmarkletAppView model: Post::current if platform isnt "redirect"
 
     Post::current.save params, success: (model) ->
+      User::current = model.get("user")
+
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url

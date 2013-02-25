@@ -1,15 +1,15 @@
 define [
   "jquery"
+  "app/models/user"
   "app/views/base/model"
   "mustache"
   "app/views/pages/page"
   "app/views/posts/subposts"
   "app/collections/posts"
-  "app/models/current_user"
   "app/views/comments/comments_with_input"
   "text!app/templates/pages/page_row.mustache"
   "app/models/page" # this needs preloading
-], ($, ModelView, Mustache, PageView, SubPostsView, Posts, current_user, CommentsWithInputView, template) ->
+], ($, User, ModelView, Mustache, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
 
   class PageRowView extends ModelView
     template: Mustache.compile template
@@ -26,7 +26,7 @@ define [
       @posts_view = new SubPostsView collection: @model.posts
       @comments_view = new CommentsWithInputView
         collection: @model.comments
-        user: current_user
+        user: User::current
         page: @model
 
     show_posts: ->

@@ -3,7 +3,6 @@ define [
   "backbone"
   "app/models/user"
   "app/collections/users"
-  "app/models/current_user"
   "app/collections/pages"
   "app/views/users/show"
   "app/views/users/subnav"
@@ -11,7 +10,7 @@ define [
   "app/views/users/edit"
   "app/views/users/followingers"
   "app/views/users/find_people"
-], ($, Backbone, User, Users, current_user, Pages, UserShowView, UserSubnavView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, Pages, UserShowView, UserSubnavView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -45,7 +44,7 @@ define [
       @user_subnav_view = new UserSubnavView
         el: $("#subnav")
 
-      if username is current_user.get("username")
+      if username is User::current.get("username")
         @posts_with_input_view = new PagesWithInputView
           collection: @collection
 
@@ -72,7 +71,7 @@ define [
       @find_people "recommended"
 
     friends: ->
-      @collection = current_user.expats
+      @collection = User::current.expats
       @find_people "friends"
 
     search: ->

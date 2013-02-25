@@ -2,11 +2,11 @@ define [
   "jquery"
   "app/init"
   "app/constants"
-  "app/models/current_user"
+  "app/models/user"
   "app/helpers/authorizations"
   "app/helpers/form_builders"
   "app/views/hooks/properties"
-], ($, App, Constants, current_user, AuthorizationsHelper, builders, hook_properties) ->
+], ($, App, Constants, User, AuthorizationsHelper, builders, hook_properties) ->
 
   # TODO - port this to be a true Backbone View
 
@@ -58,7 +58,7 @@ define [
             .removeAttr("disabled")
             .removeClass("disabled")
             .html($("<option>").text("Loading...").val(""))
-          current_user.get("authorizations")[provider].get(account).places success:(places) ->
+          User::current.get("authorizations")[provider].get(account).places success:(places) ->
             $places.html ""
             $places.append($("<option>").text(place.text).val(place.value)) for place in places
             $places.change() # fire a change event so the hook_params_place_name will get set
@@ -92,7 +92,7 @@ define [
         if account is "new"
           auth = new App.Models["#{prov_cap}Auth"](uid: account)
         else
-          auth = current_user.get("authorizations")[provider].get(account)
+          auth = User::current.get("authorizations")[provider].get(account)
 
         if not auth.can permission
           $('#loading').fadeIn()

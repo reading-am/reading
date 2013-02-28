@@ -1,4 +1,4 @@
-web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+web: bundle exec puma -t 1:4 -b tcp://0.0.0.0:$PORT
 worker: bundle exec rake jobs:work
 search: bundle exec rake sunspot:solr:run
 devmail: mailcatcher --foreground

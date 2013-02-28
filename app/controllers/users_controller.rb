@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     user = User.find_by_username(params[:username])
     if user == current_user
       respond_to do |format|
-        format.csv { render 'pages/export', :layout => false, :locals => {:pages => user.pages} }
+        format.csv { render 'posts/export', :layout => false, :locals => {:posts => user.posts} }
       end
     else
       show_404

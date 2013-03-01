@@ -1,7 +1,6 @@
 # encoding: utf-8
 class UsersController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :followingers, :delete_cookies, :tagalong, :find_people]
-  before_filter :load_templates
 
   # GET /users/1
   # GET /users/1.xml
@@ -97,9 +96,5 @@ class UsersController < ApplicationController
   end
 
   def find_people
-  end
-
-  def load_templates
-    self.append_view_path('app/assets/javascripts/backbone/templates') #It worked!!!
   end
 end

@@ -10,7 +10,7 @@ group :assets do
   gem 'less-rails'
   # Required by less-rails. Not sure why it's not included by the gem. 0.11.0 has trouble with libv8
   # https://github.com/cowboyd/therubyracer/issues/215
-  gem 'therubyracer', '~> 0.10.2'
+  gem 'therubyracer', '~> 0.11.1'
   gem 'coffee-rails'
   gem 'uglifier'
 end
@@ -85,7 +85,8 @@ gem 'twitter-text' # for comment parsing
 gem 'sitemap_generator'
 gem 'carrierwave'
 gem 'fog'
-gem 'handlebars'
+# gem 'handlebars'
+gem 'handlebars-rails', git: 'git://github.com/davidbyrd11/handlebars-rails.git'
 
 group :development do
   gem 'debugger'

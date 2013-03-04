@@ -10,7 +10,7 @@
            <p> <a href="">@<%= comment.user.username %></a> shared <a href=""><%= comment.page.title %></a> to the group.</p>
           <% else %>
             <p><%= comment.body[3..-1] %><p>
-            &mdash; <cite><a href="">@<%= comment.user.username %></a> on <a href=""><%= comment.page.title %></a></cite>
+            &mdash; <cite><a href="/<%= comment.user.username %>">@<%= comment.user.username %></a> on <a href="<%= comment.page.url %>"><%= comment.page.title %></a></cite>
           <% end %>
         </blockquote>
       </div>

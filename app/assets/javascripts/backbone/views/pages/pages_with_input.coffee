@@ -47,9 +47,10 @@ define [
       false
 
     render: =>
-      @$el.html(@template())
-          .append(@subview.render().el)
+      #@$el.html(@template())
+      #     .append(@subview.render().el)
 
+      @subview.render()
       @input = @$("form input[type=text]")
       @row = @$("#new_post_row")
       @use_extension = @$("#new_post_use_extension")

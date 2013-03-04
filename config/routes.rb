@@ -57,6 +57,8 @@ Reading::Application.routes.draw do
     end
   end
 
+  match "/groups/:id" => "pages#group"
+
   match "/pusher/auth" => "pusher#auth"
   match "/support/delete_cookies" => "users#delete_cookies"
 

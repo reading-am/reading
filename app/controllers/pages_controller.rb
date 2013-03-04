@@ -12,5 +12,15 @@ class PagesController < ApplicationController
     end
   end
 
+  def group
+    @result = Comment.joins(:page, :post, :user).where("body LIKE ?", "##{params[:id]}%")
+    respond_to do |format|
+      format.json {
+        render json: @result.to_json(:include => [ :page, :post, :user ])
+      }
+      format.html
+    end
+  end
+
 end
 

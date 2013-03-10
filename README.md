@@ -65,6 +65,10 @@ READING_EVERNOTE_SECRET
 
 # Pocket / Readitlater Oauth
 READING_POCKET_KEY
+
+# Flattr Oauth
+READING_FLATTR_KEY
+READING_FLATTR_SECRET
 ```
 
 ## Starting the app

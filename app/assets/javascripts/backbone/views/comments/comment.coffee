@@ -121,6 +121,7 @@ define [
       json.body_html = @model.body_html()
 
       if @model.is_a_show()
+        @$el.addClass "r_comment_shown"
         if (m = @model.mentions().length) > 1
           json.body_html = "#{m} people"
         @$el.html(@shown_template(json))

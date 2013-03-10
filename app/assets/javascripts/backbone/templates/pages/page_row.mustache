@@ -4,13 +4,12 @@
 <div class="span6 posts_group">
 </div>
 <div class="span1 comment">
-  {{#has_comments}}
-  <a class="post_icon has_comments" href="#">
-    {{comments_count}}
+  <a class="post_icon comments_icon
+    {{#has_comments}}has_comments{{else}}hasnt_comments{{/has_comments}}" href="#">
+    {{#has_comments}}{{comments_count}}{{else}}+{{/has_comments}}
     <div class="r_tri"></div>
   </a>
-  {{/has_comments}}
-  <a class="post_icon has_posts" href="#">
+  <a class="post_icon posts_icon" href="#">
     {{posts_count}}
   </a>
 </div>

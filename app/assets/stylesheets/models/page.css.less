@@ -34,8 +34,14 @@
   float:left;
   margin-right:5px;
 }
-.has_comments {
-  .speech_bubble(@purple, @white, bottom-left);
+.comments_icon {
+  &.has_comments {
+    .speech_bubble(@purple, @white, bottom-left);
+  }
+  &.hasnt_comments {
+    .speech_bubble(@ghost_grey, @white, bottom-left);
+    font-weight:bold;
+  }
   padding:0 6px;
   margin-bottom:10px;
   min-width:10px;
@@ -48,7 +54,7 @@
     .r_tri { border-left-color:@dark_purple; }
   }
 }
-.has_posts {
+.posts_icon {
   .circle(22px, @eli_blue);
   color:@white;
   font-size:11px;

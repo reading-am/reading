@@ -18,8 +18,8 @@ define [
     className: "row w_rule"
 
     events:
-      "click .has_posts": "show_posts"
-      "click .has_comments": "show_comments"
+      "click .posts_icon": "show_posts"
+      "click .comments_icon": "show_comments"
 
     initialize: ->
       @page_view = new PageView model: @model, tagName: "div"
@@ -40,8 +40,8 @@ define [
       type_view = @["#{type}_view"]
       other_view = @["#{other}_view"]
 
-      @["#{type}_button"].hide()
-      @["#{other}_button"].show()
+      @["#{type}_icon"].hide()
+      @["#{other}_icon"].show()
 
       other_view.$el.slideUp()
 
@@ -61,8 +61,8 @@ define [
 
       @$el.append(@template(json))
 
-      @posts_button = @$(".has_posts")
-      @comments_button = @$(".has_comments")
+      @posts_icon = @$(".posts_icon")
+      @comments_icon = @$(".comments_icon")
 
       @body = @$(".posts_group")
       @body

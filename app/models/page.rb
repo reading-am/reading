@@ -6,6 +6,7 @@ class Page < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
 
   validates_presence_of :url, :domain
+  validates_associated :domain
   validates_uniqueness_of :url
 
   before_validation { parse_domain }
@@ -48,7 +49,16 @@ public
   end
 
   def self.cleanup_url(url)
+    # add http if the url doesn't include a protocol
+    if !url.include?("://") or (url.include?(".") and url.index("://") > url.index("."))
+      url = "http://#{url}"
+    end
+
     parsed_url = Addressable::URI.parse(url)
+
+    # protocols and hosts aren't case sensitive: http://stackoverflow.com/questions/2148603/is-the-protocol-name-in-urls-case-sensitive
+    parsed_url.scheme = parsed_url.scheme.downcase unless parsed_url.scheme.blank?
+    parsed_url.host = parsed_url.host.downcase unless parsed_url.host.blank?
 
     # Get rid of trailing hash
     parsed_url.fragment = nil if parsed_url.fragment.blank?
@@ -76,6 +86,7 @@ public
   end
 
   def self.find_or_create_by_url(attributes)
+    attributes[:url] = self.cleanup_url attributes[:url]
     page = self.find_by_url(attributes[:url], true)
     if page.new_record?
       page.attributes = attributes.merge(page.attributes)
@@ -157,7 +168,7 @@ public
       'looking at'
     else
       # TODO it's janky to check for the domain. Architect this better.
-      if association(:domain).loaded?
+      if !domain_id.blank? && association(:domain).loaded?
         domain.verb
       else
         'reading'

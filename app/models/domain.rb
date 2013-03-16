@@ -10,6 +10,14 @@ class Domain < ActiveRecord::Base
     name
   end
 
+  def name=(name)
+    self[:name] = name.downcase
+  end
+
+  def self.find_by_name(name)
+    where("name = ?", name.downcase).limit(1).first
+  end
+
   def verb
     # from: http://stackoverflow.com/questions/373731/override-activerecord-attribute-methods
     read_attribute(:verb) || 'reading'

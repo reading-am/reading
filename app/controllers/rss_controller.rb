@@ -25,11 +25,6 @@ class RssController < ApplicationController
       i += 1
       @posts << post
     end
-
-    respond_to do |format|
-      format.html { render 'posts/index' }
-      format.xml  { render 'posts/index', :xml => @posts }
-    end
   end
 
 end

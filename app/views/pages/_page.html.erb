@@ -20,8 +20,8 @@
     excluded_domains = [10, 64]
     if !excluded_domains.include? page.domain_id and !page.description.blank?
   %>
-  <p class="description" title="<%= page.description.html_safe %>">
-    <%= page.description.html_safe %>
+  <p class="description" title="<%= page.description %>">
+    <%= page.description %>
   </p>
   <% end %>
 </div>

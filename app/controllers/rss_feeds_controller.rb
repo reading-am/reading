@@ -1,5 +1,5 @@
 # encoding: utf-8
-class RssController < ApplicationController
+class RssFeedsController < ApplicationController
   # GET /domains/1
   # GET /domains/1.xml
   def show

@@ -264,6 +264,19 @@ public
     @curl
   end
 
+  def rss_curl
+    if @rss_curl.blank?
+      @rss_curl = Curl::Easy.new link_tags['rss']
+      @rss_curl.follow_location = true
+      @rss_curl.perform
+    end
+    @rss_curl
+  end
+
+  def remote_rss
+    @remote_rss ||= Nokogiri::XML curl.body_str
+  end
+
   def remote_html
     @remote_html ||= Nokogiri::HTML curl.body_str
   end

@@ -274,7 +274,7 @@ public
   end
 
   def remote_rss
-    @remote_rss ||= Nokogiri::XML curl.body_str
+    @remote_rss ||= Nokogiri::XML rss_curl.body_str
   end
 
   def remote_html

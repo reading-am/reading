@@ -14,7 +14,8 @@ class RssController < ApplicationController
         :user => user,
         :page => Page.new(
           :url => item.search("link").first.content,
-          :title => item.search("title").first.content
+          :title => item.search("title").first.content,
+          :r_excerpt => item.search("description").first.content
         ),
         :created_at => Time.now,
         :updated_at => Time.now

@@ -1,5 +1,5 @@
 <% if @user %>
-  <%= render :partial => 'users/card', :locals => {:user => @user} %>
+  <%= render :partial => 'card', :locals => {:user => @user} %>
   <%= render :partial => 'users/you_subnav', :locals => {:user => @user} %>
 <% else %>
   <div id="subhead" class="row">

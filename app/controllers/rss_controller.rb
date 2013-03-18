@@ -5,6 +5,12 @@ class RssController < ApplicationController
   def show
     @page = Page.find_by_url("#{params[:url]}/")
 
+    uname = @page.remote_rss.search("channel title").first.content
+    @user = User.new(
+      :username => uname,
+      :name => uname
+    )
+
     @posts = []
     user = User.find(1)
     i = 1

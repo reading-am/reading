@@ -1,7 +1,6 @@
 <% if @user %>
   <%= render :partial => 'users/card', :locals => {:user => @user} %>
   <%= render :partial => 'users/you_subnav', :locals => {:user => @user} %>
-  <%= render :partial => 'blank_slate' if @user.posts.size == 0 or @user.following.size == 0 %>
 <% else %>
   <div id="subhead" class="row">
     <div class="span7 offset1">

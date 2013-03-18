@@ -49,8 +49,11 @@ public
   end
 
   def self.cleanup_url(url)
+    # the protocol will be missing its second slash if it's been pulled from the middle of a url
+    if !/^https?:\/\w/.match(url).blank?
+      url = url.sub(":/", "://")
     # add http if the url doesn't include a protocol
-    if !url.include?("://") or (url.include?(".") and url.index("://") > url.index("."))
+    elsif !url.include?("://") or (url.include?(".") and url.index("://") > url.index("."))
       url = "http://#{url}"
     end
 

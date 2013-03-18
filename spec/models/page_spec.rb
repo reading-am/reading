@@ -5,6 +5,24 @@ ShimCurl = Struct.new 'ShimCurl', :last_effective_url, :body_str
 describe Page do
   fixtures :pages
 
+  context "when cleaning up the url" do
+
+    it "restores missing slashes in the protocol" do
+      Page.cleanup_url("http:/testing.com/http:/here").should eq("http://testing.com/http:/here")
+      Page.cleanup_url("https:/testing.com/http:/here").should eq("https://testing.com/http:/here")
+      Page.cleanup_url("https://testing.com").should eq("https://testing.com")
+    end
+
+    it "adds a protocol when one is missing" do
+      Page.cleanup_url("testing.com/here/is").should eq("http://testing.com/here/is")
+    end
+
+    it "lowercases the scheme/protocol and host" do
+      Page.cleanup_url("HTTPs://teSTing.com/HERE/is").should eq("https://testing.com/HERE/is")
+    end
+
+  end
+
   context "when saved" do
 
     it "rejects non-web / http urls" do

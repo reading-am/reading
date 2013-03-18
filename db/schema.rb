@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130317161100) do
+ActiveRecord::Schema.define(:version => 20130318032800) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20130317161100) do
     t.integer  "posts_count",    :default => 0
     t.integer  "comments_count", :default => 0
     t.text     "head_tags"
+    t.integer  "rss_feed_count", :default => 0
   end
 
   add_index "pages", ["url"], :name => "index_pages_on_url", :unique => true
@@ -138,6 +139,13 @@ ActiveRecord::Schema.define(:version => 20130317161100) do
   add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
   add_index "relationships", ["follower_id", "followed_id"], :name => "index_relationships_on_follower_id_and_followed_id", :unique => true
   add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
+
+  create_table "rss_feeds", :force => true do |t|
+    t.integer  "page_id"
+    t.text     "url"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"

@@ -89,10 +89,10 @@ ActiveRecord::Schema.define(:version => 20130318032800) do
     t.datetime "updated_at"
     t.text     "r_title"
     t.string   "r_excerpt"
-    t.integer  "posts_count",    :default => 0
-    t.integer  "comments_count", :default => 0
+    t.integer  "posts_count",     :default => 0
+    t.integer  "comments_count",  :default => 0
     t.text     "head_tags"
-    t.integer  "rss_feed_count", :default => 0
+    t.integer  "rss_feeds_count", :default => 0
   end
 
   add_index "pages", ["url"], :name => "index_pages_on_url", :unique => true

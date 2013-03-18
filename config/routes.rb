@@ -88,6 +88,8 @@ Reading::Application.routes.draw do
     resources :pages
   end
 
+  match '/rss/:url' => 'rss#show', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i} 
+
   match '/extensions/safari/update' => 'extras#safari_update'
 
   match "/users"              => redirect("/")

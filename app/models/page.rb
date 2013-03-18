@@ -239,6 +239,9 @@ public
       @tag_cache[:link_tags] = {}
       head_tags.search('link').each do |m|
         name = m.attribute('rel') ? m.attribute('rel').to_s : m.attribute('itemprop').to_s
+        if m.attribute('type').to_s.downcase == 'application/rss+xml'
+          name = 'rss'
+        end
         if name != ''
           @tag_cache[:link_tags][name] = m.attribute('href').to_s
         end

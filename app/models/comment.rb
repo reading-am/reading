@@ -64,26 +64,26 @@ class Comment < ActiveRecord::Base
     ]
   end
 
+  ### This method is mirrored in comment.coffee
   def body_html
     html = html_escape(body)
-    ### These methods are mirrored in the handlebars js helpers
     # nl2br
     html.gsub!(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/, "\\1<br>\\2")
-    # email
-    html.gsub!(/(([a-z0-9*._+]){1,}\@(([a-z0-9]+[-]?){1,}[a-z0-9]+\.){1,}([a-z]{2,4}|museum)(?![\w\s?&.\/;#~%"=-]*>))/, "<a href=\"mailto:\\1\">\\1</a>")
-    # code
+    # wrap code
     html.gsub!(/`((?:[^`]+|\\.)*)`/) {|s| s.scan("\n").blank? ? "<code>#{s[1..-2]}</code>" : "<pre><code>#{s[1..-2]}</code></pre>" }
-    # quotes
+    # italicize quotes
     html.gsub!(/&quot;.*&quot;/, "<i>\\&</i>")
-    # links and @mentions
+    # embed images
+    html.gsub!(/(<a.*)( class="r_url" )(.*>)(.*\.(jpg|jpeg|png|gif).*)<\/a>/, "\\1 class=\"r_url r_image\" \\3<img src=\"\\4\"></a>")
+    # link emails
+    html.gsub!(/(([a-z0-9*._+]){1,}\@(([a-z0-9]+[-]?){1,}[a-z0-9]+\.){1,}([a-z]{2,4}|museum)(?![\w\s?&.\/;#~%"=-]*>))/, "<a href=\"mailto:\\1\">\\1</a>")
+    # wrap links and @mentions
     html = auto_link(html, {
       :url_class => 'r_url',
       :username_class => 'user',
       :username_url_base => "http://#{DOMAIN}/",
       :hashtag_url_base => "http://#{DOMAIN}/search?q="
     })
-    # images
-    html.gsub!(/(<a.*)( class="r_url" )(.*>)(.*\.(jpg|jpeg|png|gif).*)<\/a>/, "\\1 class=\"r_url r_image\" \\3<img src=\"\\4\"></a>")
 
     html.html_safe
   end

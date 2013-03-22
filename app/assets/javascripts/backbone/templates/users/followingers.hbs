@@ -4,11 +4,12 @@
   </nav>
   <div class="span7">
     <h3>
-      {{#if followers}}
+      {{#followers}}
         People Following {{user.first_name}}
-      {{else}}
+      {{/followers}}
+      {{^followers}}
         People {{user.first_name}} is Following
-      {{/if}}
+      {{/followers}}
     </h3>
   </div>
 </div>

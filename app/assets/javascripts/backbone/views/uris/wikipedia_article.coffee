@@ -1,6 +1,6 @@
 define [
   "app/views/uris/uri"
-  "handlebars"
+  "mustache"
   "app/init"
   "text!app/templates/uris/wikipedia_article.hbs"
 ], (URIView, Handlebars, App, template) ->

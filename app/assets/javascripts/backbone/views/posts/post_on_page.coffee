@@ -2,7 +2,7 @@ define [
   "underscore"
   "jquery"
   "app/views/posts/post"
-  "handlebars"
+  "mustache"
   "app/constants"
   "app/views/users/user"
   "text!app/templates/posts/post_on_page.hbs"

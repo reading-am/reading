@@ -2,7 +2,7 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "handlebars"
+  "mustache"
   "pusher"
   "app/models/post"
   "app/views/comments/comments_with_input"

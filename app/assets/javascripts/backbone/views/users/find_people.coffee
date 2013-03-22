@@ -1,6 +1,6 @@
 define [
   "backbone"
-  "handlebars"
+  "mustache"
   "app/models/current_user"
   "app/views/users/users"
   "text!app/templates/users/find_people.hbs"

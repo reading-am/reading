@@ -1,7 +1,7 @@
 define [
   "jquery"
   "app/views/uris/uri"
-  "handlebars"
+  "mustache"
   "app/init"
   "text!app/templates/uris/amazon_product.hbs"
 ], ($, URIView, Handlebars, App, template) ->

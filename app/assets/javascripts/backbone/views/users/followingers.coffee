@@ -1,6 +1,6 @@
 define [
   "backbone"
-  "handlebars"
+  "mustache"
   "app/views/users/users"
   "text!app/templates/users/followingers.hbs"
 ], (Backbone, Handlebars, UsersView, template) ->

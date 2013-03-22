@@ -2,7 +2,7 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "handlebars"
+  "mustache"
   "text!app/templates/components/popover.hbs"
   "text!components/popover.css"
 ], (_, $, Backbone, Handlebars, template, css) ->

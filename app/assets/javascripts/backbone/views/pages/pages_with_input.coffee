@@ -2,7 +2,7 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "handlebars"
+  "mustache"
   "app/models/post"
   "app/views/pages/pages"
   "text!app/templates/pages/pages_with_input.hbs"

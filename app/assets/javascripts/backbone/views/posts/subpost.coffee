@@ -1,7 +1,7 @@
 define [
   "underscore"
   "jquery"
-  "handlebars"
+  "mustache"
   "app/views/posts/post_on_page"
   "text!app/templates/posts/subpost.hbs"
   "text!posts/subpost.css"

@@ -1,6 +1,6 @@
 define [
   "backbone"
-  "handlebars"
+  "mustache"
   "app/views/comments/popover"
   "text!app/templates/comments/show.hbs"
 ], (Backbone, Handlebars, CommentPopover, template) ->

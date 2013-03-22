@@ -1,6 +1,6 @@
 define [
   "backbone"
-  "handlebars"
+  "mustache"
   "text!app/templates/admin/header.hbs"
 ], (Backbone, Handlebars, template) ->
 

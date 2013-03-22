@@ -2,7 +2,7 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "handlebars"
+  "mustache"
   "libs/keymaster"
   "app/views/comments/comments"
   "app/models/post"

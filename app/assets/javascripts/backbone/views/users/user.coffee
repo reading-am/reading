@@ -1,6 +1,6 @@
 define [
   "app/views/base/model"
-  "handlebars"
+  "mustache"
   "app/constants"
   "app/views/users/popover"
   "text!app/templates/users/user.hbs"

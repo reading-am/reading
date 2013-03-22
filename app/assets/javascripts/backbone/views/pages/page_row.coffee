@@ -1,7 +1,7 @@
 define [
   "jquery"
   "app/views/base/model"
-  "handlebars"
+  "mustache"
   "app/views/pages/page"
   "app/views/posts/subposts"
   "app/collections/posts"

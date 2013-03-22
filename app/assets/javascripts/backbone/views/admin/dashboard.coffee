@@ -2,7 +2,7 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "handlebars"
+  "mustache"
   "app/collections/users"
   "app/collections/posts"
   "app/collections/comments"

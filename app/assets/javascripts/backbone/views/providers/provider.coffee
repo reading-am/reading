@@ -1,6 +1,6 @@
 define [
   "app/views/base/model"
-  "handlebars"
+  "mustache"
   "app/models/post"
   "app/models/comment"
   "text!app/templates/providers/provider.hbs"

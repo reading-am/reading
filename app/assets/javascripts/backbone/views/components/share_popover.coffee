@@ -1,5 +1,5 @@
 define [
-  "handlebars"
+  "mustache"
   "app/views/components/popover"
   "app/models/provider"
   "app/collections/providers"

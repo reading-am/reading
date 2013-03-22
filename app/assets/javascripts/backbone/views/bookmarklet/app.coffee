@@ -9,13 +9,13 @@ define [
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
   "text!app/templates/bookmarklet/app.mustache"
-], ($, _, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
+], ($, _, Backbone, Mustache, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
 
   class BookmarkletAppView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
 

@@ -3,10 +3,10 @@ define [
   "mustache"
   "app/init"
   "text!app/templates/uris/twitter_tweet.mustache"
-], (URIView, Handlebars, App, template) ->
+], (URIView, Mustache, App, template) ->
 
   class TwitterTweetView extends URIView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     className: "r_url r_uri r_twitter_tweet"
 

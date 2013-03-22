@@ -18,12 +18,12 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
+], (_, $, Backbone, Mustache, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentView extends Backbone.View
-    template: Handlebars.compile template
-    shown_template: Handlebars.compile shown_template
+    template: Mustache.compile template
+    shown_template: Mustache.compile shown_template
 
     tagName: "li"
     className: "r_comment"

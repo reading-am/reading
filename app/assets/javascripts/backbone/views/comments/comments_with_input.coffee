@@ -12,10 +12,10 @@ define [
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], ($, _, Backbone, Handlebars, Key, CommentsView, Post, template) ->
+], ($, _, Backbone, Mustache, Key, CommentsView, Post, template) ->
 
   class CommentsWithInputView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
 

@@ -3,10 +3,10 @@ define [
   "mustache"
   "app/views/users/users"
   "text!app/templates/users/followingers.mustache"
-], (Backbone, Handlebars, UsersView, template) ->
+], (Backbone, Mustache, UsersView, template) ->
 
   class FollowingersView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     initialize: (options) ->
       @followers = options.followers

@@ -5,10 +5,10 @@ define [
   "app/collections/providers"
   "app/views/providers/providers"
   "text!app/templates/components/share_popover.mustache"
-], (Handlebars, Popover, Provider, Providers, ProvidersView, template) ->
+], (Mustache, Popover, Provider, Providers, ProvidersView, template) ->
 
   class SharePopover extends Popover
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     id: "r_share_popover"
     className: "r_popover"

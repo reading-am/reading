@@ -3,10 +3,10 @@ define [
   "mustache"
   "app/init"
   "text!app/templates/uris/vimeo_video.mustache"
-], (URIView, Handlebars, App, template) ->
+], (URIView, Mustache, App, template) ->
 
   class VimeoVideoView extends URIView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
     className: "r_url r_uri r_vimeo_video"

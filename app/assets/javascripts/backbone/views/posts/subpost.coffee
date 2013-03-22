@@ -5,11 +5,11 @@ define [
   "app/views/posts/post_on_page"
   "text!app/templates/posts/subpost.mustache"
   "text!posts/subpost.css"
-], (_, $, Handlebars, PostOnPageView, template, css) ->
+], (_, $, Mustache, PostOnPageView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class SubPostView extends PostOnPageView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     className: "r_post r_subpost"
 

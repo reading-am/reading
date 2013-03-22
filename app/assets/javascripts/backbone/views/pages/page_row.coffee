@@ -7,10 +7,10 @@ define [
   "app/collections/posts"
   "text!app/templates/pages/page_row.mustache"
   "app/models/page" # this needs preloading
-], ($, ModelView, Handlebars, PageView, SubPostsView, Posts, template) ->
+], ($, ModelView, Mustache, PageView, SubPostsView, Posts, template) ->
 
   class PageRowView extends ModelView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
     className: "row w_rule"

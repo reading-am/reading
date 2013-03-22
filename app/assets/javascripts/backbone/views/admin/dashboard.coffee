@@ -11,11 +11,11 @@ define [
   "app/views/comments/comments"
   "text!app/templates/admin/dashboard.mustache"
   "text!admin/dashboard.css"
-], (_, $, Backbone, Handlebars, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
+], (_, $, Backbone, Mustache, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class DashboardView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     initialize: ->
       load_css()

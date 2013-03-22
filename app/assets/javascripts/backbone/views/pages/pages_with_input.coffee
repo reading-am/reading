@@ -6,10 +6,10 @@ define [
   "app/models/post"
   "app/views/pages/pages"
   "text!app/templates/pages/pages_with_input.mustache"
-], ($, _, Backbone, Handlebars, Post, PagesView, template) ->
+], ($, _, Backbone, Mustache, Post, PagesView, template) ->
 
   class PagesWithInputView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
 

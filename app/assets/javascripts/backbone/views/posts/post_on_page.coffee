@@ -2,15 +2,15 @@ define [
   "underscore"
   "jquery"
   "app/views/posts/post"
-  "handlebars"
+  "mustache"
   "app/constants"
   "app/views/users/user"
-  "text!app/templates/posts/post_on_page.hbs"
+  "text!app/templates/posts/post_on_page.mustache"
   "text!posts/post.css"
-], (_, $, PostView, Handlebars, Constants, UserView, template, css) ->
+], (_, $, PostView, Mustache, Constants, UserView, template, css) ->
 
   class PostOnPageView extends PostView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     initialize: (options) ->
       # because we don't call super(), this CSS needs to be loaded

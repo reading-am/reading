@@ -1,12 +1,12 @@
 define [
   "backbone"
-  "handlebars"
+  "mustache"
   "app/views/comments/popover"
-  "text!app/templates/comments/show.hbs"
-], (Backbone, Handlebars, CommentPopover, template) ->
+  "text!app/templates/comments/show.mustache"
+], (Backbone, Mustache, CommentPopover, template) ->
 
   class ShowView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     render: ->
       @popover = new CommentPopover model: @model

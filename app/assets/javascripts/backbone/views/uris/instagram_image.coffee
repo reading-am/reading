@@ -1,12 +1,12 @@
 define [
   "app/views/uris/uri"
-  "handlebars"
+  "mustache"
   "app/init"
-  "text!app/templates/uris/instagram_image.hbs"
-], (URIView, Handlebars, App, template) ->
+  "text!app/templates/uris/instagram_image.mustache"
+], (URIView, Mustache, App, template) ->
 
   class InstagramImageView extends URIView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     className: "r_url r_uri r_instagram_image"
 

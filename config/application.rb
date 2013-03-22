@@ -44,7 +44,7 @@ module Reading
     config.assets.enabled = true
 
     # per: https://github.com/jwhitley/requirejs-rails/#build-time-asset-filter
-    config.requirejs.logical_asset_filter += [/\.hbs$/,/\.css$/]
+    config.requirejs.logical_asset_filter += [/\.mustache$/,/\.css$/]
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

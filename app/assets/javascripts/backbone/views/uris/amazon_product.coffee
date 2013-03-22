@@ -1,13 +1,13 @@
 define [
   "jquery"
   "app/views/uris/uri"
-  "handlebars"
+  "mustache"
   "app/init"
-  "text!app/templates/uris/amazon_product.hbs"
-], ($, URIView, Handlebars, App, template) ->
+  "text!app/templates/uris/amazon_product.mustache"
+], ($, URIView, Mustache, App, template) ->
 
   class AmazonProductView extends URIView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     className: "r_url r_uri r_amazon_product"
 

@@ -2,7 +2,7 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "handlebars"
+  "mustache"
   "app/init"
   "app/models/user"
   "app/models/post"
@@ -11,19 +11,19 @@ define [
   "app/views/users/user"
   "app/views/users/popover"
   "app/views/components/share_popover"
-  "text!app/templates/comments/comment.hbs"
-  "text!app/templates/comments/comment_shown.hbs"
+  "text!app/templates/comments/comment.mustache"
+  "text!app/templates/comments/comment_shown.mustache"
   "text!comments/comment.css"
   "app/models/uris/all"
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, Handlebars, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
+], (_, $, Backbone, Mustache, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentView extends Backbone.View
-    template: Handlebars.compile template
-    shown_template: Handlebars.compile shown_template
+    template: Mustache.compile template
+    shown_template: Mustache.compile shown_template
 
     tagName: "li"
     className: "r_comment"

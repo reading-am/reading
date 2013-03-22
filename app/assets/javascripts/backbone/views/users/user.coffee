@@ -1,15 +1,15 @@
 define [
   "app/views/base/model"
-  "handlebars"
+  "mustache"
   "app/constants"
   "app/views/users/popover"
-  "text!app/templates/users/user.hbs"
-], (ModelView, Handlebars, Constants, UserPopoverView, template) ->
+  "text!app/templates/users/user.mustache"
+], (ModelView, Mustache, Constants, UserPopoverView, template) ->
 
   is_retina = window.devicePixelRatio > 1
 
   class UserView extends ModelView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
     className: "r_user"

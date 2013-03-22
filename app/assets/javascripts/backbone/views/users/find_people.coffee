@@ -1,13 +1,13 @@
 define [
   "backbone"
-  "handlebars"
+  "mustache"
   "app/models/current_user"
   "app/views/users/users"
-  "text!app/templates/users/find_people.hbs"
-], (Backbone, Handlebars, current_user, UsersView, template) ->
+  "text!app/templates/users/find_people.mustache"
+], (Backbone, Mustache, current_user, UsersView, template) ->
 
   class FindPeopleView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     initialize: (options) ->
       @collection.bind "reset", @reset

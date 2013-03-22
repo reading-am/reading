@@ -1,10 +1,11 @@
 define [
+  "jquery"
   "backbone"
   "app/init"
   "app/constants"
   "libs/base58"
   "libs/twitter-text"
-], (Backbone, App, Constants, Base58, TwitterText) ->
+], ($, Backbone, App, Constants, Base58, TwitterText) ->
 
   class Comment extends Backbone.Model
     type: "Comment"

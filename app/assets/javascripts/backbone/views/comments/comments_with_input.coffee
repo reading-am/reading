@@ -33,6 +33,8 @@ define [
       # and preventing keydown from being fired.
       # ex: The spacebar on Google Image Search
       e.stopPropagation()
+      # But we still want our lib/keymaster to track the events
+      Key.dispatch e
 
     delegate_keys:(e) ->
       # prevent preexisting handlers from firing

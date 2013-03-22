@@ -1,0 +1,18 @@
+<div id="subnav" class="row">
+  <nav class="span1">
+    <a href="/{{user.username}}">« read</a>
+  </nav>
+  <div class="span7">
+    <h3>
+      {{#followers}}
+        People Following {{user.first_name}}
+      {{/followers}}
+      {{^followers}}
+        People {{user.first_name}} is Following
+      {{/followers}}
+    </h3>
+  </div>
+</div>
+<div class="row">
+  <div id="users" class="span7 offset1"></div>
+</div>

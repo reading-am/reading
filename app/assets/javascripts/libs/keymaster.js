@@ -5,6 +5,7 @@
 //     Modified for Reading.am:
 //     - Wrapped in define()
 //     - Removed noConflict and module check
+//     - Added access to key.dispatch
 
 define(function(){
   var k,
@@ -217,6 +218,7 @@ define(function(){
 
   // set window.key and window.key.set/get/deleteScope, and the default filter
   var key = assignKey;
+  key.dispatch = function(e, scope){ dispatch(e, scope || getScope()); } // Added by GBL
   key.setScope = setScope;
   key.getScope = getScope;
   key.deleteScope = deleteScope;

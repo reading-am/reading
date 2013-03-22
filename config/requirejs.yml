@@ -17,7 +17,7 @@ paths:
   jquery_ui:  libs/jquery_ui
   underscore: libs/lodash_extended
   backbone:   libs/backbone_extended
-  handlebars: libs/handlebars_extended
+  handlebars: libs/handlebars
   pusher:     libs/pusher_extended
 
 modules:

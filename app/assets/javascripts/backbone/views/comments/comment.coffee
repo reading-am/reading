@@ -89,15 +89,42 @@ define [
 
       false
 
+    link_quotes: (html) ->
+      matches = html.match(/"(?:[^\\"]+|\\.)*"/gi)
+
+      if matches
+        cname = "r_quoted"
+        config = className: cname
+        $body = $("body > *:not(#r_am)")
+
+        matches = _.map matches, (text) -> text.substring(1, text.length-1)
+        matches = _.filter matches, (text) ->
+          $body.highlight text, config
+          if $body.find(".#{cname}").length
+            $body.unhighlight config
+          else
+            false
+
+        if matches
+          $html = $("<div>#{html}</div>")
+          config.element = "a"
+          $html.highlight matches, config
+          $html.find(".#{cname}").attr(href: "#")
+          html = $html.html()
+
+      return html
+
     render: =>
       json = @model.toJSON()
       # TODO there has to be a better current_user solution here
       # this is being shared between the main site and the bookmarklet
       json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
+      json.body_html = @model.body_html()
+      json.body_html = @link_quotes json.body_html
 
       if @model.is_a_show()
         if (m = @model.mentions().length) > 1
-          json.body = "#{m} people"
+          json.body_html = "#{m} people"
         @$el.html(@shown_template(json))
       else
         @$el.html(@template(json))

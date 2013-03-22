@@ -1,12 +1,12 @@
 define [
   "app/views/uris/uri"
-  "handlebars"
+  "mustache"
   "app/init"
-  "text!app/templates/uris/wikipedia_article.hbs"
-], (URIView, Handlebars, App, template) ->
+  "text!app/templates/uris/wikipedia_article.mustache"
+], (URIView, Mustache, App, template) ->
 
   class WikipediaArticleView extends URIView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     className: "r_url r_uri r_wikipedia_article"
 

@@ -2,14 +2,14 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "handlebars"
-  "text!app/templates/components/popover.hbs"
+  "mustache"
+  "text!app/templates/components/popover.mustache"
   "text!components/popover.css"
-], (_, $, Backbone, Handlebars, template, css) ->
+], (_, $, Backbone, Mustache, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class Popover extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     className: "r_popover"
 

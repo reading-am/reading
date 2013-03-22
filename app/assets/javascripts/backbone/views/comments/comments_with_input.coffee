@@ -2,20 +2,20 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "handlebars"
+  "mustache"
   "libs/keymaster"
   "app/views/comments/comments"
   "app/models/post"
-  "text!app/templates/comments/comments_with_input.hbs"
+  "text!app/templates/comments/comments_with_input.mustache"
   "jquery_ui"
   "extend/jquery/mentionsInput"
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], ($, _, Backbone, Handlebars, Key, CommentsView, Post, template) ->
+], ($, _, Backbone, Mustache, Key, CommentsView, Post, template) ->
 
   class CommentsWithInputView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
 

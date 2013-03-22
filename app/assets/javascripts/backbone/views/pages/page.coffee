@@ -1,10 +1,10 @@
 define [
   "app/views/base/model"
-  "handlebars"
-  "text!app/templates/pages/page.hbs"
+  "mustache"
+  "text!app/templates/pages/page.mustache"
   "app/models/page" # this has to be loaded here because it's not referenced anywhere else
-], (ModelView, Handlebars, template) ->
+], (ModelView, Mustache, template) ->
 
   class PageView extends ModelView
-    template: Handlebars.compile template
+    template: Mustache.compile template
     className: "r_page"

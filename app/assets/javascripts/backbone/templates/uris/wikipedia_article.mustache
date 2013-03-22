@@ -1,6 +1,7 @@
-{{#if id}}
+{{#id}}
   <h3 class="r_wikipedia_article_title"><img src="https://wikipedia.org/favicon.ico" class="r_icon"> {{title}}</h3>
   <div class="r_wikipedia_article_extract">{{{short_extract}}}</div>
-{{else}}
+{{/id}}
+{{^id}}
   Loading Wikipedia Article...
-{{/if}}
+{{/id}}

@@ -17,7 +17,7 @@ paths:
   jquery_ui:  libs/jquery_ui
   underscore: libs/lodash_extended
   backbone:   libs/backbone_extended
-  handlebars: libs/handlebars
+  mustache:   libs/mustache
   pusher:     libs/pusher_extended
 
 modules:
@@ -30,7 +30,7 @@ modules:
       - libs/jquery_ui
       - libs/lodash
       - libs/backbone
-      - libs/handlebars
+      - libs/mustache
       - libs/pusher
 
   - name: bookmarklet/loader
@@ -43,7 +43,7 @@ modules:
       - libs/jquery_ui
       - libs/lodash
       - libs/backbone
-      - libs/handlebars
+      - libs/mustache
       - libs/pusher
 
   - name: libs/jquery
@@ -59,7 +59,7 @@ modules:
       - jquery
       - underscore
 
-  - name: libs/handlebars
+  - name: libs/mustache
 
   - name: libs/pusher
 

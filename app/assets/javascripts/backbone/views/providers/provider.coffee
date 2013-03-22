@@ -1,13 +1,13 @@
 define [
   "app/views/base/model"
-  "handlebars"
+  "mustache"
   "app/models/post"
   "app/models/comment"
-  "text!app/templates/providers/provider.hbs"
-], (ModelView, Handlebars, Post, Comment, template) ->
+  "text!app/templates/providers/provider.mustache"
+], (ModelView, Mustache, Post, Comment, template) ->
 
   class ProviderView extends ModelView
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     events:
       "click" : "run"

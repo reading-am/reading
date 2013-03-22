@@ -2,20 +2,20 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "handlebars"
+  "mustache"
   "pusher"
   "app/models/post"
   "app/views/comments/comments_with_input"
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
-  "text!app/templates/bookmarklet/app.hbs"
-], ($, _, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
+  "text!app/templates/bookmarklet/app.mustache"
+], ($, _, Backbone, Mustache, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
 
   class BookmarkletAppView extends Backbone.View
-    template: Handlebars.compile template
+    template: Mustache.compile template
 
     tagName: "div"
 

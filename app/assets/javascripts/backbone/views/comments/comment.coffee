@@ -120,13 +120,13 @@ define [
       # this is being shared between the main site and the bookmarklet
       json.is_owner = (Post::current? and @model.get("user").get("id") == Post::current.get("user").get("id"))
       json.body_html = @model.body_html()
-      json.body_html = @link_quotes json.body_html
 
       if @model.is_a_show()
         if (m = @model.mentions().length) > 1
           json.body_html = "#{m} people"
         @$el.html(@shown_template(json))
       else
+        json.body_html = @link_quotes json.body_html
         @$el.html(@template(json))
 
       @$("a.r_url:not(.r_mention, .r_tag, .r_email, .r_image, .r_quoted)").each (i, el) =>

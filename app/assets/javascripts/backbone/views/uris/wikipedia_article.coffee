@@ -2,7 +2,7 @@ define [
   "app/views/uris/uri"
   "mustache"
   "app/init"
-  "text!app/templates/uris/wikipedia_article.hbs"
+  "text!app/templates/uris/wikipedia_article.mustache"
 ], (URIView, Handlebars, App, template) ->
 
   class WikipediaArticleView extends URIView

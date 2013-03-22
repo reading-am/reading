@@ -3,7 +3,7 @@ define [
   "jquery"
   "mustache"
   "app/views/posts/post_on_page"
-  "text!app/templates/posts/subpost.hbs"
+  "text!app/templates/posts/subpost.mustache"
   "text!posts/subpost.css"
 ], (_, $, Handlebars, PostOnPageView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))

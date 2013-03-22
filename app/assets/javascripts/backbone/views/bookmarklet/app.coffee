@@ -8,7 +8,7 @@ define [
   "app/views/comments/comments_with_input"
   "app/views/posts/posts_grouped_by_user"
   "app/views/components/share_popover"
-  "text!app/templates/bookmarklet/app.hbs"
+  "text!app/templates/bookmarklet/app.mustache"
 ], ($, _, Backbone, Handlebars, pusher, Post, CommentsView, PostsView, SharePopover, template) ->
 
   active = "r_active"

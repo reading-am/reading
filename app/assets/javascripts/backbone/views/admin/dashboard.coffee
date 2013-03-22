@@ -9,7 +9,7 @@ define [
   "app/views/users/users"
   "app/views/posts/posts"
   "app/views/comments/comments"
-  "text!app/templates/admin/dashboard.hbs"
+  "text!app/templates/admin/dashboard.mustache"
   "text!admin/dashboard.css"
 ], (_, $, Backbone, Handlebars, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))

@@ -3,7 +3,7 @@ define [
   "mustache"
   "app/constants"
   "app/views/users/popover"
-  "text!app/templates/users/user.hbs"
+  "text!app/templates/users/user.mustache"
 ], (ModelView, Handlebars, Constants, UserPopoverView, template) ->
 
   is_retina = window.devicePixelRatio > 1

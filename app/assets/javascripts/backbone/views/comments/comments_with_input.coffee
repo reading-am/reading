@@ -6,7 +6,7 @@ define [
   "libs/keymaster"
   "app/views/comments/comments"
   "app/models/post"
-  "text!app/templates/comments/comments_with_input.hbs"
+  "text!app/templates/comments/comments_with_input.mustache"
   "jquery_ui"
   "extend/jquery/mentionsInput"
   "extend/jquery/events.input"

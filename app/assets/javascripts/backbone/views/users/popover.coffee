@@ -4,7 +4,7 @@ define [
   "backbone"
   "mustache"
   "app/views/components/popover"
-  "text!app/templates/users/popover.hbs"
+  "text!app/templates/users/popover.mustache"
   "text!users/popover.css"
 ], (_, $, Backbone, Handlebars, Popover, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))

@@ -2,7 +2,7 @@ define [
   "app/views/uris/uri"
   "mustache"
   "app/init"
-  "text!app/templates/uris/instagram_image.hbs"
+  "text!app/templates/uris/instagram_image.mustache"
 ], (URIView, Handlebars, App, template) ->
 
   class InstagramImageView extends URIView

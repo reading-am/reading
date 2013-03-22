@@ -2,7 +2,7 @@ define [
   "app/views/uris/uri"
   "mustache"
   "app/init"
-  "text!app/templates/uris/github_repo.hbs"
+  "text!app/templates/uris/github_repo.mustache"
 ], (URIView, Handlebars, App, template) ->
 
   class GitHubRepoView extends URIView

@@ -2,7 +2,7 @@ define [
   "backbone"
   "mustache"
   "app/views/comments/popover"
-  "text!app/templates/comments/show.hbs"
+  "text!app/templates/comments/show.mustache"
 ], (Backbone, Handlebars, CommentPopover, template) ->
 
   class ShowView extends Backbone.View

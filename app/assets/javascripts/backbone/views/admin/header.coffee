@@ -1,7 +1,7 @@
 define [
   "backbone"
   "mustache"
-  "text!app/templates/admin/header.hbs"
+  "text!app/templates/admin/header.mustache"
 ], (Backbone, Handlebars, template) ->
 
   class AdminHeaderView extends Backbone.View

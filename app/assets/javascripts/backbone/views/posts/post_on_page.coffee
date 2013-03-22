@@ -5,7 +5,7 @@ define [
   "mustache"
   "app/constants"
   "app/views/users/user"
-  "text!app/templates/posts/post_on_page.hbs"
+  "text!app/templates/posts/post_on_page.mustache"
   "text!posts/post.css"
 ], (_, $, PostView, Handlebars, Constants, UserView, template, css) ->
 

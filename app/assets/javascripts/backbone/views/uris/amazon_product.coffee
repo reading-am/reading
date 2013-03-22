@@ -3,7 +3,7 @@ define [
   "app/views/uris/uri"
   "mustache"
   "app/init"
-  "text!app/templates/uris/amazon_product.hbs"
+  "text!app/templates/uris/amazon_product.mustache"
 ], ($, URIView, Handlebars, App, template) ->
 
   class AmazonProductView extends URIView

@@ -2,7 +2,7 @@ define [
   "backbone"
   "mustache"
   "app/views/users/users"
-  "text!app/templates/users/followingers.hbs"
+  "text!app/templates/users/followingers.mustache"
 ], (Backbone, Handlebars, UsersView, template) ->
 
   class FollowingersView extends Backbone.View

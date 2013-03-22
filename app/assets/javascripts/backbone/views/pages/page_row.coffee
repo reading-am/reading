@@ -5,7 +5,7 @@ define [
   "app/views/pages/page"
   "app/views/posts/subposts"
   "app/collections/posts"
-  "text!app/templates/pages/page_row.hbs"
+  "text!app/templates/pages/page_row.mustache"
   "app/models/page" # this needs preloading
 ], ($, ModelView, Handlebars, PageView, SubPostsView, Posts, template) ->
 

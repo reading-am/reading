@@ -2,7 +2,7 @@ define [
   "app/views/uris/uri"
   "mustache"
   "app/init"
-  "text!app/templates/uris/twitter_tweet.hbs"
+  "text!app/templates/uris/twitter_tweet.mustache"
 ], (URIView, Handlebars, App, template) ->
 
   class TwitterTweetView extends URIView

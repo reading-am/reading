@@ -4,7 +4,7 @@ define [
   "app/models/provider"
   "app/collections/providers"
   "app/views/providers/providers"
-  "text!app/templates/components/share_popover.hbs"
+  "text!app/templates/components/share_popover.mustache"
 ], (Handlebars, Popover, Provider, Providers, ProvidersView, template) ->
 
   class SharePopover extends Popover

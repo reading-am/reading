@@ -5,7 +5,7 @@ define [
   "mustache"
   "app/models/post"
   "app/views/pages/pages"
-  "text!app/templates/pages/pages_with_input.hbs"
+  "text!app/templates/pages/pages_with_input.mustache"
 ], ($, _, Backbone, Handlebars, Post, PagesView, template) ->
 
   class PagesWithInputView extends Backbone.View

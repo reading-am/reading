@@ -2,7 +2,7 @@ define [
   "app/views/uris/uri"
   "mustache"
   "app/init"
-  "text!app/templates/uris/vimeo_video.hbs"
+  "text!app/templates/uris/vimeo_video.mustache"
 ], (URIView, Handlebars, App, template) ->
 
   class VimeoVideoView extends URIView

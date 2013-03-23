@@ -45,7 +45,7 @@ private
 public
 
   def params
-    Yajl::Parser.parse(read_attribute(:params)) unless read_attribute(:params).nil?
+    ActiveSupport::JSON.decode read_attribute(:params) unless read_attribute(:params).nil?
   end
 
   def place
@@ -62,7 +62,7 @@ public
     if read_attribute(:events).class == Array
       read_attribute(:events)
     else
-      Yajl::Parser.parse(read_attribute(:events)).map {|event| event.to_sym}
+      ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
     end
   end
 

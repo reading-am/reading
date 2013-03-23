@@ -94,7 +94,7 @@ describe Hook do
       response = hook.run(post, :new)
       response.code.should eq(200)
       # cleanup
-      body = Yajl::Parser.parse response.body
+      body = ActiveSupport::JSON.decode response.body
       response = Typhoeus::Request.post 'https://getpocket.com/v3/send',
         :params => {
           :consumer_key => ENV['READING_POCKET_KEY'],

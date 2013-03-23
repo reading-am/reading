@@ -5,7 +5,7 @@ class SwapPinboardUserPassForTokens < ActiveRecord::Migration
         :userpwd => "#{hook.params['user']}:#{hook.params['password']}",
         :params => {:format => 'json'}
       if response.code == 200
-        body = Yajl::Parser.parse response.body
+        body = ActiveSupport::JSON.decode response.body
         if !body["result"].blank?
           hook.params = {:user => hook.params['user'], :token => body["result"]}.to_json
           hook.save

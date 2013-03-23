@@ -13,7 +13,7 @@ class ReadabilityData < ActiveRecord::Base
   def populate_from_remote
     # Checking for url is a hack to see if it's been manually populated
     if url.nil?
-      obj = Yajl::Parser.parse remote rescue nil
+      obj = ActiveSupport::JSON.decode remote rescue nil
       self.attributes = obj unless obj.blank? or obj['error']
     end
   end

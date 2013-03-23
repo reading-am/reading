@@ -13,7 +13,7 @@ class AuthorizationObserver < ActiveRecord::Observer
       indexes = info["accounts"].collect.with_index{|a,i| i if a["product"] == "campfire"}.compact
       indexes.each do |i|
         response = Typhoeus::Request.get "https://#{URI.parse(info["accounts"][i]["href"]).host}/users/me.json", :params => {:access_token => auth.token}
-        response = Yajl::Parser.parse(response.body)
+        response = ActiveSupport::JSON.decode response.body
         info["accounts"][i]["api_auth_token"] = response["user"]["api_auth_token"]
       end
       auth[:info] = info.to_json

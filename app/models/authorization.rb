@@ -38,14 +38,14 @@ public
     if auth_hash[:extra][:raw_info].nil?
       info = nil
     else
-      info = Yajl::Parser.parse(auth_hash[:extra][:raw_info].to_json)
+      info = ActiveSupport::JSON.decode auth_hash[:extra][:raw_info].to_json
 
       case auth_hash.provider
       when 'evernote'
         # store these per: http://discussion.evernote.com/topic/26173-is-it-safe-to-cache-the-shard-under-oauth/
-        info[:edam] = {
-          :noteStoreUrl     => auth_hash[:extra][:access_token].params[:edam_noteStoreUrl],
-          :webApiUrlPrefix  => auth_hash[:extra][:access_token].params[:edam_webApiUrlPrefix]
+        info['edam'] = {
+          'noteStoreUrl'     => auth_hash[:extra][:access_token].params[:edam_noteStoreUrl],
+          'webApiUrlPrefix'  => auth_hash[:extra][:access_token].params[:edam_webApiUrlPrefix]
         }
       end
 
@@ -100,11 +100,11 @@ public
   end
 
   def permissions
-    Yajl::Parser.parse(read_attribute(:permissions)) unless read_attribute(:permissions).nil?
+    ActiveSupport::JSON.decode read_attribute(:permissions) unless read_attribute(:permissions).nil?
   end
 
   def info
-    Yajl::Parser.parse(read_attribute(:info)) unless read_attribute(:info).nil?
+    ActiveSupport::JSON.decode read_attribute(:info) unless read_attribute(:info).nil?
   end
 
   def display_name

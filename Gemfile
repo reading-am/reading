@@ -24,12 +24,12 @@ gem 'base58'
 #####################
 # Ruby Conveniences #
 #####################
+gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'
-gem 'paperclip'
-gem 'browser'
-gem 'sanitize'
-gem 'bitmask_attributes'
+gem 'paperclip' # file attachments
+gem 'browser' # browser detection
+gem 'sanitize' # HTML sanitizer
 
 ########
 # Auth #
@@ -52,11 +52,11 @@ gem 'omniauth-kippt', :git => 'git://github.com/leppert/omniauth-kippt.git'
 ####################
 # Async Processing #
 ####################
+gem 'girl_friday'
 gem 'delayed_job', "3.0.1"
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
-gem 'girl_friday'
 gem 'hirefireapp' # has to be AFTER delayed_job
 
 #####################

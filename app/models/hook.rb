@@ -62,7 +62,7 @@ public
     if read_attribute(:events).class == Array
       read_attribute(:events)
     else
-      ActiveSupport::JSON.decode read_attribute(:events).map {|event| event.to_sym}
+      ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
     end
   end
 

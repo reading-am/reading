@@ -4,9 +4,9 @@
 <div class="span6 posts_group">
 </div>
 <div class="span1 comment">
-  <a class="post_icon comments_icon
-    {{#has_comments}}has_comments{{else}}hasnt_comments{{/has_comments}}" href="#">
-    {{#has_comments}}{{comments_count}}{{else}}+{{/has_comments}}
+  <a href="#" class="post_icon comments_icon
+    {{#has_comments}}has_comments{{/has_comments}}{{^has_comments}}hasnt_comments{{/has_comments}}">
+    {{#has_comments}}{{comments_count}}{{/has_comments}}{{^has_comments}}+{{/has_comments}}
     <div class="r_tri"></div>
   </a>
   <a class="post_icon posts_icon" href="#">

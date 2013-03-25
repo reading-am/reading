@@ -28,6 +28,6 @@ define [
       json = if @model? then @model.toJSON() else {}
       @$el.html(@template(json))
       $("body > *").addClass "r_disabled"
-      @$el.prependTo("body")
+      @$el.appendTo("body")
 
       return this

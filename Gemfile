@@ -87,6 +87,8 @@ gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
 gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
 gem 'twitter-text' # for comment parsing
+gem "mustache"
+gem "stache" # mustache for rails
 
 ###############
 # Frontend JS #

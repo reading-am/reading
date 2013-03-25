@@ -299,6 +299,7 @@ GEM
     multi_json (1.3.7)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
+    mustache (0.99.4)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.6.2)
@@ -460,6 +461,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    stache (1.0.0)
     sunspot (1.3.3)
       pr_geohash (~> 1.0)
       rsolr (~> 1.0.7)
@@ -567,6 +569,7 @@ DEPENDENCIES
   koala
   konacha (~> 1.0)
   less-rails
+  mustache
   newrelic_rpm
   nilify_blanks
   nokogiri
@@ -599,6 +602,7 @@ DEPENDENCIES
   sass-rails
   sitemap_generator
   spork-rails
+  stache
   sunspot_rails
   sunspot_solr
   terminal-notifier

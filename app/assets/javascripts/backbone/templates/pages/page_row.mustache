@@ -1,15 +1,18 @@
-<div class="span1 date">
-  &nbsp;
-</div>
-<div class="span6 posts_group">
-</div>
-<div class="span1 comment">
-  <a href="#" class="post_icon comments_icon
-    {{#has_comments}}has_comments{{/has_comments}}{{^has_comments}}hasnt_comments{{/has_comments}}">
-    {{#has_comments}}{{comments_count}}{{/has_comments}}{{^has_comments}}+{{/has_comments}}
-    <div class="r_tri"></div>
-  </a>
-  <a class="post_icon posts_icon" href="#">
-    {{posts_count}}
-  </a>
+<div class="row w_rule">
+  <div class="span1 date">
+    &nbsp;
+  </div>
+  <div class="span6 posts_group">
+    {{#page}}{{> pages/page}}{{/page}}
+  </div>
+  <div class="span1 comment">
+    <a href="#" class="post_icon comments_icon
+      {{#has_comments}}has_comments{{/has_comments}}{{^has_comments}}hasnt_comments{{/has_comments}}">
+      {{#has_comments}}{{comments_count}}{{/has_comments}}{{^has_comments}}+{{/has_comments}}
+      <div class="r_tri"></div>
+    </a>
+    <a class="post_icon posts_icon" href="#">
+      {{posts_count}}
+    </a>
+  </div>
 </div>

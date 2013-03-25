@@ -1,0 +1,35 @@
+{{#user}}
+  {{> users/card}}
+  {{> users/you_subnav}}
+  {{#show_blank_slate}}
+    {{> users/blank_slate}}
+  {{/show_blank_slate}}
+{{/user}}
+{{^user}}
+  <div id="subhead" class="row">
+    <div class="span7 offset1">
+    {{#domain}}
+      <h3>Stuff people are reading on <%= @domain.name %></h3>
+    {{/domain}}
+    {{^domain}}
+      {{#signed_in?}}
+        <h3>Posts from everyone on Reading</h3>
+      {{/signed_in?}}
+      {{^signed_in?}}
+        <h3>Some people are reading this stuff</h3>
+      {{/signed_in?}}
+    {{/domain}}
+    </div>
+  </div>
+{{/user}}
+
+{{#posts.all}}
+  {{> pages/page_row}}
+{{/posts.all}}
+
+<div id="posts_footer" class="row">
+  <div class="span5 offset1">{{{pagination}}}</div>
+  {{#params.type}}
+  <div class="span1">{{{link_to_rss}}}</div>
+  {{/params.type}}
+</div>

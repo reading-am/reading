@@ -1,5 +1,47 @@
-module Posts 
+# encoding: utf-8
+module Posts
   class Index < ::Stache::Mustache::View
+
+    def pages
+      pages = []
+      posts.group_by(&:page).each_with_index do |(page, subposts), i|
+        p = page.simple_obj
+        p[:posts] = subposts
+        pages << p
+      end
+      pages
+    end
+
+    def pages2
+      time = ''
+
+      posts.group_by(&:page).each_with_index do |(page, subposts), i|
+        subposts.reverse!
+        post = subposts.first
+        yn_avg = yn_average subposts
+        comment_count = 0
+        subposts.each {|p| comment_count += p.comments.size}
+
+        if yn_avg > 0
+          yn_class = "yep"
+        elsif yn_avg < 0
+          yn_class = "nope"
+        else
+          yn_class = ""
+        end
+
+        if time != subposts.last.created_at.strftime("%m/%d")
+          time = subposts.last.created_at.strftime("%m/%d")
+        elsif !yn_class.blank?
+          yn_avg > 0 ? '✔' : '×'
+        end
+
+        subposts.each do |post|
+          # posts here
+        end
+
+      end
+    end
 
     def pagination
       will_paginate @posts, :page_links => false

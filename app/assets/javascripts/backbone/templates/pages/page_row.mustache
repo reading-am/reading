@@ -3,7 +3,12 @@
     &nbsp;
   </div>
   <div class="span6 posts_group">
-    {{#page}}{{> pages/page}}{{/page}}
+    {{> pages/page}}
+    <ul class="r_subposts">
+    {{#posts}}
+      <li class="r_post r_subpost">{{> posts/subpost}}</li>
+    {{/posts}}
+    </ul>
   </div>
   <div class="span1 comment">
     <a href="#" class="post_icon comments_icon

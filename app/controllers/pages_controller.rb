@@ -2,7 +2,7 @@
 class PagesController < ApplicationController
 
   def show
-    @page = Page.find(params[:id])
+    @page = Page.fetch(params[:id])
     if @page.domain.name != params[:domain_id]
       redirect_to "/domains/#{@page.domain.name}/pages/#{@page.id}"
     else

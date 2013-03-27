@@ -6,27 +6,28 @@ module Posts
       _pages = []
       date = ''
       posts.group_by(&:page).each_with_index do |(page, subposts), i|
-        subposts.reverse!
-
         _page = page.simple_obj
         _page[:url] = subposts.first.wrapped_url
         _page[:posts] = []
 
-        if date != subposts.last.created_at.strftime("%m/%d")
-          _page[:date] = date = subposts.last.created_at.strftime("%m/%d")
+        if date != subposts.first.created_at.strftime("%m/%d")
+          _page[:date] = date = subposts.first.created_at.strftime("%m/%d")
         else
           yn_avg = yn_average subposts
           if yn_avg > 0
             _page[:yn_class] = "yep"
-            _page[:yepped] = true
+            _page[:yep] = true
           elsif yn_avg < 0
             _page[:yn_class] = "nope"
-            _page[:noped] = true
+            _page[:nope] = true
           end
         end
 
         subposts.each do |post|
           _post = post.simple_obj
+
+          _post[:yep] = post.yn === true
+          _post[:nope] = post.yn === false
 
           _post[:user][:size] = "small"
           _post[:user].delete(:username)

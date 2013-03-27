@@ -3,8 +3,8 @@
   {{date}}
   {{^date}}{{#yn_class}}
     <h3 class="{{yn_class}}">
-      {{#yepped}}&#10004;{{/yepped}}
-      {{#noped}}&times;{{/noped}}
+      {{#yep}}&#10004;{{/yep}}
+      {{#nope}}&times;{{/nope}}
     </h3>
   {{/yn_class}}{{/date}}
   {{^yn_class}}
@@ -30,6 +30,6 @@
     <a class="post_icon posts_icon" href="#">
       {{posts_count}}
     </a>
-    {{! put in delete link here}}
+    {{! TODO - put in delete link here}}
   </div>
 </div>

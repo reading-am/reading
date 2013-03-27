@@ -3,44 +3,41 @@ module Posts
   class Index < ::Stache::Mustache::View
 
     def pages
-      pages = []
-      posts.group_by(&:page).each_with_index do |(page, subposts), i|
-        p = page.simple_obj
-        p[:posts] = subposts
-        pages << p
-      end
-      pages
-    end
-
-    def pages2
-      time = ''
-
+      _pages = []
+      date = ''
       posts.group_by(&:page).each_with_index do |(page, subposts), i|
         subposts.reverse!
-        post = subposts.first
-        yn_avg = yn_average subposts
-        comment_count = 0
-        subposts.each {|p| comment_count += p.comments.size}
 
-        if yn_avg > 0
-          yn_class = "yep"
-        elsif yn_avg < 0
-          yn_class = "nope"
+        _page = page.simple_obj
+        _page[:url] = subposts.first.wrapped_url
+        _page[:posts] = []
+
+        if date != subposts.last.created_at.strftime("%m/%d")
+          _page[:date] = date = subposts.last.created_at.strftime("%m/%d")
         else
-          yn_class = ""
-        end
-
-        if time != subposts.last.created_at.strftime("%m/%d")
-          time = subposts.last.created_at.strftime("%m/%d")
-        elsif !yn_class.blank?
-          yn_avg > 0 ? '✔' : '×'
+          yn_avg = yn_average subposts
+          if yn_avg > 0
+            _page[:yn_class] = "yep"
+            _page[:yepped] = true
+          elsif yn_avg < 0
+            _page[:yn_class] = "nope"
+            _page[:noped] = true
+          end
         end
 
         subposts.each do |post|
-          # posts here
-        end
+          _post = post.simple_obj
 
+          _post[:user][:size] = "small"
+          _post[:user].delete(:username)
+          _post[:user].delete(:bio)
+
+          _page[:posts] << _post
+        end
+        _page[:has_comments] = _page[:comments_count] > 0
+        _pages << _page
       end
+      _pages
     end
 
     def pagination

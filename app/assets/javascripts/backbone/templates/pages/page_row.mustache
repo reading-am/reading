@@ -1,23 +1,35 @@
 <div class="row w_rule">
   <div class="span1 date">
+  {{date}}
+  {{^date}}{{#yn_class}}
+    <h3 class="{{yn_class}}">
+      {{#yepped}}&#10004;{{/yepped}}
+      {{#noped}}&times;{{/noped}}
+    </h3>
+  {{/yn_class}}{{/date}}
+  {{^yn_class}}
     &nbsp;
+  {{/yn_class}}
   </div>
   <div class="span6 posts_group">
     {{> pages/page}}
     <ul class="r_subposts">
     {{#posts}}
-      <li class="r_post r_subpost">{{> posts/subpost}}</li>
+      <li>{{> posts/subpost}}</li>
     {{/posts}}
     </ul>
   </div>
   <div class="span1 comment">
     <a href="#" class="post_icon comments_icon
-      {{#has_comments}}has_comments{{/has_comments}}{{^has_comments}}hasnt_comments{{/has_comments}}">
-      {{#has_comments}}{{comments_count}}{{/has_comments}}{{^has_comments}}+{{/has_comments}}
+      {{#has_comments}}has_comments{{/has_comments}}
+      {{^has_comments}}hasnt_comments{{/has_comments}}">
+      {{#has_comments}}{{comments_count}}{{/has_comments}}
+      {{^has_comments}}+{{/has_comments}}
       <div class="r_tri"></div>
     </a>
     <a class="post_icon posts_icon" href="#">
       {{posts_count}}
     </a>
+    {{! put in delete link here}}
   </div>
 </div>

@@ -2,8 +2,8 @@
 include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :authorization
+  belongs_to :user, touch: true
+  belongs_to :authorization, touch: true
   validates_presence_of :events, :provider
   before_save :parse_pinboard_token
 

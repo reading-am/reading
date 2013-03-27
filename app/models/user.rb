@@ -267,6 +267,19 @@ class User < ActiveRecord::Base
       :updated_at => updated_at
     }
   end
+
+  # Caching
+  def self.fetch(id)
+    Rails.cache.fetch(cache_key, self) { User.find(id) }
+  end
+
+  def after_save
+    Rails.cache.write(cache_key, self)
+  end
+
+  def after_destroy
+    Rails.cache.delete(cache_key, self)
+  end
 end
 
 class AuthError < StandardError

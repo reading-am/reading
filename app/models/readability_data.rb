@@ -1,5 +1,5 @@
 class ReadabilityData < ActiveRecord::Base
-  belongs_to :page
+  belongs_to :page, touch: true
   before_create :populate_from_remote
 
   def remote

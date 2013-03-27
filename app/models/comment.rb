@@ -2,11 +2,11 @@ class Comment < ActiveRecord::Base
   include Twitter::Extractor
   include Twitter::Autolink
 
-  belongs_to :user, :counter_cache => true
-  belongs_to :page, :counter_cache => true
-  belongs_to :post, :counter_cache => true
+  belongs_to :user, :counter_cache => true, touch: true
+  belongs_to :page, :counter_cache => true, touch: true
+  belongs_to :post, :counter_cache => true, touch: true
   belongs_to :parent, :class_name => 'Comment',
-             :foreign_key => :comment_id
+             :foreign_key => :comment_id, touch: true
   has_many   :children, :class_name => 'Comment',
              :foreign_key => :comment_id
 

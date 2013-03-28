@@ -9,7 +9,7 @@
   <div id="subhead" class="row">
     <div class="span7 offset1">
     {{#domain}}
-      <h3>Stuff people are reading on <%= @domain.name %></h3>
+      <h3>Stuff people are reading on {{name}}</h3>
     {{/domain}}
     {{^domain}}
       {{#signed_in?}}

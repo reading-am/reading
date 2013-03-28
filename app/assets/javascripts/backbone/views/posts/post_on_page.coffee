@@ -26,10 +26,10 @@ define [
       @$el.slideUp => @$el.remove()
 
     render: =>
-      @set_yn()
-
       json = @model.toJSON()
       json.domain = Constants.domain
+      json.yep = true if @model.get("yn") is true
+      json.nope = true if @model.get("yn") is false
 
       @$el.html(@template(json))
           .find(".r_post_bg").prepend(@user_view.render().el)

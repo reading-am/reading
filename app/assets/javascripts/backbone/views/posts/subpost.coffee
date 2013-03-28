@@ -11,8 +11,6 @@ define [
   class SubPostView extends PostOnPageView
     template: Mustache.compile template
 
-    className: "r_post r_subpost"
-
     initialize: ->
       load_css()
       super()

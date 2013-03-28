@@ -13,9 +13,7 @@ define [
 
   class PageRowView extends ModelView
     template: Mustache.compile template
-
     tagName: "div"
-    className: "row w_rule"
 
     events:
       "click .posts_icon": "show_posts"

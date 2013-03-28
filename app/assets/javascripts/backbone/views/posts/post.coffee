@@ -10,7 +10,6 @@ define [
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class PostView extends ModelView
-    className: "r_post"
 
     initialize: (options) ->
       load_css()

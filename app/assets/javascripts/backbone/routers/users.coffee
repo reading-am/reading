@@ -45,10 +45,10 @@ define [
         el: $("#subnav")
 
       if username is User::current.get("username")
-        @posts_with_input_view = new PagesWithInputView
+        @pages_with_input_view = new PagesWithInputView
           collection: @collection
 
-        $("#subnav").after @posts_with_input_view.render().el
+        $("#subnav").after @pages_with_input_view.render().el
 
     edit: ->
       @view = new UserEditView

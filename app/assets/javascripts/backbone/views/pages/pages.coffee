@@ -7,3 +7,4 @@ define [
     modelView: PageRowView
 
     tagName: "div"
+    className: "r_pages"

@@ -4,12 +4,12 @@ define [
   "app/models/user"
   "app/collections/users"
   "app/collections/pages"
-  "app/views/users/show"
-  "app/views/users/subnav"
-  "app/views/pages/pages_with_input"
-  "app/views/users/edit"
-  "app/views/users/followingers"
-  "app/views/users/find_people"
+  "app/views/users/show/view"
+  "app/views/users/subnav/view"
+  "app/views/pages/pages_with_input/view"
+  "app/views/users/edit/view"
+  "app/views/users/followingers/view"
+  "app/views/users/find_people/view"
 ], ($, Backbone, User, Users, Pages, UserShowView, UserSubnavView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router

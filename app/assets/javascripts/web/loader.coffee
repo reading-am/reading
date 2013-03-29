@@ -8,7 +8,7 @@ require [
   "app/models/post"
   "app/models/user_with_current"
   "app/constants"
-  "app/views/components/titlecard"
+  "app/views/components/titlecard/view"
   "extend/jquery/rails"
   "extend/jquery/cookies"
 ], ($, base58, Indian, App, Post, User, Constants, Titlecard) ->

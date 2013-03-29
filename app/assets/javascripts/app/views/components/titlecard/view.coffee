@@ -7,7 +7,7 @@ define [
 ], (_, $, Backbone, css) ->
 
   class Titlecard extends Backbone.View
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+    load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
     events:
       "click": "scroll_to_top"

@@ -12,7 +12,6 @@ require [
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/loader.css"
-  "text!components/mentionsInput.css"
 ], (_, $, Constants, Post, User, Page, BookmarkletAppView, Helpers, Pages, Providers, css) ->
 
   $("<style>").html(css).appendTo("head")

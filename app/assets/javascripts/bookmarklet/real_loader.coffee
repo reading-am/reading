@@ -7,7 +7,7 @@ require [
   "app/models/post"
   "app/models/user"
   "app/models/page"
-  "app/views/bookmarklet/app"
+  "app/views/bookmarklet/app/view"
   "app/helpers/bookmarklet"
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded

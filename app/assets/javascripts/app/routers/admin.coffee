@@ -1,8 +1,8 @@
 define [
   "jquery"
   "backbone"
-  "app/views/admin/header"
-  "app/views/admin/dashboard"
+  "app/views/admin/header/view"
+  "app/views/admin/dashboard/view"
 ], ($, Backbone, HeaderView, DashboardView) ->
 
   class AdminRouter extends Backbone.Router

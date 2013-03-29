@@ -1,7 +1,7 @@
 define [
   "jquery"
   "backbone"
-  "app/views/hooks/index"
+  "app/views/hooks/index/view"
 ], ($, Backbone, HooksIndexView) ->
 
   class HooksRouter extends Backbone.Router

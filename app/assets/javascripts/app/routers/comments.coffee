@@ -2,7 +2,7 @@ define [
   "jquery"
   "backbone"
   "app/models/comment"
-  "app/views/comments/show"
+  "app/views/comments/show/view"
 ], ($, Backbone, Comment, ShowView) ->
 
   class CommentsRouter extends Backbone.Router

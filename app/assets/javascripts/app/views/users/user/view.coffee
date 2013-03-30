@@ -5,7 +5,9 @@ define [
   "app/views/users/popover/view"
   "text!app/views/users/user/wrapper.mustache"
   "text!app/views/users/user/template.mustache"
-], (ModelView, Mustache, Constants, UserPopoverView, wrapper, template) ->
+  "text!app/views/users/user/styles.css"
+], (ModelView, Mustache, Constants, UserPopoverView, wrapper, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   is_retina = window.devicePixelRatio > 1
 
@@ -17,6 +19,7 @@ define [
 
     initialize: (options) ->
       @size = options.size ? "medium"
+      load_css()
       super()
 
     show: ->

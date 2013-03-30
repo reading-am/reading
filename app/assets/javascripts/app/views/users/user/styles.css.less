@@ -2,7 +2,7 @@
 @import "mixins";
 
 .r_user {
-  &.r_size_small {
+  .r_size_small {
     .r_avatar {
       display:inline-block;
       width:25px;
@@ -18,14 +18,12 @@
       margin-right:3px;
     }
   }
-  &.r_size_medium {
-    a {
-      .makeRow();
-      display:block;
-      padding:10px 0;
-      .border-radius(3px);
-      &:hover { background: lighten(@ghost_grey, 5%); }
-    }
+  .r_size_medium {
+    .makeRow();
+    display:block;
+    padding:10px 0;
+    .border-radius(3px);
+    &:hover { background: lighten(@ghost_grey, 5%); }
     .r_avatar {
       float:left;
       width:40px;

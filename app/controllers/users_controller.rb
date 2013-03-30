@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render 'posts/index' }
+      format.html { render 'posts/index/template' }
       format.xml  { render 'posts/index', :xml => @posts }
       format.rss  { render 'posts/index' }
     end

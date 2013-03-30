@@ -5,4 +5,5 @@ define [
   "app/models/model"
   "app/collections/collection"
   "app/routers/router"
+  "app/views/base/view"
 ], (Backbone) -> Backbone

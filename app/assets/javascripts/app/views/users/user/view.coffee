@@ -3,16 +3,14 @@ define [
   "mustache"
   "app/constants"
   "app/views/users/popover/view"
+  "text!app/views/users/user/wrapper.mustache"
   "text!app/views/users/user/template.mustache"
-], (ModelView, Mustache, Constants, UserPopoverView, template) ->
+], (ModelView, Mustache, Constants, UserPopoverView, wrapper, template) ->
 
   is_retina = window.devicePixelRatio > 1
 
   class UserView extends ModelView
     template: Mustache.compile template
-
-    tagName: "div"
-    className: "r_user"
 
     events:
       "click a:not(.r_tagalong)" : "show"
@@ -43,3 +41,5 @@ define [
         .html(@template(json))
 
       return this
+
+  UserView::wrap wrapper

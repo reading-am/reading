@@ -64,6 +64,10 @@ class User < ActiveRecord::Base
 
   before_create { generate_token(:token) }
 
+  after_save    :update_cache
+  after_update  :update_cache
+  after_destroy :expire_cache
+
   scope :only_follows, lambda { |user| follows(user) }
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
@@ -270,15 +274,17 @@ class User < ActiveRecord::Base
 
   # Caching
   def self.fetch(id)
-    Rails.cache.fetch(cache_key, self) { User.find(id) }
+    Rails.cache.fetch("users/#{id}") { User.find(id) }
   end
 
-  def after_save
-    Rails.cache.write(cache_key, self)
+  def update_cache
+    Rails.cache.write("users/#{id}", self)
+    return true
   end
 
-  def after_destroy
-    Rails.cache.delete(cache_key, self)
+  def expire_cache
+    Rails.cache.delete("users/#{id}")
+    return true
   end
 end
 

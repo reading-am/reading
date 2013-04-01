@@ -20,6 +20,11 @@ class Post < ActiveRecord::Base
   # Used to check for duplicate entries
   scope :recent_by_user_and_page, lambda { |user, page, time=1.day.ago| where("user_id = ? and page_id = ? and created_at > ?", user, page, time) }
 
+  after_save    :update_cache
+  after_update  :update_cache
+  after_destroy :expire_cache
+
+
   # for will_paginate
   self.per_page = 100
 
@@ -106,17 +111,19 @@ class Post < ActiveRecord::Base
       }
     }
   end
-
-    # Caching
+  
+  # Caching
   def self.fetch(id)
-    Rails.cache.fetch(cache_key, self) { Post.find(id) }
+    Rails.cache.fetch("users/#{id}") { User.find(id) }
   end
 
-  def after_save
-    Rails.cache.write(cache_key, self)
+  def update_cache
+    Rails.cache.write("users/#{id}", self)
+    return true
   end
 
-  def after_destroy
-    Rails.cache.delete(cache_key, self)
+  def expire_cache
+    Rails.cache.delete("users/#{id}")
+    return true
   end
 end

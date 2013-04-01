@@ -12,6 +12,10 @@ class Page < ActiveRecord::Base
   before_create {|page| page.populate_remote_data unless page.loads_via_js }
   after_create :populate_readability
 
+  after_save    :update_cache
+  after_update  :update_cache
+  after_destroy :expire_cache
+
   # search
   searchable do
     text :title, :url
@@ -337,16 +341,18 @@ public
     }
   end
 
-    # Caching
+  # Caching
   def self.fetch(id)
-    Rails.cache.fetch(cache_key, self) { Page.find(id) }
+    Rails.cache.fetch("users/#{id}") { User.find(id) }
   end
 
-  def after_save
-    Rails.cache.write(cache_key, self)
+  def update_cache
+    Rails.cache.write("users/#{id}", self)
+    return true
   end
 
-  def after_destroy
-    Rails.cache.delete(cache_key, self)
+  def expire_cache
+    Rails.cache.delete("users/#{id}")
+    return true
   end
 end

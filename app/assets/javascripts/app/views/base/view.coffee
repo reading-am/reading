@@ -5,7 +5,7 @@ define [
 ], (_, Backbone, Mustache) ->
 
   Backbone.View::wrap = (wrapper) ->
-    $el = Backbone.$(Mustache.render(wrapper))
+    $el = Backbone.$(Mustache.render(wrapper, {}))
 
     @id =         @id         || $el.attr "id"
     @tagName =    @tagName    || $el.prop "tagName"

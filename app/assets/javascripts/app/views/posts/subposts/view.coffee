@@ -15,4 +15,4 @@ define [
       load_css()
       super()
 
-  SubPostView::wrap wrapper
+  SubPostsView::wrap wrapper

@@ -1,4 +1,6 @@
 define [
+  "underscore"
+  "jquery"
   "app/views/base/model"
   "mustache"
   "app/constants"
@@ -6,7 +8,7 @@ define [
   "text!app/views/users/user/wrapper.mustache"
   "text!app/views/users/user/template.mustache"
   "text!app/views/users/user/styles.css"
-], (ModelView, Mustache, Constants, UserPopoverView, wrapper, template, css) ->
+], (_, $, ModelView, Mustache, Constants, UserPopoverView, wrapper, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   is_retina = window.devicePixelRatio > 1

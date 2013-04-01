@@ -105,7 +105,7 @@ class Api::PostsController < Api::APIController
   # PUT /posts/1
   # PUT /posts/1.xml
   def update
-    @post = Post.fetch(params[:id])
+    @post = Post.find(params[:id])
     user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
     if allowed = (user == @post.user) and !params[:model].nil?

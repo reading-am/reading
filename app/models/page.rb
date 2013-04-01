@@ -343,16 +343,16 @@ public
 
   # Caching
   def self.fetch(id)
-    Rails.cache.fetch("users/#{id}") { Page.find(id) }
+    Rails.cache.fetch("pages/#{id}") { Page.find(id) }
   end
 
   def update_cache
-    Rails.cache.write("users/#{id}", self)
+    Rails.cache.write("pages/#{id}", self)
     return true
   end
 
   def expire_cache
-    Rails.cache.delete("users/#{id}")
+    Rails.cache.delete("pages/#{id}")
     return true
   end
 end

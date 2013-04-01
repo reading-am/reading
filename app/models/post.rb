@@ -114,16 +114,16 @@ class Post < ActiveRecord::Base
 
   # Caching
   def self.fetch(id)
-    Rails.cache.fetch("users/#{id}") { Post.find(id) }
+    Rails.cache.fetch("posts/#{id}") { Post.find(id) }
   end
 
   def update_cache
-    Rails.cache.write("users/#{id}", self)
+    Rails.cache.write("posts/#{id}", self)
     return true
   end
 
   def expire_cache
-    Rails.cache.delete("users/#{id}")
+    Rails.cache.delete("posts/#{id}")
     return true
   end
 end

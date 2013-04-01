@@ -107,7 +107,7 @@ class Comment < ActiveRecord::Base
 
   # Caching
   def self.fetch(id)
-    Rails.cache.fetch("users/#{id}") { User.find(id) }
+    Rails.cache.fetch("users/#{id}") { Comment.find(id) }
   end
 
   def update_cache

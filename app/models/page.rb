@@ -343,7 +343,7 @@ public
 
   # Caching
   def self.fetch(id)
-    Rails.cache.fetch("users/#{id}") { User.find(id) }
+    Rails.cache.fetch("users/#{id}") { Page.find(id) }
   end
 
   def update_cache

@@ -286,6 +286,42 @@ class User < ActiveRecord::Base
     Rails.cache.delete("users/#{id}")
     return true
   end
+
+  def cached_posts
+    Rails.cache.fetch("#{cache_key}/posts") { posts }
+  end
+
+  def cached_followers
+    Rails.cache.fetch("#{cache_key}/followers") { followers }
+  end
+
+  def cached_following
+    Rails.cache.fetch("#{cache_key}/following") { following }
+  end
+
+  def cached_domains
+    Rails.cache.fetch("#{cache_key}/domains") { domains }
+  end
+
+  def cached_hooks
+    Rails.cache.fetch("#{cache_key}/hooks") { hooks }
+  end
+
+  def cached_pages
+    Rails.cache.fetch("#{cache_key}/pages") { pages }
+  end
+
+  def cached_comments
+    Rails.cache.fetch("#{cache_key}/comments") { comments }
+  end 
+
+  def cached_relationships
+    Rails.cache.fetch("#{cache_key}/relationships") { relationships }
+  end
+
+  def cached_reverse_relationships
+    Rails.cache.fetch("#{cache_key}/reverse_relationships") { reverse_relationships }
+  end
 end
 
 class AuthError < StandardError

@@ -51,7 +51,7 @@ class Api::UsersController < Api::APIController
 
     @users = []
     @user.authorizations.each do |a|
-      @users |= a.following
+      @users |= a.cached_following
     end
     # don't include the user being queried on
     @users.delete @user

@@ -20,11 +20,11 @@ class UsersController < ApplicationController
 
       if params[:type] == 'list'
         @posts = @user.feed.paginate(:page => params[:page])
-        @channels = @user.following.map { |user| user.username }
+        @channels = @user.cached_following.map { |user| user.username }
         # add the user to the channels since it's not in .following()
         @channels.push @user.username
       else
-        @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page])
+        @posts = @user.cached_posts.order("created_at DESC").paginate(:page => params[:page])
         @channels = @user.username
       end
     end
@@ -42,13 +42,13 @@ class UsersController < ApplicationController
 
   def followingers
     @user = User.find_by_username(params[:username])
-    @users = (params[:type] == 'followers') ? @user.followers : @user.following
+    @users = (params[:type] == 'followers') ? @user.cached_followers : @user.cached_following
   end
 
   def hooks
     @user = current_user
     @new_hook = Hook.new
-    @hooks = @user.hooks
+    @hooks = @user.cached_hooks
 
     respond_to do |format|
       format.html { render 'hooks/index' }
@@ -83,9 +83,9 @@ class UsersController < ApplicationController
 
     case params[:dir]
     when "next"
-      @post = @user.posts.where("id > ?", params[:post_id]).order("id ASC").limit(1).first
+      @post = @user.cached_posts.where("id > ?", params[:post_id]).order("id ASC").limit(1).first
     when "prev"
-      @post = @user.posts.where("id < ?", params[:post_id]).order("id DESC").limit(1).first
+      @post = @user.cached_posts.where("id < ?", params[:post_id]).order("id DESC").limit(1).first
     end
 
     if @post.blank?

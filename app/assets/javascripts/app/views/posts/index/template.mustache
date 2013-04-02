@@ -28,6 +28,10 @@
 <div id="posts_footer" class="row">
   <div class="span5 offset1">{{{pagination}}}</div>
   {{#params.type}}
-  <div class="span1">{{{link_to_rss}}}</div>
+  <div class="span1">
+    <a href="{{rss_path}}" class="rss">
+      <span class="glyph">r</span> rss
+    </a>
+  </div>
   {{/params.type}}
 </div>

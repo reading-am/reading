@@ -31,8 +31,7 @@
       <%= render :partial => 'pages/page', :locals => { :page => page, :yn_class => yn_class, :post => post, :wrap_url => wrap_urls } %>
       <div class="posts">
       <% subposts.each do |post| %>
-        <%= render 'posts/subpost' %>
-        <%# render :partial => 'posts/subpost', :locals => { :post => post } %>
+        <%= render :partial => 'posts/subpost', :locals => { :post => post } %>
       <% end %>
       </div>
     </div>

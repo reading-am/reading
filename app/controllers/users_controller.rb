@@ -29,8 +29,46 @@ class UsersController < ApplicationController
       end
     end
 
+    _pages = []
+    date = ''
+    @posts.group_by(&:page).each_with_index do |(page, subposts), i|
+      _page = page.simple_obj
+      _page[:url] = subposts.first.wrapped_url
+      _page[:posts] = []
+
+      if date != subposts.first.created_at.strftime("%m/%d")
+        _page[:date] = date = subposts.first.created_at.strftime("%m/%d")
+      else
+        yn_avg = 0
+        #yn_avg = yn_average subposts
+        if yn_avg > 0
+          _page[:yn_class] = "yep"
+          _page[:yep] = true
+        elsif yn_avg < 0
+          _page[:yn_class] = "nope"
+          _page[:nope] = true
+        end
+      end
+
+      subposts.each do |post|
+        _post = post.simple_obj
+
+        _post[:yep] = post.yn === true
+        _post[:nope] = post.yn === false
+
+        _post[:user][:size] = "small"
+        _post[:user].delete(:username)
+        _post[:user].delete(:bio)
+
+        _page[:posts] << _post
+      end
+      _page[:has_comments] = _page[:comments_count] > 0
+      _pages << _page
+    end
+    @pages = _pages
+
     respond_to do |format|
-      format.html { render 'posts/index' }
+      format.html { render 'posts/index/template' }
       format.xml  { render 'posts/index', :xml => @posts }
       format.rss  { render 'posts/index' }
     end

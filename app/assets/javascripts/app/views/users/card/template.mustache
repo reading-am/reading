@@ -10,14 +10,14 @@
     <a href="/{{username}}/followers"{{#viewing_followers}} class="active"{{/viewing_followers}}>
       <span id="followers_count">{{followers.size}}</span> Followers
     </a>
-    {{#signed_in?}}
+    {{#signed_in}}
       {{#is_current_user}}
         - <a href="/users/recommended" class="button">Find People<div class="new_badge">new</div></a>
       {{/is_current_user}}
       {{^is_current_user}}
         - <a rel="tooltip" data-title="Add what {{first_name}} reads to your following feed" href="/{{username}}/{{follow_text}}" class="button follow"><span>{{follow_text_capitalized}}</span> {{first_name}}</a>
       {{/is_current_user}}
-    {{/signed_in?}}
+    {{/signed_in}}
   </nav>
   <div id="user_places" class="span7 offset1">
     {{location}} {{#link}}{{#location}}-{{/location}} <a href="{{link}}" target="_blank">{{link}}</a>{{/link}}

@@ -3,13 +3,13 @@
     <img src="{{avatar_img_url}}" alt="avatar">
   </a>
   <div class="span7">
-    <h1>{{display_name}}</h1>
+    <h1>{{user.display_name}}</h1>
   </div>
   <nav class="span7">
-    <a href="/{{username}}/following"{{#viewing_following}} class="active"{{/viewing_following}}>
+    <a href="/{{user.username}}/following"{{#viewing_following}} class="active"{{/viewing_following}}>
       <span id="following_count">{{following.size}}</span> Following
     </a>
-    <a href="/{{username}}/followers"{{#viewing_followers}} class="active"{{/viewing_followers}}>
+    <a href="/{{user.username}}/followers"{{#viewing_followers}} class="active"{{/viewing_followers}}>
       <span id="followers_count">{{followers.size}}</span> Followers
     </a>
     {{#signed_in}}
@@ -17,17 +17,17 @@
         - <a href="/users/recommended" class="button">Find People<div class="new_badge">new</div></a>
       {{/is_current_user}}
       {{^is_current_user}}
-        - <a rel="tooltip" data-title="Add what {{first_name}} reads to your following feed" href="/{{username}}/{{follow_text}}" class="button follow"><span>{{follow_text}}</span> {{first_name}}</a>
+        - <a rel="tooltip" data-title="Add what {{user.first_name}} reads to your following feed" href="/{{user.username}}/{{follow_text}}" class="button follow"><span>{{follow_text}}</span> {{user.first_name}}</a>
       {{/is_current_user}}
     {{/signed_in}}
   </nav>
   <div id="user_places" class="span7 offset1">
-    {{location}} {{#link}}{{#location}}-{{/location}} <a href="{{link}}" target="_blank">{{link}}</a>{{/link}}
+    {{user.location}} {{#user.link}}{{#user.location}}-{{/user.location}} <a href="{{user.link}}" target="_blank">{{user.link}}</a>{{/user.link}}
   </div>
   <div id="user_bio" class="r_bio span7 offset1">
-    {{bio}}
-    {{^bio}}{{#is_current_user}}
+    {{user.bio}}
+    {{^user.bio}}{{#is_current_user}}
       <a href="/settings/info">Click here to add a bio</a>
-    {{/is_current_user}}{{/bio}}
+    {{/is_current_user}}{{/user.bio}}
   </div>
 </div>

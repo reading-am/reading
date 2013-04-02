@@ -10,7 +10,7 @@
 <body>
 
   <% if @posts.count > 0 %>
-    <%= render :partial => 'posts/group', :locals => {:posts => @posts, :wrap_urls => true} %>
+    <%= render :file => 'pages/pages/wrapper', :locals => {:pages => page_hashes_from_posts(@posts)} %>
   <% else %>
     <div class="row">
       <div class="span6">

@@ -67,8 +67,8 @@ class UserMailer < ApplicationMailer
 
   def digest(user)
     @user   = user
-    @posts  = @user.unread_since(@user.mail_digest.days.ago).limit(25)
-    #@posts  = @user.unread_since(9999.days.ago).limit(100) # for testing
+    #@posts  = @user.unread_since(@user.mail_digest.days.ago).limit(25)
+    @posts  = @user.unread_since(9999.days.ago).limit(25) # for testing
     mail(
       :to       => @user.email,
       :subject  => "Your Reading Digest - #{Time.now.strftime("%b %d, %Y")}"

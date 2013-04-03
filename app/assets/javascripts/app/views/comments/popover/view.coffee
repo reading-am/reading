@@ -4,12 +4,13 @@ define [
   "backbone"
   "app/views/components/popover/view"
   "app/views/comments/comment/view"
+  "text!app/views/comments/popover/template.mustache"
   "text!app/views/comments/popover/styles.css"
-], (_, $, Backbone, Popover, CommentView, css) ->
+], (_, $, Backbone, Popover, CommentView, template. css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentPopover extends Popover
-    id: "r_comment_popover"
+    @parse_template template
 
     initialize: ->
       load_css()

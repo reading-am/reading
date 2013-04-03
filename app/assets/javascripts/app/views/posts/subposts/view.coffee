@@ -9,8 +9,8 @@ define [
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class SubPostsView extends CollectionView
-    modelView: SubPostView
     @parse_template template
+    modelView: SubPostView
 
     initialize: ->
       load_css()

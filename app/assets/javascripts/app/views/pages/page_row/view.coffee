@@ -2,14 +2,13 @@ define [
   "jquery"
   "app/models/user"
   "app/views/base/model"
-  "mustache"
   "app/views/pages/page/view"
   "app/views/posts/subposts/view"
   "app/collections/posts"
   "app/views/comments/comments_with_input/view"
   "text!app/views/pages/page_row/template.mustache"
   "app/models/page" # this needs preloading
-], ($, User, ModelView, Mustache, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
+], ($, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
 
   class PageRowView extends ModelView
     @parse_template template

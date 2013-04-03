@@ -1,13 +1,12 @@
 define [
   "app/views/base/model"
-  "mustache"
   "app/models/post"
   "app/models/comment"
   "text!app/views/providers/provider/template.mustache"
-], (ModelView, Mustache, Post, Comment, template) ->
+], (ModelView, Post, Comment, template) ->
 
   class ProviderView extends ModelView
-    template: Mustache.compile template
+    @parse_template template
 
     events:
       "click" : "run"

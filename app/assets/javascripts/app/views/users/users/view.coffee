@@ -2,9 +2,11 @@ define [
   "underscore"
   "app/views/base/collection"
   "app/views/users/user/view"
-], (_, CollectionView, UserView) ->
+  "text!app/views/users/user/template.mustache"
+], (_, CollectionView, UserView, template) ->
 
   class UsersView extends CollectionView
+    @parse_template template
     modelView: UserView
 
     initialize: (options) ->

@@ -1,11 +1,10 @@
 define [
   "backbone"
-  "mustache"
   "text!app/views/admin/header/template.mustache"
-], (Backbone, Mustache, template) ->
+], (Backbone, template) ->
 
   class AdminHeaderView extends Backbone.View
-    template: Mustache.compile template
+    @parse_template template
 
     initialize: (options) ->
       @section = options.section

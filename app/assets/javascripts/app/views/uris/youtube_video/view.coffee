@@ -6,10 +6,7 @@ define [
 ], (URIView, Mustache, App, template) ->
 
   class YouTubeVideoView extends URIView
-    template: Mustache.compile template
-
-    tagName: "div"
-    className: "r_url r_uri r_youtube_video"
+    @parse_template template
     attributes: {}
 
   App.Views.URIs.YouTubeVideo = YouTubeVideoView

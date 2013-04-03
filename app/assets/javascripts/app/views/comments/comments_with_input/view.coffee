@@ -2,7 +2,6 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "mustache"
   "libs/keymaster"
   "app/views/comments/comments/view"
   "app/models/post"
@@ -13,14 +12,11 @@ define [
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], ($, _, Backbone, Mustache, Key, CommentsView, Post, template, css) ->
+], ($, _, Backbone, Key, CommentsView, Post, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentsWithInputView extends Backbone.View
-    template: Mustache.compile template
-
-    tagName: "div"
-    className: "r_comments_with_input"
+    @parse_template template
 
     events:
       "keydown textarea"  : "stop_propagation"

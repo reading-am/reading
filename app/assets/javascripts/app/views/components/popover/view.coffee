@@ -2,16 +2,13 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "mustache"
   "text!app/views/components/popover/template.mustache"
   "text!app/views/components/popover/styles.css"
-], (_, $, Backbone, Mustache, template, css) ->
+], (_, $, Backbone, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class Popover extends Backbone.View
-    template: Mustache.compile template
-
-    className: "r_popover"
+    @parse_template template
 
     events:
       "click .r_blocker" : "close"

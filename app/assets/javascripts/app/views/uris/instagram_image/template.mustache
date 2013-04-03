@@ -1,11 +1,13 @@
-{{#url}}
-  <img src="{{url}}">
-  <div class="r_instagram_image_info">
-    <img class="r_icon" src="https://instagr.am/favicon.ico">
-    <span>{{author_name}}</span>
-    : <span class="r_instagram_image_title">{{title}}</span>
-  </div>
-{{/url}}
-{{^url}}
-  Loading Instagram image...
-{{/url}}
+<a class="r_url r_uri r_instagram_image">
+  {{#url}}
+    <img src="{{url}}">
+    <div class="r_instagram_image_info">
+      <img class="r_icon" src="https://instagr.am/favicon.ico">
+      <span>{{author_name}}</span>
+      : <span class="r_instagram_image_title">{{title}}</span>
+    </div>
+  {{/url}}
+  {{^url}}
+    Loading Instagram image...
+  {{/url}}
+</a>

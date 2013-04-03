@@ -4,9 +4,11 @@ define [
   "app/models/post"
   "app/collections/posts"
   "app/views/posts/post_on_page/view"
-], (_, CollectionView, Post, Posts, PostOnPageView) ->
+  "text!app/views/posts/posts_grouped_by_user/template.mustache"
+], (_, CollectionView, Post, Posts, PostOnPageView, template) ->
 
   class PostsGroupedByUserView extends CollectionView
+    @parse_template template
     modelView: PostOnPageView
 
     initialize: (options) ->

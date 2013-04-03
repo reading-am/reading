@@ -2,12 +2,11 @@ define [
   "underscore"
   "jquery"
   "app/views/base/model"
-  "mustache"
   "app/constants"
   "app/views/users/popover/view"
   "text!app/views/users/user/template.mustache"
   "text!app/views/users/user/styles.css"
-], (_, $, ModelView, Mustache, Constants, UserPopoverView, template, css) ->
+], (_, $, ModelView, Constants, UserPopoverView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   is_retina = window.devicePixelRatio > 1

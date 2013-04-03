@@ -1,15 +1,12 @@
 define [
   "jquery"
   "app/views/uris/uri/view"
-  "mustache"
   "app/init"
   "text!app/views/uris/amazon_product/template.mustache"
-], ($, URIView, Mustache, App, template) ->
+], ($, URIView, App, template) ->
 
   class AmazonProductView extends URIView
-    template: Mustache.compile template
-
-    className: "r_url r_uri r_amazon_product"
+    @parse_template template
 
     render: ->
       @$el.html(@template(@model.toJSON()))

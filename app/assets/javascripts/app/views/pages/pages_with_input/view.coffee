@@ -2,16 +2,13 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "mustache"
   "app/models/post"
   "app/views/pages/pages/view"
   "text!app/views/pages/pages_with_input/template.mustache"
-], ($, _, Backbone, Mustache, Post, PagesView, template) ->
+], ($, _, Backbone, Post, PagesView, template) ->
 
   class PagesWithInputView extends Backbone.View
-    template: Mustache.compile template
-
-    tagName: "div"
+    @parse_template template
 
     events:
       "submit form": "submit"

@@ -1,13 +1,15 @@
-<div class="r_comment_header">
-  <div class="r_author r_user"></div>
-  <time datetime="{{updated_at}}"></time>
-  <div class="r_comment_actions">
-    {{#is_owner}}<a href="#" class="r_destroy">Delete</a>{{/is_owner}}
-    <a href="#" class="r_share">Share</a>
-    <a href="{{url}}" class="r_permalink">#</a>
+<li class="r_comment">
+  <div class="r_comment_header">
+    <div class="r_author r_user"></div>
+    <time datetime="{{updated_at}}"></time>
+    <div class="r_comment_actions">
+      {{#is_owner}}<a href="#" class="r_destroy">Delete</a>{{/is_owner}}
+      <a href="#" class="r_share">Share</a>
+      <a href="{{url}}" class="r_permalink">#</a>
+    </div>
   </div>
-</div>
-<div class="r_comment_body">
-  <div class="r_tri"></div>
-  {{{body_html}}}
-</div>
+  <div class="r_comment_body">
+    <div class="r_tri"></div>
+    {{{body_html}}}
+  </div>
+</li>

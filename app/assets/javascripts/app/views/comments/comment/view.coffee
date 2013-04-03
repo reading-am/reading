@@ -22,11 +22,8 @@ define [
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentView extends Backbone.View
-    template: Mustache.compile template
+    @parse_template template
     shown_template: Mustache.compile shown_template
-
-    tagName: "li"
-    className: "r_comment"
 
     events:
       "click .r_permalink": "new_window"

@@ -2,14 +2,15 @@ define [
   "underscore"
   "jquery"
   "app/views/base/model"
-  "mustache"
   "app/views/users/user/view"
   "app/views/pages/page/view"
+  "text!app/views/posts/post/template.mustache"
   "text!app/views/posts/post/styles.css"
-], (_, $, ModelView, Mustache, UserView, PageView, css) ->
+], (_, $, ModelView, UserView, PageView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class PostView extends ModelView
+    @parse_template template
 
     initialize: (options) ->
       load_css()

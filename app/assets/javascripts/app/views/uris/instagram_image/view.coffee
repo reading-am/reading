@@ -1,14 +1,11 @@
 define [
   "app/views/uris/uri/view"
-  "mustache"
   "app/init"
   "text!app/views/uris/instagram_image/template.mustache"
-], (URIView, Mustache, App, template) ->
+], (URIView, App, template) ->
 
   class InstagramImageView extends URIView
-    template: Mustache.compile template
-
-    className: "r_url r_uri r_instagram_image"
+    @parse_template template
 
   App.Views.URIs.InstagramImage = InstagramImageView
   return InstagramImageView

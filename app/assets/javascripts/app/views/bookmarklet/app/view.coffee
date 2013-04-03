@@ -2,7 +2,6 @@ define [
   "jquery"
   "underscore"
   "backbone"
-  "mustache"
   "pusher"
   "app/models/post"
   "app/models/user"
@@ -10,17 +9,13 @@ define [
   "app/views/posts/posts_grouped_by_user/view"
   "app/views/components/share_popover/view"
   "text!app/views/bookmarklet/app/template.mustache"
-], ($, _, Backbone, Mustache, pusher, Post, User, CommentsWithInputView, PostsView, SharePopover, template) ->
+], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsView, SharePopover, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
 
   class BookmarkletAppView extends Backbone.View
-    template: Mustache.compile template
-
-    tagName: "div"
-
-    id: "r_am"
+    @parse_template template
 
     events:
       "click #r_yep, #r_nope" : "set_yn"

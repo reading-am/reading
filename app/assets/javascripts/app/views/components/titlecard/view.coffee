@@ -2,12 +2,14 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "text!app/views/components/share_popover/styles.css"
+  "text!app/views/components/titlecard/template.mustache"
+  "text!app/views/components/titlecard/styles.css"
   "extend/jquery/waypoints.min"
-], (_, $, Backbone, css) ->
+], (_, $, Backbone, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class Titlecard extends Backbone.View
-    load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+    @parse_template template
 
     events:
       "click": "scroll_to_top"

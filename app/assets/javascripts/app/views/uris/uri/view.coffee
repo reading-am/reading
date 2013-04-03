@@ -1,11 +1,11 @@
 define [
   "backbone"
   "app/init"
-], (Backbone, App) ->
+  "text!app/views/uris/uri/template.mustache"
+], (Backbone, App, template) ->
 
   class URIView extends Backbone.View
-    tagName: "a"
-    className: "r_url"
+    @parse_template template
 
     initialize: (options) ->
       @model.bind "change", @render, this

@@ -2,7 +2,6 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "mustache"
   "app/collections/users"
   "app/collections/posts"
   "app/collections/comments"
@@ -11,11 +10,11 @@ define [
   "app/views/comments/comments/view"
   "text!app/views/admin/dashboard/template.mustache"
   "text!app/views/admin/dashboard/styles.css"
-], (_, $, Backbone, Mustache, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
+], (_, $, Backbone, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class DashboardView extends Backbone.View
-    template: Mustache.compile template
+    @parse_template template
 
     initialize: ->
       load_css()

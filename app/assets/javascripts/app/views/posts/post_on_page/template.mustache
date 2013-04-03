@@ -1,10 +1,12 @@
-<div class="r_post {{#yep}}r_yep{{/yep}}{{#nope}}r_nope{{/nope}}">
-  <div class="r_yep_nope">
-    <div class="r_tri"></div>
-  </div>
-  <div class="r_post_bg">
-    <div class="r_status" title="Currently Reading!"></div>
-    <a href="http://{{domain}}/users/{{user_id}}/tagalong?post_id={{id}}&dir=prev" class="r_tagalong r_before">&laquo;</a>
-    <a href="http://{{domain}}/users/{{user_id}}/tagalong?post_id={{id}}&dir=next" class="r_tagalong r_after">&raquo;</a>
+<div class="r_post">
+  <div class="{{#yep}}r_yep{{/yep}}{{#nope}}r_nope{{/nope}}">
+    <div class="r_yep_nope">
+      <div class="r_tri"></div>
+    </div>
+    <div class="r_post_bg">
+      <div class="r_status" title="Currently Reading!"></div>
+      <a href="http://{{domain}}/users/{{user_id}}/tagalong?post_id={{id}}&dir=prev" class="r_tagalong r_before">&laquo;</a>
+      <a href="http://{{domain}}/users/{{user_id}}/tagalong?post_id={{id}}&dir=next" class="r_tagalong r_after">&raquo;</a>
+    </div>
   </div>
 </div>

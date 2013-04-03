@@ -10,7 +10,7 @@
 <body>
 
   <% if @posts.count > 0 %>
-    <%= render :file => 'pages/pages/wrapper', :locals => {:pages => page_hashes_from_posts(@posts)} %>
+    <%= render :file => 'pages/pages/template', :locals => {:pages => page_hashes_from_posts(@posts)} %>
   <% else %>
     <div class="row">
       <div class="span6">

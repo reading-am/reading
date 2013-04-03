@@ -6,5 +6,4 @@ define [
 ], (ModelView, Mustache, template) ->
 
   class PageView extends ModelView
-    template: Mustache.compile template
-    className: "r_page"
+    @parse_template template

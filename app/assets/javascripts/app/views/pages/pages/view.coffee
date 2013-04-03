@@ -1,10 +1,9 @@
 define [
   "app/views/base/collection"
   "app/views/pages/page_row/view"
-], (CollectionView, PageRowView) ->
+  "text!app/views/pages/pages/template.mustache"
+], (CollectionView, PageRowView, template) ->
 
   class PagesView extends CollectionView
     modelView: PageRowView
-
-    tagName: "div"
-    className: "r_pages"
+    @parse_template template

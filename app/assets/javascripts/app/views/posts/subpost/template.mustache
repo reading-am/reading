@@ -1,8 +1,10 @@
-<div class="{{#yep}}r_yep{{/yep}}{{#nope}}r_nope{{/nope}}">
-  <div class="r_yep_nope">
-    <div class="r_tri"></div>
+<li class="r_post r_subpost">
+  <div class="{{#yep}}r_yep{{/yep}}{{#nope}}r_nope{{/nope}}">
+    <div class="r_yep_nope">
+      <div class="r_tri"></div>
+    </div>
+    <div class="r_post_bg">
+      {{#user}}{{>users/user/template}}{{/user}} is reading this
+    </div>
   </div>
-  <div class="r_post_bg">
-    {{#user}}{{>users/user/wrapper}}{{/user}} is reading this
-  </div>
-</div>
+</li>

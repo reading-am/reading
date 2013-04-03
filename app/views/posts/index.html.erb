@@ -3,7 +3,7 @@
   has_avatar = @user != current_user or (@user == current_user and !@user.avatar.size.nil?)
 
   locals = {
-    :pages                      => page_hashes_from_posts(@posts),
+    #:pages                      => page_hashes_from_posts(@posts),
     :show_blank_slate           => (@user.posts.size == 0 or @user.following.size == 0),
     :signed_in                  => signed_in?,
     :is_current_user            => @user == current_user,
@@ -29,4 +29,4 @@
 
 %>
 
-<%# render :partial => 'backbone/router', :locals => {:model => @user, :collection => @posts} if @user %>
+<%= render :partial => 'backbone/router', :locals => {:model => @user, :collection => @posts} if @user %>

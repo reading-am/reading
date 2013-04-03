@@ -12,9 +12,8 @@ define [
 ], ($, User, ModelView, Mustache, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
 
   class PageRowView extends ModelView
-    template: Mustache.compile template
-    tagName: "div"
-
+    @parse_template template
+      
     events:
       "click .posts_icon": "show_posts"
       "click .comments_icon": "show_comments"

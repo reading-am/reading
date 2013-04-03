@@ -12,18 +12,16 @@ define [
   "app/views/users/popover/view"
   "app/views/components/share_popover/view"
   "text!app/views/comments/comment/template.mustache"
-  "text!app/views/comments/comment_shown/template.mustache"
   "text!app/views/comments/comment/styles.css"
   "app/models/uris/all"
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, Mustache, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, shown_template, css) ->
+], (_, $, Backbone, Mustache, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentView extends Backbone.View
     @parse_template template
-    shown_template: Mustache.compile shown_template
 
     events:
       "click .r_permalink": "new_window"
@@ -116,15 +114,16 @@ define [
       json = @model.toJSON()
       json.is_owner = (@model.get("user").get("id") == User::current.get("id"))
       json.body_html = @model.body_html()
+      json.is_a_show = @model.is_a_show()
 
       if @model.is_a_show()
         @$el.addClass "r_comment_shown"
         if (m = @model.mentions().length) > 1
           json.body_html = "#{m} people"
-        @$el.html(@shown_template(json))
       else
         json.body_html = @link_quotes json.body_html
-        @$el.html(@template(json))
+
+      @$el.html(@template(json))
 
       @$("a.r_url:not(.r_mention, .r_tag, .r_email, .r_image, .r_quoted)").each (i, el) =>
         model = URI::factory el.href

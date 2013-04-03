@@ -31,12 +31,6 @@
       border-left:3px solid @red;
     }
   }
-  .r_post_bg {
-    background:@yellow;
-    &:hover {
-      background:@white;
-    }
-  }
   .r_user, .r_status, .r_post_bg {
     float:left;
     display:block;
@@ -71,16 +65,26 @@
     float:left;
     padding:0 5px;
     line-height:25px;
-    background:@blue;
+    background-color:@blue;
     border-right:1px solid @light_blue;
     &:hover {
-      background:@light_blue;
+      background-color:@light_blue;
     }
     &.r_disabled {
       opacity:1 !important;
       color:@medium_light_grey !important;
       border-color:#DDD;
-      background:@ghost_grey;
+      background-color:@ghost_grey;
+    }
+  }
+}
+
+// bookmarklet only
+#r_am .r_post {
+  .r_post_bg {
+    background-color:@yellow;
+    &:hover {
+      background-color:@white;
     }
   }
 }

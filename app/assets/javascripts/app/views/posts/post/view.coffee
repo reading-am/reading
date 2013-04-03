@@ -19,19 +19,14 @@ define [
       @page_view = new PageView model: @model.get("page"), tagName: "div"
       super()
 
-    set_yn: =>
-      # reset for re-renders on update
-      @$el.removeClass("r_yep r_nope")
-
-      if @model.get("yn") is true
-        @$el.addClass("r_yep")
-      else if @model.get("yn") is false
-        @$el.addClass("r_nope")
-
     render: =>
-      @set_yn()
+      json = @model.toJSON()
+      json.yep = true if @model.get("yn") is true
+      json.nope = true if @model.get("yn") is false
 
-      @$el.append(@user_view.render().el)
-      @$el.append(@page_view.render().el)
+      @$el.html(@template(json))
+          .find("div:first")
+          .append(@user_view.render().el)
+          .append(@page_view.render().el)
 
       return this

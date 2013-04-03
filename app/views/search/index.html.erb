@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<%= render :partial => 'posts/group', :locals => { :posts => @posts } %>
+<%= render :file => 'pages/pages/template', :locals => { :pages => page_hashes_from_posts(@posts) } %>
 </div>
 
 <% if @pages %>

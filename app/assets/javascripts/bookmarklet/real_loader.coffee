@@ -39,11 +39,12 @@ require [
     BookmarkletAppView::current.close() if BookmarkletAppView::current?
 
     Post::current = new Post
+    # This must be bound before the BookmarkletAppView is instantiated and binds its events
+    Post::current.bind "change:id", -> User::current = @get("user")
+
     BookmarkletAppView::current = new BookmarkletAppView model: Post::current if platform isnt "redirect"
 
     Post::current.save params, success: (model) ->
-      User::current = model.get("user")
-
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url

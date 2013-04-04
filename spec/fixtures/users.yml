@@ -1,30 +1,87 @@
 greg:
+  id: '1'
   name: Greg Leppert
   username: greg
-  created_at: 2011-08-08 11:43:22
-  updated_at: 2012-11-17 18:45:01
-  token: afjkalsdfjsdklafj
-  auth_token: fjdsklafjdskal
-  email: test@reading.am
-  first_name: ~
-  last_name: ~
+  created_at: '2011-08-08 11:43:22.496678'
+  updated_at: '2013-03-22 15:30:02.414165'
+  token: afjdsklafjdsaklf
+  auth_token: afjdsklfjdddddfd
+  email: greg@reading.am
+  first_name: 
+  last_name: 
   location: NYC
-  description: Design'n. Develop'n. Cofound'n Svpply.com.
+  description: Design'n. Develop'n. Cofound'n Svpply.com. Weekend'n Reading.am.
   image: http://a0.twimg.com/profile_images/1609147766/302644_10150294503584070_500384069_7411310_1065630111_n_normal.jpeg
-  phone: ~
-  urls: "--- !ruby/hash:Hashie::Mash\nWebsite: http://leppert.me\nTwitter: http://twitter.com/leppert\n"
-  email_when_followed: true
-  avatar_file_name: avatar_square.png
+  phone: 
+  urls: ! '--- !ruby/hash:Hashie::Mash
+
+    Website: http://leppert.me
+
+    Twitter: http://twitter.com/leppert
+
+'
+  email_when_followed: t
+  avatar_file_name: tabo.png
   avatar_content_type: image/png
-  avatar_file_size: 258249
-  avatar_updated_at: 2012-03-24 19:26:50
+  avatar_file_size: '570398'
+  avatar_updated_at: '2013-01-17 16:13:35.646826'
   bio: I make Reading.am and Svpply.com.
   link: http://twitter.com/leppert
-  mail_digest: 1
-  access: 7
-  posts_count: 4982
-  following_count: 142
-  followers_count: 157
-  comments_count: 621
-  email_when_mentioned: true
-  roles: 1
+  mail_digest: '1'
+  access: '7'
+  posts_count: '5056'
+  following_count: '142'
+  followers_count: '157'
+  comments_count: '680'
+  email_when_mentioned: t
+  roles: '1'
+  encrypted_password: aslssssfjkdslafjsl
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: '2013-03-22 15:30:02.413549'
+  sign_in_count: '31'
+  current_sign_in_at: '2013-03-22 15:30:02.264881'
+  last_sign_in_at: '2013-03-19 14:36:31.207643'
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+
+howard:
+  id: '2'
+  name: Howards
+  username: howard
+  created_at: '2011-08-08 11:49:08.733713'
+  updated_at: '2013-02-07 22:00:13.666527'
+  token: fjdskalfjasdkl
+  auth_token: afjdskalfjdsaklfjdsakl
+  email: greg@formasfunction.com
+  first_name: 
+  last_name: Leppert
+  location: ''
+  description: 
+  image: http://graph.facebook.com/517880926/picture?type=square
+  phone: 
+  urls: ! "--- \nFacebook: http://www.facebook.com/quiet\nWebsite: \n"
+  email_when_followed: t
+  avatar_file_name: howard_hughes.png
+  avatar_content_type: image/png
+  avatar_file_size: '50593'
+  avatar_updated_at: '2012-11-23 19:57:05.431255'
+  bio: Just reading from my hotel room. Ssshhh, don't tell anyone where I live.
+  link: ''
+  mail_digest: '1'
+  access: '7'
+  posts_count: '2625'
+  following_count: '13'
+  followers_count: '21'
+  comments_count: '262'
+  email_when_mentioned: t
+  roles: 
+  encrypted_password: afjdsklafjdsklfjkl
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: '2012-12-16 14:50:02.906465'
+  sign_in_count: '14'
+  current_sign_in_at: '2013-02-07 22:00:13.664809'
+  last_sign_in_at: '2013-01-07 22:53:52.710533'
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1

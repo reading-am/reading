@@ -65,7 +65,7 @@ class UserMailer < ApplicationMailer
     )
   end
 
-  def digest(user, num_days, limit=25)
+  def digest(user, num_days=nil, limit=25)
     @user   = user
     num_days ||= @user.mail_digest
     @posts  = @user.unread_since(num_days.days.ago).limit(limit)

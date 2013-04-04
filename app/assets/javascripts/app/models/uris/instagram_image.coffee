@@ -6,7 +6,7 @@ define [
 
   class InstagramImage extends URI
     type: "InstagramImage"
-    regex: /instagr\.am\/p\/([^\/]+)/
+    regex: /instagr\.?am(?:\.com)?\/p\/([^\/]+)/
 
     sync: (method, model, options) ->
       options.dataType = "jsonp"

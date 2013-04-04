@@ -2,7 +2,6 @@ define [
   "underscore"
   "jquery"
   "backbone"
-  "mustache"
   "app/init"
   "app/models/user"
   "app/models/post"
@@ -17,7 +16,7 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, Mustache, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, css) ->
+], (_, $, Backbone, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, css) ->
   load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class CommentView extends Backbone.View

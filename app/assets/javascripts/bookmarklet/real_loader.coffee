@@ -81,7 +81,7 @@ require [
 
   # this has a Ruby companion in models/page.rb#remote_head_tags()
   get_head_tags = ->
-    $("<div>").append($("title,meta,link:not([rel=stylesheet])")).html()
+    $("<div>").append($("title,meta,link:not([rel=stylesheet])").clone()).html()
 
   #-----------------------------------------
   # Initialize!

@@ -1,0 +1,17 @@
+@import "variables";
+
+.r_twitter_tweet, #r_am .r_comment .r_comment_body .r_twitter_tweet {
+  .box-shadow(inset 0 0 10px lighten(@twitter, 40%));
+  background: lighten(@twitter, 50%);
+  &:hover {
+    .box-shadow(inset 0 0 10px lighten(@twitter, 35%));
+    background: lighten(@twitter, 45%);
+  }
+  .r_twitter_tweet_info {
+    margin:5px 0 0;
+    &, span, a { color: darken(@twitter, 15%) !important; }
+  }
+  .r_twitter_tweet_screen_name {
+    text-decoration:underlined;
+  }
+}

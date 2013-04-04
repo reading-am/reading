@@ -1,15 +1,21 @@
 define [
+  "underscore"
+  "jquery"
   "backbone"
   "app/init"
   "text!app/views/uris/uri/template.mustache"
-], (Backbone, App, template) ->
+  "text!app/views/uris/uri/styles.css"
+], (_, $, Backbone, App, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class URIView extends Backbone.View
     @parse_template template
 
     initialize: (options) ->
+      load_css()
       @model.bind "change", @render, this
       @model.bind "destroy", @remove, this
+      super options
 
     attributes: ->
       href: @model.get("string")

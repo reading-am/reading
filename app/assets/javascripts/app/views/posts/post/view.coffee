@@ -17,7 +17,7 @@ define [
 
       @user_view = new UserView model: @model.get("user"), tagName: "div", size: "small"
       @page_view = new PageView model: @model.get("page"), tagName: "div"
-      super()
+      super options
 
     render: =>
       json = @model.toJSON()

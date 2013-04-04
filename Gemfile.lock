@@ -302,6 +302,7 @@ GEM
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.6.2)
+    newrelic_rpm (3.6.0.78)
     nilify_blanks (1.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -566,6 +567,7 @@ DEPENDENCIES
   koala
   konacha (~> 1.0)
   less-rails
+  newrelic_rpm
   nilify_blanks
   nokogiri
   oauth!

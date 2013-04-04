@@ -57,11 +57,12 @@ gem 'delayed_job', "3.0.1"
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
-gem 'hirefireapp' # has to be AFTER delayed_job
 
 #####################
 # External Services #
 #####################
+gem 'newrelic_rpm'
+gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'aws-sdk'
 gem 'hipchat'
 gem 'tinder' # campfire

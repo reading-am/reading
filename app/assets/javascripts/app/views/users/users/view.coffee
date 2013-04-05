@@ -11,4 +11,4 @@ define [
 
     initialize: (options) ->
       @size = options.size ? "small"
-      super()
+      super options

@@ -12,9 +12,9 @@ define [
   class CommentPopover extends Popover
     @parse_template template
 
-    initialize: ->
+    initialize: (options) ->
       load_css()
-      super()
+      super options
 
     render: =>
       @$el.html(@template())

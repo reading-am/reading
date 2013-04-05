@@ -17,8 +17,8 @@ define [
       "click" : "close"
 
     initialize: (options) ->
-      super()
       load_css()
+      super options
 
       popup = (url, width, height) ->
         window.open url, "r_win", "location=0,toolbars=0,status=0,directories=0,menubar=0,resizable=0,width=#{width},height=#{height}"

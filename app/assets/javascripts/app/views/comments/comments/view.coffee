@@ -12,6 +12,6 @@ define [
     @parse_template template
     modelView: CommentView
 
-    initialize: ->
+    initialize: (options) ->
       load_css()
-      super()
+      super options

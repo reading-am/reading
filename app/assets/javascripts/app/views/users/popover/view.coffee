@@ -11,6 +11,6 @@ define [
   class UserPopover extends Popover
     @parse_template template
 
-    initialize: ->
+    initialize: (options) ->
       load_css()
-      super()
+      super options

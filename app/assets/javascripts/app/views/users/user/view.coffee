@@ -20,7 +20,7 @@ define [
     initialize: (options) ->
       @size = options.size ? "medium"
       load_css()
-      super()
+      super options
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0

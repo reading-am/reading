@@ -5,15 +5,18 @@ define [
   "app/collections/posts"
   "app/views/posts/post_on_page/view"
   "text!app/views/posts/posts_grouped_by_user/template.mustache"
-], (_, CollectionView, Post, Posts, PostOnPageView, template) ->
+  "text!app/views/posts/posts_grouped_by_user/styles.css"
+], (_, CollectionView, Post, Posts, PostOnPageView, template, css) ->
+  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
 
   class PostsGroupedByUserView extends CollectionView
     @parse_template template
     modelView: PostOnPageView
 
     initialize: (options) ->
+      load_css()
       @filtered = new Posts
-      super()
+      super options
 
     is_online: (ids, state) -> @set_status ids, "r_online", state
     is_blurred: (ids, state) -> @set_status ids, "r_blurred", state

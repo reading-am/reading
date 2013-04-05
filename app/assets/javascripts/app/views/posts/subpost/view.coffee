@@ -9,7 +9,7 @@ define [
 
   class SubPostView extends PostOnPageView
     @parse_template template
-      
-    initialize: ->
+
+    initialize: (options) ->
       load_css()
-      super()
+      super options

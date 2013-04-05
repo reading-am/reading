@@ -16,9 +16,7 @@
     {{>posts/subposts/template}}
   </div>
   <div class="span1 comment">
-    <a href="#" class="post_icon comments_icon
-      {{#has_comments}}has_comments{{/has_comments}}
-      {{^has_comments}}hasnt_comments{{/has_comments}}">
+    <a href="#" class="post_icon comments_icon{{#has_comments}} has_comments{{/has_comments}}{{^has_comments}} hasnt_comments{{/has_comments}}">
       {{#has_comments}}{{comments_count}}{{/has_comments}}
       {{^has_comments}}+{{/has_comments}}
       <div class="r_tri"></div>

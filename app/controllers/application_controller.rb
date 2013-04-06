@@ -79,6 +79,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_bot
+    # Alternatively, we could use this gem: https://github.com/biola/Voight-Kampff
     agents = [
       'msnbot',
       'yahoo',

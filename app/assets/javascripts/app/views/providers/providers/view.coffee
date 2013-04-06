@@ -5,5 +5,6 @@ define [
 ], (CollectionView, ProviderView, template) ->
 
   class ProvidersView extends CollectionView
-    @parse_template template
+    @assets
+      template: template
     modelView: ProviderView

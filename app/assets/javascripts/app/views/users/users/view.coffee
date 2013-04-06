@@ -6,7 +6,8 @@ define [
 ], (_, CollectionView, UserView, template) ->
 
   class UsersView extends CollectionView
-    @parse_template template
+    @assets
+      template: template
     modelView: UserView
 
     initialize: (options) ->

@@ -5,5 +5,6 @@ define [
 ], (CollectionView, PostView, template) ->
 
   class PostsView extends CollectionView
-    @parse_template template
+    @assets
+      template: template
     modelView: PostView

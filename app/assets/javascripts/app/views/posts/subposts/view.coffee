@@ -1,17 +1,13 @@
 define [
-  "underscore"
-  "jquery"
   "app/views/base/collection"
   "app/views/posts/subpost/view"
   "text!app/views/posts/subposts/template.mustache"
   "text!app/views/posts/subposts/styles.css"
-], (_, $, CollectionView, SubPostView, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (CollectionView, SubPostView, template, styles) ->
 
   class SubPostsView extends CollectionView
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
+      
     modelView: SubPostView
-
-    initialize: (options) ->
-      load_css()
-      super options

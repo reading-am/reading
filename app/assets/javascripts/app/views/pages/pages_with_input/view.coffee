@@ -8,7 +8,8 @@ define [
 ], ($, _, Backbone, Post, PagesView, template) ->
 
   class PagesWithInputView extends Backbone.View
-    @parse_template template
+    @assets
+      template: template
 
     events:
       "submit form": "submit"

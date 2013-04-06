@@ -6,15 +6,16 @@ define [
   "app/views/posts/post_on_page/view"
   "text!app/views/posts/posts_grouped_by_user/template.mustache"
   "text!app/views/posts/posts_grouped_by_user/styles.css"
-], (_, CollectionView, Post, Posts, PostOnPageView, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (_, CollectionView, Post, Posts, PostOnPageView, template, styles) ->
 
   class PostsGroupedByUserView extends CollectionView
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
+      
     modelView: PostOnPageView
 
     initialize: (options) ->
-      load_css()
       @filtered = new Posts
       super options
 

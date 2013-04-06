@@ -6,4 +6,5 @@ define [
 
   class PagesView extends CollectionView
     modelView: PageRowView
-    @parse_template template
+    @assets
+      template: template

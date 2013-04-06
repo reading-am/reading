@@ -1,21 +1,17 @@
 define [
-  "underscore"
-  "jquery"
   "app/views/posts/post/view"
   "app/constants"
   "app/views/users/user/view"
   "text!app/views/posts/post_on_page/template.mustache"
   "text!app/views/posts/post/styles.css"
-], (_, $, PostView, Constants, UserView, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (PostView, Constants, UserView, template, styles) ->
 
   class PostOnPageView extends PostView
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     initialize: ->
-      # because we don't call super(), this CSS needs to be loaded
-      load_css()
-
       @model.on "change", @render, this
       @model.on "remove", @remove
 

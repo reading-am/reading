@@ -6,7 +6,8 @@ define [
 ], (Backbone, User, UsersView, template) ->
 
   class FindPeopleView extends Backbone.View
-    @parse_template template
+    @assets
+      template: template
 
     initialize: (options) ->
       @collection.bind "reset", @reset

@@ -4,7 +4,8 @@ define [
 ], (Backbone, template) ->
 
   class AdminHeaderView extends Backbone.View
-    @parse_template template
+    @assets
+      template: template
 
     initialize: (options) ->
       @section = options.section

@@ -16,11 +16,12 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (_, $, Backbone, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, styles) ->
 
   class CommentView extends Backbone.View
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     events:
       "click .r_permalink": "new_window"
@@ -32,8 +33,6 @@ define [
       "click a.r_url:not(.r_mention)": "new_window"
 
     initialize: (options) ->
-      load_css()
-
       @model.bind "change", @render, this
       @model.bind "destroy", @remove, this
       @model.bind "remove", @remove, this

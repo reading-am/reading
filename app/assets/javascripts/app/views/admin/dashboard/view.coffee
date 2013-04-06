@@ -1,5 +1,4 @@
 define [
-  "underscore"
   "jquery"
   "backbone"
   "app/collections/users"
@@ -10,15 +9,14 @@ define [
   "app/views/comments/comments/view"
   "text!app/views/admin/dashboard/template.mustache"
   "text!app/views/admin/dashboard/styles.css"
-], (_, $, Backbone, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], ($, Backbone, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, styles) ->
 
   class DashboardView extends Backbone.View
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     initialize: ->
-      load_css()
-
       users = new Users
       users.comparator = (user) -> -user.get("id")
       @users_view = new UsersView collection: users

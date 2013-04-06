@@ -1,22 +1,20 @@
 define [
-  "underscore"
   "jquery"
   "backbone"
   "text!app/views/components/titlecard/template.mustache"
   "text!app/views/components/titlecard/styles.css"
   "extend/jquery/waypoints.min"
-], (_, $, Backbone, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], ($, Backbone, template, styles) ->
 
   class Titlecard extends Backbone.View
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     events:
       "click": "scroll_to_top"
 
     initialize: ->
-      load_css()
-
       $.waypoints.settings.scrollThrottle = 30
       $("body").waypoint (event, direction) =>
         if direction is "down"

@@ -11,7 +11,8 @@ define [
 ], ($, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
 
   class PageRowView extends ModelView
-    @parse_template template
+    @assets
+      template: template
       
     events:
       "click .posts_icon": "show_posts"

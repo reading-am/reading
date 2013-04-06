@@ -1,6 +1,6 @@
 define [
-  "jquery"
   "underscore"
+  "jquery"
   "backbone"
   "libs/keymaster"
   "app/views/comments/comments/view"
@@ -12,18 +12,18 @@ define [
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], ($, _, Backbone, Key, CommentsView, Post, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (_, $, Backbone, Key, CommentsView, Post, template, styles) ->
 
   class CommentsWithInputView extends Backbone.View
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     events:
       "keydown textarea"  : "stop_propagation"
       "keypress textarea" : "delegate_keys"
 
     initialize: (options) ->
-      load_css()
       @subview = new CommentsView collection: @collection
       @user = options.user
       @post = options.post

@@ -1,23 +1,21 @@
 define [
-  "underscore"
-  "jquery"
   "app/views/components/popover/view"
   "app/models/provider"
   "app/collections/providers"
   "app/views/providers/providers/view"
   "text!app/views/components/share_popover/template.mustache"
   "text!app/views/components/share_popover/styles.css"
-], (_, $, Popover, Provider, Providers, ProvidersView, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (Popover, Provider, Providers, ProvidersView, template, styles) ->
 
   class SharePopover extends Popover
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     events:
       "click" : "close"
 
     initialize: (options) ->
-      load_css()
       super options
 
       popup = (url, width, height) ->

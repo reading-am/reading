@@ -5,7 +5,8 @@ define [
 ], (Backbone, CommentPopover, template) ->
 
   class ShowView extends Backbone.View
-    @parse_template template
+    @assets
+      template: template
 
     render: ->
       @popover = new CommentPopover model: @model

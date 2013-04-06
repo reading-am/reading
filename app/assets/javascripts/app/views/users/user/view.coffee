@@ -1,25 +1,23 @@
 define [
-  "underscore"
-  "jquery"
   "app/views/base/model"
   "app/constants"
   "app/views/users/popover/view"
   "text!app/views/users/user/template.mustache"
   "text!app/views/users/user/styles.css"
-], (_, $, ModelView, Constants, UserPopoverView, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (ModelView, Constants, UserPopoverView, template, styles) ->
 
   is_retina = window.devicePixelRatio > 1
 
   class UserView extends ModelView
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     events:
       "click a:not(.r_tagalong)" : "show"
 
     initialize: (options) ->
       @size = options.size ? "medium"
-      load_css()
       super options
 
     show: ->

@@ -15,7 +15,8 @@ define [
   inactive = "r_inactive"
 
   class BookmarkletAppView extends Backbone.View
-    @parse_template template
+    @assets
+      template: template
 
     events:
       "click #r_yep, #r_nope" : "set_yn"

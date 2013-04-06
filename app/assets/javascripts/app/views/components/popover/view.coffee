@@ -1,20 +1,17 @@
 define [
-  "underscore"
   "jquery"
   "backbone"
   "text!app/views/components/popover/template.mustache"
   "text!app/views/components/popover/styles.css"
-], (_, $, Backbone, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], ($, Backbone, template, styles) ->
 
   class Popover extends Backbone.View
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
 
     events:
       "click .r_blocker" : "close"
-
-    initialize: ->
-      load_css()
 
     close: ->
       $("body > .r_disabled").removeClass "r_disabled"

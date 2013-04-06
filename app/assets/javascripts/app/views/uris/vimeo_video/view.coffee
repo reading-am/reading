@@ -1,20 +1,16 @@
 define [
-  "underscore"
-  "jquery"
   "app/views/uris/uri/view"
   "app/init"
   "text!app/views/uris/vimeo_video/template.mustache"
   "text!app/views/uris/vimeo_video/styles.css"
-], (_, $, URIView, App, template, css) ->
-  load_css = _.once(=>$("<style>").html(css).appendTo("head"))
+], (URIView, App, template, styles) ->
 
   class VimeoVideoView extends URIView
-    @parse_template template
+    @assets
+      styles: styles
+      template: template
+      
     attributes: {}
-
-    initialize: (options) ->
-      load_css()
-      super options
 
   App.Views.URIs.VimeoVideo = VimeoVideoView
   return VimeoVideoView

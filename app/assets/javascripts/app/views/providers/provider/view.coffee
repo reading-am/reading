@@ -6,7 +6,8 @@ define [
 ], (ModelView, Post, Comment, template) ->
 
   class ProviderView extends ModelView
-    @parse_template template
+    @assets
+      template: template
 
     events:
       "click" : "run"

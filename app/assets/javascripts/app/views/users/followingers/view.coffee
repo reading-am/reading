@@ -5,7 +5,8 @@ define [
 ], (Backbone, UsersView, template) ->
 
   class FollowingersView extends Backbone.View
-    @parse_template template
+    @assets
+      template: template
 
     initialize: (options) ->
       @followers = options.followers

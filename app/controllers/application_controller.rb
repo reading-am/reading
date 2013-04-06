@@ -5,8 +5,11 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device, :set_headers, :migrate_auth_token, :check_signed_in
-  helper_method :mobile_device?, :desktop_device?
+  before_filter :protect_staging, :check_domain, :set_user_device,
+                :set_headers, :migrate_auth_token, :check_signed_in,
+                :set_bot
+
+  helper_method :mobile_device?, :desktop_device?, :bot?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
@@ -59,6 +62,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def bot?
+    if @bot.nil?
+    end
+    @bot
+  end
+
   def is_mobile_safari_request? # from: http://www.ibm.com/developerworks/opensource/library/os-eclipse-iphoneruby1/
     request.user_agent =~ /(Mobile\/.+Safari)/
   end
@@ -67,6 +76,14 @@ class ApplicationController < ActionController::Base
     if !request.user_agent then return false end
     ua = request.user_agent.downcase
     ua.index('iphone') || ua.index('ipod')
+  end
+
+  def set_bot
+    @bot = ['msnbot','yahoo! slurp','googlebot','bingbot','duckduckbot'].detect {|bot| request.user_agent.include? bot }
+  end
+
+  def bot?
+    !@bot.blank?
   end
 
   def set_user_device

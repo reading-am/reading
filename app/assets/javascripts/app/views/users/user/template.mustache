@@ -1,8 +1,10 @@
 <div class="r_user">
   <a href="{{url}}" class="r_size_{{size}}">
+    {{#avatar}}
     <div class="r_avatar">
       <img src="{{avatar}}">
     </div>
+    {{/avatar}}
     <div class="r_info">
       <span class="r_name">{{display_name}}</span>
       {{#username}}<span class="r_username">@{{username}}</span>{{/username}}

@@ -11,7 +11,7 @@ define [
       styles: styles
       template: template
 
-    initialize: ->
+    initialize: (options) ->
       @model.on "change", @render, this
       @model.on "remove", @remove
 

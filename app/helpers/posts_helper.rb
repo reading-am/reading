@@ -31,6 +31,14 @@ module PostsHelper
         _post[:user].delete(:username)
         _post[:user].delete(:bio)
 
+        if post.referrer_post_id
+          _post[:referrer_post][:user][:size] = "small"
+          _post[:referrer_post][:user].delete(:username)
+          _post[:referrer_post][:user].delete(:bio)
+        else
+          _post.delete(:referrer_post)
+        end
+
         _page[:posts] << _post
       end
       _page[:has_comments] = _page[:comments_count] > 0

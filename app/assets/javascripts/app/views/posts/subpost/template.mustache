@@ -5,6 +5,7 @@
     </div>
     <div class="r_post_bg">
       {{#user}}{{>users/user/template}}{{/user}} is reading this
+      {{#referrer_post.user}}because of {{>users/user/template}}{{/referrer_post.user}}
     </div>
   </div>
 </li>

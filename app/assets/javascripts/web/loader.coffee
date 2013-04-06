@@ -35,24 +35,6 @@ require [
     framed = window.top isnt window
     $("body").addClass("framed") if framed
 
-    $("a.external").on "click", ->
-      $this = $(this)
-      link_host = @href.split("/")[2]
-      document_host = document.location.href.split("/")[2]
-      base58_id = (if typeof $this.data("base58-id") isnt "undefined" then $this.data("base58-id") else "")
-      if link_host isnt document_host
-        if framed # used in the user popover in offsite in the bookmarklet
-          pre = "//#{document_host}/"+(if base58_id then "p/#{base58_id}/" else "")
-          window.top.location = pre+@href
-        else
-          if User::current.logged_in()
-            post = new Post
-              url: @href
-              referrer_id: (if base58_id then base58.decode(base58_id) else "")
-            post.save()
-          window.open @href
-        false
-
     $(".footnote").on "click", ->
       window.open $(this).data("url"), "footnote", "location=0,status=0,scrollbars=0,width=900,height=400"
       false

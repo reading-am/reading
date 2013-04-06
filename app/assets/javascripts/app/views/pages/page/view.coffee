@@ -9,3 +9,11 @@ define [
     @assets
       styles: styles
       template: template
+
+    render: =>
+      json = @model.toJSON()
+      if @model.posts.size
+        json.url = @model.posts.first().get("wrapped_url")
+
+      @$el.html(@template json)
+      return this

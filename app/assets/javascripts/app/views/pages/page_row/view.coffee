@@ -19,7 +19,7 @@ define [
       "click .comments_icon": "show_comments"
 
     initialize: ->
-      @page_view = new PageView model: @model, tagName: "div"
+      @page_view = new PageView model: @model
       @posts_view = new SubPostsView collection: @model.posts
       @comments_view = new CommentsWithInputView
         collection: @model.comments

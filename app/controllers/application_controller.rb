@@ -79,7 +79,21 @@ class ApplicationController < ActionController::Base
   end
 
   def set_bot
-    @bot = ['msnbot','yahoo! slurp','googlebot','bingbot','duckduckbot'].detect {|bot| request.user_agent.include? bot }
+    agents = [
+      'msnbot',
+      'yahoo',
+      'y!', # Yahoo Japan
+      'google',
+      'bingbot',
+      'duckduckbot',
+      'yandex',
+      'teoma', # Ask.com
+      'baidu',
+      'gigabot',
+      'ia_archiver', # Alexia and Archive.org
+      'asterias', # AOL
+    ]
+    @bot = agents.detect {|bot| request.user_agent.include? bot }
   end
 
   def bot?

@@ -5,7 +5,7 @@ props[:model] = model.simple_obj if defined? model
 props[:collection] = collection.collect{|v| v.simple_obj} if defined? collection
 %>
 
-<script type="text/javascript">
+<script>
 
 <%= requirejs %>(["backbone", "app/routers/<%= router %>"], function(Backbone, Router){
   new Router(<%- if props.length > 0 %>

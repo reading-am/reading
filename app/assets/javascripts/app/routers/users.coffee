@@ -6,11 +6,12 @@ define [
   "app/collections/pages"
   "app/views/users/show/view"
   "app/views/users/subnav/view"
+  "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], ($, Backbone, User, Users, Pages, UserShowView, UserSubnavView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, Pages, UserShowView, UserSubnavView, PagesView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -45,10 +46,13 @@ define [
         el: $("#subnav")
 
       if username is User::current.get("username")
-        @pages_with_input_view = new PagesWithInputView
+        @pages_view = new PagesWithInputView
+          collection: @collection
+      else
+        @pages_view = new PagesView
           collection: @collection
 
-        $("#subnav").after @pages_with_input_view.render().el
+        $("#subnav").after @pages_view.render().el
 
     edit: ->
       @view = new UserEditView

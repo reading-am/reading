@@ -7,5 +7,5 @@ define [
 
   class PageView extends ModelView
     @assets
-      template: template
       styles: styles
+      template: template

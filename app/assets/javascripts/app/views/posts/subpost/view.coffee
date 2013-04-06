@@ -22,6 +22,8 @@ define [
       super()
 
       if @ref_user_view?
-        @$el.find(".r_post_bg").append @ref_user_view.render().$el.prepend("because of ")
+        @$el.find(".r_post_bg")
+          .append(" because of ")
+          .append(@ref_user_view.render().el)
 
       return this

@@ -52,7 +52,7 @@ define [
         @pages_view = new PagesView
           collection: @collection
 
-        $("#subnav").after @pages_view.render().el
+      $("#subnav").after @pages_view.render().el
 
     edit: ->
       @view = new UserEditView

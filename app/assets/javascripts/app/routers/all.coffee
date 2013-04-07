@@ -5,6 +5,7 @@
 require [
   "app/routers/comments"
   "app/routers/users"
+  "app/routers/posts"
   "app/routers/hooks"
   "app/routers/admin"
 ], ->

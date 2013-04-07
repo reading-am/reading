@@ -14,7 +14,7 @@ define [
   Backbone.Model::factory = (input) ->
     if _.isArray input
       input = (Backbone.Model::factory val for val in input)
-      if _.isObject input[0] and input[0].type? and _.isFunction App.Collections["#{input[0].type}s"]
+      if _.isObject(input[0]) and input[0].type? and _.isFunction App.Collections["#{input[0].type}s"]
         input = new App.Collections["#{input[0].type}s"](input)
     else if input instanceof Object and (input not instanceof Backbone.Model and input not instanceof Backbone.Collection)
       for prop, val of input

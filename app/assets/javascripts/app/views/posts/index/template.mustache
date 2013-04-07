@@ -12,12 +12,12 @@
       <h3>Stuff people are reading on {{name}}</h3>
     {{/domain}}
     {{^domain}}
-      {{#signed_in?}}
+      {{#signed_in}}
         <h3>Posts from everyone on Reading</h3>
-      {{/signed_in?}}
-      {{^signed_in?}}
+      {{/signed_in}}
+      {{^signed_in}}
         <h3>Some people are reading this stuff</h3>
-      {{/signed_in?}}
+      {{/signed_in}}
     {{/domain}}
     </div>
   </div>

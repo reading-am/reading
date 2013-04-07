@@ -5,6 +5,7 @@ define [
   "libs/keymaster"
   "app/views/comments/comments/view"
   "app/models/post"
+  "app/models/user_with_current"
   "text!app/views/comments/comments_with_input/template.mustache"
   "text!app/views/comments/comments_with_input/styles.css"
   "jquery_ui"
@@ -12,7 +13,7 @@ define [
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], (_, $, Backbone, Key, CommentsView, Post, template, styles) ->
+], (_, $, Backbone, Key, CommentsView, Post, User, template, styles) ->
 
   class CommentsWithInputView extends Backbone.View
     @assets
@@ -120,7 +121,7 @@ define [
               finish following
 
     render: =>
-      @$el.html(@template())
+      @$el.html(@template({signed_in: User::current.signed_in()}))
           .append(@subview.render().el)
 
       @textarea = @$("textarea")

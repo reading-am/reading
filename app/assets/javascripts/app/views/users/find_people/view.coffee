@@ -32,7 +32,7 @@ define [
     render: ->
       data =
         query:     @collection.query
-        logged_in: User::current.logged_in()
+        signed_in: User::current.signed_in()
 
       data[@section] = true
 

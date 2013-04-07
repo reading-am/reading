@@ -13,7 +13,7 @@ define [
       @has_many "Followers", "Users"
       @has_many "Expats", "Users"
 
-    logged_in: ->
+    signed_in: ->
       return Boolean @get "id"
 
   App.Models.User = User

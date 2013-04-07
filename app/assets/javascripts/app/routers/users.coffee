@@ -5,12 +5,13 @@ define [
   "app/collections/users"
   "app/views/users/show/view"
   "app/views/users/subnav/view"
+  "app/views/users/settings_subnav/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], ($, Backbone, User, Users, UserShowView, UserSubnavView, PagesView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -22,6 +23,7 @@ define [
     routes:
       ":username(/list)(/page/:page)" : "show"
       "settings/info"         : "edit"
+      "settings/extras"       : "extras"
       ":username/followers"   : "followers"
       ":username/following"   : "following"
       "users/recommended"     : "recommended"
@@ -46,9 +48,16 @@ define [
       $("#subnav").after @pages_view.render().el
 
     edit: ->
+      @settings_subnav_view = new SettingsSubnavView
+        el: $("#subnav")
+
       @view = new UserEditView
         el: $(".container")
         model: @model
+
+    settings: ->
+      @settings_subnav_view = new SettingsSubnavView
+        el: $("#subnav")
 
     followers: -> @followingers true
     following: -> @followingers false

@@ -9,7 +9,6 @@ define [
 
     events:
       "keyup #user_password"  : "toggle_password_fields"
-      "click #signout"        : "signout"
       "click #user_delete a"  : "destroy"
 
     initialize: ->
@@ -25,9 +24,6 @@ define [
         @$password_fields.slideDown()
       else
         @$password_fields.slideUp()
-
-    signout: ->
-      confirm "Are you sure you want to sign out?"
 
     destroy:(e) ->
       @$destroy       ?= $(e.currentTarget)

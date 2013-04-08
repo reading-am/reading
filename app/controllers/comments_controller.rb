@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
   # GET /comments/1
   # GET /comments/1.json
   def show
-    @comment = Comment.find(params[:id])
+    @comment = Comment.fetch(params[:id])
 
     if @comment.user.username != params[:username]
       redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
 
 
   def shortener
-    @comment = Comment.find(Base58.decode(params[:id]))
+    @comment = Comment.fetch(Base58.decode(params[:id]))
     redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
   end
 

@@ -35,4 +35,8 @@ Reading::Application.configure do
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   # Needed by Devise
   config.action_mailer.default_url_options = { :host => DOMAIN }
+
+  # Model Caching
+  config.identity_cache_store = :mem_cache_store, Memcached::Rails.new(:servers => ["localhost:11211"])
+
 end

@@ -8,7 +8,7 @@ gem 'rails', '3.2.12'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli' # Memcache
+gem 'memcached'
 gem 'sunspot_rails' # Solr
 
 #############
@@ -24,6 +24,7 @@ gem 'base58'
 #####################
 # Ruby Conveniences #
 #####################
+gem 'identity_cache' # model caching
 gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'

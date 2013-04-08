@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     else
       @user = params[:username] ?
         User.find_by_username(params[:username]) :
-        User.find(params[:id])
+        User.fetch(params[:id])
       if !@user then not_found end
 
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
@@ -79,7 +79,7 @@ class UsersController < ApplicationController
   end
 
   def tagalong
-    @user = User.find(params[:user_id])
+    @user = User.fetch(params[:user_id])
 
     case params[:dir]
     when "next"

@@ -11,7 +11,7 @@ class Api::PagesController < Api::APIController
   end
 
   def show
-    @page = Page.find(params[:id])
+    @page = Page.fetch(params[:id])
 
     respond_to do |format|
       format.json { render_json :page => @page.simple_obj }

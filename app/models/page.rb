@@ -1,9 +1,14 @@
 class Page < ActiveRecord::Base
+  include IdentityCache
   belongs_to :domain, :counter_cache => true
   has_one  :readability_data, :dependent => :destroy
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
   has_many :comments, :dependent => :destroy
+
+  cache_has_many :posts, embed: true
+  # cache_has_many :users, embed: true, :inverse_name => :user # TODO (david) :through issue
+  cache_has_many :comments, embed: true
 
   validates_presence_of :url, :domain
   validates_associated :domain

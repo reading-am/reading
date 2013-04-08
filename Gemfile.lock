@@ -111,6 +111,8 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.3.3)
+    ar_transaction_changes (0.0.1)
+      activerecord (>= 3.0.0)
     arel (3.0.2)
     awesome_print (1.0.2)
     aws-sdk (1.7.1)
@@ -144,6 +146,7 @@ GEM
       activesupport (>= 3.2.0)
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
+    cityhash (0.6.0)
     clipboard (1.0.1)
     cocaine (0.4.2)
     coderay (1.0.9)
@@ -163,7 +166,6 @@ GEM
       addressable
     curb (0.8.3)
     daemons (1.1.9)
-    dalli (2.6.0)
     debug_inspector (0.0.2)
     debugger (1.5.0)
       columnize (>= 0.3.1)
@@ -241,6 +243,9 @@ GEM
       multi_xml
     httpauth (0.2.0)
     i18n (0.6.4)
+    identity_cache (0.0.1)
+      ar_transaction_changes (= 0.0.1)
+      cityhash (= 0.6.0)
     interactive_editor (0.0.10)
       spoon (>= 0.0.1)
     irbtools (1.4.0)
@@ -291,6 +296,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcached (1.5.0)
     method_locator (0.0.4)
     method_source (0.8.1)
     methodfinder (1.2.5)
@@ -550,7 +556,6 @@ DEPENDENCIES
   crack
   curb (~> 0.8.0)
   daemons
-  dalli
   debugger
   delayed_job (= 3.0.1)
   delayed_job_active_record
@@ -562,6 +567,7 @@ DEPENDENCIES
   girl_friday
   hipchat
   hirefireapp
+  identity_cache
   instapaper!
   irbtools
   jquery-rails
@@ -569,6 +575,7 @@ DEPENDENCIES
   koala
   konacha (~> 1.0)
   less-rails
+  memcached
   musterb!
   newrelic_rpm
   nilify_blanks

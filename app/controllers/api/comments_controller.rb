@@ -32,7 +32,7 @@ class Api::CommentsController < Api::APIController
   # GET /comments/1
   # GET /comments/1.json
   def show
-    @comment = Comment.find(params[:id])
+    @comment = Comment.fetch(params[:id])
 
     respond_to do |format|
       format.json { render_json :comment => @comment }
@@ -53,9 +53,9 @@ class Api::CommentsController < Api::APIController
       end
     else
       # Note - an associated post is not required
-      @comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
+      @comment.post  = Post.fetch(params[:model][:post_id]) unless params[:model][:post_id].blank?
       @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-      @comment.page  = Page.find(params[:model][:page_id])
+      @comment.page  = Page.fetch(params[:model][:page_id])
       @comment.body  = params[:model][:body]
     end
 
@@ -74,7 +74,7 @@ class Api::CommentsController < Api::APIController
   # PUT /comments/1.json
   def update
     @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @comment = Comment.find(params[:id])
+    @comment = Comment.fetch(params[:id])
 
     respond_to do |format|
       if @user != @comment.user
@@ -92,7 +92,7 @@ class Api::CommentsController < Api::APIController
   # DELETE /comments/1.json
   def destroy
     @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @comment = Comment.find(params[:id])
+    @comment = Comment.fetch(params[:id])
 
     @comment.destroy if @user == @comment.user
 

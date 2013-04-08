@@ -10,7 +10,7 @@ class Api::PostsController < Api::APIController
       if params[:type] == "following"
         # list events from users the user is following
         # users/1/following/events
-        @user = User.find(params[:user_id])
+        @user = User.fetch(params[:user_id])
         @posts = @user.feed
       else
         # list a user's posts
@@ -48,7 +48,7 @@ class Api::PostsController < Api::APIController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    @post = Post.find(params[:id])
+    @post = Post.fetch(params[:id])
 
     respond_to do |format|
       format.json { render_json :post => @post.simple_obj }
@@ -105,7 +105,7 @@ class Api::PostsController < Api::APIController
   # PUT /posts/1
   # PUT /posts/1.xml
   def update
-    @post = Post.find(params[:id])
+    @post = Post.fetch(params[:id])
     user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
     if allowed = (user == @post.user) and !params[:model].nil?
@@ -127,7 +127,7 @@ class Api::PostsController < Api::APIController
   # DELETE /posts/1.json
   def destroy
     @user = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @post = Post.find(params[:id])
+    @post = Post.fetch(params[:id])
 
     @post.destroy if @user == @post.user
 

@@ -22,6 +22,7 @@
     </div>
   </div>
 {{/user}}
+{{#has_posts}}
 <div id="yield">
   {{^pages}}
   <div class="row">
@@ -32,6 +33,7 @@
   {{/pages}}
   {{>pages/pages/template}}
 </div>
+{{/has_posts}}
 
 <div id="posts_footer" class="row">
   <div class="span5 offset1">{{{pagination}}}</div>

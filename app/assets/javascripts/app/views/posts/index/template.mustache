@@ -23,6 +23,13 @@
   </div>
 {{/user}}
 <div id="yield">
+  {{^pages}}
+  <div class="row">
+    <div class="span6 offset1 r_loading">
+      Loading...
+    </div>
+  </div>
+  {{/pages}}
   {{>pages/pages/template}}
 </div>
 

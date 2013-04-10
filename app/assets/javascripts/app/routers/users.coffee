@@ -45,7 +45,7 @@ define [
         @pages_view = new PagesView
           collection: @collection
 
-      $("#subnav").after @pages_view.render().el
+      $("#yield").append @pages_view.render().el
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

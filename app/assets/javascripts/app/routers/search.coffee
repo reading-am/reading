@@ -4,12 +4,12 @@ define [
   "app/views/pages/pages/view"
 ], ($, Backbone, PagesView) ->
 
-  class PostsRouter extends Backbone.Router
+  class SearchRouter extends Backbone.Router
     initialize: (options) ->
       @collection = options.collection
 
     routes:
-      "(everybody)" : "index"
+      "search" : "index"
 
     index: ->
       @pages_view = new PagesView

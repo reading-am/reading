@@ -28,10 +28,14 @@
       :avatar_link_target         => has_avatar ? "_blank" : false,
       :avatar_img_url             => @user.avatar.url(:medium),
       :you_or_name                => @user == current_user ? 'you' : @user.first_name,
-      :follow_text                => current_user.following?(@user) ? 'unfollow' : 'follow',
-      :bookmarklet_url            => bookmarklet_url(current_user),
+      :follow_text                => signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
       :has_followed               => @user.following.size > 0
     })
+    if @user == current_user
+      locals.merge!({
+        :bookmarklet_url          => bookmarklet_url(current_user),
+      })
+    end
   end
 
   render :file => 'posts/index/template', :locals => locals

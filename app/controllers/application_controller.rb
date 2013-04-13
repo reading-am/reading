@@ -29,12 +29,13 @@ class ApplicationController < ActionController::Base
   end
 
   def set_headers
-    if request.format == 'rss'
-      # settings borrowed from Twitter's RSS headers: https://twitter.com/statuses/user_timeline/27260086.rss
-      response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
-      response.headers["Pragma"] = "no-cache"
-      response.headers["Keep-Alive"] = "timeout=15, max=100"
-    end
+    set_no_cache_headers if request.format == 'rss'
+  end
+  
+  def set_no_cache_headers
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate, pre-check=0, post-check=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
   def migrate_auth_token

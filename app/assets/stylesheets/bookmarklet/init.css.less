@@ -1,0 +1,121 @@
+@import "variables";
+@import "mixins";
+
+.r_reset { .minimal_reset(); }
+
+#r_iframe, #r_body {
+  width:100%;
+  height:100%;
+  border:0;
+  margin:0;
+  padding:0;
+}
+
+#r_am {
+  @import "./../javascripts/app/views/users/user/styles.css.less";
+  display:none;
+  z-index:@zmax;
+  position:fixed;
+  top:15px;
+  right:15px;
+  &, * { .r_reset; }
+  img {
+    display:inline-block;
+  }
+  #r_wrp {
+    overflow:hidden;
+    height:75px;
+    width:50px;
+    padding:0 10px;
+  }
+  #r_wrp, #r_other, #r_readers, #r_readers li, .r_comment {
+    float:right;
+    clear:both;
+  }
+  #r_wrp, #r_other {
+    background:@yellow;
+  }
+  #r_other {
+    display:none;
+  	margin-top: 6px;
+  }
+  #r_icon, #r_subtext {
+    text-align:center;
+  }
+  #r_icon {
+    font-size:56px;
+    line-height:0;
+    margin:26px 0 25px;
+  }
+  .r_submitted #r_icon {
+    color:@yellow !important;
+  }
+  #r_actions {
+    margin:15px 0 0;
+    width:154px;
+    line-height:32px;
+  }
+  #r_actions a {
+    padding:2px;
+  }
+  #r_wrp, #r_readers {
+    a {
+      display:inline-block;
+    }
+  }
+  a:hover, .r_active, &.r_yep #r_yep, &.r_nope #r_nope {
+    background:@white;
+  }
+  #r_actions .r_inactive, &.r_yep #r_nope, &.r_nope #r_yep {
+    text-decoration:line-through;
+  }
+  ul {
+    margin:3px 0 0 0;
+  }
+  li {
+    margin:3px 0;
+  }
+  #r_readers {
+    display:none;
+  }
+  #r_nope {
+    margin:0 3px 0 0;
+  }
+  a#r_share {
+    margin:0 3px;
+    padding:2px 8px 3px;
+    border-left:1px dotted @black;
+    border-right:1px dotted @black;
+  }
+  #r_close {
+    margin:0 0 0 3px;
+  }
+  .r_user a, #r_other {
+    padding:0 8px;
+    line-height:25px;
+  }
+  .r_user {
+    a {
+      padding-left:0;
+    }
+    img {
+      vertical-align:middle;
+      max-width:25px;
+      max-height:25px;
+    }
+  }
+  .r_popped_over {
+    overflow:hidden;
+  }
+  .r_quoted {
+    color:@black !important;
+    background:@ghost_grey;
+    &:hover {
+      text-decoration:underline;
+    }
+  }
+}
+.r_quote {
+  color: @black !important;
+  background-color: rgba(255,255,0,.5) !important;
+}

@@ -1,0 +1,6 @@
+(function(){
+  var head = document.getElementsByTagName('head')[0],
+      script = document.createElement('script');
+  script.src = '<%= "#{Rails.env == 'production' ? 'https' : 'http'}://#{DOMAIN}#{asset_path('bookmarklet/init.js')}" %>';
+  head.appendChild(script);
+})();

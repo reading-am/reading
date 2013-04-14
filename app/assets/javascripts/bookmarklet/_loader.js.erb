@@ -1,6 +1,12 @@
+<%
+    manifest = {}
+    yaml = YAML.load(File.new("#{Rails.root}/public/assets/rjs_manifest.yml")) rescue {}
+    yaml.each {|key, val| manifest[key[0..-4]] = val[0..-4] }
+%>
 (function(){
+  reading.manifest = <%= manifest.to_json.html_safe %>;
   var head = document.getElementsByTagName('head')[0],
       script = document.createElement('script');
-  script.src = '<%= "#{Rails.env == 'production' ? 'https' : 'http'}://#{DOMAIN}#{asset_path('bookmarklet/init.js')}" %>';
+  script.src = '<%= "//#{DOMAIN}#{asset_path('bookmarklet/init.js')}" %>';
   head.appendChild(script);
 })();

@@ -1,0 +1,77 @@
+<div id="blank_slate" class="row section">
+  <div class="span7 offset1">
+  {{#is_current_user}}
+    {{#viewing_posts}}{{^has_posts}}
+      <p>
+        <h3>
+          This is where you'll see the things you post to Reading,
+          but you haven't posted anything yet.
+        </h3>
+      </p>
+    {{/has_posts}}{{/viewing_posts}}
+    {{#viewing_list}}
+      <p>
+        <h3>
+          This is where you'll see your own posts and the posts from people you follow,
+          {{^has_followed}}but you're not following anyone yet.{{/has_followed}}
+          {{#has_followed}}but you haven't posted anything that you're reading yet.{{/has_followed}}
+        </h3>
+      </p>
+    {{/viewing_list}}
+    {{^has_posts}}
+    <p>
+      To begin adding posts to your profile,
+      {{#browser_chrome}}install the Chrome Extension.{{/browser_chrome}}
+      {{#browser_safari}}install the Safari Extension.{{/browser_safari}}
+      {{#browser_firefox}}install the Firefox Extension.{{/browser_firefox}}
+      {{^browser_chrome}}{{^browser_safari}}{{^browser_firefox}}
+        drag this link to your bookmarks bar.
+      {{/browser_firefox}}{{/browser_safari}}{{/browser_chrome}}
+    </p>
+    <div class="well">
+      {{^browser_has_extension}}
+        <a href="{{bookmarklet_url}}" class="btn">&#9996; Reading</a>
+      {{/browser_has_extension}}
+      {{#browser_chrome}}{{extension_install_chrome}}{{/browser_chrome}}
+      {{#browser_safari}}{{extension_install_safari}}{{/browser_safari}}
+      {{#browser_firefox}}{{extension_install_firefox}}{{/browser_firefox}}
+    </div>
+    <p>
+      Or, alternately,
+      {{#browser_has_extension}}
+        you can use this bookmarklet in any browser by dragging it to your bookmarks bar:
+        <a href="{{bookmarklet_url}}" class="btn">&#9996; Reading</a>
+      {{/browser_has_extension}}
+      {{^browser_has_extension}}
+        if you have one of these browsers, you can install our extension:
+        {{extension_install_chrome}}
+        {{extension_install_safari}}
+        {{extension_install_firefox}}
+      {{/browser_has_extension}}
+    </p>
+    <p>
+      When you visit a webpage, press that button before you start reading so your friends can come read with you.
+      That's it, but also:
+      <ul>
+        <li>Don't wait until after you've read it.</li>
+        <li>Don't think too much about it.</li>
+        <li>Don't worry about whether the content is good or bad or boring or interesting,<br> everyone else will figure that out for themselves.</li>
+      </ul>
+    </p>
+    {{/has_posts}}
+  {{/is_current_user}}
+  {{^is_current_user}}
+    <h4>
+      {{#viewing_posts}}{{^has_posts}}
+        {{display_name}} hasn't posted anything yet.
+      {{/has_posts}}{{/viewing_posts}}
+      {{#viewing_list}}{{^has_posts}}
+        {{display_name}} hasn't posted anything yet.
+      {{/has_posts}}{{/viewing_list}}
+      {{#viewing_list}}{{^has_followed}}
+        {{display_name}} isn't following anyone yet.
+      {{/has_followed}}{{/viewing_list}}
+    </h4>
+  {{/is_current_user}}
+  </div>
+</div>

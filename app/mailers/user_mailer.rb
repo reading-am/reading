@@ -14,6 +14,8 @@ class UserMailer < ApplicationMailer
     @enactor = comment.user
     @subject = subject
     @comment = comment
+    @url = @comment.post.blank? ? @comment.page.wrapped_url : @comment.post.wrapped_url
+
     mail(
       :to       => @subject.email,
       :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),
@@ -25,6 +27,8 @@ class UserMailer < ApplicationMailer
     @enactor = comment.user
     @subject = subject
     @comment = comment
+    @url = @comment.post.blank? ? @comment.page.wrapped_url : @comment.post.wrapped_url
+
     mail(
       :to       => @subject.email,
       :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),
@@ -61,10 +65,10 @@ class UserMailer < ApplicationMailer
     )
   end
 
-  def digest(user)
+  def digest(user, num_days=nil, limit=25)
     @user   = user
-    @posts  = @user.unread_since(@user.mail_digest.days.ago).limit(25)
-    #@posts  = @user.unread_since(9999.days.ago).limit(100) # for testing
+    num_days ||= @user.mail_digest
+    @posts  = @user.unread_since(num_days.days.ago).limit(limit)
     mail(
       :to       => @user.email,
       :subject  => "Your Reading Digest - #{Time.now.strftime("%b %d, %Y")}"

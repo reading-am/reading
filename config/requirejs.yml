@@ -11,7 +11,6 @@ preserveLicenseComments: false
 
 paths:
   requireLib: require
-  app:        backbone
   extend:     libs/extend
   jquery:     libs/jquery_extended
   jquery_ui:  libs/jquery_ui
@@ -21,7 +20,7 @@ paths:
   pusher:     libs/pusher_extended
 
 modules:
-  - name: web/loader
+  - name: web/init
     include:
       - requireLib
       - app/routers/all
@@ -33,11 +32,11 @@ modules:
       - libs/mustache
       - libs/pusher
 
-  - name: bookmarklet/loader
+  - name: bookmarklet/init
     create: true
     include:
       - requireLib
-      - bookmarklet/real_loader
+      - bookmarklet/real_init
     excludeShallow:
       - libs/jquery
       - libs/jquery_ui

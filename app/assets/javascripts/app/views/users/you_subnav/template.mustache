@@ -1,0 +1,9 @@
+<div id="subnav" class="row">
+  <nav class="span7 offset1">
+    <a rel="tooltip" data-title="What {{#is_current_user}}you've{{/is_current_user}}{{^is_current_user}}{{first_name}} has{{/is_current_user}} read" href="/{{username}}"{{#viewing_posts}} class="active"{{/viewing_posts}}>
+      {{#is_current_user}}Your{{/is_current_user}} Posts <span class="count"> &#8250; {{posts.size}}</span>
+    </a>
+    <a rel="tooltip" data-title="What {{you_or_name}} and people {{you_or_name}} follow{{^is_current_user}}s{{/is_current_user}} have read" href="/{{username}}/list"{{#viewing_list}} class="active"{{/viewing_list}}>Following Posts</a>
+    {{#is_current_user}}<a href="#" id="new_post_button">Post a Link</a>{{/is_current_user}}
+  </nav>
+</div>

@@ -60,14 +60,13 @@ Reading::Application.routes.draw do
   match "/pusher/auth" => "pusher#auth"
   match "/support/delete_cookies" => "users#delete_cookies"
 
-  match '/posts/create' => 'posts#create'
-  match '/posts/:id/update' => 'posts#update'
   resources :posts
 
-  match '/comments/create' => 'comments#create'
   match '/c/:id' => 'comments#shortener'
   match '/:username/comments/:id' => 'comments#show'
   resources :comments
+
+  match '/assets/bookmarklet/loader' => 'extras#bookmarklet_loader'
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional

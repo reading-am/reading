@@ -102,7 +102,7 @@ public
     url.include? "#!"
   end
 
-  # this has a JS companion in bookmarklet/real_loader.rb#get_title()
+  # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
     if loads_via_js
       title
@@ -215,7 +215,7 @@ public
   # http://www.metatags.org/all_metatags
   # http://en.wikipedia.org/wiki/Meta_element
   def meta_tags
-    # this has a JS companion in bookmarklet/real_loader.rb#get_meta_tags()
+    # this has a JS companion in bookmarklet/real_init.rb#get_meta_tags()
     if @tag_cache[:meta_tags].blank?
       @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
       regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
@@ -273,7 +273,7 @@ public
     remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
   end
 
-  # this has a JS companion in bookmarklet/real_loader.coffee#get_head_tags()
+  # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
   def remote_head_tags
     remote_html.search('title,meta,link:not([rel=stylesheet])')
   end
@@ -285,7 +285,7 @@ public
     protocol = "#{parsed_url.scheme}:"
     host = parsed_url.host
 
-    # this has a JS companion in bookmarklet/real_loader.coffee#get_url()
+    # this has a JS companion in bookmarklet/real_init.coffee#get_url()
     search = remote_html.search("link[rel=canonical][href!='']")
     if search.length > 0
       canonical = search.attr('href').to_s
@@ -344,10 +344,12 @@ public
       :url    => url,
       :title  => display_title,
       :image  => image,
-      :media_type   => media_type,
-      :description  => description,
-      :created_at   => created_at,
-      :updated_at   => updated_at
+      :media_type     => media_type,
+      :description    => description,
+      :posts_count    => posts_count,
+      :comments_count => comments_count,
+      :created_at     => created_at,
+      :updated_at     => updated_at
     }
   end
 end

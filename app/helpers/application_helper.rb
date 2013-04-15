@@ -72,4 +72,11 @@ module ApplicationHelper
     # this namespace must mirror what's in requirejs.yml
     "#{['production','staging'].include?(Rails.env) ? 'r_require.' : ''}require"
   end
+
+  def js_manifest
+    manifest = {}
+    yaml = YAML.load(File.new("#{Rails.root}/public/assets/rjs_manifest.yml")) rescue {}
+    yaml.each {|key, val| manifest[key[0..-4]] = val[0..-4] }
+    manifest.to_json.html_safe
+  end
 end

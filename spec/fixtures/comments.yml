@@ -1,3 +1,6 @@
+single_mention:
+  body: "This is a comment where @greg has been mentioned"
+
 single_show:
   body: "@greg"
 

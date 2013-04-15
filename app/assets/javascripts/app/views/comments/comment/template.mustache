@@ -1,0 +1,25 @@
+<li class="r_comment">
+  <div class="{{#is_a_show}}r_comment_shown{{/is_a_show}}">
+    <div class="r_comment_header">
+      <div class="r_author r_user"></div>
+      {{#is_a_show}}
+      <div class="r_showed_this_to">showed this to</div>
+      <div class="r_shown_user r_user">{{{body_html}}}</div>
+      {{/is_a_show}}
+      {{^is_a_show}}<time datetime="{{updated_at}}"></time>{{/is_a_show}}
+      <div class="r_comment_actions">
+        {{#is_owner}}<a href="#" class="r_destroy">Delete</a>{{/is_owner}}
+        {{^is_a_show}}
+        <a href="#" class="r_share">Share</a>
+        <a href="{{url}}" class="r_permalink">#</a>
+        {{/is_a_show}}
+      </div>
+    </div>
+    {{^is_a_show}}
+    <div class="r_comment_body">
+      <div class="r_tri"></div>
+      {{{body_html}}}
+    </div>
+    {{/is_a_show}}
+  </div>
+</li>

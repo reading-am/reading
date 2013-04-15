@@ -25,6 +25,16 @@
   word-wrap:break-word; /* legacy */
 }
 
+.circle(@size, @color){
+  display:block;
+	width: @size;
+	height: @size;
+	background: @color;
+  line-height:@size;
+  text-align:center;
+  .border-radius(@size/2);
+}
+
 // Triangle code from: https://github.com/stijnj/less-triangle/blob/master/less-triangle.less
 .triangle-base(@size){
   content: '';
@@ -85,4 +95,26 @@
 .speech_bubble(@bg_color, @color, @direction, @radius:2px, @angle:5px) when (@direction = bottom-left){
   .speech_bubble_base(@bg_color, @color, @radius, @angle, right);
   .r_tri { bottom:-@angle; left:@angle; }
+}
+
+.minimal_reset(){
+  padding:0;
+  margin:0;
+  color:@black !important;
+  background:none;
+  border:none;
+  height:auto;
+  width:auto;
+  font-family:"Helvetica Neue", helvetica, arial, sans-serif;
+  font-weight:normal;
+  font-style:normal;
+  font-size:12px;
+  line-height:normal;
+  text-align:left;
+  text-decoration:none;
+  text-shadow:none;
+  text-transform:none;
+  font-variant:normal;
+  letter-spacing:normal;
+  list-style:none;
 }

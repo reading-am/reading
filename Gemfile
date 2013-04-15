@@ -85,8 +85,9 @@ gem 'will_paginate'
 gem 'twitter-bootstrap-rails', '2.1.4' # there's a LESS compile issue with 2.1.6
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
-gem 'premailer-rails3', :git => 'git://github.com/Sija/premailer-rails3.git'
+gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
+gem "musterb", :git => 'git://github.com/leppert/musterb.git'
 
 ###############
 # Frontend JS #

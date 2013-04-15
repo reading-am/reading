@@ -1,0 +1,75 @@
+@import "variables";
+@import "mixins";
+
+.r_page {
+  h2 {
+    .word-wrap();
+    font-size:21px;
+    font-family:@palatino;
+    font-weight:normal;
+    line-height:29px;
+    margin-bottom:@baseLineHeight / 2;
+  }
+  &.nope a span {
+    color:@darkest_grey;
+    background:none;
+  }
+  &.yep a span {
+    color:@black;
+  }
+  &.nope a {
+    color:@red;
+    text-decoration:line-through;
+  }
+  .description {
+    color:@medium_light_grey;
+    font-family:@georgia;
+    font-style:italic;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.post_icon {
+  float:left;
+  margin-right:5px;
+}
+.comments_icon {
+  &.has_comments {
+    .speech_bubble(@purple, @white, bottom-left);
+  }
+  &.hasnt_comments {
+    .speech_bubble(@ghost_grey, @white, bottom-left);
+    font-weight:bold;
+  }
+  padding:0 6px;
+  margin-bottom:10px;
+  min-width:10px;
+  text-align:center;
+  font-size:11px;
+  &:hover {
+    text-decoration:none;
+    color:@white;
+    background:@dark_purple;
+    .r_tri { border-left-color:@dark_purple; }
+  }
+}
+.posts_icon {
+  .circle(22px, @eli_blue);
+  color:@white;
+  font-size:11px;
+  margin-top:-1px;
+  display:none;
+  &:hover {
+    text-decoration:none;
+    color:@white;
+    background: darken(@eli_blue, 10%);
+  }
+}
+
+// TODO - should this be done with logic in the JS?
+.r_signed_out {
+  .comments_icon.hasnt_comments {
+    display:none;
+  }
+}

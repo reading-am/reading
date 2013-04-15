@@ -1,0 +1,12 @@
+<%
+# This is required to prevent failure on rake assets:precompile
+# TODO - figure out why this file is precompiled
+environment.context_class.instance_eval { include ApplicationHelper } if defined? environment
+%>
+(function(){
+  reading.manifest = <%= js_manifest %>;
+  var head = document.getElementsByTagName('head')[0],
+      script = document.createElement('script');
+  script.src = '<%= "//#{DOMAIN}#{asset_path('bookmarklet/init.js')}" %>';
+  head.appendChild(script);
+})();

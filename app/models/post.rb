@@ -99,6 +99,7 @@ class Post < ActiveRecord::Base
         :type => "Post",
         :id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
         :user => {
+          :type         => "User",
           :id           => has_ref ? (to_s ? referrer_post.user.id.to_s : referrer_post.user.id) : '',
           :username     => has_ref ? referrer_post.user.username : '',
           :display_name => has_ref ? referrer_post.user.display_name : ''

@@ -52,7 +52,8 @@ class Api::CommentsController < Api::APIController
         @comment.page   = @comment.parent.page
       end
     else
-      @comment.post  = Post.find(params[:model][:post_id])
+      # Note - an associated post is not required
+      @comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
       @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
       @comment.page  = Page.find(params[:model][:page_id])
       @comment.body  = params[:model][:body]

@@ -1,0 +1,47 @@
+{{#user}}
+  {{>users/card/template}}
+  {{>users/you_subnav/template}}
+  {{#show_blank_slate}}
+    {{>users/blank_slate/template}}
+  {{/show_blank_slate}}
+{{/user}}
+{{^user}}
+  <div id="subhead" class="row">
+    <div class="span7 offset1">
+    {{#domain}}
+      <h3>Stuff people are reading on {{name}}</h3>
+    {{/domain}}
+    {{^domain}}
+      {{#signed_in}}
+        <h3>Posts from everyone on Reading</h3>
+      {{/signed_in}}
+      {{^signed_in}}
+        <h3>Some people are reading this stuff</h3>
+      {{/signed_in}}
+    {{/domain}}
+    </div>
+  </div>
+{{/user}}
+{{#has_posts}}
+<div id="yield">
+  {{^pages}}
+  <div class="row">
+    <div class="span6 offset1 r_loading">
+      Loading...
+    </div>
+  </div>
+  {{/pages}}
+  {{>pages/pages/template}}
+</div>
+{{/has_posts}}
+
+<div id="posts_footer" class="row">
+  <div class="span5 offset1">{{{pagination}}}</div>
+  {{#params.type}}
+  <div class="span1">
+    <a href="{{rss_path}}" class="rss">
+      <span class="glyph">r</span> rss
+    </a>
+  </div>
+  {{/params.type}}
+</div>

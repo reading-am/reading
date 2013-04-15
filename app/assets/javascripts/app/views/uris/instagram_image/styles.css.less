@@ -1,0 +1,18 @@
+@import "variables";
+@import "mixins";
+
+.r_instagram_image, #r_am .r_comment .r_comment_body .r_instagram_image {
+  text-align:center;
+  .box-shadow(inset 0 0 10px lighten(@instagram, 50%));
+  background: lighten(@instagram, 60%);
+  &:hover {
+    .box-shadow(inset 0 0 10px lighten(@instagram, 40%));
+    background: lighten(@instagram, 50%);
+  }
+  .r_instagram_image_info {
+    margin-top:10px;
+    .r_instagram_image_title {
+      color:@instagram !important;
+    }
+  }
+}

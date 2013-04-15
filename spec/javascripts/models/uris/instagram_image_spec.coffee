@@ -3,27 +3,35 @@
 #= require ./shared
 
 require [
+  "underscore"
   "spec/models/uris/shared"
   "app/models/uris/instagram_image"
-], (shared, InstagramImage) ->
+], (_, shared, InstagramImage) ->
 
   describe "Model", ->
     describe "URI", ->
       describe "InstagramImage", ->
 
         beforeEach ->
-          @id = "Lq8xzYBvXC"
-          @urls = [
-            "http://instagr.am/p/#{@id}/"
-            "http://instagr.am/p/LmGhlTMo88"
+          @ids = [
+            "Lq8xzYBvXC"
+            "LmGhlTMo88"
+            "XgS1tuPf3l"
           ]
-          @model = new InstagramImage string: @urls[0]
+          @urls = [
+            "http://instagr.am/p/#{@ids[0]}/"
+            "http://instagr.am/p/#{@ids[1]}"
+            "http://instagram.com/p/#{@ids[2]}"
+          ]
+          @models = _.map @urls, (url) -> new InstagramImage(string: url)
+          @model = @models[0]
 
-        shared() 
+        shared()
 
         describe "#initialize()", ->
           it "should return the correct id after initialization", ->
-            @model.get("id").should.equal(@id)
+            _.each @models, (model, i) =>
+              model.get("id").should.equal(@ids[i])
 
         describe "#fetch()", ->
           it "should get data from the API", (done) ->

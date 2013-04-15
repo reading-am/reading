@@ -8,5 +8,6 @@
  *= require_tree ./collections
  *= require_tree ./components
  *= require_tree ./pages
+ *= require_tree ../javascripts/app
  *= require ./mobile
 */

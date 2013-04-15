@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <%= render :partial => 'layouts/head' %>
-<body id="application_layout">
+<body id="application_layout" class="r_<%= signed_in? ? 'signed_in' : 'signed_out' %>">
   <%= render :partial => 'layouts/fb_api' %>
   <%= render :partial => 'layouts/titlecard' %>
   <div class="container">

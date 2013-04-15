@@ -18,10 +18,11 @@
   <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? and ["posts","list"].include? params[:type] %>
   <%= stylesheet_link_tag 'application' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
+  <script>reading = {manifest: <%= js_manifest %>};</script>
   <% if ['production','staging'].include? Rails.env %>
-    <%= javascript_include_tag "web/loader" %>
+    <%= javascript_include_tag "web/init" %>
   <% else %>
-    <%= requirejs_include_tag "web/loader" %>
+    <%= requirejs_include_tag "web/init" %>
   <% end %>
   <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <%= csrf_meta_tag %>

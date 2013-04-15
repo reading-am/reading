@@ -18,6 +18,7 @@
   <%= auto_discovery_link_tag(:rss, rss_path) if !params[:type].nil? and ["posts","list"].include? params[:type] %>
   <%= stylesheet_link_tag 'application' %>
   <script><%= render :partial => 'layouts/current_user_js' %></script>
+  <script>reading = {manifest: <%= js_manifest %>};</script>
   <% if ['production','staging'].include? Rails.env %>
     <%= javascript_include_tag "web/init" %>
   <% else %>

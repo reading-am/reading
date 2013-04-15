@@ -27,6 +27,14 @@ GIT
       multi_json (~> 1.3.4)
 
 GIT
+  remote: git://github.com/leppert/musterb.git
+  revision: b823ceaef050ba027ebc93159e288ac7a3553138
+  specs:
+    musterb (1.0.1)
+      erubis
+      hashie
+
+GIT
   remote: git://github.com/leppert/omniauth-37signals.git
   revision: c062fcd29d5f9440c12c1c55c2f20b93dd424ba4
   specs:
@@ -71,14 +79,6 @@ GIT
     twitter_bootstrap_form_for (1.0.7)
       actionpack (~> 3)
       railties (~> 3)
-
-GIT
-  remote: git@github.com:leppert/musterb.git
-  revision: b823ceaef050ba027ebc93159e288ac7a3553138
-  specs:
-    musterb (1.0.1)
-      erubis
-      hashie
 
 GEM
   remote: http://rubygems.org/

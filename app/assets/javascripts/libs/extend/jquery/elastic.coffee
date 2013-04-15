@@ -77,7 +77,7 @@ define ["jquery"], (jQuery) ->
         setTwinWidth = =>
           curatedWidth = Math.floor(parseInt($textarea.width(),10))
           if $twin.width() isnt curatedWidth
-            $twin.css({'width': "#{curatedWidth}px"})
+            $twin.css width: curatedWidth
 
             # Update height of textarea
             update(true)
@@ -86,7 +86,9 @@ define ["jquery"], (jQuery) ->
         setHeightAndOverflow = (height, overflow) =>
           curratedHeight = Math.floor(parseInt(height,10))
           if $textarea.innerHeight() isnt curratedHeight
-            $textarea.css({'height': "#{curratedHeight}px",'overflow':overflow})
+            $textarea.css
+              height: curratedHeight
+              overflow: overflow
 
         # This function will update the height of the textarea if necessary
         update = (forced) =>
@@ -135,7 +137,7 @@ define ["jquery"], (jQuery) ->
               $textarea.height(minheight)
 
         # And this line is to catch the browser paste event
-        $textarea.bind 'input paste', (e) => setTimeout(update, 250)
+        $textarea.bind 'input paste', => setTimeout(update, 250)
 
         # Run update once when elastic is initialized
         update()

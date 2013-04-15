@@ -1,4 +1,5 @@
 define [
+  "underscore"
   "jquery"
   "app/models/user"
   "app/views/base/model"
@@ -8,12 +9,12 @@ define [
   "app/views/comments/comments_with_input/view"
   "text!app/views/pages/page_row/template.mustache"
   "app/models/page" # this needs preloading
-], ($, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
+], (_, $, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
 
   class PageRowView extends ModelView
     @assets
       template: template
-      
+
     events:
       "click .posts_icon": "show_posts"
       "click .comments_icon": "show_comments"
@@ -30,9 +31,10 @@ define [
       @show_many "posts"
 
     show_comments: ->
-      @show_many "comments"
+      # elastic needs to be reinitialized after the element is visible
+      @show_many "comments", _.once(=> @comments_view.textarea.elastic())
 
-    show_many: (type) ->
+    show_many: (type, callback) ->
       other = if type is "posts" then "comments" else "posts"
       type_view = @["#{type}_view"]
       other_view = @["#{other}_view"]
@@ -44,9 +46,9 @@ define [
 
       if type_view.collection.length < @model.get("#{type}_count")
         type_view.collection.fetch success: =>
-          type_view.$el.slideDown()
+          type_view.$el.slideDown(callback)
       else
-        type_view.$el.slideDown()
+        type_view.$el.slideDown(callback)
 
       false
 

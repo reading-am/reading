@@ -13,11 +13,11 @@ define [
 
     initialize: (options) ->
       @model.on "change", @render, this
-      @model.on "remove", @remove
+      @model.on "remove", @remove, this
 
       @user_view = new UserView model: @model.get("user"), size: "small"
 
-    remove: =>
+    remove: ->
       @$el.slideUp => @$el.remove()
 
     json: ->
@@ -27,7 +27,7 @@ define [
       json.nope = true if @model.get("yn") is false
       return json
 
-    render: =>
+    render: ->
       @$el.html(@template(@json()))
           .find(".r_post_bg").prepend(@user_view.render().el)
 

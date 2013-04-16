@@ -6,6 +6,7 @@
   margin-bottom:5px;
   .r_post_bg {
     float:none;
+    display:inline;
   }
   .r_yep_nope {
     position:absolute;
@@ -22,8 +23,11 @@
   .r_nope .r_yep_nope {
     left:-33px;
   }
+  // TODO - combine this with web.css.less .admin.action
   .r_post_actions {
-    display:none;
+    opacity:0;
+    display:inline;
+    .transition(opacity .25s ease-in-out);
     .r_destroy {
       background:@red;
       color:@white;
@@ -38,6 +42,6 @@
     }
   }
   &:hover .r_post_actions {
-    display:inline;
+    opacity:1;
   }
 }

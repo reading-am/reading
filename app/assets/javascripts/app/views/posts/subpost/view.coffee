@@ -11,6 +11,9 @@ define [
       styles: styles
       template: template
 
+    events:
+      "click .r_destroy": "destroy"
+
     initialize: (options) ->
       if @model.get("referrer_post").get("user").get("id")
         @ref_user_view = new UserView
@@ -19,12 +22,18 @@ define [
 
       super options
 
+    destroy: ->
+      if confirm "Are you sure you want to delete this post?"
+        @model.destroy()
+
+      false
+
     json: ->
       json = super()
       json.is_owner = (@model.get("user").get("id") == User::current.get("id"))
       return json
 
-    render: =>
+    render: ->
       super()
 
       if @ref_user_view?

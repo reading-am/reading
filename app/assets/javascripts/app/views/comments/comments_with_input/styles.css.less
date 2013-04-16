@@ -9,10 +9,11 @@
   .mentions-input-box {
     width:335px;
     float:right;
+    // don't put this on the textarea itself, you'll have issues with the elastic plugin
+    border: 5px solid @blue;
     textarea {
       outline: 0;
-      border:5px solid @blue;
-      height:15px;
+      height: 25px;
       padding: 5px;
     }
     .mentions {

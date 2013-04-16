@@ -3,7 +3,7 @@ define [
   "jquery"
   "backbone"
   "app/init"
-  "app/models/user"
+  "app/models/user_with_current"
   "app/models/post"
   "app/models/uris/uri"
   "app/views/uris/uri/view"

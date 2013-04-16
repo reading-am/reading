@@ -11,20 +11,6 @@ class PostsController < ApplicationController
     @channels = 'everybody'
   end
 
-  # DELETE /posts/1
-  # DELETE /posts/1.xml
-  def destroy
-    @post = Post.find(params[:id])
-    if @post.user == current_user
-      @post.destroy
-    end
-
-    respond_to do |format|
-      format.html { redirect_to("/#{current_user.username}") }
-      format.xml  { head :ok }
-    end
-  end
-
   # A note about schema
   # The original idea was that the referrer_id didn't
   # have to dictate the :url param - that way we could

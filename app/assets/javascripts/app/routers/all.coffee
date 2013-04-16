@@ -8,4 +8,5 @@ require [
   "app/routers/posts"
   "app/routers/hooks"
   "app/routers/admin"
+  "app/routers/search"
 ], ->

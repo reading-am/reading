@@ -1,3 +1,6 @@
+@import 'variables';
+@import 'mixins';
+
 .r_subposts .r_subpost.r_post {
   position:relative;
   margin-bottom:5px;
@@ -18,5 +21,23 @@
   }
   .r_nope .r_yep_nope {
     left:-33px;
+  }
+  .r_post_actions {
+    display:none;
+    .r_destroy {
+      background:@red;
+      color:@white;
+      font-size:12px;
+      padding:3px;
+      .border-radius(2px);
+      margin-left:10px;
+      &:hover {
+        text-decoration:none;
+        background:darken(@red, 10%);
+      }
+    }
+  }
+  &:hover .r_post_actions {
+    display:inline;
   }
 }

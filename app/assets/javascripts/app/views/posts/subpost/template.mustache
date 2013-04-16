@@ -7,5 +7,8 @@
       {{#user}}{{>users/user/template}}{{/user}} is reading this
       {{#referrer_post.user}}because of {{>users/user/template}}{{/referrer_post.user}}
     </div>
+    <div class="r_post_actions">
+      {{#is_owner}}<a href="#" class="r_destroy">Delete</a>{{/is_owner}}
+    </div>
   </div>
 </li>

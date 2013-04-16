@@ -126,7 +126,7 @@ class Api::PostsController < Api::APIController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
-    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post = Post.find(params[:id])
 
     @post.destroy if @user == @post.user

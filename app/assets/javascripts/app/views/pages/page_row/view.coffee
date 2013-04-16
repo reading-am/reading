@@ -20,6 +20,8 @@ define [
       "click .comments_icon": "show_comments"
 
     initialize: ->
+      @model.posts.on "remove", => @remove() if @model.posts.length is 0
+
       @page_view = new PageView model: @model
       @posts_view = new SubPostsView collection: @model.posts
       @comments_view = new CommentsWithInputView
@@ -50,6 +52,9 @@ define [
         type_view.$el.slideDown()
 
       false
+
+    remove: ->
+      @$el.slideUp => @$el.remove()
 
     render: =>
       json =

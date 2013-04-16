@@ -4,6 +4,7 @@ define [
   "backbone"
   "libs/keymaster"
   "app/views/comments/comments/view"
+  "app/models/comment"
   "app/models/post"
   "app/models/user_with_current"
   "text!app/views/comments/comments_with_input/template.mustache"
@@ -13,7 +14,7 @@ define [
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], (_, $, Backbone, Key, CommentsView, Post, User, template, styles) ->
+], (_, $, Backbone, Key, CommentsView, Comment, Post, User, template, styles) ->
 
   class CommentsWithInputView extends Backbone.View
     @assets
@@ -55,15 +56,18 @@ define [
       , 500
 
     submit: ->
-      @subview.collection.create
+      comment = new Comment
         body: @textarea.val(),
         post: @post
         user: @user
         page: @page
 
-      @textarea
-        .val("")
-        .mentionsInput("reset")
+      if comment.isValid()
+        @subview.collection.create comment
+
+        @textarea
+          .val("")
+          .mentionsInput("reset")
 
       @$("ul").animate
         scrollTop: 0

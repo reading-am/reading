@@ -31,8 +31,7 @@ define [
       @show_many "posts"
 
     show_comments: ->
-      # elastic needs to be reinitialized after the element is visible
-      @show_many "comments", _.once(=> @comments_view.textarea.elastic())
+      @show_many "comments"
 
     show_many: (type, callback) ->
       other = if type is "posts" then "comments" else "posts"
@@ -46,9 +45,9 @@ define [
 
       if type_view.collection.length < @model.get("#{type}_count")
         type_view.collection.fetch success: =>
-          type_view.$el.slideDown(callback)
+          type_view.$el.slideDown()
       else
-        type_view.$el.slideDown(callback)
+        type_view.$el.slideDown()
 
       false
 

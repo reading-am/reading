@@ -48,9 +48,6 @@ define [
           $frameset.remove()
           $body.show()
           @insert()
-          # reinitialize elastic because it fails if the item wasn't on the DOM
-          # when it was first called TODO - roll this into the comment view
-          @comments_view.textarea.elastic() if @comments_view?
 
         $body = $("<body>").attr(id: "r_body").hide().append $iframe
         $("html").append $body

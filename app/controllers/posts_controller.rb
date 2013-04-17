@@ -32,7 +32,7 @@ class PostsController < ApplicationController
       # schema: reading.am/http://example.com
     else
       @referrer_id = Base58.decode(params[:id])
-      @ref = Post.find(@referrer_id)
+      @ref = Post.fetch(@referrer_id)
 
       if !params[:url]
         # Post from a referrer id only

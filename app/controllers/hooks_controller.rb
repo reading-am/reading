@@ -5,7 +5,7 @@ class HooksController < ApplicationController
   # GET /hooks/1
   # GET /hooks/1.xml
   def show
-    @hook = Hook.find(params[:id])
+    @hook = Hook.fetch(params[:id])
     if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
@@ -29,7 +29,7 @@ class HooksController < ApplicationController
 
   # GET /hooks/1/edit
   def edit
-    @hook = Hook.find(params[:id])
+    @hook = Hook.fetch(params[:id])
     if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
@@ -64,7 +64,7 @@ class HooksController < ApplicationController
   # PUT /hooks/1
   # PUT /hooks/1.xml
   def update
-    @hook = Hook.find(params[:id])
+    @hook = Hook.fetch(params[:id])
     if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
@@ -83,7 +83,7 @@ class HooksController < ApplicationController
   # DELETE /hooks/1
   # DELETE /hooks/1.xml
   def destroy
-    @hook = Hook.find(params[:id])
+    @hook = Hook.fetch(params[:id])
     if @hook.user != current_user
       redirect_to "/#{current_user.username}/list"
     end

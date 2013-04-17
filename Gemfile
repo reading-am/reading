@@ -14,6 +14,7 @@ gem 'sunspot_rails' # Solr
 #############
 # Core Libs #
 #############
+gem 'escape_utils' # fast string escaping lib used by Github
 gem 'curb', '~> 0.8.0' # CURL bindings
 gem 'nokogiri' # HTML / XML parsing
 gem 'addressable' # URI parsing

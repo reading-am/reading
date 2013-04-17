@@ -1,14 +1,14 @@
 class Comment < ActiveRecord::Base
+  include IdentityCache
   include Twitter::Extractor
   include Twitter::Autolink
-  include IdentityCache
-  
+
   belongs_to :user, :counter_cache => true
   belongs_to :page, :counter_cache => true
   belongs_to :post, :counter_cache => true
   belongs_to :parent, :class_name => 'Comment',
              :foreign_key => :comment_id
-  has_many   :children, :class_name => 'Comment', # TODO (david) figure out how to cache the comment tree
+  has_many   :children, :class_name => 'Comment',
              :foreign_key => :comment_id
 
   validates_presence_of :user_id, :page_id, :body

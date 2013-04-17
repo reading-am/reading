@@ -3,7 +3,7 @@ class RelationshipsController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    @user = User.find_by_username(params[:username])
+    @user = User.fetch_by_username(params[:username])
     result = !!current_user.follow!(@user)
 
     respond_to do |format|
@@ -14,7 +14,7 @@ class RelationshipsController < ApplicationController
   end
 
   def destroy
-    @user = User.find_by_username(params[:username])
+    @user = User.fetch_by_username(params[:username])
     result = !!current_user.unfollow!(@user)
 
     respond_to do |format|

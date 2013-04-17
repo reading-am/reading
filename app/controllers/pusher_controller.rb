@@ -5,7 +5,7 @@ class PusherController < ApplicationController
   skip_before_filter :protect_staging # for some reason, http auth prevents this endpoint from working
 
   def auth
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     if !@user.blank?
       response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
         :user_id => @user.id, # => required

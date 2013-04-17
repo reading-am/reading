@@ -106,7 +106,7 @@ and can be read at <http://127.0.0.1:1080>
 ## Grant Admin Access
 enter the following script in the rails console:
 ```ruby
-u = User.find_by_username("someUsername")
+u = User.fetch_by_username("someUsername")
 u.roles << :admin
 u.save!
 ```

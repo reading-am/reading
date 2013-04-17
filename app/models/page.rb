@@ -1,14 +1,13 @@
 class Page < ActiveRecord::Base
   include IdentityCache
+
   belongs_to :domain, :counter_cache => true
   has_one  :readability_data, :dependent => :destroy
   has_many :posts, :dependent => :destroy
   has_many :users, :through => :posts
   has_many :comments, :dependent => :destroy
 
-  cache_has_many :posts, embed: true
-  # cache_has_many :users, embed: true, :inverse_name => :user # TODO (david) :through issue
-  cache_has_many :comments, embed: true
+  cache_index :url, :unique => true
 
   validates_presence_of :url, :domain
   validates_associated :domain
@@ -95,7 +94,7 @@ public
 
   def self.find_or_create_by_url(attributes)
     attributes[:url] = self.cleanup_url attributes[:url]
-    page = self.find_by_url(attributes[:url], true)
+    page = self.fetch_by_url(attributes[:url], true)
     if page.new_record?
       page.attributes = attributes.merge(page.attributes)
       page.save

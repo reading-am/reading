@@ -1,13 +1,11 @@
 class Domain < ActiveRecord::Base
   include IdentityCache
-  
+
   has_many :pages, :dependent => :destroy
   has_many :posts, :through => :pages
   has_many :users, :through => :pages
 
-  cache_has_many :pages, embed: true
-  # cache_has_many :posts, embed: true
-  # cache_has_many :users, embed: true
+  cache_index :name, :unique => true
 
   validates_presence_of :name
   validates_uniqueness_of :name, :case_sensitive => false

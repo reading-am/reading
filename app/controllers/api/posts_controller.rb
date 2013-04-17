@@ -80,7 +80,7 @@ class Api::PostsController < Api::APIController
       url   = params[:model][:url]
       title = params[:model][:title] unless params[:model][:title] == 'null'
       head_tags = params[:model][:head_tags] unless params[:model][:head_tags] == 'null'
-      user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
       ref   = Post.find_by_id(params[:model][:referrer_id]) unless params[:model][:referrer_id].blank?
       yn    = params[:model][:yn]
     end
@@ -106,7 +106,7 @@ class Api::PostsController < Api::APIController
   # PUT /posts/1.xml
   def update
     @post = Post.fetch(params[:id])
-    user = params[:token] ? User.find_by_token(params[:token]) : current_user
+    user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
 
     if allowed = (user == @post.user) and !params[:model].nil?
       params[:model][:yn] = nil if !params[:model][:yn].nil? and params[:model][:yn] == 'null'
@@ -126,7 +126,7 @@ class Api::PostsController < Api::APIController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     @post = Post.fetch(params[:id])
 
     @post.destroy if @user == @post.user

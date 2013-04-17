@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include IdentityCache
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable
@@ -41,22 +42,8 @@ class User < ActiveRecord::Base
                                    :dependent => :destroy
   has_many :followers, :through => :reverse_relationships, :source => :follower
 
-  cache_has_many :posts, embed: true
-  # cache_has_many :domains, embed: true, :inverse_name => :domain
-  cache_has_many :hooks, embed: true
-  # cache_has_many :pages, embed: true, :inverse_name => :page
-  cache_has_many :comments, embed: true
-
-  # TODO (david) caching user relationships is hard because :inverse_name is looking for relationship not following
-  # cache_has_many :relationships, embed: true, :inverse_name =>
-  # cache_has_many :following, embed: true, :inverse_name => :followed, :class_name => "Relationship"
-  # cache_has_many :reverse_relationships, embed: true
-  # cache_has_many :followers, embed: true, :inverse_name => :follower
-
-
-
-
-
+  cache_index :username, :unique => true
+  cache_index :token, :unique => true
 
   has_attached_file :avatar,
     :styles => {

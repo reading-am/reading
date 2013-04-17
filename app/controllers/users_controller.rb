@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       @channels = 'everybody'
     else
       @user = params[:username] ?
-        User.find_by_username(params[:username]) :
+        User.fetch_by_username(params[:username]) :
         User.fetch(params[:id])
       if !@user then not_found end
 
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   end
 
   def followingers
-    @user = User.find_by_username(params[:username])
+    @user = User.fetch_by_username(params[:username])
     @users = (params[:type] == 'followers') ? @user.followers : @user.following
   end
 
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
   end
 
   def export
-    user = User.find_by_username(params[:username])
+    user = User.fetch_by_username(params[:username])
     if user == current_user
       respond_to do |format|
         format.csv { render 'posts/export', :layout => false, :locals => {:posts => user.posts} }

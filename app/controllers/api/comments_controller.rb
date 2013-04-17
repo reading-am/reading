@@ -54,7 +54,7 @@ class Api::CommentsController < Api::APIController
     else
       # Note - an associated post is not required
       @comment.post  = Post.fetch(params[:model][:post_id]) unless params[:model][:post_id].blank?
-      @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      @comment.user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
       @comment.page  = Page.fetch(params[:model][:page_id])
       @comment.body  = params[:model][:body]
     end
@@ -73,7 +73,7 @@ class Api::CommentsController < Api::APIController
   # PUT /comments/1
   # PUT /comments/1.json
   def update
-    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     @comment = Comment.fetch(params[:id])
 
     respond_to do |format|
@@ -91,7 +91,7 @@ class Api::CommentsController < Api::APIController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     @comment = Comment.fetch(params[:id])
 
     @comment.destroy if @user == @comment.user

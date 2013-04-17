@@ -5,8 +5,6 @@ class Domain < ActiveRecord::Base
   has_many :posts, :through => :pages
   has_many :users, :through => :pages
 
-  cache_index :name, :unique => true
-
   validates_presence_of :name
   validates_uniqueness_of :name, :case_sensitive => false
 

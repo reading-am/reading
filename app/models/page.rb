@@ -7,8 +7,6 @@ class Page < ActiveRecord::Base
   has_many :users, :through => :posts
   has_many :comments, :dependent => :destroy
 
-  cache_index :url, :unique => true
-
   validates_presence_of :url, :domain
   validates_associated :domain
   validates_uniqueness_of :url
@@ -94,7 +92,7 @@ public
 
   def self.find_or_create_by_url(attributes)
     attributes[:url] = self.cleanup_url attributes[:url]
-    page = self.fetch_by_url(attributes[:url], true)
+    page = self.find_by_url(attributes[:url], true)
     if page.new_record?
       page.attributes = attributes.merge(page.attributes)
       page.save

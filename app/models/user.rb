@@ -42,7 +42,6 @@ class User < ActiveRecord::Base
                                    :dependent => :destroy
   has_many :followers, :through => :reverse_relationships, :source => :follower
 
-  cache_index :username, :unique => true
   cache_index :token, :unique => true
 
   has_attached_file :avatar,

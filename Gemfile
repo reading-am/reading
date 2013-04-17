@@ -8,7 +8,7 @@ gem 'rails', '3.2.12'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'memcached'
+gem 'dalli' # Memcached
 gem 'sunspot_rails' # Solr
 
 #############

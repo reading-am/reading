@@ -62,9 +62,6 @@ Reading::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.cache_store = :dalli_store
-  # config.identity_cache_store = :mem_cache_store, Memcached::Rails.new(:servers => ["localhost:11211"]) #TODO (david) figure out what the env var for the server should be
- 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :address        => ENV['MAILGUN_SMTP_SERVER'],

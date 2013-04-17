@@ -166,6 +166,7 @@ GEM
       addressable
     curb (0.8.3)
     daemons (1.1.9)
+    dalli (2.6.0)
     debug_inspector (0.0.2)
     debugger (1.5.0)
       columnize (>= 0.3.1)
@@ -296,7 +297,6 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    memcached (1.5.0)
     method_locator (0.0.4)
     method_source (0.8.1)
     methodfinder (1.2.5)
@@ -556,6 +556,7 @@ DEPENDENCIES
   crack
   curb (~> 0.8.0)
   daemons
+  dalli
   debugger
   delayed_job (= 3.0.1)
   delayed_job_active_record
@@ -575,7 +576,6 @@ DEPENDENCIES
   koala
   konacha (~> 1.0)
   less-rails
-  memcached
   musterb!
   newrelic_rpm
   nilify_blanks

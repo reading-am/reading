@@ -1,4 +1,6 @@
 class Page < ActiveRecord::Base
+  include IdentityCache
+
   belongs_to :domain, :counter_cache => true
   has_one  :readability_data, :dependent => :destroy
   has_many :posts, :dependent => :destroy

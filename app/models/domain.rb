@@ -1,4 +1,6 @@
 class Domain < ActiveRecord::Base
+  include IdentityCache
+
   has_many :pages, :dependent => :destroy
   has_many :posts, :through => :pages
   has_many :users, :through => :pages

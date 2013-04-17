@@ -111,6 +111,8 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.3.3)
+    ar_transaction_changes (0.0.1)
+      activerecord (>= 3.0.0)
     arel (3.0.2)
     awesome_print (1.0.2)
     aws-sdk (1.7.1)
@@ -144,6 +146,7 @@ GEM
       activesupport (>= 3.2.0)
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
+    cityhash (0.6.0)
     clipboard (1.0.1)
     cocaine (0.4.2)
     coderay (1.0.9)
@@ -241,6 +244,9 @@ GEM
       multi_xml
     httpauth (0.2.0)
     i18n (0.6.4)
+    identity_cache (0.0.1)
+      ar_transaction_changes (= 0.0.1)
+      cityhash (= 0.6.0)
     interactive_editor (0.0.10)
       spoon (>= 0.0.1)
     irbtools (1.4.0)
@@ -562,6 +568,7 @@ DEPENDENCIES
   girl_friday
   hipchat
   hirefireapp
+  identity_cache
   instapaper!
   irbtools
   jquery-rails

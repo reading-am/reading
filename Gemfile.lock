@@ -193,6 +193,7 @@ GEM
     diff-lcs (1.2.2)
     ejs (1.1.1)
     erubis (2.7.0)
+    escape_utils (0.3.2)
     ethon (0.5.7)
       ffi (~> 1.2.0)
       mime-types (~> 1.18)
@@ -563,6 +564,7 @@ DEPENDENCIES
   delayed_job_active_record
   delayed_job_web
   devise
+  escape_utils
   evernote-thrift
   flattr
   fog

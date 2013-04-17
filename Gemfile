@@ -62,6 +62,7 @@ gem 'daemons' # for delayed_job
 #####################
 # External Services #
 #####################
+gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
 gem 'newrelic_rpm'
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'aws-sdk'

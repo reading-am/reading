@@ -170,6 +170,24 @@ class User < ActiveRecord::Base
     end while User.exists?(column => self[column])
   end
 
+  def fetch_many attr
+    key = [self, updated_at, attr]
+    if result = Rails.cache.read(key)
+      result
+    else
+      Rails.cache.write(key, send(attr))
+      send(attr)
+    end
+  end
+
+  def fetch_following
+    fetch_many 'following'
+  end
+
+  def fetch_followers
+    fetch_many 'followers'
+  end
+
   def first_name
     self.name ? self.name.split(' ')[0] : self.username
   end

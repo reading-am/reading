@@ -7,7 +7,7 @@ class Api::UsersController < Api::APIController
       # users/1/followers
       # users/1/following
       @user = User.fetch(params[:user_id])
-      @users = @user.send(params[:type])
+      @users = @user.send("fetch_#{params[:type]}")
     elsif params[:page_id]
       # list users who have visited a page
       # pages/1/users

@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   def followingers
     @user = User.find_by_username(params[:username])
-    @users = (params[:type] == 'followers') ? @user.followers : @user.following
+    @users = (params[:type] == 'followers') ? @user.fetch_followers : @user.fetch_following
   end
 
   def hooks

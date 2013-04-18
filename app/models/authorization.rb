@@ -5,7 +5,7 @@ class Authorization < ActiveRecord::Base
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  cache_index :provider, :uid
+  cache_index :provider, :uid, :unique => true
 
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms

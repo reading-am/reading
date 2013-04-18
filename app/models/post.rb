@@ -25,22 +25,22 @@ class Post < ActiveRecord::Base
   # for will_paginate
   self.per_page = 100
 
-  # searchable do
-  #   boolean :yn
-  #   integer :user_id
-  #   text :page_title do
-  #     page.title
-  #   end
-  #   text :page_url do
-  #     page.url
-  #   end
-  #   text :page_content do
-  #     if page.readability_data
-  #       Sanitize.clean page.readability_data.content rescue nil
-  #     end
-  #   end
-  # end
-  # handle_asynchronously :solr_index
+  searchable do
+    boolean :yn
+    integer :user_id
+    text :page_title do
+      page.title
+    end
+    text :page_url do
+      page.url
+    end
+    text :page_content do
+      if page.readability_data
+        Sanitize.clean page.readability_data.content rescue nil
+      end
+    end
+  end
+  handle_asynchronously :solr_index
 
   private
 

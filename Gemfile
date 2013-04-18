@@ -11,7 +11,7 @@ gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli', :github => 'mperham/dalli' # Memcached
-#gem 'sunspot_rails' # Solr
+gem 'sunspot_rails', :github => 'sunspot/sunspot'
 
 #############
 # Core Libs #
@@ -96,7 +96,7 @@ gem 'flattr'
 gem 'will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
-#gem 'twitter_bootstrap_form_for', :github => 'zzip/twitter_bootstrap_form_for'
+gem 'twitter_bootstrap_form_for', :github => 'leppert/twitter_bootstrap_form_for'
 gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
 gem "musterb", :github => 'leppert/musterb'
@@ -128,7 +128,7 @@ group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
   gem 'debugger'
-  gem 'sunspot_solr'
+  gem 'sunspot_solr', :github => 'sunspot/sunspot'
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors

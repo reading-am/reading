@@ -4,11 +4,11 @@ ruby '2.0.0'
 #################
 # Core Services #
 #################
-gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-2-stable' # switch back to gem version when 3.2.14 lands
+gem 'rails', '4.0.0'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli', :git => 'git://github.com/mperham/dalli.git' # Memcached
+gem 'dalli', :github => 'mperham/dalli' # Memcached
 gem 'sunspot_rails' # Solr
 
 #############
@@ -26,8 +26,8 @@ gem 'mechanize' # web crawler
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache'
-gem 'bitmask_attributes'
+#gem 'identity_cache'
+#gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'
 gem 'paperclip' # file attachments
@@ -45,28 +45,28 @@ gem 'newrelic_rpm'
 ########
 # Auth #
 ########
-gem 'devise'
+gem 'devise', '~> 3.0.0.rc'
 gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
-gem 'omniauth-37signals', :git => 'git://github.com/leppert/omniauth-37signals.git'
+gem 'omniauth-37signals', :github => 'leppert/omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
 gem 'omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
-gem 'omniauth-http-basic', :git => 'git://github.com/leppert/omniauth-http-basic.git' #required by omniauth-kippt
-gem 'omniauth-kippt', :git => 'git://github.com/leppert/omniauth-kippt.git'
+gem 'omniauth-http-basic', :github => 'leppert/omniauth-http-basic' #required by omniauth-kippt
+gem 'omniauth-kippt', :github => 'leppert/omniauth-kippt'
 
 ####################
 # Async Processing #
 ####################
 gem 'girl_friday'
-gem 'delayed_job', "3.0.1"
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
+gem 'delayed_job', :github => 'collectiveidea/delayed_job'
+gem 'delayed_job_active_record', :github => 'collectiveidea/delayed_job_active_record'
+#gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
 
 #####################
@@ -81,11 +81,11 @@ gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'
 gem 'koala' # facebook
-gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
-gem 'tumblr-ruby', :git => 'git://github.com/weheartit/tumblr', require: 'tumblr'
-gem 'readit', :git => 'git://github.com/29decibel/readit.git'
+gem 'instapaper', :github => 'leppert/instapaper'
+gem 'tumblr-ruby', github: 'weheartit/tumblr', require: 'tumblr'
+gem 'readit', :github => '29decibel/readit'
 gem 'evernote-thrift'
-gem 'kippt', :git => 'git://github.com/leppert/kippt.git'
+gem 'kippt', :github => 'leppert/kippt'
 gem 'flattr'
 
 #################
@@ -94,16 +94,16 @@ gem 'flattr'
 gem 'will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
-gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
+#gem 'twitter_bootstrap_form_for', :github => 'zzip/twitter_bootstrap_form_for'
 gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
-gem "musterb", :git => 'git://github.com/leppert/musterb.git'
-gem 'tuml', :git => 'git://github.com/leppert/tuml.git'
+gem "musterb", :github => 'leppert/musterb'
+gem 'tuml', :github => 'leppert/tuml'
 
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git', :ref => 'c4268ab2c0fd6f508efdf73214e75144b9fc4c09' # using an older ref because the new one balloons the precompile time, which takes forever on Heroku
+gem 'requirejs-rails', :github => 'jwhitley/requirejs-rails'
 gem 'rails-backbone'
 gem 'jquery-rails'
 
@@ -116,10 +116,9 @@ gem 'carrierwave'
 gem 'fog'
 
 group :assets do
-  gem 'sass-rails'
   gem 'less-rails'
   gem 'therubyracer' # Required by less-rails
-  gem 'coffee-rails'
+  gem 'coffee-rails', github: 'rails/coffee-rails'
   gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 end
 
@@ -136,8 +135,8 @@ group :development do
 end
 
 group :development, :test do
-  gem 'konacha', '~> 1.0'
+  #gem 'konacha', '~> 1.0'
   gem 'rspec-rails'
-  gem 'spork-rails'
+  #gem 'spork-rails'
   gem 'watchr'
 end

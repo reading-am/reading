@@ -21,15 +21,15 @@ class Page < ActiveRecord::Base
   after_create :populate_remote_meta_data
 
   # search
-  searchable do
-    text :title, :url
-    text :content do
-      if readability_data
-        Sanitize.clean readability_data.content rescue nil
-      end
-    end
-  end
-  handle_asynchronously :solr_index
+  # searchable do
+  #   text :title, :url
+  #   text :content do
+  #     if readability_data
+  #       Sanitize.clean readability_data.content rescue nil
+  #     end
+  #   end
+  # end
+  # handle_asynchronously :solr_index
 
   META_TAG_NAMESPACES = ['og','twitter']
 

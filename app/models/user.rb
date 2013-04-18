@@ -15,17 +15,17 @@ class User < ActiveRecord::Base
 
   attr_accessor :email_required, :password_required
 
-  bitmask :roles, :as => [
-    :admin
-  ]
+  #bitmask :roles, :as => [
+    #:admin
+  #]
 
-  bitmask :access, :as => [
-    :digest,
-    :tagalong,
-    :comments,
-    :media_feed,
-    :tumblr_templates
-  ]
+  #bitmask :access, :as => [
+    #:digest,
+    #:tagalong,
+    #:comments,
+    #:media_feed,
+    #:tumblr_templates
+  #]
 
   has_many :authorizations, :dependent => :destroy, :include => [:user]
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     :size => { :less_than => 2.megabytes },
     :content_type => { :content_type => ['image/jpeg', 'image/png', 'image/gif'] }
 
-  validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
+  validates_format_of     :username, :with => /\A\w+[A-Z0-9]\w*\z/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true, :case_sensitive => false
   validates :email, :email => {:allow_nil => true}
   validates_uniqueness_of :email, :allow_nil => true, :case_sensitive => false
@@ -76,10 +76,10 @@ class User < ActiveRecord::Base
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
 
-  searchable do
-    text :name, :username, :email, :link
-  end
-  handle_asynchronously :solr_index
+  # searchable do
+  #   text :name, :username, :email, :link
+  # end
+  # handle_asynchronously :solr_index
 
   private
 

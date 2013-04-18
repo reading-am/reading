@@ -5,11 +5,13 @@ ruby '2.0.0'
 # Core Services #
 #################
 gem 'rails', '4.0.0'
+gem 'rails-observers'
+gem 'protected_attributes'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli', :github => 'mperham/dalli' # Memcached
-gem 'sunspot_rails' # Solr
+#gem 'sunspot_rails' # Solr
 
 #############
 # Core Libs #

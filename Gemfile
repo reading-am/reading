@@ -8,7 +8,7 @@ gem 'rails', '3.2.12'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli' # Memcached
+gem 'dalli', :git => 'git://github.com/mperham/dalli.git' # Memcached
 gem 'sunspot_rails' # Solr
 
 #############
@@ -25,7 +25,7 @@ gem 'base58'
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache' # model caching
+gem 'identity_cache', :git => 'git://github.com/leppert/identity_cache.git' # model caching NOTE - this is only forced to allow 0.0.2 to install on rails 3.2.12 since 3.2.13 has a routing bug
 gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'

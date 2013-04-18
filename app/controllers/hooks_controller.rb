@@ -39,7 +39,7 @@ class HooksController < ApplicationController
   # POST /hooks.xml
   def create
     if Authorization::PROVIDERS.include? params[:hook][:provider]
-      auth = Authorization.find_by_provider_and_uid(params[:hook][:provider], params[:hook][:params][:account])
+      auth = Authorization.fetch_by_provider_and_uid(params[:hook][:provider], params[:hook][:params][:account])
       params[:hook][:params].delete(:account)
       params[:hook][:params] = params[:hook][:params].to_json
       @hook = Hook.new(params[:hook])

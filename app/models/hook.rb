@@ -2,6 +2,8 @@
 include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
+  include IdentityCache
+
   belongs_to :user
   belongs_to :authorization
   validates_presence_of :events, :provider

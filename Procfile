@@ -4,5 +4,5 @@ search: bundle exec rake sunspot:solr:run
 memcached: memcached -v
 devmail: mailcatcher --foreground
 /*testjs: rake konacha:serve*/
-/*testrubyserver: bundle exec spork*/
-/*testruby: rake watchr*/
+testrubyserver: bundle exec spork
+testruby: rake watchr

@@ -137,7 +137,7 @@ group :development do
 end
 
 group :development, :test do
-  #gem 'konacha', '~> 1.0'
+  gem 'konacha'
   gem 'rspec-rails'
   gem 'spork-rails', :github => 'A-gen/spork-rails'
   gem 'watchr'

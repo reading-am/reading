@@ -132,4 +132,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'spork-rails'
   gem 'watchr'
+  gem 'ruby-prof'
+  gem 'test-unit'
 end

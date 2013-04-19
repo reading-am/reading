@@ -68,7 +68,7 @@ gem 'omniauth-kippt', :github => 'leppert/omniauth-kippt'
 gem 'girl_friday'
 gem 'delayed_job', :github => 'collectiveidea/delayed_job'
 gem 'delayed_job_active_record', :github => 'collectiveidea/delayed_job_active_record'
-#gem 'delayed_job_web'
+gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
 
 #####################

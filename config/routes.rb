@@ -114,7 +114,7 @@ Reading::Application.routes.draw do
   # Admin
   get '/admin' => redirect('/admin/dashboard')
   get '/admin/dashboard' => 'admin#dashboard'
-  #get '/admin/jobs' => DelayedJobWeb, :anchor => false
+  get '/admin/jobs' => DelayedJobWeb, :anchor => false
 
   # These routes should be cleaned up
   get '/:username(/posts(/page/:page))'  => 'users#show', :defaults => { :type => 'posts' }

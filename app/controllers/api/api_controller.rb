@@ -5,7 +5,8 @@ class Api::APIController < ActionController::Metal
   include ActionController::Rendering
   include ActionController::Renderers::All
   include ActionController::MimeResponds
-
+  include ActionController::Helpers
+  include Devise::Controllers::Helpers
   # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 

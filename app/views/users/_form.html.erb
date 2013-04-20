@@ -4,7 +4,7 @@
   <fieldset>
     <%= f.file_field :avatar, false, :class => 'input-xlarge' do %>
       <p class="help-block">JPG, PNG or GIF under 2mb.</p>
-      <div id="avatar"><%= image_tag resource.avatar.url :medium %></div>
+      <div id="avatar"><%= image_tag resource.avatar_url :medium %></div>
     <% end %>
 
     <%= f.text_field :name, :class => 'input-xlarge' %>

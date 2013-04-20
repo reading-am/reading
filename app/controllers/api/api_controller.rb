@@ -6,6 +6,9 @@ class Api::APIController < ActionController::Metal
   include ActionController::Renderers::All
   include ActionController::MimeResponds
 
+  # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
+  include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
+
   before_filter :map_method, :limit_count
 
   DEFAULT_COUNT = 20

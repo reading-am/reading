@@ -44,6 +44,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json :posts => @posts.collect { |post| post.simple_obj } }
     end
   end
+  add_transaction_tracer :index
 
   # GET /posts/1
   # GET /posts/1.xml
@@ -54,6 +55,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json :post => @post.simple_obj }
     end
   end
+  add_transaction_tracer :show
 
   # POST /posts
   # POST /posts.xml
@@ -101,6 +103,7 @@ class Api::PostsController < Api::APIController
       end
     end
   end
+  add_transaction_tracer :create
 
   # PUT /posts/1
   # PUT /posts/1.xml
@@ -122,6 +125,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json status }
     end
   end
+  add_transaction_tracer :update
 
   # DELETE /posts/1
   # DELETE /posts/1.json
@@ -136,6 +140,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json status }
     end
   end
+  add_transaction_tracer :destroy
 
   def count
     if current_user.roles? :admin
@@ -146,5 +151,6 @@ class Api::PostsController < Api::APIController
       show_404
     end
   end
+  add_transaction_tracer :count
 
 end

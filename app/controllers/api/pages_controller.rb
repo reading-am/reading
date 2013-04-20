@@ -9,6 +9,7 @@ class Api::PagesController < Api::APIController
       format.json { render_json :pages => @pages.collect { |page| page.simple_obj } }
     end
   end
+  add_transaction_tracer :index
 
   def show
     @page = Page.fetch(params[:id])
@@ -17,6 +18,7 @@ class Api::PagesController < Api::APIController
       format.json { render_json :page => @page.simple_obj }
     end
   end
+  add_transaction_tracer :show
 
   def search
     search = Page.search do
@@ -29,6 +31,7 @@ class Api::PagesController < Api::APIController
       format.json { render_json :pages => @pages.collect { |page| page.simple_obj } }
     end
   end
+  add_transaction_tracer :search
 
   def count
     if current_user.roles? :admin
@@ -39,6 +42,7 @@ class Api::PagesController < Api::APIController
       show_404
     end
   end
+  add_transaction_tracer :count
 
 end
 

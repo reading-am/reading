@@ -6,9 +6,9 @@
     :user                       => @user,
     :signed_in                  => signed_in?,
     :is_current_user            => @user == current_user,
-    :avatar_link_url            => has_avatar ? @user.avatar.url : "/settings/info",
+    :avatar_link_url            => has_avatar ? @user.avatar_url : "/settings/info",
     :avatar_link_target         => has_avatar ? "_blank" : false,
-    :avatar_img_url             => @user.avatar.url(:medium),
+    :avatar_img_url             => @user.avatar_url(:medium),
     :viewing_following          => params[:type] == 'following',
     :viewing_followers          => params[:type] == 'followers',
   }

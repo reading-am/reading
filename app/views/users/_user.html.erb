@@ -1,6 +1,6 @@
 <%= link_to "/#{user.username}", :class => 'user' do %>
   <span class="avatar">
-    <%= image_tag user.avatar.url :mini %>
+    <%= image_tag user.avatar_url :mini %>
   </span>
   <span class="name">
     <%= user.display_name %>

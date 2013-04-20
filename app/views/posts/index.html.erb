@@ -24,9 +24,9 @@
     locals.merge!({
       :show_blank_slate           => (@user.posts.size == 0 or @user.following.size == 0),
       :is_current_user            => @user == current_user,
-      :avatar_link_url            => has_avatar ? @user.avatar.url : "/settings/info",
+      :avatar_link_url            => has_avatar ? @user.avatar_url : "/settings/info",
       :avatar_link_target         => has_avatar ? "_blank" : false,
-      :avatar_img_url             => @user.avatar.url(:medium),
+      :avatar_img_url             => @user.avatar_url(:medium),
       :you_or_name                => @user == current_user ? 'you' : @user.first_name,
       :follow_text                => signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
       :has_followed               => @user.following.size > 0

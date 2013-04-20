@@ -13,8 +13,12 @@ define [
     delete: 'DELETE'
 
   Backbone._sync = Backbone.sync
-  Backbone.sync = (method, model, options) ->
+  Backbone.sync = (method, model, _options) ->
     _.log method, model, options
+
+    # if you don't clone the options, they'll be modified and used by
+    # BB to instantiate the objects and the url prop will be overwritten
+    options         = _.clone _options
 
     options.type    ?= methodMap[method]
     options.url     ?= _.result(model, 'url') || throw new Error 'A "url" property or function must be specified'

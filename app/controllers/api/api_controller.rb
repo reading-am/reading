@@ -1,6 +1,11 @@
 # encoding: utf-8
-class Api::APIController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+class Api::APIController < ActionController::Metal
+  # Bare metal rails controllers: http://newaperio.com/blog/19-fast-json-api-controllers-in-rails
+  include AbstractController::Callbacks # before_filter
+  include ActionController::Rendering
+  include ActionController::Renderers::All
+  include ActionController::MimeResponds
+
   before_filter :map_method, :limit_count
 
   DEFAULT_COUNT = 20

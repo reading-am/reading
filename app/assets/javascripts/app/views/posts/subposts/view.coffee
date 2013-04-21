@@ -9,5 +9,5 @@ define [
     @assets
       styles: styles
       template: template
-      
+
     modelView: SubPostView

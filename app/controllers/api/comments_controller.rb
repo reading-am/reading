@@ -1,5 +1,6 @@
 # encoding: utf-8
 class Api::CommentsController < Api::APIController
+
   # GET /comments
   # GET /comments.json
   def index
@@ -28,6 +29,7 @@ class Api::CommentsController < Api::APIController
       format.json { render_json :comments => @comments.collect { |comment| comment.simple_obj } }
     end
   end
+  add_transaction_tracer :index
 
   # GET /comments/1
   # GET /comments/1.json
@@ -38,6 +40,7 @@ class Api::CommentsController < Api::APIController
       format.json { render_json :comment => @comment }
     end
   end
+  add_transaction_tracer :show
 
   # POST /comments
   # POST /comments.json
@@ -69,6 +72,7 @@ class Api::CommentsController < Api::APIController
       end
     end
   end
+  add_transaction_tracer :create
 
   # PUT /comments/1
   # PUT /comments/1.json
@@ -87,6 +91,7 @@ class Api::CommentsController < Api::APIController
       format.json { render_json status }
     end
   end
+  add_transaction_tracer :update
 
   # DELETE /comments/1
   # DELETE /comments/1.json
@@ -101,6 +106,7 @@ class Api::CommentsController < Api::APIController
       format.json { render_json status }
     end
   end
+  add_transaction_tracer :destroy
 
   def count
     if current_user.roles? :admin
@@ -111,5 +117,6 @@ class Api::CommentsController < Api::APIController
       show_404
     end
   end
+  add_transaction_tracer :count
 
 end

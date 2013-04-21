@@ -118,6 +118,8 @@ group :assets do
 end
 
 group :development do
+  gem 'bullet'
+  gem 'ruby-growl' # used by bullet
   gem 'debugger'
   gem 'sunspot_solr'
   gem 'progress_bar'

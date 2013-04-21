@@ -24,6 +24,7 @@ class Api::UsersController < Api::APIController
       format.json { render_json :users => @users.collect { |user| user.simple_obj } }
     end
   end
+  add_transaction_tracer :index
 
   def show
     if params[:user_id]
@@ -45,6 +46,7 @@ class Api::UsersController < Api::APIController
       show_404
     end
   end
+  add_transaction_tracer :show
 
   def expats
     @user = User.fetch(params[:id])
@@ -60,6 +62,7 @@ class Api::UsersController < Api::APIController
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
     end
   end
+  add_transaction_tracer :expats
 
   def recommended
     @users = User.where("posts_count > ?", 300).order("followers_count DESC").limit(20)
@@ -68,6 +71,7 @@ class Api::UsersController < Api::APIController
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
     end
   end
+  add_transaction_tracer :recommended
 
   def search
     search = User.search do fulltext params[:q] end
@@ -77,6 +81,7 @@ class Api::UsersController < Api::APIController
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
     end
   end
+  add_transaction_tracer :search
 
   def count
     if current_user.roles? :admin
@@ -87,5 +92,6 @@ class Api::UsersController < Api::APIController
       show_404
     end
   end
+  add_transaction_tracer :count
 
 end

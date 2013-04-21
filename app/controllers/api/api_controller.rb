@@ -1,6 +1,23 @@
 # encoding: utf-8
-class Api::APIController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+class Api::APIController < ActionController::Metal
+  # Bare metal rails controllers: http://www.slideshare.net/artellectual/developing-api-with-rails-metal
+  include ActionController::Helpers
+  include ActionController::Redirecting
+  include ActionController::Rendering
+  include ActionController::Renderers::All
+  include ActionController::ConditionalGet
+  # need this for responding to different types .json .xml etc...
+  include ActionController::MimeResponds
+  include AbstractController::Callbacks
+  # need this to build 'params'
+  include ActionController::Instrumentation
+  include ActionController::ParamsWrapper
+  include Devise::Controllers::Helpers
+  include Rails.application.routes.url_helpers
+  # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
+  include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
+
+  wrap_parameters format: [:json]
   before_filter :map_method, :limit_count
 
   DEFAULT_COUNT = 20

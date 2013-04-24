@@ -7,8 +7,12 @@ define [
 
   Backbone.View.assets = (options) ->
     if options.styles
-      this::styles = options.styles
-      this::apply_styles = _.once(=>$("<style>").html(this::styles).appendTo("head"))
+      # We save a reference to the parent's styles so they can be applied too
+      styles = this::styles = options.styles
+      parent_apply = this::apply_styles
+      this::apply_styles = _.once =>
+        parent_apply?()
+        $("<style>").html(styles).appendTo("head")
 
     if options.template
       $el = Backbone.$(Mustache.render(options.template, {}))
@@ -29,7 +33,7 @@ define [
 
   Backbone.View::_constructor = Backbone.View::constructor
   Backbone.View::constructor = (options) ->
-    @apply_styles() if @styles
+    @apply_styles?()
     Backbone.View::_constructor.apply(this, arguments)
 
 

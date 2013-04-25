@@ -86,6 +86,7 @@ class ApplicationController < ActionController::Base
       'yahoo',
       'y!', # Yahoo Japan
       'google',
+      'facebook',
       'bingbot',
       'duckduckbot',
       'yandex',

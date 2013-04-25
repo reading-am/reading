@@ -258,6 +258,7 @@ public
     if @curl.blank?
       @curl = Curl::Easy.new url
       @curl.follow_location = true
+      @curl.useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
       @curl.perform
     end
     @curl

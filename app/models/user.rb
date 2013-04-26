@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   has_many :authorizations, :dependent => :destroy
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
   has_many :domains, :through => :posts
-  has_many :hooks, :dependent => :destroy
+  has_many :hooks, :dependent => :destroy, :include => [:user, :authorization]
   has_many :pages, :through => :posts
   has_many :comments, :dependent => :destroy
 

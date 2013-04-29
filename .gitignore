@@ -1,4 +1,5 @@
 .bundle
+.orientdb_history
 db/*.sqlite3
 log/
 tmp/

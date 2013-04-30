@@ -97,6 +97,9 @@ namespace :orientdb do
 
           has_many[model].each do |assoc|
             attrs[assoc.name] = []
+            m.send(assoc.name).find_each do |a|
+              attrs[assoc.name] << "##{cluster_ids[a.class.name]}:#{a.id}"
+            end
           end
 
           f.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"
@@ -110,8 +113,8 @@ namespace :orientdb do
   end
 
   def to_json obj
-    JSON.pretty_generate obj
-    #ActiveSupport::JSON.encode obj
+    #JSON.pretty_generate obj
+    ActiveSupport::JSON.encode obj
   end
 
   def base_path

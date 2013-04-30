@@ -1,6 +1,13 @@
 namespace :orientdb do
   desc "Output a JSON file compatible with the OrientDB Import / Export format."
   task :export => :environment do
+
+    class ActiveSupport::TimeWithZone
+      def as_json(options = {})
+        strftime("%Y-%m-%d %H:%M:%S:%L")
+      end
+    end
+
     data = {
       "info" => {
         "name" => Rails.configuration.database_configuration[Rails.env]["database"],
@@ -20,22 +27,43 @@ namespace :orientdb do
     }
 
     i = 7
+    cluster_ids = {}
+    belongs_to = {}
     models.each do |model|
       i += 1
+      cluster_ids[model.name] = i
       data["clusters"] << {"name" => model.name, "id" => i, "type" => "PHYSICAL"}
-      data["schema"]["classes"] << {"name" => model.name, "default-cluster-id" => i, "cluster-ids" => [i]}
+
+      c = {"name" => model.name, "default-cluster-id" => i, "cluster-ids" => [i], "properties" => []}
+
+      belongs_to[model.name] = {}
+      model.reflect_on_all_associations(:belongs_to).each do |assc|
+        #belongs_to[model.name][assc.foreign_key] = assc.class_name
+      end
+      model.columns_hash.each do |column|
+        column = column[1]
+        prop = {"name" => column.name, "type" => (column.type == :text ? "STRING" : column.type.to_s.upcase), "mandatory" => !column.null, "not-null" => column.null}
+        if !belongs_to[model.name][column.name].nil?
+          prop["type"] = "LINK"
+          prop["linked-class"] = belongs_to[model.name][column.name]
+        end
+        c["properties"] << prop
+      end
+      data["schema"]["classes"] << c
     end
 
     File.open('export.json', 'wb') do |f|
-      f.write data.to_json[0..-3]
+      f.write to_json(data)[0..-3]
 
       i = 7
       first = true
       models.each do |model|
         i += 1
-        model.limit(2000).each do |m|
+        model.order("id ASC").limit(5).each do |m|
           meta = {"@type" => "d", "@rid" => "##{i}:#{m.id}", "@version" => 0, "@class" => model.name}
-          f.write "#{first ? '' : ','}#{meta.merge(m.attributes).to_json}"
+          attr = m.attributes
+          belongs_to[model.name].each {|k,v| attr[k] = "#{cluster_ids[v]}:#{attr[k]}"}
+          f.write "#{first ? '' : ','}#{to_json meta.merge(attr)}"
           first = false
         end
       end
@@ -43,6 +71,11 @@ namespace :orientdb do
       f.write "]}"
     end
 
+  end
+
+  def to_json obj
+    #JSON.pretty_generate obj
+    ActiveSupport::JSON.encode obj
   end
 
   def base_path

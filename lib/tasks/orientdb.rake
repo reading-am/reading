@@ -96,10 +96,7 @@ namespace :orientdb do
           end
 
           has_many[model].each do |assoc|
-            attrs[assoc.name] = []
-            m.send(assoc.name).find_each do |a|
-              attrs[assoc.name] << "##{cluster_ids[a.class.name]}:#{a.id}"
-            end
+            attrs[assoc.name] = m.send(assoc.name).select(:id).map {|x| "##{cluster_ids[assoc.class_name]}:#{x.id}"}
           end
 
           f.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"

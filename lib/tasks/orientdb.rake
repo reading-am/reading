@@ -36,16 +36,17 @@ namespace :orientdb do
 
       c = {"name" => model.name, "default-cluster-id" => i, "cluster-ids" => [i], "properties" => []}
 
-      belongs_to[model.name] = {}
+      belongs_to[model] = {}
       model.reflect_on_all_associations(:belongs_to).each do |assc|
-        #belongs_to[model.name][assc.foreign_key] = assc.class_name
+        belongs_to[model][assc.foreign_key] = assc
       end
       model.columns_hash.each do |column|
         column = column[1]
         prop = {"name" => column.name, "type" => (column.type == :text ? "STRING" : column.type.to_s.upcase), "mandatory" => !column.null, "not-null" => column.null}
-        if !belongs_to[model.name][column.name].nil?
+        if !belongs_to[model][column.name].nil?
+          prop["name"] = belongs_to[model][column.name].name
           prop["type"] = "LINK"
-          prop["linked-class"] = belongs_to[model.name][column.name]
+          prop["linked-class"] = belongs_to[model][column.name].class_name
         end
         c["properties"] << prop
       end
@@ -61,9 +62,12 @@ namespace :orientdb do
         i += 1
         model.order("id ASC").limit(5).each do |m|
           meta = {"@type" => "d", "@rid" => "##{i}:#{m.id}", "@version" => 0, "@class" => model.name}
-          attr = m.attributes
-          belongs_to[model.name].each {|k,v| attr[k] = "#{cluster_ids[v]}:#{attr[k]}"}
-          f.write "#{first ? '' : ','}#{to_json meta.merge(attr)}"
+          attrs = m.attributes
+          belongs_to[model].each do |k,v|
+            attrs[v.name] = "##{cluster_ids[v.class_name]}:#{attrs[k]}" unless attrs[k].blank?
+            attrs.delete(k)
+          end
+          f.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"
           first = false
         end
       end

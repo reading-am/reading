@@ -2,13 +2,16 @@ namespace :orientdb do
   desc "Output a JSON file compatible with the OrientDB Import / Export format."
   task :export => :environment do
 
+    # Monkey patch the JSON output of dates
+    # This is the only format I found that works with OrientDB
     class ActiveSupport::TimeWithZone
       def as_json(options = {})
         strftime("%Y-%m-%d %H:%M:%S:%L")
       end
     end
 
-    data = {
+    # Create the basic structure of the output
+    base = {
       "info" => {
         "name" => Rails.configuration.database_configuration[Rails.env]["database"],
         "exporter-version" => 5,
@@ -26,47 +29,76 @@ namespace :orientdb do
       "records" => []
     }
 
-    i = 7
+    # pad the id to allow room for the system ids required by orient
+    id = 10
     cluster_ids = {}
     belongs_to = {}
+    has_many = {}
+
     models.each do |model|
-      i += 1
-      cluster_ids[model.name] = i
-      data["clusters"] << {"name" => model.name, "id" => i, "type" => "PHYSICAL"}
+      cluster_ids[model.name] = id
+      id += 1
 
-      c = {"name" => model.name, "default-cluster-id" => i, "cluster-ids" => [i], "properties" => []}
+      base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
+      clss = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}
 
+      # find the ActiveRecord associations and add them to the schema
       belongs_to[model] = {}
-      model.reflect_on_all_associations(:belongs_to).each do |assc|
-        belongs_to[model][assc.foreign_key] = assc
+      model.reflect_on_all_associations(:belongs_to).each do |assoc|
+        belongs_to[model][assoc.foreign_key] = assoc
       end
+
+      has_many[model] = []
+      model.reflect_on_all_associations(:has_many).each do |assoc|
+        if assoc.options[:through].blank?
+          has_many[model] << assoc
+        end
+      end
+
       model.columns_hash.each do |column|
         column = column[1]
-        prop = {"name" => column.name, "type" => (column.type == :text ? "STRING" : column.type.to_s.upcase), "mandatory" => !column.null, "not-null" => column.null}
-        if !belongs_to[model][column.name].nil?
-          prop["name"] = belongs_to[model][column.name].name
-          prop["type"] = "LINK"
-          prop["linked-class"] = belongs_to[model][column.name].class_name
-        end
-        c["properties"] << prop
+        assoc = belongs_to[model][column.name]
+
+        clss["properties"] << {
+          "name" => assoc.nil? ? column.name : assoc.name,
+          "type" => (assoc.nil? ? column.type == :text ? "STRING" : column.type.to_s.upcase : "LINK"),
+          "mandatory" => !column.null,
+          "not-null" => !column.null
+        }
+        clss["properties"].last["linked-class"] = assoc.class_name unless assoc.nil?
       end
-      data["schema"]["classes"] << c
+
+      has_many[model].each do |assoc|
+        clss["properties"] << {
+          "name" => assoc.name,
+          "type" => "LINKSET",
+          "linked-class" => assoc.class_name,
+          "mandatory" => false,
+          "not-null" => false
+        }
+      end
+
+      base["schema"]["classes"] << clss
     end
 
     File.open('export.json', 'wb') do |f|
-      f.write to_json(data)[0..-3]
+      f.write to_json(base)[0..-3]
 
-      i = 7
       first = true
       models.each do |model|
-        i += 1
         model.order("id ASC").limit(5).each do |m|
-          meta = {"@type" => "d", "@rid" => "##{i}:#{m.id}", "@version" => 0, "@class" => model.name}
+          meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
+
           belongs_to[model].each do |k,v|
             attrs[v.name] = "##{cluster_ids[v.class_name]}:#{attrs[k]}" unless attrs[k].blank?
             attrs.delete(k)
           end
+
+          has_many[model].each do |assoc|
+            attrs[assoc.name] = []
+          end
+
           f.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"
           first = false
         end
@@ -78,8 +110,8 @@ namespace :orientdb do
   end
 
   def to_json obj
-    #JSON.pretty_generate obj
-    ActiveSupport::JSON.encode obj
+    JSON.pretty_generate obj
+    #ActiveSupport::JSON.encode obj
   end
 
   def base_path

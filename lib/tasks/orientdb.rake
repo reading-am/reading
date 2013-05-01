@@ -36,8 +36,8 @@ namespace :orientdb do
     has_many = {}
 
     models.each do |model|
-      cluster_ids[model.name] = id
       id += 1
+      cluster_ids[model.name] = id
 
       base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
       clss = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}

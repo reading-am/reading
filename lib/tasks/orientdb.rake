@@ -33,7 +33,6 @@ namespace :orientdb do
     id = 10
     cluster_ids = {}
     belongs_to = {}
-    has_many = {}
 
     models.each do |model|
       id += 1
@@ -46,13 +45,6 @@ namespace :orientdb do
       belongs_to[model] = {}
       model.reflect_on_all_associations(:belongs_to).each do |assoc|
         belongs_to[model][assoc.foreign_key] = assoc
-      end
-
-      has_many[model] = []
-      model.reflect_on_all_associations(:has_many).each do |assoc|
-        if assoc.options[:through].blank?
-          has_many[model] << assoc
-        end
       end
 
       model.columns_hash.each do |column|
@@ -68,7 +60,7 @@ namespace :orientdb do
         clss["properties"].last["linked-class"] = assoc.class_name unless assoc.nil?
       end
 
-      has_many[model].each do |assoc|
+      model.reflect_on_all_associations(:has_many).each do |assoc|
         clss["properties"] << {
           "name" => assoc.name,
           "type" => "LINKSET",
@@ -86,17 +78,17 @@ namespace :orientdb do
 
       first = true
       models.each do |model|
-        model.order("id ASC").limit(5).each do |m|
+        model.order("id ASC").limit(100).each do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
 
-          belongs_to[model].each do |k,v|
-            attrs[v.name] = "##{cluster_ids[v.class_name]}:#{attrs[k]}" unless attrs[k].blank?
-            attrs.delete(k)
+          model.reflect_on_all_associations(:belongs_to).each do |assoc|
+            attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
+            attrs.delete(assoc.foreign_key)
           end
 
-          has_many[model].each do |assoc|
-            attrs[assoc.name] = m.send(assoc.name).select(:id).map {|x| "##{cluster_ids[assoc.class_name]}:#{x.id}"}
+          model.reflect_on_all_associations(:has_many).each do |assoc|
+            attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map {|x| "##{cluster_ids[assoc.class_name]}:#{x.id}"}
           end
 
           f.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"

@@ -78,7 +78,7 @@ namespace :orientdb do
 
       first = true
       models.each do |model|
-        model.order("id ASC").limit(100).each do |m|
+        model.find_each do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
 

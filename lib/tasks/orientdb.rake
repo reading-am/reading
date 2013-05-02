@@ -43,10 +43,24 @@ namespace :orientdb do
       base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
       clss = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}
 
+      model.reflect_on_all_associations(:has_many).each do |assoc|
+        if assoc.options[:through].nil? || through?
+          clss["properties"] << {
+            "name" => assoc.name,
+            "type" => "LINKSET",
+            "linked-class" => assoc.class_name,
+            "mandatory" => false,
+            "not-null" => false
+          }
+        end
+      end
+
       # find the ActiveRecord associations and add them to the schema
       belongs_to[model] = {}
-      model.reflect_on_all_associations(:belongs_to).each do |assoc|
-        belongs_to[model][assoc.foreign_key] = assoc
+      model.reflect_on_all_associations(:has_one).concat(model.reflect_on_all_associations(:belongs_to)).each do |assoc|
+        if assoc.options[:through].nil? || through?
+          belongs_to[model][assoc.foreign_key] = assoc
+        end
       end
 
       model.columns_hash.each do |column|
@@ -60,16 +74,6 @@ namespace :orientdb do
           "not-null" => !column.null
         }
         clss["properties"].last["linked-class"] = assoc.class_name unless assoc.nil?
-      end
-
-      model.reflect_on_all_associations(:has_many).each do |assoc|
-        clss["properties"] << {
-          "name" => assoc.name,
-          "type" => "LINKSET",
-          "linked-class" => assoc.class_name,
-          "mandatory" => false,
-          "not-null" => false
-        }
       end
 
       base["schema"]["classes"] << clss
@@ -110,17 +114,19 @@ namespace :orientdb do
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
 
-          model.reflect_on_all_associations(:has_one).each do |assoc|
-            if !assoc.options[:through].nil?
-              attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
-              attrs.delete(assoc.foreign_key)
+          if through?
+            model.reflect_on_all_associations(:has_one).each do |assoc|
+              if !assoc.options[:through].nil?
+                attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
+                attrs.delete(assoc.foreign_key)
+              end
             end
-          end
 
-          model.reflect_on_all_associations(:has_many).each do |assoc|
-            if !assoc.options[:through].nil?
-              attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
-                "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
+            model.reflect_on_all_associations(:has_many).each do |assoc|
+              if !assoc.options[:through].nil?
+                attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
+                  "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
+                end
               end
             end
           end
@@ -136,6 +142,10 @@ namespace :orientdb do
     system "orientdb-console #{cmd_path}"
     File.delete cmd_path, data_path
 
+  end
+
+  def through?
+    !(ENV['through'].blank? || ENV['through'].downcase == 'false')
   end
 
   def to_json obj

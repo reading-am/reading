@@ -73,12 +73,12 @@ namespace :orientdb do
       base["schema"]["classes"] << clss
     end
 
-    File.open('export.json', 'wb') do |f|
-      f.write to_json(base)[0..-3]
+    Zlib::GzipWriter.open("#{base['info']['name']}.json.gz") do |gz|
+      gz.write to_json(base)[0..-3]
 
       first = true
       models.each do |model|
-        model.find_each do |m|
+        model.order("id ASC").limit(10).each do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
 
@@ -91,12 +91,12 @@ namespace :orientdb do
             attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map {|x| "##{cluster_ids[assoc.class_name]}:#{x.id}"}
           end
 
-          f.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"
+          gz.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"
           first = false
         end
       end
 
-      f.write "]}"
+      gz.write "]}"
     end
 
   end

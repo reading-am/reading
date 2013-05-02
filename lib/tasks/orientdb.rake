@@ -33,6 +33,8 @@ namespace :orientdb do
     id = 10
     cluster_ids = {}
     belongs_to = {}
+    data_path = "/tmp/#{base['info']['name']}_data.json.gz"
+    cmd_path = "/tmp/#{base['info']['name']}_commands"
 
     models.each do |model|
       id += 1
@@ -73,29 +75,53 @@ namespace :orientdb do
       base["schema"]["classes"] << clss
     end
 
-    Zlib::GzipWriter.open("#{base['info']['name']}.json.gz") do |gz|
+    File.open(cmd_path, "wb") do |f|
+      f.write "drop database #{ENV['db'].split(' ')[0..2].join(' ')};"
+      f.write "create database #{ENV['db']};"
+      f.write "import database #{data_path};"
+
+      models.each do |model|
+        model.reflect_on_all_associations(:has_many).each do |assoc|
+          if assoc.options[:through].nil?
+            f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
+          end
+        end
+
+        model.reflect_on_all_associations(:has_one).concat(model.reflect_on_all_associations(:belongs_to)).each do |assoc|
+          if assoc.options[:through].nil?
+            f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
+            f.write "UPDATE #{assoc.name} REMOVE #{assoc.foreign_key};\n\n"
+          end
+        end
+      end
+    end
+
+    Zlib::GzipWriter.open(data_path) do |gz|
       gz.write to_json(base)[0..-3]
 
       first = true
+      limit = 100
       models.each do |model|
 
-        puts "\n"
         puts "#{model.name} | #{model.table_name} | #{model.count}"
-        puts "belongs_to: #{model.reflect_on_all_associations(:belongs_to).map {|a| a.name}}"
-        puts "has_many: #{model.reflect_on_all_associations(:has_many).map {|a| a.name}}"
 
-        model.order("id ASC").limit(10).each do |m|
+
+        model.order("id ASC").limit(limit).each do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
 
-          model.reflect_on_all_associations(:belongs_to).each do |assoc|
-            attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
-            attrs.delete(assoc.foreign_key)
+          model.reflect_on_all_associations(:has_one).each do |assoc|
+            if !assoc.options[:through].nil?
+              attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
+              attrs.delete(assoc.foreign_key)
+            end
           end
 
           model.reflect_on_all_associations(:has_many).each do |assoc|
-            attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
-              "##{cluster_ids[assoc.class_name]}:#{x.id}"
+            if !assoc.options[:through].nil?
+              attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
+                "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
+              end
             end
           end
 
@@ -106,6 +132,9 @@ namespace :orientdb do
 
       gz.write "]}"
     end
+
+    system "orientdb-console #{cmd_path}"
+    File.delete cmd_path, data_path
 
   end
 

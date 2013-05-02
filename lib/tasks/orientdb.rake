@@ -76,9 +76,9 @@ namespace :orientdb do
     end
 
     File.open(cmd_path, "wb") do |f|
-      f.write "drop database #{ENV['db'].split(' ')[0..2].join(' ')};"
-      f.write "create database #{ENV['db']};"
-      f.write "import database #{data_path};"
+      f.write "drop database #{ENV['db'].split(' ')[0..2].join(' ')};\n"
+      f.write "create database #{ENV['db']};\n"
+      f.write "import database #{data_path};\n\n"
 
       models.each do |model|
         model.reflect_on_all_associations(:has_many).each do |assoc|
@@ -90,7 +90,7 @@ namespace :orientdb do
         model.reflect_on_all_associations(:has_one).concat(model.reflect_on_all_associations(:belongs_to)).each do |assoc|
           if assoc.options[:through].nil?
             f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
-            f.write "UPDATE #{assoc.name} REMOVE #{assoc.foreign_key};\n\n"
+            f.write "UPDATE #{model.name} REMOVE #{assoc.foreign_key};\n\n"
           end
         end
       end
@@ -100,7 +100,7 @@ namespace :orientdb do
       gz.write to_json(base)[0..-3]
 
       first = true
-      limit = 100
+      limit = 5
       models.each do |model|
 
         puts "#{model.name} | #{model.table_name} | #{model.count}"

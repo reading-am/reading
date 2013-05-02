@@ -78,6 +78,12 @@ namespace :orientdb do
 
       first = true
       models.each do |model|
+
+        puts "\n"
+        puts "#{model.name} | #{model.table_name} | #{model.count}"
+        puts "belongs_to: #{model.reflect_on_all_associations(:belongs_to).map {|a| a.name}}"
+        puts "has_many: #{model.reflect_on_all_associations(:has_many).map {|a| a.name}}"
+
         model.order("id ASC").limit(10).each do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
@@ -88,7 +94,9 @@ namespace :orientdb do
           end
 
           model.reflect_on_all_associations(:has_many).each do |assoc|
-            attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map {|x| "##{cluster_ids[assoc.class_name]}:#{x.id}"}
+            attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
+              "##{cluster_ids[assoc.class_name]}:#{x.id}"
+            end
           end
 
           gz.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"

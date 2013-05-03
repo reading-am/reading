@@ -10,7 +10,6 @@ namespace :orientdb do
       end
     end
 
-    limit = 10
     db_name   = Rails.configuration.database_configuration[Rails.env]["database"]
     data_path = "/tmp/#{db_name}_data.json.gz"
     cmd_path  = "/tmp/#{db_name}_commands"
@@ -113,9 +112,7 @@ namespace :orientdb do
       first = true
       selected_models.each do |model|
 
-        puts "#{model.name} | #{model.table_name} | #{model.count}"
-
-        model.order("id ASC").limit(limit).each do |m|
+        write_assocs = lambda do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
           attrs = m.attributes
 
@@ -136,7 +133,7 @@ namespace :orientdb do
                   end
                 when :has_many
                   attrs[assoc.name] = m.send(assoc.name).select("#{assoc.klass.table_name}.id").map do |x|
-                    "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
+                    "##{cluster_ids[assoc.class_name]}:#{x.id}" if !limit || x.id <= limit
                   end
                 end
               end
@@ -146,6 +143,14 @@ namespace :orientdb do
           gz.write "#{first ? '' : ','}#{to_json meta.merge(attrs)}"
           first = false
         end
+
+        puts "#{model.name} | #{model.table_name} | #{model.count}"
+        if limit
+          model.order("id ASC").limit(limit).each &write_assocs
+        else
+          model.find_each &write_assocs
+        end
+
       end
 
       gz.write "]}"
@@ -172,6 +177,14 @@ namespace :orientdb do
       end
     end
     @join_assoc
+  end
+
+  def limit
+    if ENV['limit'].blank? || ENV['limit'] == '0' || ENV['limit'].downcase == 'false'
+      false
+    else
+      ENV['limit'].to_i
+    end
   end
 
   def add_links_in_ruby?

@@ -40,8 +40,6 @@ namespace :orientdb do
     belongs_to = {}
 
     if remove_join_tables?
-      join_models = models.select {|m| is_a_join_table?(m)}
-      join_tables = join_models.map {|m| m.table_name.to_sym}
       exclude = join_models.map {|m| m.name}
     else
       exclude = []
@@ -56,25 +54,25 @@ namespace :orientdb do
       base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
       clss = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}
 
-      model.reflect_on_all_associations(:has_many).each do |assoc|
+      belongs_to[model] = {}
+      model.reflect_on_all_associations.each do |assoc|
         next if exclude.include?(assoc.class_name)
 
-        if assoc.options[:through].nil? || through? || (remove_join_tables? && join_tables.include?(assoc.options[:through]))
-          clss["properties"] << {
-            "name" => assoc.name,
-            "type" => "LINKSET",
-            "linked-class" => assoc.class_name,
-            "mandatory" => false,
-            "not-null" => false
-          }
-        end
-      end
+        if assoc.options[:through].nil? || through? ||
+          (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through])))
 
-      # find the ActiveRecord associations and add them to the schema
-      belongs_to[model] = {}
-      model.reflect_on_all_associations(:has_one).concat(model.reflect_on_all_associations(:belongs_to)).each do |assoc|
-        if assoc.options[:through].nil? || through? || (remove_join_tables? && join_tables.include?(assoc.options[:through]))
-          belongs_to[model][assoc.foreign_key] = assoc
+          case assoc.macro
+          when :has_many
+            clss["properties"] << {
+              "name" => assoc.name,
+              "type" => "LINKSET",
+              "linked-class" => assoc.class_name,
+              "mandatory" => false,
+              "not-null" => false
+            }
+          when :has_one, :belongs_to
+            belongs_to[model][assoc.foreign_key] = assoc
+          end
         end
       end
 
@@ -103,18 +101,18 @@ namespace :orientdb do
       models.each do |model|
         next if exclude.include?(model.name)
 
-        model.reflect_on_all_associations(:has_many).each do |assoc|
+        model.reflect_on_all_associations.each do |assoc|
           if assoc.options[:through].nil? && !exclude.include?(assoc.class_name)
-            f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
+            case assoc.macro
+            when :has_many
+              f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
+            when :has_one, :belongs_to
+              f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
+              f.write "UPDATE #{model.name} REMOVE #{assoc.foreign_key};\n\n"
+            end
           end
         end
 
-        model.reflect_on_all_associations(:has_one).concat(model.reflect_on_all_associations(:belongs_to)).each do |assoc|
-          if assoc.options[:through].nil? && !exclude.include?(assoc.class_name)
-            f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
-            f.write "UPDATE #{model.name} REMOVE #{assoc.foreign_key};\n\n"
-          end
-        end
       end
     end
 
@@ -132,17 +130,18 @@ namespace :orientdb do
           attrs = m.attributes
 
           if through? || remove_join_tables?
-            model.reflect_on_all_associations(:has_one).each do |assoc|
-              if !assoc.options[:through].nil? && !exclude.include?(assoc.class_name) && (through? || (remove_join_tables? && join_tables.include?(assoc.options[:through])))
-                attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
-                attrs.delete(assoc.foreign_key)
-              end
-            end
+            model.reflect_on_all_associations.each do |assoc|
+              if !assoc.options[:through].nil? && !exclude.include?(assoc.class_name) &&
+                (through? || (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through]))))
 
-            model.reflect_on_all_associations(:has_many).each do |assoc|
-              if !assoc.options[:through].nil? && !exclude.include?(assoc.class_name) && (through? || (remove_join_tables? && join_tables.include?(assoc.options[:through])))
-                attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
-                  "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
+                case assoc.macro
+                when :has_one
+                  attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
+                  attrs.delete(assoc.foreign_key)
+                when :has_many
+                  attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
+                    "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
+                  end
                 end
               end
             end
@@ -159,6 +158,24 @@ namespace :orientdb do
     system "orientdb-console #{cmd_path}"
     File.delete cmd_path, data_path
 
+  end
+
+  def join_models
+    @join_models ||= models.select {|m| is_a_join_table?(m)}
+  end
+
+  def join_tables
+    @join_tables ||= join_models.map {|m| m.table_name.to_sym}
+  end
+
+  def join_assoc
+    if @join_assoc.blank?
+      @join_assoc = {}
+      models.each do |m|
+        @join_assoc[m] = m.reflect_on_all_associations.select {|a| join_tables.include?(a.table_name.to_sym)}.map! {|a| a.name}
+      end
+    end
+    @join_assoc
   end
 
   def through?

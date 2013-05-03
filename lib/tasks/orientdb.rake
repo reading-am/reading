@@ -211,6 +211,11 @@ namespace :orientdb do
       else
         @selected_models = models
       end
+
+      if !ENV['models'].blank?
+        i = ENV['models'].downcase.split(',').collect(&:strip)
+        @selected_models.select! {|m| i.include?(m.name.downcase)}
+      end
     end
 
     @selected_models

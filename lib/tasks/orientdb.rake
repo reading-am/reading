@@ -10,7 +10,7 @@ namespace :orientdb do
       end
     end
 
-    limit = 100
+    limit = 5
     db_name   = Rails.configuration.database_configuration[Rails.env]["database"]
     data_path = "/tmp/#{db_name}_data.json.gz"
     cmd_path  = "/tmp/#{db_name}_commands"
@@ -39,31 +39,23 @@ namespace :orientdb do
     cluster_ids = {}
     belongs_to = {}
 
-    if remove_join_tables?
-      exclude = join_models.map {|m| m.name}
-    else
-      exclude = []
-    end
-
-    models.each do |model|
-      next if exclude.include?(model.name)
-
+    selected_models.each do |model|
       id += 1
       cluster_ids[model.name] = id
 
       base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
-      clss = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}
+      klass = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}
 
       belongs_to[model] = {}
       model.reflect_on_all_associations.each do |assoc|
-        next if exclude.include?(assoc.class_name)
+        next if !selected_models.include?(assoc.klass)
 
         if assoc.options[:through].nil? || through? ||
           (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through])))
 
           case assoc.macro
           when :has_many
-            clss["properties"] << {
+            klass["properties"] << {
               "name" => assoc.name,
               "type" => "LINKSET",
               "linked-class" => assoc.class_name,
@@ -79,18 +71,18 @@ namespace :orientdb do
       model.columns_hash.each do |column|
         column = column[1]
         assoc = belongs_to[model][column.name]
-        next if !assoc.nil? && exclude.include?(assoc.class_name)
+        next if !assoc.nil? && !selected_models.include?(assoc.klass)
 
-        clss["properties"] << {
+        klass["properties"] << {
           "name" => assoc.nil? ? column.name : assoc.name,
           "type" => (assoc.nil? ? column.type == :text ? "STRING" : column.type.to_s.upcase : "LINK"),
           "mandatory" => !column.null,
           "not-null" => !column.null
         }
-        clss["properties"].last["linked-class"] = assoc.class_name unless assoc.nil?
+        klass["properties"].last["linked-class"] = assoc.class_name unless assoc.nil?
       end
 
-      base["schema"]["classes"] << clss
+      base["schema"]["classes"] << klass
     end
 
     File.open(cmd_path, "wb") do |f|
@@ -98,11 +90,10 @@ namespace :orientdb do
       f.write "create database #{ENV['db']};\n"
       f.write "import database #{data_path};\n\n"
 
-      models.each do |model|
-        next if exclude.include?(model.name)
+      selected_models.each do |model|
 
         model.reflect_on_all_associations.each do |assoc|
-          if assoc.options[:through].nil? && !exclude.include?(assoc.class_name)
+          if assoc.options[:through].nil? && selected_models.include?(assoc.klass)
             case assoc.macro
             when :has_many
               f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
@@ -120,8 +111,7 @@ namespace :orientdb do
       gz.write to_json(base)[0..-3]
 
       first = true
-      models.each do |model|
-        next if exclude.include?(model.name)
+      selected_models.each do |model|
 
         puts "#{model.name} | #{model.table_name} | #{model.count}"
 
@@ -131,7 +121,7 @@ namespace :orientdb do
 
           if through? || remove_join_tables?
             model.reflect_on_all_associations.each do |assoc|
-              if !assoc.options[:through].nil? && !exclude.include?(assoc.class_name) &&
+              if !assoc.options[:through].nil? && selected_models.include?(assoc.klass) &&
                 (through? || (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through]))))
 
                 case assoc.macro
@@ -139,7 +129,7 @@ namespace :orientdb do
                   attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
                   attrs.delete(assoc.foreign_key)
                 when :has_many
-                  attrs[assoc.name] = m.send(assoc.name).select("#{assoc.class_name.constantize.table_name}.id").map do |x|
+                  attrs[assoc.name] = m.send(assoc.name).select("#{assoc.klass.table_name}.id").map do |x|
                     "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
                   end
                 end
@@ -204,12 +194,26 @@ namespace :orientdb do
     @model_path ||= File.join(base_path, 'app/models', '**/*.rb')
   end
 
-  # @return [Array<Class>] classes(models) descending from ActiveRecord::Base
   # from: https://github.com/salesking/json_schema_builder/blob/master/lib/schema_builder/writer.rb
   def models
-    Dir.glob(model_path).each {|file| require file rescue nil}
-    model_names = Module.constants.select { |c| (eval "#{c}").is_a?(Class) && (eval "#{c}") < ::ActiveRecord::Base }
-    model_names.map{|i| "#{i}".constantize}
+    if @models.blank?
+      Dir.glob(model_path).each {|file| require file rescue nil}
+      model_names = Module.constants.select { |c| (eval "#{c}").is_a?(Class) && (eval "#{c}") < ::ActiveRecord::Base }
+      @models = model_names.map{|i| "#{i}".constantize}
+    end
+    @models
+  end
+
+  def selected_models
+    if @selected_models.blank?
+      if remove_join_tables?
+        @selected_models = models.select {|m| !join_models.include?(m)}
+      else
+        @selected_models = models
+      end
+    end
+
+    @selected_models
   end
 
 end

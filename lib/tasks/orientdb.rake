@@ -10,7 +10,7 @@ namespace :orientdb do
       end
     end
 
-    limit = 5
+    limit = 10
     db_name   = Rails.configuration.database_configuration[Rails.env]["database"]
     data_path = "/tmp/#{db_name}_data.json.gz"
     cmd_path  = "/tmp/#{db_name}_commands"
@@ -50,7 +50,7 @@ namespace :orientdb do
       model.reflect_on_all_associations.each do |assoc|
         next if !selected_models.include?(assoc.klass)
 
-        if assoc.options[:through].nil? || through? ||
+        if add_links_in_ruby? || assoc.options[:through].nil? || through? ||
           (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through])))
 
           case assoc.macro
@@ -90,20 +90,20 @@ namespace :orientdb do
       f.write "create database #{ENV['db']};\n"
       f.write "import database #{data_path};\n\n"
 
-      selected_models.each do |model|
-
-        model.reflect_on_all_associations.each do |assoc|
-          if assoc.options[:through].nil? && selected_models.include?(assoc.klass)
-            case assoc.macro
-            when :has_many
-              f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
-            when :has_one, :belongs_to
-              f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
-              f.write "UPDATE #{model.name} REMOVE #{assoc.foreign_key};\n\n"
+      if !add_links_in_ruby?
+        selected_models.each do |model|
+          model.reflect_on_all_associations.each do |assoc|
+            if assoc.options[:through].nil? && selected_models.include?(assoc.klass)
+              case assoc.macro
+              when :has_many
+                f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
+              when :has_one, :belongs_to
+                f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
+                f.write "UPDATE #{model.name} REMOVE #{assoc.foreign_key};\n\n"
+              end
             end
           end
         end
-
       end
     end
 
@@ -121,13 +121,19 @@ namespace :orientdb do
 
           if through? || remove_join_tables?
             model.reflect_on_all_associations.each do |assoc|
-              if !assoc.options[:through].nil? && selected_models.include?(assoc.klass) &&
-                (through? || (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through]))))
+              if selected_models.include?(assoc.klass) && (
+                add_links_in_ruby? ||
+                (!assoc.options[:through].nil? &&
+                 (through? || (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through]))))
+                )
+              )
 
                 case assoc.macro
-                when :has_one
-                  attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
-                  attrs.delete(assoc.foreign_key)
+                when :has_one, :belongs_to
+                  if assoc.macro == :has_one || add_links_in_ruby?
+                    attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
+                    attrs.delete(assoc.foreign_key)
+                  end
                 when :has_many
                   attrs[assoc.name] = m.send(assoc.name).select("#{assoc.klass.table_name}.id").map do |x|
                     "##{cluster_ids[assoc.class_name]}:#{x.id}" if x.id <= limit
@@ -166,6 +172,10 @@ namespace :orientdb do
       end
     end
     @join_assoc
+  end
+
+  def add_links_in_ruby?
+    !(ENV['add_links_in_ruby'].blank? || ENV['add_links_in_ruby'].downcase == 'false')
   end
 
   def through?

@@ -132,9 +132,10 @@ namespace :orientdb do
                     attrs.delete(assoc.foreign_key)
                   end
                 when :has_many
-                  attrs[assoc.name] = m.send(assoc.name).select("#{assoc.klass.table_name}.id").map do |x|
-                    "##{cluster_ids[assoc.class_name]}:#{x.id}" if !limit || x.id <= limit
-                  end
+                  prop = "#{assoc.klass.table_name}.id"
+                  rows = m.send(assoc.name).select(prop)
+                  rows = rows.where("#{prop} <= #{limit}") if limit
+                  attrs[assoc.name] = rows.map {|row| "##{cluster_ids[assoc.class_name]}:#{row.id}"}
                 end
               end
             end

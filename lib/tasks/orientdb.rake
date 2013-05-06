@@ -34,7 +34,7 @@ namespace :orientdb do
     }
 
     # pad the id to allow room for the system ids required by orient
-    id = 10
+    id = 9
     cluster_ids = {}
     belongs_to = {}
 
@@ -43,7 +43,8 @@ namespace :orientdb do
       cluster_ids[model.name] = id
 
       base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
-      klass = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "properties" => []}
+      # The order of these props matters. If you add super-class after properties[] it will be ignored
+      klass = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "super-class" => "OGraphVertex", "properties" => []}
 
       belongs_to[model] = {}
       model.reflect_on_all_associations.each do |assoc|
@@ -145,7 +146,7 @@ namespace :orientdb do
           first = false
         end
 
-        puts "#{model.name} | #{model.table_name} | #{model.count}"
+        puts "#{model.name} | #{model.table_name} | #{!limit || model.count < limit ? model.count : limit}"
         if limit
           model.order("id ASC").limit(limit).each &write_assocs
         else
@@ -157,8 +158,10 @@ namespace :orientdb do
       gz.write "]}"
     end
 
-    system "orientdb-console #{cmd_path}"
-    File.delete cmd_path, data_path
+    if !pretty_print?
+      system "orientdb-console #{cmd_path}"
+      #File.delete cmd_path, data_path
+    end
 
   end
 
@@ -192,6 +195,10 @@ namespace :orientdb do
     !(ENV['add_links_in_ruby'].blank? || ENV['add_links_in_ruby'].downcase == 'false')
   end
 
+  def pretty_print?
+    !(ENV['pretty_print'].blank? || ENV['pretty_print'].downcase == 'false')
+  end
+
   def through?
     !(ENV['through'].blank? || ENV['through'].downcase == 'false')
   end
@@ -206,8 +213,11 @@ namespace :orientdb do
   end
 
   def to_json obj
-    #JSON.pretty_generate obj
-    ActiveSupport::JSON.encode obj
+    if pretty_print?
+      JSON.pretty_generate obj
+    else
+      ActiveSupport::JSON.encode obj
+    end
   end
 
   def base_path

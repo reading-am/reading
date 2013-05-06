@@ -160,7 +160,7 @@ namespace :orientdb do
 
     if !pretty_print?
       system "orientdb-console #{cmd_path}"
-      #File.delete cmd_path, data_path
+      File.delete cmd_path, data_path
     end
 
   end

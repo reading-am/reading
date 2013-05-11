@@ -25,6 +25,10 @@ class Post < ActiveRecord::Base
   # for will_paginate
   self.per_page = 100
 
+  oriental :edge,
+    :attributes => [:id, :yn],
+    :out => [:user, :page]
+
   searchable do
     boolean :yn
     integer :user_id

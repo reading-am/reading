@@ -7,4 +7,8 @@ class Relationship < ActiveRecord::Base
 
   validates :follower_id, :presence => true
   validates :followed_id, :presence => true
+
+  oriental :edge,
+    :attributes => [:created_at],
+    :in => [:follower], :out => [:followed]
 end

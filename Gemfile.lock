@@ -70,6 +70,12 @@ GIT
       omniauth
 
 GIT
+  remote: git://github.com/leppert/oriental
+  revision: 2307e748a693478062f7d86f2e181945ff887468
+  specs:
+    oriental (0.0.1)
+
+GIT
   remote: git://github.com/leppert/requirejs-rails.git
   revision: c4268ab2c0fd6f508efdf73214e75144b9fc4c09
   specs:
@@ -621,6 +627,7 @@ DEPENDENCIES
   omniauth-readability
   omniauth-tumblr
   omniauth-twitter
+  oriental!
   paperclip
   pg
   premailer-rails

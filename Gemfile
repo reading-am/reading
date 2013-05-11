@@ -10,6 +10,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli', :git => 'git://github.com/mperham/dalli.git' # Memcached
 gem 'sunspot_rails' # Solr
+gem 'oriental', :git => 'git://github.com/leppert/oriental' # OrientDB
 
 #############
 # Core Libs #

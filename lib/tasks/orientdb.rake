@@ -36,107 +36,89 @@ namespace :orientdb do
     # pad the id to allow room for the system ids required by orient
     id = 9
     cluster_ids = {}
-    belongs_to = {}
 
-    selected_models.each do |model|
+    models.each do |model|
       id += 1
       cluster_ids[model.name] = id
 
       base["clusters"] << {"name" => model.name, "id" => id, "type" => "PHYSICAL"}
       # The order of these props matters. If you add super-class after properties[] it will be ignored
-      klass = {"name" => model.name, "default-cluster-id" => id, "cluster-ids" => [id], "super-class" => "OGraphVertex", "properties" => []}
+      klass = {
+        "name" => model.name,
+        "default-cluster-id" => id,
+        "cluster-ids" => [id],
+        "super-class" => "OGraph#{model.oriental_config[:type].to_s.capitalize}",
+        "properties" => []
+      }
 
-      belongs_to[model] = {}
-      model.reflect_on_all_associations.each do |assoc|
-        next if !selected_models.include?(assoc.klass)
-
-        if add_links_in_ruby? || assoc.options[:through].nil? || through? ||
-          (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through])))
-
-          case assoc.macro
-          when :has_many
-            klass["properties"] << {
-              "name" => assoc.name,
-              "type" => "LINKSET",
-              "linked-class" => assoc.class_name,
-              "mandatory" => false,
-              "not-null" => false
-            }
-          when :has_one, :belongs_to
-            belongs_to[model][assoc.foreign_key] = assoc
-          end
+      model.oriental_config[:attributes].each do |cname|
+        assoc = model.reflect_on_association cname
+        if !assoc.blank?
+          klass["properties"] << {
+            "name" => assoc.name,
+            "type" => "LINK#{assoc.macro == :has_many ? 'SET' : ''}",
+            "linked-class" => assoc.class_name,
+            "mandatory" => false,
+            "not-null" => false
+          }
+        else
+          column = model.columns.select{|c| c.name == cname.to_s}.first
+          klass["properties"] << {
+            "name" => column.name,
+            "type" => column.type == :text ? "STRING" : column.type.to_s.upcase,
+            "mandatory" => !column.null,
+            "not-null" => !column.null
+          }
         end
-      end
-
-      model.columns_hash.each do |column|
-        column = column[1]
-        assoc = belongs_to[model][column.name]
-        next if !assoc.nil? && !selected_models.include?(assoc.klass)
-
-        klass["properties"] << {
-          "name" => assoc.nil? ? column.name : assoc.name,
-          "type" => (assoc.nil? ? column.type == :text ? "STRING" : column.type.to_s.upcase : "LINK"),
-          "mandatory" => !column.null,
-          "not-null" => !column.null
-        }
-        klass["properties"].last["linked-class"] = assoc.class_name unless assoc.nil?
       end
 
       base["schema"]["classes"] << klass
     end
 
     File.open(cmd_path, "wb") do |f|
-      f.write "drop database #{ENV['db'].split(' ')[0..2].join(' ')};\n"
-      f.write "create database #{ENV['db']};\n"
+      f.write "drop database #{config['url']} #{config['username']} #{config['password']};\n"
+      f.write "create database #{config['url']} #{config['username']} #{config['password']} #{config['storage']} #{config['type']};\n"
       f.write "import database #{data_path};\n\n"
-
-      if !add_links_in_ruby?
-        selected_models.each do |model|
-          model.reflect_on_all_associations.each do |assoc|
-            if assoc.options[:through].nil? && selected_models.include?(assoc.klass)
-              case assoc.macro
-              when :has_many
-                f.write "CREATE LINK #{assoc.name} TYPE LINKSET FROM #{assoc.class_name}.#{assoc.foreign_key} TO #{model.name}.id INVERSE;\n\n"
-              when :has_one, :belongs_to
-                f.write "CREATE LINK #{assoc.name} TYPE LINK FROM #{model.name}.#{assoc.foreign_key} TO #{assoc.class_name}.id;\n"
-                f.write "UPDATE #{model.name} REMOVE #{assoc.foreign_key};\n\n"
-              end
-            end
-          end
-        end
-      end
     end
 
     Zlib::GzipWriter.open(data_path) do |gz|
       gz.write to_json(base)[0..-3]
 
       first = true
-      selected_models.each do |model|
+      models.each do |model|
 
         write_assocs = lambda do |m|
           meta = {"@type" => "d", "@rid" => "##{cluster_ids[model.name]}:#{m.id}", "@version" => 0, "@class" => model.name}
-          attrs = m.attributes
+          attrs = Hash[model.oriental_config[:attributes].map{|a| [a, m.attributes[a.to_s]] }]
 
-          if through? || remove_join_tables?
-            model.reflect_on_all_associations.each do |assoc|
-              if selected_models.include?(assoc.klass) && (
-                add_links_in_ruby? ||
-                (!assoc.options[:through].nil? &&
-                 (through? || (remove_join_tables? && (join_tables.include?(assoc.options[:through]) || join_assoc[model].include?(assoc.options[:through]))))
-                )
-              )
+          (model.oriental_config[:attributes] + model.oriental_config[:in] + model.oriental_config[:out]).each do |aname|
+            assoc = model.reflect_on_association aname
+            if !assoc.blank?
+              prop = model.oriental_config[:in].include?(assoc.name) ? "in" : model.oriental_config[:out].include?(assoc.name) ? "out" : assoc.name
+              case assoc.macro
+              when :has_one, :belongs_to
+                if !attrs[assoc.foreign_key].blank?
+                  v = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}"
+                else
+                  v = false
+                end
+              when :has_many
+                column = "#{assoc.klass.table_name}.id"
+                rows = m.send(assoc.name).select(column)
+                rows = rows.where("#{column} <= #{limit}") if limit
+                v = rows.map {|row| "##{cluster_ids[assoc.class_name]}:#{row.id}"}
+              end
 
-                case assoc.macro
-                when :has_one, :belongs_to
-                  if assoc.macro == :has_one || add_links_in_ruby?
-                    attrs[assoc.name] = "##{cluster_ids[assoc.class_name]}:#{attrs[assoc.foreign_key]}" unless attrs[assoc.foreign_key].blank?
-                    attrs.delete(assoc.foreign_key)
+              if !v.blank?
+                if prop == 'in' || prop == 'out'
+                  attrs[prop] ||= []
+                  if v.class == Array
+                    attrs[prop] += v
+                  else
+                    attrs[prop] << v
                   end
-                when :has_many
-                  prop = "#{assoc.klass.table_name}.id"
-                  rows = m.send(assoc.name).select(prop)
-                  rows = rows.where("#{prop} <= #{limit}") if limit
-                  attrs[assoc.name] = rows.map {|row| "##{cluster_ids[assoc.class_name]}:#{row.id}"}
+                else
+                  attrs[prop] = v
                 end
               end
             end
@@ -165,22 +147,21 @@ namespace :orientdb do
 
   end
 
-  def join_models
-    @join_models ||= models.select {|m| is_a_join_table?(m)}
-  end
-
-  def join_tables
-    @join_tables ||= join_models.map {|m| m.table_name.to_sym}
-  end
-
-  def join_assoc
-    if @join_assoc.blank?
-      @join_assoc = {}
-      models.each do |m|
-        @join_assoc[m] = m.reflect_on_all_associations.select {|a| join_tables.include?(a.table_name.to_sym)}.map! {|a| a.name}
-      end
+  def to_json obj
+    if pretty_print?
+      JSON.pretty_generate obj
+    else
+      ActiveSupport::JSON.encode obj
     end
-    @join_assoc
+  end
+
+  def config
+    if @config.blank?
+      @config = YAML.load_file("#{Rails.root}/config/orientdb.yml")[Rails.env]
+      @config['storage'] ||= 'local'
+      @config['type'] ||= 'graph'
+    end
+    @config
   end
 
   def limit
@@ -191,33 +172,8 @@ namespace :orientdb do
     end
   end
 
-  def add_links_in_ruby?
-    !(ENV['add_links_in_ruby'].blank? || ENV['add_links_in_ruby'].downcase == 'false')
-  end
-
   def pretty_print?
     !(ENV['pretty_print'].blank? || ENV['pretty_print'].downcase == 'false')
-  end
-
-  def through?
-    !(ENV['through'].blank? || ENV['through'].downcase == 'false')
-  end
-
-  def remove_join_tables?
-    !(ENV['remove_join_tables'].blank? || ENV['remove_join_tables'].downcase == 'false')
-  end
-
-  def is_a_join_table? model
-    columns = model.reflect_on_all_associations(:belongs_to).map {|assoc| assoc.foreign_key}
-    columns.length == 2 && model.columns.select {|c| !(columns + ['id','created_at','updated_at']).include?(c.name)}.blank?
-  end
-
-  def to_json obj
-    if pretty_print?
-      JSON.pretty_generate obj
-    else
-      ActiveSupport::JSON.encode obj
-    end
   end
 
   def base_path
@@ -233,26 +189,9 @@ namespace :orientdb do
     if @models.blank?
       Dir.glob(model_path).each {|file| require file rescue nil}
       model_names = Module.constants.select { |c| (eval "#{c}").is_a?(Class) && (eval "#{c}") < ::ActiveRecord::Base }
-      @models = model_names.map{|i| "#{i}".constantize}
+      @models = model_names.map{|i| "#{i}".constantize}.select{|c| defined? c.oriental_config }
     end
     @models
-  end
-
-  def selected_models
-    if @selected_models.blank?
-      if remove_join_tables?
-        @selected_models = models.select {|m| !join_models.include?(m)}
-      else
-        @selected_models = models
-      end
-
-      if !ENV['models'].blank?
-        i = ENV['models'].downcase.split(',').collect(&:strip)
-        @selected_models.select! {|m| i.include?(m.name.downcase)}
-      end
-    end
-
-    @selected_models
   end
 
 end

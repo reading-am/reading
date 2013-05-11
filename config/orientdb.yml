@@ -1,0 +1,4 @@
+development:
+  url: 'remote:localhost/dev_test'
+  username: root
+  password: '31FE3D42388632FA610773758D42A6030AAC0180023BCC262D11479002FF9925'

@@ -15,6 +15,10 @@ class Page < ActiveRecord::Base
   before_create {|page| page.populate_remote_data unless page.loads_via_js }
   after_create :populate_readability
 
+  oriental :vertex,
+    :attributes => [:title, :url],
+    :in => [:posts], :out => [:domain]
+
   # search
   searchable do
     text :title, :url

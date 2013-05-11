@@ -73,6 +73,10 @@ class User < ActiveRecord::Base
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
   scope :mentioned_in, lambda { |comment| mentioned(comment) }
 
+  oriental :vertex,
+    :attributes => [:id, :username, :name, :avatar_file_name, :avatar_updated_at],
+    :in => [:reverse_relationships], :out => [:relationships, :posts]
+
   searchable do
     text :name, :username, :email, :link
   end

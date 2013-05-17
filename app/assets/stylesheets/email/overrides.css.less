@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 body {
   padding:0 30px;
@@ -28,8 +29,10 @@ img {
   }
   .r_yep .r_yep_nope, .r_nope .r_yep_nope {
     left:0;
+    margin:0;
+    .border-radius(0);
     .r_tri {
-      display:none;
+      display:none !important;
     }
   }
 }

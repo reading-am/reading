@@ -184,6 +184,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def url
+    "http://#{DOMAIN}/#{username}"
+  end
+
   def following?(followed)
     relationships.find_by_followed_id(followed)
   end
@@ -270,7 +274,7 @@ class User < ActiveRecord::Base
       :first_name => first_name,
       :full_name  => name,
       :bio        => bio,
-      :url        => "http://#{DOMAIN}/#{username}",
+      :url        => url,
       :avatar     => avatar_url,
       :avatar_medium => avatar_url(:medium),
       :avatar_thumb => avatar_url(:thumb),

@@ -83,12 +83,6 @@ GIT
     dalli (2.6.2)
 
 GIT
-  remote: git://github.com/oauth/oauth-ruby.git
-  revision: e04ce113749fce8d37660826d9530ee6058aabea
-  specs:
-    oauth (0.4.7)
-
-GIT
   remote: git://github.com/zzip/twitter_bootstrap_form_for.git
   revision: eb4f07f5a15d44db449b4335f2c57eb3899604ce
   specs:
@@ -330,6 +324,7 @@ GEM
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
     nokogiri (1.5.6)
+    oauth (0.4.7)
     oauth2 (0.8.0)
       faraday (~> 0.8)
       httpauth (~> 0.1)
@@ -607,7 +602,7 @@ DEPENDENCIES
   newrelic_rpm
   nilify_blanks
   nokogiri
-  oauth!
+  oauth
   oj
   omniauth
   omniauth-37signals!

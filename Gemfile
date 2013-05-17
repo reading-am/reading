@@ -37,7 +37,7 @@ gem 'sanitize' # HTML sanitizer
 # Auth #
 ########
 gem 'devise'
-gem 'oauth', :git => 'git://github.com/oauth/oauth-ruby.git'
+gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1

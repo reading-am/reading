@@ -1,35 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <%= render :partial => 'head' %>
-  <%= stylesheet_link_tag 'app/views/pages/page/styles' %>
-  <%= stylesheet_link_tag 'app/views/users/user/styles' %>
-  <%= stylesheet_link_tag 'email/overrides' %>
-  <%= stylesheet_link_tag 'email/mentioned' %>
-</head>
-<body>
+<%= stylesheet_link_tag 'app/views/pages/page/styles' %>
+<%= stylesheet_link_tag 'app/views/users/user/styles' %>
+<%= stylesheet_link_tag 'email/overrides' %>
+<%= stylesheet_link_tag 'email/mentioned' %>
 
-  <div class="row">
-    <div class="span6">
-      <p>
-        <%= link_to "http://#{DOMAIN}/#{@enactor.username}", :class => 'r_user' do %>
-          <span class="r_name"><%= @enactor.display_name %></span>
-          <% if !@enactor.name.blank? %>
-            <span class="r_username">(@<%= @enactor.username %>)</span>
-          <% end %>
+<div class="row">
+  <div class="span6">
+    <p>
+      <%= link_to "http://#{DOMAIN}/#{@enactor.username}", :class => 'r_user' do %>
+        <span class="r_name"><%= @enactor.display_name %></span>
+        <% if !@enactor.name.blank? %>
+          <span class="r_username">(@<%= @enactor.username %>)</span>
         <% end %>
-        wants to show you a page:
-      </p>
-    </div>
+      <% end %>
+      wants to show you a page:
+    </p>
   </div>
+</div>
 
-  <div class="row">
-    <div class="span6">
-      <%= render :file => 'pages/page/template', :locals => {:title => @comment.page.display_title, :description => @comment.page.description, :url => @url} %>
-    </div>
+<div class="row">
+  <div class="span6">
+    <%= render :file => 'pages/page/template', :locals => {:title => @comment.page.display_title, :description => @comment.page.description, :url => @url} %>
   </div>
+</div>
 
-  <%= render :partial => 'footer' %>
-
-</body>
-</html>
+<%= render :partial => 'footer' %>

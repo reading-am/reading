@@ -1,42 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <%= render :partial => 'head' %>
-  <%= stylesheet_link_tag 'app/views/users/user/styles' %>
-  <%= stylesheet_link_tag 'app/views/comments/comment/styles' %>
-  <%= stylesheet_link_tag 'email/overrides' %>
-  <%= stylesheet_link_tag 'email/mentioned' %>
-</head>
-<body>
+<%= stylesheet_link_tag 'app/views/users/user/styles' %>
+<%= stylesheet_link_tag 'app/views/comments/comment/styles' %>
+<%= stylesheet_link_tag 'email/overrides' %>
+<%= stylesheet_link_tag 'email/mentioned' %>
 
-  <div class="row">
-    <div class="span6">
-      <p>
-        <%= link_to "http://#{DOMAIN}/#{@enactor.username}", :class => 'r_user' do %>
-          <span class="r_name"><%= @enactor.display_name %></span>
-          <% if !@enactor.name.blank? %>
-            <span class="r_username">(@<%= @enactor.username %>)</span>
-          <% end %>
+<div class="row">
+  <div class="span6">
+    <p>
+      <%= link_to "http://#{DOMAIN}/#{@enactor.username}", :class => 'r_user' do %>
+        <span class="r_name"><%= @enactor.display_name %></span>
+        <% if !@enactor.name.blank? %>
+          <span class="r_username">(@<%= @enactor.username %>)</span>
         <% end %>
-        mentioned you at <em><%= link_to @comment.page.display_title, @url, :class => 'r_page' %></em>:
+      <% end %>
+      mentioned you at <em><%= link_to @comment.page.display_title, @url, :class => 'r_page' %></em>:
+    </p>
+    <blockquote class="r_comment" cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
+      <div class="r_tri"></div>
+      <p class="r_comment_body">
+        <%= @comment.body_html.html_safe %>
       </p>
-      <blockquote class="r_comment" cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
-        <div class="r_tri"></div>
-        <p class="r_comment_body">
-          <%= @comment.body_html.html_safe %>
-        </p>
-      </blockquote>
-    </div>
+    </blockquote>
   </div>
+</div>
 
-  <div class="row">
-    <div class="span6">
-      <%= link_to "Click to respond", @url, :class => "btn btn-success" %>
-      or simply reply to this email.
-    </div>
+<div class="row">
+  <div class="span6">
+    <%= link_to "Click to respond", @url, :class => "btn btn-success" %>
+    or simply reply to this email.
   </div>
+</div>
 
-  <%= render :partial => 'footer' %>
-
-</body>
-</html>
+<%= render :partial => 'footer' %>

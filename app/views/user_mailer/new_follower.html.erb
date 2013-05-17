@@ -1,26 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <%= render :partial => 'head' %>
-  <%= stylesheet_link_tag 'app/views/users/user/styles' %>
-  <%= stylesheet_link_tag 'email/overrides' %>
-  <%= stylesheet_link_tag 'email/new_follower' %>
-</head>
-<body>
+<%= stylesheet_link_tag 'app/views/users/user/styles' %>
+<%= stylesheet_link_tag 'email/overrides' %>
+<%= stylesheet_link_tag 'email/new_follower' %>
 
-  <div class="row">
-    <div class="span6">
-      <p>
-      Check out your new admirer: <%= link_to "#{DOMAIN}/#{@enactor.username}", "http://#{DOMAIN}/#{@enactor.username}", :class => "user" %>
-      </p>
-      <p>
-        I love you,<br>
-        Reading
-      </p>
-    </div>
+<div class="row">
+  <div class="span6">
+    <p>
+    Check out your new admirer: <%= link_to "#{DOMAIN}/#{@enactor.username}", "http://#{DOMAIN}/#{@enactor.username}", :class => "user" %>
+    </p>
+    <p>
+      I love you,<br>
+      Reading
+    </p>
   </div>
+</div>
 
-  <%= render :partial => 'footer' %>
-
-</body>
-</html>
+<%= render :partial => 'footer' %>

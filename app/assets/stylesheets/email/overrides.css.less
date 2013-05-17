@@ -3,25 +3,24 @@
 body {
   padding:0 30px;
 }
+img {
+  // Bootstrap contains the IE hack width:auto\9;
+  // which causes Gmail to strip all img style tags.
+  // This ensures that doesn't happen.
+  width:auto;
+}
 .row {
   position:relative;
   margin-top:@baseLineHeight;
 }
-.date {
-  display:none;
-}
-.comment {
-  position:absolute;
-  top:7px;
-  right:0;
-}
-.page {
+.r_page {
   .description { white-space:normal; }
 }
-.comments_icon.hasnt_comments {
-  display:none;
-}
 .r_subposts .r_subpost.r_post {
+  .r_user .r_avatar img {
+    // iOS gmail doesn't support max-width
+    width:100%;
+  }
   .r_yep, .r_nope {
     .r_user {
       margin-left:0;

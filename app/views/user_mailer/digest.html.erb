@@ -1,31 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <%= render :partial => 'head' %>
-  <%= stylesheet_link_tag 'models/post' %>
-  <%= stylesheet_link_tag 'app/views/pages/page/styles' %>
-  <%= stylesheet_link_tag 'app/views/posts/post/styles' %>
-  <%= stylesheet_link_tag 'app/views/posts/subpost/styles' %>
-  <%= stylesheet_link_tag 'app/views/posts/subposts/styles' %>
-  <%= stylesheet_link_tag 'app/views/users/user/styles' %>
-  <%= stylesheet_link_tag 'email/overrides' %>
-</head>
-<body>
+<%= stylesheet_link_tag 'models/post' %>
+<%= stylesheet_link_tag 'app/views/pages/page/styles' %>
+<%= stylesheet_link_tag 'app/views/posts/post/styles' %>
+<%= stylesheet_link_tag 'app/views/posts/subpost/styles' %>
+<%= stylesheet_link_tag 'app/views/posts/subposts/styles' %>
+<%= stylesheet_link_tag 'app/views/users/user/styles' %>
+<%= stylesheet_link_tag 'email/overrides' %>
 
-  <% if @posts.count > 0 %>
-    <%= render :file => 'pages/pages/template', :locals => {:pages => page_hashes_from_posts(@posts)} %>
-  <% else %>
-    <div class="row">
-      <div class="span6">
-        <p>
-          Huh, you didn't miss any posts.<br>
-          Either you're a stellar Reader or you should consider following more people.
-        </p>
-      </div>
+<% if @posts.count > 0 %>
+  <%= render :file => 'email/pages/pages/template', :locals => {:pages => page_hashes_from_posts(@posts)} %>
+<% else %>
+  <div class="row">
+    <div class="span6">
+      <p>
+        Huh, you didn't miss any posts.<br>
+        Either you're a stellar Reader or you should consider following more people.
+      </p>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
-  <%= render :partial => 'footer' %>
-
-</body>
-</html>
+<%= render :partial => 'footer' %>

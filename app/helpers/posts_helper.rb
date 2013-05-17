@@ -28,11 +28,13 @@ module PostsHelper
         _post[:nope] = post.yn === false
 
         _post[:user][:size] = "small"
+        _post[:user][:avatar] = _post[:user][:avatar_thumb]
         _post[:user].delete(:username)
         _post[:user].delete(:bio)
 
         if post.referrer_post_id
           _post[:referrer_post][:user][:size] = "small"
+          _post[:referrer_post][:user][:avatar] = _post[:referrer_post][:user][:avatar_thumb]
           _post[:referrer_post][:user].delete(:username)
           _post[:referrer_post][:user].delete(:bio)
         else

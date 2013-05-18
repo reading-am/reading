@@ -11,7 +11,10 @@ require [
   "app/views/components/titlecard/view"
   "extend/jquery/rails"
   "extend/jquery/cookies"
+  "extend/jquery/embedly"
 ], ($, base58, Indian, App, Post, User, Constants, Titlecard) ->
+
+  $.embedly.defaults.key = Constants.embedly_key
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"

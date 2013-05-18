@@ -11,6 +11,7 @@ define [
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
+  "extend/jquery/embedly"
 ], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
@@ -46,6 +47,7 @@ define [
           collection: @collection
 
       $("#yield").html @pages_view.render().el
+      $('.r_page a').embedly()
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

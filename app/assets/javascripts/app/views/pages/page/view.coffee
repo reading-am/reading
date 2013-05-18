@@ -13,7 +13,7 @@ define [
     render: =>
       json = @model.toJSON()
       if @model.posts.length
-        json.url = @model.posts.first().get("wrapped_url")
+        json.url = @model.posts.first().get("url")
 
       @$el.html(@template json)
       return this

@@ -1,6 +1,8 @@
 class Page < ActiveRecord::Base
   include IdentityCache
 
+  serialize :oembed, JSON
+
   belongs_to :domain, :counter_cache => true
   has_one  :readability_data, :dependent => :destroy
   has_many :posts, :dependent => :destroy
@@ -12,8 +14,8 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation { parse_domain }
-  before_create {|page| page.populate_remote_data unless page.loads_via_js }
-  after_create :populate_readability
+  before_create {|page| page.populate_remote_page_data unless page.loads_via_js }
+  after_create :populate_oembed, :populate_readability
 
   # search
   searchable do
@@ -249,6 +251,16 @@ public
     @tag_cache[:link_tags]
   end
 
+  def oembed_tags
+    if @tag_cache[:oembed_tags].blank?
+      @tag_cache[:oembed_tags] = {'json'=>false,'xml'=>false}
+      head_tags.search('link[rel=alternate][type$=oembed]').each do |n|
+        @tag_cache[:oembed_tags][n.attribute('type').to_s[/\/(.*)\+/,1]] = n.attribute('href').to_s
+      end
+    end
+    @tag_cache[:oembed_tags]
+  end
+
   def curl=(obj)
     # this setter is used during testing
     @curl = obj
@@ -320,12 +332,30 @@ public
     canonical
   end
 
-  def populate_remote_data
+  def remote_oembed
+    begin
+      curl = Curl::Easy.new oembed_tags['json'] || oembed_tags['xml']
+      curl.follow_location = true
+      curl.useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
+      curl.perform
+      oembed_tags['json'] ? ActiveSupport::JSON.decode(curl.body_str) : Hash.from_xml(curl.body_str)['oembed']
+    rescue
+      nil
+    end
+  end
+
+  def populate_remote_page_data
     self.url = remote_normalized_url
     self.head_tags = remote_head_tags
     self.title = title_tag
     return self
   end
+
+  def populate_oembed
+    self.oembed = remote_oembed
+    self.save
+  end
+  handle_asynchronously :populate_oembed
 
   def populate_readability
     r = ReadabilityData.create :page => self

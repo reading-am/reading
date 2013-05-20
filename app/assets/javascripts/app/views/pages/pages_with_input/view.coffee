@@ -36,7 +36,6 @@ define [
       post.save {url: val}, success: =>
         page = post.get("page")
         page.posts.add post
-        post.unset("page")
 
         @subview.collection.add page
         @subview.$el.find('div:first').hide().slideDown()

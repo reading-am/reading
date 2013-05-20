@@ -27,6 +27,8 @@ module PostsHelper
         _post[:yep] = post.yn === true
         _post[:nope] = post.yn === false
 
+        _post[:page][:verb] = page.verb
+
         _post[:user][:size] = "small"
         _post[:user][:avatar] = _post[:user][:avatar_thumb]
         _post[:user].delete(:username)

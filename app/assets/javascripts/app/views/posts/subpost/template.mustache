@@ -5,7 +5,7 @@
       <div class="r_tri"></div>
     </div>
     <div class="r_post_bg">
-      {{#user}}{{>users/user/template}}{{/user}} is reading this
+      {{#user}}{{>users/user/template}}{{/user}} is {{#page.verb}}{{page.verb}}{{/page.verb}}{{^page.verb}}reading{{/page.verb}} this
       {{#referrer_post.user}}because of {{>users/user/template}}{{/referrer_post.user}}
     </div>
     <div class="r_post_actions">

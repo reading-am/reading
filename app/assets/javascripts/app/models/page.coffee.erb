@@ -14,6 +14,16 @@ define [
       @has_many "Posts"
       @has_many "Comments"
 
+    verb: ->
+      if @get("medium") is "audio"
+        'listening to'
+      else if @get("medium") is "video"
+        'watching'
+      else if @get("medium") is "image" or ['profile'].indexOf(@get("media_type")) isnt -1
+        'looking at'
+      else
+        'reading'
+
   Page::meta_tag_namespaces = <%= Page::META_TAG_NAMESPACES.to_json %>
 
   Page::parse_canonical = (canonical, host, protocol) ->
@@ -21,7 +31,7 @@ define [
     domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
 
     # twitter doesn't update the canonical on push state
-    excluded_domains = ["twitter.com","instagram.com"]
+    excluded_domains = ["twitter.com","instagram.com","hulu.com"]
 
     # this has a Ruby companion in app/models/page.rb#remote_canonical()
     if !canonical or

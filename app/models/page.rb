@@ -1,6 +1,8 @@
 class Page < ActiveRecord::Base
   include IdentityCache
 
+  serialize :oembed, JSON
+
   belongs_to :domain, :counter_cache => true
   has_one  :readability_data, :dependent => :destroy
   has_many :posts, :dependent => :destroy
@@ -12,8 +14,8 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation { parse_domain }
-  before_create {|page| page.populate_remote_data unless page.loads_via_js }
-  after_create :populate_readability
+  before_create {|page| page.populate_remote_page_data unless page.loads_via_js }
+  after_create :populate_remote_meta_data
 
   # search
   searchable do
@@ -108,8 +110,8 @@ public
   def display_title
     if loads_via_js
       title
-    elsif !og_twitter_or_native_tag("title").blank?
-      og_twitter_or_native_tag("title")
+    elsif !trans_tags("title").blank?
+      trans_tags("title")
     elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
@@ -120,7 +122,9 @@ public
   end
 
   def media_type
-    if !meta_tags['og']['type'].blank?
+    if !oembed.blank? && !oembed['type'].blank?
+      oembed['type']
+    elsif !meta_tags['og']['type'].blank?
       # http://ogp.me/#types
       # colon denotes a namespace, period a sub property
       meta_tags['og']['type'].split(':').last.split('.').first
@@ -132,7 +136,20 @@ public
   end
 
   def image
-    og_twitter_or_native_tag("image")
+    trans_tags("image")
+  end
+
+  def embed
+    if !oembed.blank? && oembed['html']
+      oembed['html']
+    elsif trans_tags("player") || trans_tags("video")
+      param = trans_tags("player") ? "player" : "video"
+      "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
+    elsif media_type == "photo"
+      "<img src=\"#{image}\">"
+    else
+      nil
+    end
   end
 
   def excerpt
@@ -140,8 +157,8 @@ public
   end
 
   def description
-    if !og_twitter_or_native_tag("description").blank?
-      og_twitter_or_native_tag("description")
+    if !trans_tags("description").blank?
+      trans_tags("description")
     else
       excerpt
     end
@@ -161,23 +178,32 @@ public
     end
   end
 
+  def medium
+    if @medium.blank?
+      mediums = {
+        :audio => ['music','song','album','sound'],
+        :video => ['video','movie'],
+        :image => ['photo'],
+        :words => ['article','book','quote']
+      }
+      @medium = :words # default
+      mediums.select! do |k,v|
+        @medium = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
+      end
+    end
+
+    @medium
+  end
+
   def verb
-    case media_type
-    when 'article','book'
-      'reading'
-    when 'music'
+    if medium == :audio
       'listening to'
-    when 'video'
+    elsif medium == :video
       'watching'
-    when 'profile','photo'
+    elsif medium == :image or ['profile'].include?(media_type)
       'looking at'
     else
-      # TODO it's janky to check for the domain. Architect this better.
-      if !domain_id.blank? && association(:domain).loaded?
-        domain.verb
-      else
-        'reading'
-      end
+      'reading'
     end
   end
 
@@ -203,8 +229,10 @@ public
     @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
   end
 
-  def og_twitter_or_native_tag name
-    if !meta_tags["og"][name].blank?
+  def trans_tags name
+    if !oembed.blank? and !oembed[name].blank?
+      oembed[name]
+    elsif !meta_tags["og"][name].blank?
       meta_tags["og"][name]
     elsif !meta_tags["twitter"][name].blank?
       meta_tags["twitter"][name]
@@ -247,6 +275,16 @@ public
       end
     end
     @tag_cache[:link_tags]
+  end
+
+  def oembed_tags
+    if @tag_cache[:oembed_tags].blank?
+      @tag_cache[:oembed_tags] = {'json'=>false,'xml'=>false}
+      head_tags.search('link[rel=alternate][type$=oembed]').each do |n|
+        @tag_cache[:oembed_tags][n.attribute('type').to_s[/\/(.*)\+/,1]] = n.attribute('href').to_s
+      end
+    end
+    @tag_cache[:oembed_tags]
   end
 
   def curl=(obj)
@@ -320,14 +358,33 @@ public
     canonical
   end
 
-  def populate_remote_data
+  def remote_oembed
+    begin
+      curl = Curl::Easy.new oembed_tags['json'] || oembed_tags['xml']
+      curl.follow_location = true
+      curl.useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
+      curl.perform
+      oembed_tags['json'] ? ActiveSupport::JSON.decode(curl.body_str) : Hash.from_xml(curl.body_str)['oembed']
+    rescue
+      begin
+        OEmbed::Providers.register_all
+        OEmbed::Providers.get(url).fields
+      rescue
+        nil
+      end
+    end
+  end
+
+  def populate_remote_page_data
     self.url = remote_normalized_url
     self.head_tags = remote_head_tags
     self.title = title_tag
     return self
   end
 
-  def populate_readability
+  def populate_remote_meta_data
+    self.oembed = remote_oembed
+
     r = ReadabilityData.create :page => self
     self.r_title = r.title
     self.r_excerpt = r.excerpt
@@ -342,11 +399,12 @@ public
 
   def simple_obj to_s=false
     {
-      :type   => 'Page',
-      :id     => to_s ? id.to_s : id,
-      :url    => url,
-      :title  => display_title,
-      :image  => image,
+      :type           => 'Page',
+      :id             => to_s ? id.to_s : id,
+      :url            => url,
+      :title          => display_title,
+      :embed          => embed,
+      :medium         => medium,
       :media_type     => media_type,
       :description    => description,
       :posts_count    => posts_count,

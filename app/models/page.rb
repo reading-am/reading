@@ -110,8 +110,8 @@ public
   def display_title
     if loads_via_js
       title
-    elsif !oembed_og_twitter_or_native_tag("title").blank?
-      oembed_og_twitter_or_native_tag("title")
+    elsif !trans_tags("title").blank?
+      trans_tags("title")
     elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
@@ -136,11 +136,20 @@ public
   end
 
   def image
-    oembed_og_twitter_or_native_tag("image")
+    trans_tags("image")
   end
 
   def embed
-    !oembed.blank? ? oembed['html'] : nil
+    if !oembed.blank? && oembed['html']
+      oembed['html']
+    elsif trans_tags("player") || trans_tags("video")
+      param = trans_tags("player") ? "player" : "video"
+      "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
+    elsif media_type == "photo"
+      "<img src=\"#{image}\">"
+    else
+      nil
+    end
   end
 
   def excerpt
@@ -148,8 +157,8 @@ public
   end
 
   def description
-    if !oembed_og_twitter_or_native_tag("description").blank?
-      oembed_og_twitter_or_native_tag("description")
+    if !trans_tags("description").blank?
+      trans_tags("description")
     else
       excerpt
     end
@@ -211,7 +220,7 @@ public
     @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
   end
 
-  def oembed_og_twitter_or_native_tag name
+  def trans_tags name
     if !oembed.blank? and !oembed[name].blank?
       oembed[name]
     elsif !meta_tags["og"][name].blank?
@@ -389,7 +398,6 @@ public
       :id             => to_s ? id.to_s : id,
       :url            => url,
       :title          => display_title,
-      :image          => image,
       :embed          => embed,
       :media_type     => media_type,
       :description    => description,

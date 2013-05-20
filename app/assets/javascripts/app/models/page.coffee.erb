@@ -15,17 +15,14 @@ define [
       @has_many "Comments"
 
     verb: ->
-      switch @get("media_type")
-        when 'article','book','quote'
-          'reading'
-        when 'music','song','album'
-          'listening to'
-        when 'video'
-          'watching'
-        when 'profile','photo'
-          'looking at'
-        else
-          'reading'
+      if @get("medium") is "audio"
+        'listening to'
+      else if @get("medium") is "video"
+        'watching'
+      else if @get("medium") is "image" or ['profile'].indexOf(@get("media_type")) isnt -1
+        'looking at'
+      else
+        'reading'
 
   Page::meta_tag_namespaces = <%= Page::META_TAG_NAMESPACES.to_json %>
 

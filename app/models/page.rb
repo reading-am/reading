@@ -178,23 +178,32 @@ public
     end
   end
 
+  def medium
+    if @medium.blank?
+      mediums = {
+        :audio => ['music','song','album','sound'],
+        :video => ['video','movie'],
+        :image => ['photo'],
+        :words => ['article','book','quote']
+      }
+      @medium = :words # default
+      mediums.select! do |k,v|
+        @medium = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
+      end
+    end
+
+    @medium
+  end
+
   def verb
-    case media_type
-    when 'article','book','quote'
-      'reading'
-    when 'music','song','album'
+    if medium == :audio
       'listening to'
-    when 'video'
+    elsif medium == :video
       'watching'
-    when 'profile','photo'
+    elsif medium == :image or ['profile'].include?(media_type)
       'looking at'
     else
-      # TODO it's janky to check for the domain. Architect this better.
-      if !domain_id.blank? && association(:domain).loaded?
-        domain.verb
-      else
-        'reading'
-      end
+      'reading'
     end
   end
 
@@ -395,6 +404,7 @@ public
       :url            => url,
       :title          => display_title,
       :embed          => embed,
+      :medium         => medium,
       :media_type     => media_type,
       :description    => description,
       :posts_count    => posts_count,

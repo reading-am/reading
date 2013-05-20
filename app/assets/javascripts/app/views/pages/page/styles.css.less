@@ -59,11 +59,19 @@
     .r_tri { border-left-color:@dark_purple; }
   }
 }
-.r_page_video.r_has_embed {
-  h2 {
+.r_page_video, .r_page_audio {
+  &.r_has_embed {
+    h2 {
+      display:none;
+    }
+  }
+}
+.r_page_audio.r_has_embed {
+  .description {
     display:none;
   }
 }
+
 .posts_icon {
   .circle(22px, @eli_blue);
   color:@white;

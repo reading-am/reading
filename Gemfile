@@ -32,6 +32,7 @@ gem 'validate_email'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
 gem 'sanitize' # HTML sanitizer
+gem 'ruby-oembed'
 
 ########
 # Auth #

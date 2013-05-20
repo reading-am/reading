@@ -451,6 +451,7 @@ GEM
     ruby-growl (4.0)
       uuid (~> 2.3, >= 2.3.5)
     ruby-hmac (0.4.0)
+    ruby-oembed (0.8.8)
     rubyzip (0.9.9)
     sanitize (2.0.3)
       nokogiri (>= 1.4.4, < 1.6)
@@ -628,6 +629,7 @@ DEPENDENCIES
   requirejs-rails!
   rspec-rails
   ruby-growl
+  ruby-oembed
   sanitize
   sass-rails
   sitemap_generator

@@ -348,7 +348,12 @@ public
       curl.perform
       oembed_tags['json'] ? ActiveSupport::JSON.decode(curl.body_str) : Hash.from_xml(curl.body_str)['oembed']
     rescue
-      nil
+      begin
+        OEmbed::Providers.register_all
+        OEmbed::Providers.get(url).fields
+      rescue
+        nil
+      end
     end
   end
 

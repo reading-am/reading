@@ -15,7 +15,7 @@ class Page < ActiveRecord::Base
 
   before_validation { parse_domain }
   before_create {|page| page.populate_remote_page_data unless page.loads_via_js }
-  after_create :populate_oembed, :populate_readability
+  after_create :populate_remote_meta_data
 
   # search
   searchable do
@@ -182,7 +182,7 @@ public
     case media_type
     when 'article','book','quote'
       'reading'
-    when 'music'
+    when 'music','song','album'
       'listening to'
     when 'video'
       'watching'
@@ -373,13 +373,9 @@ public
     return self
   end
 
-  def populate_oembed
+  def populate_remote_meta_data
     self.oembed = remote_oembed
-    self.save
-  end
-  handle_asynchronously :populate_oembed
 
-  def populate_readability
     r = ReadabilityData.create :page => self
     self.r_title = r.title
     self.r_excerpt = r.excerpt

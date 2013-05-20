@@ -110,8 +110,8 @@ public
   def display_title
     if loads_via_js
       title
-    elsif !og_twitter_or_native_tag("title").blank?
-      og_twitter_or_native_tag("title")
+    elsif !oembed_og_twitter_or_native_tag("title").blank?
+      oembed_og_twitter_or_native_tag("title")
     elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
@@ -122,7 +122,9 @@ public
   end
 
   def media_type
-    if !meta_tags['og']['type'].blank?
+    if !oembed.blank? && !oembed['type'].blank?
+      oembed['type']
+    elsif !meta_tags['og']['type'].blank?
       # http://ogp.me/#types
       # colon denotes a namespace, period a sub property
       meta_tags['og']['type'].split(':').last.split('.').first
@@ -134,7 +136,11 @@ public
   end
 
   def image
-    og_twitter_or_native_tag("image")
+    oembed_og_twitter_or_native_tag("image")
+  end
+
+  def embed
+    !oembed.blank? ? oembed['html'] : nil
   end
 
   def excerpt
@@ -142,8 +148,8 @@ public
   end
 
   def description
-    if !og_twitter_or_native_tag("description").blank?
-      og_twitter_or_native_tag("description")
+    if !oembed_og_twitter_or_native_tag("description").blank?
+      oembed_og_twitter_or_native_tag("description")
     else
       excerpt
     end
@@ -165,7 +171,7 @@ public
 
   def verb
     case media_type
-    when 'article','book'
+    when 'article','book','quote'
       'reading'
     when 'music'
       'listening to'
@@ -205,8 +211,10 @@ public
     @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
   end
 
-  def og_twitter_or_native_tag name
-    if !meta_tags["og"][name].blank?
+  def oembed_og_twitter_or_native_tag name
+    if !oembed.blank? and !oembed[name].blank?
+      oembed[name]
+    elsif !meta_tags["og"][name].blank?
       meta_tags["og"][name]
     elsif !meta_tags["twitter"][name].blank?
       meta_tags["twitter"][name]
@@ -372,11 +380,12 @@ public
 
   def simple_obj to_s=false
     {
-      :type   => 'Page',
-      :id     => to_s ? id.to_s : id,
-      :url    => url,
-      :title  => display_title,
-      :image  => image,
+      :type           => 'Page',
+      :id             => to_s ? id.to_s : id,
+      :url            => url,
+      :title          => display_title,
+      :image          => image,
+      :embed          => embed,
       :media_type     => media_type,
       :description    => description,
       :posts_count    => posts_count,

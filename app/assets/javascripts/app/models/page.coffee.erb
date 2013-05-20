@@ -14,6 +14,19 @@ define [
       @has_many "Posts"
       @has_many "Comments"
 
+    verb: ->
+      switch @get("media_type")
+        when 'article','book','quote'
+          'reading'
+        when 'music'
+          'listening to'
+        when 'video'
+          'watching'
+        when 'profile','photo'
+          'looking at'
+        else
+          'reading'
+
   Page::meta_tag_namespaces = <%= Page::META_TAG_NAMESPACES.to_json %>
 
   Page::parse_canonical = (canonical, host, protocol) ->

@@ -30,6 +30,7 @@ define [
 
     json: ->
       json = super()
+      json.page = verb: @model.get("page").verb()
       json.is_owner = (@model.get("user").get("id") == User::current.get("id"))
       return json
 

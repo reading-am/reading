@@ -2,6 +2,10 @@
 @import "mixins";
 
 .r_page {
+  iframe {
+    max-width:100%;
+    max-height:265px;
+  }
   h2 {
     .word-wrap();
     font-size:21px;
@@ -52,6 +56,11 @@
     color:@white;
     background:@dark_purple;
     .r_tri { border-left-color:@dark_purple; }
+  }
+}
+.r_page_video {
+  h2 {
+    display:none;
   }
 }
 .posts_icon {

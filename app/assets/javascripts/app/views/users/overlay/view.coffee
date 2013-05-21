@@ -1,10 +1,10 @@
 define [
-  "app/views/components/popover/view"
-  "text!app/views/users/popover/template.mustache"
-  "text!app/views/users/popover/styles.css"
-], (Popover, template, styles) ->
+  "app/views/components/overlay/view"
+  "text!app/views/users/overlay/template.mustache"
+  "text!app/views/users/overlay/styles.css"
+], (Overlay, template, styles) ->
 
-  class UserPopover extends Popover
+  class UserOverlay extends Overlay
     @assets
       styles: styles
       template: template

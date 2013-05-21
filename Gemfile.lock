@@ -67,12 +67,6 @@ GIT
       railties (>= 3.1.1, < 4.1)
 
 GIT
-  remote: git://github.com/mperham/dalli.git
-  revision: 0f07d6361ae0e18493e7e41daa23427cf3e0960a
-  specs:
-    dalli (2.6.2)
-
-GIT
   remote: git://github.com/rails/rails.git
   revision: b0f96d4436619b25b8024cc70a71c77bcfc12bf6
   branch: 3-2-stable
@@ -132,8 +126,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.3.3)
-    ar_transaction_changes (0.0.1)
-      activerecord (>= 3.0.0)
     arel (3.0.2)
     awesome_print (1.0.2)
     aws-sdk (1.7.1)
@@ -169,7 +161,6 @@ GEM
       activesupport (>= 3.2.0)
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
-    cityhash (0.6.0)
     clipboard (1.0.1)
     cocaine (0.4.2)
     coderay (1.0.9)
@@ -267,11 +258,6 @@ GEM
       multi_xml
     httpauth (0.2.0)
     i18n (0.6.4)
-    identity_cache (0.0.2)
-      activerecord (= 3.2.13)
-      activesupport (= 3.2.13)
-      ar_transaction_changes (= 0.0.1)
-      cityhash (= 0.6.0)
     interactive_editor (0.0.10)
       spoon (>= 0.0.1)
     irbtools (1.4.0)
@@ -323,7 +309,6 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    memcachier (0.0.2)
     method_locator (0.0.4)
     method_source (0.8.1)
     methodfinder (1.2.5)
@@ -577,7 +562,6 @@ DEPENDENCIES
   crack
   curb (~> 0.8.0)
   daemons
-  dalli!
   debugger
   delayed_job (= 3.0.1)
   delayed_job_active_record
@@ -590,7 +574,6 @@ DEPENDENCIES
   girl_friday
   hipchat
   hirefireapp
-  identity_cache
   instapaper!
   irbtools
   jquery-rails
@@ -598,7 +581,6 @@ DEPENDENCIES
   koala
   konacha (~> 1.0)
   less-rails
-  memcachier
   musterb!
   newrelic_rpm
   nilify_blanks

@@ -1,5 +1,11 @@
 class User < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
+  def self.fetch_by_token(*args)
+    self.send(:fetch_by_token, *args)
+  end
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -42,7 +48,7 @@ class User < ActiveRecord::Base
                                    :dependent => :destroy
   has_many :followers, :through => :reverse_relationships, :source => :follower
 
-  cache_index :token, :unique => true
+  #cache_index :token, :unique => true
 
   has_attached_file :avatar,
     :styles => {

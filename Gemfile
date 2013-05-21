@@ -8,7 +8,7 @@ gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-2-stable'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli', :git => 'git://github.com/mperham/dalli.git' # Memcached
+#gem 'dalli', :git => 'git://github.com/mperham/dalli.git' # Memcached
 gem 'sunspot_rails' # Solr
 
 #############
@@ -25,7 +25,7 @@ gem 'base58'
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache'
+#gem 'identity_cache'
 gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'
@@ -64,7 +64,7 @@ gem 'daemons' # for delayed_job
 #####################
 # External Services #
 #####################
-gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
+#gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
 gem 'newrelic_rpm'
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'aws-sdk'

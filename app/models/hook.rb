@@ -2,7 +2,10 @@
 include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
 
   belongs_to :user
   belongs_to :authorization

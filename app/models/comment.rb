@@ -1,5 +1,8 @@
 class Comment < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
   include Twitter::Extractor
   include Twitter::Autolink
 

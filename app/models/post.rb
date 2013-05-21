@@ -1,5 +1,8 @@
 class Post < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
 
   attr_protected :id # this is so that we can safely use post.attributes = in post#update without worrying about overwriting the id
 

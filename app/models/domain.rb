@@ -1,5 +1,8 @@
 class Domain < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
 
   has_many :pages, :dependent => :destroy
   has_many :posts, :through => :pages

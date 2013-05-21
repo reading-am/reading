@@ -1,11 +1,17 @@
 # from: http://net.tutsplus.com/tutorials/ruby/how-to-use-omniauth-to-authenticate-your-users/
 class Authorization < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
+  def self.fetch_by_provider_and_uid(*args)
+    self.send(:fetch_by_provider_and_uid, *args)
+  end
 
   belongs_to :user
   has_many :hooks, :dependent => :destroy
 
-  cache_index :provider, :uid, :unique => true
+  #cache_index :provider, :uid, :unique => true
 
   validates :provider, :uid, :presence => true
   before_create :set_initial_perms

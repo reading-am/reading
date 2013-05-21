@@ -1,5 +1,8 @@
 class Page < ActiveRecord::Base
-  include IdentityCache
+  #include IdentityCache
+  def self.fetch(*args)
+    self.send(:find, *args)
+  end
 
   serialize :oembed, JSON
 

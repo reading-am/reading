@@ -1,11 +1,10 @@
 define [
-  "require"
   "jquery"
   "underscore"
   "backbone"
   "app/init"
   "app/models/user"
-], (require, $, _, Backbone, App, User) ->
+], ($, _, Backbone, App, User) ->
 
   # TODO - this uses its own save and sync methods
   # it'd be better if it used the Backbone methods

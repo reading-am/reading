@@ -1,10 +1,9 @@
 define [
-  "require"
   "underscore"
   "jquery"
   "app/init"
   "app/models/authorizations/authorization"
-], (require, _, $, App, Authorization) ->
+], (_, $, App, Authorization) ->
 
   # A NOTE ON THE FACEBOOK JS SDK:
   # The version of this file before this note was added worked well.

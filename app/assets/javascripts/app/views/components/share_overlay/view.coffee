@@ -1,13 +1,13 @@
 define [
-  "app/views/components/popover/view"
+  "app/views/components/overlay/view"
   "app/models/provider"
   "app/collections/providers"
   "app/views/providers/providers/view"
-  "text!app/views/components/share_popover/template.mustache"
-  "text!app/views/components/share_popover/styles.css"
-], (Popover, Provider, Providers, ProvidersView, template, styles) ->
+  "text!app/views/components/share_overlay/template.mustache"
+  "text!app/views/components/share_overlay/styles.css"
+], (Overlay, Provider, Providers, ProvidersView, template, styles) ->
 
-  class SharePopover extends Popover
+  class ShareOverlay extends Overlay
     @assets
       styles: styles
       template: template

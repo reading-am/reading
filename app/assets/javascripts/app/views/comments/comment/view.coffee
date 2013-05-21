@@ -8,15 +8,15 @@ define [
   "app/models/uris/uri"
   "app/views/uris/uri/view"
   "app/views/users/user/view"
-  "app/views/users/popover/view"
-  "app/views/components/share_popover/view"
+  "app/views/users/overlay/view"
+  "app/views/components/share_overlay/view"
   "text!app/views/comments/comment/template.mustache"
   "text!app/views/comments/comment/styles.css"
   "app/models/uris/all"
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, App, User, Post, URI, URIView, UserView, UserPopoverView, SharePopover, template, styles) ->
+], (_, $, Backbone, App, User, Post, URI, URIView, UserView, UserOverlayView, ShareOverlay, template, styles) ->
 
   class CommentView extends Backbone.View
     @assets
@@ -41,13 +41,13 @@ define [
       @uri_views = []
 
     show_user: (e) ->
-      popover = new UserPopoverView
+      overlay = new UserOverlayView
         model: new User(url: $(e.target).attr("href"))
-      popover.render()
+      overlay.render()
       false
 
     share: ->
-      @share_view = new SharePopover subject: @model
+      @share_view = new ShareOverlay subject: @model
       @share_view.render()
       false
 

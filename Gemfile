@@ -4,7 +4,7 @@ ruby '1.9.3'
 #################
 # Core Services #
 #################
-gem 'rails', '3.2.12'
+gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-2-stable' # switch back to gem version when 3.2.14 lands
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
@@ -25,7 +25,7 @@ gem 'base58'
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache', :git => 'git://github.com/leppert/identity_cache.git' # model caching NOTE - this is only forced to allow 0.0.2 to install on rails 3.2.12 since 3.2.13 has a routing bug
+gem 'identity_cache'
 gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'

@@ -5,6 +5,10 @@ define [
   "text!app/views/components/overlay/styles.css"
 ], ($, Backbone, template, styles) ->
 
+  # NOTE - this is called an Overlay rather than a Popover
+  # because AdBlock blocks the loading of any JS files with
+  # "popover" in their path
+
   class Overlay extends Backbone.View
     @assets
       styles: styles

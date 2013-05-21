@@ -1,10 +1,10 @@
 define [
   "app/views/base/model"
   "app/constants"
-  "app/views/users/popover/view"
+  "app/views/users/overlay/view"
   "text!app/views/users/user/template.mustache"
   "text!app/views/users/user/styles.css"
-], (ModelView, Constants, UserPopoverView, template, styles) ->
+], (ModelView, Constants, UserOverlayView, template, styles) ->
 
   is_retina = window.devicePixelRatio > 1
 
@@ -22,8 +22,8 @@ define [
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0
-        popover = new UserPopoverView model: @model
-        popover.render()
+        overlay = new UserOverlayView model: @model
+        overlay.render()
         false
 
     render: =>

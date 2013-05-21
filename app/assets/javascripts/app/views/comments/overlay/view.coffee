@@ -1,12 +1,11 @@
 define [
-  "backbone"
-  "app/views/components/popover/view"
+  "app/views/components/overlay/view"
   "app/views/comments/comment/view"
-  "text!app/views/comments/popover/template.mustache"
-  "text!app/views/comments/popover/styles.css"
-], (Backbone, Popover, CommentView, template, styles) ->
+  "text!app/views/comments/overlay/template.mustache"
+  "text!app/views/comments/overlay/styles.css"
+], (Overlay, CommentView, template, styles) ->
 
-  class CommentPopover extends Popover
+  class CommentOverlay extends Overlay
     @assets
       styles: styles
       template: template

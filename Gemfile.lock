@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/identity_cache.git
-  revision: 3238aeb00b560f7b3916e113963498d81cad6a4a
+  revision: 91c3fb8d42586579cc59e2be4ac3c1a2b4c2887c
   specs:
     identity_cache (0.0.2)
       activerecord (~> 3.2.12)
@@ -312,7 +312,7 @@ GEM
     method_locator (0.0.4)
     method_source (0.8.1)
     methodfinder (1.2.5)
-    mime-types (1.22)
+    mime-types (1.23)
     multi_json (1.3.7)
     multi_xml (0.5.1)
     multipart-post (1.1.5)

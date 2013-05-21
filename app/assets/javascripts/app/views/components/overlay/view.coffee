@@ -1,11 +1,11 @@
 define [
   "jquery"
   "backbone"
-  "text!app/views/components/popover/template.mustache"
-  "text!app/views/components/popover/styles.css"
+  "text!app/views/components/overlay/template.mustache"
+  "text!app/views/components/overlay/styles.css"
 ], ($, Backbone, template, styles) ->
 
-  class Popover extends Backbone.View
+  class Overlay extends Backbone.View
     @assets
       styles: styles
       template: template

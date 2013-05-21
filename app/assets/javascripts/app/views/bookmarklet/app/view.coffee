@@ -7,9 +7,9 @@ define [
   "app/models/user"
   "app/views/comments/comments_with_input/view"
   "app/views/posts/posts_grouped_by_user/view"
-  "app/views/components/share_popover/view"
+  "app/views/components/share_overlay/view"
   "text!app/views/bookmarklet/app/template.mustache"
-], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsView, SharePopover, template) ->
+], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsView, ShareOverlay, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -160,7 +160,7 @@ define [
         @$el.addClass(if @model.get("yn") then "r_yep" else "r_nope")
 
     showShare: ->
-      @share_view = new SharePopover subject: Post::current
+      @share_view = new ShareOverlay subject: Post::current
       @share_view.render()
 
     close: ->

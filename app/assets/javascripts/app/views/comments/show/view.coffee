@@ -1,19 +1,19 @@
 define [
   "backbone"
-  "app/views/comments/popover/view"
+  "app/views/comments/overlay/view"
   "text!app/views/comments/show/template.mustache"
-], (Backbone, CommentPopover, template) ->
+], (Backbone, CommentOverlay, template) ->
 
   class ShowView extends Backbone.View
     @assets
       template: template
 
     render: ->
-      @popover = new CommentPopover model: @model
-      @popover.close = => window.location = @$("iframe").attr("src")
-      @popover.delegateEvents()
+      @overlay = new CommentOverlay model: @model
+      @overlay.close = => window.location = @$("iframe").attr("src")
+      @overlay.delegateEvents()
 
       @$el.html(@template(@model.toJSON()))
-      @$el.prepend(@popover.render().el)
+      @$el.prepend(@overlay.render().el)
 
       return this

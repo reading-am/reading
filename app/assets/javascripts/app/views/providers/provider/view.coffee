@@ -14,3 +14,8 @@ define [
 
     run: ->
       @model.run()
+
+    json: ->
+      json = super()
+      json.className = json.name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '')
+      json

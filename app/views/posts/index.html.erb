@@ -29,7 +29,8 @@
       :avatar_img_url             => @user.avatar_url(:medium),
       :you_or_name                => @user == current_user ? 'you' : @user.first_name,
       :follow_text                => signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
-      :has_followed               => @user.following.size > 0
+      :has_followed               => @user.following.size > 0,
+      :show_media                 => @user.access?(:media_feed)
     })
     if @user == current_user
       locals.merge!({

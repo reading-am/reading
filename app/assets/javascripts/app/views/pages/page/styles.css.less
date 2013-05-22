@@ -59,19 +59,6 @@
     .r_tri { border-left-color:@dark_purple; }
   }
 }
-.r_page_video, .r_page_audio {
-  &.r_has_embed {
-    h2 {
-      display:none;
-    }
-  }
-}
-.r_page_audio.r_has_embed {
-  .r_description {
-    display:none;
-  }
-}
-
 .posts_icon {
   .circle(22px, @eli_blue);
   color:@white;
@@ -84,10 +71,30 @@
     background: darken(@eli_blue, 10%);
   }
 }
-
 // TODO - should this be done with logic in the JS?
 .r_signed_out {
   .comments_icon.hasnt_comments {
     display:none;
+  }
+}
+
+.r_embed {
+  display:none;
+}
+.r_show_media {
+  .r_embed {
+    display:inline;
+  }
+  .r_page_video, .r_page_audio {
+    &.r_has_embed {
+      h2 {
+        display:none;
+      }
+    }
+  }
+  .r_page_audio.r_has_embed {
+    .r_description {
+      display:none;
+    }
   }
 }

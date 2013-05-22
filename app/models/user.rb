@@ -22,7 +22,8 @@ class User < ActiveRecord::Base
   bitmask :access, :as => [
     :digest,
     :tagalong,
-    :comments
+    :comments,
+    :media_feed
   ]
 
   has_many :authorizations, :dependent => :destroy, :include => [:user]

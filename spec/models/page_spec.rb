@@ -1,6 +1,10 @@
 require "spec_helper"
 
-ShimCurl = Struct.new 'ShimCurl', :last_effective_url, :body_str
+ShimMech = Struct.new 'ShimMech', :uri, :body_str do
+  def search *args
+    Nokogiri::HTML(body_str).search(*args)
+  end
+end
 
 describe Page do
   fixtures :pages
@@ -49,7 +53,7 @@ describe Page do
 
     it "resolves the canonical url when present" do
       page = pages(:youtube_short)
-      page.curl = ShimCurl.new 'http://www.youtube.com/watch?v=sIy4KsWq-FA&feature=youtu.be&t=1m36s', page.head_tags.to_s
+      page.mech = ShimMech.new URI.parse('http://www.youtube.com/watch?v=sIy4KsWq-FA&feature=youtu.be&t=1m36s'), page.head_tags.to_s
       page.remote_canonical_url.should eq("http://www.youtube.com/watch?v=sIy4KsWq-FA")
     end
 

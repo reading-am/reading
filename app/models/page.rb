@@ -287,27 +287,23 @@ public
     @tag_cache[:oembed_tags]
   end
 
-  def curl=(obj)
+  def mech=(obj)
     # this setter is used during testing
-    @curl = obj
+    @mech = obj
   end
 
-  def curl
-    if @curl.blank?
-      @curl = Curl::Easy.new url
-      @curl.follow_location = true
-      @curl.useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
-      @curl.perform
+  def mech
+    if @mech.blank?
+      agent = Mechanize.new
+      agent.user_agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
+      agent.follow_meta_refresh = true
+      @mech = agent.get url
     end
-    @curl
-  end
-
-  def remote_html
-    @remote_html ||= Nokogiri::HTML curl.body_str
+    @mech
   end
 
   def remote_resolved_url
-    curl.last_effective_url
+    mech.uri.to_s
   end
 
   def remote_normalized_url
@@ -316,7 +312,7 @@ public
 
   # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
   def remote_head_tags
-    remote_html.search('title,meta,link:not([rel=stylesheet])')
+    mech.search('title,meta,link:not([rel=stylesheet])')
   end
 
   def remote_canonical_url
@@ -327,11 +323,11 @@ public
     host = parsed_url.host
 
     # this has a JS companion in bookmarklet/real_init.coffee#get_url()
-    search = remote_html.search("link[rel=canonical][href!='']")
+    search = mech.search("link[rel=canonical][href!='']")
     if search.length > 0
       canonical = search.attr('href').to_s
     else
-      search = remote_html.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
+      search = mech.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
       if search.length > 0
         canonical = search.attr('value').to_s
       else

@@ -66,6 +66,12 @@ define [
             popup @url(), 490, 400
         },{
           subject: options.subject
+          name: "App.net α"
+          url_scheme: "https://alpha.app.net/intent/post?text=✌%20Reading%20{{title}}%20{{short_url}}"
+          action: ->
+            popup @url(), 475, 345
+        },{
+          subject: options.subject
           name: "Email"
           url_scheme: "mailto:?subject=✌%20Reading%20{{title}}&body={{wrapped_url}}"
           action: ->

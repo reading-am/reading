@@ -10,6 +10,9 @@ define [
       @model.on "destroy", @remove, this
       @model.on "remove", @remove, this
 
+    json: ->
+      @model.toJSON()
+
     render: =>
-      @$el.html(@template(@model.toJSON())) if @template?
+      @$el.html(@template(@json())) if @template?
       return this

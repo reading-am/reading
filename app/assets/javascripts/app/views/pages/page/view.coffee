@@ -1,19 +1,23 @@
 define [
+  "app/models/user_with_current"
   "app/views/base/model"
   "text!app/views/pages/page/template.mustache"
   "text!app/views/pages/page/styles.css"
   "app/models/page" # this has to be loaded here because it's not referenced anywhere else
-], (ModelView, template, styles) ->
+], (User, ModelView, template, styles) ->
 
   class PageView extends ModelView
     @assets
       styles: styles
       template: template
 
-    render: =>
-      json = @model.toJSON()
+    json: ->
+      json = super()
+
       if @model.posts.length
         json.url = @model.posts.first().get("wrapped_url")
 
-      @$el.html(@template json)
-      return this
+      if User::current.get("access").indexOf("media_feed") is -1
+        json.embed = false
+
+      return json

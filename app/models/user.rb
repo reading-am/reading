@@ -282,6 +282,7 @@ class User < ActiveRecord::Base
       :avatar_mini  => avatar_url(:mini),
       :following_count => following.size,
       :followers_count => followers.size,
+      :access     => access,
       :created_at => created_at,
       :updated_at => updated_at
     }

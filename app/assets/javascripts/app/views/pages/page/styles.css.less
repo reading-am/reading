@@ -78,23 +78,15 @@
   }
 }
 
-.r_embed {
-  display:none;
-}
-.r_show_media {
-  .r_embed {
-    display:inline;
-  }
-  .r_page_video, .r_page_audio {
-    &.r_has_embed {
-      h2 {
-        display:none;
-      }
-    }
-  }
-  .r_page_audio.r_has_embed {
-    .r_description {
+.r_page_video, .r_page_audio {
+  &.r_has_embed {
+    h2 {
       display:none;
     }
+  }
+}
+.r_page_audio.r_has_embed {
+  .r_description {
+    display:none;
   }
 }

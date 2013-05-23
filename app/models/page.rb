@@ -140,16 +140,20 @@ public
   end
 
   def embed
-    if !oembed.blank? && oembed['html']
-      oembed['html']
-    elsif trans_tags("player") || trans_tags("video")
-      param = trans_tags("player") ? "player" : "video"
-      "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-    elsif media_type == "photo"
-      "<img src=\"#{image}\">"
-    else
-      nil
+    if medium != :words
+      if !oembed.blank? && oembed['html']
+        oembed['html']
+      elsif trans_tags("player") || trans_tags("video")
+        param = trans_tags("player") ? "player" : "video"
+        "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
+      elsif media_type == "photo"
+        "<img src=\"#{image}\">"
+      else
+        nil
+      end
     end
+    # here's a sample :words embed should we decide to embed them
+    # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
   end
 
   def excerpt

@@ -1,7 +1,9 @@
 @import "variables";
 
 #header_card {
-  margin-bottom:36px;
+  padding-bottom:@baseLineHeight*2;
+  border-bottom:1px solid @light_grey;
+  &.r_current_user { border:0; }
   .r_avatar {
     min-height:60px;
   }

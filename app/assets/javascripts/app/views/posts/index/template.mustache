@@ -1,7 +1,6 @@
 {{#user}}
-  {{>users/card/template}}
-  {{#is_current_user}}
-    {{>users/you_subnav/template}}
+  {{^is_current_user}}
+    {{>users/card/template}}
   {{/is_current_user}}
   {{#show_blank_slate}}
     {{>users/blank_slate/template}}

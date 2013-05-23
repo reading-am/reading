@@ -4,7 +4,6 @@ define [
   "app/models/user_with_current"
   "app/collections/users"
   "app/views/users/show/view"
-  "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
@@ -12,7 +11,7 @@ define [
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
+], ($, Backbone, User, Users, UserShowView, SettingsSubnavView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
@@ -36,9 +35,6 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       @user_show_view = new UserShowView
         el: $("#header_card.r_user")
         model: @model
-
-      @user_subnav_view = new UserSubnavView
-        el: $("#subnav")
 
       path = window.location.pathname.split("/")
       is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")

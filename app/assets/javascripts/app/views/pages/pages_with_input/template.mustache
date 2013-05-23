@@ -1,18 +1,21 @@
-<div>
-  <div id="new_post_row" class="row w_rule">
-    <div class="span7 offset1">
+<div class="r_pages_with_input">
+  <div class="row r_header r_size_large">
+    <a href="{{avatar_link_url}}" class="span1 r_avatar" {{#avatar_link_target}}target="{{avatar_link_target}}"{{/avatar_link_target}}>
+      <img src="{{avatar_medium}}" alt="avatar">
+    </a>
+    <div class="span6">
       <form accept-charset="UTF-8" action="/api/posts" class="new_model" id="new_model" method="post">
         <div class="control-group" id="model_url_controls">
           <div class="controls">
-            <input class="input-xlarge" id="model_url" name="model[url]" placeholder="Enter the url you'd like to post" size="30" type="text">
+            <input class="input-xlarge" id="model_url" name="model[url]" placeholder="Enter the link you'd like to post" size="30" type="text">
           </div>
         </div>
         <div class="form-actions">
-          <input class="btn" name="commit" type="submit" value="Add Post">
+          <input class="btn btn-success" name="commit" type="submit" value="Post">
         </div>
       </form>
     </div>
-    <div class="span7 offset1">
+    <div class="span6">
       Even better, post using our <a href="/settings/extras">extension</a> or <a href="/settings/extras">bookmarklet</a>
     </div>
   </div>

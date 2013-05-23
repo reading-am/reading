@@ -2,15 +2,18 @@ define [
   "jquery"
   "underscore"
   "backbone"
+  "app/models/user_with_current"
   "app/models/post"
   "app/views/pages/pages/view"
   "app/views/posts/posts_grouped_by_page/view"
   "text!app/views/pages/pages_with_input/template.mustache"
-], ($, _, Backbone, Post, PagesView, PostsGroupedByPageView, template) ->
+  "text!app/views/pages/pages_with_input/styles.css"
+], ($, _, Backbone, User, Post, PagesView, PostsGroupedByPageView, template, styles) ->
 
   class PagesWithInputView extends Backbone.View
     @assets
       template: template
+      styles: styles
 
     events:
       "submit form": "submit"
@@ -24,8 +27,8 @@ define [
     toggle_loading: ->
       msg = "Posting..."
       @input.val if @input.val() is msg then "" else msg
-      @row.toggleClass "disabled"
-      @$("input").attr disabled: @row.hasClass "disabled"
+      @header.toggleClass "disabled"
+      @$("input").attr disabled: @header.hasClass "disabled"
       # The line above used to read like this:
       # @$("input").each -> @disabled = !@disabled
       # It worked fine for adding disabled but would only remove
@@ -43,18 +46,24 @@ define [
 
         @subview.collection.add page
         @subview.$el.find('div:first').hide().slideDown()
-        @row.slideUp complete: => @toggle_loading()
+        @toggle_loading()
 
       false
 
+    json: ->
+      has_avatar = true
+      {
+        avatar_link_url:    if has_avatar then User::current.get("avatar") else "/settings/info",
+        avatar_link_target: if has_avatar then "_blank" else false,
+        avatar_medium:      User::current.get("avatar_medium")
+      }
+
     render: =>
-      @$el.html(@template())
+      @$el.html(@template(@json()))
           .append(@subview.render().el)
 
       @input = @$("form input[type=text]")
-      @row = @$("#new_post_row")
-      @use_extension = @$("#new_post_use_extension")
-      @loading = @$("new_post_loading")
+      @header = @$(".r_header")
 
       return this
 

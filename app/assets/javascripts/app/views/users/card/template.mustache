@@ -22,7 +22,7 @@
     {{/signed_in}}
   </nav>
   <div id="user_places" class="span7 offset1">
-    {{user.location}} {{#user.link}}{{#user.location}}-{{/user.location}} <a href="{{user.link}}" target="_blank">{{user.link}}</a>{{/user.link}}
+    {{user.location}} {{#has_link}}{{#has_location}}-{{/has_location}} <a href="{{user.link}}" target="_blank">{{user.link}}</a>{{/has_link}}
   </div>
   <div id="user_bio" class="r_bio span7 offset1">
     {{user.bio}}

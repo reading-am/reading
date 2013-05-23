@@ -30,6 +30,8 @@
       :you_or_name                => @user == current_user ? 'you' : @user.first_name,
       :follow_text                => signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
       :has_followed               => @user.following.size > 0,
+      :has_link                   => !@user.link.blank?,
+      :has_location               => !@user.location.blank?,
       :show_media                 => @user.access?(:media_feed)
     })
     if @user == current_user

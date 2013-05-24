@@ -17,7 +17,7 @@ define [
       if @model.posts.length
         json.url = @model.posts.first().get("wrapped_url")
 
-      if User::current.get("access").indexOf("media_feed") is -1
+      if !User::current.access("media_feed")
         json.embed = false
 
       return json

@@ -97,7 +97,7 @@ gem "musterb", :git => 'git://github.com/leppert/musterb.git'
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git'
+gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git', :ref => 'c4268ab2c0fd6f508efdf73214e75144b9fc4c09' # using an older ref because the new one balloons the precompile time, which takes forever on Heroku
 gem 'rails-backbone'
 gem 'jquery-rails'
 

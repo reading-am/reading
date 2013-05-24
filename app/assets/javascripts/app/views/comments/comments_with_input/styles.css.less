@@ -1,6 +1,8 @@
 @import "variables";
 @import "mixins";
 
+@mentions_padding:5px;
+
 #r_am .r_comments_with_input {
   opacity:0;
   .transition(opacity .2s ease-in-out);
@@ -14,12 +16,10 @@
     textarea {
       outline: 0;
       height: 25px;
-      padding: 5px;
+      padding: @mentions_padding;
     }
     .mentions {
-      left: 5px; // sync with border
-      top: 5px; // sync with border
-      padding: 5px;
+      padding: @mentions_padding;
     }
   }
 }

@@ -16,5 +16,12 @@ define [
     signed_in: ->
       return Boolean @get "id"
 
+    access: (perm) ->
+      if !perm
+        @get("access")
+      else
+        @get("access") && @get("access").indexOf(perm) isnt -1
+
+
   App.Models.User = User
   return User

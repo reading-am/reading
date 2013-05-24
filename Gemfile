@@ -79,7 +79,6 @@ gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
 gem 'tumblr-ruby', require: 'tumblr'
 gem 'readit', :git => 'git://github.com/29decibel/readit.git'
 gem 'evernote-thrift'
-gem 'thrift' # added to force 0.9.0 install to fix evernote encoding issues
 gem 'kippt', :git => 'git://github.com/leppert/kippt.git'
 gem 'flattr'
 

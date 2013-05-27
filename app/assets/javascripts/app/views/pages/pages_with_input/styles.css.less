@@ -1,10 +1,12 @@
 @import "variables";
 
 #header {
-  display:none;
+  /*display:none;*/
 }
 
 .r_pages_with_input .r_header {
+  padding-bottom:@baseLineHeight*2;
+  border-bottom:1px solid @light_grey;
   .control-group, .form-actions {
     float:left;
   }
@@ -18,14 +20,23 @@
   a {
     text-decoration:underline;
   }
-  margin-top:@baseLineHeight;
-  padding-bottom:@baseLineHeight*2;
-  border-bottom:1px solid @light_grey;
   #model_url {
     width:385px;
   }
   img {
     border-radius:30px;
     margin-top:-5px;
+  }
+}
+
+.right_nav {
+  margin:0 0 @baseLineHeight;
+  li {
+    list-style:none;
+    a {
+      display:block;
+      border-bottom:1px solid @light_grey;
+      padding:5px;
+    }
   }
 }

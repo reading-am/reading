@@ -6,7 +6,26 @@
   <%= render :partial => 'layouts/titlecard' %>
   <div class="container">
     <%= render :partial => 'layouts/header' if params[:action] != 'visit' %>
-    <%= yield %>
+    <div class="row">
+    <div class="span8">
+      <%= yield %>
+    </div>
+      <div class="span2">
+        <ul class="right_nav">
+          <li><a href="#">Posts</a></li>
+          <li><a href="#">Followers</a></li>
+          <li><a href="#">Following</a></li>
+        </ul>
+        <ul class="right_nav">
+          <li><a href="#">Find People</a></li>
+        </ul>
+        <ul class="right_nav">
+        <% User.order("id ASC").limit(3).each do |user| %>
+          <li><%= render :file => 'users/user/template', :locals => {:size => 'small', :display_name => user.display_name, :avatar => user.avatar(:thumb)} %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
   </div>
   <%= render :partial => 'layouts/loading' %>
   <%= render :partial => 'layouts/quantcast' if Rails.env == 'production' %>

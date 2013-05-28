@@ -36,6 +36,34 @@ class UsersController < ApplicationController
     end
   end
 
+  def tumblr
+    @user = params[:username] ?
+      User.find_by_username(params[:username]) :
+      User.fetch(params[:id])
+    if !@user then not_found end
+
+    @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})"
+    @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|
+      case p.page.medium
+      when :words
+        {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
+      when :audio
+        {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
+      when :video
+        {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
+      when :image
+        {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
+      end
+    end
+
+    template = Tuml::Template.new(File.open("/Users/leppert/Desktop/default_template.html", "rb").read)
+    page = Tuml::IndexPage.new('title' => @page_title, 'description' => @user.bio, 'posts' => @posts)
+
+    respond_to do |format|
+      format.html { render :text => template.render(page) }
+    end
+  end
+
   def settings
     redirect_to "/settings/info"
   end

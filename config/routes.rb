@@ -122,4 +122,5 @@ Reading::Application.routes.draw do
   match '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
   match '/:username/follow'   => 'relationships#create'
   match '/:username/unfollow' => 'relationships#destroy'
+  match '/:username/tumblr'   => 'users#tumblr'
 end

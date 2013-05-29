@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})"
     @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|
       case p.page.medium
-      when :words
+      when :text
         {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
       when :audio
         {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}

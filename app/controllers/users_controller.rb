@@ -50,9 +50,9 @@ class UsersController < ApplicationController
       when :audio
         {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
       when :video
-        {'type' => 'video', 'title' => p.page.title, 'body' => p.page.excerpt, 'player' => [500,400,250].map{|w| {'width'=>w,'embed_code'=>p.page.embed}} }
+        {'type' => 'video', 'title' => p.page.title, 'body' => p.page.excerpt, 'player' => [500,400,250].map{|w| {'width'=>w,'embed_code'=>p.page.embed}}}
       when :image
-        {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
+        {'type' => 'photo', 'title' => p.page.title, 'body' => p.page.excerpt, 'photos' => [{'alt_sizes' => [500, 400, 250, 100].map{|w| {'width'=>w,'url'=>p.page.image}}}]}
       end
     end
 

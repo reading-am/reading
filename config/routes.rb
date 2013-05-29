@@ -61,6 +61,7 @@ Reading::Application.routes.draw do
   match "/support/delete_cookies" => "users#delete_cookies"
 
   resources :posts
+  resources :blogs
 
   match '/c/:id' => 'comments#shortener'
   match '/:username/comments/:id' => 'comments#show'
@@ -122,4 +123,5 @@ Reading::Application.routes.draw do
   match '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
   match '/:username/follow'   => 'relationships#create'
   match '/:username/unfollow' => 'relationships#destroy'
+  match '/:username/tumblr'   => 'blogs#show'
 end

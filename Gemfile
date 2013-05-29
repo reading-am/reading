@@ -92,6 +92,7 @@ gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstr
 gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
 gem "musterb", :git => 'git://github.com/leppert/musterb.git'
+gem 'tuml', :git => 'git://github.com/leppert/tuml.git'
 
 ###############
 # Frontend JS #

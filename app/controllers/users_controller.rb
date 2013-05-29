@@ -46,6 +46,11 @@ class UsersController < ApplicationController
     @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|
       data = {'type' => p.page.medium.to_s, 'title' => p.page.title, 'body' => p.page.excerpt, 'timestamp' => p.created_at.to_i}
       case p.page.medium
+      when :text
+        data['type'] = 'link'
+        data['link-url'] = p.page.url
+        data['link-text'] = p.page.title
+        data['link-description'] = p.page.excerpt
       when :audio
         data['player'] = p.page.embed
       when :video
@@ -57,7 +62,7 @@ class UsersController < ApplicationController
       data
     end
 
-    template = Tuml::Template.new(File.open("/Users/leppert/Desktop/tumblr_themes/redux.html", "rb").read)
+    template = Tuml::Template.new(File.open("/Users/leppert/Desktop/tumblr_themes/royal_ribbon.html", "rb").read)
     page = Tuml::IndexPage.new('title' => @page_title, 'description' => @user.bio, 'posts' => @posts)
 
     respond_to do |format|

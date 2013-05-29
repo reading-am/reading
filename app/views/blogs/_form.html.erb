@@ -1,0 +1,6 @@
+<%= twitter_bootstrap_form_for(blog, :html => {:method => :put, :class => "form-horizontal" }) do |f| %>
+  <%= f.text_area :template, :cols => nil, :rows => 3, :class => 'input-xlarge', :placeholder => 'Paste your Tumblr template here' if resource.access? :tumblr_templates %>
+  <%= f.actions do %>
+    <%= f.submit 'Update Template', :class => 'btn btn-success' %>
+  <% end %>
+<% end %>

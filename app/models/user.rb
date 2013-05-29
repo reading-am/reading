@@ -23,7 +23,8 @@ class User < ActiveRecord::Base
     :digest,
     :tagalong,
     :comments,
-    :media_feed
+    :media_feed,
+    :tumblr_templates
   ]
 
   has_many :authorizations, :dependent => :destroy, :include => [:user]
@@ -42,6 +43,8 @@ class User < ActiveRecord::Base
                                    :class_name => "Relationship",
                                    :dependent => :destroy
   has_many :followers, :through => :reverse_relationships, :source => :follower
+
+  has_many :blogs, :dependent => :destroy
 
   cache_index :token, :unique => true
 

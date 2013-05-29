@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/tuml.git
-  revision: c151ecf17e1d03eacd4369753871d365fde4c175
+  revision: f6d922e9061c8ee96da8f644a3c9e1945f1278e1
   specs:
     tuml (0.0.1)
       nokogiri (>= 1.4)

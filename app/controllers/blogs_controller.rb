@@ -30,13 +30,25 @@ class BlogsController < ApplicationController
     if @user.blogs.first && @user.blogs.first.template
       template = Tuml::Template.new @user.blogs.first.template
     else
+      # default template
       template = Tuml::Template.new Blog.find(1).template
     end
 
-    page = Tuml::IndexPage.new('title' => @page_title, 'description' => @user.bio, 'posts' => @posts)
+    props = {'title' => @page_title, 'description' => @user.bio, 'posts' => @posts}
+    Tuml::Page::PORTRAIT_SIZES.each do |size|
+      props["PortraitURL-#{size}"] = @user.avatar_url
+    end
+    page = Tuml::IndexPage.new(props)
+
+    # Inject styles to prevent overflow of images and iframes
+    html = Nokogiri::HTML template.render(page)
+    styles = Nokogiri::XML::Node.new("style", html)
+    styles['type'] = "text/css"
+    styles.content = "img, iframe { max-width:100% !important; }"
+    html.at_css('head').add_child(styles)
 
     respond_to do |format|
-      format.html { render :text => template.render(page) }
+      format.html { render :text => html }
     end
   end
 

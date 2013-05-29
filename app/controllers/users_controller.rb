@@ -44,19 +44,20 @@ class UsersController < ApplicationController
 
     @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})"
     @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|
+      data = {'type' => p.page.medium.to_s, 'title' => p.page.title, 'body' => p.page.excerpt, 'timestamp' => p.created_at.to_i}
       case p.page.medium
-      when :text
-        {'type' => 'text', 'title' => p.page.title, 'body' => p.page.excerpt}
       when :audio
-        {'type' => 'audio', 'title' => p.page.title, 'body' => p.page.excerpt, 'player' => p.page.embed}
+        data['player'] = p.page.embed
       when :video
-        {'type' => 'video', 'title' => p.page.title, 'body' => p.page.excerpt, 'player' => [500,400,250].map{|w| {'width'=>w,'embed_code'=>p.page.embed}}}
+        data['player'] = [500,400,250].map{|w| {'width'=>w,'embed_code'=>p.page.embed}}
       when :image
-        {'type' => 'photo', 'title' => p.page.title, 'body' => p.page.excerpt, 'photos' => [{'alt_sizes' => [500, 400, 250, 100].map{|w| {'width'=>w,'url'=>p.page.image}}}]}
+        data['type'] = 'photo'
+        data['photos'] = [{'alt_sizes' => [500, 400, 250, 100].map{|w| {'width'=>w,'url'=>p.page.image}}}]
       end
+      data
     end
 
-    template = Tuml::Template.new(File.open("/Users/leppert/Desktop/default_template.html", "rb").read)
+    template = Tuml::Template.new(File.open("/Users/leppert/Desktop/tumblr_themes/redux.html", "rb").read)
     page = Tuml::IndexPage.new('title' => @page_title, 'description' => @user.bio, 'posts' => @posts)
 
     respond_to do |format|

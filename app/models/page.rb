@@ -140,7 +140,7 @@ public
   end
 
   def embed
-    if medium != :words
+    if medium != :text
       if !oembed.blank? && oembed['html']
         oembed['html']
       elsif trans_tags("player") || trans_tags("video")
@@ -152,7 +152,7 @@ public
         nil
       end
     end
-    # here's a sample :words embed should we decide to embed them
+    # here's a sample :text embed should we decide to embed them
     # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
   end
 
@@ -188,9 +188,9 @@ public
         :audio => ['music','song','album','sound'],
         :video => ['video','movie'],
         :image => ['photo'],
-        :words => ['article','book','quote']
+        :text  => ['article','book','quote']
       }
-      @medium = :words # default
+      @medium = :text # default
       mediums.select! do |k,v|
         @medium = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
       end

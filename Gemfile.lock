@@ -139,7 +139,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.3.3)
+    addressable (2.3.4)
     ar_transaction_changes (0.0.1)
       activerecord (>= 3.0.0)
     arel (3.0.2)
@@ -326,7 +326,7 @@ GEM
     less-rails (2.3.3)
       actionpack (>= 3.1)
       less (~> 2.3.1)
-    libv8 (3.3.10.4)
+    libv8 (3.11.8.17)
     libwebsocket (0.1.7.1)
       addressable
       websocket
@@ -455,6 +455,7 @@ GEM
       hashie (~> 1.2.0)
     rdoc (3.12.2)
       json (~> 1.4)
+    ref (1.0.5)
     roauth (0.0.8)
     rsolr (1.0.8)
       builder (>= 2.1.2)
@@ -517,8 +518,9 @@ GEM
     sunspot_solr (2.0.0)
     systemu (2.5.2)
     terminal-notifier (1.4.2)
-    therubyracer (0.10.2)
-      libv8 (~> 3.3.10)
+    therubyracer (0.11.4)
+      libv8 (~> 3.11.8.12)
+      ref
     thor (0.18.1)
     tilt (1.4.1)
     tinder (1.9.1)
@@ -664,7 +666,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr
   terminal-notifier
-  therubyracer (~> 0.10.2)
+  therubyracer
   tinder
   tumblr-ruby
   tuml!

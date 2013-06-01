@@ -28,4 +28,5 @@ define [
 
     window.WEB_SOCKET_DEBUG = true # Flash fallback debug flag
 
-  return new Pusher Constants.config.pusher.key, encrypted: encrypted
+  # Stats must be disabled for the 2.0 lib because it tries to call window.Pusher
+  return new Pusher Constants.config.pusher.key, encrypted: encrypted, disableStats: true

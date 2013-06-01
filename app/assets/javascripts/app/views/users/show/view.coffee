@@ -24,7 +24,7 @@ define [
 
         if data is "true"
           $span = $target.find("span")
-          followed = $span.text().indexOf(follow) is 0
+          followed = $span.text().toLowerCase().indexOf(follow.toLowerCase()) is 0
           text = if followed then "Un" + follow.toLowerCase() else follow
           href = $target.attr("href")
 

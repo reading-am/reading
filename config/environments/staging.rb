@@ -45,14 +45,8 @@ Reading::Application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 
-  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += ['*.css*']
-
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-
-  # Needed by Devise
-  config.action_mailer.default_url_options = { :host => DOMAIN }
 
   # Enable threaded mode
   # config.threadsafe!
@@ -63,4 +57,18 @@ Reading::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :port           => ENV['MAILGUN_SMTP_PORT'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         => DOMAIN,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+  # Needed by Devise
+  config.action_mailer.default_url_options = { :host => DOMAIN }
+
 end

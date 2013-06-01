@@ -43,6 +43,9 @@ module Reading
     # Enable the asset pipeline
     config.assets.enabled = true
 
+    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    config.assets.precompile += ['*.css*','bookmarklet/loader.js']
+
     # per: https://github.com/jwhitley/requirejs-rails/#build-time-asset-filter
     config.requirejs.logical_asset_filter += [/\.mustache$/,/\.css$/]
 

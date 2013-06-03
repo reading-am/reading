@@ -16,11 +16,14 @@ define [
     short_url: ->
       "#{Constants.short_domain}/c/#{Base58.encode(@id)}"
 
-    mentions: ->
-      TwitterText.extractMentions @get("body")
+    mentioned_usernames: ->
+      TwitterText.extractMentions @get("body") || []
 
-    emails: ->
-      @get("body").match(Constants.regexes.email)
+    mentioned_emails: ->
+      @get("body").match(Constants.regexes.email) || []
+
+    mentions: ->
+      @mentioned_usernames().concat @mentioned_emails()
 
     hashtags: ->
       TwitterText.extractHashtags @get("body")
@@ -29,8 +32,10 @@ define [
       TwitterText.extractUrls @get("body")
 
     is_a_show: ->
-      m = @mentions()
-      return (m.length > 0 and @get("body").replace(/\s|,/g,"").length is "@#{m.join("@")}".length)
+      m = @mentioned_usernames().join("@")
+      m = "@#{m}" if m.length > 0
+      m += @mentioned_emails().join('')
+      return (m.length > 0 and @get("body").replace(/\s|,/g,"").length is m.length)
 
     ## This method is mirrored in comment.rb
     body_html: ->

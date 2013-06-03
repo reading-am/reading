@@ -3,14 +3,7 @@
 <%= stylesheet_link_tag 'email/overrides' %>
 <%= stylesheet_link_tag 'email/mentioned' %>
 
-<% if @subject.is_adhoc? %>
-<div class="row bandana">
-  <div class="span6">
-    <%= link_to @enactor.name, "#{ROOT_URL}/#{@enactor.username}", :class => 'r_user' %> uses <%= link_to 'Reading.am', ROOT_URL %> to share links with friends, like you!
-    You should <%= link_to 'sign up', "#{ROOT_URL}#{new_user_session_path}", :id => 'signup' %> too.
-  </div>
-</div>
-<% end %>
+<%= render :partial => 'join_bandana', :locals => {:user => @enactor } if @subject.is_adhoc? %>
 
 <div class="container">
 

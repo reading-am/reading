@@ -3,6 +3,8 @@
 <%= stylesheet_link_tag 'email/overrides' %>
 <%= stylesheet_link_tag 'email/mentioned' %>
 
+<%= render :partial => 'join_bandana', :locals => {:user => @enactor } if @subject.is_adhoc? %>
+
 <div class="container">
 
   <div class="row">

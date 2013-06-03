@@ -2,16 +2,20 @@
 <%= stylesheet_link_tag 'email/overrides' %>
 <%= stylesheet_link_tag 'email/new_follower' %>
 
-<div class="row">
-  <div class="span6">
-    <p>
-    Check out your new admirer: <%= link_to "#{DOMAIN}/#{@enactor.username}", "http://#{DOMAIN}/#{@enactor.username}", :class => "user" %>
-    </p>
-    <p>
-      I love you,<br>
-      Reading
-    </p>
-  </div>
-</div>
+<div class="container">
 
-<%= render :partial => 'footer' %>
+  <div class="row">
+    <div class="span6">
+      <p>
+      Check out your new admirer: <%= link_to "#{DOMAIN}/#{@enactor.username}", "#{ROOT_URL}/#{@enactor.username}", :class => "user" %>
+      </p>
+      <p>
+        I love you,<br>
+        Reading
+      </p>
+    </div>
+  </div>
+
+  <%= render :partial => 'footer' %>
+
+</div>

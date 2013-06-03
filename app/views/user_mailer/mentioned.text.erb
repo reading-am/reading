@@ -1,4 +1,4 @@
-<%= @enactor.display_name %> mentioned you:
+<%= @enactor.name %> mentioned you in a comment:
 
 <%= @comment.body.html_safe %>
 
@@ -9,4 +9,9 @@ Respond at <%= @url %>
 Or simply reply to this email.
 
 --------
+<% if @subject.is_adhoc? %>
+<%= @subject.is_adhoc? ? @enactor.first_name : @enactor.display_name %> uses Reading.am to share links with friends, like you!
+You should sign up too: <%= "#{ROOT_URL}#{new_user_session_path}" %>
+<% else %>
 No mas? http://<%= DOMAIN %>/settings/info
+<% end %>

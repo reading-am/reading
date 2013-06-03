@@ -1,5 +1,5 @@
 <div id="content">
-  <h4 class="breadcrumb"><%= link_to @page.domain.name, "http://#{DOMAIN}/domains/#{@page.domain.name}" %> » <span class="active"><%= @page.display_title %></span></h4>
+  <h4 class="breadcrumb"><%= link_to @page.domain.name, "#{ROOT_URL}/domains/#{@page.domain.name}" %> » <span class="active"><%= @page.display_title %></span></h4>
   <%= link_to @page.url, @page.url, :class => 'external' %>
 
   <h5><%= pluralize @page.users.uniq.count, 'Reader' %></h5>

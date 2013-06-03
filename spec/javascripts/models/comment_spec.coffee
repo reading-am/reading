@@ -5,7 +5,8 @@
 require [
   "spec/models/shared"
   "app/models/comment"
-], (shared, Comment) ->
+  "fixtures/comments"
+], (shared, Comment, Fixtures) ->
 
   describe "Model", ->
     describe "Comment", ->
@@ -28,21 +29,20 @@ require [
       describe "#is_a_show()", ->
 
         it "should recognize a single 'show'", ->
-          model = new Comment body: "@greg"
+          model = new Comment Fixtures.single_show
           model.is_a_show().should.be.true
 
         it "should recognize a multiple 'show'", ->
-          model = new Comment body: "@greg   \t\n @howard,@foxhole , @richard"
+          model = new Comment Fixtures.multiple_show
           model.is_a_show().should.be.true
 
-      describe "#emails()", ->
+      describe "#mentioned_emails()", ->
 
         it "should recognize a single email addresss", ->
-          email = "greg@reading.am"
-          model = new Comment body: email
-          model.emails()[0].should.equal email
+          model = new Comment Fixtures.single_email
+          model.mentioned_emails()[0].should.equal model.get('body')
 
         it "should recognize multiple email addressses", ->
           emails = ["greg@reading.am","test@example.com","heyo@fun.vg"]
           model = new Comment body: "This is an email for #{emails[0]} and #{emails[1]},#{emails[2]}"
-          model.emails().toString().should.equal emails.toString()
+          model.mentioned_emails().toString().should.equal emails.toString()

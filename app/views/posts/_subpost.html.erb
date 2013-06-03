@@ -7,9 +7,9 @@
       <% if post.user.username.nil? %>
         <%= post.user.display_name %>
       <% elsif post.user == current_user %>
-        <%= link_to 'You', "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> are
+        <%= link_to 'You', "#{ROOT_URL}/#{post.user.username}", :class => 'user' %> are
       <% else %>
-        <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> is
+        <%= link_to post.user.display_name, "#{ROOT_URL}/#{post.user.username}", :class => 'user' %> is
       <% end %>
       <%= post.page.verb %> this
       <% if post.referrer_post and post.user != post.referrer_post.user %>

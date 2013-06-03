@@ -6,5 +6,5 @@ solr/
 .DS_Store
 .sass-cache/
 public/assets/
-.reading_env
 .orientdb_history
+.env

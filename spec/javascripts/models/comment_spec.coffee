@@ -15,7 +15,7 @@ require [
 
       shared
         type: Comment
-        attrs: {body: "This is a test comment", post_id: 95087, page_id: 1140}
+        attrs: {body: "This is a test comment", page_id: 1140}
 
       describe "#save()", ->
 

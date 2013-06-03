@@ -9,6 +9,7 @@ class Api::APIController < ActionController::Metal
   # need this for responding to different types .json .xml etc...
   include ActionController::MimeResponds
   include AbstractController::Callbacks
+  include ActionController::Rescue # rescue_from
   # need this to build 'params'
   include ActionController::Instrumentation
   include ActionController::ParamsWrapper
@@ -19,6 +20,7 @@ class Api::APIController < ActionController::Metal
 
   wrap_parameters format: [:json]
   before_filter :map_method, :limit_count
+  rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
   DEFAULT_COUNT = 20
   MAX_COUNT = 200

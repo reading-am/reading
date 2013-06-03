@@ -7,9 +7,9 @@
       <% if post.user.username.nil? %>
         <%= post.user.display_name %>
       <% elsif post.user == current_user %>
-        <%= link_to 'You', "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> are
+        <%= link_to 'You', "#{ROOT_URL}/#{post.user.username}", :class => 'user' %> are
       <% else %>
-        <%= link_to post.user.display_name, "http://#{DOMAIN}/#{post.user.username}", :class => 'user' %> is
+        <%= link_to post.user.display_name, "#{ROOT_URL}/#{post.user.username}", :class => 'user' %> is
       <% end %>
       <%= post.page.verb %>
       <%= link_to post.page.display_title, post.page.url, :class => 'external', :data => {:base58_id => Base58.encode(post.id)} %>
@@ -20,7 +20,7 @@
   </span>
 <%
 #  <span class="plusnav">
-#    |<%= link_to "+", "http://#{DOMAIN}/domains/#{post.page.domain.name}/pages/#{post.page.id}", :class => 'info'
+#    |<%= link_to "+", "#{ROOT_URL}/domains/#{post.page.domain.name}/pages/#{post.page.id}", :class => 'info'
 #  </span>
 %>
 </div>

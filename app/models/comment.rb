@@ -92,8 +92,8 @@ class Comment < ActiveRecord::Base
     html = auto_link(html, {
       :url_class => 'r_url',
       :username_class => 'user',
-      :username_url_base => "http://#{DOMAIN}/",
-      :hashtag_url_base => "http://#{DOMAIN}/search?q="
+      :username_url_base => "#{ROOT_URL}/",
+      :hashtag_url_base => "#{ROOT_URL}/search?q="
     })
     # embed images
     html.gsub!(/(<a.*)( class="r_url" )(.*>)(.*\.(jpg|jpeg|png|gif).*)<\/a>/, "\\1 class=\"r_url r_image\" \\3<img src=\"\\4\"></a>")
@@ -106,7 +106,7 @@ class Comment < ActiveRecord::Base
       :type   => "Comment",
       :id     => to_s ? id.to_s : id,
       :body   => body,
-      :url    => "http://#{DOMAIN}/#{user.username}/comments/#{id}",
+      :url    => "#{ROOT_URL}/#{user.username}/comments/#{id}",
       :created_at => created_at,
       :updated_at => updated_at,
       :user   => user.simple_obj,

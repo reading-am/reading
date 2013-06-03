@@ -184,7 +184,7 @@ class User < ActiveRecord::Base
   end
 
   def url
-    "http://#{DOMAIN}/#{username}"
+    "#{ROOT_URL}/#{username}"
   end
 
   def following?(followed)

@@ -1,0 +1,6 @@
+<div class="row bandana">
+  <div class="span6">
+    <%= link_to user.name, "#{ROOT_URL}/#{user.username}", :class => 'r_user' %> uses <%= link_to 'Reading.am', ROOT_URL %> to share links with friends, like you!
+    You should <%= link_to 'sign up', "#{ROOT_URL}#{new_user_session_path}", :id => 'signup' %> too.
+  </div>
+</div>

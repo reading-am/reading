@@ -169,7 +169,7 @@ public
   end
 
   def wrapped_url
-    "http://#{DOMAIN}/#{self.url}"
+    "#{ROOT_URL}/#{self.url}"
   end
 
   def keywords

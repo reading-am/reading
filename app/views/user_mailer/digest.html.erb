@@ -6,9 +6,11 @@
 <%= stylesheet_link_tag 'app/views/users/user/styles' %>
 <%= stylesheet_link_tag 'email/overrides' %>
 
-<% if @posts.count > 0 %>
+<div class="container">
+
+  <% if @posts.count > 0 %>
   <%= render :file => 'email/pages/pages/template', :locals => {:pages => page_hashes_from_posts(@posts)} %>
-<% else %>
+  <% else %>
   <div class="row">
     <div class="span6">
       <p>
@@ -17,6 +19,8 @@
       </p>
     </div>
   </div>
-<% end %>
+  <% end %>
 
-<%= render :partial => 'footer' %>
+  <%= render :partial => 'footer' %>
+
+</div>

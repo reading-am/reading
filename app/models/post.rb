@@ -68,7 +68,7 @@ class Post < ActiveRecord::Base
 
   #TODO consider moving this to a view helper
   def wrapped_url(token=false)
-    url = "http://#{DOMAIN}"
+    url = "#{ROOT_URL}"
     url += "/t/#{token}" if token
     url += "/p/#{Base58.encode(self.id)}/#{self.page.url}"
   end

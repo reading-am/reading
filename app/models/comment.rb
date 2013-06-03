@@ -66,7 +66,9 @@ class Comment < ActiveRecord::Base
   end
 
   def is_a_show
-    m = mentioned_usernames.join("@") + mentioned_emails.join('')
+    m = mentioned_usernames.join("@")
+    m = "@#{m}" if m.length > 0
+    m += mentioned_emails.join
     return @is_a_show ||= (m.length > 0 and body.gsub(/\s|,/, '').length == m.length)
   end
 

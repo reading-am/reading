@@ -94,4 +94,11 @@ class Api::UsersController < Api::APIController
   end
   add_transaction_tracer :count
 
+  def presence
+    respond_to do |format|
+      format.html {head :ok}
+    end
+  end
+  add_transaction_tracer :presence
+
 end

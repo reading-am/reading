@@ -39,6 +39,7 @@ Reading::Application.routes.draw do
       get 'count', :on => :collection
       get 'search', :on => :collection
       get 'recommended', :on => :collection
+      post 'presence', :on => :collection # Pusher webhook
       resources :posts
       resources :comments
       resources :events, :controller => 'posts'

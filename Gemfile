@@ -71,7 +71,7 @@ gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'aws-sdk'
 gem 'hipchat'
 gem 'tinder' # campfire
-gem 'pusher', '0.10.0' # 0.11 installs gem signature 0.1.6 which throws 404s
+gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'
 gem 'koala' # facebook

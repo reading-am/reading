@@ -4,7 +4,7 @@ module Broadcaster
     async = defined? PUSHER_QUEUE # this won't exist in the console
     simple_obj = obj.simple_obj
 
-    obj.channels.each_slice(100).to_a.each do |channels|
+    obj.channels.each_slice(100).to_a.each do |channels| # Pusher can only take channels in groups of 100 or less
       msg = {:channels => channels, :action => action.to_s, :msg => simple_obj}
       if async
         PUSHER_QUEUE << msg

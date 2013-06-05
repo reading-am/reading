@@ -12,16 +12,16 @@ define [
     @assets
       styles: styles
       template: template
-      
+
     modelView: PostOnPageView
 
     initialize: (options) ->
       @filtered = new Posts
       super options
 
-    is_online: (ids, state) -> @set_status ids, "r_online", state
+    is_online:  (ids, state) -> @set_status ids, "r_online", state
     is_blurred: (ids, state) -> @set_status ids, "r_blurred", state
-    is_typing: (ids, state) -> @set_status ids, "r_typing", state
+    is_typing:  (ids, state) -> @set_status ids, "r_typing", state
 
     set_status: (ids, status, state) ->
       ids = [ids] unless _.isArray ids

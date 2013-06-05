@@ -41,6 +41,7 @@ define [
       if username is User::current.get("username")
         @collection.endpoint = => "users/#{User::current.get("id")}/feed"
         @collection.monitor()
+
         @pages_view = new PagesWithInputView
           collection: @collection
       else

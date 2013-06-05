@@ -9,13 +9,3 @@ define [
     modelView: PageRowView
     @assets
       template: template
-
-    initialize: (options) ->
-      # this takes a posts collection and groups it by Page
-      if options.collection.type is "Posts"
-        @collection = new Pages
-        options.collection.each (post) =>
-          @collection.add post.get("page")
-          @collection.get(post.get("page").id).posts.add post
-
-      super options

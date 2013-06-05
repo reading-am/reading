@@ -4,8 +4,9 @@ define [
   "backbone"
   "app/models/post"
   "app/views/pages/pages/view"
+  "app/views/posts/posts_grouped_by_page/view"
   "text!app/views/pages/pages_with_input/template.mustache"
-], ($, _, Backbone, Post, PagesView, template) ->
+], ($, _, Backbone, Post, PagesView, PostsGroupedByPageView, template) ->
 
   class PagesWithInputView extends Backbone.View
     @assets
@@ -15,7 +16,10 @@ define [
       "submit form": "submit"
 
     initialize: ->
-      @subview = new PagesView collection: @collection
+      if @collection.type is "Posts"
+        @subview = new PostsGroupedByPageView collection: @collection
+      else
+        @subview = new PagesView collection: @collection
 
     toggle_loading: ->
       msg = "Posting..."

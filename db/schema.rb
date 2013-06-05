@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130529184803) do
+ActiveRecord::Schema.define(:version => 20130603201423) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(:version => 20130529184803) do
     t.integer  "comments_count",         :default => 0
     t.boolean  "email_when_mentioned",   :default => true
     t.integer  "roles"
-    t.string   "encrypted_password",     :default => "",   :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(:version => 20130529184803) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "feed_present",           :default => false
   end
 
   add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true

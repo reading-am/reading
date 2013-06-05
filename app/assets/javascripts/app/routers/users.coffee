@@ -30,7 +30,7 @@ define [
       "users/friends"         : "friends"
       "users/search"          : "search"
 
-    show: (username) ->
+    show: (username, page) ->
       @user_show_view = new UserShowView
         el: $("#header_card.r_user")
         model: @model
@@ -40,7 +40,7 @@ define [
 
       if username is User::current.get("username")
         @collection.endpoint = => "users/#{User::current.get("id")}/feed"
-        @collection.monitor()
+        @collection.monitor() unless page > 1
 
         @pages_view = new PagesWithInputView
           collection: @collection

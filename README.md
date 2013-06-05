@@ -31,7 +31,7 @@ and needs to be started on its own using:
 
 `slanger --app_key $READING_SLANGER_KEY --secret
 $READING_SLANGER_SECRET --webhook_url
-http://0.0.0.0:3000/api/users/presence`
+http://0.0.0.0:3000/pusher/existence`
 
 ## Testing
 

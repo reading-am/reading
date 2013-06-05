@@ -98,9 +98,8 @@ class Api::UsersController < Api::APIController
     event = ActiveSupport::JSON.decode(request.raw_post)['events'].first
     if (event['channel'] =~ /^users\.[0-9]*\.feed$/) == 0 \
       and ['channel_occupied','channel_vacated'].include? event['name']
-      user = User.fetch(event['channel'].split('.')[1])
-      user.feed_present = (event['name'] == 'channel_occupied')
-      user.save
+      User.where(:id => event['channel'].split('.')[1])
+          .update_all(:feed_present => (event['name'] == 'channel_occupied'))
     end
     respond_to do |format|
       format.html {head :ok}

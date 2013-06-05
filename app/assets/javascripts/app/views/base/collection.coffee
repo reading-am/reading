@@ -6,18 +6,20 @@ define [
     tagName: "ul"
 
     initialize: (options) ->
-      @collection.on "reset", @addAll
-      @collection.on "add", @addOne
+      @collection.on "reset", @addAll, this
+      @collection.on "add", @addOne, this
 
-    addAll: =>
-      @collection.each @addOne
+    addAll: (collection, options) ->
+      @collection.each (model) => @addOne model, collection, options, true
 
-    addOne: (model) =>
+    addOne: (model, collection, options, bulk) ->
       props = model: model
       props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
       props.size = @size if @size?
 
       view = new @modelView props
+      view.render()
+      view.$el.hide() unless bulk
 
       i = @collection.indexOf(model)
       c_len = @$el.children().length
@@ -27,9 +29,11 @@ define [
 
       # add models in order if we're only adding one of them
       if c_len is @collection.length-1 and i < c_len
-        @$el.children().eq(i).before(view.render().el)
+        @$el.children().eq(i).before(view.el)
       else
-        @$el.append(view.render().el)
+        @$el.append(view.el)
+
+      view.$el.slideDown() unless bulk
 
     render: =>
       @addAll()

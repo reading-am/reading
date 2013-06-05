@@ -29,10 +29,7 @@ define [
         if _.contains ids, post.get("user").id
           @$("li:eq(#{i})").toggleClass(status, state)
 
-    addAll: =>
-      @collection.each (post) => @addOne post, false
-
-    addOne: (post, slide) =>
+    addOne: (post, collection, options, bulk) ->
       old = @filtered.find (p) -> post.get("user").id is p.get("user").id
 
       if !old or old.id < post.id
@@ -50,7 +47,7 @@ define [
         $el = view.render().$el
 
         $el.addClass("r_current_post") if post.id is Post::current.id
-        $el.hide() if slide
+        $el.hide() unless bulk
 
         # add posts in order if we're only adding one of them
         if li_len is @filtered.length-1 and i < li_len
@@ -58,4 +55,4 @@ define [
         else
           @$el.append($el)
 
-        $el.slideDown() if slide
+        $el.slideDown() unless bulk

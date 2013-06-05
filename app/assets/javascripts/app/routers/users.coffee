@@ -8,10 +8,11 @@ define [
   "app/views/users/settings_subnav/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
+  "app/views/posts/posts_grouped_by_page/view"
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView, PagesWithInputView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -45,7 +46,7 @@ define [
         @pages_view = new PagesWithInputView
           collection: @collection
       else
-        @pages_view = new PagesView
+        @pages_view = new PostsGroupedByPageView
           collection: @collection
 
       $("#yield").html @pages_view.render().el

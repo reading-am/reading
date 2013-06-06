@@ -1,18 +1,21 @@
 define [
   "jquery"
   "backbone"
-  "app/views/pages/pages/view"
-], ($, Backbone, PagesView) ->
+  "app/views/posts/posts_grouped_by_page/view"
+], ($, Backbone, PostsGroupedByPageView) ->
 
   class PostsRouter extends Backbone.Router
     initialize: (options) ->
       @collection = options.collection
 
     routes:
-      "(everybody)" : "index"
+      "(everybody)(/posts)(/page/:page)" : "index"
 
-    index: ->
-      @pages_view = new PagesView
+    index: (page) ->
+      page ||= @query_params().page
+      @collection.monitor() unless page > 1
+
+      @pages_view = new PostsGroupedByPageView
         collection: @collection
 
       $("#yield").html @pages_view.render().el

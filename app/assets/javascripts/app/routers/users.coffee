@@ -1,7 +1,7 @@
 define [
   "jquery"
   "backbone"
-  "app/models/user"
+  "app/models/user_with_current"
   "app/collections/users"
   "app/views/users/show/view"
   "app/views/users/subnav/view"
@@ -12,7 +12,8 @@ define [
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
+], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
+PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
     initialize: (options) ->
@@ -39,10 +40,12 @@ define [
       @user_subnav_view = new UserSubnavView
         el: $("#subnav")
 
-      if username is User::current.get("username")
-        @collection.endpoint = => "users/#{User::current.get("id")}/feed"
-        @collection.monitor() unless page > 1
+      path = window.location.pathname.split("/")
+      is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
+      @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "feed" else "posts"}"
+      @collection.monitor() unless page > 1
 
+      if username is User::current.get("username")
         @pages_view = new PagesWithInputView
           collection: @collection
       else

@@ -4,6 +4,7 @@ define [
 
   class CollectionView extends Backbone.View
     tagName: "ul"
+    animate: true
 
     initialize: (options) ->
       @collection.on "reset", @addAll, this
@@ -19,7 +20,7 @@ define [
 
       view = new @modelView props
       view.render()
-      view.$el.hide() unless bulk
+      view.$el.hide() unless !@animate || bulk
 
       i = @collection.indexOf(model)
       c_len = @$el.children().length
@@ -33,7 +34,7 @@ define [
       else
         @$el.append(view.el)
 
-      view.$el.slideDown() unless bulk
+      view.$el.slideDown() unless !@animate || bulk
 
     render: =>
       @addAll()

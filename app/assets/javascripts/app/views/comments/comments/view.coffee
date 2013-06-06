@@ -11,3 +11,4 @@ define [
       template: template
 
     modelView: CommentView
+    animate: false

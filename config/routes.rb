@@ -117,7 +117,7 @@ Reading::Application.routes.draw do
   match '/admin/jobs' => DelayedJobWeb, :anchor => false
 
   # These routes should be cleaned up
-  match '/:username(/posts)(/posts/page/:page)'  => 'users#show', :defaults => { :type => 'posts' }
+  match '/:username(/posts(/page/:page))'  => 'users#show', :defaults => { :type => 'posts' }
   match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }
   match '/:username/export'   => 'users#export'
   match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }

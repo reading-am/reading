@@ -580,7 +580,7 @@ GEM
     watchr (0.7)
     webrobots (0.1.1)
     websocket (1.0.4)
-    will_paginate (3.0.3)
+    will_paginate (3.0.4)
     wirb (1.0.1)
       paint
     xpath (1.0.0)

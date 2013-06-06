@@ -22,7 +22,7 @@ define [
         @collection = options.collection
 
     routes:
-      ":username(/list)(/page/:page)" : "show"
+      ":username(/list)(/posts)(/page/:page)" : "show"
       "settings/info"         : "edit"
       "settings/extras"       : "extras"
       ":username/followers"   : "followers"

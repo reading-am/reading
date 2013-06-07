@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .r_pages_with_input .r_header {
   padding-bottom:32px;
@@ -38,7 +39,7 @@
 }
 
 .row.r_hint {
-  background: -webkit-linear-gradient(left, #ffffff 1%,#e0fdff 5%,#e0fdff 95%,#ffffff 100%);
+  #gradient > .horizontal-four-colors(@white, #e0fdff, 5%, #e0fdff, 95%, @white);
   padding: 5px 0;
   text-align: center;
   color: rgb(0, 125, 156);

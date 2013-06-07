@@ -1,11 +1,7 @@
 @import "variables";
 
-#header {
-  /*display:none;*/
-}
-
 .r_pages_with_input .r_header {
-  padding-bottom:@baseLineHeight*2;
+  padding-bottom:32px;
   border-bottom:1px solid @light_grey;
   .control-group, .form-actions {
     float:left;
@@ -38,5 +34,25 @@
       border-bottom:1px solid @light_grey;
       padding:5px;
     }
+  }
+}
+
+.row.r_hint {
+  background: -webkit-linear-gradient(left, #ffffff 1%,#e0fdff 5%,#e0fdff 95%,#ffffff 100%);
+  padding: 5px 0;
+  text-align: center;
+  color: rgb(0, 125, 156);
+  a {
+    color: inherit;
+    text-decoration: underline;
+    &:hover {
+      background:@white;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .row.r_hint {
+    background: #e0fdff;
   }
 }

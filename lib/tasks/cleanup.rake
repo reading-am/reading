@@ -43,6 +43,9 @@ namespace :cleanup do
       rescue Curl::Err::HostResolutionError
         puts "## Curl Not Found\n#{page.id} : #{page.url}"
         next
+      rescue Exception => e
+        puts "## #{e.message}"
+        next
       end
 
       puts "\n-------------\n"

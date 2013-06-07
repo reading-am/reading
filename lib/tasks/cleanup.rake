@@ -34,7 +34,13 @@ namespace :cleanup do
   desc "Populate remote page data for pages missing it, resolve the canonical url, and combine with duplicate urls"
   task :populate_remote_page_data => :environment do
     Page.observers.disable :all
-    Page.where(:head_tags => nil).find_each do |page|
+
+    pages = Page.where(:head_tags => nil)
+    if !ENV['domain'].blank?
+      pages = pages.where(:domain_id => Domain.find_by_name(ENV['domain']).id)
+    end
+
+    pages.find_each do |page|
       begin
         page.populate_remote_page_data
       rescue Curl::Err::ConnectionFailedError
@@ -50,13 +56,16 @@ namespace :cleanup do
 
       puts "\n-------------\n"
       if page.url_changed?
-        puts "## URL will change. Continue? (y/n)"
+        puts "## URL will change"
         puts "from: #{page.url_was}"
         puts "to:   #{page.url}"
-        input = STDIN.gets.strip.downcase
-        if input[0] == "n"
-          puts "## Page #{page.id} will remain unchanged."
-          next # if the user said "no" then continue without changing anything
+        if ENV['force'].blank? || ENV['force'].downcase != 'true'
+          puts "Continue? (y/n)"
+          input = STDIN.gets.strip.downcase
+          if input[0] == "n"
+            puts "## Page #{page.id} will remain unchanged."
+            next # if the user said "no" then continue without changing anything
+          end
         end
         dupe_page = Page.find_by_url page.url
         if dupe_page

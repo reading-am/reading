@@ -48,7 +48,6 @@ namespace :cleanup do
       pages = pages.where("id >= ?", start_id)
     end
 
-    white = Text::WhiteSimilarity.new
     total = pages.count
     progress = 0
     pages.find_each do |page|
@@ -63,7 +62,7 @@ namespace :cleanup do
       end
 
       if page.url_changed?
-        similarity = white.similarity(strip_url(page.url.split('?')[0]), strip_url(page.url_was.split('?')[0]))
+        similarity = Text::WhiteSimilarity.similarity(strip_url(page.url.split('?')[0]), strip_url(page.url_was.split('?')[0]))
         puts "## URL will change"
         puts "from: #{page.url_was}"
         puts "to:   #{page.url}"
@@ -133,7 +132,7 @@ namespace :cleanup do
   end
 
   def strip_url url
-    url.gsub(/https?/,'').gsub('www.','').gsub('/','').gsub(/#!?/,'').gsub('?','').gsub('.','')
+    url.gsub(/https?/,'').gsub('www.','').gsub('/','').gsub(/#!?/,'').gsub('?','').gsub('.','').gsub(':','')
   end
 
   def prompt_unsimilar

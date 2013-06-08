@@ -13,6 +13,8 @@ class Page < ActiveRecord::Base
   validates_associated :domain
   validates_uniqueness_of :url
 
+  cattr_accessor :crawl_timeout
+
   before_validation { parse_domain }
   before_create {|page| page.populate_remote_page_data unless page.loads_via_js }
   after_create :populate_remote_meta_data
@@ -301,6 +303,9 @@ public
       agent = Mechanize.new
       agent.user_agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
       agent.follow_meta_refresh = true
+      if !crawl_timeout.blank?
+        agent.open_timeout = agent.read_timeout = crawl_timeout
+      end
       @mech = agent.get url
     end
     @mech

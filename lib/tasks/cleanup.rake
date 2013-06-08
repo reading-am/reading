@@ -34,10 +34,14 @@ namespace :cleanup do
   desc "Populate remote page data for pages missing it, resolve the canonical url, and combine with duplicate urls"
   task :populate_remote_page_data => :environment do
     Page.observers.disable :all
+    Page.crawl_timeout = timeout
 
     pages = Page.where(:head_tags => nil)
-    if !ENV['domain'].blank?
-      pages = pages.where(:domain_id => Domain.find_by_name(ENV['domain']).id)
+    if domain
+      pages = pages.where(:domain_id => Domain.find_by_name(domain).id)
+    end
+    if start_id
+      pages = pages.where("id >= ?", start_id)
     end
 
     total = pages.count
@@ -48,12 +52,6 @@ namespace :cleanup do
 
       begin
         page.populate_remote_page_data
-      rescue Curl::Err::ConnectionFailedError
-        puts "## Curl Timeout\n#{page.id} : #{page.url}"
-        next
-      rescue Curl::Err::HostResolutionError
-        puts "## Curl Not Found\n#{page.id} : #{page.url}"
-        next
       rescue Exception => e
         puts "## #{e.message}"
         next
@@ -107,6 +105,18 @@ namespace :cleanup do
         puts "## #{page.id} destroyed"
       end
     end
+  end
+
+  def timeout
+    ENV['timeout'].blank? ? false : ENV['timeout'].to_i
+  end
+
+  def domain
+    ENV['domain'] || false
+  end
+
+  def start_id
+    ENV['start_id'] || false
   end
 
   def strip_url url

@@ -40,7 +40,12 @@ namespace :cleanup do
       pages = pages.where(:domain_id => Domain.find_by_name(ENV['domain']).id)
     end
 
+    total = pages.count
+    progress = 0
     pages.find_each do |page|
+      progress += 1
+      puts "\n------- Page #{page.id}: #{"%0#{total.to_s.length}d" % progress} of #{total} -------\n"
+
       begin
         page.populate_remote_page_data
       rescue Curl::Err::ConnectionFailedError
@@ -54,18 +59,21 @@ namespace :cleanup do
         next
       end
 
-      puts "\n-------------\n"
       if page.url_changed?
+        minor = strip_url(page.url) == strip_url(page.url_was)
+        next unless update_urls? || minor
         puts "## URL will change"
         puts "from: #{page.url_was}"
         puts "to:   #{page.url}"
-        if ENV['force'].blank? || ENV['force'].downcase != 'true'
+        if !force? && !minor
           puts "Continue? (y/n)"
           input = STDIN.gets.strip.downcase
           if input[0] == "n"
             puts "## Page #{page.id} will remain unchanged."
             next # if the user said "no" then continue without changing anything
           end
+        elsif minor
+          puts "Minor URL change. Updating."
         end
         dupe_page = Page.find_by_url page.url
         if dupe_page
@@ -99,6 +107,18 @@ namespace :cleanup do
         puts "## #{page.id} destroyed"
       end
     end
+  end
+
+  def strip_url url
+    url.gsub(/https?/,'').gsub('www.','').gsub('/','').gsub(/#!?/,'').gsub('?','')
+  end
+
+  def force?
+    !ENV['force'].blank? && ENV['force'].downcase == 'true'
+  end
+
+  def update_urls?
+    ENV['update_urls'].blank? || ENV['update_urls'].downcase != 'false'
   end
 
 end

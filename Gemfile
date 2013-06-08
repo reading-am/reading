@@ -34,6 +34,7 @@ gem 'paperclip' # file attachments
 gem 'browser' # browser detection
 gem 'sanitize' # HTML sanitizer
 gem 'ruby-oembed'
+gem 'text'
 
 ########
 # Auth #

@@ -518,6 +518,7 @@ GEM
     sunspot_solr (2.0.0)
     systemu (2.5.2)
     terminal-notifier (1.4.2)
+    text (1.2.1)
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
       ref
@@ -666,6 +667,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr
   terminal-notifier
+  text
   therubyracer
   tinder
   tumblr-ruby

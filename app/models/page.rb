@@ -16,7 +16,7 @@ class Page < ActiveRecord::Base
   cattr_accessor :crawl_timeout
 
   before_validation { parse_domain }
-  before_create {|page| page.populate_remote_page_data unless page.loads_via_js }
+  before_create :populate_remote_page_data
   after_create :populate_remote_meta_data
 
   # search
@@ -104,15 +104,9 @@ public
     page
   end
 
-  def loads_via_js
-    url.include? "#!"
-  end
-
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
-    if loads_via_js
-      title
-    elsif !trans_tags("title").blank?
+    if !trans_tags("title").blank?
       trans_tags("title")
     elsif !title.blank?
       title
@@ -293,6 +287,18 @@ public
     @tag_cache[:oembed_tags]
   end
 
+  def crawl_url
+    a = Addressable::URI.parse(url)
+    # check for a hashbang: https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
+    if !a.fragment.blank? && a.fragment[0] == '!'
+      qv = a.query_values || {}
+      qv['_escaped_fragment_'] = a.fragment[1..-1]
+      a.query_values = qv
+      a.fragment = nil
+    end
+    a.to_s
+  end
+
   def mech=(obj)
     # this setter is used during testing
     @mech = obj
@@ -306,7 +312,7 @@ public
       if !crawl_timeout.blank?
         agent.open_timeout = agent.read_timeout = crawl_timeout
       end
-      @mech = agent.get url
+      @mech = agent.get crawl_url
     end
     @mech
   end

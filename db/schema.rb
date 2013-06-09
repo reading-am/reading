@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603201423) do
+ActiveRecord::Schema.define(:version => 20130609172058) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -102,8 +102,10 @@ ActiveRecord::Schema.define(:version => 20130603201423) do
     t.integer  "comments_count", :default => 0
     t.text     "head_tags"
     t.text     "oembed"
+    t.string   "medium"
   end
 
+  add_index "pages", ["medium"], :name => "index_pages_on_medium"
   add_index "pages", ["url"], :name => "index_pages_on_url", :unique => true
 
   create_table "posts", :force => true do |t|

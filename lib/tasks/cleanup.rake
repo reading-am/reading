@@ -31,14 +31,31 @@ namespace :cleanup do
     end
   end
 
+  desc "Populate the medium type for pages missing it"
+  task :populate_medium => :environment do
+    ActiveRecord::Base.observers.disable :all
+
+    pages = Page.where(:medium => nil)
+    total = pages.count
+    progress = 0
+
+    pages.find_each do |page|
+      progress += 1
+      puts_header page, total, progress
+      page.medium = page.parse_medium
+      puts "#{page.medium} : #{page.url}"
+      page.save
+    end
+  end
+
   desc "Populate remote oembed data for pages missing it"
   task :populate_remote_oembed => :environment do
     ActiveRecord::Base.observers.disable :all
 
     pages = Page.where(:oembed => nil).where("head_tags like ?", "%oembed%")
-
     total = pages.count
     progress = 0
+
     pages.find_each do |page|
       progress += 1
       puts_header page, total, progress

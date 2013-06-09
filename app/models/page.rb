@@ -15,7 +15,8 @@ class Page < ActiveRecord::Base
 
   cattr_accessor :crawl_timeout
 
-  before_validation { parse_domain }
+  before_validation :populate_domain
+  before_save :populate_medium
   before_create :populate_remote_page_data
   after_create :populate_remote_meta_data
 
@@ -37,7 +38,7 @@ class Page < ActiveRecord::Base
 
 private
 
-  def parse_domain
+  def populate_domain
     a = Addressable::URI.parse(url)
     # make sure the domain at least includes a period
     # and that it uses a valid protocol
@@ -178,29 +179,26 @@ public
     end
   end
 
-  def medium
-    if @medium.blank?
-      mediums = {
-        :audio => ['music','song','album','sound'],
-        :video => ['video','movie'],
-        :image => ['photo'],
-        :text  => ['article','book','quote']
-      }
-      @medium = :text # default
-      mediums.select! do |k,v|
-        @medium = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
-      end
+  def parse_medium
+    mediums = {
+      'audio' => ['music','song','album','sound'],
+      'video' => ['video','movie'],
+      'image' => ['photo'],
+      'text'  => ['article','book','quote']
+    }
+    m = 'text' # default
+    mediums.select! do |k,v|
+      m = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
     end
-
-    @medium
+    m
   end
 
   def verb
-    if medium == :audio
+    if medium == 'audio'
       'listening to'
-    elsif medium == :video
+    elsif medium == 'video'
       'watching'
-    elsif medium == :image or ['profile'].include?(media_type)
+    elsif medium == 'image' or ['profile'].include?(media_type)
       'looking at'
     else
       'reading'
@@ -384,6 +382,10 @@ public
         nil
       end
     end
+  end
+
+  def populate_medium
+    self.medium = parse_medium
   end
 
   def populate_remote_page_data

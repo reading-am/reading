@@ -31,13 +31,26 @@ namespace :cleanup do
     end
   end
 
+  desc "Populate remote oembed data for pages missing it"
+  task :populate_remote_oembed => :environment do
+    ActiveRecord::Base.observers.disable :all
+
+    pages = Page.where(:oembed => nil).where("head_tags like ?", "%oembed%")
+
+    total = pages.count
+    progress = 0
+    pages.find_each do |page|
+      progress += 1
+      puts_header page, total, progress
+      puts page.oembed_tags['json'] || page.oembed_tags['xml']
+      page.oembed = page.remote_oembed
+      page.save
+    end
+  end
+
   desc "Populate remote page data for pages missing it, resolve the canonical url, and combine with duplicate urls"
   task :populate_remote_page_data => :environment do
-    Page.observers.disable :all
-    Domain.observers.disable :all
-    Comment.observers.disable :all
-    Post.observers.disable :all
-
+    ActiveRecord::Base.observers.disable :all
     Page.crawl_timeout = timeout
 
     pages = Page.where(:head_tags => nil)
@@ -52,7 +65,7 @@ namespace :cleanup do
     progress = 0
     pages.find_each do |page|
       progress += 1
-      puts "\n------- Page #{page.id}: #{"%0#{total.to_s.length}d" % progress} of #{total} -------\n"
+      puts_header page, total, progress
 
       begin
         page.populate_remote_page_data
@@ -117,6 +130,10 @@ namespace :cleanup do
         puts "## #{page.id} destroyed"
       end
     end
+  end
+
+  def puts_header model, total, progress
+      puts "\n------- #{model.class.name} #{model.id}: #{"%0#{total.to_s.length}d" % progress} of #{total} -------\n"
   end
 
   def timeout

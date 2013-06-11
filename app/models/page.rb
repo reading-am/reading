@@ -137,7 +137,7 @@ public
   end
 
   def embed
-    if medium != :text
+    if medium != 'text'
       if !oembed.blank? && oembed['html']
         oembed['html']
       elsif trans_tags("player") || trans_tags("video")

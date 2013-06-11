@@ -8,7 +8,6 @@ class PostsController < ApplicationController
     @posts =  Post.order("created_at DESC")
                   .includes([:user, :page, {:referrer_post => :user}])
                   .paginate(:page => params[:page])
-    @channels = 'everybody'
   end
 
   # A note about schema

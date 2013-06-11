@@ -1,9 +1,0 @@
-<script>
-  var _pusher = {
-    key: '<%= Pusher.key %>',
-    channels: [
-    '<%= if @channels.kind_of?(Array) then @channels.join("','") else @channels end %>'
-    ]
-  };
-</script>
-<%= javascript_include_tag '//js.pusherapp.com/1.9/pusher.min.js', 'pusher' %>

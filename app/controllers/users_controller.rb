@@ -14,8 +14,12 @@ class UsersController < ApplicationController
       @posts = params[:type] == 'list' ? @user.feed : @user.posts
     end
 
+    if !params[:medium].blank?
+      @posts = @posts.where('pages.medium' => params[:medium])
+    end
+
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
-                   .order("created_at DESC")
+                   .order("posts.created_at DESC")
                    .limit(50)
 
     respond_to do |format|

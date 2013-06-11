@@ -76,12 +76,12 @@ class User < ActiveRecord::Base
   private
 
   def self.posted_to page
-    where("id IN (SELECT user_id FROM posts WHERE posts.page_id = :page_id)", { :page_id => page })
+    where("id IN (SELECT posts.user_id FROM posts WHERE posts.page_id = :page_id)", {:page_id => page})
   end
 
   def self.follows user
     where("id IN (SELECT followed_id FROM relationships WHERE follower_id = :user_id)",
-          { :user_id => user})
+          {:user_id => user})
   end
 
   def self.digesting freq

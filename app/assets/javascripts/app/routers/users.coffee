@@ -22,7 +22,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
   class UsersRouter extends Backbone.Router
 
     routes:
-      "(:username)(/list)(/posts)" : "show"
+      "(:username)(/list)(/posts)(/:medium)" : "show"
       "settings/info"         : "edit"
       "settings/extras"       : "extras"
       ":username/followers"   : "followers"
@@ -31,7 +31,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       "users/friends"         : "friends"
       "users/search"          : "search"
 
-    show: (username) ->
+    show: (username, medium) ->
       username = false if username is "everybody"
       @collection = new Posts if _.isEmpty @collection
 

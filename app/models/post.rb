@@ -46,9 +46,9 @@ class Post < ActiveRecord::Base
   def self.followed_by(user)
     following_ids = %(SELECT followed_id FROM relationships
                       WHERE follower_id = :user_id)
-    where("user_id IN (#{following_ids}) OR user_id = :user_id",
+    where("posts.user_id IN (#{following_ids}) OR posts.user_id = :user_id",
           { :user_id => user })
-    .order("created_at DESC")
+    .order("posts.created_at DESC")
   end
 
   def self.unread_since(user, datetime)

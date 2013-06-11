@@ -6,28 +6,15 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     if params[:username] == 'everybody'
-      @posts  = Post.order("created_at DESC")
-                    .includes([:user, :page, {:referrer_post => :user}])
-                    .paginate(:page => params[:page])
-      @channels = 'everybody'
+      @posts = Post.includes([:user, :page, {:referrer_post => :user}])
     else
-      @user = params[:username] ?
-        User.find_by_username(params[:username]) :
-        User.fetch(params[:id])
+      @user = params[:username] ? User.find_by_username(params[:username]) : User.fetch(params[:id])
       if !@user then not_found end
-
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
-
-      if params[:type] == 'list'
-        @posts = @user.feed.paginate(:page => params[:page])
-        @channels = @user.following.map { |user| user.username }
-        # add the user to the channels since it's not in .following()
-        @channels.push @user.username
-      else
-        @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page])
-        @channels = @user.username
-      end
+      @posts = params[:type] == 'list' ? @user.feed : @user.posts
     end
+
+    @posts = @posts.order("created_at DESC").paginate(:page => params[:page])
 
     respond_to do |format|
       format.html { render 'posts/index' }

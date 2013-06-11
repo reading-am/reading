@@ -7,9 +7,7 @@ define [
   class PostsGroupedByPageView extends CollectionView
     initialize: (options) ->
       pages = new Pages
-      @collection.each (post) =>
-        post.get("page").posts.add post
-        pages.add post.get("page")
+      @collection.each (post) => @groupUnder(post, pages)
 
       @subview = new PagesView collection: pages
       @setElement @subview.el
@@ -17,10 +15,15 @@ define [
       super options
 
     addOne: (post) ->
-      # the post must be added to the page first in order that
-      # the wrapped url is used to render the page
-      post.get("page").posts.add post
-      @subview.collection.add(post.get("page"))
+      @groupUnder post, @subview.collection
+
+    groupUnder: (post, pages) ->
+      page = pages.get(post.get("page").id)
+      if page
+        page.posts.add post
+      else
+        post.get("page").posts.add post
+        pages.add(post.get("page"))
 
     render: ->
       @subview.render()

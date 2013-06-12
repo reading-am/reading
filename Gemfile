@@ -128,6 +128,7 @@ group :development do
   gem 'binding_of_caller' # for better_errors
   gem 'irbtools', :require => false
   gem 'terminal-notifier', :require => false # or else irbtools will complain
+  gem 'rack-mini-profiler'
 end
 
 group :development, :test do

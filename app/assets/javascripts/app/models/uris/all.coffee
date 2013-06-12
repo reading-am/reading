@@ -1,6 +1,6 @@
 define [
   "app/models/uris/uri"
-  "app/models/uris/twitter_tweet"
+  #"app/models/uris/twitter_tweet" # disabled because v1 API has been shut down
   "app/models/uris/github_repo"
   "app/models/uris/youtube_video"
   "app/models/uris/vimeo_video"

@@ -43,7 +43,7 @@ module ActiveRecordExtension
     end
 
     def lightning
-      connection.select_all(skeletons.arel).each do |attrs|
+      connection.select_all(skeletal.arel).each do |attrs|
         attrs.each_key do |attr|
           attrs[attr] = type_cast_attribute(attr, attrs)
         end

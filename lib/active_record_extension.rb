@@ -10,32 +10,36 @@ module ActiveRecordExtension
 
   # add your static(class) methods here
   module ClassMethods
-    def skeleton columns=:all, assocs=[]
+    def skeleton args={}
+      columns = args[:columns] || :all
+      assocs = args[:assocs] || []
+
       cattr_accessor :skeleton_columns 
+
       self.skeleton_columns = (columns == :all ? column_names : columns)
       assocs.each do |name|
         a = self.reflect_on_association name
         args = [
-          "#{a.name}_skeleton",
+          "#{a.name}_skeleton".to_sym,
           :class_name => a.class_name,
           :foreign_key => a.foreign_key,
           :foreign_type => a.foreign_type,
           :select => a.klass.skeleton_columns
         ]
-        self.send a.macro, *args
-        alias_method "#{a.name}_flesh", a.name
-        define_method(a.name) do
-          if self.association(a.name).loaded? || !self.association("#{a.name}_skeleton").loaded?
-            self.send("#{a.name}_flesh")
-          else
-            self.send("#{a.name}_skeleton")
-          end
+        if !self.skeleton_columns.include?(a.foreign_key.to_sym)
+          self.skeleton_columns << a.foreign_key.to_sym
         end
+        self.send a.macro, *args
       end
     end
 
     def skeletal
-      select(skeleton_columns)
+      rel = select(skeleton_columns)
+      rel.includes_values = rel.includes_values.map do |v|
+        s = "#{v}_skeleton".to_sym
+        self.reflect_on_association(s).blank? ? v : s
+      end
+      rel
     end
 
     def lightning

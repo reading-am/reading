@@ -39,6 +39,15 @@ class Post < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
+  skeleton [
+    :id,
+    :yn,
+    :user_id,
+    :page_id,
+    :created_at,
+    :updated_at
+  ], [:user, :page]
+
   private
 
   # Return an SQL condition for users followed by the given user.
@@ -62,6 +71,14 @@ class Post < ActiveRecord::Base
   end
 
   public
+
+  def user
+    user_skeleton || user_flesh
+  end
+
+  def page
+    page_skeleton || page_flesh
+  end
 
   #TODO consider moving this to a view helper
   def wrapped_url(token=false)

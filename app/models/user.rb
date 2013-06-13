@@ -71,6 +71,20 @@ class User < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
+  skeleton [
+    :id,
+    :username,
+    :name,
+    :bio,
+    :avatar_file_name,
+    :avatar_updated_at,
+    :following_count,
+    :followers_count,
+    :access,
+    :created_at,
+    :updated_at
+  ]
+
   private
 
   def self.posted_to page
@@ -248,7 +262,7 @@ class User < ActiveRecord::Base
 
   def simple_obj to_s=false
     {
-      :type       => 'User',
+      :type       => self.class.name,
       :id         => to_s ? id.to_s : id,
       :username   => username,
       :display_name => display_name,

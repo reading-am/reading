@@ -86,7 +86,7 @@ public
   def facebook post, event_fired
     case params['permission']
     when 'publish_stream' # wall
-      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.verb.capitalize} \"#{post.page.display_title}\"") rescue nil
+      authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.verb.capitalize} \"#{post.page.title}\"") rescue nil
     when 'publish_actions' # timeline
       action = post.page.imperative
       action = "read" if action == "listen" # we didn't get approved for listen
@@ -107,19 +107,19 @@ public
       :params => {
         :auth_token => "#{self.params['user']}:#{self.params['token']}",
         :url => post.page.url,
-        :description => post.page.display_title,
+        :description => post.page.title,
         :tags => 'Reading.am'
       }
   end
 
   def tumblr post, event_fired
     # this must use string rather than symbol keys in the options hash
-    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.display_title}", "description" => post.page.description}
+    authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.title}", "description" => post.page.description}
   end
 
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
-    tweet = "✌ #{post.page.verb.capitalize} \"#{post.page.display_title}\""
+    tweet = "✌ #{post.page.verb.capitalize} \"#{post.page.title}\""
     tweet_len = tweet.unpack('c*').length
     full_len = tweet_len + post.short_url.unpack('c*').length + 1 # plus one is the space
     buffer = 10 # 10 for good measure and because twitter drove me batty about being over the character limit
@@ -144,8 +144,8 @@ public
     user = obj.user
 
     user_link = "<a href='http://#{DOMAIN}/#{user.username}'>#{user.display_name}</a>"
-    post_link = "<a href='#{post.wrapped_url}'>#{post.page.display_title}</a>"
-    post_link_truncated = "<a href='#{post.wrapped_url}'>#{truncate(post.page.display_title)}</a>"
+    post_link = "<a href='#{post.wrapped_url}'>#{post.page.title}</a>"
+    post_link_truncated = "<a href='#{post.wrapped_url}'>#{truncate(post.page.title)}</a>"
 
     case event_fired
     when :new
@@ -194,7 +194,7 @@ EOF
   end
 
   def tssignals post, event_fired, room=nil
-    post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
+    post_link = "\"#{post.page.title}\" #{post.wrapped_url}"
     case event_fired
     when :new
       output = "✌ #{post.page.verb.capitalize} #{post_link}"

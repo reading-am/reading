@@ -42,7 +42,7 @@ class PostsController < ApplicationController
         # Post through the classic JS method
         # Facebook hits this page to grab info
         # for the timeline
-        @page_title = "✌ #{@ref.page.display_title}"
+        @page_title = "✌ #{@ref.page.title}"
         @og_props = {
           :type => @ref.page.media_type,
           :title => @page_title,

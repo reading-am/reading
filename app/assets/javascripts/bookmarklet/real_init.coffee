@@ -67,7 +67,7 @@ require [
 
     Page::parse_url(url)
 
-  # this has a Ruby companion in models/page.rb#display_title()
+  # this has a Ruby companion in models/page.rb#parse_title()
   get_title = ->
     # if there's a hashbang, don't use the title metagtags since
     # they're usually not updated as the hashbang is changed

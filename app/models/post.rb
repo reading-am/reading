@@ -90,7 +90,7 @@ class Post < ActiveRecord::Base
     {
       :type   => "Post",
       :id     => to_s ? id.to_s : id,
-      :title  => page.display_title,
+      :title  => page.title,
       :url    => page.url,
       :yn     => yn,
       :wrapped_url => wrapped_url,

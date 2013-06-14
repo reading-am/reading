@@ -16,7 +16,7 @@
             <span class="r_username">(@<%= @enactor.username %>)</span>
           <% end %>
         <% end %>
-        mentioned you at <em><%= link_to @comment.page.display_title, @url, :class => 'r_page' %></em>:
+        mentioned you at <em><%= link_to @comment.page.title, @url, :class => 'r_page' %></em>:
       </p>
       <blockquote class="r_comment" cite="http://<%= DOMAIN %>/<%= @enactor.username %>/comments/<%= @comment.id %>">
         <div class="r_tri"></div>

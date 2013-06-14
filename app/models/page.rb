@@ -16,9 +16,9 @@ class Page < ActiveRecord::Base
   cattr_accessor :crawl_timeout
 
   before_validation :populate_domain
-  before_save :populate_medium
-  before_create :populate_remote_page_data
-  after_create :populate_remote_meta_data
+  before_save :populate_parsed_attributes
+  before_create :populate_remote_page_data, :populate_parsed_attributes
+  after_create :populate_readability_data
 
   # search
   searchable do
@@ -32,9 +32,6 @@ class Page < ActiveRecord::Base
   handle_asynchronously :solr_index
 
   META_TAG_NAMESPACES = ['og','twitter']
-
-  # NOTE - properties prefixed with r_ (r_title, r_excerpt)
-  # are from readability_data
 
 private
 
@@ -106,11 +103,11 @@ public
   end
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
-  def display_title
+  def parse_title
     if !trans_tags("title").blank?
       trans_tags("title")
-    elsif !title.blank?
-      title
+    elsif !title_tag.blank?
+      title_tag
     elsif !r_title.blank? and r_title != "(no title provided)"
       r_title
     else
@@ -118,7 +115,7 @@ public
     end
   end
 
-  def media_type
+  def parse_media_type
     if !oembed.blank? && !oembed['type'].blank?
       oembed['type']
     elsif !meta_tags['og']['type'].blank?
@@ -136,18 +133,16 @@ public
     trans_tags("image")
   end
 
-  def embed
-    if medium != 'text'
-      if !oembed.blank? && oembed['html']
-        oembed['html']
-      elsif trans_tags("player") || trans_tags("video")
-        param = trans_tags("player") ? "player" : "video"
-        "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-      elsif media_type == "photo"
-        "<img src=\"#{image}\">"
-      else
-        nil
-      end
+  def parse_embed
+    if !oembed.blank? && oembed['html']
+      oembed['html']
+    elsif trans_tags("player") || trans_tags("video")
+      param = trans_tags("player") ? "player" : "video"
+      "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
+    elsif media_type == "photo"
+      "<img src=\"#{image}\">"
+    else
+      nil
     end
     # here's a sample :text embed should we decide to embed them
     # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
@@ -157,7 +152,7 @@ public
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
-  def description
+  def parse_description
     if !trans_tags("description").blank?
       trans_tags("description")
     else
@@ -384,25 +379,29 @@ public
     end
   end
 
-  def populate_medium
-    self.medium = parse_medium
-  end
-
   def populate_remote_page_data
-    self.url = remote_normalized_url
-    self.head_tags = remote_head_tags
-    self.title = title_tag
+    self.url = remote_normalized_url rescue nil
+    self.head_tags = remote_head_tags rescue nil
+    self.oembed = remote_oembed rescue nil
     return self
   end
 
-  def populate_remote_meta_data
-    self.oembed = remote_oembed
+  def populate_parsed_attributes
+    self.medium = parse_medium
+    self.title = parse_title
+    self.media_type = parse_media_type
+    self.embed = parse_embed
+    self.description = parse_description
+    return self
+  end
 
+  def populate_readability_data
     r = ReadabilityData.create :page => self
     self.r_title = r.title
     self.r_excerpt = r.excerpt
     self.save
   end
+  handle_asynchronously :populate_readability_data
 
   def channels
     [
@@ -415,8 +414,8 @@ public
       :type           => 'Page',
       :id             => to_s ? id.to_s : id,
       :url            => url,
-      :title          => display_title,
-      :embed          => embed,
+      :title          => title,
+      :embed          => medium != 'text' ? embed : '',
       :medium         => medium,
       :media_type     => media_type,
       :description    => description,

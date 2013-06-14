@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130609172058) do
+ActiveRecord::Schema.define(:version => 20130614175142) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -103,6 +103,9 @@ ActiveRecord::Schema.define(:version => 20130609172058) do
     t.text     "head_tags"
     t.text     "oembed"
     t.string   "medium"
+    t.string   "media_type"
+    t.text     "embed"
+    t.text     "description"
   end
 
   add_index "pages", ["medium"], :name => "index_pages_on_medium"

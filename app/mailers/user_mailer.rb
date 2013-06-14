@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
     mail(
       :to       => @subject.email,
       :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),
-      :subject  => "#{@enactor.display_name} mentioned you in a comment at \"#{@comment.page.display_title}\""
+      :subject  => "#{@enactor.display_name} mentioned you in a comment at \"#{@comment.page.title}\""
     )
   end
 
@@ -32,7 +32,7 @@ class UserMailer < ApplicationMailer
     mail(
       :to       => @subject.email,
       :reply_to => MailPipe::encode_mail_recipient('reply', @subject, @comment),
-      :subject  => "#{@enactor.display_name} wants to show you \"#{@comment.page.display_title}\""
+      :subject  => "#{@enactor.display_name} wants to show you \"#{@comment.page.title}\""
     )
   end
 

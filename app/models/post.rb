@@ -66,14 +66,6 @@ class Post < ActiveRecord::Base
 
   public
 
-  def user
-    user_skeleton || user_flesh
-  end
-
-  def page
-    page_skeleton || page_flesh
-  end
-
   #TODO consider moving this to a view helper
   def wrapped_url(token=false)
     url = "#{ROOT_URL}"

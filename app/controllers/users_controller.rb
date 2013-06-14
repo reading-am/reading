@@ -14,7 +14,7 @@ class UsersController < ApplicationController
       @posts = params[:type] == 'list' ? @user.feed : @user.posts
     end
 
-    @posts = @posts.includes([:user_skeleton, :page_skeleton, {:referrer_post => :user_skeleton}]).skeletal.order("created_at DESC").paginate(:page => params[:page])
+    @posts = @posts.order("created_at DESC").paginate(:page => params[:page]).skeletal
 
     respond_to do |format|
       format.html { render 'posts/index' }

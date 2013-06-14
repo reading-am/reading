@@ -30,6 +30,14 @@ module ActiveRecordExtension
           self.skeleton_columns << a.foreign_key.to_sym
         end
         self.send a.macro, *args
+        alias_method "#{a.name}_flesh", a.name
+        define_method(a.name) do
+          if self.association(a.name.to_sym).loaded? || !self.association("#{a.name}_skeleton".to_sym).loaded?
+            self.send("#{a.name}_flesh")
+          else
+            self.send("#{a.name}_skeleton")
+          end
+        end
       end
     end
 

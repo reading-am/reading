@@ -188,15 +188,15 @@ class User < ActiveRecord::Base
   end
 
   def following?(followed)
-    relationships.find_by_followed_id(followed)
+    id == followed.id ? true : relationships.find_by_followed_id(followed)
   end
 
   def follow!(followed)
-    relationships.create!(:followed_id => followed.id)
+    relationships.create!(:followed_id => followed.id) unless id == followed.id
   end
 
   def unfollow!(followed)
-    relationships.find_by_followed_id(followed).destroy
+    relationships.find_by_followed_id(followed).destroy unless id == followed.id
   end
 
   def feed

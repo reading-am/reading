@@ -36,6 +36,7 @@ class UsersController < ApplicationController
     @user = current_user
     @new_hook = Hook.new
     @hooks = @user.hooks
+    @authorizations = @user.authorizations
 
     respond_to do |format|
       format.html { render 'hooks/index' }

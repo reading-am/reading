@@ -1,7 +1,7 @@
 # encoding: utf-8
 class SearchController < ApplicationController
   def index
-    search = Post.search do
+    search = Post.search(:include => [:user, :page, {:referrer_post => :user}]) do
       fulltext params[:q] do
         boost(4.0) { with(:yn, true) }
         boost_fields :title => 3.0

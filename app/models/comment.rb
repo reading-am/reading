@@ -16,7 +16,7 @@ class Comment < ActiveRecord::Base
 
   attr_accessible :body
 
-  default_scope includes([:user,:page])
+  default_scope { includes([:user,:page]) }
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
   private

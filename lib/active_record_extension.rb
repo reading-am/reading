@@ -16,7 +16,7 @@ module ActiveRecordExtension
 
       cattr_accessor :skeleton_columns 
 
-      self.skeleton_columns = (columns == :all ? column_names : columns)
+      self.skeleton_columns = (columns == :all ? column_names : columns).map{|c| c.to_sym}
       assocs.each do |name|
         a = self.reflect_on_association name
         args = [
@@ -42,7 +42,7 @@ module ActiveRecordExtension
     end
 
     def skeletal
-      rel = select(skeleton_columns)
+      rel = select(defined?(skeleton_columns) ? skeleton_columns : column_names)
       rel.includes_values = rel.includes_values.map do |v|
         s = "#{v}_skeleton".to_sym
         self.reflect_on_association(s).blank? ? v : s

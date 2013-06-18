@@ -76,6 +76,8 @@ class User < ActiveRecord::Base
     :username,
     :name,
     :bio,
+    :link,
+    :location,
     :avatar_file_name,
     :avatar_updated_at,
     :following_count,

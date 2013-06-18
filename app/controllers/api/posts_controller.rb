@@ -44,9 +44,10 @@ class Api::PostsController < Api::APIController
     end
 
     @posts = @posts
-      .includes([:user, :page, :domain, {:referrer_post => :user}])
+      .includes([:user, :page, {:referrer_post => :user}])
       .order("created_at DESC")
       .limit(params[:count])
+      .skeletal
 
     respond_to do |format|
       format.json { render_json :posts => @posts.collect { |post| post.simple_obj } }

@@ -20,7 +20,7 @@
   }
 
   if @user
-    has_avatar = @user != current_user or (@user == current_user and !@user.avatar.size.nil?)
+    has_avatar = @user != current_user or (@user == current_user and !@user.avatar_file_name.blank?)
     locals.merge!({
       :show_blank_slate           => (@user.posts.size == 0 or @user.following.size == 0),
       :is_current_user            => @user == current_user,

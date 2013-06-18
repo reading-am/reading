@@ -30,6 +30,7 @@ class Api::CommentsController < Api::APIController
       @comments =  Comment.order("created_at DESC")
                           .paginate(:page => params[:page])
     end
+    @comments = @comments.includes([:user, :page]).skeletal
 
     respond_to do |format|
       format.json { render_json :comments => @comments.collect { |comment| comment.simple_obj } }

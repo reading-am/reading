@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     if params[:username] == 'everybody'
       @posts = Post.includes([:user, :page, {:referrer_post => :user}])
     else
-      @user = params[:username] ? User.find_by_username(params[:username]) : User.find(params[:id])
+      @user = params[:username] ? User.skeletal.find_by_username(params[:username]) : User.find(params[:id])
       if !@user then not_found end
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
       @posts = params[:type] == 'list' ? @user.feed : @user.posts

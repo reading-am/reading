@@ -13,8 +13,9 @@ class Comment < ActiveRecord::Base
   validates_presence_of :user_id, :page_id, :body
   validate :post_belongs_to_user
 
-  default_scope { includes([:user,:page]) }
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
+
+  skeleton :assocs => [:user, :page, :post]
 
   private
 
@@ -32,6 +33,10 @@ class Comment < ActiveRecord::Base
   end
 
   public
+
+  def url
+    "#{ROOT_URL}/#{user.username}/comments/#{id}"
+  end
 
   def mentioned_usernames
     @mentioned_usernames ||= extract_mentioned_screen_names body || []
@@ -102,10 +107,10 @@ class Comment < ActiveRecord::Base
 
   def simple_obj to_s=false
     {
-      :type   => "Comment",
+      :type   => self.class.name,
       :id     => to_s ? id.to_s : id,
       :body   => body,
-      :url    => "#{ROOT_URL}/#{user.username}/comments/#{id}",
+      :url    => url,
       :created_at => created_at,
       :updated_at => updated_at,
       :user   => user.simple_obj,

@@ -34,8 +34,12 @@ class Comment < ActiveRecord::Base
 
   public
 
+  def self.url username, id
+    "#{ROOT_URL}/#{username}/comments/#{id}"
+  end
+
   def url
-    "#{ROOT_URL}/#{user.username}/comments/#{id}"
+    self.class.url user.username, id
   end
 
   def mentioned_usernames
@@ -105,16 +109,18 @@ class Comment < ActiveRecord::Base
     html.html_safe
   end
 
-  def simple_obj to_s=false
+  def self.simple_obj attrs
     {
-      :type   => self.class.name,
-      :id     => to_s ? id.to_s : id,
-      :body   => body,
-      :url    => url,
-      :created_at => created_at,
-      :updated_at => updated_at,
-      :user   => user.simple_obj,
-      :page   => page.simple_obj
+      'type'   => name,
+      'id'     => attrs['id'],
+      'body'   => attrs['body'],
+      'url'    => attrs['url'],
+      'created_at' => attrs['created_at'],
+      'updated_at' => attrs['updated_at']
     }
+  end
+
+  def simple_obj
+    self.class.simple_obj attributes
   end
 end

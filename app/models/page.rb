@@ -30,7 +30,7 @@ class Page < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
-  skeleton :columns => :all
+  skeleton :columns => [:id, :url]
 
   META_TAG_NAMESPACES = ['og','twitter']
 
@@ -409,6 +409,10 @@ public
     [
       "pages"
     ]
+  end
+
+  def self.simple_obj attrs
+    attrs
   end
 
   def simple_obj to_s=false

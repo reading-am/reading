@@ -51,15 +51,32 @@ module ActiveRecordExtension
     end
 
     def lightning
-      connection.select_all(skeletal.arel).each do |attrs|
+      records = connection.select_all(scoped.arel).each do |attrs|
         attrs.each_key do |attr|
           attrs[attr] = type_cast_attribute(attr, attrs)
         end
+      end
+
+      assoc_recs = {}
+      scoped.includes_values.each do |aname|
+        assoc = self.reflect_on_association aname
+        ids = records.map{|r| r[assoc.foreign_key]}.uniq
+        assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
+          assoc.klass.select(assoc.options[:select]).where(:id => ids).lightning.map{|r| [r['id'], r]}
+        ]
+      end
+
+      records.map do |attrs|
+        assocs = {}
+        assoc_recs.each do |k,v|
+          assocs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
+        end
+        attrs = simple_obj(attrs).merge(assocs)
       end
     end
   end
 
 end
 
-# include the extension 
+# include the extension
 ActiveRecord::Base.send(:include, ActiveRecordExtension)

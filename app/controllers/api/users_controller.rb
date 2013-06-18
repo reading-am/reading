@@ -18,11 +18,11 @@ class Api::UsersController < Api::APIController
     else
       @users = User.order("created_at DESC")
                    .paginate(:page => params[:page])
-                   .skeletal
+                   .lightning
     end
 
     respond_to do |format|
-      format.json { render_json :users => @users.collect { |user| user.simple_obj } }
+      format.json { render_json :users => @users }
     end
   end
   add_transaction_tracer :index

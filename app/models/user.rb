@@ -166,7 +166,7 @@ class User < ActiveRecord::Base
     self.name ? self.name.split(' ')[0] : self.username
   end
 
-  def display_name
+  def self.display_name name, username
     if !name.blank?
       name
     elsif !username.blank?
@@ -176,8 +176,16 @@ class User < ActiveRecord::Base
     end
   end
 
-  def url
+  def display_name
+    self.class.display_name name, username
+  end
+
+  def self.url username
     "#{ROOT_URL}/#{username}"
+  end
+
+  def url
+    self.class.url username
   end
 
   def following?(followed)
@@ -251,7 +259,7 @@ class User < ActiveRecord::Base
     result
   end
 
-  def avatar_url style=:original
+  def self.avatar_url id, avatar_file_name, avatar_updated_at, style=:original
     # URL generation through the paperclip gem is slooowwwww. This is a swifter workaround.
     # https://github.com/thoughtbot/paperclip/issues/909
     base = "https://s3.amazonaws.com/#{ENV['READING_S3_BUCKET']}/users/avatars"
@@ -262,25 +270,33 @@ class User < ActiveRecord::Base
     end
   end
 
-  def simple_obj to_s=false
+  def avatar_url style=:original
+    self.class.avatar_url id, avatar_file_name, avatar_updated_at, style
+  end
+
+  def self.simple_obj attrs
     {
-      :type       => self.class.name,
-      :id         => to_s ? id.to_s : id,
-      :username   => username,
-      :display_name => display_name,
-      :first_name => first_name,
-      :full_name  => name,
-      :bio        => bio,
-      :url        => url,
-      :avatar     => avatar_url,
-      :avatar_medium => avatar_url(:medium),
-      :avatar_thumb => avatar_url(:thumb),
-      :avatar_mini  => avatar_url(:mini),
-      :following_count => following.size,
-      :followers_count => followers.size,
-      :access     => access,
-      :created_at => created_at,
-      :updated_at => updated_at
+      'type'          => name,
+      'id'            => attrs['id'],
+      'username'      => attrs['username'],
+      'display_name'  => display_name(attrs['name'], attrs['username']),
+      'full_name'     => attrs['name'],
+      'bio'           => attrs['bio'],
+      'link'          => attrs['link'],
+      'url'           => url(attrs['username']),
+      'avatar'        => avatar_url(attrs['id'], attrs['avatar_file_name'], attrs['avatar_updated_at']),
+      'avatar_medium' => avatar_url(attrs['id'], attrs['avatar_file_name'], attrs['avatar_updated_at'], :medium),
+      'avatar_thumb'  => avatar_url(attrs['id'], attrs['avatar_file_name'], attrs['avatar_updated_at'], :thumb),
+      'avatar_mini'   => avatar_url(attrs['id'], attrs['avatar_file_name'], attrs['avatar_updated_at'], :mini),
+      'following_count' => attrs['following_size'],
+      'followers_count' => attrs['fofollowers_size'],
+      'access'        => attrs['access'],
+      'created_at'    => attrs['created_at'],
+      'updated_at'    => attrs['updated_at']
     }
+  end
+
+  def simple_obj
+    self.class.simple_obj attributes
   end
 end

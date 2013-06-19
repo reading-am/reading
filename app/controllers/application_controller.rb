@@ -7,13 +7,17 @@ class ApplicationController < ActionController::Base
 
   before_filter :protect_staging, :check_domain, :set_user_device,
                 :set_headers, :migrate_auth_token, :check_signed_in,
-                :set_bot
+                :set_bot, :profiler
 
   helper_method :mobile_device?, :desktop_device?, :bot?
 
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
   private
+
+  def profiler
+    Rack::MiniProfiler.authorize_request if signed_in? && current_user.roles?(:admin)
+  end
 
   def protect_staging
     if Rails.env == 'staging'

@@ -36,6 +36,12 @@ gem 'sanitize' # HTML sanitizer
 gem 'ruby-oembed'
 gem 'text'
 
+##############
+# Monitoring #
+##############
+gem 'rack-mini-profiler'
+gem 'newrelic_rpm'
+
 ########
 # Auth #
 ########
@@ -67,7 +73,6 @@ gem 'daemons' # for delayed_job
 # External Services #
 #####################
 gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
-gem 'newrelic_rpm'
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'aws-sdk'
 gem 'hipchat'
@@ -128,7 +133,6 @@ group :development do
   gem 'binding_of_caller' # for better_errors
   gem 'irbtools', :require => false
   gem 'terminal-notifier', :require => false # or else irbtools will complain
-  gem 'rack-mini-profiler'
 end
 
 group :development, :test do

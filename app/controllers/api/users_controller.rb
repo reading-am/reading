@@ -18,7 +18,7 @@ class Api::UsersController < Api::APIController
     else
       @users = User.order("created_at DESC")
                    .paginate(:page => params[:page])
-                   .lightning
+                   .naked
     end
 
     respond_to do |format|

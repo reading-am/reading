@@ -52,6 +52,7 @@ module ActiveRecordExtension
 
     def naked
       records = connection.select_all(scoped.arel).each do |attrs|
+        attrs = initialize_attributes(attrs)
         attrs.each_key do |attr|
           attrs[attr] = type_cast_attribute(attr, attrs)
         end

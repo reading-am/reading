@@ -67,10 +67,14 @@ class Post < ActiveRecord::Base
   public
 
   #TODO consider moving this to a view helper
-  def wrapped_url(token=false)
+  def self.wrapped_url id, url, token=false
     url = "#{ROOT_URL}"
     url += "/t/#{token}" if token
-    url += "/p/#{Base58.encode(self.id)}/#{self.page.url}"
+    url += "/p/#{Base58.encode(id)}/#{url}"
+  end
+
+  def wrapped_url token=false
+    self.class.wrapped_url id, page.url, token
   end
 
   def short_url
@@ -85,20 +89,20 @@ class Post < ActiveRecord::Base
     ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.feed"}
   end
 
-  def self.simple_obj attrs
+  def simple_obj to_s=false
     has_ref = !referrer_post.nil?
     {
-      'type'   => name,
-      'id'     => attrs['id'],
-      'title'  => page.display_title,
-      'url'    => page.url,
-      'yn'     => attrs['yn'],
-      'wrapped_url' => wrapped_url,
-      'created_at' => attrs['created_at'],
-      'updated_at' => attrs['updated_at'],
-      'user' => user.simple_obj(to_s),
-      'page' => page.simple_obj(to_s),
-      'referrer_post' => {
+      :type   => "Post",
+      :id     => to_s ? id.to_s : id,
+      :title  => page.display_title,
+      :url    => page.url,
+      :yn     => yn,
+      :wrapped_url => wrapped_url,
+      :created_at => created_at,
+      :updated_at => updated_at,
+      :user => user.simple_obj(to_s),
+      :page => page.simple_obj(to_s),
+      :referrer_post => {
         :type => "Post",
         :id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
         :user => {
@@ -109,6 +113,30 @@ class Post < ActiveRecord::Base
           :url          => has_ref ? referrer_post.user.url : ''
         }
       }
+    }
+  end
+
+  def self.simple_obj attrs
+    {
+      'type'   => name,
+      'id'     => attrs['id'],
+      'title'  => attrs['page']['title'],
+      'url'    => attrs['page']['url'],
+      'yn'     => attrs['yn'],
+      'wrapped_url' => wrapped_url(attrs['id'], attrs['page']['url']),
+      'created_at' => attrs['created_at'],
+      'updated_at' => attrs['updated_at'],
+      #'referrer_post' => {
+        #:type => "Post",
+        #:id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
+        #:user => {
+          #:type         => "User",
+          #:id           => has_ref ? (to_s ? referrer_post.user.id.to_s : referrer_post.user.id) : '',
+          #:username     => has_ref ? referrer_post.user.username : '',
+          #:display_name => has_ref ? referrer_post.user.display_name : '',
+          #:url          => has_ref ? referrer_post.user.url : ''
+        #}
+      #}
     }
   end
 end

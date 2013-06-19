@@ -14,7 +14,7 @@
     :extension_install_chrome   => extension_install(:chrome),
     :extension_install_safari   => extension_install(:safari),
     :extension_install_firefox  => extension_install(:firefox),
-    :pagination                 => will_paginate(@posts, :page_links => false),
+#    :pagination                 => will_paginate(@posts, :page_links => false),
     :params                     => {:type => params[:type]},
     :rss_path                   => params[:type] ? rss_path : false
   }

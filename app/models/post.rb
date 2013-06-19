@@ -126,6 +126,17 @@ class Post < ActiveRecord::Base
       'wrapped_url' => wrapped_url(attrs['id'], attrs['page']['url']),
       'created_at' => attrs['created_at'],
       'updated_at' => attrs['updated_at'],
+      'referrer_post' => {
+        'type' => 'Post',
+        'id' => '',
+        'user' => {
+          'type' => 'User',
+          'id' => '',
+          'username' => '',
+          'display_name' => '',
+          'url' => ''
+        }
+      }
       #'referrer_post' => {
         #:type => "Post",
         #:id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',

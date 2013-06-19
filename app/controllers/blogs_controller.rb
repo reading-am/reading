@@ -17,13 +17,13 @@ class BlogsController < ApplicationController
 
     @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})"
     @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|
-      data = {'type' => p.page.medium.to_s, 'title' => p.page.title, 'body' => p.page.excerpt, 'timestamp' => p.created_at.to_i}
+      data = {'type' => p.page.medium.to_s, 'title' => p.page.title, 'body' => p.page.description, 'timestamp' => p.created_at.to_i}
       case p.page.medium
       when :text
         data['type'] = 'link'
         data['link-url'] = p.page.url
         data['link-text'] = p.page.title
-        data['link-description'] = p.page.excerpt
+        data['link-description'] = p.page.description
       when :audio
         data['player'] = p.page.embed
       when :video

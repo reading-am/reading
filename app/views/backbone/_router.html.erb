@@ -2,7 +2,7 @@
 router = model.class.name.downcase.pluralize if router.blank?
 props = {}
 props[:model] = model.simple_obj if defined? model
-props[:collection] = collection.collect{|v| v.simple_obj} if defined? collection
+props[:collection] = collection if defined? collection
 %>
 
 <script>

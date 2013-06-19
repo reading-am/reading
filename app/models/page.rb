@@ -30,7 +30,7 @@ class Page < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
-  skeleton :columns => [:id, :url]
+  skeleton :columns => :all
 
   META_TAG_NAMESPACES = ['og','twitter']
 
@@ -119,7 +119,7 @@ public
     end
   end
 
-  def media_type
+  def self.media_type oembed, meta_tags
     if !oembed.blank? && !oembed['type'].blank?
       oembed['type']
     elsif !meta_tags['og']['type'].blank?
@@ -133,19 +133,27 @@ public
     end
   end
 
-  def image
-    trans_tags("image")
+  def media_type
+    self.class.media_type oembed, meta_tags
   end
 
-  def embed
+  def self.image oembed, meta_tags
+    trans_tags("image", oembed, meta_tags)
+  end
+
+  def image
+    self.class.image oembed, meta_tags
+  end
+
+  def self.embed medium, oembed, meta_tags
     if medium != 'text'
       if !oembed.blank? && oembed['html']
         oembed['html']
-      elsif trans_tags("player") || trans_tags("video")
-        param = trans_tags("player") ? "player" : "video"
-        "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-      elsif media_type == "photo"
-        "<img src=\"#{image}\">"
+      elsif player = trans_tags("player", oembed, meta_tags) || trans_tags("video", oembed, meta_tags)
+        param = trans_tags("player", oembed, meta_tags) ? "player" : "video"
+        "<iframe width=\"#{trans_tags("#{param}:width", oembed, meta_tags)}\" height=\"#{trans_tags("#{param}:height", oembed, meta_tags)}\" src=\"#{player}\"></iframe>"
+      elsif medium == 'image'
+        "<img src=\"#{image(oembed, meta_tags)}\">"
       else
         nil
       end
@@ -154,16 +162,20 @@ public
     # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
   end
 
-  def excerpt
-    r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
+  def embed
+    self.class.embed medium, oembed, meta_tags
+  end
+
+  def self.description oembed, meta_tags, r_excerpt
+    if !(desc = trans_tags("description", oembed, meta_tags)).blank?
+      desc
+    elsif !r_excerpt.blank?
+      r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ")
+    end
   end
 
   def description
-    if !trans_tags("description").blank?
-      trans_tags("description")
-    else
-      excerpt
-    end
+    self.class.description oembed, meta_tags, r_excerpt
   end
 
   def wrapped_url
@@ -219,16 +231,20 @@ public
     self[:head_tags] = str_or_nodes.to_s.encode('UTF-16', 'UTF-8', :invalid => :replace, :replace => '').encode('UTF-8', 'UTF-16')
   end
 
+  def self.parse_head_tags head_tags
+    Nokogiri::HTML head_tags
+  end
+
   def head_tags
     @tag_cache ||= {}
-    @tag_cache[:head_tags] ||= Nokogiri::HTML self[:head_tags]
+    @tag_cache[:head_tags] ||= self.class.parse_head_tags self[:head_tags]
   end
 
   def title_tag
     @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
   end
 
-  def trans_tags name
+  def self.trans_tags name, oembed, meta_tags
     if !oembed.blank? and !oembed[name].blank?
       oembed[name]
     elsif !meta_tags["og"][name].blank?
@@ -240,25 +256,34 @@ public
     end
   end
 
+  def trans_tags name
+    self.class.trans_tags name, oembed, meta_tags
+  end
+
   # Relevant
   # http://www.metatags.org/all_metatags
   # http://en.wikipedia.org/wiki/Meta_element
-  def meta_tags
+  def self.parse_meta_tags head_tags
     # this has a JS companion in bookmarklet/real_init.rb#get_meta_tags()
-    if @tag_cache[:meta_tags].blank?
-      @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
-      regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
-      head_tags.search('meta').each do |m|
-        if m.attribute('property') || m.attribute('name') || m.attribute('itemprop')
-          key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
-          val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
-          if key.match(regex)
-            @tag_cache[:meta_tags][$1][$2] = val
-          else
-            @tag_cache[:meta_tags][key] = val
-          end
+    meta_tags = {'og'=>{},'twitter'=>{}}
+    regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
+    head_tags.search('meta').each do |m|
+      if m.attribute('property') || m.attribute('name') || m.attribute('itemprop')
+        key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
+        val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
+        if key.match(regex)
+          meta_tags[$1][$2] = val
+        else
+          meta_tags[key] = val
         end
       end
+    end
+    meta_tags
+  end
+
+  def meta_tags
+    if @tag_cache[:meta_tags].blank?
+      @tag_cache[:meta_tags] = self.class.parse_meta_tags head_tags
     end
     @tag_cache[:meta_tags]
   end
@@ -412,23 +437,24 @@ public
   end
 
   def self.simple_obj attrs
-    attrs
+    meta_tags = parse_meta_tags(parse_head_tags(attrs['head_tags']))
+    {
+      'type'          => name,
+      'id'            => attrs['id'],
+      'url'           => attrs['url'],
+      'title'         => attrs['title'],
+      'medium'        => attrs['medium'],
+      'embed'         => embed(attrs['medium'], attrs['oembed'], meta_tags),
+      'media_type'    => media_type(attrs['oembed'], meta_tags),
+      'description'   => description(attrs['oembed'], meta_tags, attrs['r_excerpt']),
+      'posts_count'   => attrs['posts_count'],
+      'comments_count'=> attrs['comments_count'],
+      'created_at'    => attrs['created_at'],
+      'updated_at'    => attrs['updated_at']
+    }
   end
 
-  def simple_obj to_s=false
-    {
-      :type           => self.class.name,
-      :id             => to_s ? id.to_s : id,
-      :url            => url,
-      :title          => display_title,
-      :embed          => embed,
-      :medium         => medium,
-      :media_type     => media_type,
-      :description    => description,
-      :posts_count    => posts_count,
-      :comments_count => comments_count,
-      :created_at     => created_at,
-      :updated_at     => updated_at
-    }
+  def simple_obj
+    self.class.simple_obj attributes
   end
 end

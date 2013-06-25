@@ -66,8 +66,8 @@ gem 'omniauth-kippt', :github => 'leppert/omniauth-kippt'
 # Async Processing #
 ####################
 gem 'girl_friday'
-gem 'delayed_job', :github => 'collectiveidea/delayed_job'
-gem 'delayed_job_active_record', :github => 'collectiveidea/delayed_job_active_record'
+gem 'delayed_job', '~> 4.0.0.beta2'
+gem 'delayed_job_active_record', '~> 4.0.0.beta3'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
 

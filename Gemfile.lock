@@ -15,21 +15,6 @@ GIT
       spork (>= 1.0rc0)
 
 GIT
-  remote: git://github.com/collectiveidea/delayed_job.git
-  revision: fa22baa5942fca7683a1c478f201ca0f37a9604a
-  specs:
-    delayed_job (4.0.0.beta2)
-      activesupport (>= 3.0, < 4.1)
-
-GIT
-  remote: git://github.com/collectiveidea/delayed_job_active_record.git
-  revision: ba49bf6c5eb2a4c5197630b24702a06e7c61a416
-  specs:
-    delayed_job_active_record (4.0.0.beta3)
-      activerecord (>= 3.0, < 4.1)
-      delayed_job (>= 3.0, < 4.1)
-
-GIT
   remote: git://github.com/jwhitley/requirejs-rails.git
   revision: f2330104aeca4d193fd5680a22ae7eee85d814b5
   specs:
@@ -242,6 +227,11 @@ GEM
       debugger-ruby_core_source (~> 1.2.0)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.0)
+    delayed_job (4.0.0.beta2)
+      activesupport (>= 3.0, < 4.1)
+    delayed_job_active_record (4.0.0.beta3)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
     delayed_job_web (1.1.2)
       activerecord (> 3.0.0)
       delayed_job (> 2.0.3)
@@ -626,8 +616,8 @@ DEPENDENCIES
   daemons
   dalli!
   debugger
-  delayed_job!
-  delayed_job_active_record!
+  delayed_job (~> 4.0.0.beta2)
+  delayed_job_active_record (~> 4.0.0.beta3)
   delayed_job_web
   devise (~> 3.0.0.rc)
   escape_utils

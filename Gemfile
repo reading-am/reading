@@ -28,7 +28,7 @@ gem 'mechanize' # web crawler
 #####################
 # Ruby Conveniences #
 #####################
-#gem 'identity_cache'
+gem 'identity_cache', :github => 'leppert/identity_cache'
 #gem 'bitmask_attributes'
 gem 'nilify_blanks'
 gem 'validate_email'

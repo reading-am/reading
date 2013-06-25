@@ -27,26 +27,26 @@ class User < ActiveRecord::Base
     :tumblr_templates
   ]
 
-  has_many :authorizations, :dependent => :destroy, :include => [:user]
-  has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
-  has_many :domains, :through => :posts
-  has_many :hooks, :dependent => :destroy, :include => [:user, :authorization]
-  has_many :pages, :through => :posts
-  has_many :comments, :dependent => :destroy
+  has_many :authorizations, -> { includes [:user] }, dependent: :destroy
+  has_many :posts, -> { includes [:user, :page, :domain, {:referrer_post => :user}] }, dependent: :destroy
+  has_many :domains, through: :posts
+  has_many :hooks, -> { includes [:user, :authorization] }, dependent: :destroy
+  has_many :pages, through: :posts
+  has_many :comments, dependent: :destroy
 
   # from: http://ruby.railstutorial.org/chapters/following-users
-  has_many :relationships, :foreign_key => "follower_id",
-                           :dependent => :destroy
-  has_many :following, :through => :relationships, :source => :followed
+  has_many :relationships, foreign_key: "follower_id",
+                           dependent: :destroy
+  has_many :following, through: :relationships, source: :followed
 
-  has_many :reverse_relationships, :foreign_key => "followed_id",
-                                   :class_name => "Relationship",
-                                   :dependent => :destroy
-  has_many :followers, :through => :reverse_relationships, :source => :follower
+  has_many :reverse_relationships, foreign_key: "followed_id",
+                                   class_name: "Relationship",
+                                   dependent: :destroy
+  has_many :followers, through: :reverse_relationships, source: :follower
 
-  has_many :blogs, :dependent => :destroy
+  has_many :blogs, dependent: :destroy
 
-  cache_index :token, :unique => true
+  cache_index :token, unique: true
 
   has_attached_file :avatar,
     :styles => {

@@ -3,11 +3,11 @@ class Authorization < ActiveRecord::Base
   include IdentityCache
 
   belongs_to :user
-  has_many :hooks, :dependent => :destroy
+  has_many :hooks, dependent: :destroy
 
-  cache_index :provider, :uid, :unique => true
+  cache_index :provider, :uid, unique: true
 
-  validates :provider, :uid, :presence => true
+  validates :provider, :uid, presence: true
   before_create :set_initial_perms
 
   PROVIDERS = [

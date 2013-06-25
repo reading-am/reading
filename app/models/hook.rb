@@ -10,10 +10,10 @@ class Hook < ActiveRecord::Base
   before_save :parse_pinboard_token
 
   EVENTS = {
-    :new  => {:perms => [:write], :text => 'read a page'},
-    :yep  => {:perms => [:write], :text => 'say "yep"'},
-    :nope => {:perms => [:write], :text => 'say "nope"'},
-    :comment => {:perms => [:write], :text => 'comment'}
+    :new  => {perms: [:write], text: 'read a page'},
+    :yep  => {perms: [:write], text: 'say "yep"'},
+    :nope => {perms: [:write], text: 'say "nope"'},
+    :comment => {perms: [:write], text: 'comment'}
   }
 
   PLACE_TYPES = {

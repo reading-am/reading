@@ -149,6 +149,14 @@ GIT
       sunspot (= 2.0.0)
     sunspot_solr (2.0.0)
 
+GIT
+  remote: git://github.com/zlx/bitmask_attributes.git
+  revision: 515c0f936e91c91911685d46f300abc6dc40fed5
+  branch: feature/support_rails_4
+  specs:
+    bitmask_attributes (0.4.0)
+      activerecord (>= 3.0, < 5.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -607,6 +615,7 @@ DEPENDENCIES
   base58
   better_errors
   binding_of_caller
+  bitmask_attributes!
   bootstrap-will_paginate
   browser
   bullet

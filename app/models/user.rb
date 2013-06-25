@@ -15,17 +15,17 @@ class User < ActiveRecord::Base
 
   attr_accessor :email_required, :password_required
 
-  #bitmask :roles, :as => [
-    #:admin
-  #]
+  bitmask :roles, :as => [
+    :admin
+  ]
 
-  #bitmask :access, :as => [
-    #:digest,
-    #:tagalong,
-    #:comments,
-    #:media_feed,
-    #:tumblr_templates
-  #]
+  bitmask :access, :as => [
+    :digest,
+    :tagalong,
+    :comments,
+    :media_feed,
+    :tumblr_templates
+  ]
 
   has_many :authorizations, :dependent => :destroy, :include => [:user]
   has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]

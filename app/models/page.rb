@@ -1,6 +1,8 @@
 class Page < ActiveRecord::Base
   include IdentityCache
 
+  attr_accessible :url
+
   serialize :oembed, JSON
 
   belongs_to :domain, counter_cache: true

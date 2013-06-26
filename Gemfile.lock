@@ -92,9 +92,9 @@ GIT
 
 GIT
   remote: git://github.com/leppert/twitter_bootstrap_form_for.git
-  revision: 041e4451d2e9d103681f947cefe0e590ff53a06c
+  revision: db97144d89c9325834a2c67e93951cbf846474d0
   specs:
-    twitter_bootstrap_form_for (1.0.5)
+    twitter_bootstrap_form_for (1.0.7)
       actionpack (>= 3)
       railties (>= 3)
 

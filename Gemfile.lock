@@ -173,7 +173,7 @@ GEM
     ar_transaction_changes (0.0.1)
       activerecord (>= 3.0.0)
     arel (4.0.0)
-    atomic (1.1.9)
+    atomic (1.1.10)
     awesome_print (1.0.2)
     aws-sdk (1.7.1)
       httparty (~> 0.7)

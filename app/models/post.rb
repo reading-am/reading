@@ -1,8 +1,6 @@
 class Post < ActiveRecord::Base
   include IdentityCache
 
-  attr_protected :id # this is so that we can safely use post.attributes = in post#update without worrying about overwriting the id
-
   belongs_to      :user, counter_cache: true
   belongs_to      :page, counter_cache: true
   has_one         :domain, through: :page

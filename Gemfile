@@ -6,7 +6,6 @@ ruby '2.0.0'
 #################
 gem 'rails', '4.0.0'
 gem 'rails-observers'
-gem 'protected_attributes'
 gem 'unicorn' # server
 gem 'rack-cors', :require => 'rack/cors'
 gem 'pg' # PostgresSQL
@@ -132,8 +131,9 @@ group :development do
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors
-  gem 'irbtools', :require => false
-  gem 'terminal-notifier', :require => false # or else irbtools will complain
+  gem 'irbtools', require: false
+  gem 'terminal-notifier', require: false # or else irbtools will complain
+  gem 'meta_request' # for RailsPanel
 end
 
 group :development, :test do

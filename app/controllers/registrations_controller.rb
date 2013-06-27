@@ -11,9 +11,20 @@ class RegistrationsController < Devise::RegistrationsController
       u.permit(:name, :username, :email, :password, :password_confirmation, :remember_me)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
-      u.permit(:name,
-        :email, :password, :password_confirmation, :current_password)
+      attrs = [:username, :email, :name, :first_name, :last_name,
+               :password, :password_confirmation,
+               :remember_me, :mail_digest, :email_when_followed, :email_when_mentioned,
+               :location, :bio, :link, :phone, :urls, :description, :avatar]
+      attrs << :current_password if change_requires_password
+      u.permit(attrs)
     end
+  end
+
+  def change_requires_password
+    email_changed = params.has_key?(:email) && resource.email != params[:email]
+    password_changed = !params[:password].blank?
+
+    email_changed || password_changed
   end
 
   def after_update_path_for(resource)
@@ -32,16 +43,13 @@ class RegistrationsController < Devise::RegistrationsController
   #   * Use update_without_password if email and password are unchanged
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    email_changed = resource_params.has_key?(:email) && resource.email != resource_params[:email]
-    password_changed = !resource_params[:password].blank?
-
-    if resource.send("update_with#{email_changed || password_changed ? '' : 'out'}_password", resource_params)
+    if resource.send("update_with#{change_requires_password ? '' : 'out'}_password", account_update_params)
       if is_navigational_format?
-        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
-          flash_key = :update_needs_confirmation
-        end
-        set_flash_message :notice, flash_key || :updated
+        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+          :update_needs_confirmation : :updated
+        set_flash_message :notice, flash_key
       end
       sign_in resource_name, resource, :bypass => true
       respond_with resource, :location => after_update_path_for(resource)
@@ -64,10 +72,7 @@ class RegistrationsController < Devise::RegistrationsController
   def almost_ready_update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
 
-    email_changed = resource_params.has_key?(:email) && resource.email != resource_params[:email]
-    password_changed = !resource_params[:password].blank?
-
-    if resource.send("update_with#{email_changed || password_changed ? '' : 'out'}_password", resource_params)
+    if resource.send("update_with#{change_requires_password ? '' : 'out'}_password", account_update_params)
       sign_in resource_name, resource, :bypass => true
       redirect_to("/#{resource.username}/list", :notice => 'User was successfully updated.')
     else

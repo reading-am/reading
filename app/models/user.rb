@@ -8,11 +8,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable
 
-  attr_accessible :username, :email, :password, :password_confirmation,
-                  :remember_me, :name, :first_name, :last_name, :location,
-                  :bio, :link, :phone, :urls, :description, :mail_digest,
-                  :email_when_followed, :email_when_mentioned, :avatar
-
   attr_accessor :email_required, :password_required
 
   bitmask :roles, :as => [
@@ -114,7 +109,7 @@ class User < ActiveRecord::Base
   # This is in addition to a real persisted field like 'username'
   # via: https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   attr_accessor :login
-  attr_accessible :login
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)

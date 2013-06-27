@@ -84,6 +84,19 @@ GIT
       omniauth
 
 GIT
+  remote: git://github.com/leppert/sunspot.git
+  revision: 320e7a1f7290d503c8478bf3771ae356b249dc91
+  branch: 2.0.0-rails4
+  specs:
+    sunspot (2.0.0)
+      pr_geohash (~> 1.0)
+      rsolr (~> 1.0.7)
+    sunspot_rails (2.0.0)
+      nokogiri
+      sunspot (= 2.0.0)
+    sunspot_solr (2.0.0)
+
+GIT
   remote: git://github.com/leppert/tuml.git
   revision: c7f4c047877d3779e8a37b162aaa07823740f9b2
   specs:
@@ -111,18 +124,6 @@ GIT
     coffee-rails (4.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
-
-GIT
-  remote: git://github.com/sunspot/sunspot.git
-  revision: f3ae6251e0332747d5e76eba3b7cba2d6f96b129
-  specs:
-    sunspot (2.0.0)
-      pr_geohash (~> 1.0)
-      rsolr (~> 1.0.7)
-    sunspot_rails (2.0.0)
-      nokogiri
-      sunspot (= 2.0.0)
-    sunspot_solr (2.0.0)
 
 GIT
   remote: git://github.com/weheartit/tumblr.git

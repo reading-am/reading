@@ -41,6 +41,9 @@ class OmniauthController < Devise::OmniauthCallbacksController
         username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
         username = username.blank? ? nil : username
 
+        urls = auth_hash["info"]["urls"]
+        urls = urls.blank? ? nil : urls.kind_of?(Hashie::Mash) ? urls.to_json : urls.to_s
+
         user = User.new(
           :username   => username,
           :name       => auth_hash["info"]["name"],
@@ -51,7 +54,7 @@ class OmniauthController < Devise::OmniauthCallbacksController
           :description=> auth_hash["info"]["description"],
           :image      => auth_hash["info"]["image"],
           :phone      => auth_hash["info"]["phone"],
-          :urls       => auth_hash["info"]["urls"]
+          :urls       => urls
         )
         # skip required check on email and password
         user.email_required = user.password_required = false

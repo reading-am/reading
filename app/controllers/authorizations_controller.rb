@@ -2,8 +2,6 @@
 class AuthorizationsController < ApplicationController
   before_filter :authenticate_user!, :except => [:loading]
 
-  # PUT /authorizations/1
-  # PUT /authorizations/1.xml
   def update
     @auth = Authorization.fetch_by_provider_and_uid(params[:provider], params[:uid])
 

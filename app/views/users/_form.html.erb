@@ -1,6 +1,6 @@
 <div id="user_info" class="row">
   <div class="span8">
-  <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => edit_registration_path(resource_name), :html => { :method => :put, :class => "form-horizontal" }) do |f| %>
+  <%= twitter_bootstrap_form_for(resource, :as => resource_name, :url => edit_registration_path(resource_name), :html => { :class => "form-horizontal" }) do |f| %>
   <fieldset>
     <%= f.file_field :avatar, false, :class => 'input-xlarge' do %>
       <p class="help-block">JPG, PNG or GIF under 2mb.</p>
@@ -55,6 +55,6 @@
 
 <div id="user_delete" class="row">
   <div class="span6 offset2">
-    <%= link_to 'I respectfully request to be destroyed.', registration_path(resource_name), :confirm => 'Are you sure you want to completely delete your account and destroy all your user data?', :method => :delete %>
+    <%= link_to 'I respectfully request to be destroyed.', registration_path(resource_name), data: { confirm: 'Are you sure you want to completely delete your account and destroy all your user data?' }, method: :delete %>
   </div>
 </div>

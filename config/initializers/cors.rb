@@ -7,7 +7,7 @@ Rails.application.config.middleware.insert 0, Rack::Cors do
     origins '*'
     resource %r{api/.*},
       :headers => :any,
-      :methods => [:get, :post, :put, :delete]
+      :methods => [:get, :post, :put, :patch, :delete]
     resource '/pusher/auth',
       :headers => :any,
       :methods => [:get, :post]

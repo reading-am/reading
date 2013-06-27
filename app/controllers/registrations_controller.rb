@@ -2,6 +2,31 @@
 # and: https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb#L39
 class RegistrationsController < Devise::RegistrationsController
 
+  before_filter :configure_permitted_parameters
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:name, :username, :email, :password, :password_confirmation, :remember_me)
+    end
+    devise_parameter_sanitizer.for(:account_update) do |u|
+      u.permit(:name,
+        :email, :password, :password_confirmation, :current_password)
+    end
+  end
+
+  def after_update_path_for(resource)
+    case resource
+    when :user, User
+      edit_user_registration_path
+    else
+      super
+    end
+  end
+
+  public
+
   # This is taken directly from Devise 2.1.2: https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb#L39
   # The only modifications are:
   #   * Use update_without_password if email and password are unchanged
@@ -49,17 +74,6 @@ class RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       render :almost_ready
     end
-
   end
 
-  protected
-
-  def after_update_path_for(resource)
-    case resource
-    when :user, User
-      edit_user_registration_path
-    else
-      super
-    end
-  end
 end

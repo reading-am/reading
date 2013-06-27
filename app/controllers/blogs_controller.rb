@@ -58,9 +58,9 @@ class BlogsController < ApplicationController
 
     respond_to do |format|
       if @blog.update_attributes(params[:blog])
-        format.html { redirect_to "/settings/info", notice: 'Template was successfully updated.' }
+        format.html { redirect_to :back, notice: 'Template was successfully updated.' }
       else
-        format.html { redirect_to "/settings/info" }
+        format.html { redirect_to :back }
       end
     end
   end

@@ -19,9 +19,9 @@ Reading::Application.routes.draw do
     get     '/users/sign_up'  => 'registrations#new',     :as => :new_user_registration
     get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
     get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
-    put     '/settings/info'  => 'registrations#update'
+    patch   '/settings/info'  => 'registrations#update'
     get     '/almost_ready'   => 'registrations#almost_ready'
-    put     '/almost_ready'   => 'registrations#almost_ready_update'
+    patch   '/almost_ready'   => 'registrations#almost_ready_update'
   end
 
   # sitemap
@@ -77,9 +77,9 @@ Reading::Application.routes.draw do
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
   get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
-  get '/users/auth/loading/:provider'         => 'authorizations#loading'
-  put '/authorizations/:provider/:uid/update' => 'authorizations#update'
-  get '/authorizations/:provider/:uid/places' => 'authorizations#places'
+  get   '/users/auth/loading/:provider'         => 'authorizations#loading'
+  patch '/authorizations/:provider/:uid/update' => 'authorizations#update'
+  get   '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id

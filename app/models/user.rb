@@ -123,13 +123,34 @@ class User < ActiveRecord::Base
     where("lower(username) = ?", username.downcase).limit(1).first
   end
 
+  def self.transform_auth_hash auth_hash
+    username = auth_hash["info"]["nickname"]
+    username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
+    username = username.blank? ? nil : username
+
+    urls = auth_hash["info"]["urls"]
+    urls = urls.blank? ? nil : urls.kind_of?(Hashie::Mash) ? urls.to_json : urls.to_s
+
+    {
+      username:    username,
+      name:        auth_hash["info"]["name"],
+      email:       auth_hash["info"]["email"],
+      first_name:  auth_hash["info"]["first_name"],
+      last_name:   auth_hash["info"]["last_name"],
+      location:    auth_hash["info"]["location"],
+      description: auth_hash["info"]["description"],
+      image:       auth_hash["info"]["image"],
+      phone:       auth_hash["info"]["phone"],
+      urls:        urls
+    }
+  end
+
   # TODO - consolidate most of this logic with Authorization#find_or_create
   def add_provider(auth_hash)
     # Check if the provider already exists, so we don't add it twice
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
-      if auth.user_id != self.id
-        raise AuthError.new("AuthTaken")
-      end
+      raise AuthError.new("AuthTaken") if auth.user_id != self.id
+
       # grab whatever info that came down from the credentials this time
       # and save it if we're missing it
       ["token","secret","expires_at"].each do |prop|
@@ -137,17 +158,7 @@ class User < ActiveRecord::Base
       end
       auth.save
 
-      [
-        "name",
-        "email",
-        "first_name",
-        "last_name",
-        "location",
-        "description",
-        "image",
-        "phone",
-        "urls"
-      ].each do |prop| self[prop] ||= auth_hash["info"][prop] end
+      self.class.transform_auth_hash(auth_hash).each{|k,v| self[k] ||= v }
       self.save
 
       raise AuthError.new("AuthPreexisting", auth)

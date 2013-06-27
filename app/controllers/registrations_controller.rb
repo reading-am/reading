@@ -21,8 +21,8 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def change_requires_password
-    email_changed = params.has_key?(:email) && resource.email != params[:email]
-    password_changed = !params[:password].blank?
+    email_changed = resource_params.has_key?(:email) && resource.email != resource_params[:email]
+    password_changed = !resource_params[:password].blank?
 
     email_changed || password_changed
   end

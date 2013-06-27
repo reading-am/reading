@@ -7,10 +7,10 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 gem 'rails-observers'
 gem 'unicorn' # server
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli', :github => 'mperham/dalli' # Memcached
-gem 'sunspot_rails', :github => 'sunspot/sunspot'
+gem 'dalli', github: 'mperham/dalli' # Memcached
+gem 'sunspot_rails', github: 'leppert/sunspot', branch: '2.0.0-rails4'
 
 #############
 # Core Libs #
@@ -27,8 +27,8 @@ gem 'mechanize' # web crawler
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache', :github => 'leppert/identity_cache'
-gem 'bitmask_attributes', :github => 'zlx/bitmask_attributes', :branch => 'feature/support_rails_4'
+gem 'identity_cache', github: 'leppert/identity_cache'
+gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/support_rails_4'
 gem 'nilify_blanks'
 gem 'validate_email'
 gem 'paperclip' # file attachments
@@ -51,15 +51,15 @@ gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
-gem 'omniauth-37signals', :github => 'leppert/omniauth-37signals'
+gem 'omniauth-37signals', github: 'leppert/omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
 gem 'omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
-gem 'omniauth-http-basic', :github => 'leppert/omniauth-http-basic' #required by omniauth-kippt
-gem 'omniauth-kippt', :github => 'leppert/omniauth-kippt'
+gem 'omniauth-http-basic', github: 'leppert/omniauth-http-basic' #required by omniauth-kippt
+gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
 
 ####################
 # Async Processing #
@@ -82,11 +82,11 @@ gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'
 gem 'koala' # facebook
-gem 'instapaper', :github => 'leppert/instapaper'
+gem 'instapaper', github: 'leppert/instapaper'
 gem 'tumblr-ruby', github: 'weheartit/tumblr', require: 'tumblr'
-gem 'readit', :github => '29decibel/readit'
+gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
-gem 'kippt', :github => 'leppert/kippt'
+gem 'kippt', github: 'leppert/kippt'
 gem 'flattr'
 
 #################
@@ -95,16 +95,16 @@ gem 'flattr'
 gem 'will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
-gem 'twitter_bootstrap_form_for', :github => 'leppert/twitter_bootstrap_form_for'
+gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
 gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
-gem "musterb", :github => 'leppert/musterb'
-gem 'tuml', :github => 'leppert/tuml'
+gem "musterb", github: 'leppert/musterb'
+gem 'tuml', github: 'leppert/tuml'
 
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', :github => 'jwhitley/requirejs-rails'
+gem 'requirejs-rails', github: 'jwhitley/requirejs-rails'
 gem 'rails-backbone'
 gem 'jquery-rails'
 
@@ -127,7 +127,7 @@ group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
   gem 'debugger'
-  gem 'sunspot_solr', :github => 'sunspot/sunspot'
+  gem 'sunspot_solr', github: 'leppert/sunspot', branch: '2.0.0-rails4'
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors
@@ -139,6 +139,6 @@ end
 group :development, :test do
   gem 'konacha'
   gem 'rspec-rails'
-  gem 'spork-rails', :github => 'A-gen/spork-rails'
+  gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'
 end

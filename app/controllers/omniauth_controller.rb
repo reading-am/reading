@@ -29,7 +29,7 @@ class OmniauthController < Devise::OmniauthCallbacksController
       end
     else
       # Log him in or sign him up
-      if auth = Authorization.fetch_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
+      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
         # fill in any changed info
         ["token","secret","expires_at"].each do |prop|
           auth.attributes = {prop => auth_hash["credentials"][prop] || auth[prop]}

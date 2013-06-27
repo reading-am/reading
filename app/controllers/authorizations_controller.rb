@@ -3,7 +3,7 @@ class AuthorizationsController < ApplicationController
   before_filter :authenticate_user!, :except => [:loading]
 
   def update
-    @auth = Authorization.fetch_by_provider_and_uid(params[:provider], params[:uid])
+    @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
 
     if allowed = @auth.user == current_user and !params[:authorization].nil?
       @auth.attributes = params[:authorization]
@@ -33,7 +33,7 @@ class AuthorizationsController < ApplicationController
   end
 
   def places
-    @auth = Authorization.fetch_by_provider_and_uid(params[:provider], params[:uid])
+    @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])
 
     if @auth.user == current_user
       case @auth.provider

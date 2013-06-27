@@ -5,7 +5,9 @@ class HooksController < ApplicationController
   private
 
   def hook_params
-    params.require(:hook).permit(:provider, :events, params: {})
+    params.require(:hook).permit(:provider, :events).tap do |whitelisted|
+      whitelisted[:params] = params[:hook][:params]
+    end
   end
 
   public
@@ -48,7 +50,7 @@ class HooksController < ApplicationController
   def create
     pms = hook_params
     if Authorization::PROVIDERS.include? pms[:provider]
-      auth = Authorization.fetch_by_provider_and_uid(pms[:provider], pms[:params][:account])
+      auth = Authorization.find_by_provider_and_uid(pms[:provider], pms[:params][:account])
       pms[:params].delete(:account)
       pms[:params] = pms[:params].to_json
       @hook = Hook.new(pms)

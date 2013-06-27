@@ -82,7 +82,7 @@ gem 'crack' # required by the hipchat gem
 gem 'twitter'
 gem 'koala' # facebook
 gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
-gem 'tumblr-ruby', require: 'tumblr'
+gem 'tumblr-ruby', :git => 'git://github.com/weheartit/tumblr', require: 'tumblr'
 gem 'readit', :git => 'git://github.com/29decibel/readit.git'
 gem 'evernote-thrift'
 gem 'kippt', :git => 'git://github.com/leppert/kippt.git'

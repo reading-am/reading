@@ -129,6 +129,16 @@ GIT
       thor (>= 0.14.6, < 2.0)
 
 GIT
+  remote: git://github.com/weheartit/tumblr
+  revision: 7e8d4b6b6b6f391fecd98dbd8aa0fba4d8c10f20
+  specs:
+    tumblr-ruby (0.1.0)
+      activesupport
+      hashie
+      oauth
+      rack
+
+GIT
   remote: git://github.com/zzip/twitter_bootstrap_form_for.git
   revision: eb4f07f5a15d44db449b4335f2c57eb3899604ce
   specs:
@@ -539,11 +549,6 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    tumblr-ruby (0.1.0)
-      activesupport
-      hashie
-      oauth
-      rack
     twitter (4.4.1)
       faraday (~> 0.8)
       multi_json (~> 1.3)
@@ -673,7 +678,7 @@ DEPENDENCIES
   text
   therubyracer
   tinder
-  tumblr-ruby
+  tumblr-ruby!
   tuml!
   twitter
   twitter-bootstrap-rails

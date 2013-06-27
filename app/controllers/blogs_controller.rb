@@ -1,6 +1,14 @@
 class BlogsController < ApplicationController
   before_filter :authenticate_user!
 
+  private
+
+  def blog_params
+    params.require(:blog).permit(:template)
+  end
+
+  public
+
   def show
     if !current_user.access?(:tumblr_templates) then not_found end
 
@@ -57,7 +65,7 @@ class BlogsController < ApplicationController
     if @blog.user != current_user then not_found end
 
     respond_to do |format|
-      if @blog.update_attributes(params[:blog])
+      if @blog.update_attributes(blog_params)
         format.html { redirect_to :back, notice: 'Template was successfully updated.' }
       else
         format.html { redirect_to :back }

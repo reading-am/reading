@@ -78,7 +78,6 @@ Reading::Application.routes.draw do
   get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
   get   '/users/auth/loading/:provider'         => 'authorizations#loading'
-  patch '/authorizations/:provider/:uid/update' => 'authorizations#update'
   get   '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations
 

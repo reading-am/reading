@@ -116,12 +116,13 @@ gem 'sitemap_generator'
 gem 'carrierwave'
 gem 'fog'
 
-group :assets do
-  gem 'less-rails'
-  gem 'therubyracer' # Required by less-rails
-  gem 'coffee-rails', github: 'rails/coffee-rails'
-  gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
-end
+##########
+# Assets #
+##########
+gem 'less-rails'
+gem 'therubyracer' # Required by less-rails
+gem 'coffee-rails', github: 'rails/coffee-rails'
+gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 
 group :development do
   gem 'bullet'

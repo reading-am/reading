@@ -18,23 +18,18 @@ class OmniauthController < Devise::OmniauthCallbacksController
       auth_hash.provider = 'tssignals'
     end
 
-    if signed_in?
-      # Means our user is signed in. Add the authorization to the user
-      begin
-        auth = current_user.add_provider(auth_hash)
-        status = "AuthAdded"
-      rescue AuthError => e
-        status = e.message
-        auth = e.auth
+    # Log him in or sign him up
+    if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
+      # fill in any changed info
+      ["token","secret","expires_at"].each do |prop|
+        auth.attributes = {prop => auth_hash["credentials"][prop] || auth[prop]}
       end
+      auth.save
+      status = !signed_in? ? 'AuthLogin' : (auth.user_id == current_user.id) ? 'AuthPreexisting' : 'AuthTaken'
     else
-      # Log him in or sign him up
-      if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
-        # fill in any changed info
-        ["token","secret","expires_at"].each do |prop|
-          auth.attributes = {prop => auth_hash["credentials"][prop] || auth[prop]}
-        end
-        auth.save
+      if signed_in?
+        user = current_user
+        status = "AuthAdded"
       else
         # NEW USER
         user = User.new(User::transform_auth_hash(auth_hash))
@@ -49,19 +44,20 @@ class OmniauthController < Devise::OmniauthCallbacksController
         user.email = nil if !user.errors.messages[:email].blank?
         user.save
 
-        auth_params = Authorization::transform_auth_hash(auth_hash)
-        auth_params[:user] = user
-        auth = Authorization.create auth_params
-
-        # Auto-follow everyone from their social network
-        #auth.following.each do |u|
-          #user.follow!(u)
-        #end
+        status = "AuthRegister"
       end
 
+      auth_params = Authorization::transform_auth_hash(auth_hash)
+      auth_params[:user] = user
+      auth = Authorization.create auth_params
+
+      # Auto-follow everyone from their social network
+      #auth.following.each{|u| user.follow!(u)}
+    end
+
+    if ['AuthLogin','AuthRegister'].include? status
       sign_in auth.user
       remember_me auth.user
-      status = "AuthLoginCreate"
     end
 
     data = {:status => status, :authResponse => auth_hash, :auth => auth.nil? ? nil : auth.simple_obj}

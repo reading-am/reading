@@ -145,27 +145,6 @@ class User < ActiveRecord::Base
     }
   end
 
-  # TODO - consolidate most of this logic with Authorization#find_or_create
-  def add_provider(auth_hash)
-    # Check if the provider already exists, so we don't add it twice
-    if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
-      raise AuthError.new("AuthTaken") if auth.user_id != self.id
-
-      # grab whatever info that came down from the credentials this time
-      # and save it if we're missing it
-      ["token","secret","expires_at"].each do |prop|
-        auth[prop] = auth_hash["credentials"][prop] || auth[prop]
-      end
-      auth.save
-
-      raise AuthError.new("AuthPreexisting", auth)
-    else
-      auth_params = Authorization::transform_auth_hash(auth_hash)
-      auth_params[:user] = self
-      auth = Authorization.create auth_params
-    end
-  end
-
   def generate_token(column)
     begin
       self[column] = SecureRandom.urlsafe_base64
@@ -291,15 +270,5 @@ class User < ActiveRecord::Base
       :created_at => created_at,
       :updated_at => updated_at
     }
-  end
-end
-
-class AuthError < StandardError
-  # per: http://jqr.github.com/2009/02/11/passing-data-with-ruby-exceptions.html
-  attr_accessor :auth
-
-  def initialize(message = nil, auth = nil)
-    super(message)
-    self.auth = auth
   end
 end

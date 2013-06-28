@@ -84,6 +84,15 @@ GIT
       omniauth
 
 GIT
+  remote: git://github.com/leppert/premailer-rails.git
+  revision: 8b12645115c4b2368399666eb18efa65baef2dd7
+  branch: patch-1
+  specs:
+    premailer-rails (1.4.0)
+      premailer (~> 1.7)
+      rails (>= 3)
+
+GIT
   remote: git://github.com/leppert/sunspot.git
   revision: 320e7a1f7290d503c8478bf3771ae356b249dc91
   branch: 2.0.0-rails4
@@ -455,9 +464,6 @@ GEM
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
-    premailer-rails (1.4.0)
-      premailer (~> 1.7)
-      rails (>= 3)
     progress_bar (1.0.0)
       highline (~> 1.6.1)
       options (~> 2.3.0)
@@ -677,7 +683,7 @@ DEPENDENCIES
   omniauth-twitter
   paperclip
   pg
-  premailer-rails
+  premailer-rails!
   progress_bar
   pusher
   rack-cors

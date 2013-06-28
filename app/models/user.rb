@@ -158,9 +158,6 @@ class User < ActiveRecord::Base
       end
       auth.save
 
-      self.class.transform_auth_hash(auth_hash).each{|k,v| self[k] ||= v }
-      self.save
-
       raise AuthError.new("AuthPreexisting", auth)
     else
       auth_params = Authorization::transform_auth_hash(auth_hash)

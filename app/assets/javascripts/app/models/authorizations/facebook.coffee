@@ -3,7 +3,8 @@ define [
   "jquery"
   "app/init"
   "app/models/authorizations/authorization"
-], (_, $, App, Authorization) ->
+  "app/models/user" # even though we need this for User::current, include the base model since this file is included in user_with_current and will create a circular reference
+], (_, $, App, Authorization, User) ->
 
   # A NOTE ON THE FACEBOOK JS SDK:
   # The version of this file before this note was added worked well.

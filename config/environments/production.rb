@@ -4,10 +4,10 @@ DOMAIN = 'reading.am'
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  config.eager_load = true
-
   # Code is not reloaded between requests
   config.cache_classes = true
+
+  config.eager_load = true
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
@@ -18,7 +18,7 @@ Reading::Application.configure do
 
   # Compress JavaScripts and CSS
   # requirejs namespacing needs it to be false
-  config.assets.compress = false
+  config.assets.js_compressor = false
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false

@@ -1,6 +1,14 @@
 # encoding: utf-8
 class Api::PostsController < Api::APIController
 
+  private
+
+  def post_params
+    params.require(:model).permit(:yn)
+  end
+
+  public
+
   # NOTE - this is also being used for events as
   # the only events we have right now are posts.
   # Will spin out when we aggregate in comments.
@@ -105,9 +113,10 @@ class Api::PostsController < Api::APIController
     @post = Post.find(params[:id])
     user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
-    if allowed = (user == @post.user) and !params[:model].nil?
-      params[:model][:yn] = nil if !params[:model][:yn].nil? and params[:model][:yn] == 'null'
-      @post.yn = params[:model][:yn]
+    pms = post_params
+    if allowed = (user == @post.user)
+      pms[:yn] = nil if !pms[:yn].nil? and pms[:yn] == 'null'
+      @post.yn = pms[:yn]
     end
 
     respond_to do |format|

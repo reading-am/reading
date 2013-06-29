@@ -22,6 +22,7 @@ class Api::APIController < ActionController::Metal
   wrap_parameters format: [:json]
   before_filter :map_method, :limit_count
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
+  rescue_from ActionController::ParameterMissing, :with => :show_400
 
   DEFAULT_COUNT = 20
   MAX_COUNT = 200
@@ -49,6 +50,13 @@ class Api::APIController < ActionController::Metal
       if params[:count] > MAX_COUNT
         params[:count] = MAX_COUNT
       end
+    end
+  end
+
+  def show_400
+    respond_to do |format|
+      format.json { render_json 400 }
+      format.any { head :bad_request }
     end
   end
 

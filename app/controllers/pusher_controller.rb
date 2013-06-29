@@ -3,7 +3,7 @@
 class PusherController < Api::APIController
 
   def auth
-    @user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
+    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     if !@user.blank?
       response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
         :user_id => @user.id, # => required

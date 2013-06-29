@@ -4,12 +4,13 @@ ruby '2.0.0'
 #################
 # Core Services #
 #################
-gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-2-stable' # switch back to gem version when 3.2.14 lands
+gem 'rails', '4.0.0'
+gem 'rails-observers'
 gem 'unicorn' # server
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli', :git => 'git://github.com/mperham/dalli.git' # Memcached
-gem 'sunspot_rails' # Solr
+gem 'dalli', github: 'mperham/dalli' # Memcached
+gem 'sunspot_rails', github: 'leppert/sunspot', branch: '2.0.0-rails4'
 
 #############
 # Core Libs #
@@ -26,10 +27,8 @@ gem 'mechanize' # web crawler
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache'
-gem 'bitmask_attributes'
+gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/support_rails_4'
 gem 'nilify_blanks'
-gem 'validate_email'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
 gem 'sanitize' # HTML sanitizer
@@ -45,27 +44,27 @@ gem 'newrelic_rpm'
 ########
 # Auth #
 ########
-gem 'devise'
+gem 'devise', '~> 3.0.0.rc'
 gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
-gem 'omniauth-37signals', :git => 'git://github.com/leppert/omniauth-37signals.git'
+gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
-gem 'omniauth-readability'
+gem 'omniauth-readability', github: '29decibel/omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
-gem 'omniauth-http-basic', :git => 'git://github.com/leppert/omniauth-http-basic.git' #required by omniauth-kippt
-gem 'omniauth-kippt', :git => 'git://github.com/leppert/omniauth-kippt.git'
+gem 'omniauth-http-basic', github: 'leppert/omniauth-http-basic' #required by omniauth-kippt
+gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
 
 ####################
 # Async Processing #
 ####################
 gem 'girl_friday'
-gem 'delayed_job', "3.0.1"
-gem 'delayed_job_active_record'
+gem 'delayed_job', '~> 4.0.0.beta2'
+gem 'delayed_job_active_record', '~> 4.0.0.beta3'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
 
@@ -80,13 +79,13 @@ gem 'tinder' # campfire
 gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'
-gem 'koala' # facebook
-gem 'instapaper', :git => 'git://github.com/leppert/instapaper.git'
-gem 'tumblr-ruby', :git => 'git://github.com/weheartit/tumblr', require: 'tumblr'
-gem 'readit', :git => 'git://github.com/29decibel/readit.git'
+gem 'koala', github: 'arsduo/koala' # facebook
+gem 'instapaper', github: 'spagalloco/instapaper'
+gem 'tumblr-ruby', github: 'weheartit/tumblr', require: 'tumblr'
+gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
-gem 'kippt', :git => 'git://github.com/leppert/kippt.git'
-gem 'flattr'
+gem 'kippt', github: 'leppert/kippt'
+gem 'flattr', github: 'smgt/flattr'
 
 #################
 # Frontend HTML #
@@ -94,16 +93,16 @@ gem 'flattr'
 gem 'will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
-gem 'twitter_bootstrap_form_for', :git => 'git://github.com/zzip/twitter_bootstrap_form_for.git'
-gem 'premailer-rails'
+gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
+gem 'premailer-rails', github: 'leppert/premailer-rails', branch: 'patch-1'
 gem 'twitter-text' # for comment parsing
-gem "musterb", :git => 'git://github.com/leppert/musterb.git'
-gem 'tuml', :git => 'git://github.com/leppert/tuml.git'
+gem "musterb", github: 'leppert/musterb'
+gem 'tuml', github: 'leppert/tuml'
 
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', :git => 'git://github.com/leppert/requirejs-rails.git', :ref => 'c4268ab2c0fd6f508efdf73214e75144b9fc4c09' # using an older ref because the new one balloons the precompile time, which takes forever on Heroku
+gem 'requirejs-rails', github: 'jwhitley/requirejs-rails'
 gem 'rails-backbone'
 gem 'jquery-rails'
 
@@ -115,29 +114,30 @@ gem 'sitemap_generator'
 gem 'carrierwave'
 gem 'fog'
 
-group :assets do
-  gem 'sass-rails'
-  gem 'less-rails'
-  gem 'therubyracer' # Required by less-rails
-  gem 'coffee-rails'
-  gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
-end
+##########
+# Assets #
+##########
+gem 'less-rails'
+gem 'therubyracer' # Required by less-rails
+gem 'coffee-rails', github: 'rails/coffee-rails'
+gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 
 group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
   gem 'debugger'
-  gem 'sunspot_solr'
+  gem 'sunspot_solr', github: 'leppert/sunspot', branch: '2.0.0-rails4'
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors
-  gem 'irbtools', :require => false
-  gem 'terminal-notifier', :require => false # or else irbtools will complain
+  gem 'irbtools', require: false
+  gem 'terminal-notifier', require: false # or else irbtools will complain
+  gem 'meta_request' # for RailsPanel
 end
 
 group :development, :test do
-  gem 'konacha', '~> 1.0'
+  gem 'konacha'
   gem 'rspec-rails'
-  gem 'spork-rails'
+  gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'
 end

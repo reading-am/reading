@@ -13,6 +13,7 @@ class Api::APIController < ActionController::Metal
   # need this to build 'params'
   include ActionController::Instrumentation
   include ActionController::ParamsWrapper
+  include ActionController::StrongParameters
   include Devise::Controllers::Helpers
   include Rails.application.routes.url_helpers
   # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
@@ -21,6 +22,7 @@ class Api::APIController < ActionController::Metal
   wrap_parameters format: [:json]
   before_filter :map_method, :limit_count
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
+  rescue_from ActionController::ParameterMissing, :with => :show_400
 
   DEFAULT_COUNT = 20
   MAX_COUNT = 200
@@ -31,7 +33,7 @@ class Api::APIController < ActionController::Metal
     # for JSONP requests
     map = {
       'index#POST'  => 'create',
-      'show#PUT'    => 'update',
+      'show#PATCH'  => 'update',
       'show#DELETE' => 'destroy'
     }
     if !params[:_method].blank?
@@ -48,6 +50,13 @@ class Api::APIController < ActionController::Metal
       if params[:count] > MAX_COUNT
         params[:count] = MAX_COUNT
       end
+    end
+  end
+
+  def show_400
+    respond_to do |format|
+      format.json { render_json 400 }
+      format.any { head :bad_request }
     end
   end
 

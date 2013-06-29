@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  include IdentityCache
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -7,11 +6,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable
-
-  attr_accessible :username, :email, :password, :password_confirmation,
-                  :remember_me, :name, :first_name, :last_name, :location,
-                  :bio, :link, :phone, :urls, :description, :mail_digest,
-                  :email_when_followed, :email_when_mentioned, :avatar
 
   attr_accessor :email_required, :password_required
 
@@ -27,26 +21,24 @@ class User < ActiveRecord::Base
     :tumblr_templates
   ]
 
-  has_many :authorizations, :dependent => :destroy, :include => [:user]
-  has_many :posts, :dependent => :destroy, :include => [:user, :page, :domain, {:referrer_post => :user}]
-  has_many :domains, :through => :posts
-  has_many :hooks, :dependent => :destroy, :include => [:user, :authorization]
-  has_many :pages, :through => :posts
-  has_many :comments, :dependent => :destroy
+  has_many :authorizations, -> { includes [:user] }, dependent: :destroy
+  has_many :posts, -> { includes [:user, :page, :domain, {:referrer_post => :user}] }, dependent: :destroy
+  has_many :domains, through: :posts
+  has_many :hooks, -> { includes [:user, :authorization] }, dependent: :destroy
+  has_many :pages, through: :posts
+  has_many :comments, dependent: :destroy
 
   # from: http://ruby.railstutorial.org/chapters/following-users
-  has_many :relationships, :foreign_key => "follower_id",
-                           :dependent => :destroy
-  has_many :following, :through => :relationships, :source => :followed
+  has_many :relationships, foreign_key: "follower_id",
+                           dependent: :destroy
+  has_many :following, through: :relationships, source: :followed
 
-  has_many :reverse_relationships, :foreign_key => "followed_id",
-                                   :class_name => "Relationship",
-                                   :dependent => :destroy
-  has_many :followers, :through => :reverse_relationships, :source => :follower
+  has_many :reverse_relationships, foreign_key: "followed_id",
+                                   class_name: "Relationship",
+                                   dependent: :destroy
+  has_many :followers, through: :reverse_relationships, source: :follower
 
-  has_many :blogs, :dependent => :destroy
-
-  cache_index :token, :unique => true
+  has_many :blogs, dependent: :destroy
 
   has_attached_file :avatar,
     :styles => {
@@ -61,10 +53,8 @@ class User < ActiveRecord::Base
     :size => { :less_than => 2.megabytes },
     :content_type => { :content_type => ['image/jpeg', 'image/png', 'image/gif'] }
 
-  validates_format_of     :username, :with => /^\w+[A-Z0-9]\w*$/i, :allow_nil => true
+  validates_format_of     :username, :with => /\A\w+[A-Z0-9]\w*\z/i, :allow_nil => true
   validates_uniqueness_of :username, :message => 'is taken', :allow_nil => true, :case_sensitive => false
-  validates :email, :email => {:allow_nil => true}
-  validates_uniqueness_of :email, :allow_nil => true, :case_sensitive => false
   validates :bio, :length => { :maximum => 255 }
   validates_format_of     :link, :with => URI::regexp(%w(http https)), :allow_blank => true
 
@@ -114,7 +104,7 @@ class User < ActiveRecord::Base
   # This is in addition to a real persisted field like 'username'
   # via: https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   attr_accessor :login
-  attr_accessible :login
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -128,39 +118,26 @@ class User < ActiveRecord::Base
     where("lower(username) = ?", username.downcase).limit(1).first
   end
 
-  # TODO - consolidate most of this logic with Authorization#find_or_create
-  def add_provider(auth_hash)
-    # Check if the provider already exists, so we don't add it twice
-    if auth = Authorization.fetch_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
-      if auth.user_id != self.id
-        raise AuthError.new("AuthTaken")
-      end
-      # grab whatever info that came down from the credentials this time
-      # and save it if we're missing it
-      ["token","secret","expires_at"].each do |prop|
-        auth[prop] = auth_hash["credentials"][prop] || auth[prop]
-      end
-      auth.save
+  def self.transform_auth_hash auth_hash
+    username = auth_hash["info"]["nickname"]
+    username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
+    username = username.blank? ? nil : username
 
-      [
-        "name",
-        "email",
-        "first_name",
-        "last_name",
-        "location",
-        "description",
-        "image",
-        "phone",
-        "urls"
-      ].each do |prop| self[prop] ||= auth_hash["info"][prop] end
-      self.save
+    urls = auth_hash["info"]["urls"]
+    urls = urls.blank? ? nil : urls.kind_of?(Hashie::Mash) ? urls.to_json : urls.to_s
 
-      raise AuthError.new("AuthPreexisting", auth)
-    else
-      auth_params = Authorization::transform_auth_hash(auth_hash)
-      auth_params[:user] = self
-      auth = Authorization.create auth_params
-    end
+    {
+      username:    username,
+      name:        auth_hash["info"]["name"],
+      email:       auth_hash["info"]["email"],
+      first_name:  auth_hash["info"]["first_name"],
+      last_name:   auth_hash["info"]["last_name"],
+      location:    auth_hash["info"]["location"],
+      description: auth_hash["info"]["description"],
+      image:       auth_hash["info"]["image"],
+      phone:       auth_hash["info"]["phone"],
+      urls:        urls
+    }
   end
 
   def generate_token(column)
@@ -288,15 +265,5 @@ class User < ActiveRecord::Base
       :created_at => created_at,
       :updated_at => updated_at
     }
-  end
-end
-
-class AuthError < StandardError
-  # per: http://jqr.github.com/2009/02/11/passing-data-with-ruby-exceptions.html
-  attr_accessor :auth
-
-  def initialize(message = nil, auth = nil)
-    super(message)
-    self.auth = auth
   end
 end

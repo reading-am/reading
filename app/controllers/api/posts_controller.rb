@@ -1,6 +1,14 @@
 # encoding: utf-8
 class Api::PostsController < Api::APIController
 
+  private
+
+  def post_params
+    params.require(:model).permit(:yn)
+  end
+
+  public
+
   # NOTE - this is also being used for events as
   # the only events we have right now are posts.
   # Will spin out when we aggregate in comments.
@@ -10,7 +18,7 @@ class Api::PostsController < Api::APIController
       if params[:type] == "following"
         # list events from users the user is following
         # users/1/following/events
-        @user = User.fetch(params[:user_id])
+        @user = User.find(params[:user_id])
         @posts = @user.feed
       else
         # list a user's posts
@@ -46,10 +54,8 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :index
 
-  # GET /posts/1
-  # GET /posts/1.xml
   def show
-    @post = Post.fetch(params[:id])
+    @post = Post.find(params[:id])
 
     respond_to do |format|
       format.json { render_json :post => @post.simple_obj }
@@ -57,8 +63,6 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :show
 
-  # POST /posts
-  # POST /posts.xml
   def create
     user, url, title, page, ref, yn = nil
 
@@ -82,7 +86,7 @@ class Api::PostsController < Api::APIController
       url   = params[:model][:url]
       title = params[:model][:title] unless params[:model][:title] == 'null'
       head_tags = params[:model][:head_tags] unless params[:model][:head_tags] == 'null'
-      user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
+      user  = params[:token] ? User.find_by_token(params[:token]) : current_user
       ref   = Post.find_by_id(params[:model][:referrer_id]) unless params[:model][:referrer_id].blank?
       yn    = params[:model][:yn]
     end
@@ -105,15 +109,14 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :create
 
-  # PUT /posts/1
-  # PUT /posts/1.xml
   def update
-    @post = Post.fetch(params[:id])
-    user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
+    @post = Post.find(params[:id])
+    user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
-    if allowed = (user == @post.user) and !params[:model].nil?
-      params[:model][:yn] = nil if !params[:model][:yn].nil? and params[:model][:yn] == 'null'
-      @post.yn = params[:model][:yn]
+    pms = post_params
+    if allowed = (user == @post.user)
+      pms[:yn] = nil if !pms[:yn].nil? and pms[:yn] == 'null'
+      @post.yn = pms[:yn]
     end
 
     respond_to do |format|
@@ -127,11 +130,9 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :update
 
-  # DELETE /posts/1
-  # DELETE /posts/1.json
   def destroy
-    @user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
-    @post = Post.fetch(params[:id])
+    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @post = Post.find(params[:id])
 
     @post.destroy if @user == @post.user
 

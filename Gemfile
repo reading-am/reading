@@ -30,7 +30,6 @@ gem 'mechanize' # web crawler
 gem 'identity_cache', github: 'leppert/identity_cache'
 gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/support_rails_4'
 gem 'nilify_blanks'
-gem 'validate_email'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
 gem 'sanitize' # HTML sanitizer

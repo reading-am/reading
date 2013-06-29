@@ -616,9 +616,6 @@ GEM
     uuid (2.3.7)
       macaddr (~> 1.0)
     uuidtools (2.1.4)
-    validate_email (0.1.6)
-      activemodel (>= 3.0)
-      mail (>= 2.2.5)
     warden (1.2.1)
       rack (>= 1.0)
     watchr (0.7)
@@ -723,6 +720,5 @@ DEPENDENCIES
   typhoeus
   uglifier
   unicorn
-  validate_email
   watchr
   will_paginate

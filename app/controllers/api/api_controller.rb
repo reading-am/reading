@@ -13,6 +13,7 @@ class Api::APIController < ActionController::Metal
   # need this to build 'params'
   include ActionController::Instrumentation
   include ActionController::ParamsWrapper
+  include ActionController::StrongParameters
   include Devise::Controllers::Helpers
   include Rails.application.routes.url_helpers
   # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal

@@ -46,8 +46,6 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :index
 
-  # GET /posts/1
-  # GET /posts/1.xml
   def show
     @post = Post.fetch(params[:id])
 
@@ -57,8 +55,6 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :show
 
-  # POST /posts
-  # POST /posts.xml
   def create
     user, url, title, page, ref, yn = nil
 
@@ -125,8 +121,6 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :update
 
-  # DELETE /posts/1
-  # DELETE /posts/1.json
   def destroy
     @user = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     @post = Post.fetch(params[:id])

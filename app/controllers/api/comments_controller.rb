@@ -1,8 +1,14 @@
 # encoding: utf-8
 class Api::CommentsController < Api::APIController
 
-  # GET /comments
-  # GET /comments.json
+  private
+
+  def comment_params
+    params.require(:model).permit(:body)
+  end
+
+  public
+
   def index
     if params[:page_id]
       where = {
@@ -31,8 +37,6 @@ class Api::CommentsController < Api::APIController
   end
   add_transaction_tracer :index
 
-  # GET /comments/1
-  # GET /comments/1.json
   def show
     @comment = Comment.fetch(params[:id])
 
@@ -42,8 +46,6 @@ class Api::CommentsController < Api::APIController
   end
   add_transaction_tracer :show
 
-  # POST /comments
-  # POST /comments.json
   def create
     @comment = Comment.new
 
@@ -81,7 +83,7 @@ class Api::CommentsController < Api::APIController
     respond_to do |format|
       if @user != @comment.user
         status = :forbidden
-      elsif @comment.update_attributes(params[:model])
+      elsif @comment.update_attributes(comment_params)
         status = :ok
       else
         status = :unprocessable_entity
@@ -91,8 +93,6 @@ class Api::CommentsController < Api::APIController
   end
   add_transaction_tracer :update
 
-  # DELETE /comments/1
-  # DELETE /comments/1.json
   def destroy
     @user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     @comment = Comment.fetch(params[:id])

@@ -36,6 +36,9 @@ module Reading
     config.filter_parameters += [:password]
 
     # Enable the asset pipeline
+    # Even though this is true by default for Rails 4, something is
+    # overwriting it unless set here. Maybe requirejs?
+    # Similar issues: https://github.com/rails/rails/issues/10334
     config.assets.enabled = true
 
     # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)

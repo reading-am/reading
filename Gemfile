@@ -11,6 +11,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli', github: 'mperham/dalli' # Memcached
 gem 'sunspot_rails', github: 'leppert/sunspot', branch: '2.0.0-rails4'
+gem 'rails_12factor', group: :production # needed by Heroku
 
 #############
 # Core Libs #

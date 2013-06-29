@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  include IdentityCache
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -40,8 +39,6 @@ class User < ActiveRecord::Base
   has_many :followers, through: :reverse_relationships, source: :follower
 
   has_many :blogs, dependent: :destroy
-
-  cache_index :token, unique: true
 
   has_attached_file :avatar,
     :styles => {

@@ -2,7 +2,6 @@
 include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
-  include IdentityCache
 
   belongs_to :user
   belongs_to :authorization

@@ -1,5 +1,4 @@
 class Page < ActiveRecord::Base
-  include IdentityCache
 
   serialize :oembed, JSON
 

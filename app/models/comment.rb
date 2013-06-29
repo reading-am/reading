@@ -1,5 +1,4 @@
 class Comment < ActiveRecord::Base
-  include IdentityCache
   include Twitter::Extractor
   include Twitter::Autolink
 

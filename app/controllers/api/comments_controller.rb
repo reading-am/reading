@@ -38,7 +38,7 @@ class Api::CommentsController < Api::APIController
   add_transaction_tracer :index
 
   def show
-    @comment = Comment.fetch(params[:id])
+    @comment = Comment.find(params[:id])
 
     respond_to do |format|
       format.json { render_json :comment => @comment }
@@ -58,9 +58,9 @@ class Api::CommentsController < Api::APIController
       end
     else
       # Note - an associated post is not required
-      @comment.post  = Post.fetch(params[:model][:post_id]) unless params[:model][:post_id].blank?
-      @comment.user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
-      @comment.page  = Page.fetch(params[:model][:page_id])
+      @comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
+      @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      @comment.page  = Page.find(params[:model][:page_id])
       @comment.body  = params[:model][:body]
     end
 
@@ -77,8 +77,8 @@ class Api::CommentsController < Api::APIController
   add_transaction_tracer :create
 
   def update
-    @user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
-    @comment = Comment.fetch(params[:id])
+    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @comment = Comment.find(params[:id])
 
     respond_to do |format|
       if @user != @comment.user
@@ -94,8 +94,8 @@ class Api::CommentsController < Api::APIController
   add_transaction_tracer :update
 
   def destroy
-    @user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
-    @comment = Comment.fetch(params[:id])
+    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @comment = Comment.find(params[:id])
 
     @comment.destroy if @user == @comment.user
 

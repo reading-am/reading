@@ -27,7 +27,6 @@ gem 'mechanize' # web crawler
 #####################
 # Ruby Conveniences #
 #####################
-gem 'identity_cache', github: 'leppert/identity_cache'
 gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/support_rails_4'
 gem 'nilify_blanks'
 gem 'paperclip' # file attachments

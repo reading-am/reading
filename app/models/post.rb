@@ -1,5 +1,4 @@
 class Post < ActiveRecord::Base
-  include IdentityCache
 
   belongs_to      :user, counter_cache: true
   belongs_to      :page, counter_cache: true

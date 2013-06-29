@@ -40,16 +40,6 @@ GIT
       railties (>= 3.1.1, < 4.1)
 
 GIT
-  remote: git://github.com/leppert/identity_cache.git
-  revision: 7be7d972b090f68c3256e6ae37ee6fcfe963cf4a
-  specs:
-    identity_cache (0.0.3)
-      activerecord (~> 4.0.0)
-      activesupport (~> 4.0.0)
-      ar_transaction_changes (= 0.0.1)
-      cityhash (= 0.6.0)
-
-GIT
   remote: git://github.com/leppert/kippt.git
   revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
   specs:
@@ -198,8 +188,6 @@ GEM
       tzinfo (~> 0.3.37)
     addressable (2.3.5)
     alias (0.2.3)
-    ar_transaction_changes (0.0.1)
-      activerecord (>= 3.0.0)
     arel (4.0.0)
     atomic (1.1.10)
     awesome_print (1.1.0)
@@ -233,7 +221,6 @@ GEM
     carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
-    cityhash (0.6.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     clipboard (1.0.5)
@@ -658,7 +645,6 @@ DEPENDENCIES
   girl_friday
   hipchat
   hirefireapp
-  identity_cache!
   instapaper!
   irbtools
   jquery-rails

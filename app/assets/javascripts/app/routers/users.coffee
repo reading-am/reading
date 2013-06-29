@@ -1,8 +1,10 @@
 define [
+  "underscore"
   "jquery"
   "backbone"
   "app/models/user_with_current"
   "app/collections/users"
+  "app/collections/posts"
   "app/views/users/show/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
@@ -12,7 +14,7 @@ define [
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], ($, Backbone, User, Users, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
+], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
@@ -33,6 +35,8 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       "users/search"          : "search"
 
     show: (username, page) ->
+      @collection = new Posts if _.isEmpty @collection
+
       @user_show_view = new UserShowView
         el: $("#header_card.r_user")
         model: @model

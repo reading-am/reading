@@ -1,8 +1,10 @@
 define [
+  "underscore"
   "jquery"
   "backbone"
+  "app/collections/posts"
   "app/views/posts/posts_grouped_by_page/view"
-], ($, Backbone, PostsGroupedByPageView) ->
+], (_, $, Backbone, Posts, PostsGroupedByPageView) ->
 
   class PostsRouter extends Backbone.Router
     initialize: (options) ->
@@ -12,6 +14,8 @@ define [
       "(everybody)(/posts)(/page/:page)" : "index"
 
     index: (page) ->
+      @collection = new Posts if _.isEmpty @collection
+
       page ||= @query_params().page
       @collection.monitor() unless page > 1
 

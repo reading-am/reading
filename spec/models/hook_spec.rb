@@ -5,8 +5,7 @@ describe Hook do
 
   context "when run" do
 
-    it "posts to Facebook" do
-    end
+    pending "posts to Facebook"
 
     it "posts to Twitter" do
       # setup

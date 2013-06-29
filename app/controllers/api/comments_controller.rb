@@ -74,8 +74,6 @@ class Api::CommentsController < Api::APIController
   end
   add_transaction_tracer :create
 
-  # PUT /comments/1
-  # PUT /comments/1.json
   def update
     @user  = params[:token] ? User.fetch_by_token(params[:token]) : current_user
     @comment = Comment.fetch(params[:id])

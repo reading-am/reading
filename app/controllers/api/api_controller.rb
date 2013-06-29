@@ -31,7 +31,7 @@ class Api::APIController < ActionController::Metal
     # for JSONP requests
     map = {
       'index#POST'  => 'create',
-      'show#PUT'    => 'update',
+      'show#PATCH'  => 'update',
       'show#DELETE' => 'destroy'
     }
     if !params[:_method].blank?

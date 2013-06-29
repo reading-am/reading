@@ -105,8 +105,6 @@ class Api::PostsController < Api::APIController
   end
   add_transaction_tracer :create
 
-  # PUT /posts/1
-  # PUT /posts/1.xml
   def update
     @post = Post.fetch(params[:id])
     user = params[:token] ? User.fetch_by_token(params[:token]) : current_user

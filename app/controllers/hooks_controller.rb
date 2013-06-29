@@ -72,8 +72,6 @@ class HooksController < ApplicationController
     end
   end
 
-  # PUT /hooks/1
-  # PUT /hooks/1.xml
   def update
     @hook = Hook.fetch(params[:id])
     if @hook.user != current_user

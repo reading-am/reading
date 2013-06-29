@@ -51,10 +51,10 @@ gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
-gem 'omniauth-37signals', github: 'leppert/omniauth-37signals'
+gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
-gem 'omniauth-readability'
+gem 'omniauth-readability', github: '29decibel/omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
@@ -81,13 +81,13 @@ gem 'tinder' # campfire
 gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'
-gem 'koala' # facebook
-gem 'instapaper', github: 'leppert/instapaper'
+gem 'koala', github: 'arsduo/koala' # facebook
+gem 'instapaper', github: 'spagalloco/instapaper'
 gem 'tumblr-ruby', github: 'weheartit/tumblr', require: 'tumblr'
 gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
 gem 'kippt', github: 'leppert/kippt'
-gem 'flattr'
+gem 'flattr', github: 'smgt/flattr'
 
 #################
 # Frontend HTML #

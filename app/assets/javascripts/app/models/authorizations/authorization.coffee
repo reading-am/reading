@@ -55,19 +55,6 @@ define [
         @initialize uid: response.auth.uid, permissions: response.auth.permissions, info: response.auth.info
         User::current.get("authorizations")[@provider].set(@uid, this)
 
-    save: (params) ->
-      data =
-        authorization: # the id is passed in the url
-          permissions: "[\"#{@permissions.join('","')}\"]"
-      $.ajax
-        url: "/authorizations/#{@provider}/#{@uid}/update.json"
-        type: 'POST'
-        data: data
-        success: (data, textStatus, jqXHR) =>
-          params.success() if params.success?
-        error: (jqXHR, textStatus, errorThrown) =>
-          params.error() if params.error?
-
     places: (params) ->
       $.ajax
         url: "/authorizations/#{@provider}/#{@uid}/places.json"

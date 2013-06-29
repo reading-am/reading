@@ -12,7 +12,7 @@ class Api::PagesController < Api::APIController
   add_transaction_tracer :index
 
   def show
-    @page = Page.fetch(params[:id])
+    @page = Page.find(params[:id])
 
     respond_to do |format|
       format.json { render_json :page => @page.simple_obj }

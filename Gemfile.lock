@@ -1,30 +1,52 @@
 GIT
-  remote: git://github.com/29decibel/readit.git
-  revision: 3333717588ac4440a559a175e4fc90180384a898
+  remote: git://github.com/29decibel/omniauth-readability.git
+  revision: 8337b769cd11d142b49a02027d825f42170010c6
   specs:
-    readit (0.0.7)
+    omniauth-readability (0.0.1)
+      multi_json
+      omniauth (>= 0.2.6)
+      omniauth-oauth (>= 1.0.0.rc2)
+
+GIT
+  remote: git://github.com/29decibel/readit.git
+  revision: f352941719e54cd05c241e56571fd160ab456aa4
+  specs:
+    readit (0.1.0)
       hashie
       multi_json
       oauth
 
 GIT
-  remote: git://github.com/leppert/instapaper.git
-  revision: e4570ab9caa6bb6adeefc5f52261cd0da914167e
+  remote: git://github.com/A-gen/spork-rails.git
+  revision: 5db525af2f917047057f546bc1ac2574d1c6b11e
   specs:
-    instapaper (0.2.1)
-      faraday_middleware (~> 0.7)
-      multi_json (>= 1.0.3)
-      rash (~> 0.3)
-      simple_oauth (~> 0.1)
+    spork-rails (3.2.1)
+      spork (>= 1.0rc0)
+
+GIT
+  remote: git://github.com/arsduo/koala.git
+  revision: b1a0be2b8ad7bc30b5c09a0a0ed0cfa97094da37
+  specs:
+    koala (1.7.0rc1)
+      addressable
+      faraday
+      multi_json
+
+GIT
+  remote: git://github.com/jwhitley/requirejs-rails.git
+  revision: f2330104aeca4d193fd5680a22ae7eee85d814b5
+  specs:
+    requirejs-rails (0.9.1)
+      railties (>= 3.1.1, < 4.1)
 
 GIT
   remote: git://github.com/leppert/kippt.git
-  revision: 7cbbdfce19e8bb3f14bfdf1ace83ecce99394706
+  revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
   specs:
     kippt (1.1.0)
       faraday
       faraday_middleware
-      multi_json (~> 1.3.4)
+      multi_json
 
 GIT
   remote: git://github.com/leppert/musterb.git
@@ -33,15 +55,6 @@ GIT
     musterb (1.0.1)
       erubis
       hashie
-
-GIT
-  remote: git://github.com/leppert/omniauth-37signals.git
-  revision: c062fcd29d5f9440c12c1c55c2f20b93dd424ba4
-  specs:
-    omniauth-37signals (1.0.4)
-      multi_json (~> 1.0)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
 
 GIT
   remote: git://github.com/leppert/omniauth-http-basic.git
@@ -60,12 +73,26 @@ GIT
       omniauth
 
 GIT
-  remote: git://github.com/leppert/requirejs-rails.git
-  revision: c4268ab2c0fd6f508efdf73214e75144b9fc4c09
-  ref: c4268ab2c0fd6f508efdf73214e75144b9fc4c09
+  remote: git://github.com/leppert/premailer-rails.git
+  revision: 8b12645115c4b2368399666eb18efa65baef2dd7
+  branch: patch-1
   specs:
-    requirejs-rails (0.9.1)
-      railties (>= 3.1.1, < 3.3)
+    premailer-rails (1.4.0)
+      premailer (~> 1.7)
+      rails (>= 3)
+
+GIT
+  remote: git://github.com/leppert/sunspot.git
+  revision: 320e7a1f7290d503c8478bf3771ae356b249dc91
+  branch: 2.0.0-rails4
+  specs:
+    sunspot (2.0.0)
+      pr_geohash (~> 1.0)
+      rsolr (~> 1.0.7)
+    sunspot_rails (2.0.0)
+      nokogiri
+      sunspot (= 2.0.0)
+    sunspot_solr (2.0.0)
 
 GIT
   remote: git://github.com/leppert/tuml.git
@@ -75,61 +102,47 @@ GIT
       nokogiri (>= 1.4)
 
 GIT
+  remote: git://github.com/leppert/twitter_bootstrap_form_for.git
+  revision: db97144d89c9325834a2c67e93951cbf846474d0
+  specs:
+    twitter_bootstrap_form_for (1.0.7)
+      actionpack (>= 3)
+      railties (>= 3)
+
+GIT
   remote: git://github.com/mperham/dalli.git
-  revision: 0f07d6361ae0e18493e7e41daa23427cf3e0960a
+  revision: 26b8c35396cc0df7ca6c11ad28aab12284f2be86
   specs:
-    dalli (2.6.2)
+    dalli (2.6.4)
 
 GIT
-  remote: git://github.com/rails/rails.git
-  revision: 8799cfa72d071fe6ce78fa7dbbf5dd3c9d763a68
-  branch: 3-2-stable
+  remote: git://github.com/rails/coffee-rails.git
+  revision: c812f4da1f5adc226ef834b57c2498467761cb2c
   specs:
-    actionmailer (3.2.13)
-      actionpack (= 3.2.13)
-      mail (~> 2.5.4)
-    actionpack (3.2.13)
-      activemodel (= 3.2.13)
-      activesupport (= 3.2.13)
-      builder (~> 3.0.0)
-      erubis (~> 2.7.0)
-      journey (~> 1.0.4)
-      rack (~> 1.4.5)
-      rack-cache (~> 1.2)
-      rack-test (~> 0.6.1)
-      sprockets (~> 2.2.1)
-    activemodel (3.2.13)
-      activesupport (= 3.2.13)
-      builder (~> 3.0.0)
-    activerecord (3.2.13)
-      activemodel (= 3.2.13)
-      activesupport (= 3.2.13)
-      arel (~> 3.0.2)
-      tzinfo (~> 0.3.29)
-    activeresource (3.2.13)
-      activemodel (= 3.2.13)
-      activesupport (= 3.2.13)
-    activesupport (3.2.13)
-      i18n (~> 0.6, >= 0.6.4)
-      multi_json (~> 1.0)
-    rails (3.2.13)
-      actionmailer (= 3.2.13)
-      actionpack (= 3.2.13)
-      activerecord (= 3.2.13)
-      activeresource (= 3.2.13)
-      activesupport (= 3.2.13)
-      bundler (~> 1.0)
-      railties (= 3.2.13)
-    railties (3.2.13)
-      actionpack (= 3.2.13)
-      activesupport (= 3.2.13)
-      rack-ssl (~> 1.3.2)
-      rake (>= 0.8.7)
-      rdoc (~> 3.4)
-      thor (>= 0.14.6, < 2.0)
+    coffee-rails (4.0.0)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0, < 5.0)
 
 GIT
-  remote: git://github.com/weheartit/tumblr
+  remote: git://github.com/smgt/flattr.git
+  revision: cef9dd282d4bc6352c32776715fafc29706aeab3
+  specs:
+    flattr (0.3.7)
+      faraday (~> 0.7)
+      multi_json (~> 1.7.0)
+
+GIT
+  remote: git://github.com/spagalloco/instapaper.git
+  revision: 9b11f2d27ef5bb9865aad9b4380f0f452eac3744
+  specs:
+    instapaper (0.3.0)
+      faraday_middleware (~> 0.7)
+      multi_json (~> 1)
+      rash
+      simple_oauth
+
+GIT
+  remote: git://github.com/weheartit/tumblr.git
   revision: 7e8d4b6b6b6f391fecd98dbd8aa0fba4d8c10f20
   specs:
     tumblr-ruby (0.1.0)
@@ -139,23 +152,46 @@ GIT
       rack
 
 GIT
-  remote: git://github.com/zzip/twitter_bootstrap_form_for.git
-  revision: eb4f07f5a15d44db449b4335f2c57eb3899604ce
+  remote: git://github.com/zlx/bitmask_attributes.git
+  revision: 515c0f936e91c91911685d46f300abc6dc40fed5
+  branch: feature/support_rails_4
   specs:
-    twitter_bootstrap_form_for (1.0.7)
-      actionpack (~> 3)
-      railties (~> 3)
+    bitmask_attributes (0.4.0)
+      activerecord (>= 3.0, < 5.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.3.4)
-    ar_transaction_changes (0.0.1)
-      activerecord (>= 3.0.0)
-    arel (3.0.2)
-    awesome_print (1.0.2)
-    aws-sdk (1.7.1)
-      httparty (~> 0.7)
+    actionmailer (4.0.0)
+      actionpack (= 4.0.0)
+      mail (~> 2.5.3)
+    actionpack (4.0.0)
+      activesupport (= 4.0.0)
+      builder (~> 3.1.0)
+      erubis (~> 2.7.0)
+      rack (~> 1.5.2)
+      rack-test (~> 0.6.2)
+    activemodel (4.0.0)
+      activesupport (= 4.0.0)
+      builder (~> 3.1.0)
+    activerecord (4.0.0)
+      activemodel (= 4.0.0)
+      activerecord-deprecated_finders (~> 1.0.2)
+      activesupport (= 4.0.0)
+      arel (~> 4.0.0)
+    activerecord-deprecated_finders (1.0.3)
+    activesupport (4.0.0)
+      i18n (~> 0.6, >= 0.6.4)
+      minitest (~> 4.2)
+      multi_json (~> 1.3)
+      thread_safe (~> 0.1)
+      tzinfo (~> 0.3.37)
+    addressable (2.3.5)
+    alias (0.2.3)
+    arel (4.0.0)
+    atomic (1.1.10)
+    awesome_print (1.1.0)
+    aws-sdk (1.11.1)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
@@ -164,172 +200,159 @@ GEM
     better_errors (0.9.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
-    binding_of_caller (0.7.1)
+    binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bitmask_attributes (0.4.0)
-      activerecord (~> 3.0)
     bootstrap-will_paginate (0.0.9)
       will_paginate
     boson (1.2.4)
-    browser (0.1.5)
-    builder (3.0.4)
+    boson-more (0.2.2)
+      boson (>= 1.2.0)
+    browser (0.1.6)
+    builder (3.1.4)
     bullet (4.6.0)
       uniform_notifier
-    capybara (2.0.1)
+    callsite (0.0.11)
+    capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
-      selenium-webdriver (~> 2.0)
-      xpath (~> 1.0.0)
-    carrierwave (0.7.1)
+      xpath (~> 2.0)
+    carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
-    childprocess (0.3.6)
-      ffi (~> 1.0, >= 1.0.6)
-    cityhash (0.6.0)
-    clipboard (1.0.1)
-    cocaine (0.4.2)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    clipboard (1.0.5)
+    cocaine (0.5.1)
+      climate_control (>= 0.0.3, < 1.0)
     coderay (1.0.9)
-    coffee-rails (3.2.2)
-      coffee-script (>= 2.2.0)
-      railties (~> 3.2.0)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.4.0)
+    coffee-script-source (1.6.2)
     colorize (0.5.8)
     columnize (0.3.6)
     commonjs (0.2.6)
-    connection_pool (0.9.2)
-    crack (0.3.1)
+    connection_pool (1.1.0)
+    crack (0.4.0)
+      safe_yaml (~> 0.9.0)
     css_parser (1.3.4)
       addressable
-    curb (0.8.3)
+    curb (0.8.4)
     daemons (1.1.9)
     debug_inspector (0.0.2)
-    debugger (1.5.0)
+    debugger (1.6.0)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.1)
     debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.0)
-    delayed_job (3.0.1)
-      activesupport (~> 3.0)
-    delayed_job_active_record (0.3.3)
-      activerecord (>= 2.1.0, < 4)
-      delayed_job (~> 3.0)
-    delayed_job_web (1.1.2)
+    debugger-ruby_core_source (1.2.3)
+    delayed_job (4.0.0.beta2)
+      activesupport (>= 3.0, < 4.1)
+    delayed_job_active_record (4.0.0.beta3)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
+    delayed_job_web (1.2.0)
       activerecord (> 3.0.0)
       delayed_job (> 2.0.3)
-      haml (~> 3.1.3)
+      haml (>= 3.1.3)
       rdoc
       sinatra (>= 0.9.2)
-    devise (2.1.2)
+    devise (3.0.0.rc)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (~> 3.1)
+      railties (>= 3.2.6, < 5)
       warden (~> 1.2.1)
-    diff-lcs (1.2.2)
-    domain_name (0.5.11)
+    diff-lcs (1.2.4)
+    domain_name (0.5.12)
       unf (>= 0.0.5, < 1.0.0)
     ejs (1.1.1)
     erubis (2.7.0)
     escape_utils (0.3.2)
-    ethon (0.5.7)
-      ffi (~> 1.2.0)
+    ethon (0.5.12)
+      ffi (>= 1.3.0)
       mime-types (~> 1.18)
-    eventmachine (1.0.0)
-    evernote-thrift (1.24.0)
-    every_day_irb (1.4.0)
-    excon (0.16.10)
+    eventmachine (1.0.3)
+    evernote-thrift (1.25.0)
+    every_day_irb (1.5.0)
+    excon (0.6.6)
     execjs (1.4.0)
       multi_json (~> 1.0)
     fancy_irb (0.7.3)
       paint (>= 0.8.1)
       unicode-display_width (>= 0.1.1)
-    faraday (0.8.4)
+    faraday (0.8.7)
       multipart-post (~> 1.1)
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
     fattr (2.2.1)
-    ffi (1.2.0)
-    flattr (0.3.7)
-      faraday (~> 0.7)
-      multi_json (~> 1.3.2)
-    fog (1.8.0)
+    ffi (1.9.0)
+    fog (0.9.0)
       builder
-      excon (~> 0.14)
-      formatador (~> 0.2.0)
+      excon (~> 0.6.1)
+      formatador (>= 0.1.3)
+      json
       mime-types
-      multi_json (~> 1.0)
-      net-scp (~> 1.0.4)
-      net-ssh (>= 2.1.3)
-      nokogiri (~> 1.5.0)
+      net-scp (>= 1.0.4)
+      net-ssh (>= 2.1.4)
+      nokogiri (>= 1.4.4)
       ruby-hmac
     formatador (0.2.4)
     g (1.7.2)
-    girl_friday (0.11.1)
-      connection_pool (~> 0.9.0)
+    girl_friday (0.11.2)
+      connection_pool (~> 1.0)
       rubinius-actor
-    haml (3.1.7)
+    haml (4.0.3)
+      tilt
     hashie (1.2.0)
-    highline (1.6.16)
-    hike (1.2.2)
-    hipchat (0.7.0)
-      httparty
+    highline (1.6.19)
+    hike (1.2.3)
+    hipchat (0.10.0)
       httparty
     hirb (0.7.1)
-    hirefireapp (0.0.8)
+    hirefireapp (0.2.0)
     htmlentities (4.3.1)
     http-cookie (1.0.1)
       domain_name (~> 0.5)
-    httparty (0.9.0)
+    httparty (0.11.0)
       multi_json (~> 1.0)
-      multi_xml
+      multi_xml (>= 0.5.2)
     httpauth (0.2.0)
     i18n (0.6.4)
-    identity_cache (0.0.2)
-      activerecord (= 3.2.13)
-      activesupport (= 3.2.13)
-      ar_transaction_changes (= 0.0.1)
-      cityhash (= 0.6.0)
     interactive_editor (0.0.10)
       spoon (>= 0.0.1)
-    irbtools (1.4.0)
-      awesome_print (~> 1.0.2)
+    irbtools (1.5.0)
+      alias (~> 0.2.3)
+      awesome_print (~> 1.1.0)
       boson (~> 1.2.4)
-      clipboard (~> 1.0.1)
-      coderay (~> 1.0.8)
-      every_day_irb (>= 1.4.0)
+      boson-more (~> 0.2.2)
+      clipboard (~> 1.0.5)
+      coderay (~> 1.0.9)
+      every_day_irb (>= 1.5.0)
       fancy_irb (>= 0.7.3)
-      g (>= 1.7.1)
-      hirb (~> 0.7.0)
+      g (>= 1.7.2)
+      hirb (~> 0.7.1)
       interactive_editor (>= 0.0.10)
       method_locator (>= 0.0.4)
       method_source (>= 0.8.1)
       methodfinder (>= 1.2.5)
       ori (~> 0.1.0)
-      paint (>= 0.8.5)
-      wirb (>= 0.4.3)
-      zucker (>= 12.1)
-    journey (1.0.4)
+      paint (>= 0.8.6)
+      wirb (>= 1.0.1)
+      zucker (>= 13.1)
     jquery-rails (2.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.0)
-    jwt (0.1.5)
+    jwt (0.1.6)
       multi_json (>= 1.0)
     kgio (2.8.0)
-    koala (1.6.0)
-      addressable (~> 2.2)
-      faraday (~> 0.8)
-      multi_json (~> 1.3)
-    konacha (1.5.1)
-      actionpack (~> 3.1)
+    konacha (3.0.0)
+      actionpack (>= 3.1, < 5)
       capybara
       colorize
-      railties (~> 3.1)
+      railties (>= 3.1, < 5)
       sprockets
     less (2.3.2)
       commonjs (~> 0.2.6)
@@ -337,15 +360,12 @@ GEM
       actionpack (>= 3.1)
       less (~> 2.3.1)
     libv8 (3.11.8.17)
-    libwebsocket (0.1.7.1)
-      addressable
-      websocket
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mechanize (2.7.0)
+    mechanize (2.7.1)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0.0)
       mime-types (~> 1.17, >= 1.17.2)
@@ -355,42 +375,52 @@ GEM
       ntlm-http (~> 0.1, >= 0.1.1)
       webrobots (>= 0.0.9, < 0.2)
     memcachier (0.0.2)
+    meta_request (0.2.7)
+      callsite
+      rack-contrib
+      railties
     method_locator (0.0.4)
     method_source (0.8.1)
     methodfinder (1.2.5)
     mime-types (1.23)
-    multi_json (1.3.7)
-    multi_xml (0.5.1)
-    multipart-post (1.1.5)
+    mini_portile (0.5.0)
+    minitest (4.7.5)
+    multi_json (1.7.7)
+    multi_xml (0.5.4)
+    multipart-post (1.2.0)
     net-http-digest_auth (1.3)
     net-http-persistent (2.8)
-    net-scp (1.0.4)
-      net-ssh (>= 1.99.1)
-    net-ssh (2.6.2)
-    newrelic_rpm (3.6.0.78)
-    nilify_blanks (1.0.0)
+    net-scp (1.1.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.6.7)
+    newrelic_rpm (3.6.4.122)
+    nilify_blanks (1.0.1)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
-    nokogiri (1.5.9)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
     ntlm-http (0.1.1)
     oauth (0.4.7)
-    oauth2 (0.8.0)
+    oauth2 (0.8.1)
       faraday (~> 0.8)
       httpauth (~> 0.1)
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
-    oj (2.0.10)
+    oj (2.1.2)
     omniauth (1.0.3)
       hashie (~> 1.2)
       rack
+    omniauth-37signals (1.0.5)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-evernote (1.2.0)
       evernote-thrift
       multi_json (~> 1.0)
       omniauth-oauth (~> 1.0)
     omniauth-facebook (1.4.0)
       omniauth-oauth2 (~> 1.0.2)
-    omniauth-flattr (0.1.0)
+    omniauth-flattr (0.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
     omniauth-instapaper (0.2.0)
@@ -405,13 +435,9 @@ GEM
     omniauth-pocket (0.1.0)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
-    omniauth-readability (0.0.1)
-      multi_json
-      omniauth (~> 1.0.0.rc2)
-      omniauth-oauth (~> 1.0.0.rc2)
     omniauth-tumblr (1.1)
       omniauth-oauth (~> 1.0)
-    omniauth-twitter (0.0.16)
+    omniauth-twitter (1.0.0)
       multi_json (~> 1.3)
       omniauth-oauth (~> 1.0)
     omniauth-xauth (0.0.2)
@@ -421,12 +447,12 @@ GEM
       fattr
     ori (0.1.0)
     orm_adapter (0.4.0)
-    paint (0.8.5)
-    paperclip (3.3.1)
+    paint (0.8.6)
+    paperclip (3.4.2)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
-      cocaine (~> 0.4.0)
+      cocaine (~> 0.5.0)
       mime-types
     pg (0.15.1)
     polyglot (0.3.3)
@@ -434,48 +460,58 @@ GEM
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
-    premailer-rails (1.4.0)
-      premailer (~> 1.7)
-      rails (>= 3)
     progress_bar (1.0.0)
       highline (~> 1.6.1)
       options (~> 2.3.0)
     pusher (0.11.3)
       multi_json (~> 1.0)
       signature (~> 0.1.6)
-    rack (1.4.5)
-    rack-cache (1.2)
-      rack (>= 0.4)
-    rack-cors (0.2.7)
+    rack (1.5.2)
+    rack-contrib (1.1.0)
+      rack (>= 0.9.1)
+    rack-cors (0.2.8)
       rack
-    rack-mini-profiler (0.1.26)
+    rack-mini-profiler (0.1.27)
       rack (>= 1.1.3)
-    rack-protection (1.3.2)
-      rack
-    rack-ssl (1.3.3)
+    rack-protection (1.5.0)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails-backbone (0.8.0)
+    rails (4.0.0)
+      actionmailer (= 4.0.0)
+      actionpack (= 4.0.0)
+      activerecord (= 4.0.0)
+      activesupport (= 4.0.0)
+      bundler (>= 1.3.0, < 2.0)
+      railties (= 4.0.0)
+      sprockets-rails (~> 2.0.0)
+    rails-backbone (0.9.10)
       coffee-script (~> 2.2.0)
       ejs (~> 1.1.1)
       jquery-rails (~> 2.1.3)
       railties (>= 3.1.0)
+    rails-observers (0.1.1)
+      railties (~> 4.0.0.beta)
+    railties (4.0.0)
+      actionpack (= 4.0.0)
+      activesupport (= 4.0.0)
+      rake (>= 0.8.7)
+      thor (>= 0.18.1, < 2.0)
     raindrops (0.11.0)
-    rake (10.0.4)
+    rake (10.1.0)
     rash (0.3.2)
       hashie (~> 1.2.0)
-    rdoc (3.12.2)
+    rdoc (4.0.1)
       json (~> 1.4)
     ref (1.0.5)
     roauth (0.0.8)
-    rsolr (1.0.8)
+    rsolr (1.0.9)
       builder (>= 2.1.2)
     rspec-core (2.13.1)
     rspec-expectations (2.13.0)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.13.0)
-    rspec-rails (2.13.0)
+    rspec-mocks (2.13.1)
+    rspec-rails (2.13.2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -489,45 +525,29 @@ GEM
       uuid (~> 2.3, >= 2.3.5)
     ruby-hmac (0.4.0)
     ruby-oembed (0.8.8)
-    rubyzip (0.9.9)
-    sanitize (2.0.3)
-      nokogiri (>= 1.4.4, < 1.6)
-    sass (3.2.3)
-    sass-rails (3.2.5)
-      railties (~> 3.2.0)
-      sass (>= 3.1.10)
-      tilt (~> 1.3)
-    selenium-webdriver (2.27.2)
-      childprocess (>= 0.2.5)
-      libwebsocket (~> 0.1.3)
-      multi_json (~> 1.0)
-      rubyzip
+    safe_yaml (0.9.3)
+    sanitize (2.0.4)
+      nokogiri (~> 1.6.0)
     signature (0.1.7)
     simple_oauth (0.2.0)
-    sinatra (1.3.3)
-      rack (~> 1.3, >= 1.3.6)
-      rack-protection (~> 1.2)
-      tilt (~> 1.3, >= 1.3.3)
-    sitemap_generator (3.4)
+    sinatra (1.4.3)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    sitemap_generator (4.1.0)
       builder
-    spoon (0.0.3)
+    spoon (0.0.4)
       ffi
     spork (1.0.0rc3)
-    spork-rails (3.2.1)
-      rails (>= 3.0.0, < 3.3.0)
-      spork (>= 1.0rc0)
-    sprockets (2.2.2)
+    sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sunspot (1.3.3)
-      pr_geohash (~> 1.0)
-      rsolr (~> 1.0.7)
-    sunspot_rails (1.3.3)
-      nokogiri
-      sunspot (= 1.3.3)
-    sunspot_solr (2.0.0)
+    sprockets-rails (2.0.0)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      sprockets (~> 2.8)
     systemu (2.5.2)
     terminal-notifier (1.4.2)
     text (1.2.1)
@@ -535,6 +555,8 @@ GEM
       libv8 (~> 3.11.8.12)
       ref
     thor (0.18.1)
+    thread_safe (0.1.0)
+      atomic
     tilt (1.4.1)
     tinder (1.9.1)
       eventmachine (>= 0.12.0, < 2)
@@ -546,54 +568,51 @@ GEM
       multi_json (~> 1.0)
       multipart-post (~> 1.1)
       twitter-stream (~> 0.1)
-    treetop (1.4.12)
+    treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
-    twitter (4.4.1)
-      faraday (~> 0.8)
-      multi_json (~> 1.3)
+    twitter (4.8.1)
+      faraday (~> 0.8, < 0.10)
+      multi_json (~> 1.0)
       simple_oauth (~> 0.2)
-    twitter-bootstrap-rails (2.2.6)
+    twitter-bootstrap-rails (2.2.7)
       actionpack (>= 3.1)
       execjs
+      rails (>= 3.1)
       railties (>= 3.1)
     twitter-stream (0.1.12)
       eventmachine (>= 0.12.8)
       roauth (>= 0.0.2)
-    twitter-text (1.5.0)
-      activesupport
-    typhoeus (0.5.3)
-      ethon (~> 0.5.3)
+    twitter-text (1.6.1)
+      unf (~> 0.0.5)
+    typhoeus (0.6.3)
+      ethon (~> 0.5.11)
     tzinfo (0.3.37)
-    uglifier (1.3.0)
+    uglifier (2.1.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    unf (0.1.1)
+    unf (0.0.5)
       unf_ext
     unf_ext (0.0.6)
     unicode-display_width (0.1.1)
-    unicorn (4.6.2)
+    unicorn (4.6.3)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
     uniform_notifier (1.2.0)
     uuid (2.3.7)
       macaddr (~> 1.0)
-    uuidtools (2.1.3)
-    validate_email (0.1.6)
-      activemodel (>= 3.0)
-      mail (>= 2.2.5)
+    uuidtools (2.1.4)
     warden (1.2.1)
       rack (>= 1.0)
     watchr (0.7)
     webrobots (0.1.1)
-    websocket (1.0.4)
     will_paginate (3.0.4)
     wirb (1.0.1)
       paint
-    xpath (1.0.0)
+    xpath (2.0.0)
       nokogiri (~> 1.3)
-    zucker (12.1)
+    zucker (13.1)
 
 PLATFORMS
   ruby
@@ -604,38 +623,38 @@ DEPENDENCIES
   base58
   better_errors
   binding_of_caller
-  bitmask_attributes
+  bitmask_attributes!
   bootstrap-will_paginate
   browser
   bullet
   carrierwave
-  coffee-rails
+  coffee-rails!
   crack
   curb (~> 0.8.0)
   daemons
   dalli!
   debugger
-  delayed_job (= 3.0.1)
-  delayed_job_active_record
+  delayed_job (~> 4.0.0.beta2)
+  delayed_job_active_record (~> 4.0.0.beta3)
   delayed_job_web
-  devise
+  devise (~> 3.0.0.rc)
   escape_utils
   evernote-thrift
-  flattr
+  flattr!
   fog
   girl_friday
   hipchat
   hirefireapp
-  identity_cache
   instapaper!
   irbtools
   jquery-rails
   kippt!
-  koala
-  konacha (~> 1.0)
+  koala!
+  konacha
   less-rails
   mechanize
   memcachier
+  meta_request
   musterb!
   newrelic_rpm
   nilify_blanks
@@ -643,7 +662,7 @@ DEPENDENCIES
   oauth
   oj
   omniauth
-  omniauth-37signals!
+  omniauth-37signals
   omniauth-evernote
   omniauth-facebook (= 1.4.0)
   omniauth-flattr
@@ -651,29 +670,29 @@ DEPENDENCIES
   omniauth-instapaper
   omniauth-kippt!
   omniauth-pocket
-  omniauth-readability
+  omniauth-readability!
   omniauth-tumblr
   omniauth-twitter
   paperclip
   pg
-  premailer-rails
+  premailer-rails!
   progress_bar
   pusher
   rack-cors
   rack-mini-profiler
-  rails!
+  rails (= 4.0.0)
   rails-backbone
+  rails-observers
   readit!
   requirejs-rails!
   rspec-rails
   ruby-growl
   ruby-oembed
   sanitize
-  sass-rails
   sitemap_generator
-  spork-rails
-  sunspot_rails
-  sunspot_solr
+  spork-rails!
+  sunspot_rails!
+  sunspot_solr!
   terminal-notifier
   text
   therubyracer
@@ -687,6 +706,5 @@ DEPENDENCIES
   typhoeus
   uglifier
   unicorn
-  validate_email
   watchr
   will_paginate

@@ -2,12 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-if defined?(Bundler)
-  # If you precompile assets before deploying to production, use this line
-  Bundler.require *Rails.groups(:assets => %w(development test))
-  # If you want your assets lazily compiled in production, use this line
-  # Bundler.require(:default, :assets, Rails.env)
-end
+Bundler.require(:default, Rails.env)
 
 module Reading
   class Application < Rails::Application
@@ -40,6 +35,8 @@ module Reading
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    config.eager_load = false
+
     # Enable the asset pipeline
     config.assets.enabled = true
 
@@ -50,7 +47,6 @@ module Reading
     config.requirejs.logical_asset_filter += [/\.mustache$/,/\.css$/]
 
     config.cache_store = :dalli_store
-    config.identity_cache_store = :dalli_store
  
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

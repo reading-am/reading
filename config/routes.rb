@@ -11,7 +11,7 @@ Reading::Application.routes.draw do
   as :user do
     get   '/sign_in'  => 'devise/sessions#new',     :as => :new_user_session
     post  '/sign_in'  => 'devise/sessions#create',  :as => :user_session
-    match '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session,
+    get   '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session,
       :via => Devise.mappings[:user].sign_out_via
 
     post    '/users'          => 'registrations#create',  :as => :user_registration
@@ -19,13 +19,13 @@ Reading::Application.routes.draw do
     get     '/users/sign_up'  => 'registrations#new',     :as => :new_user_registration
     get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
     get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
-    put     '/settings/info'  => 'registrations#update'
+    patch   '/settings/info'  => 'registrations#update'
     get     '/almost_ready'   => 'registrations#almost_ready'
-    put     '/almost_ready'   => 'registrations#almost_ready_update'
+    patch   '/almost_ready'   => 'registrations#almost_ready_update'
   end
 
   # sitemap
-  match '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
+  get '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
 
   # api
   namespace :api, :defaults => { :format => 'json' } do
@@ -57,72 +57,71 @@ Reading::Application.routes.draw do
     end
   end
 
-  match "/pusher/auth" => "pusher#auth"
+  get "/pusher/auth" => "pusher#auth"
   post  "/pusher/existence" => "pusher#existence" # webhook
-  match "/support/delete_cookies" => "users#delete_cookies"
+  get "/support/delete_cookies" => "users#delete_cookies"
 
   resources :posts
   resources :blogs
 
-  match '/c/:id' => 'comments#shortener'
-  match '/:username/comments/:id' => 'comments#show'
+  get '/c/:id' => 'comments#shortener'
+  get '/:username/comments/:id' => 'comments#show'
   resources :comments
 
-  match '/assets/bookmarklet/loader' => 'extras#bookmarklet_loader'
+  get '/assets/bookmarklet/loader' => 'extras#bookmarklet_loader'
 
   # via: http://stackoverflow.com/questions/4273205/rails-routing-with-a-parameter-that-includes-slash
   # Rails or WEBrick for some reason will turn http:// into http:/ so the second / has a ? to make it optional
   # Notice the .rss negative lookahead that allows user RSS feeds to pass through
   # We're not currently supporting (/yn/:yn) "yep . nope" because it should be a user initiated action
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
-  match '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
+  get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
 
-  match '/users/auth/loading/:provider'         => 'authorizations#loading'
-  match '/authorizations/:provider/:uid/update' => 'authorizations#update'
-  match '/authorizations/:provider/:uid/places' => 'authorizations#places'
+  get   '/users/auth/loading/:provider'         => 'authorizations#loading'
+  get   '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
-  match '/domains/:domain_name' => 'domains#show', :constraints => { :domain_name => /[0-9A-Z\-\.]+/i }
+  get '/domains/:domain_name' => 'domains#show', :constraints => { :domain_name => /[0-9A-Z\-\.]+/i }
   resources :domains, :constraints => { :id => /[0-9A-Za-z\-\.]+/ } do
     resources :posts
     resources :pages
   end
 
-  match '/extensions/safari/update' => 'extras#safari_update'
+  get '/extensions/safari/update' => 'extras#safari_update'
 
-  match "/users"              => redirect("/")
-  match '/users/recommended'  => 'users#find_people'
-  match '/users/friends'      => 'users#find_people'
-  match '/users/search'       => 'users#find_people'
+  get "/users"              => redirect("/")
+  get '/users/recommended'  => 'users#find_people'
+  get '/users/friends'      => 'users#find_people'
+  get '/users/search'       => 'users#find_people'
   resources :users do
     get 'tagalong'
     resources :posts
   end
 
   # Search
-  match '/search' => 'search#index'
+  get '/search' => 'search#index'
 
   resources :hooks
   resources :footnotes
 
   # Settings
-  match '/settings' => 'users#settings'
-  match '/settings/hooks'  => 'users#hooks'
-  match '/settings/extras' => 'users#extras'
+  get '/settings' => 'users#settings'
+  get '/settings/hooks'  => 'users#hooks'
+  get '/settings/extras' => 'users#extras'
 
   # Admin
-  match '/admin' => redirect('/admin/dashboard')
-  match '/admin/dashboard' => 'admin#dashboard'
-  match '/admin/jobs' => DelayedJobWeb, :anchor => false
+  get '/admin' => redirect('/admin/dashboard')
+  get '/admin/dashboard' => 'admin#dashboard'
+  get '/admin/jobs' => DelayedJobWeb, :anchor => false
 
   # These routes should be cleaned up
-  match '/:username(/posts(/page/:page))'  => 'users#show', :defaults => { :type => 'posts' }
-  match '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }
-  match '/:username/export'   => 'users#export'
-  match '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }
-  match '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
-  match '/:username/follow'   => 'relationships#create'
-  match '/:username/unfollow' => 'relationships#destroy'
-  match '/:username/tumblr'   => 'blogs#show'
+  get '/:username(/posts(/page/:page))'  => 'users#show', :defaults => { :type => 'posts' }
+  get '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }
+  get '/:username/export'   => 'users#export'
+  get '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }
+  get '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
+  get '/:username/follow'   => 'relationships#create'
+  get '/:username/unfollow' => 'relationships#destroy'
+  get '/:username/tumblr'   => 'blogs#show'
 end

@@ -2,10 +2,20 @@
 class HooksController < ApplicationController
   before_filter :authenticate_user!
 
+  private
+
+  def hook_params
+    params.require(:hook).permit(:provider, :events).tap do |whitelisted|
+      whitelisted[:params] = params[:hook][:params]
+    end
+  end
+
+  public
+
   # GET /hooks/1
   # GET /hooks/1.xml
   def show
-    @hook = Hook.fetch(params[:id])
+    @hook = Hook.find(params[:id])
     if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
@@ -29,7 +39,7 @@ class HooksController < ApplicationController
 
   # GET /hooks/1/edit
   def edit
-    @hook = Hook.fetch(params[:id])
+    @hook = Hook.find(params[:id])
     if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
@@ -38,15 +48,16 @@ class HooksController < ApplicationController
   # POST /hooks
   # POST /hooks.xml
   def create
-    if Authorization::PROVIDERS.include? params[:hook][:provider]
-      auth = Authorization.fetch_by_provider_and_uid(params[:hook][:provider], params[:hook][:params][:account])
-      params[:hook][:params].delete(:account)
-      params[:hook][:params] = params[:hook][:params].to_json
-      @hook = Hook.new(params[:hook])
+    pms = hook_params
+    if Authorization::PROVIDERS.include? pms[:provider]
+      auth = Authorization.find_by_provider_and_uid(pms[:provider], pms[:params][:account])
+      pms[:params].delete(:account)
+      pms[:params] = pms[:params].to_json
+      @hook = Hook.new(pms)
       @hook.authorization = auth
     else
-      params[:hook][:params] = params[:hook][:params].to_json
-      @hook = Hook.new(params[:hook])
+      pms[:params] = pms[:params].to_json
+      @hook = Hook.new(pms)
     end
     @hook.user = current_user
 
@@ -61,16 +72,14 @@ class HooksController < ApplicationController
     end
   end
 
-  # PUT /hooks/1
-  # PUT /hooks/1.xml
   def update
-    @hook = Hook.fetch(params[:id])
+    @hook = Hook.find(params[:id])
     if @hook.user != current_user
       redirect_to "/settings/hooks"
     end
 
     respond_to do |format|
-      if @hook.update_attributes(params[:hook])
+      if @hook.update_attributes(hook_params)
         format.html { redirect_to("/settings/hooks", :notice => 'Hook was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -83,7 +92,7 @@ class HooksController < ApplicationController
   # DELETE /hooks/1
   # DELETE /hooks/1.xml
   def destroy
-    @hook = Hook.fetch(params[:id])
+    @hook = Hook.find(params[:id])
     if @hook.user != current_user
       redirect_to "/#{current_user.username}/list"
     end

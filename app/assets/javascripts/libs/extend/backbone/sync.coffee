@@ -9,7 +9,7 @@ define [
   methodMap =
     create: 'POST',
     read:   'GET',
-    update: 'PUT',
+    update: 'PATCH',
     delete: 'DELETE'
 
   Backbone._sync = Backbone.sync

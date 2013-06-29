@@ -4,4 +4,10 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
+# Hack to get requirejs-rails working
+# via: https://github.com/jwhitley/requirejs-rails/issues/118#issuecomment-18007963
+def ruby_rake_task(task)
+  Rake::Task[task].invoke
+end
+
 Reading::Application.load_tasks

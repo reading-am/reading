@@ -103,7 +103,7 @@ gem 'tuml', github: 'leppert/tuml'
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', github: 'jwhitley/requirejs-rails'
+gem 'requirejs-rails', github: 'leppert/requirejs-rails', branch: 'rails4' # using an older ref because the new one balloons the precompile time, which takes forever on Heroku
 gem 'rails-backbone'
 gem 'jquery-rails'
 

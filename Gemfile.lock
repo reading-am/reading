@@ -33,13 +33,6 @@ GIT
       multi_json
 
 GIT
-  remote: git://github.com/jwhitley/requirejs-rails.git
-  revision: f2330104aeca4d193fd5680a22ae7eee85d814b5
-  specs:
-    requirejs-rails (0.9.1)
-      railties (>= 3.1.1, < 4.1)
-
-GIT
   remote: git://github.com/leppert/kippt.git
   revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
   specs:
@@ -80,6 +73,14 @@ GIT
     premailer-rails (1.4.0)
       premailer (~> 1.7)
       rails (>= 3)
+
+GIT
+  remote: git://github.com/leppert/requirejs-rails.git
+  revision: 6354194f7abfa920133ebeba4da63532b5b4868a
+  branch: rails4
+  specs:
+    requirejs-rails (0.9.1)
+      railties (>= 3.1.1)
 
 GIT
   remote: git://github.com/leppert/sunspot.git

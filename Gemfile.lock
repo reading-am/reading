@@ -76,7 +76,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/requirejs-rails.git
-  revision: 6354194f7abfa920133ebeba4da63532b5b4868a
+  revision: 3f2721e20fe9115c3127d6118ff31fc750de6692
   branch: rails4
   specs:
     requirejs-rails (0.9.1)

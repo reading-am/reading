@@ -238,10 +238,11 @@ class User < ActiveRecord::Base
   def avatar_url style=:original
     # URL generation through the paperclip gem is slooowwwww. This is a swifter workaround.
     # https://github.com/thoughtbot/paperclip/issues/909
+    base = "https://s3.amazonaws.com/#{ENV['READING_S3_BUCKET']}/users/avatars"
     if avatar_file_name.blank?
-      "http#{Rails.env == 'production' ? 's' : ''}://#{DOMAIN}/assets/users/avatars/default_#{style}.png"
+      "#{base}/default/#{style}.png"
     else
-      "https://s3.amazonaws.com/#{ENV['READING_S3_BUCKET']}/users/avatars/#{sprintf('%09d', id).gsub(/(\d{3})(?=\d)/, '\\1/')}/#{style}/#{avatar_file_name}?#{avatar_updated_at.to_time.to_i}"
+      "#{base}/#{sprintf('%09d', id).gsub(/(\d{3})(?=\d)/, '\\1/')}/#{style}/#{avatar_file_name}?#{avatar_updated_at.to_time.to_i}"
     end
   end
 

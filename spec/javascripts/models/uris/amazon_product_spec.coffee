@@ -1,13 +1,11 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
+define [
+  "support/chai"
   "underscore"
   "jquery"
-  "spec/models/uris/shared"
+  "models/uris/shared"
   "app/models/uris/amazon_product"
-], (_, $, shared, AmazonProduct) ->
+], (chai, _, $, shared, AmazonProduct) ->
+  chai.should()
 
   describe "Model", ->
     describe "URI", ->

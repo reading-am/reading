@@ -1,13 +1,11 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
+define [
+  "support/chai"
   "underscore"
   "app/constants"
-  "spec/models/shared"
+  "models/shared"
   "app/models/page"
-], (_, Constants, shared, Page) ->
+], (chai, _, Constants, shared, Page) ->
+  chai.should()
 
   describe "Model", ->
     describe "Page", ->

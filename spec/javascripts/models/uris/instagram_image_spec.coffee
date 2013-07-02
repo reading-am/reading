@@ -1,12 +1,10 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
+define [
+  "support/chai"
   "underscore"
-  "spec/models/uris/shared"
+  "models/uris/shared"
   "app/models/uris/instagram_image"
-], (_, shared, InstagramImage) ->
+], (chai, _, shared, InstagramImage) ->
+  chai.should()
 
   describe "Model", ->
     describe "URI", ->

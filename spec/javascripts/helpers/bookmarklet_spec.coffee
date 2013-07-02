@@ -1,10 +1,9 @@
-#= require require
-#= require baseUrl
-
-require [
+define [
+  "support/chai"
   "app/constants"
   "app/helpers/bookmarklet"
-], (Constants, Helpers) ->
+], (chai, Constants, Helpers) ->
+  chai.should()
 
   describe "Helper", ->
     describe "Bookmarklet", ->

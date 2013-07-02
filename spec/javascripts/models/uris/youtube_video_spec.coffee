@@ -1,12 +1,10 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
+define [
+  "support/chai"
   "underscore"
-  "spec/models/uris/shared"
+  "models/uris/shared"
   "app/models/uris/youtube_video"
-], (_, shared, YouTubeVideo) ->
+], (chai, _, shared, YouTubeVideo) ->
+  chai.should()
 
   describe "Model", ->
     describe "URI", ->

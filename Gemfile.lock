@@ -111,6 +111,12 @@ GIT
       railties (>= 3)
 
 GIT
+  remote: git://github.com/mislav/will_paginate.git
+  revision: 7a45eab080ff0da7917ac4f6e76cfb2db29d90b1
+  specs:
+    will_paginate (3.0.4)
+
+GIT
   remote: git://github.com/mperham/dalli.git
   revision: 26b8c35396cc0df7ca6c11ad28aab12284f2be86
   specs:
@@ -613,7 +619,6 @@ GEM
       rack (>= 1.0)
     watchr (0.7)
     webrobots (0.1.1)
-    will_paginate (3.0.4)
     wirb (1.0.1)
       paint
     xpath (2.0.0)
@@ -714,4 +719,4 @@ DEPENDENCIES
   uglifier
   unicorn
   watchr
-  will_paginate
+  will_paginate!

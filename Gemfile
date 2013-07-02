@@ -91,7 +91,7 @@ gem 'flattr', github: 'smgt/flattr'
 #################
 # Frontend HTML #
 #################
-gem 'will_paginate'
+gem 'will_paginate', github: 'mislav/will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'

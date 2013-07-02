@@ -13,7 +13,7 @@ xml.rss :version => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
 
     # validate that this is a real user
     # TODO this should really happen in the controller
-    if User.fetch_by_token(params[:t])
+    if User.find_by_token(params[:t])
       token = params[:t]
     else
       token = false

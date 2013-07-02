@@ -1,4 +1,4 @@
-define "spec/models/shared", [
+define [
   "jquery"
   "underscore"
 ], ($, _) -> (vals) ->

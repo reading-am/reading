@@ -1,11 +1,7 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
+define [
   "underscore"
   "app/constants"
-  "spec/models/shared"
+  "models/shared"
   "app/models/page"
 ], (_, Constants, shared, Page) ->
 

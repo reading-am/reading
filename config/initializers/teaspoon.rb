@@ -43,7 +43,7 @@ Teaspoon.setup do |config|
     # Available frameworks: teaspoon-jasmine, teaspoon-mocha, teaspoon-qunit
     #
     # Note: To use the CoffeeScript source files use `"teaspoon/mocha"` etc.
-    suite.javascripts = ["teaspoon-mocha"]
+    suite.javascripts = ["teaspoon/mocha"]
 
     # If you want to change how Teaspoon looks, or include your own stylesheets you can do that here. The default is the
     # stylesheet for the HTML reporter.

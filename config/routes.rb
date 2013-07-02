@@ -113,15 +113,15 @@ Reading::Application.routes.draw do
   # Admin
   get '/admin' => redirect('/admin/dashboard')
   get '/admin/dashboard' => 'admin#dashboard'
-  get '/admin/jobs' => DelayedJobWeb, :anchor => false
+  get '/admin/jobs' => DelayedJobWeb, anchor: false
 
   # These routes should be cleaned up
-  get '/:username(/posts(/page/:page))'  => 'users#show', :defaults => { :type => 'posts' }
-  get '/:username/list(/page/:page)'     => 'users#show', :defaults => { :type => 'list' }
   get '/:username/export'   => 'users#export'
-  get '/:username/following'=> 'users#followingers', :defaults => { :type => 'following' }
-  get '/:username/followers'=> 'users#followingers', :defaults => { :type => 'followers' }
+  get '/:username/following'=> 'users#followingers', defaults: { type: 'following' }
+  get '/:username/followers'=> 'users#followingers', defaults: { type: 'followers' }
   get '/:username/follow'   => 'relationships#create'
   get '/:username/unfollow' => 'relationships#destroy'
   get '/:username/tumblr'   => 'blogs#show'
+  get '/:username/:type(/page/:page)' => 'users#show', constraints: { type: /posts|list/ }
+  get '/:username' => 'users#show', defaults: { type: 'posts' }
 end

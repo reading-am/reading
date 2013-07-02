@@ -1,7 +1,9 @@
-define "spec/collections/shared", [
+define [
+  "support/chai"
   "jquery"
   "underscore"
-], ($, _) -> (vals) ->
+], (chai, $, _) -> (vals) ->
+  chai.should()
 
   type = vals.type
   search_term = vals.search_term

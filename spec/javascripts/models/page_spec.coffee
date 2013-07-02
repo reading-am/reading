@@ -1,9 +1,11 @@
 define [
+  "support/chai"
   "underscore"
   "app/constants"
   "models/shared"
   "app/models/page"
-], (_, Constants, shared, Page) ->
+], (chai, _, Constants, shared, Page) ->
+  chai.should()
 
   describe "Model", ->
     describe "Page", ->

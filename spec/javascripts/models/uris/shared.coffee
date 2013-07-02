@@ -1,6 +1,8 @@
-define "spec/models/uris/shared", [
+define [
+  "support/chai"
   "underscore"
-], (_) -> ->
+], (chai, _) -> ->
+  chai.should()
 
   describe "#regex", ->
     it "should successfully identify urls", ->

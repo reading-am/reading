@@ -1,9 +1,8 @@
-#= require require
-#= require baseUrl
-
-require [
+define [
+  "support/chai"
   "app/models/provider"
-], (Provider) ->
+], (chai, Provider) ->
+  chai.should()
 
   describe "Model", ->
     describe "Provider", ->

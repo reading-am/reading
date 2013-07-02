@@ -137,7 +137,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'konacha'
+  gem 'teaspoon', github: 'modeset/teaspoon'
   gem 'rspec-rails'
   gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'

@@ -1,11 +1,9 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
-  "spec/models/uris/shared"
+define [
+  "support/chai"
+  "models/uris/shared"
   "app/models/uris/vimeo_video"
-], (shared, VimeoVideo) ->
+], (chai, shared, VimeoVideo) ->
+  chai.should()
 
   describe "Model", ->
     describe "URI", ->

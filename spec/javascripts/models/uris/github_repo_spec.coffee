@@ -1,11 +1,9 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
-  "spec/models/uris/shared"
+define [
+  "support/chai"
+  "models/uris/shared"
   "app/models/uris/github_repo"
-], (shared, GitHubRepo) ->
+], (chai, shared, GitHubRepo) ->
+  chai.should()
 
   describe "Model", ->
     describe "URI", ->

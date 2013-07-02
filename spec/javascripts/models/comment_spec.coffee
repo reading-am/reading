@@ -1,12 +1,10 @@
-#= require require
-#= require baseUrl
-#= require ./shared
-
-require [
-  "spec/models/shared"
+define [
+  "support/chai"
+  "models/shared"
   "app/models/comment"
   "fixtures/comments"
-], (shared, Comment, Fixtures) ->
+], (chai, shared, Comment, Fixtures) ->
+  chai.should()
 
   describe "Model", ->
     describe "Comment", ->

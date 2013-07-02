@@ -1,7 +1,9 @@
-define "spec/models/shared", [
+define [
+  "support/chai"
   "jquery"
   "underscore"
-], ($, _) -> (vals) ->
+], (chai, $, _) -> (vals) ->
+  chai.should()
 
   methods = vals.methods ? ["create","read","update","destroy"]
   type = vals.type

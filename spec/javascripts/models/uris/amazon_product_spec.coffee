@@ -32,19 +32,21 @@ define [
             @model.get("image").should.equal("http://ec2.images-amazon.com/images/P/#{@id}.01._SCMZZZZZZZ_.jpg")
 
           it "should not return Amazon's dummy 1px x 1px image", (done) ->
-            $img = $("<img>").attr(src: @model.get("image")).load ->
+            $img = $("<img>").hide().attr(src: @model.get("image")).load ->
               $(this).width().should.be.above(1)
               $(this).height().should.be.above(1)
+              $(this).remove()
               done()
 
-            $("#konacha").append $img
+            $("body").append $img
 
           it "Amazon should still be returning dummy 1px x 1px images for some products", (done) ->
             @model = new AmazonProduct string: @urls[1]
 
-            $img = $("<img>").attr(src: @model.get("image")).load ->
+            $img = $("<img>").hide().attr(src: @model.get("image")).load ->
               $(this).width().should.equal(1)
               $(this).height().should.equal(1)
+              $(this).remove()
               done()
 
-            $("#konacha").append $img
+            $("body").append $img

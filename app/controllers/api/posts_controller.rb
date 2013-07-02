@@ -32,7 +32,7 @@ class Api::PostsController < Api::APIController
     else
       # list all posts
       # posts
-      @posts = Post.scoped
+      @posts = Post.all
     end
 
     if params[:since_id]

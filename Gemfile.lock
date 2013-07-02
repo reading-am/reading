@@ -84,7 +84,7 @@ GIT
 
 GIT
   remote: git://github.com/leppert/sunspot.git
-  revision: 320e7a1f7290d503c8478bf3771ae356b249dc91
+  revision: ef46ae2a61976200cccd77fcfae65d8d4fbd89ba
   branch: 2.0.0-rails4
   specs:
     sunspot (2.0.0)

@@ -44,8 +44,8 @@ under the process named `testruby`.
 ### Javascript
 
 Tests are run through [Mocha](http://visionmedia.github.com/mocha/)
-via [Konacha](https://github.com/jfirebaugh/konacha) by visiting
-<http://0.0.0.0:3500> in your browser.
+via [Teaspoon](https://github.com/modeset/teaspoon) by visiting
+<http://0.0.0.0:3000/teaspoon> in your browser.
 
 ### Mail
 

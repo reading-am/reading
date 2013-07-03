@@ -9,25 +9,30 @@ define [
     describe "URI", ->
       describe "TwitterTweet", ->
 
-        beforeEach ->
-          @id = "206942518468808706"
-          @urls = [
-            "https://twitter.com/leppert/status/#{@id}"
-            "https://twitter.com/hamsandwich/status/211850281774874626/"
-          ]
-          @model = new TwitterTweet string: @urls[0]
+        it "should get data from the API"
 
-        shared()
+        # The tests below have been disabled
+        # because v1 API has been shut down
 
-        describe "#initialize()", ->
-          it "should return the correct id after initialization", ->
-            @model.get("id").should.equal(@id)
+        #beforeEach ->
+          #@id = "206942518468808706"
+          #@urls = [
+            #"https://twitter.com/leppert/status/#{@id}"
+            #"https://twitter.com/hamsandwich/status/211850281774874626/"
+          #]
+          #@model = new TwitterTweet string: @urls[0]
 
-        describe "#fetch()", ->
-          it "should get data from the API", (done) ->
-            @model.fetch 
-              success: (model, response) ->
-                model.get("text").should.equal("Why am I the only one not making out with someone in front of this ice cream shop?")
-                done()
-              error: (model, response) ->
-                throw response.responseText
+        #shared()
+
+        #describe "#initialize()", ->
+          #it "should return the correct id after initialization", ->
+            #@model.get("id").should.equal(@id)
+
+        #describe "#fetch()", ->
+          #it "should get data from the API", (done) ->
+            #@model.fetch 
+              #success: (model, response) ->
+                #model.get("text").should.equal("Why am I the only one not making out with someone in front of this ice cream shop?")
+                #done()
+              #error: (model, response) ->
+                #throw response.responseText

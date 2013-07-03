@@ -138,7 +138,9 @@ end
 
 group :development, :test do
   gem 'teaspoon', github: 'modeset/teaspoon'
+  gem 'tapout'
   gem 'rspec-rails'
+  #gem 'rspec-ontap'
   gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'
 end

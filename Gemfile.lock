@@ -118,7 +118,7 @@ GIT
 
 GIT
   remote: git://github.com/modeset/teaspoon.git
-  revision: 9ac2173e243a5253c5a140174adaa68a64a2b2b0
+  revision: f779cf3f48935b168dea4be468f890fd2638319f
   specs:
     teaspoon (0.7.4)
       phantomjs (>= 1.8.1.1)

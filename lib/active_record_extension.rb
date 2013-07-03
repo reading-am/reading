@@ -14,17 +14,17 @@ module ActiveRecordExtension
       columns = args[:columns] || :all
       assocs = args[:assocs] || []
 
-      cattr_accessor :skeleton_columns 
+      cattr_accessor :skeleton_columns
 
       self.skeleton_columns = (columns == :all ? column_names : columns).map{|c| c.to_sym}
       assocs.each do |name|
         a = self.reflect_on_association name
         args = [
-          "#{a.name}_skeleton".to_sym,
-          :class_name => a.class_name,
-          :foreign_key => a.foreign_key,
-          :foreign_type => a.foreign_type,
-          :select => a.klass.skeleton_columns
+          :"#{a.name}_skeleton",
+          -> { select a.klass.skeleton_columns },
+          class_name: a.class_name,
+          foreign_key: a.foreign_key,
+          foreign_type: a.foreign_type
         ]
         if !self.skeleton_columns.include?(a.foreign_key.to_sym)
           self.skeleton_columns << a.foreign_key.to_sym

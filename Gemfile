@@ -76,7 +76,7 @@ gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
 gem 'hirefireapp' # has to be AFTER delayed_job
 gem 'aws-sdk'
 gem 'hipchat'
-gem 'tinder' # campfire
+gem 'tinder', github: 'skirchmeier/tinder' # campfire. Only using this branch to bypass JSON dependency
 gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'

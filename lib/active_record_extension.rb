@@ -51,15 +51,10 @@ module ActiveRecordExtension
     end
 
     def naked
-      records = connection.select_all(scoped.arel).each do |attrs|
-        attrs = initialize_attributes(attrs)
-        attrs.each_key do |attr|
-          attrs[attr] = type_cast_attribute(attr, attrs)
-        end
-      end
+      records = pluck all.arel.projections
 
       assoc_recs = {}
-      scoped.includes_values.each do |aname|
+      all.includes_values.each do |aname|
         assoc = self.reflect_on_association aname
         ids = records.map{|r| r[assoc.foreign_key]}.uniq
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[

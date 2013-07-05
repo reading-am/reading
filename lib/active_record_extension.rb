@@ -60,7 +60,7 @@ module ActiveRecordExtension
         assoc = self.reflect_on_association aname
         ids = records.map{|r| r[assoc.foreign_key]}.uniq
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
-          (assoc.scope ? assoc.scope.call : assoc.klass).where(:id => ids).naked.map{|r| [r['id'], r]}
+          (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).naked.map{|r| [r['id'], r]}
         ]
       end
 

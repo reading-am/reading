@@ -65,7 +65,7 @@ module ActiveRecordExtension
           (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).naked.map{|r| [r['id'], r]}
         ]
       end
-      debugger
+
       records.map do |attrs|
         assocs = {}
         assoc_recs.each do |k,v|

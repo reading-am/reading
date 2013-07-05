@@ -289,7 +289,7 @@ class User < ActiveRecord::Base
       'avatar_thumb'  => avatar_url(attrs['id'], attrs['avatar_file_name'], attrs['avatar_updated_at'], :thumb),
       'avatar_mini'   => avatar_url(attrs['id'], attrs['avatar_file_name'], attrs['avatar_updated_at'], :mini),
       'following_count' => attrs['following_size'],
-      'followers_count' => attrs['fofollowers_size'],
+      'followers_count' => attrs['followers_size'],
       'access'        => access_for_bitmask(attrs['access']),
       'created_at'    => attrs['created_at'],
       'updated_at'    => attrs['updated_at']

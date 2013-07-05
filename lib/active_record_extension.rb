@@ -15,13 +15,16 @@ module ActiveRecordExtension
       assocs = args[:assocs] || []
 
       cattr_accessor :skeleton_columns
+      cattr_accessor :skeleton_arel_columns
 
       self.skeleton_columns = (columns == :all ? column_names : columns).map{|c| c.to_sym}
+      self.skeleton_arel_columns = skeleton_columns.map{|c| arel_table[c]}
+
       assocs.each do |name|
-        a = self.reflect_on_association name
+        a = reflect_on_association name
         args = [
           :"#{a.name}_skeleton",
-          -> { a.klass.select a.klass.skeleton_columns },
+          -> { a.klass.select a.klass.skeleton_arel_columns },
           class_name: a.class_name,
           foreign_key: a.foreign_key,
           foreign_type: a.foreign_type
@@ -40,14 +43,14 @@ module ActiveRecordExtension
     end
 
     def skeletal
-      columns = defined?(skeleton_columns) ? skeleton_columns : false
+      acolumns = defined?(skeleton_arel_columns) ? skeleton_arel_columns : false
       all.includes_values = all.includes_values.map do |v|
         s = :"#{v}_skeleton"
         ref = reflect_on_association(s) || reflect_on_association(v)
-        columns << ref.foreign_key if columns
+        acolumns << arel_table[ref.foreign_key] if acolumns && !skeleton_columns.include?(ref.foreign_key.to_sym)
         ref.name
       end
-      columns ? select(columns.uniq) : all
+      acolumns ? select(acolumns) : all
     end
 
     def naked

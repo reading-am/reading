@@ -59,10 +59,8 @@ module ActiveRecordExtension
       all.includes_values.each do |aname|
         assoc = self.reflect_on_association aname
         ids = records.map{|r| r[assoc.foreign_key]}.uniq
-        query = assoc.klass.where(:id => ids)
-        query = query.select(assoc.scope.call.arel.projections) if assoc.scope
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
-          query.naked.map{|r| [r['id'], r]}
+          (assoc.scope ? assoc.scope.call : assoc.klass).where(:id => ids).naked.map{|r| [r['id'], r]}
         ]
       end
 

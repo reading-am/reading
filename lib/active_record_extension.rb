@@ -21,7 +21,7 @@ module ActiveRecordExtension
         a = self.reflect_on_association name
         args = [
           :"#{a.name}_skeleton",
-          -> { select a.klass.skeleton_columns },
+          -> { a.klass.select a.klass.skeleton_columns },
           class_name: a.class_name,
           foreign_key: a.foreign_key,
           foreign_type: a.foreign_type
@@ -51,14 +51,18 @@ module ActiveRecordExtension
     end
 
     def naked
-      records = pluck all.arel.projections
+      f = all.arel.projections.first
+      cnames = f.respond_to?(:name) && f.name == '*' ? column_names : all.arel.projections
+      records = pluck(all.arel.projections).map{|rec| Hash[*cnames.zip(rec).flatten(1)]}
 
       assoc_recs = {}
       all.includes_values.each do |aname|
         assoc = self.reflect_on_association aname
         ids = records.map{|r| r[assoc.foreign_key]}.uniq
+        query = assoc.klass.where(:id => ids)
+        query = query.select(assoc.scope.call.arel.projections) if assoc.scope
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
-          assoc.klass.select(assoc.options[:select]).where(:id => ids).naked.map{|r| [r['id'], r]}
+          query.naked.map{|r| [r['id'], r]}
         ]
       end
 

@@ -25,8 +25,8 @@ module ActiveRecordExtension
         args = [
           :"#{a.name}_skeleton",
           -> { a.klass.select a.klass.skeleton_arel_columns },
-          class_name: a.class_name,
-          foreign_key: a.foreign_key,
+          class_name:   a.class_name,
+          foreign_key:  a.foreign_key,
           foreign_type: a.foreign_type
         ]
 
@@ -47,15 +47,14 @@ module ActiveRecordExtension
       all.includes_values = all.includes_values.map do |v|
         s = :"#{v}_skeleton"
         ref = reflect_on_association(s) || reflect_on_association(v)
-        acolumns << arel_table[ref.foreign_key] if acolumns && !skeleton_columns.include?(ref.foreign_key.to_sym)
+        acolumns << arel_table[ref.foreign_key.to_sym] if acolumns && !skeleton_columns.include?(ref.foreign_key.to_sym)
         ref.name
       end
       acolumns ? select(acolumns) : all
     end
 
     def naked
-      f = all.arel.projections.first
-      cnames = f.respond_to?(:name) && f.name == '*' ? column_names : all.arel.projections
+      cnames = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map{|c| c.name.to_s}
       records = pluck(all.arel.projections).map{|rec| Hash[*cnames.zip(rec).flatten(1)]}
 
       assoc_recs = {}
@@ -66,7 +65,7 @@ module ActiveRecordExtension
           (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).naked.map{|r| [r['id'], r]}
         ]
       end
-
+      debugger
       records.map do |attrs|
         assocs = {}
         assoc_recs.each do |k,v|

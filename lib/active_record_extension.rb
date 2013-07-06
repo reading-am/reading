@@ -55,11 +55,15 @@ module ActiveRecordExtension
     end
 
     def naked
+      # Dupe and clear includes_values else pluck() will do a join on them
+      includes = all.includes_values.dup
+      all.includes_values.clear
+
       cnames = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map{|c| c.name.to_s}
       records = pluck(all.arel.projections).map{|rec| Hash[*cnames.zip(rec).flatten(1)]}
 
       assoc_recs = {}
-      all.includes_values.each do |aname|
+      includes.each do |aname|
         assoc = self.reflect_on_association aname
         ids = records.map{|r| r[assoc.foreign_key]}.uniq
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[

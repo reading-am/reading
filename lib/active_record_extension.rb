@@ -60,14 +60,8 @@ module ActiveRecordExtension
       includes = all.includes_values.dup
       all.includes_values.clear
 
-      columns = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map{|c| c.name.to_s}
-      records = pluck(all.arel.projections).map do |values|
-        record = {}
-        columns.zip(values).map do |column, value|
-          record[column] = value
-        end
-        record
-      end
+      columns = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map {|c| c.name.to_s }
+      records = pluck(all.arel.projections).map {|values| Hash[columns.zip(values)] }
 
       assoc_recs = {}
       includes.each do |aname|
@@ -93,7 +87,7 @@ end
 def skeleton_bm l=100, n=20
   ll = ActiveRecord::Base.logger
   ActiveRecord::Base.logger = nil
-  Benchmark.bmbm(15) do |x|
+  Benchmark.bm(15) do |x|
     x.report 'Full:' do
       n.times do
         Post.limit(l).includes(:user, :page).map {|p| p.simple_obj }

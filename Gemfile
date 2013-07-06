@@ -39,7 +39,7 @@ gem 'text'
 ##############
 # Monitoring #
 ##############
-gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', github: 'leppert/MiniProfiler', branch: 'patch-1'
 gem 'newrelic_rpm'
 
 ########
@@ -133,6 +133,7 @@ group :development do
   gem 'irbtools', require: false
   gem 'terminal-notifier', require: false # or else irbtools will complain
   gem 'meta_request' # for RailsPanel
+  gem 'benchmark-ips'
 end
 
 group :development, :test do

@@ -84,33 +84,15 @@ module ActiveRecordExtension
 
 end
 
-def skeleton_bm l=100, n=20
-  ll = ActiveRecord::Base.logger
-  ActiveRecord::Base.logger = nil
-  Benchmark.bm(15) do |x|
-    x.report 'Full:' do
-      n.times do
-        Post.limit(l).includes(:user, :page).map {|p| p.simple_obj }
-      end
-    end
-    x.report 'Skeletal:' do
-      n.times do
-        Post.limit(l).includes(:user, :page).skeletal.map {|p| p.simple_obj }
-      end
-    end
-    x.report 'Naked:' do
-      n.times do
-        Post.limit(l).includes(:user, :page).naked
-      end
-    end
-    x.report 'Naked Skeletal:' do
-      n.times do
-        Post.limit(l).includes(:user, :page).skeletal.naked
-      end
+def skeleton_bm l=100
+  ActiveRecord::Base.logger.silence do
+    Benchmark.ips(15) do |x|
+      x.report('Full:')           { Post.limit(l).includes(:user, :page).map {|p| p.simple_obj } }
+      x.report('Skeletal:')       { Post.limit(l).includes(:user, :page).skeletal.map {|p| p.simple_obj } }
+      x.report('Naked:')          { Post.limit(l).includes(:user, :page).naked }
+      x.report('Naked Skeletal:') { Post.limit(l).includes(:user, :page).skeletal.naked }
     end
   end
-  ActiveRecord::Base.logger = ll
-  puts "\n"
 end
 
 # include the extension

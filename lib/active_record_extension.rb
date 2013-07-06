@@ -44,7 +44,9 @@ module ActiveRecordExtension
 
     def skeletal
       acolumns = defined?(skeleton_arel_columns) ? skeleton_arel_columns : false
-      all.includes_values = all.includes_values.map do |v|
+      # This must use map! rather than v = v.map because assignment doesn't work
+      # correctly within this method even though it works outside of it. No idea.
+      all.includes_values.map! do |v|
         s = :"#{v}_skeleton"
         ref = reflect_on_association(s) || reflect_on_association(v)
         acolumns << arel_table[ref.foreign_key.to_sym] if acolumns && !skeleton_columns.include?(ref.foreign_key.to_sym)

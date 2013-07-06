@@ -73,11 +73,11 @@ module ActiveRecordExtension
       end
 
       records.map do |attrs|
-        assocs = {}
         assoc_recs.each do |k,v|
-          assocs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
+          attrs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
         end
-        attrs = assocs.merge(simple_obj(attrs.merge(assocs)))
+        attrs
+        #attrs = assocs.merge(simple_obj(attrs))
       end
     end
   end
@@ -87,8 +87,8 @@ end
 def skeleton_bm l=100
   ActiveRecord::Base.logger.silence do
     Benchmark.ips(15) do |x|
-      x.report('Full:')           { Post.limit(l).includes(:user, :page).map {|p| p.simple_obj } }
-      x.report('Skeletal:')       { Post.limit(l).includes(:user, :page).skeletal.map {|p| p.simple_obj } }
+      x.report('Full:')           { Post.limit(l).includes(:user, :page).to_a }
+      x.report('Skeletal:')       { Post.limit(l).includes(:user, :page).to_a }
       x.report('Naked:')          { Post.limit(l).includes(:user, :page).naked }
       x.report('Naked Skeletal:') { Post.limit(l).includes(:user, :page).skeletal.naked }
     end

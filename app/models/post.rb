@@ -39,7 +39,7 @@ class Post < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
-  skeleton :columns => [:id, :yn, :created_at, :updated_at],
+  bones :columns => [:id, :yn, :created_at, :updated_at],
            :assocs  => [:user, :page]
 
   private

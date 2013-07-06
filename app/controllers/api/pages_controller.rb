@@ -4,7 +4,7 @@ class Api::PagesController < Api::APIController
   def index
    @pages = Page.order("created_at DESC")
                 .paginate(:page => params[:page])
-                .skeletal
+                .bones
 
     respond_to do |format|
       format.json { render_json :pages => @pages.collect { |page| page.simple_obj } }

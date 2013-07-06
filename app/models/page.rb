@@ -30,7 +30,7 @@ class Page < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
-  skeleton :columns => :all
+  bones :columns => :all
 
   META_TAG_NAMESPACES = ['og','twitter']
 

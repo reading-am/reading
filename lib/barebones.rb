@@ -11,21 +11,25 @@ module ActiveRecordExtension
   # add your static(class) methods here
   module ClassMethods
 
-    def skeleton args={}
+    def bones args=false
+      args ? bones_init(args) : bones_query
+    end
+
+    def bones_init args={}
+      cattr_accessor :bones_columns
+      cattr_accessor :bones_arel_columns
+
       columns = args[:columns] || :all
       assocs = args[:assocs] || []
 
-      cattr_accessor :skeleton_columns
-      cattr_accessor :skeleton_arel_columns
-
-      self.skeleton_columns = (columns == :all ? column_names : columns).map{|c| c.to_sym}
-      self.skeleton_arel_columns = skeleton_columns.map{|c| arel_table[c]}
+      self.bones_columns = (columns == :all ? column_names : columns).map{|c| c.to_sym}
+      self.bones_arel_columns = bones_columns.map{|c| arel_table[c]}
 
       assocs.each do |name|
         a = reflect_on_association name
         send a.macro, *[
-          :"#{a.name}_skeleton",
-          -> { a.klass.select a.klass.skeleton_arel_columns },
+          :"#{a.name}_bones",
+          -> { a.klass.select a.klass.bones_arel_columns },
           class_name:   a.class_name,
           foreign_key:  a.foreign_key,
           foreign_type: a.foreign_type
@@ -33,29 +37,29 @@ module ActiveRecordExtension
 
         alias_method "#{a.name}_flesh", a.name
         define_method(a.name) do
-          if self.association(a.name.to_sym).loaded? || !self.association(:"#{a.name}_skeleton").loaded?
+          if self.association(a.name.to_sym).loaded? || !self.association(:"#{a.name}_bones").loaded?
             self.send("#{a.name}_flesh")
           else
-            self.send("#{a.name}_skeleton")
+            self.send("#{a.name}_bones")
           end
         end
       end
     end
 
-    def skeletal
-      acolumns = defined?(skeleton_arel_columns) ? skeleton_arel_columns : false
+    def bones_query
+      acolumns = defined?(bones_arel_columns) ? bones_arel_columns : false
       # This must use map! rather than v = v.map because assignment doesn't work
       # correctly within this method even though it works outside of it. No idea.
       all.includes_values.map! do |v|
-        s = :"#{v}_skeleton"
+        s = :"#{v}_bones"
         ref = reflect_on_association(s) || reflect_on_association(v)
-        acolumns << arel_table[ref.foreign_key.to_sym] if acolumns && !skeleton_columns.include?(ref.foreign_key.to_sym)
+        acolumns << arel_table[ref.foreign_key.to_sym] if acolumns && !bones_columns.include?(ref.foreign_key.to_sym)
         ref.name
       end
       acolumns ? select(acolumns) : all
     end
 
-    def naked
+    def bare
       # Dupe and clear includes_values else pluck() will do a join on them
       includes = all.includes_values.dup
       all.includes_values.clear
@@ -67,8 +71,8 @@ module ActiveRecordExtension
       includes.each do |aname|
         assoc = self.reflect_on_association aname
         ids = records.map{|r| r[assoc.foreign_key]}.uniq
-        assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
-          (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).naked.map{|r| [r['id'], r]}
+        assoc_recs[aname.to_s.sub('_bones','').to_sym] = Hash[
+          (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).bare.map{|r| [r['id'], r]}
         ]
       end
 
@@ -84,13 +88,13 @@ module ActiveRecordExtension
 
 end
 
-def skeleton_bm l=100
+def bones_bm l=100
   ActiveRecord::Base.logger.silence do
-    Benchmark.ips(15) do |x|
-      x.report('Full:')           { Post.limit(l).includes(:user, :page).to_a }
-      x.report('Skeletal:')       { Post.limit(l).includes(:user, :page).to_a }
-      x.report('Naked:')          { Post.limit(l).includes(:user, :page).naked }
-      x.report('Naked Skeletal:') { Post.limit(l).includes(:user, :page).skeletal.naked }
+    Benchmark.ips(12) do |x|
+      x.report('Full:')       { Post.limit(l).includes(:user, :page).to_a }
+      x.report('Bones:')      { Post.limit(l).includes(:user, :page).to_a }
+      x.report('Bare:')       { Post.limit(l).includes(:user, :page).bare }
+      x.report('Bare Bones:') { Post.limit(l).includes(:user, :page).bones.bare }
     end
   end
 end

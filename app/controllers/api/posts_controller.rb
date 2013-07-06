@@ -47,8 +47,8 @@ class Api::PostsController < Api::APIController
       .includes([:user, :page])#, {:referrer_post => :user}])
       .order("created_at DESC")
       .limit(params[:count])
-      .skeletal
-      .naked
+      .bones
+      .bare
 
     respond_to do |format|
       format.json { render_json :posts => @posts }

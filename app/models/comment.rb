@@ -15,7 +15,7 @@ class Comment < ActiveRecord::Base
 
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
-  skeleton :assocs => [:user, :page, :post]
+  bones :assocs => [:user, :page, :post]
 
   private
 

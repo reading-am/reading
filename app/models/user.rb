@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
   end
   handle_asynchronously :solr_index
 
-  skeleton :columns => [
+  bones :columns => [
     :id,
     :username,
     :name,

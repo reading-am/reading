@@ -10,6 +10,7 @@ module ActiveRecordExtension
 
   # add your static(class) methods here
   module ClassMethods
+
     def skeleton args={}
       columns = args[:columns] || :all
       assocs = args[:assocs] || []
@@ -55,23 +56,39 @@ module ActiveRecordExtension
     end
 
     def naked
-      # Dupe and clear includes_values else pluck() will do a join on them
-      includes = all.includes_values.dup
-      all.includes_values.clear
+      # Taken from ActiveRecord's pluck()
+      # https://github.com/rails/rails/blob/master/activerecord/lib/active_record/relation/calculations.rb#L154
+      klass = self
+      result = klass.connection.select_all(all.arel)
+      columns = result.columns.map do |key|
+        klass.column_types.fetch(key) {
+          result.column_types.fetch(key) {
+            Class.new { def type_cast(v); v; end }.new
+          }
+        }
+      end
 
-      cnames = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map{|c| c.name.to_s}
-      records = pluck(all.arel.projections).map{|rec| Hash[*cnames.zip(rec).flatten(1)]}
+      result = result.map do |attributes|
+        values = klass.initialize_attributes(attributes).values
+        record = {}
+        columns.zip(values).map do |column, value|
+          # For TimeZoneConversion column type because for some reason it won't give us direct access to @column. TODO - cleanup
+          c = column.instance_variable_get(:@column) || column
+          record[c.name] = column.type_cast(value)
+        end
+        record
+      end
 
       assoc_recs = {}
-      includes.each do |aname|
+      all.includes_values.each do |aname|
         assoc = self.reflect_on_association aname
-        ids = records.map{|r| r[assoc.foreign_key]}.uniq
+        ids = result.map{|r| r[assoc.foreign_key]}.uniq
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
           (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).naked.map{|r| [r['id'], r]}
         ]
       end
 
-      records.map do |attrs|
+      result.map do |attrs|
         assocs = {}
         assoc_recs.each do |k,v|
           assocs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
@@ -81,6 +98,37 @@ module ActiveRecordExtension
     end
   end
 
+end
+
+def skeleton_bm l=100, n=20
+  ll = ActiveRecord::Base.logger
+  ActiveRecord::Base.logger = nil
+
+  Benchmark.bmbm(15) do |x|
+    x.report 'Full:' do
+      n.times do
+        Post.limit(l).includes(:user, :page).map {|p| p.simple_obj }
+      end
+    end
+    x.report 'Skeletal:' do
+      n.times do
+        Post.limit(l).includes(:user, :page).skeletal.map {|p| p.simple_obj }
+      end
+    end
+    x.report 'Naked:' do
+      n.times do
+        Post.limit(l).includes(:user, :page).naked
+      end
+    end
+    x.report 'Naked Skeletal:' do
+      n.times do
+        Post.limit(l).includes(:user, :page).skeletal.naked
+      end
+    end
+  end
+
+  ActiveRecord::Base.logger = ll
+  puts "\n"
 end
 
 # include the extension

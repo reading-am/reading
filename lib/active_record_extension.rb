@@ -56,39 +56,29 @@ module ActiveRecordExtension
     end
 
     def naked
-      # Taken from ActiveRecord's pluck()
-      # https://github.com/rails/rails/blob/master/activerecord/lib/active_record/relation/calculations.rb#L154
-      klass = self
-      result = klass.connection.select_all(all.arel)
-      columns = result.columns.map do |key|
-        klass.column_types.fetch(key) {
-          result.column_types.fetch(key) {
-            Class.new { def type_cast(v); v; end }.new
-          }
-        }
-      end
+      # Dupe and clear includes_values else pluck() will do a join on them
+      includes = all.includes_values.dup
+      all.includes_values.clear
 
-      result = result.map do |attributes|
-        values = klass.initialize_attributes(attributes).values
+      columns = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map{|c| c.name.to_s}
+      records = pluck(all.arel.projections).map do |values|
         record = {}
         columns.zip(values).map do |column, value|
-          # For TimeZoneConversion column type because for some reason it won't give us direct access to @column. TODO - cleanup
-          c = column.instance_variable_get(:@column) || column
-          record[c.name] = column.type_cast(value)
+          record[column] = value
         end
         record
       end
 
       assoc_recs = {}
-      all.includes_values.each do |aname|
+      includes.each do |aname|
         assoc = self.reflect_on_association aname
-        ids = result.map{|r| r[assoc.foreign_key]}.uniq
+        ids = records.map{|r| r[assoc.foreign_key]}.uniq
         assoc_recs[aname.to_s.sub('_skeleton','').to_sym] = Hash[
           (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).naked.map{|r| [r['id'], r]}
         ]
       end
 
-      result.map do |attrs|
+      records.map do |attrs|
         assocs = {}
         assoc_recs.each do |k,v|
           assocs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
@@ -103,7 +93,6 @@ end
 def skeleton_bm l=100, n=20
   ll = ActiveRecord::Base.logger
   ActiveRecord::Base.logger = nil
-
   Benchmark.bmbm(15) do |x|
     x.report 'Full:' do
       n.times do
@@ -126,7 +115,6 @@ def skeleton_bm l=100, n=20
       end
     end
   end
-
   ActiveRecord::Base.logger = ll
   puts "\n"
 end

@@ -22,7 +22,7 @@ module ActiveRecordExtension
 
       assocs.each do |name|
         a = reflect_on_association name
-        args = [
+        send a.macro, *[
           :"#{a.name}_skeleton",
           -> { a.klass.select a.klass.skeleton_arel_columns },
           class_name:   a.class_name,
@@ -30,7 +30,6 @@ module ActiveRecordExtension
           foreign_type: a.foreign_type
         ]
 
-        self.send a.macro, *args
         alias_method "#{a.name}_flesh", a.name
         define_method(a.name) do
           if self.association(a.name.to_sym).loaded? || !self.association(:"#{a.name}_skeleton").loaded?

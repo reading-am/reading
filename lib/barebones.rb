@@ -26,21 +26,27 @@ module ActiveRecordExtension
       self.bones_arel_columns = bones_columns.map{|c| arel_table[c]}
 
       assocs.each do |name|
-        a = reflect_on_association name
-        send a.macro, *[
-          :"#{a.name}_bones",
-          -> { a.klass.select a.klass.bones_arel_columns },
-          class_name:   a.class_name,
-          foreign_key:  a.foreign_key,
-          foreign_type: a.foreign_type
-        ]
+        assoc = reflect_on_association name
 
-        alias_method "#{a.name}_flesh", a.name
-        define_method(a.name) do
-          if self.association(a.name.to_sym).loaded? || !self.association(:"#{a.name}_bones").loaded?
-            self.send("#{a.name}_flesh")
+        options = assoc.options.merge({
+          class_name:   assoc.class_name,
+          foreign_key:  assoc.foreign_key,
+        })
+        options[:foreign_type] = assoc.foreign_type if assoc.macro == :belongs_to
+
+        scope = -> {
+          query = assoc.scope ? assoc.klass.instance_eval(&assoc.scope) : assoc.klass
+          query.select(assoc.klass.bones_arel_columns)
+        }
+
+        send assoc.macro, *[:"#{assoc.name}_bones", scope, options]
+
+        alias_method "#{assoc.name}_flesh", assoc.name
+        define_method(assoc.name) do
+          if self.association(assoc.name.to_sym).loaded? || !self.association(:"#{assoc.name}_bones").loaded?
+            self.send("#{assoc.name}_flesh")
           else
-            self.send("#{a.name}_bones")
+            self.send("#{assoc.name}_bones")
           end
         end
       end

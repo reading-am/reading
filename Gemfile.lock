@@ -125,20 +125,6 @@ GIT
       railties (>= 3.2.5, < 5)
 
 GIT
-  remote: git://github.com/mperham/dalli.git
-  revision: 26b8c35396cc0df7ca6c11ad28aab12284f2be86
-  specs:
-    dalli (2.6.4)
-
-GIT
-  remote: git://github.com/rails/coffee-rails.git
-  revision: c812f4da1f5adc226ef834b57c2498467761cb2c
-  specs:
-    coffee-rails (4.0.0)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.0)
-
-GIT
   remote: git://github.com/skirchmeier/tinder.git
   revision: 740af8c53540eb188367ac3e33421880229b0388
   specs:
@@ -257,6 +243,9 @@ GEM
     cocaine (0.5.1)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.0.9)
+    coffee-rails (4.0.0)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0.beta, < 5.0)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
@@ -270,6 +259,7 @@ GEM
       addressable
     curb (0.8.4)
     daemons (1.1.9)
+    dalli (2.6.4)
     debug_inspector (0.0.2)
     debugger (1.6.0)
       columnize (>= 0.3.1)
@@ -657,11 +647,11 @@ DEPENDENCIES
   browser
   bullet
   carrierwave
-  coffee-rails!
+  coffee-rails
   crack
   curb (~> 0.8.0)
   daemons
-  dalli!
+  dalli
   debugger
   delayed_job (~> 4.0.0.beta2)
   delayed_job_active_record (~> 4.0.0.beta3)

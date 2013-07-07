@@ -9,7 +9,7 @@ gem 'rails-observers'
 gem 'unicorn' # server
 gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
-gem 'dalli', github: 'mperham/dalli' # Memcached
+gem 'dalli' # Memcached
 gem 'sunspot_rails', github: 'leppert/sunspot', branch: '2.0.0-rails4'
 gem 'rails_12factor', group: :production # needed by Heroku
 
@@ -120,7 +120,7 @@ gem 'fog'
 ##########
 gem 'less-rails'
 gem 'therubyracer' # Required by less-rails
-gem 'coffee-rails', github: 'rails/coffee-rails'
+gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 
 group :development do

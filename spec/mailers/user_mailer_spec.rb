@@ -3,15 +3,6 @@ require "spec_helper"
 describe UserMailer do
   fixtures :users, :comments, :pages
 
-  # This is a monkey patch because, when upgrading to Rails 4,
-  # rspec calls params() on the UserMailer object if there's a
-  # stylesheet_link_tag in any of the html templates.
-  # This method doesn't exist so the tests fail.
-  # TODO - upgrade rails and/or rspec in a few weeks and see if this is fixed
-  class UserMailer
-    def params; {}; end
-  end
-
   it "should deliver new follower mail" do
     UserMailer.new_follower(users(:greg), users(:howard)).deliver
   end

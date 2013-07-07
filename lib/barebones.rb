@@ -35,7 +35,7 @@ module ActiveRecordExtension
         options[:foreign_type] = assoc.foreign_type if assoc.macro == :belongs_to
 
         scope = -> {
-          query = assoc.scope ? assoc.klass.instance_eval(&assoc.scope) : assoc.klass
+          query = assoc.scope ? assoc.klass.instance_eval(&assoc.scope) : assoc.klass.all
           query.select(assoc.klass.bones_arel_columns)
         }
 

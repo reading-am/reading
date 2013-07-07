@@ -19,8 +19,8 @@ module ActiveRecordExtension
       cattr_accessor :bones_columns
       cattr_accessor :bones_arel_columns
 
-      columns = args[:columns] || :all
-      assocs = args[:assocs] || []
+      columns = args[:columns]  || :all
+      assocs  = args[:assocs]   || []
 
       self.bones_columns = (columns == :all ? column_names : columns).map{|c| c.to_sym}
       self.bones_arel_columns = bones_columns.map{|c| arel_table[c]}
@@ -87,7 +87,6 @@ module ActiveRecordExtension
           attrs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
         end
         attrs
-        #attrs = assocs.merge(simple_obj(attrs))
       end
     end
   end

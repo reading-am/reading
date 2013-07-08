@@ -71,27 +71,33 @@ module ActiveRecordExtension
     end
 
     def bare
-      projections = all.arel.projections.map do |proj|
-        if !p.is_a? Arel::Attributes::Attribute
-          parts = proj.to_s.split('.')
-          model = parts.length == 1 ? self : parts.shift.singularize.capitalize.constantize
-          column = parts.join('.')
-          proj = model.arel_table[column]
-        end
-        proj
+      projections = all.arel.projections
+      associations = all.includes_values.map { |name| reflect_on_association name }
+
+      associations.each do |assoc|
+        projections << assoc.klass.arel_table[Arel.star]
       end
 
-      all.includes_values.each do |aname|
-        assoc = self.reflect_on_association aname
-        if !projections.any? { |p| p.relation.engine == assoc.klass }
-          projections << assoc.klass.arel_table[Arel.star]
+      columns = []
+      projections.each do |p|
+        if p.respond_to? :name
+          model = p.relation.engine
+          column = p.name
+        else
+          model = self
+          column = p
+        end
+
+        if column == Arel.star
+          model.column_names.each { |c| columns << "#{model.table_name}.#{c}" }
+        else
+          columns << column
         end
       end
 
-      pluck(projections)
-
-      #columns = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map {|c| c.name.to_s }
-      #records = pluck(projections).map {|values| Hash[columns.zip(values)] }
+      records = pluck(projections)
+      puts records.first.count, columns.count
+      records.map {|values| Hash[columns.zip(values)] }
 
       #assoc_recs = {}
       #all.includes_values.each do |aname|

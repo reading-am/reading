@@ -1,1 +1,1 @@
-Sitemap: https://reading.am/sitemap.xml.gz
+Sitemap: https://reading.am/sitemap.xml

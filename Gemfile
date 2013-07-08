@@ -112,7 +112,6 @@ gem 'jquery-rails'
 ############
 # See: https://github.com/kjvarga/sitemap_generator/wiki/Generate-Sitemaps-on-read-only-filesystems-like-Heroku
 gem 'sitemap_generator'
-gem 'carrierwave'
 gem 'fog'
 
 ##########

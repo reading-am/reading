@@ -11,6 +11,11 @@ module ActiveRecordExtension
   # add your static(class) methods here
   module ClassMethods
 
+
+    #def arel_columns
+      #@arel_columns ||= column_names.map{|c| arel_table[c]}
+    #end
+
     def bones args=false
       args ? bones_init(args) : bones_query
     end
@@ -66,28 +71,43 @@ module ActiveRecordExtension
     end
 
     def bare
-      # Dupe and clear includes_values else pluck() will do a join on them
-      includes = all.includes_values.dup
-      all.includes_values.clear
-
-      columns = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map {|c| c.name.to_s }
-      records = pluck(all.arel.projections).map {|values| Hash[columns.zip(values)] }
-
-      assoc_recs = {}
-      includes.each do |aname|
-        assoc = self.reflect_on_association aname
-        ids = records.map{|r| r[assoc.foreign_key]}.uniq
-        assoc_recs[aname.to_s.sub('_bones','').to_sym] = Hash[
-          (assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).bare.map{|r| [r['id'], r]}
-        ]
-      end
-
-      records.map do |attrs|
-        assoc_recs.each do |k,v|
-          attrs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
+      projections = all.arel.projections.map do |proj|
+        if !p.is_a? Arel::Attributes::Attribute
+          parts = proj.to_s.split('.')
+          model = parts.length == 1 ? self : parts.shift.singularize.capitalize.constantize
+          column = parts.join('.')
+          proj = model.arel_table[column]
         end
-        attrs
+        proj
       end
+
+      all.includes_values.each do |aname|
+        assoc = self.reflect_on_association aname
+        if !projections.any? { |p| p.relation.engine == assoc.klass }
+          projections << assoc.klass.arel_table[Arel.star]
+        end
+      end
+
+      pluck(projections)
+
+      #columns = all.arel.projections.first.name == '*' ? column_names : all.arel.projections.map {|c| c.name.to_s }
+      #records = pluck(projections).map {|values| Hash[columns.zip(values)] }
+
+      #assoc_recs = {}
+      #all.includes_values.each do |aname|
+        #assoc = self.reflect_on_association aname
+        #ids = records.map{|r| r[assoc.foreign_key]}.uniq
+        #assoc_recs[aname.to_s.sub('_bones','').to_sym] = Hash[
+          #(assoc.scope ? assoc.scope.call : assoc.klass).where(id: ids).bare.map{|r| [r['id'], r]}
+        #]
+      #end
+
+      #records.map do |attrs|
+        #assoc_recs.each do |k,v|
+          #attrs[k.to_s] = v[attrs[self.reflect_on_association(k).foreign_key]]
+        #end
+        #attrs
+      #end
     end
   end
 

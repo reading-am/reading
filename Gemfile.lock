@@ -329,7 +329,7 @@ GEM
     hipchat (0.10.0)
       httparty
     hirb (0.7.1)
-    hirefireapp (0.2.0)
+    hirefire-resource (0.1.2)
     htmlentities (4.3.1)
     http-cookie (1.0.1)
       domain_name (~> 0.5)
@@ -659,7 +659,7 @@ DEPENDENCIES
   fog
   girl_friday
   hipchat
-  hirefireapp
+  hirefire-resource
   instapaper!
   irbtools
   jquery-rails

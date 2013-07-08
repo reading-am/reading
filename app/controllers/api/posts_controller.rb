@@ -49,7 +49,7 @@ class Api::PostsController < Api::APIController
       .limit(params[:count])
 
     respond_to do |format|
-      format.json { render_json :posts => @posts.collect { |post| post.simple_obj } }
+      format.json { render_json :posts => @posts.map { |post| post.simple_obj } }
     end
   end
   add_transaction_tracer :index

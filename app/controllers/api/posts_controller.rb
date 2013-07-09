@@ -43,10 +43,9 @@ class Api::PostsController < Api::APIController
       @posts = @posts.where("id <= ?", params[:max_id])
     end
 
-    @posts = @posts
-      .includes([:user, :page, :domain, {:referrer_post => :user}])
-      .order("created_at DESC")
-      .limit(params[:count])
+    @posts = @posts.includes(:user, :page, :domain, {:referrer_post => :user})
+                   .order("created_at DESC")
+                   .limit(params[:count])
 
     respond_to do |format|
       format.json { render_json :posts => @posts.map { |post| post.simple_obj } }

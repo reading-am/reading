@@ -17,7 +17,7 @@ class PusherController < Api::APIController
     webhook = Pusher.webhook(request)
     if webhook.valid?
       webhook.events.each do |event|
-        if (event['channel'] =~ /^users\.[0-9]*\.feed$/) == 0 \
+        if (event['channel'] =~ /^users\.[0-9]*\.following\.events/) == 0 \
           and ['channel_occupied','channel_vacated'].include? event['name']
           User.where(:id => event['channel'].split('.')[1])
               .update_all(:feed_present => (event['name'] == 'channel_occupied'))

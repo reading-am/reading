@@ -14,6 +14,11 @@ define [
 
       super options
 
+    addAll: (posts, options) ->
+      pages = new Pages
+      posts.each (post) => @groupUnder(post, pages)
+      @subview.collection.reset pages.models
+
     addOne: (post) ->
       @groupUnder post, @subview.collection
 

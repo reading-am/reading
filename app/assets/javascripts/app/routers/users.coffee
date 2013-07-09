@@ -46,7 +46,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
       path = window.location.pathname.split("/")
       is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
-      @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "feed" else "posts"}"
+      @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
       @collection.monitor() unless page > 1
 
       if username is User::current.get("username")
@@ -56,7 +56,8 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         @pages_view = new PostsGroupedByPageView
           collection: @collection
 
-      $("#yield").html @pages_view.render().el
+      @collection.fetch reset: true, success: =>
+        $("#yield").html @pages_view.render().el
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

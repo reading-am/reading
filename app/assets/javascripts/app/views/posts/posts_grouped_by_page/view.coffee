@@ -1,35 +1,13 @@
 define [
-  "app/views/base/collection"
+  "app/views/base/grouped_collection"
   "app/collections/pages"
   "app/views/pages/pages/view"
-], (CollectionView, Pages, PagesView) ->
+], (GroupedCollectionView, Pages, PagesView) ->
 
-  class PostsGroupedByPageView extends CollectionView
+  class PostsGroupedByPageView extends GroupedCollectionView
+    group_by: "page"
+    group_under: "posts"
+
     initialize: (options) ->
-      pages = new Pages
-      @collection.each (post) => @groupUnder(post, pages)
-
-      @subview = new PagesView collection: pages
-      @setElement @subview.el
-
+      @subview = new PagesView collection: new Pages
       super options
-
-    addAll: (posts, options) ->
-      pages = new Pages
-      posts.each (post) => @groupUnder(post, pages)
-      @subview.collection.reset pages.models
-
-    addOne: (post) ->
-      @groupUnder post, @subview.collection
-
-    groupUnder: (post, pages) ->
-      page = pages.get(post.get("page").id)
-      if page
-        page.posts.add post
-      else
-        post.get("page").posts.add post
-        pages.add(post.get("page"))
-
-    render: ->
-      @subview.render()
-      return this

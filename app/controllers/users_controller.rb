@@ -15,7 +15,13 @@ class UsersController < ApplicationController
     end
 
     if !params[:medium].blank?
-      @posts = @posts.where(pages: {medium: params[:medium]})
+      ids = @posts.joins(:page)
+                  .where(pages: {medium: params[:medium]})
+                  .order("posts.created_at DESC")
+                  .limit(50)
+                  .pluck(:id)
+
+      @posts = Post.where(:id => ids)
     end
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})

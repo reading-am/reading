@@ -33,6 +33,14 @@ GIT
       multi_json
 
 GIT
+  remote: git://github.com/leppert/MiniProfiler.git
+  revision: 99af067239c843b828f758cfbf32c4b342fa194a
+  branch: patch-1
+  specs:
+    rack-mini-profiler (0.1.27)
+      rack (>= 1.1.3)
+
+GIT
   remote: git://github.com/leppert/kippt.git
   revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
   specs:
@@ -490,8 +498,6 @@ GEM
       rack (>= 0.9.1)
     rack-cors (0.2.8)
       rack
-    rack-mini-profiler (0.1.27)
-      rack (>= 1.1.3)
     rack-protection (1.5.0)
       rack
     rack-test (0.6.2)
@@ -693,7 +699,7 @@ DEPENDENCIES
   progress_bar
   pusher
   rack-cors
-  rack-mini-profiler
+  rack-mini-profiler!
   rails (= 4.0.0)
   rails-backbone
   rails-observers

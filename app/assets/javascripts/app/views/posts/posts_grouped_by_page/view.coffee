@@ -7,7 +7,5 @@ define [
   class PostsGroupedByPageView extends GroupedCollectionView
     group_by: "page"
     group_under: "posts"
-
-    initialize: (options) ->
-      @subview = new PagesView collection: new Pages
-      super options
+    group_view: PagesView
+    group_collection: Pages

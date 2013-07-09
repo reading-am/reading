@@ -5,8 +5,11 @@ define [
   class GroupedCollectionView extends CollectionView
     group_by: ""
     group_under: ""
+    group_view: {}
+    group_collection: {}
 
     initialize: (options) ->
+      @subview = new @group_view collection: new @group_collection
       @addAll @collection
       @setElement @subview.el
       super options
@@ -20,7 +23,7 @@ define [
         collection.add(model.get(@group_by))
 
     addAll: (collection, options) ->
-      tmp_collection = new @subview.collection.constructor
+      tmp_collection = new @group_collection
       collection.each (model) => @group(model, tmp_collection)
       @subview.collection.reset tmp_collection.models
 

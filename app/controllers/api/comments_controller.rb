@@ -31,6 +31,8 @@ class Api::CommentsController < Api::APIController
                           .paginate(:page => params[:page])
     end
 
+    @comments = @comments.includes([:user, :page])
+
     respond_to do |format|
       format.json { render_json :comments => @comments.collect { |comment| comment.simple_obj } }
     end

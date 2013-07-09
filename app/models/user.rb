@@ -169,7 +169,7 @@ class User < ActiveRecord::Base
   end
 
   def follow!(followed)
-    relationships.create!(:followed_id => followed.id) unless id == followed.id
+    relationships.create!(followed_id: followed.id) unless id == followed.id
   end
 
   def unfollow!(followed)
@@ -177,11 +177,11 @@ class User < ActiveRecord::Base
   end
 
   def feed
-    Post.from_users_followed_by(self).includes([:user, :page, {:referrer_post => :user}])
+    Post.from_users_followed_by(self).includes(:user, :page, {referrer_post: :user})
   end
 
   def unread_since(datetime)
-    Post.unread_by_since(self, datetime).includes([:user, :page, {:referrer_post => :user}])
+    Post.unread_by_since(self, datetime).includes(:user, :page, {referrer_post: :user})
   end
 
   def following_who_posted_to page

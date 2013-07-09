@@ -21,7 +21,7 @@ class UsersController < ApplicationController
                   .limit(50)
                   .pluck(:id)
 
-      @posts = Post.where(:id => ids)
+      @posts = Post.where(id: ids)
     end
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})

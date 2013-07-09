@@ -13,7 +13,6 @@ class Comment < ActiveRecord::Base
   validates_presence_of :user_id, :page_id, :body
   validate :post_belongs_to_user
 
-  default_scope { includes([:user,:page]) }
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
   private

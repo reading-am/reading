@@ -177,7 +177,7 @@ class User < ActiveRecord::Base
   end
 
   def feed
-    Post.from_users_followed_by(self).includes(:user, :page, {referrer_post: :user})
+    Post.from_users_followed_by(self)
   end
 
   def unread_since(datetime)

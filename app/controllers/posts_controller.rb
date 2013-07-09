@@ -1,14 +1,6 @@
 # encoding: utf-8
 class PostsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :visit]
-
-  # GET /posts
-  # GET /posts.xml
-  def index
-    @posts =  Post.order("created_at DESC")
-                  .includes([:user, :page, {:referrer_post => :user}])
-                  .paginate(:page => params[:page])
-  end
+  before_filter :authenticate_user!, :except => [:visit]
 
   # A note about schema
   # The original idea was that the referrer_id didn't

@@ -1,5 +1,5 @@
 Reading::Application.routes.draw do
-  root :to => "posts#index"
+  root :to => "users#show"
 
   devise_for :users,
     :skip => [:sessions,:registrations],

@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     end
 
     if !params[:medium].blank?
-      @posts = @posts.where('pages.medium' => params[:medium])
+      @posts = @posts.where(pages: {medium: params[:medium]})
     end
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})

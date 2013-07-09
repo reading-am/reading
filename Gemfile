@@ -39,7 +39,7 @@ gem 'text'
 ##############
 # Monitoring #
 ##############
-gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', github: 'leppert/MiniProfiler', branch: 'patch-1'
 gem 'newrelic_rpm'
 
 ########

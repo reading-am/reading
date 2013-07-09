@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     if params[:username] == 'everybody'
-      @posts = Post.includes([:user, :page, {:referrer_post => :user}])
+      @posts = Post.includes(:user, :page, {referrer_post: :user})
     else
       @user = params[:username] ? User.find_by_username(params[:username]) : User.find(params[:id])
       if !@user then not_found end
@@ -14,7 +14,8 @@ class UsersController < ApplicationController
       @posts = params[:type] == 'list' ? @user.feed : @user.posts
     end
 
-    @posts = @posts.order("created_at DESC").paginate(:page => params[:page])
+    @posts = @posts.order("created_at DESC")
+                   .paginate(page: params[:page])
 
     respond_to do |format|
       format.html { render 'posts/index' }

@@ -5,7 +5,7 @@ define [
 ], (GroupedCollectionView, Pages, PagesView) ->
 
   class PostsGroupedByPageView extends GroupedCollectionView
-    group_by: "page"
-    group_under: "posts"
-    group_view: PagesView
-    group_collection: Pages
+    groupBy: "page"
+    groupUnder: "posts"
+    groupView: PagesView
+    groupCollection: Pages

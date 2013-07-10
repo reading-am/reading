@@ -43,7 +43,7 @@ class Api::PostsController < Api::APIController
       @posts = @posts.where("id <= ?", params[:max_id])
     end
 
-    @posts = @posts.includes(:user, :page, {:referrer_post => :user})
+    @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("created_at DESC")
                    .limit(params[:count])
 

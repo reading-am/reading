@@ -56,8 +56,9 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         @pages_view = new PostsGroupedByPageView
           collection: @collection
 
+      @pages_view.render()
       @collection.fetch reset: true, success: =>
-        $("#yield").html @pages_view.render().el
+        $("#yield").html @pages_view.el
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

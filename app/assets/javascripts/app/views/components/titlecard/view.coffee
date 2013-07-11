@@ -3,7 +3,7 @@ define [
   "backbone"
   "text!app/views/components/titlecard/template.mustache"
   "text!app/views/components/titlecard/styles.css"
-  "extend/jquery/waypoints.min"
+  "extend/jquery/waypoints"
 ], ($, Backbone, template, styles) ->
 
   class Titlecard extends Backbone.View
@@ -15,8 +15,7 @@ define [
       "click": "scroll_to_top"
 
     initialize: ->
-      $.waypoints.settings.scrollThrottle = 30
-      $("body").waypoint (event, direction) =>
+      $("body").waypoint (direction) =>
         if direction is "down"
           txt = "Go up"
           opc = 0

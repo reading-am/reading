@@ -14,6 +14,7 @@ define [
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
+  "extend/jquery/waypoints"
 ], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
@@ -59,6 +60,13 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       @pages_view.render()
       @collection.fetch reset: true, success: =>
         $("#yield").html @pages_view.el
+
+        @pages_view.$el.waypoint (direction) =>
+          if direction is "down"
+            @pages_view.$el.waypoint "disable"
+            @collection.fetchNextPage success: =>
+              @pages_view.$el.waypoint "enable"
+        , {offset: "bottom-in-view"}
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

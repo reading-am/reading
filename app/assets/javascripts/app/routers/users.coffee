@@ -71,7 +71,9 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
                 wstate = "enable"
               else
                 wstate = "destroy"
-              @pages_view.$el.waypoint wstate
+              # This is on a delay because the waypoints plugin will miscalculate
+              # the offset if rendering the new DOM elements hasn't finished
+              setTimeout => @pages_view.$el.waypoint wstate, 2000
         , {offset: "bottom-in-view"}
 
     edit: ->

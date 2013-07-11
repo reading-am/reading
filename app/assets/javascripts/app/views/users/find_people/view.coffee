@@ -31,7 +31,7 @@ define [
 
     render: ->
       data =
-        query:     @collection.query
+        query:     @collection.params.q
         signed_in: User::current.signed_in()
 
       data[@section] = true

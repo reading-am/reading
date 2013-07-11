@@ -6,10 +6,9 @@ define [
 ], (_, Constants, Backbone, pusher) ->
 
   Backbone.Collection::endpoint = -> "#{@type.toLowerCase()}"
+  Backbone.Collection::params = {limit:100, offset:0}
   Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
   Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
-  Backbone.Collection::params = ->
-    {limit: @limit, offset: @offset}
 
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses
@@ -42,11 +41,15 @@ define [
   Backbone.Collection::search = (query) ->
     collection = new this.constructor
 
-    collection.query = query
-
     collection._url = collection.url
-    collection.url = -> "#{@_url()}/search?q=#{@query}"
+    collection.url = -> "#{_.result @,"_url"}/search"
+    collection.params.q = query
 
     return collection
+
+  Backbone.Collection::fetchNextPage = (options={}) ->
+    @params.offset += @params.limit
+    options.remove = false
+    @fetch options
 
   return Backbone

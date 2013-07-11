@@ -64,8 +64,12 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         @pages_view.$el.waypoint (direction) =>
           if direction is "down"
             @pages_view.$el.waypoint "disable"
-            @collection.fetchNextPage success: =>
-              @pages_view.$el.waypoint "enable"
+            @collection.fetchNextPage success: (collection, data) =>
+              if data?[collection.type.toLowerCase()]?.length
+                wstate = "enable"
+              else
+                wstate = "destroy"
+              @pages_view.$el.waypoint wstate
         , {offset: "bottom-in-view"}
 
     edit: ->

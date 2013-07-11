@@ -10,16 +10,4 @@ define [
     initialize: (options) ->
       @collection = options.collection
 
-    routes:
-      "(everybody)(/posts)(/page/:page)" : "index"
-
-    index: (page) ->
-      @collection = new Posts if _.isEmpty @collection
-
-      page ||= @query_params().page
-      @collection.monitor()
-
-      @pages_view = new PostsGroupedByPageView
-        collection: @collection
-
-      $("#yield").html @pages_view.render().el
+    routes: {}

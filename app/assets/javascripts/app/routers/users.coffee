@@ -26,7 +26,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         @collection = options.collection
 
     routes:
-      ":username(/list)(/posts)(/page/:page)" : "show"
+      "(:username)(/list)(/posts)" : "show"
       "settings/info"         : "edit"
       "settings/extras"       : "extras"
       ":username/followers"   : "followers"
@@ -35,7 +35,8 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       "users/friends"         : "friends"
       "users/search"          : "search"
 
-    show: (username, page) ->
+    show: (username) ->
+      username = false if username is "everybody"
       @collection = new Posts if _.isEmpty @collection
 
       @user_show_view = new UserShowView
@@ -47,7 +48,8 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
       path = window.location.pathname.split("/")
       is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
-      @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
+      if username
+        @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
       @collection.monitor()
 
       if username is User::current.get("username")

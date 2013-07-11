@@ -52,7 +52,7 @@
     if @user
       locals[:model] = @user
     else
-      locals[:router] = 'posts'
+      locals[:router] = 'users'
     end
     render partial: 'backbone/router', locals: locals
   end

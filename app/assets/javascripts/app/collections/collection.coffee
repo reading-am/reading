@@ -6,7 +6,7 @@ define [
 ], (_, Constants, Backbone, pusher) ->
 
   Backbone.Collection::endpoint = -> "#{@type.toLowerCase()}"
-  Backbone.Collection::params = {limit:100, offset:0}
+  Backbone.Collection::params = {limit:50, offset:0}
   Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
   Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
 

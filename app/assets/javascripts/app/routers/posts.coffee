@@ -17,7 +17,7 @@ define [
       @collection = new Posts if _.isEmpty @collection
 
       page ||= @query_params().page
-      @collection.monitor() unless page > 1
+      @collection.monitor()
 
       @pages_view = new PostsGroupedByPageView
         collection: @collection

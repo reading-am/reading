@@ -6,8 +6,10 @@ define [
 ], (_, Constants, Backbone, pusher) ->
 
   Backbone.Collection::endpoint = -> "#{@type.toLowerCase()}"
-  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{@endpoint()}"
+  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
   Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
+  Backbone.Collection::params = ->
+    {limit: @limit, offset: @offset}
 
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses

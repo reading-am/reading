@@ -47,7 +47,9 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       path = window.location.pathname.split("/")
       is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
       @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
-      @collection.monitor() unless page > 1
+      @collection.limit = 100
+      @collection.offset = 200
+      @collection.monitor()
 
       if username is User::current.get("username")
         @pages_view = new PagesWithInputView

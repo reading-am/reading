@@ -20,12 +20,9 @@ class Api::APIController < ActionController::Metal
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
   wrap_parameters format: [:json]
-  before_filter :map_method, :limit_count
+  before_filter :map_method, :set_defaults
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
   rescue_from ActionController::ParameterMissing, :with => :show_400
-
-  DEFAULT_COUNT = 20
-  MAX_COUNT = 200
 
   private
 
@@ -42,15 +39,10 @@ class Api::APIController < ActionController::Metal
     end
   end
 
-  def limit_count
-    if params[:count].blank?
-      params[:count] = DEFAULT_COUNT
-    else
-      params[:count] = params[:count].to_i
-      if params[:count] > MAX_COUNT
-        params[:count] = MAX_COUNT
-      end
-    end
+  def set_defaults
+    # [lower_bound, (param || default), upper_bound]
+    params[:limit]  = [1, (params[:limit] || 20).to_i, 200].sort[1]
+    params[:offset] = params[:offset].to_i
   end
 
   def show_400

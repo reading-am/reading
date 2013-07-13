@@ -60,21 +60,28 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
           collection: @collection
 
       @pages_view.render()
-      @collection.fetch reset: true, success: =>
-        $("#yield").html @pages_view.el
+      @collection.fetch reset: true, success: (collection) =>
+        $yield    = $("#yield")
+        $loading  = $yield.find(".r_loading")
 
-        @pages_view.$el.waypoint (direction) =>
-          if direction is "down"
-            @pages_view.$el.waypoint "disable"
-            @collection.fetchNextPage success: (collection, data) =>
-              if data?[collection.type.toLowerCase()]?.length
-                wstate = "enable"
-              else
-                wstate = "destroy"
-              # This is on a delay because the waypoints plugin will miscalculate
-              # the offset if rendering the new DOM elements hasn't finished
-              setTimeout => @pages_view.$el.waypoint wstate, 2000
-        , {offset: "bottom-in-view"}
+        $yield.prepend @pages_view.el
+
+        if collection.length < collection.params.limit
+          $loading.hide()
+        else
+          @pages_view.$el.waypoint (direction) =>
+            if direction is "down"
+              $loading.show()
+              @pages_view.$el.waypoint "disable"
+              @collection.fetchNextPage success: (collection, data) =>
+                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+                $loading.hide()
+                # This is on a delay because the waypoints plugin will miscalculate
+                # the offset if rendering the new DOM elements hasn't finished
+                setTimeout =>
+                  @pages_view.$el.waypoint(if more then "enable" else "destroy")
+                , 2000
+          , {offset: "bottom-in-view"}
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

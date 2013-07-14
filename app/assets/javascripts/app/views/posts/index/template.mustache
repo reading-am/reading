@@ -27,11 +27,7 @@
 {{#has_posts}}
 <div id="yield">
   {{^pages}}
-  <div class="row">
-    <div class="span6 offset1 r_loading">
-      Loading...
-    </div>
-  </div>
+    {{>components/loading_collection/template}}
   {{/pages}}
   {{>pages/pages/template}}
 </div>

@@ -8,6 +8,7 @@ define [
   "app/views/users/show/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
+  "app/views/components/loading_collection/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
@@ -15,10 +16,11 @@ define [
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
   "extend/jquery/waypoints"
-], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
+], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, LoadingCollectionView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
+
     initialize: (options) ->
       if options?.model?
         @model = options.model
@@ -39,18 +41,21 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       username = false if username is "everybody"
       @collection = new Posts if _.isEmpty @collection
 
-      @user_show_view = new UserShowView
-        el: $("#header_card.r_user")
-        model: @model
+      @loading_vew = new LoadingCollectionView
+        el: $("#yield .r_loading")
+      @loading_vew.play()
 
-      @user_subnav_view = new UserSubnavView
-        el: $("#subnav")
-
-      path = window.location.pathname.split("/")
-      is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
       if username
+        @user_show_view = new UserShowView
+          el: $("#header_card.r_user")
+          model: @model
+
+        @user_subnav_view = new UserSubnavView
+          el: $("#subnav")
+
+        path = window.location.pathname.split("/")
+        is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
         @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
-      @collection.monitor()
 
       if username is User::current.get("username")
         @pages_view = new PagesWithInputView
@@ -60,7 +65,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
           collection: @collection
 
       @pages_view.render()
-      @collection.fetch reset: true, success: (collection) =>
+      @collection.monitor().fetch reset: true, success: (collection) =>
         $yield    = $("#yield")
         $loading  = $yield.find(".r_loading")
 

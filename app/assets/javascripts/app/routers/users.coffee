@@ -21,12 +21,6 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
   class UsersRouter extends Backbone.Router
 
-    initialize: (options) ->
-      if options?.model?
-        @model = options.model
-      if options?.collection?
-        @collection = options.collection
-
     routes:
       "(:username)(/list)(/posts)" : "show"
       "settings/info"         : "edit"
@@ -42,8 +36,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       @collection = new Posts if _.isEmpty @collection
 
       @loading_vew = new LoadingCollectionView
-        el: $("#yield .r_loading")
-      @loading_vew.play()
+        el: @$yield.find(".r_loading")
 
       if username
         @user_show_view = new UserShowView
@@ -66,10 +59,9 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
       @pages_view.render()
       @collection.monitor().fetch reset: true, success: (collection) =>
-        $yield    = $("#yield")
-        $loading  = $yield.find(".r_loading")
+        $loading  = @$yield.find(".r_loading")
 
-        $yield.prepend @pages_view.el
+        @$yield.prepend @pages_view.el
 
         if collection.length < collection.params.limit
           $loading.hide()
@@ -109,7 +101,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         model: @model
         collection: @collection
 
-      $("#yield").html @view.render().el
+      @$yield.html @view.render().el
 
     recommended: ->
       @collection = Users::recommended()
@@ -130,5 +122,5 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
       @view.collection.fetch()
 
-      $("#yield").html @view.render().el
+      @$yield.html @view.render().el
       @view.after_insert()

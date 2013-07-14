@@ -16,14 +16,18 @@ define [
     play: ->
       $s = @$el.find("span")
       t = $s.text()
-      @interval = setInterval ->
-        t = if t.length >= 3 then "." else "#{t}."
-        $s.text(t)
-      , 500
+      unless @interval
+        @interval = setInterval ->
+          t = if t.length >= 3 then "." else "#{t}."
+          $s.text(t)
+        , 500
+      return this
 
     stop: ->
-      clearInterval @interval
+      @interval = clearInterval @interval
+      return this
 
     render: ->
       @$el.html(@template())
+      @play()
       return this

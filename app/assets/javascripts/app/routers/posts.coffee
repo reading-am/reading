@@ -7,7 +7,5 @@ define [
 ], (_, $, Backbone, Posts, PostsGroupedByPageView) ->
 
   class PostsRouter extends Backbone.Router
-    initialize: (options) ->
-      @collection = options.collection
 
     routes: {}

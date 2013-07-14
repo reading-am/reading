@@ -8,9 +8,10 @@ define [
 
   methodMap =
     create: 'POST',
-    read:   'GET',
     update: 'PATCH',
-    delete: 'DELETE'
+    patch:  'PATCH',
+    delete: 'DELETE',
+    read:   'GET'
 
   Backbone._sync = Backbone.sync
   Backbone.sync = (method, model_or_coll, options) ->

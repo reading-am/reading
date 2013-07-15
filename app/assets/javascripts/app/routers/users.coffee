@@ -35,7 +35,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       username = false if username is "everybody"
       @collection = new Posts if _.isEmpty @collection
 
-      @loading_vew = new LoadingCollectionView
+      @loading_view = new LoadingCollectionView
         el: @$yield.find(".r_loading")
 
       if username
@@ -57,28 +57,23 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         @pages_view = new PostsGroupedByPageView
           collection: @collection
 
-      @pages_view.render()
-      @collection.monitor().fetch reset: true, success: (collection) =>
-        $loading  = @$yield.find(".r_loading")
+      @$yield.prepend @pages_view.render().el
+      @loading_view.$el.hide()
 
-        @$yield.prepend @pages_view.el
-
-        if collection.length < collection.params.limit
-          $loading.hide()
-        else
-          @pages_view.$el.waypoint (direction) =>
-            if direction is "down"
-              $loading.show()
-              @pages_view.$el.waypoint "disable"
-              @collection.fetchNextPage success: (collection, data) =>
-                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-                $loading.hide()
-                # This is on a delay because the waypoints plugin will miscalculate
-                # the offset if rendering the new DOM elements hasn't finished
-                setTimeout =>
-                  @pages_view.$el.waypoint(if more then "enable" else "destroy")
-                , 2000
-          , {offset: "bottom-in-view"}
+      if @collection.length >= @collection.params.limit
+        @pages_view.$el.waypoint (direction) =>
+          if direction is "down"
+            @loading_view.$el.show()
+            @pages_view.$el.waypoint "disable"
+            @collection.fetchNextPage success: (collection, data) =>
+              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+              @loading_view.$el.hide()
+              # This is on a delay because the waypoints plugin will miscalculate
+              # the offset if rendering the new DOM elements hasn't finished
+              setTimeout =>
+                @pages_view.$el.waypoint(if more then "enable" else "destroy")
+              , 2000
+        , {offset: "bottom-in-view"}
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

@@ -1,4 +1,6 @@
 display_name = @user.nil? ? 'Everybody' : @user.display_name
+# validate that this is a real user. TODO this should really happen in the controller
+token = (!params[:t].blank? && User.find_by_token(params[:t])) ? params[:t] : false
 
 xml.instruct! :xml, :version => "1.0"
 xml.rss :version => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
@@ -10,14 +12,6 @@ xml.rss :version => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
       :href => request.url,
       :rel => 'self', :type => 'application/rss+xml'
     }
-
-    # validate that this is a real user
-    # TODO this should really happen in the controller
-    if User.find_by_token(params[:t])
-      token = params[:t]
-    else
-      token = false
-    end
 
     for post in @posts
       xml.item do

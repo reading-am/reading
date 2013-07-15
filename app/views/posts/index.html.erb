@@ -1,7 +1,7 @@
 <%=
   locals = mustache_helpers.merge({
     pages:     bot? ? page_hashes_from_posts(@posts) : false,
-    has_posts: @posts.to_a.size, # run the query first with to_a so that it doesn't make a count() query
+    has_posts: @posts.to_a.size > 0, # run the query first with to_a so that it doesn't make a count() query
   })
 
   if @user

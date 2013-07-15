@@ -6,8 +6,6 @@ define [
 ], ($, Backbone, PagesView, PostsGroupedByPageView) ->
 
   class SearchRouter extends Backbone.Router
-    initialize: (options) ->
-      @collection = options.collection
 
     routes:
       "search" : "index"
@@ -20,4 +18,4 @@ define [
         @pages_view = new PostsGroupedByPageView
           collection: @collection
 
-      $("#yield").html @pages_view.render().el
+      @$yield.html @pages_view.render().el

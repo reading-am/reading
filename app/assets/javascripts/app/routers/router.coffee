@@ -1,7 +1,8 @@
 define [
   "underscore"
+  "jquery"
   "libs/backbone"
-], (_, Backbone) ->
+], (_, $, Backbone) ->
 
   Backbone.Router::query_params = ->
     # via: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values
@@ -15,3 +16,13 @@ define [
        params[decode(match[1])] = decode(match[2])
 
     return params
+
+  Backbone.Router::initialize = (options) ->
+    @$yield = $("#yield")
+
+    if options?.model?
+      @model = options.model
+    if options?.collection?
+      @collection = options.collection
+
+  return Backbone

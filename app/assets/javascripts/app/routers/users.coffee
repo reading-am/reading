@@ -8,24 +8,21 @@ define [
   "app/views/users/show/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
+  "app/views/components/loading_collection/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
   "app/views/users/edit/view"
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, PagesView,
+  "extend/jquery/waypoints"
+], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, LoadingCollectionView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
-    initialize: (options) ->
-      if options?.model?
-        @model = options.model
-      if options?.collection?
-        @collection = options.collection
 
     routes:
-      ":username(/list)(/posts)(/page/:page)" : "show"
+      "(:username)(/list)(/posts)" : "show"
       "settings/info"         : "edit"
       "settings/extras"       : "extras"
       ":username/followers"   : "followers"
@@ -34,20 +31,24 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
       "users/friends"         : "friends"
       "users/search"          : "search"
 
-    show: (username, page) ->
+    show: (username) ->
+      username = false if username is "everybody"
       @collection = new Posts if _.isEmpty @collection
 
-      @user_show_view = new UserShowView
-        el: $("#header_card.r_user")
-        model: @model
+      @loading_view = new LoadingCollectionView
+        el: @$yield.find(".r_loading")
 
-      @user_subnav_view = new UserSubnavView
-        el: $("#subnav")
+      if username
+        @user_show_view = new UserShowView
+          el: $("#header_card.r_user")
+          model: @model
 
-      path = window.location.pathname.split("/")
-      is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
-      @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "feed" else "posts"}"
-      @collection.monitor() unless page > 1
+        @user_subnav_view = new UserSubnavView
+          el: $("#subnav")
+
+        path = window.location.pathname.split("/")
+        is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
+        @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
 
       if username is User::current.get("username")
         @pages_view = new PagesWithInputView
@@ -56,7 +57,23 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         @pages_view = new PostsGroupedByPageView
           collection: @collection
 
-      $("#yield").html @pages_view.render().el
+      @$yield.prepend @pages_view.render().el
+      @loading_view.$el.hide()
+
+      if @collection.length >= @collection.params.limit
+        @pages_view.$el.waypoint (direction) =>
+          if direction is "down"
+            @loading_view.$el.show()
+            @pages_view.$el.waypoint "disable"
+            @collection.fetchNextPage success: (collection, data) =>
+              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+              @loading_view.$el.hide()
+              # This is on a delay because the waypoints plugin will miscalculate
+              # the offset if rendering the new DOM elements hasn't finished
+              setTimeout =>
+                @pages_view.$el.waypoint(if more then "enable" else "destroy")
+              , 2000
+        , {offset: "bottom-in-view"}
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView
@@ -79,7 +96,7 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
         model: @model
         collection: @collection
 
-      $("#yield").html @view.render().el
+      @$yield.html @view.render().el
 
     recommended: ->
       @collection = Users::recommended()
@@ -100,5 +117,5 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
       @view.collection.fetch()
 
-      $("#yield").html @view.render().el
+      @$yield.html @view.render().el
       @view.after_insert()

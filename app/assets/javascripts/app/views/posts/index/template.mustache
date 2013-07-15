@@ -7,6 +7,7 @@
     {{>users/blank_slate/template}}
   {{/show_blank_slate}}
 {{/user}}
+
 {{^user}}
   <div id="subhead" class="row">
     <div class="span7 offset1">
@@ -24,26 +25,12 @@
     </div>
   </div>
 {{/user}}
-{{#has_posts}}
-<div id="yield">
-  {{^pages}}
-  <div class="row">
-    <div class="span6 offset1 r_loading">
-      Loading...
-    </div>
-  </div>
-  {{/pages}}
-  {{>pages/pages/template}}
-</div>
-{{/has_posts}}
 
-<div id="posts_footer" class="row">
-  <div class="span5 offset1">{{{pagination}}}</div>
-  {{#params.type}}
-  <div class="span1">
-    <a href="{{rss_path}}" class="rss">
-      <span class="glyph">r</span> rss
-    </a>
+{{#has_posts}}
+  <div id="yield">
+    {{^pages}}
+      {{>components/loading_collection/template}}
+    {{/pages}}
+    {{>pages/pages/template}}
   </div>
-  {{/params.type}}
-</div>
+{{/has_posts}}

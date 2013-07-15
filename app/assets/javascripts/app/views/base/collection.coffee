@@ -36,6 +36,6 @@ define [
 
       view.$el.slideDown() unless !@animate || bulk
 
-    render: =>
+    render: ->
       @addAll()
       return this

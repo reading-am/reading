@@ -1,48 +1,26 @@
 <%=
-  locals = {
-    pages:                      bot? ? page_hashes_from_posts(@posts) : false,
-    has_posts:                  @posts.to_a.size > 0, # run the query first with to_a so that it doesn't make a count() query
-    signed_in:                  signed_in?,
-    viewing_following:          params[:type] == 'following',
-    viewing_followers:          params[:type] == 'followers',
-    viewing_posts:              params[:type] == 'posts',
-    viewing_list:               params[:type] == 'list',
-    browser_chrome:             browser.chrome?,
-    browser_safari:             browser.safari?,
-    browser_firefox:            browser.firefox?,
-    browser_has_extension:      browser.chrome? || browser.safari? || browser.firefox?,
-    extension_install_chrome:   extension_install(:chrome),
-    extension_install_safari:   extension_install(:safari),
-    extension_install_firefox:  extension_install(:firefox),
-    pagination:                 will_paginate(@posts, :page_links => false),
-    params:                     {:type => params[:type]},
-    rss_path:                   params[:type] ? rss_path : false
-  }
+  locals = mustache_helpers.merge({
+    pages:     bot? ? page_hashes_from_posts(@posts) : false,
+    has_posts: @posts.to_a.size > 0, # run the query first with to_a so that it doesn't make a count() query
+  })
 
   if @user
     has_avatar = @user != current_user or (@user == current_user and !@user.avatar.size.nil?)
     locals.merge!({
-      show_blank_slate:         (@user.posts.size == 0 or @user.following.size == 0),
-      is_current_user:          @user == current_user,
-      avatar_link_url:          has_avatar ? @user.avatar_url : "/settings/info",
-      avatar_link_target:       has_avatar ? "_blank" : false,
-      avatar_img_url:           @user.avatar_url(:medium),
-      you_or_name:              @user == current_user ? 'you' : @user.first_name,
-      follow_text:              signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
-      has_followed:             @user.following.size > 0,
-      has_link:                 !@user.link.blank?,
-      has_location:             !@user.location.blank?,
-      show_media:               @user.access?(:media_feed)
+      show_blank_slate:   (@user.posts.size == 0 or @user.following.size == 0),
+      is_current_user:    @user == current_user,
+      avatar_link_url:    has_avatar ? @user.avatar_url : "/settings/info",
+      avatar_link_target: has_avatar ? "_blank" : false,
+      avatar_img_url:     @user.avatar_url(:medium),
+      you_or_name:        @user == current_user ? 'you' : @user.first_name,
+      follow_text:        signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
+      has_followed:       @user.following.size > 0,
+      has_link:           !@user.link.blank?,
+      has_location:       !@user.location.blank?
     })
-    if @user == current_user
-      locals.merge!({
-        bookmarklet_url:        bookmarklet_url(current_user),
-      })
-    end
   end
 
   render file: 'posts/index/template', locals: locals
-
 %>
 
 <%=
@@ -51,7 +29,7 @@
     if @user
       locals[:model] = @user
     else
-      locals[:router] = 'posts'
+      locals[:router] = 'users'
     end
     render partial: 'backbone/router', locals: locals
   end

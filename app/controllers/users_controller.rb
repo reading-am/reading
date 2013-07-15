@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("created_at DESC")
-                   .paginate(page: params[:page])
+                   .limit(50)
 
     respond_to do |format|
       format.html { render 'posts/index' }

@@ -80,4 +80,25 @@ module ApplicationHelper
     json['assets'].each {|key, val| manifest[key[0..-4]] = val[0..-4] }
     manifest.to_json.html_safe
   end
+
+  def mustache_helpers
+    data = {
+      signed_in: signed_in?,
+      rss_path:  params[:type] ? rss_path : false
+    }
+
+    # Sections
+    ['following', 'followers', 'posts', 'list'].each do |v|
+      data[:"viewing_#{v}"] = params[:type] == v
+    end
+
+    # Browser detection
+    data[:browser_has_extension] = browser.chrome? || browser.safari? || browser.firefox?
+    [:chrome, :safari, :firefox].each do |v|
+      data[:"browser_#{v}"] = browser.send("#{v}?")
+      data[:"extension_install_#{v}"] = extension_install(v)
+    end
+
+    data
+  end
 end

@@ -44,7 +44,7 @@ define [
 
       false
 
-    render: =>
+    render: ->
       @$el.html(@template())
           .append(@subview.render().el)
 

@@ -21,13 +21,22 @@
       {{/is_current_user}}
     {{/signed_in}}
   </nav>
-  <div id="user_places" class="span7 offset1">
+  <div id="user_places" class="span6 offset1">
     {{user.location}} {{#has_link}}{{#has_location}}-{{/has_location}} <a href="{{user.link}}" target="_blank">{{user.link}}</a>{{/has_link}}
   </div>
-  <div id="user_bio" class="r_bio span7 offset1">
-    {{user.bio}}
-    {{^user.bio}}{{#is_current_user}}
+  {{#user.bio}}
+    <div id="user_bio" class="r_bio span6 offset1">{{user.bio}}</div>
+  {{/user.bio}}
+  {{^user.bio}}{{#is_current_user}}
+    <div id="user_bio" class="r_bio span6 offset1">
       <a href="/settings/info">Click here to add a bio</a>
-    {{/is_current_user}}{{/user.bio}}
-  </div>
+    </div>
+  {{/is_current_user}}{{/user.bio}}
+  {{^is_current_user}}{{#rss_path}}
+    <div class="span1">
+      <a href="{{rss_path}}" class="rss">
+        <span class="glyph">r</span> rss
+      </a>
+    </div>
+  {{/rss_path}}{{/is_current_user}}
 </div>

@@ -1,3 +1,3 @@
-if Rails.env.development?
+if Rails.env.development? && defined?(Rack::MiniProfiler)
   Rack::MiniProfiler.config.skip_paths << '/teaspoon'
 end

@@ -3,14 +3,14 @@
   has_avatar = @user != current_user or (@user == current_user and !@user.avatar.size.nil?)
 
   locals = {
-    :user                       => @user,
-    :signed_in                  => signed_in?,
-    :is_current_user            => @user == current_user,
-    :avatar_link_url            => has_avatar ? @user.avatar_url : "/settings/info",
-    :avatar_link_target         => has_avatar ? "_blank" : false,
-    :avatar_img_url             => @user.avatar_url(:medium),
-    :viewing_following          => params[:type] == 'following',
-    :viewing_followers          => params[:type] == 'followers',
+    user:               @user,
+    signed_in:          signed_in?,
+    is_current_user:    @user == current_user,
+    avatar_link_url:    has_avatar ? @user.avatar_url : "/settings/info",
+    avatar_link_target: has_avatar ? "_blank" : false,
+    avatar_img_url:     @user.avatar_url(:medium),
+    viewing_following:  params[:type] == 'following',
+    viewing_followers:  params[:type] == 'followers'
   }
   render :file => 'users/card/template', :locals => locals
 %>

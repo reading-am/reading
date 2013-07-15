@@ -1,9 +1,8 @@
 <%=
-  @posts = []
 
   locals = {
     pages:                      bot? ? page_hashes_from_posts(@posts) : false,
-    has_posts:                  true, # run the query first with to_a so that it doesn't make a count() query
+    has_posts:                  true, #@posts.to_a.size, # run the query first with to_a so that it doesn't make a count() query
     signed_in:                  signed_in?,
     viewing_following:          params[:type] == 'following',
     viewing_followers:          params[:type] == 'followers',
@@ -16,7 +15,6 @@
     extension_install_chrome:   extension_install(:chrome),
     extension_install_safari:   extension_install(:safari),
     extension_install_firefox:  extension_install(:firefox),
-    params:                     {:type => params[:type]},
     rss_path:                   params[:type] ? rss_path : false
   }
 
@@ -32,8 +30,7 @@
       follow_text:              signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
       has_followed:             @user.following.size > 0,
       has_link:                 !@user.link.blank?,
-      has_location:             !@user.location.blank?,
-      show_media:               @user.access?(:media_feed)
+      has_location:             !@user.location.blank?
     })
     if @user == current_user
       locals.merge!({

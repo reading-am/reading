@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   private
 
   def profiler
-    Rack::MiniProfiler.authorize_request if signed_in? && current_user.roles?(:admin)
+    Rack::MiniProfiler.authorize_request if defined?(Rack::MiniProfiler) && signed_in? && current_user.roles?(:admin)
   end
 
   def protect_staging

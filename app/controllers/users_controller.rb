@@ -5,6 +5,8 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
+    limit = 50
+
     if params[:username].blank? || params[:username] == 'everybody'
       @posts = Post.all
     else
@@ -18,7 +20,7 @@ class UsersController < ApplicationController
       ids = @posts.joins(:page)
                   .where(pages: {medium: params[:medium]})
                   .order("posts.created_at DESC")
-                  .limit(50)
+                  .limit(limit)
                   .pluck(:id)
 
       @posts = Post.where(id: ids)
@@ -26,7 +28,7 @@ class UsersController < ApplicationController
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("posts.created_at DESC")
-                   .limit(50)
+                   .limit(limit)
 
     respond_to do |format|
       format.html { render 'posts/index' }

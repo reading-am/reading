@@ -15,7 +15,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.should be_an_instance_of Twitter::Tweet
       # cleanup
       response = hook.authorization.api.status_destroy(response.id)
@@ -30,7 +30,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.meta.status.should eq(201)
       # cleanup
       response = hook.authorization.api.delete_post("#{hook.place[:id]}.tumblr.com", response.response.id)
@@ -45,7 +45,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.should be_an_instance_of Evernote::EDAM::Type::Note
       # cleanup
       # NOTE - our api key is "Basic access" and doesn't
@@ -60,7 +60,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.status.should eq("202")
       # cleanup
       response = hook.authorization.api.delete_bookmark response.bookmark_id
@@ -75,7 +75,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.bookmark_id.should be_an_instance_of(Fixnum)
       # cleanup
       # NOTE - deleting bookmarks would require a $1/mo
@@ -90,7 +90,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.code.should eq(200)
       # cleanup
       body = ActiveSupport::JSON.decode response.body
@@ -114,7 +114,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.id.should be_an_instance_of(Fixnum)
       # cleanup
       response = response.destroy
@@ -129,7 +129,7 @@ describe Hook do
       post.page.domain = domains(:daringfireball)
       post.user = users(:greg)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.should be_true
       # cleanup
       # NOTE - It's a chat client so there is no cleanup
@@ -143,7 +143,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.message.type.should eq("TextMessage")
       response.message.id.should be_an_instance_of(Fixnum)
       # cleanup
@@ -157,7 +157,7 @@ describe Hook do
       post.page = pages(:daringfireball)
       post.page.domain = domains(:daringfireball)
       # test
-      response = hook.run(post, :new)
+      response = hook.run(post, 'new')
       response.should be_true
       # cleanup
       response = Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/delete',
@@ -180,7 +180,7 @@ describe Hook do
       # but I don't know of a better way to test it without adding funds
       # to flattr.com. A funds error at least means we made a round trip
       begin
-        hook.run(post, :new)
+        hook.run(post, 'new')
         raise Flattr::Error::BadRequest.new
       rescue Flattr::Error::Unauthorized => e
         e.message.should eq("You don't have any money to flattr with")

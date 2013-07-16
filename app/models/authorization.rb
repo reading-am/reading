@@ -105,7 +105,8 @@ public
     when 'tssignals'
       accounts.first["name"]
     else
-      (info.blank? or info['username'].blank?) ? uid : info['username']
+      i = info || {}
+      i['username'] || i['screen_name'] || uid
     end
   end
 

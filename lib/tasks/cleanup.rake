@@ -1,5 +1,16 @@
 namespace :cleanup do
 
+  desc "Convert unserialized Ruby objects to JSON"
+  task :fix_unserialized => :environment do
+    ActiveRecord::Base.observers.disable :all
+
+    User.where('urls LIKE ?', '--- %').find_each do |user|
+      puts "### User #{user.id} | #{user.username}", "Before:", user.urls, "\n"
+      user.update_column :urls, Hash[user.urls.split("\n")[1..-1].map { |p| p.split(': ', 2) }].to_json
+      puts "After:", user.urls, "\n\n"
+    end
+  end
+
   desc "Migrate URLs that point to NYT interstitial pages"
   task :nyt_urls => :environment do
 

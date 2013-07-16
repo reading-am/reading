@@ -8,6 +8,7 @@ class HooksController < ApplicationController
     pms = params.require(:hook).permit(:provider, :events).tap do |whitelisted|
       whitelisted[:params] = params[:hook][:params]
     end
+    # The events are a JSON encoded array to fit into a single form value
     pms[:events] = ActiveSupport::JSON.decode pms[:events]
     pms
   end

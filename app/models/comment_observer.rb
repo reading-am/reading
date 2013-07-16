@@ -2,7 +2,7 @@ class CommentObserver < ActiveRecord::Observer
 
   def after_create comment
     Broadcaster::signal :create, comment
-    comment.user.hooks.each do |hook| hook.run(comment, :comment) end
+    comment.user.hooks.each do |hook| hook.run(comment, 'comment') end
 
     # Create adhoc users from the emails
     # NOTE: uncomment this to allow email mentioning of unregistered users

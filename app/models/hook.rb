@@ -3,16 +3,19 @@ include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
 
+  serialize :events, JSON
+  serialize :params, JSON
+
   belongs_to :user
   belongs_to :authorization
   validates_presence_of :events, :provider
   before_save :parse_pinboard_token
 
   EVENTS = {
-    :new  => {perms: [:write], text: 'read a page'},
-    :yep  => {perms: [:write], text: 'say "yep"'},
-    :nope => {perms: [:write], text: 'say "nope"'},
-    :comment => {perms: [:write], text: 'comment'}
+    'new'     => {perms: [:write], text: 'read a page'},
+    'yep'     => {perms: [:write], text: 'say "yep"'},
+    'nope'    => {perms: [:write], text: 'say "nope"'},
+    'comment' => {perms: [:write], text: 'comment'}
   }
 
   PLACE_TYPES = {
@@ -39,15 +42,11 @@ private
   def parse_pinboard_token
     if provider == 'pinboard' and !self.params['auth_token'].blank?
       bits = self.params['auth_token'].split(':')
-      self.params = {:user => bits[0], :token => bits[1]}.to_json
+      self.params = {:user => bits[0], :token => bits[1]}
     end
   end
 
 public
-
-  def params
-    ActiveSupport::JSON.decode read_attribute(:params) unless read_attribute(:params).nil?
-  end
 
   def place
     unless params['place'].blank?
@@ -59,16 +58,9 @@ public
     end
   end
 
-  def events
-    if read_attribute(:events).class == Array
-      read_attribute(:events)
-    else
-      ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
-    end
-  end
-
   def responds_to event
-    events.include?(event) and (!SINGLE_FIRE.include?(provider) or (event == :new or !events.include?(:new)))
+    event = event.to_s
+    events.include?(event) and (!SINGLE_FIRE.include?(provider) or (event == 'new' or !events.include?('new')))
   end
 
   def run post, event_fired
@@ -78,9 +70,9 @@ public
   end
 
   def trigger_method post, event_fired
-    self.send(self.provider, post, event_fired)
+    self.send(self.provider, post, event_fired.to_s)
   end
-  handle_asynchronously :trigger_method unless ['development','test'].include? Rails.env
+  handle_asynchronously :trigger_method unless Rails.env.development? || Rails.env.test?
 
   def facebook post, event_fired
     case params['permission']
@@ -135,9 +127,9 @@ public
 
   def hipchat obj, event_fired
     case event_fired
-    when :new, :yep, :nope
+    when 'new', 'yep', 'nope'
       post = obj
-    when :comment
+    when 'comment'
       post = obj.post
     end
     user = obj.user
@@ -147,24 +139,24 @@ public
     post_link_truncated = "<a href='#{post.wrapped_url}'>#{truncate(post.page.display_title)}</a>"
 
     case event_fired
-    when :new
+    when 'new'
       output = "✌ #{user_link} is #{post.page.verb} #{post_link}"
       output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
-    when :yep, :nope
+    when 'yep', 'nope'
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
-    when :comment
+    when 'comment'
       output = "#{obj.body_html} | ✌ <em>#{user_link} said on #{post_link_truncated}</em>"
     end
 
     colors = {
-      :new => "yellow",
-      :yep => "green",
-      :nope => "red",
-      :comment => "purple"
+      'new'     => 'yellow',
+      'yep'     => 'green',
+      'nope'    => 'red',
+      'comment' => 'purple'
     }
 
     client = HipChat::Client.new(params['token'])
-    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == :new)) # only notify if this is not a post update
+    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == 'new')) # only notify if this is not a post update
   end
 
   # For legacy support. If you finally remove this, also remove
@@ -195,10 +187,10 @@ EOF
   def tssignals post, event_fired, room=nil
     post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
-    when :new
+    when 'new'
       output = "✌ #{post.page.verb.capitalize} #{post_link}"
       output += " because of #{post.referrer_post.user.display_name} (http://#{DOMAIN}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
-    when :yep, :nope
+    when 'yep', 'nope'
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end
 

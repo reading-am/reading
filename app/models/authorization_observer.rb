@@ -9,14 +9,12 @@ class AuthorizationObserver < ActiveRecord::Observer
   def before_create(auth)
     case auth.provider
     when "tssignals"
-      info = auth.info
-      indexes = info["accounts"].collect.with_index{|a,i| i if a["product"] == "campfire"}.compact
+      indexes = auth.info["accounts"].collect.with_index{|a,i| i if a["product"] == "campfire"}.compact
       indexes.each do |i|
-        response = Typhoeus::Request.get "https://#{URI.parse(info["accounts"][i]["href"]).host}/users/me.json", :params => {:access_token => auth.token}
+        response = Typhoeus::Request.get "https://#{URI.parse(auth.info["accounts"][i]["href"]).host}/users/me.json", :params => {:access_token => auth.token}
         response = ActiveSupport::JSON.decode response.body
-        info["accounts"][i]["api_auth_token"] = response["user"]["api_auth_token"]
+        auth.info["accounts"][i]["api_auth_token"] = response["user"]["api_auth_token"]
       end
-      auth[:info] = info.to_json
     end
   end
 

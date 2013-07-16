@@ -5,9 +5,11 @@ class HooksController < ApplicationController
   private
 
   def hook_params
-    params.require(:hook).permit(:provider, :events).tap do |whitelisted|
+    pms = params.require(:hook).permit(:provider, :events).tap do |whitelisted|
       whitelisted[:params] = params[:hook][:params]
     end
+    pms[:events] = ActiveSupport::JSON.decode pms[:events]
+    pms
   end
 
   public

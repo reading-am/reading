@@ -3,6 +3,8 @@ include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
 
+  serialize :params, JSON
+
   belongs_to :user
   belongs_to :authorization
   validates_presence_of :events, :provider
@@ -39,15 +41,11 @@ private
   def parse_pinboard_token
     if provider == 'pinboard' and !self.params['auth_token'].blank?
       bits = self.params['auth_token'].split(':')
-      self.params = {:user => bits[0], :token => bits[1]}.to_json
+      self.params = {:user => bits[0], :token => bits[1]}
     end
   end
 
 public
-
-  def params
-    ActiveSupport::JSON.decode read_attribute(:params) unless read_attribute(:params).nil?
-  end
 
   def place
     unless params['place'].blank?
@@ -56,14 +54,6 @@ public
         :name => params['place']['name'],
         :id => params['place']['id']
       }
-    end
-  end
-
-  def events
-    if read_attribute(:events).class == Array
-      read_attribute(:events)
-    else
-      ActiveSupport::JSON.decode(read_attribute(:events)).map {|event| event.to_sym}
     end
   end
 

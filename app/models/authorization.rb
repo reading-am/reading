@@ -1,6 +1,9 @@
 # from: http://net.tutsplus.com/tutorials/ruby/how-to-use-omniauth-to-authenticate-your-users/
 class Authorization < ActiveRecord::Base
 
+  serialize :info, JSON
+  serialize :permissions, JSON
+
   belongs_to :user
   has_many :hooks, dependent: :destroy
 
@@ -39,7 +42,7 @@ public
     if auth_hash[:extra][:raw_info].nil?
       info = nil
     else
-      info = ActiveSupport::JSON.decode auth_hash[:extra][:raw_info].to_json
+      info = auth_hash[:extra][:raw_info]
 
       case auth_hash.provider
       when 'evernote'
@@ -49,8 +52,6 @@ public
           'webApiUrlPrefix'  => auth_hash[:extra][:access_token].params[:edam_webApiUrlPrefix]
         }
       end
-
-      info = info.to_json
     end
 
     {
@@ -69,10 +70,9 @@ public
     when 'facebook'
       # TODO - add error checking here
       perms = api.get_object('/me/permissions').first rescue {}
-      perms = perms.map { |k,v| k if v == 1 }.compact.join('","')
-      self.permissions = perms.blank? ? "[]" : "[\"#{perms}\"]"
+      self.permissions = perms.map { |k,v| k if v == 1 }.compact
     else
-      self.permissions = '["read","write"]'
+      self.permissions = ['read','write']
     end
   end
 
@@ -100,14 +100,6 @@ public
     write_attribute :expires_at, Time.at(time) rescue nil
   end
 
-  def permissions
-    ActiveSupport::JSON.decode read_attribute(:permissions) unless read_attribute(:permissions).nil?
-  end
-
-  def info
-    ActiveSupport::JSON.decode read_attribute(:info) unless read_attribute(:info).nil?
-  end
-
   def display_name
     case provider
     when 'tssignals'
@@ -126,18 +118,6 @@ public
 
   def can perm
     permissions.include? perm.to_s
-  end
-
-  def add_perm perm
-    unless can perm
-      self.permissions = (permissions << perm).to_json
-    end
-  end
-
-  def remove_perm perm
-    if can perm
-      self.permissions = (permissions.delete_if { |v| v == perm.to_s }).to_json
-    end
   end
 
   def api

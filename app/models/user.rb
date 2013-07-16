@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
     :tumblr_templates
   ]
 
+  serialize :urls, JSON
+
   has_many :authorizations, -> { includes [:user] }, dependent: :destroy
   has_many :posts, -> { includes [:user, :page, :domain, {:referrer_post => :user}] }, dependent: :destroy
   has_many :domains, through: :posts
@@ -123,9 +125,6 @@ class User < ActiveRecord::Base
     username = username.blank? ? nil : username.gsub(/[^A-Z0-9_]/i, '')
     username = username.blank? ? nil : username
 
-    urls = auth_hash["info"]["urls"]
-    urls = urls.blank? ? nil : urls.kind_of?(Hashie::Mash) ? urls.to_json : urls.to_s
-
     {
       username:    username,
       name:        auth_hash["info"]["name"],
@@ -136,7 +135,7 @@ class User < ActiveRecord::Base
       description: auth_hash["info"]["description"],
       image:       auth_hash["info"]["image"],
       phone:       auth_hash["info"]["phone"],
-      urls:        urls
+      urls:        auth_hash["info"]["urls"]
     }
   end
 

@@ -16,7 +16,7 @@ class AuthorizationObserver < ActiveRecord::Observer
         response = ActiveSupport::JSON.decode response.body
         info["accounts"][i]["api_auth_token"] = response["user"]["api_auth_token"]
       end
-      auth[:info] = info.to_json
+      auth[:info] = info
     end
   end
 

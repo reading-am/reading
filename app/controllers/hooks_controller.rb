@@ -52,11 +52,9 @@ class HooksController < ApplicationController
     if Authorization::PROVIDERS.include? pms[:provider]
       auth = Authorization.find_by_provider_and_uid(pms[:provider], pms[:params][:account])
       pms[:params].delete(:account)
-      pms[:params] = pms[:params].to_json
       @hook = Hook.new(pms)
       @hook.authorization = auth
     else
-      pms[:params] = pms[:params].to_json
       @hook = Hook.new(pms)
     end
     @hook.user = current_user

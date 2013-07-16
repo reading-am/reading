@@ -31,7 +31,6 @@ define [
       # It worked fine for adding disabled but would only remove
       # disabled for one of the two elements. Why? WHY!?
 
-
     submit: ->
       val = @input.val()
       @toggle_loading()

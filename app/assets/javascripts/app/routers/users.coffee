@@ -52,6 +52,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           router: this
           collection: @collection
           username: username
+          medium: medium
 
         path = window.location.pathname.split("/")
         is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")

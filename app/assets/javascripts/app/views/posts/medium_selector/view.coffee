@@ -12,6 +12,7 @@ define [
     initialize: (options) ->
       @router = options.router
       @username = options.username
+      @$("select").val options.medium || "all"
 
     events:
       "change select" : "change_medium"

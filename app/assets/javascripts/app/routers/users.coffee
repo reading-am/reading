@@ -34,52 +34,59 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
 
     show: (username, medium) ->
       username = false if username is "everybody"
-      @collection = new Posts if _.isEmpty @collection
+      @collection ?= new Posts
 
-      @loading_view = new LoadingCollectionView
+      @loading_view ?= new LoadingCollectionView
         el: @$yield.find(".r_loading")
 
       if username
-        @user_show_view = new UserShowView
+        @user_show_view ?= new UserShowView
           el: $("#header_card.r_user")
           model: @model
 
-        @user_subnav_view = new UserSubnavView
+        @user_subnav_view ?= new UserSubnavView
           el: $("#subnav")
 
-        @medium_selector_view = new MediumSelectorView
+        @medium_selector_view ?= new MediumSelectorView
           el: $("#medium_selector")
+          router: this
+          collection: @collection
+          username: username
 
         path = window.location.pathname.split("/")
         is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
-        @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}"
+        @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}#{if medium then "/#{medium}" else ""}"
 
       @collection.monitor()
 
       if username is User::current.get("username")
-        @pages_view = new PagesWithInputView
+        @pages_view ?= new PagesWithInputView
           collection: @collection
       else
-        @pages_view = new PostsGroupedByPageView
+        @pages_view ?= new PostsGroupedByPageView
           collection: @collection
 
-      @$yield.prepend @pages_view.render().el
-      @loading_view.$el.hide()
+      if @rendered
+        @collection.fetch reset: true
+      else
+        @rendered = true
+        @$yield.prepend @pages_view.render().el
+        @loading_view.$el.hide()
 
-      if @collection.length >= @collection.params.limit
-        @pages_view.$el.waypoint (direction) =>
-          if direction is "down"
-            @loading_view.$el.show()
-            @pages_view.$el.waypoint "disable"
-            @collection.fetchNextPage success: (collection, data) =>
-              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-              @loading_view.$el.hide()
-              # This is on a delay because the waypoints plugin will miscalculate
-              # the offset if rendering the new DOM elements hasn't finished
-              setTimeout =>
-                @pages_view.$el.waypoint(if more then "enable" else "destroy")
-              , 2000
-        , {offset: "bottom-in-view"}
+        if @collection.length >= @collection.params.limit
+          @pages_view.$el.waypoint (direction) =>
+            if direction is "down"
+              @loading_view.$el.show()
+              @pages_view.$el.waypoint "disable"
+              @collection.fetchNextPage success: (collection, data) =>
+                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+                @loading_view.$el.hide()
+                # This is on a delay because the waypoints plugin will miscalculate
+                # the offset if rendering the new DOM elements hasn't finished
+                setTimeout =>
+                  @pages_view.$el.waypoint(if more then "enable" else "destroy")
+                , 2000
+          , {offset: "bottom-in-view"}
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

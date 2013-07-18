@@ -43,6 +43,16 @@ class Api::PostsController < Api::APIController
       @posts = @posts.where("id <= ?", params[:max_id])
     end
 
+    if params[:medium]
+      ids = @posts.joins(:page)
+                  .where(pages: {medium: params[:medium]})
+                  .order("posts.created_at DESC")
+                  .limit(params[:limit])
+                  .pluck(:id)
+
+      @posts = Post.where(id: ids)
+    end
+
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("created_at DESC")
                    .limit(params[:limit])

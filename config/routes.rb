@@ -41,10 +41,12 @@ Reading::Application.routes.draw do
       get 'recommended', :on => :collection
       resources :posts
       resources :comments
-      resources :events, :controller => 'posts'
+      resources :events, :controller => 'posts' do
+        get ':medium', on: :collection, action: 'index'
+      end
       get 'expats', :on => :member
       resources :following, :controller => 'users', :defaults => { :type => 'following' } do
-        get 'events', :on => :collection, :controller => 'posts', :action => 'index'
+        get 'events(/:medium)', :on => :collection, :controller => 'posts', :action => 'index'
       end
       resources :followers, :controller => 'users', :defaults => { :type => 'followers' }
     end

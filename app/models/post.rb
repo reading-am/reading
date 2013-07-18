@@ -77,8 +77,8 @@ class Post < ActiveRecord::Base
   def channels
     [
       "posts",
-      "pages.#{page_id}.events",
-      "users.#{user.id}.events"
+      "pages.#{page_id}.posts",
+      "users.#{user.id}.posts"
     ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.events"}
   end
 

@@ -8,6 +8,7 @@ define [
   "app/views/users/show/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
+  "app/views/posts/medium_selector/view"
   "app/views/components/loading_collection/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
@@ -16,8 +17,8 @@ define [
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
   "extend/jquery/waypoints"
-], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, LoadingCollectionView, PagesView,
-PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
+], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
+LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
 
@@ -45,6 +46,9 @@ PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, Find
 
         @user_subnav_view = new UserSubnavView
           el: $("#subnav")
+
+        @medium_selector_view = new MediumSelectorView
+          el: $("#medium_selector")
 
         path = window.location.pathname.split("/")
         is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")

@@ -16,6 +16,11 @@ define [
     if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
 
   Backbone.Collection::monitor = ->
+    # Do nothing on duplicate calls
+    return if @channel?.name is @channel_name()
+    # Disconnect if we're switching channels
+    @channel?.disconnect()
+
     @channel = pusher.subscribe @channel_name()
 
     @channel.bind "create", (data) =>

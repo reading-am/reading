@@ -23,17 +23,24 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
   class UsersRouter extends Backbone.Router
 
     routes:
-      "(:username)(/list)(/posts)(/:medium)" : "show"
       "settings/info"         : "edit"
       "settings/extras"       : "extras"
-      ":username/followers"   : "followers"
-      ":username/following"   : "following"
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
+      ":username/followers"   : "followers"
+      ":username/following"   : "following"
+      "(:username)(/:type)(/:medium)" : "show"
 
-    show: (username, medium) ->
-      username = false if username is "everybody"
+    show: (username, type, medium) ->
+      if username is "everybody"
+        username = null
+      if type isnt "list" and type isnt "posts"
+        medium = type
+        type = "posts"
+      if !medium
+        medium = "all"
+
       @collection ?= new Posts
 
       @loading_view ?= new LoadingCollectionView
@@ -49,14 +56,20 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
 
         @medium_selector_view ?= new MediumSelectorView
           el: $("#medium_selector")
-          router: this
-          collection: @collection
-          username: username
-          medium: medium
+          start_val: medium
+          on_change: (medium) =>
+            @navigate "#{username}#{
+              if type is "list" then "/#{type}" else ""
+            }#{
+              if medium isnt "all" then "/#{medium}" else ""
+            }", trigger: true
 
-        path = window.location.pathname.split("/")
-        is_feed = path[path.length-3] == "list" || ((path[path.length-1] == "list" && username != "list") || path[path.length-2] == "list")
-        @collection.endpoint = => "users/#{@model.get("id")}/#{if is_feed then "following/events" else "events"}#{if medium then "/#{medium}" else ""}"
+        @collection.endpoint = =>
+          "users/#{@model.get("id")}/#{
+            if type is "list" then "following/events" else "events"
+          }#{
+            if medium isnt "all" then "/#{medium}" else ""
+          }"
 
       @collection.monitor()
 

@@ -10,15 +10,11 @@ define [
       template: template
 
     initialize: (options) ->
-      @router = options.router
-      @username = options.username
-      @$("select").val options.medium || "all"
+      @$("select").val options.start_val
+      @on_change = options.on_change
 
     events:
-      "change select" : "change_medium"
+      "change select" : "changed"
 
-    change_medium: (e) ->
-      url = "#{@username}/list"
-      medium = @$(e.target).attr("value")
-      url += "/#{medium}" unless medium is "all"
-      @router.navigate url, trigger: true
+    changed: (e) ->
+      @on_change @$(e.target).attr("value")

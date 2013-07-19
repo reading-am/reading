@@ -5,7 +5,14 @@ define [
   "pusher"
 ], (_, Constants, Backbone, pusher) ->
 
-  Backbone.Collection::endpoint = -> "#{@type.toLowerCase()}"
+  Backbone.Collection::_endpoint = -> "#{@type.toLowerCase()}"
+  Backbone.Collection::endpoint = (ep) ->
+    if ep
+      @_endpoint = ep
+      @monitor() if @channel # if it's being monitored, reset with new url
+
+    return _.result @, "_endpoint"
+
   Backbone.Collection::params = {limit:50, offset:0}
   Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
   Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")

@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     params[:limit] = 50
+    params[:offset] = 0
 
     if params[:username].blank? || params[:username] == 'everybody'
       @posts = Post.all
@@ -16,11 +17,13 @@ class UsersController < ApplicationController
       @posts = params[:type] == 'list' ? @user.feed : @user.posts
     end
 
-    if !params[:medium].blank?
+    @posts = @posts.limit(params[:limit])
+                   .offset(params[:offset])
+
+    if params[:medium]
       ids = @posts.joins(:page)
                   .where(pages: {medium: params[:medium]})
                   .order("posts.created_at DESC")
-                  .limit(params[:limit])
                   .pluck(:id)
 
       @posts = Post.where(id: ids)
@@ -28,7 +31,6 @@ class UsersController < ApplicationController
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("posts.created_at DESC")
-                   .limit(params[:limit])
 
     respond_to do |format|
       format.html { render 'posts/index' }

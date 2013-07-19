@@ -9,11 +9,22 @@ define [
   Backbone.Collection::endpoint = (ep) ->
     if ep
       @_endpoint = ep
+      @reset_paging()
       @monitor() if @channel # if it's being monitored, reset with new url
 
     return _.result @, "_endpoint"
 
-  Backbone.Collection::params = {limit:50, offset:0}
+  default_limit = 50
+  Backbone.Collection::params = {limit:default_limit, offset:0}
+  Backbone.Collection::reset_paging = ->
+    @params.limit = default_limit
+    @params.offset = 0
+
+  Backbone.Collection::_fetch = Backbone.Collection::fetch
+  Backbone.Collection::fetch = (options) ->
+    @reset_paging() if options?.reset
+    @_fetch options
+
   Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
   Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
 

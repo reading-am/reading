@@ -48,15 +48,17 @@ class Api::PostsController < Api::APIController
                   .where(pages: {medium: params[:medium]})
                   .order("posts.created_at DESC")
                   .limit(params[:limit])
+                  .offset(params[:offset])
                   .pluck(:id)
 
       @posts = Post.where(id: ids)
+    else
+      @posts = @posts.limit(params[:limit])
+                     .offset(params[:offset])
     end
 
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("created_at DESC")
-                   .limit(params[:limit])
-                   .offset(params[:offset])
 
     respond_to do |format|
       format.json { render_json :posts => @posts.map { |post| post.simple_obj } }

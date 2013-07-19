@@ -101,11 +101,13 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           , {offset: "bottom-in-view"}
 
       if $.contains @$yield[0], @pages_view.el
+        # Render with new data from API
         @pages_view.$(".r_pages").css opacity: 0.2
         @collection.fetch
           reset: true
           success: after_render
       else
+        # Initial render with bootstrapped data
         @$yield.prepend @pages_view.render().el
         after_render()
 

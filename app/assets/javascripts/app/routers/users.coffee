@@ -81,7 +81,10 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           collection: @collection
 
       after_render = =>
+        @loading_view.$el.hide()
         @pages_view.$el.waypoint "destroy" # reset any existing waypoint
+        @pages_view.$(".r_pages").css opacity: 1
+
         if @collection.length >= @collection.params.limit
           @pages_view.$el.waypoint (direction) =>
             if direction is "down"
@@ -98,13 +101,13 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           , {offset: "bottom-in-view"}
 
       if @rendered
+        @pages_view.$(".r_pages").css opacity: 0.2
         @collection.fetch
           reset: true
           success: after_render
       else
         @rendered = true
         @$yield.prepend @pages_view.render().el
-        @loading_view.$el.hide()
         after_render()
 
     edit: ->

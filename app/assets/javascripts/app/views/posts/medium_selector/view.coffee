@@ -9,12 +9,22 @@ define [
       styles: styles
       template: template
 
-    initialize: (options) ->
-      @$("select").val options.start_val
-      @on_change = options.on_change
-
     events:
       "change select" : "changed"
 
+    initialize: (options) ->
+      @on_change = options.on_change
+      @start_val = options.start_val
+      @$("select").val @start_val
+
     changed: (e) ->
       @on_change @$(e.target).attr("value")
+
+    json: ->
+      j = {}
+      j["medium_#{@start_val}"] = true
+      return j
+
+    render: ->
+      @$el.html(@template(@json()))
+      return this

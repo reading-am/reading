@@ -100,13 +100,12 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
                 , 2000
           , {offset: "bottom-in-view"}
 
-      if @rendered
+      if $.contains @$yield[0], @pages_view.el
         @pages_view.$(".r_pages").css opacity: 0.2
         @collection.fetch
           reset: true
           success: after_render
       else
-        @rendered = true
         @$yield.prepend @pages_view.render().el
         after_render()
 

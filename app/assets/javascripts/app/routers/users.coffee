@@ -80,13 +80,8 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         @pages_view ?= new PostsGroupedByPageView
           collection: @collection
 
-      if @rendered
-        @collection.fetch reset: true
-      else
-        @rendered = true
-        @$yield.prepend @pages_view.render().el
-        @loading_view.$el.hide()
-
+      after_render = =>
+        @pages_view.$el.waypoint "destroy" # reset any existing waypoint
         if @collection.length >= @collection.params.limit
           @pages_view.$el.waypoint (direction) =>
             if direction is "down"
@@ -101,6 +96,16 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
                   @pages_view.$el.waypoint(if more then "enable" else "destroy")
                 , 2000
           , {offset: "bottom-in-view"}
+
+      if @rendered
+        @collection.fetch
+          reset: true
+          success: after_render
+      else
+        @rendered = true
+        @$yield.prepend @pages_view.render().el
+        @loading_view.$el.hide()
+        after_render()
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView

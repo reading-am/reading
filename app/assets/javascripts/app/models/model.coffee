@@ -53,7 +53,11 @@ define [
     type = name if !type?
     name = name.toLowerCase()
 
-    @[name] = @nestCollection(name, App.Collections[type], @get(name))
+    if this instanceof Backbone.Model
+      @[name] = @nestCollection(name, App.Collections[type], @get(name))
+    else # Collections don't have model.attributes so just attach to the object
+      @[name] = new App.Collections[type]
+
     @[name].urlName = name if name != _.result @[name], "urlName"
 
     c_ep = @[name].endpoint

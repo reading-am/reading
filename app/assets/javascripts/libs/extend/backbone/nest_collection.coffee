@@ -29,6 +29,4 @@ define [
 
     nestedCollection
 
-  Backbone.Collection::nestCollection = Backbone.Model::nestCollection
-
   return Backbone

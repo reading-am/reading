@@ -79,7 +79,7 @@ class Post < ActiveRecord::Base
       "posts",
       "pages.#{page_id}.posts",
       "users.#{user.id}.posts"
-    ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.events"}
+    ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.posts"}
   end
 
   def simple_obj to_s=false

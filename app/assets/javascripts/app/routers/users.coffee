@@ -43,8 +43,34 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
 
       @collection ?= new Posts
 
+      if !@setup
+        @setup = true
+        if @model
+          if type is "list"
+            @model.following.has_many "Posts"
+            @model.following.posts.reset @collection.models
+            @collection = @model.following.posts
+          else
+            @model.posts.reset @collection.models
+            @collection = @model.posts
+
+      @collection.medium = medium
+      @collection.monitor()
+
       @loading_view ?= new LoadingCollectionView
         el: @$yield.find(".r_loading")
+
+      @medium_selector_view ?= new MediumSelectorView
+        el: $("#medium_selector")
+        start_val: medium
+        on_change: (medium) =>
+          @navigate "#{
+            if username then username else ""
+          }#{
+            if type is "list" then "/#{type}" else ""
+          }#{
+            if medium isnt "all" then "/#{medium}" else ""
+          }", trigger: true
 
       if username
         @user_show_view ?= new UserShowView
@@ -53,25 +79,6 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
 
         @user_subnav_view ?= new UserSubnavView
           el: $("#subnav")
-
-        @medium_selector_view ?= new MediumSelectorView
-          el: $("#medium_selector")
-          start_val: medium
-          on_change: (medium) =>
-            @navigate "#{username}#{
-              if type is "list" then "/#{type}" else ""
-            }#{
-              if medium isnt "all" then "/#{medium}" else ""
-            }", trigger: true
-
-        @collection.endpoint = =>
-          "users/#{@model.get("id")}/#{
-            if type is "list" then "following/events" else "events"
-          }#{
-            if medium isnt "all" then "/#{medium}" else ""
-          }"
-
-      @collection.monitor()
 
       if username is User::current.get("username")
         @pages_view ?= new PagesWithInputView

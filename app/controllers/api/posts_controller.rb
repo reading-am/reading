@@ -17,7 +17,7 @@ class Api::PostsController < Api::APIController
     if params[:user_id]
       if params[:type] == "following"
         # list events from users the user is following
-        # users/1/following/events
+        # users/1/following/posts
         @user = User.find(params[:user_id])
         @posts = @user.feed
       else

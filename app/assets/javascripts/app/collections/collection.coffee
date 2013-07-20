@@ -5,14 +5,7 @@ define [
   "pusher"
 ], (_, Constants, Backbone, pusher) ->
 
-  Backbone.Collection::_endpoint = -> "#{@type.toLowerCase()}"
-  Backbone.Collection::endpoint = (ep) ->
-    if ep
-      @_endpoint = ep
-      @reset_paging()
-      @monitor() if @channel # if it's being monitored, reset with new url
-
-    return _.result @, "_endpoint"
+  Backbone.Collection::endpoint = -> _.result @,"urlName"
 
   default_limit = 50
   Backbone.Collection::params = {limit:default_limit, offset:0}
@@ -24,9 +17,6 @@ define [
   Backbone.Collection::fetch = (options) ->
     @reset_paging() if options?.reset
     @_fetch options
-
-  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
-  Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
 
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses

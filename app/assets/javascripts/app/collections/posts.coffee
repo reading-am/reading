@@ -1,8 +1,9 @@
 define [
+  "underscore"
   "backbone"
   "app/init"
   "app/models/post"
-], (Backbone, App, Post) ->
+], (_, Backbone, App, Post) ->
 
   class App.Collections.Posts extends Backbone.Collection
     type: "Posts"
@@ -25,3 +26,10 @@ define [
 
       return 0 unless total_count > 0
       the_sum / total_count
+
+    endpoint: ->
+      "#{
+        super()
+      }#{
+        if @medium and @medium isnt "all" then "/#{@medium}" else ""
+      }"

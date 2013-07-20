@@ -36,23 +36,22 @@ Reading::Application.routes.draw do
       get 'count', :on => :collection
     end
     resources :users do
-      get 'count', :on => :collection
-      get 'search', :on => :collection
-      get 'recommended', :on => :collection
-      resources :posts
+      get 'count', on: :collection
+      get 'search', on: :collection
+      get 'recommended', on: :collection
+      get 'expats', on: :member
       resources :comments
-      resources :events, :controller => 'posts' do
+      resources :posts do
         get ':medium', on: :collection, action: 'index'
       end
-      get 'expats', :on => :member
-      resources :following, :controller => 'users', :defaults => { :type => 'following' } do
-        get 'events(/:medium)', :on => :collection, :controller => 'posts', :action => 'index'
+      resources :following, controller: 'users', defaults: { type: 'following' } do
+        get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index'
       end
-      resources :followers, :controller => 'users', :defaults => { :type => 'followers' }
+      resources :followers, controller: 'users', defaults: { type: 'followers' }
     end
     resources :pages do
-      get 'count', :on => :collection
-      get 'search', :on => :collection
+      get 'count', on: :collection
+      get 'search', on: :collection
       resources :users
       resources :comments
       resources :posts

@@ -33,6 +33,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
       "(:username)(/:type)(/:medium)" : "show"
 
     show: (username, type, medium) ->
+      # Parse params
       if username is "everybody"
         username = null
       if type isnt "list" and type isnt "posts"
@@ -41,6 +42,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
       if !medium
         medium = "all"
 
+      # Setup collection
       @collection ?= new Posts
 
       if @model
@@ -52,6 +54,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
       @collection.medium = medium
       @collection.monitor()
 
+      # Setup views
       @loading_view ?= new LoadingCollectionView
         el: @$yield.find(".r_loading")
 
@@ -82,6 +85,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         @pages_view ?= new PostsGroupedByPageView
           collection: @collection
 
+      # Render
       after_render = =>
         @loading_view.$el.hide()
         @pages_view.$el.waypoint "destroy" # reset any existing waypoint

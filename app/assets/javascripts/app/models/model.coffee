@@ -66,6 +66,8 @@ define [
     @_has_many = [] unless @_has_many?
     @_has_many.push name
 
+    return @[name]
+
   Backbone.Collection::has_many = Backbone.Model::has_many
 
   Backbone.Model::is_model = (input) ->

@@ -43,16 +43,11 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
 
       @collection ?= new Posts
 
-      if !@setup
-        @setup = true
-        if @model
-          if type is "list"
-            @model.following.has_many "Posts"
-            @model.following.posts.reset @collection.models
-            @collection = @model.following.posts
-          else
-            @model.posts.reset @collection.models
-            @collection = @model.posts
+      if @model
+        c = if type is "posts" then @model.posts else (@model.following.posts || @model.following.has_many("Posts"))
+        if @collection isnt c
+          c.reset @collection.models
+          @collection = c
 
       @collection.medium = medium
       @collection.monitor()

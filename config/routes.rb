@@ -124,6 +124,7 @@ Reading::Application.routes.draw do
   get '/:username/follow'   => 'relationships#create'
   get '/:username/unfollow' => 'relationships#destroy'
   get '/:username/tumblr'   => 'blogs#show'
-  get '/:username(/:type)(/:medium)(/page/:page)' => 'users#show', constraints: { type: /posts|list/ }
-  get '/:username' => 'users#show', defaults: { type: 'posts' }
+  get '/:username(/:type)(/:medium)(/page/:page)' => 'users#show',
+    defaults: { type: 'posts' },
+    constraints: { type: /posts|list/ }
 end

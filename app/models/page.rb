@@ -104,6 +104,14 @@ public
     page
   end
 
+  def extension
+    Addressable::URI.parse(url).extname[1..-1]
+  end
+
+  def mimetype
+    Mime::Type.lookup_by_extension extension
+  end
+
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
     if !trans_tags("title").blank?
@@ -126,6 +134,8 @@ public
       meta_tags['og']['type'].split(':').last.split('.').first
     elsif !meta_tags['medium'].blank? # flickr uses this
       meta_tags['medium'].blank?
+    elsif m = mimetype
+      m.to_s.split('/')[0]
     else
       false
     end

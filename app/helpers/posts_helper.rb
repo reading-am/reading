@@ -1,5 +1,25 @@
 module PostsHelper
 
+  def medium_to_object medium
+    {
+      'all'   => 'stuff',
+      'text'  => 'stuff',
+      'image' => 'images',
+      'video' => 'videos',
+      'audio' => 'audio'
+    }[medium] || 'stuff'
+  end
+
+  def medium_to_verb medium
+    {
+      'all'   => 'reading',
+      'text'  => 'reading',
+      'image' => 'looking at',
+      'video' => 'watching',
+      'audio' => 'listening to'
+    }[medium] || 'reading'
+  end
+
   def page_hashes_from_posts posts
     _pages = []
     date = ''

@@ -46,7 +46,7 @@ class Api::PostsController < Api::APIController
     @posts = @posts.limit(params[:limit])
                    .offset(params[:offset])
 
-    if params[:medium]
+    if params[:medium] && params[:medium] != "all"
       ids = @posts.joins(:page)
                   .where(pages: {medium: params[:medium]})
                   .order("posts.created_at DESC")

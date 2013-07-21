@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130626171533) do
+ActiveRecord::Schema.define(version: 20130721195953) do
 
   create_table "authorizations", force: true do |t|
     t.string   "provider"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20130626171533) do
     t.text     "head_tags"
     t.text     "oembed"
     t.string   "medium"
+    t.text     "headers"
   end
 
   add_index "pages", ["medium"], name: "index_pages_on_medium", using: :btree

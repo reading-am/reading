@@ -1,5 +1,6 @@
 class Page < ActiveRecord::Base
 
+  serialize :headers, JSON
   serialize :oembed, JSON
 
   belongs_to :domain, counter_cache: true
@@ -15,7 +16,7 @@ class Page < ActiveRecord::Base
   cattr_accessor :crawl_timeout
 
   before_validation :populate_domain
-  before_save :populate_medium
+  before_save :populate_medium, unless: :new_record?
   before_create :populate_remote_page_data
   after_create :populate_remote_meta_data
 
@@ -43,7 +44,7 @@ private
     # and that it uses a valid protocol
     # TODO - move these checks into a validation
     if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
-      self.domain = Domain.find_or_create_by_name(a.host)
+      self.domain = Domain.where(name: a.host).first_or_create
     end
   end
 
@@ -109,7 +110,11 @@ public
   end
 
   def mimetype
-    Mime::Type.lookup_by_extension extension
+    if headers
+      Mime::Type.lookup headers['content-type'].split(';')[0]
+    else
+      Mime::Type.lookup_by_extension extension
+    end
   end
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
@@ -197,7 +202,9 @@ public
     }
     m = 'text' # default
     mediums.select! do |k,v|
-      m = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
+      m = k if media_type == k or
+            v.include?(media_type) or
+            (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
     end
     m
   end
@@ -319,9 +326,24 @@ public
       if !crawl_timeout.blank?
         agent.open_timeout = agent.read_timeout = crawl_timeout
       end
-      @mech = agent.get crawl_url
+
+      if !mimetype || mimetype.html?
+        treat_as_html = true
+      else
+        @mech = agent.head crawl_url
+        m = Mime::Type.lookup @mech.header['content-type'].split(';')[0]
+        treat_as_html = m.html?
+      end
+
+      if treat_as_html
+        @mech = agent.get crawl_url
+      end
     end
     @mech
+  end
+
+  def remote_headers
+    mech.header
   end
 
   def remote_resolved_url
@@ -332,9 +354,13 @@ public
     remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
   end
 
+  def remote_markup
+    mech.respond_to?(:search) ? mech : Nokogiri::HTML(nil)
+  end
+
   # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
   def remote_head_tags
-    mech.search('title,meta,link:not([rel=stylesheet])')
+    remote_markup.search('title,meta,link:not([rel=stylesheet])')
   end
 
   def remote_canonical_url
@@ -345,11 +371,11 @@ public
     host = parsed_url.host
 
     # this has a JS companion in bookmarklet/real_init.coffee#get_url()
-    search = mech.search("link[rel=canonical][href!='']")
+    search = remote_markup.search("link[rel=canonical][href!='']")
     if search.length > 0
       canonical = search.attr('href').to_s
     else
-      search = mech.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
+      search = remote_markup.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
       if search.length > 0
         canonical = search.attr('value').to_s
       else
@@ -398,9 +424,11 @@ public
   end
 
   def populate_remote_page_data
+    self.headers = remote_headers
     self.url = remote_normalized_url
     self.head_tags = remote_head_tags
     self.title = title_tag
+    self.medium = parse_medium
     return self
   end
 

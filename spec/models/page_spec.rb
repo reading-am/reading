@@ -30,7 +30,7 @@ describe Page do
   context "when saved" do
 
     it "rejects non-web / http urls" do
-      bad_urls = [
+      [
         "file:///Users/apple/Desktop/Site%20Practice/index.html",
         "javascript:reading={};(function(){reading.token='0dRF3d-er_31llmGUT-AKA';var otherlib=(typeof jQuery=='undefined'&&typeof $=='function');function getScript(url,success){var script=document.createElement('script');script.src=url;var head=document.getElementsByTagName('head')[0],done=false;script.onload=script.onreadystatechange=function(){if(!done&&(!this.readyState||this.readyState=='loaded'||this.readyState=='complete')){done=true;success();script.onload=script.onreadystatechange=null;head.removeChild(script);}};head.appendChild(script);}getScript('http://code.jquery.com/jquery-latest.min.js',function(){if(typeof jQuery=='undefined'){alert('There was an error loading Reading');}else{jQuery.getScript('http://reading.am/javascripts/reading.js');}});})();",
         "mailto:alasdair.monk+hello@gmail.com",
@@ -42,8 +42,7 @@ describe Page do
         "chrome-devtools://devtools/devtools.html?docked=true&toolbarColor=rgba(230,230,230,1)&textColor=rgba(0,0,0,1)",
         "nvalt://make/?txt=http%3A%2F%2Fcarl.flax.ie%2Fdothingstellpeople.html",
         "yorufukurou://pasteurl/'The%20Fifth%20Floor'%20(El%20Quinto%20Piso)%3A%20Who%20Will%20Rebuild%20the%20House%20of%20Puerto%20Rico%3F%20-%20Forbes%20http%3A%2F%2Fwww.forbes.com%2Fsites%2Fgiovannirodriguez%2F2013%2F01%2F16%2Fthe-fifth-floor-el-quinto-piso-who-will-rebuild-the-house-of-puerto-rico%2F"
-      ]
-      bad_urls.each do |url|
+      ].each do |url|
         page = Page.new :url => url
         page.save
         page.new_record?.should be_true
@@ -55,6 +54,16 @@ describe Page do
       page = pages(:youtube_short)
       page.mech = ShimMech.new URI.parse('http://www.youtube.com/watch?v=sIy4KsWq-FA&feature=youtu.be&t=1m36s'), page.head_tags.to_s
       page.remote_canonical_url.should eq("http://www.youtube.com/watch?v=sIy4KsWq-FA")
+    end
+
+    it "identifies files without html wrappers" do
+      [
+        "http://www.hawking.org.uk/uploads/8/3/0/0/8300824/254175_orig.jpg",
+        "http://law2.umkc.edu/faculty/projects/ftrials/till/Reed.pdf"
+      ].each do |url|
+        page = Page.new :url => url
+        page.save.should be_true
+      end
     end
 
     it "accurately parses the title tag when present" do

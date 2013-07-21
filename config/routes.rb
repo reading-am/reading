@@ -31,6 +31,7 @@ Reading::Application.routes.draw do
   namespace :api, :defaults => { :format => 'json' } do
     resources :posts do
       get 'count', :on => :collection
+      get ':medium', on: :collection, action: 'index'
     end
     resources :comments do
       get 'count', :on => :collection
@@ -123,6 +124,6 @@ Reading::Application.routes.draw do
   get '/:username/follow'   => 'relationships#create'
   get '/:username/unfollow' => 'relationships#destroy'
   get '/:username/tumblr'   => 'blogs#show'
-  get '/:username/:type(/:medium)(/page/:page)' => 'users#show', constraints: { type: /posts|list/ }
+  get '/:username(/:type)(/:medium)(/page/:page)' => 'users#show', constraints: { type: /posts|list/ }
   get '/:username' => 'users#show', defaults: { type: 'posts' }
 end

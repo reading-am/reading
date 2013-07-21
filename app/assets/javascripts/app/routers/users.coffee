@@ -34,8 +34,8 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
 
     show: (username, type, medium) ->
       # Parse params
-      if username is "everybody"
-        username = null
+      if !username
+        username = "everybody"
       if type isnt "list" and type isnt "posts"
         medium = type
         type = "posts"
@@ -63,14 +63,14 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         start_val: medium
         on_change: (medium) =>
           @navigate "#{
-            if username then username else ""
+            username
           }#{
             if type is "list" then "/#{type}" else ""
           }#{
             if medium isnt "all" then "/#{medium}" else ""
           }", trigger: true
 
-      if username
+      if username isnt "everybody"
         @user_show_view ?= new UserShowView
           el: $("#header_card.r_user")
           model: @model

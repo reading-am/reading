@@ -17,7 +17,7 @@ gem 'rails_12factor', group: :production # needed by Heroku
 # Core Libs #
 #############
 gem 'escape_utils' # fast string escaping lib used by Github
-gem 'curb', '~> 0.8.0' # CURL bindings
+gem 'curb' # CURL bindings
 gem 'nokogiri' # HTML / XML parsing
 gem 'addressable' # URI parsing
 gem 'oj' # fast JSON parser
@@ -45,7 +45,7 @@ gem 'newrelic_rpm'
 ########
 # Auth #
 ########
-gem 'devise', '~> 3.0.0.rc'
+gem 'devise'
 gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'

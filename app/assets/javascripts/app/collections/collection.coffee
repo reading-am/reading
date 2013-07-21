@@ -5,10 +5,18 @@ define [
   "pusher"
 ], (_, Constants, Backbone, pusher) ->
 
-  Backbone.Collection::endpoint = -> "#{@type.toLowerCase()}"
-  Backbone.Collection::params = {limit:50, offset:0}
-  Backbone.Collection::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
-  Backbone.Collection::channel_name = -> @endpoint().replace(/\//g,".")
+  Backbone.Collection::endpoint = -> _.result @,"urlName"
+
+  default_limit = 50
+  Backbone.Collection::params = {limit:default_limit, offset:0}
+  Backbone.Collection::reset_paging = ->
+    @params.limit = default_limit
+    @params.offset = 0
+
+  Backbone.Collection::_fetch = Backbone.Collection::fetch
+  Backbone.Collection::fetch = (options) ->
+    @reset_paging() if options?.reset
+    @_fetch options
 
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses
@@ -16,6 +24,11 @@ define [
     if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
 
   Backbone.Collection::monitor = ->
+    # Do nothing on duplicate calls
+    return if @channel?.name is @channel_name()
+    # Disconnect if we're switching channels
+    @channel?.disconnect()
+
     @channel = pusher.subscribe @channel_name()
 
     @channel.bind "create", (data) =>

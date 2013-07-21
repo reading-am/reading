@@ -26,6 +26,10 @@
   </div>
 {{/user}}
 
+{{#access_media_feed}}
+  {{>posts/medium_selector/template}}
+{{/access_media_feed}}
+
 {{#has_posts}}
   <div id="yield">
     {{^pages}}

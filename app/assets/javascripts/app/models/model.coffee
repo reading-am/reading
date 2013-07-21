@@ -5,11 +5,19 @@ define [
   "app/constants"
 ], (_, Backbone, App, Constants) ->
 
+  # urlName: the property name of this obj in the url.
+  # Typically the type() but can be changed. i.e. "followers" instead of "users"
+  Backbone.Model::urlName = -> @type.toLowerCase()
+  Backbone.Collection::urlName = Backbone.Model::urlName
+  Backbone.Model::urlRoot = -> "#{_.result @,"urlName"}s"
+
   # Override the url method to append the absolute API route
   Backbone.Model::endpoint = Backbone.Model::url
-  Backbone.Model::url = -> "//#{Constants.domain}/api/#{@endpoint()}"
-  Backbone.Model::urlRoot = -> "#{@type.toLowerCase()}s"
-  Backbone.Model::channel_name = -> @endpoint().replace(/\//g,".")
+  Backbone.Model::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
+  Backbone.Collection::url = Backbone.Model::url
+
+  Backbone.Model::channel_name = -> _.result(@,"endpoint").replace(/\//g,".")
+  Backbone.Collection::channel_name = Backbone.Model::channel_name
 
   Backbone.Model::factory = (input) ->
     if _.isArray input
@@ -44,11 +52,23 @@ define [
   Backbone.Model::has_many = (name, type) ->
     type = name if !type?
     name = name.toLowerCase()
-    @[name] = @nestCollection(name, App.Collections[type], @get(name))
-    @[name].endpoint = => "#{@endpoint()}/#{name}"
+
+    if this instanceof Backbone.Model
+      @[name] = @nestCollection(name, App.Collections[type], @get(name))
+    else # Collections don't have model.attributes so just attach to the object
+      @[name] = new App.Collections[type]
+
+    @[name].urlName = name if name != _.result @[name], "urlName"
+
+    c_ep = @[name].endpoint
+    @[name].endpoint = => "#{@endpoint()}/#{c_ep.call @[name]}"
 
     @_has_many = [] unless @_has_many?
     @_has_many.push name
+
+    return @[name]
+
+  Backbone.Collection::has_many = Backbone.Model::has_many
 
   Backbone.Model::is_model = (input) ->
     input instanceof Backbone.Model or (_.isObject(input) and input.type? and input.id?)

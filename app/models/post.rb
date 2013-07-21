@@ -46,9 +46,9 @@ class Post < ActiveRecord::Base
   def self.followed_by(user)
     following_ids = %(SELECT followed_id FROM relationships
                       WHERE follower_id = :user_id)
-    where("user_id IN (#{following_ids}) OR user_id = :user_id",
+    where("posts.user_id IN (#{following_ids}) OR posts.user_id = :user_id",
           { :user_id => user })
-    .order("created_at DESC")
+    .order("posts.created_at DESC")
   end
 
   def self.unread_since(user, datetime)
@@ -79,7 +79,7 @@ class Post < ActiveRecord::Base
       "posts",
       "pages.#{page_id}.posts",
       "users.#{user.id}.posts"
-    ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.events"}
+    ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.posts"}
   end
 
   def simple_obj to_s=false

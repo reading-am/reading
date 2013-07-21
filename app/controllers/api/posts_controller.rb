@@ -17,7 +17,7 @@ class Api::PostsController < Api::APIController
     if params[:user_id]
       if params[:type] == "following"
         # list events from users the user is following
-        # users/1/following/events
+        # users/1/following/posts
         @user = User.find(params[:user_id])
         @posts = @user.feed
       else
@@ -43,10 +43,20 @@ class Api::PostsController < Api::APIController
       @posts = @posts.where("id <= ?", params[:max_id])
     end
 
+    @posts = @posts.limit(params[:limit])
+                   .offset(params[:offset])
+
+    if params[:medium]
+      ids = @posts.joins(:page)
+                  .where(pages: {medium: params[:medium]})
+                  .order("posts.created_at DESC")
+                  .pluck(:id)
+
+      @posts = Post.where(id: ids)
+    end
+
     @posts = @posts.includes(:user, :page, {referrer_post: :user})
                    .order("created_at DESC")
-                   .limit(params[:limit])
-                   .offset(params[:offset])
 
     respond_to do |format|
       format.json { render_json :posts => @posts.map { |post| post.simple_obj } }

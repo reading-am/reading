@@ -1,9 +1,11 @@
 #= require baseUrl
 
 require [
+  "underscore"
   "jquery"
   "libs/base58"
   "libs/indian"
+  "libs/keymaster"
   "app/init"
   "app/models/post"
   "app/models/user_with_current"
@@ -11,7 +13,7 @@ require [
   "app/views/components/titlecard/view"
   "extend/jquery/rails"
   "extend/jquery/cookies"
-], ($, base58, Indian, App, Post, User, Constants, Titlecard) ->
+], (_, $, base58, Indian, Key, App, Post, User, Constants, Titlecard) ->
 
   # write timezone info. From: http://stackoverflow.com/questions/942747/set-current-time-zone-in-rails
   unless $.cookie "timezone"
@@ -82,3 +84,14 @@ require [
     $(window).focus ->
       Indian.badge ""
       $(".post.new").fadeTo("medium", 1).removeClass("new")
+
+  # --------------------------------------------------
+  # NOTE - silliness
+
+  Key 'shift+alt+c', _.once -> require ['etc/clippy'], (clippy) ->
+    window.clippy = clippy
+    $("<link>", {rel: "stylesheet", href: "<%= asset_path 'etc/clippy.css' %>"}).appendTo("head")
+    clippy.load 'Clippy', (agent) ->
+      agent.show()
+      agent.animate()
+      setInterval (-> agent.animate()), 15000

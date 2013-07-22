@@ -117,6 +117,10 @@ public
     end
   end
 
+  def html?
+    mimetype ? mimetype.html? : true
+  end
+
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
     if !trans_tags("title").blank?
@@ -327,7 +331,7 @@ public
         agent.open_timeout = agent.read_timeout = crawl_timeout
       end
 
-      if !mimetype || mimetype.html?
+      if html?
         treat_as_html = true
       else
         @mech = agent.head crawl_url
@@ -351,16 +355,14 @@ public
   end
 
   def remote_normalized_url
-    remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
-  end
-
-  def remote_markup
-    mech.respond_to?(:search) ? mech : Nokogiri::HTML(nil)
+    html? && remote_canonical_url ?
+      remote_canonical_url :
+      self.class.cleanup_url(remote_resolved_url)
   end
 
   # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
   def remote_head_tags
-    remote_markup.search('title,meta,link:not([rel=stylesheet])')
+    mech.search('title,meta,link:not([rel=stylesheet])')
   end
 
   def remote_canonical_url
@@ -371,11 +373,11 @@ public
     host = parsed_url.host
 
     # this has a JS companion in bookmarklet/real_init.coffee#get_url()
-    search = remote_markup.search("link[rel=canonical][href!='']")
+    search = mech.search("link[rel=canonical][href!='']")
     if search.length > 0
       canonical = search.attr('href').to_s
     else
-      search = remote_markup.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
+      search = mech.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
       if search.length > 0
         canonical = search.attr('value').to_s
       else
@@ -424,11 +426,17 @@ public
   end
 
   def populate_remote_page_data
+    # populate headers first, it's used by the others
     self.headers = remote_headers
+
     self.url = remote_normalized_url
-    self.head_tags = remote_head_tags
     self.title = title_tag
     self.medium = parse_medium
+
+    if html?
+      self.head_tags = remote_head_tags
+    end
+
     return self
   end
 

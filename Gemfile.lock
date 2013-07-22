@@ -668,6 +668,7 @@ DEPENDENCIES
   mechanize
   memcachier
   meta_request
+  mime-types
   musterb!
   newrelic_rpm
   nilify_blanks

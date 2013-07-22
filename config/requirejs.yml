@@ -62,6 +62,11 @@ modules:
 
   - name: libs/pusher
 
+  # NOTE - silliness
+  - name: etc/clippy
+    exclude:
+      - jquery
+
 optimize: uglify2 # set to none for testing
 
 # NOTE uglify2 config is namespaced under uglify2, though many docs show just uglify

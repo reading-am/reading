@@ -140,13 +140,13 @@ public
       meta_tags['og']['type'].split(':').last.split('.').first
     elsif !meta_tags['medium'].blank? # flickr uses this
       meta_tags['medium'].blank?
-    elsif mimetype
+    else
       mimetype.media_type
     end
   end
 
   def image
-    trans_tags("image")
+    mimetype.media_type == "image" ? url : trans_tags("image")
   end
 
   def embed
@@ -156,7 +156,7 @@ public
       elsif trans_tags("player") || trans_tags("video")
         param = trans_tags("player") ? "player" : "video"
         "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-      elsif media_type == "photo"
+      elsif media_type == "photo" || mimetype.media_type == "image"
         "<img src=\"#{image}\">"
       else
         nil

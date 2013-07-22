@@ -90,7 +90,7 @@ require [
 
   Key 'shift+alt+c', _.once -> require ['etc/clippy'], (clippy) ->
     window.clippy = clippy
-    $("<link>", {rel: "stylesheet", href: "/assets/etc/clippy.css"}).appendTo("head")
+    $("<link>", {rel: "stylesheet", href: "<%= asset_path 'etc/clippy.css' %>"}).appendTo("head")
     clippy.load 'Clippy', (agent) ->
       agent.show()
       agent.animate()

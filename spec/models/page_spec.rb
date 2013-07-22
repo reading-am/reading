@@ -58,12 +58,29 @@ describe Page do
 
     it "identifies files without html wrappers" do
       Page.observers.disable :all do
-        [
-          "http://www.hawking.org.uk/uploads/8/3/0/0/8300824/254175_orig.jpg",
-          "http://law2.umkc.edu/faculty/projects/ftrials/till/Reed.pdf"
-        ].each do |url|
-          page = Page.new url: url
-          page.save.should be_true
+        {
+          "text"  => [
+            "http://law2.umkc.edu/faculty/projects/ftrials/till/Reed.pdf",
+            "http://a1408.g.akamai.net/5/1408/1388/2005110403/1a1a1ad948be278cff2d96046ad90768d848b41947aa1986/sample_iPod.m4v.zip"
+          ],
+          "image" => [
+            "http://www.hawking.org.uk/uploads/8/3/0/0/8300824/254175_orig.jpg",
+            "http://25.media.tumblr.com/5253cd15777fbfb3adbaf225f61405d9/tumblr_mqaycmAF1W1qczbido1_500.gif"
+          ],
+          "video" => [
+            "http://istec.colostate.edu/me/facil/dynamics/files/drop.avi",
+            "http://www.mediacollege.com/video-gallery/testclips/barsandtone.flv"
+          ],
+          "audio" => [
+            "http://www.stephaniequinn.com/Music/Allegro%20from%20Duet%20in%20C%20Major.mp3",
+            "http://download.wavetlan.com/SVV/Media/HTTP/AAC/iTunes/iTunes_test1_AAC-LC_v4_Stereo_VBR_128kbps_44100Hz.m4a"
+          ]
+        }.each do |medium, urls|
+          urls.each do |url|
+            page = Page.new url: url
+            page.save.should be_true
+            page.medium.should eq medium
+          end
         end
       end
     end

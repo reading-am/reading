@@ -105,20 +105,17 @@ public
     page
   end
 
-  def extension
-    Addressable::URI.parse(url).extname[1..-1]
-  end
-
   def mimetype
     if headers
-      Mime::Type.lookup headers['content-type'].split(';')[0]
+      m = MIME::Types[headers['content-type'].split(';')[0]]
     else
-      Mime::Type.lookup_by_extension extension
+      m = MIME::Types.type_for url
     end
+    m[0] || MIME::Types['text/html'][0]
   end
 
   def html?
-    mimetype ? mimetype.html? : true
+    mimetype.sub_type == "html"
   end
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
@@ -143,10 +140,8 @@ public
       meta_tags['og']['type'].split(':').last.split('.').first
     elsif !meta_tags['medium'].blank? # flickr uses this
       meta_tags['medium'].blank?
-    elsif m = mimetype
-      m.to_s.split('/')[0]
-    else
-      false
+    elsif mimetype
+      mimetype.media_type
     end
   end
 

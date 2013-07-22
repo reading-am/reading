@@ -1,5 +1,6 @@
 class Page < ActiveRecord::Base
 
+  serialize :headers, JSON
   serialize :oembed, JSON
 
   belongs_to :domain, counter_cache: true
@@ -15,7 +16,7 @@ class Page < ActiveRecord::Base
   cattr_accessor :crawl_timeout
 
   before_validation :populate_domain
-  before_save :populate_medium
+  before_save :populate_medium, unless: :new_record?
   before_create :populate_remote_page_data
   after_create :populate_remote_meta_data
 
@@ -43,7 +44,7 @@ private
     # and that it uses a valid protocol
     # TODO - move these checks into a validation
     if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
-      self.domain = Domain.find_or_create_by_name(a.host)
+      self.domain = Domain.where(name: a.host).first_or_create
     end
   end
 
@@ -104,12 +105,17 @@ public
     page
   end
 
-  def extension
-    Addressable::URI.parse(url).extname[1..-1]
+  def mimetype
+    if headers
+      m = MIME::Types[headers['content-type'].split(';')[0]]
+    else
+      m = MIME::Types.type_for url
+    end
+    m[0] || MIME::Types['text/html'][0]
   end
 
-  def mimetype
-    Mime::Type.lookup_by_extension extension
+  def html?
+    mimetype.sub_type == "html"
   end
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
@@ -134,10 +140,8 @@ public
       meta_tags['og']['type'].split(':').last.split('.').first
     elsif !meta_tags['medium'].blank? # flickr uses this
       meta_tags['medium'].blank?
-    elsif m = mimetype
-      m.to_s.split('/')[0]
-    else
-      false
+    elsif mimetype
+      mimetype.media_type
     end
   end
 
@@ -197,7 +201,9 @@ public
     }
     m = 'text' # default
     mediums.select! do |k,v|
-      m = k if v.include?(media_type) or (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
+      m = k if media_type == k or
+            v.include?(media_type) or
+            (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
     end
     m
   end
@@ -319,9 +325,24 @@ public
       if !crawl_timeout.blank?
         agent.open_timeout = agent.read_timeout = crawl_timeout
       end
-      @mech = agent.get crawl_url
+
+      if html?
+        treat_as_html = true
+      else
+        @mech = agent.head crawl_url
+        m = Mime::Type.lookup @mech.header['content-type'].split(';')[0]
+        treat_as_html = m.html?
+      end
+
+      if treat_as_html
+        @mech = agent.get crawl_url
+      end
     end
     @mech
+  end
+
+  def remote_headers
+    mech.header
   end
 
   def remote_resolved_url
@@ -329,7 +350,9 @@ public
   end
 
   def remote_normalized_url
-    remote_canonical_url ? remote_canonical_url : self.class.cleanup_url(remote_resolved_url)
+    html? && remote_canonical_url ?
+      remote_canonical_url :
+      self.class.cleanup_url(remote_resolved_url)
   end
 
   # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
@@ -398,9 +421,17 @@ public
   end
 
   def populate_remote_page_data
+    # populate headers first, it's used by the others
+    self.headers = remote_headers
+
     self.url = remote_normalized_url
-    self.head_tags = remote_head_tags
     self.title = title_tag
+    self.medium = parse_medium
+
+    if html?
+      self.head_tags = remote_head_tags
+    end
+
     return self
   end
 

@@ -136,7 +136,7 @@ namespace :cleanup do
           else
             puts "## #{page.id} replacing #{dupe_page.id}\n"
             puts "## url was: #{page.url_was}\nurl is: #{page.url}\n\n"
-            page.domain = Domain.find_or_create_by_name(Addressable::URI.parse(page.url).host)
+            page.domain = Domain.where(name: Addressable::URI.parse(page.url).host).first_or_create
             page_to_replace = dupe_page
             page_to_keep = page
           end

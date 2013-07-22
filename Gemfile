@@ -35,6 +35,7 @@ gem 'browser' # browser detection
 gem 'sanitize' # HTML sanitizer
 gem 'ruby-oembed'
 gem 'text'
+gem 'mime-types'
 
 ##############
 # Monitoring #

@@ -10,12 +10,18 @@ class RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:name, :username, :email, :password, :password_confirmation, :remember_me)
     end
+
     devise_parameter_sanitizer.for(:account_update) do |u|
       attrs = [:username, :email, :name, :first_name, :last_name,
                :password, :password_confirmation,
                :remember_me, :mail_digest, :email_when_followed, :email_when_mentioned,
                :location, :bio, :link, :phone, :urls, :description, :avatar]
       attrs << :current_password if change_requires_password
+
+      if resource.roles? :admin
+        attrs << {roles: [], access: []}
+      end
+
       u.permit(attrs)
     end
   end

@@ -39,6 +39,11 @@
 
     <%= f.text_field :location, :placeholder => 'Louisville, KY', :class => 'input-xlarge' %>
 
+    <% if current_user.roles? :admin %>
+      <%= render :partial => 'users/form/roles', :locals => {:f => f} %>
+      <%= render :partial => 'users/form/access', :locals => {:f => f} %>
+    <% end %>
+
     <%= render 'authorizations/index' %>
 
     <%= f.actions do %>

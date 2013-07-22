@@ -1,0 +1,5 @@
+<%= f.toggles 'Access' do
+  f.collection_check_boxes :access, User.values_for_access, :to_sym, :to_s do |b|
+    b.label(class: "checkbox") { b.check_box + b.text.humanize }
+  end
+end %>

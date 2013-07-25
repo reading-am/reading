@@ -19,8 +19,8 @@ define [
       super options
 
     sync: ->
-      if cu = @collection.get User::current
-        cu.set is_current_user: true
+      if current = @collection.get User::current
+        current.set is_current_user: true
 
     populate_follow_state: ->
       users = @collection

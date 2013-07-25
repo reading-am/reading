@@ -26,9 +26,13 @@ define [
         overlay.render()
         false
 
-    render: =>
-      json = @model.toJSON()
+    json: ->
+      json = super()
       json.size = @size
+      json
+
+    render: ->
+      json = @json()
 
       switch @size
         when "small"

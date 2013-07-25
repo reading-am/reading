@@ -10,16 +10,15 @@
       {{#username}}<span class="r_username">@{{username}}</span>{{/username}}
       {{#bio}}<br><span class="r_bio">{{bio}}</span>{{/bio}}
     </div>
+    <div class="r_follow_button">
+      {{#is_current_user}}
+        This is you!
+      {{/is_current_user}}
+      {{^is_current_user}}
+        <div class="btn {{^is_following}}btn-success{{/is_following}}">
+          {{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}
+        </div>
+      {{/is_current_user}}
+    </div>
   </a>
-  {{#is_current_user}}
-    This is you!
-  {{/is_current_user}}
-  {{^is_current_user}}
-    {{#is_following}}
-      is_following
-    {{/is_following}}
-    {{^is_following}}
-      is_not_following
-    {{/is_following}}
-  {{/is_current_user}}
 </div>

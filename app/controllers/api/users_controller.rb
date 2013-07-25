@@ -15,10 +15,15 @@ class Api::UsersController < Api::APIController
       @users = User.who_posted_to(@page)
       # this is disabled until we get more users on the site
       # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
-    else
-      @users = User.order("created_at DESC")
-                   .paginate(:page => params[:page])
     end
+
+    if params[:user_ids]
+      @users = @users.where(id: params[:user_ids])
+    end
+
+    @users = @users.limit(params[:limit])
+                   .offset(params[:offset])
+                   .order("created_at DESC")
 
     respond_to do |format|
       format.json { render_json :users => @users.collect { |user| user.simple_obj } }

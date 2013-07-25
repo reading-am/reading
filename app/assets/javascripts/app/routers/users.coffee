@@ -157,7 +157,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         section: section
         collection: @collection
 
-      @view.collection.fetch()
+      @view.collection.fetch reset: true
 
       @$yield.html @view.render().el
       @view.after_insert()

@@ -45,10 +45,16 @@ Reading::Application.routes.draw do
       resources :posts do
         get ':medium', on: :collection, action: 'index'
       end
-      resources :following, controller: 'users', defaults: { type: 'following' } do
-        get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index'
+      resources :following,
+        controller:   'users',
+        defaults:     { type: 'following' },
+        constraints:  { type: 'following' } do
+          get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index'
       end
-      resources :followers, controller: 'users', defaults: { type: 'followers' }
+      resources :followers,
+        controller:   'users',
+        defaults:     { type: 'followers' },
+        constraints:  { type: 'followers' }
     end
     resources :pages do
       get 'count', on: :collection

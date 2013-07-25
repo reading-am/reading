@@ -10,7 +10,7 @@ define [
       template: template
 
     initialize: (options) ->
-      @collection.bind "sync", @sync
+      @collection.bind "sync", @sync, this
 
       @section = options.section
       @users_view = new UsersView
@@ -18,7 +18,7 @@ define [
         size: "medium"
         className: "r_users"
 
-    sync: =>
+    sync: ->
       if @collection.length is 0
         @status
           .text("Huh, we didn't find anyone.")

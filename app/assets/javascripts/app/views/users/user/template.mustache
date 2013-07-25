@@ -11,4 +11,15 @@
       {{#bio}}<br><span class="r_bio">{{bio}}</span>{{/bio}}
     </div>
   </a>
+  {{#is_current_user}}
+    This is you!
+  {{/is_current_user}}
+  {{^is_current_user}}
+    {{#is_following}}
+      is_following
+    {{/is_following}}
+    {{^is_following}}
+      is_not_following
+    {{/is_following}}
+  {{/is_current_user}}
 </div>

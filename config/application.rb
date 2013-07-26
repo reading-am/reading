@@ -10,6 +10,11 @@ module Reading
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    # Change default header to allow framing else user overlays won't work
+    # TODO - change to prevent clickjacking
+    # ref: http://edgeguides.rubyonrails.org/security.html#default-headers
+    config.action_dispatch.default_headers['X-Frame-Options'] = 'ALLOWALL'
+
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib/modules)
 

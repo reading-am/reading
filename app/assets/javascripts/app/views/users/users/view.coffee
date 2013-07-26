@@ -2,20 +2,16 @@ define [
   "underscore"
   "app/models/user_with_current"
   "app/views/base/collection"
-  "app/views/users/user/view"
-  "text!app/views/users/user/template.mustache"
-], (_, User, CollectionView, UserView, template) ->
+  "app/views/users/user/small/view"
+], (_, User, CollectionView, UserSmallView) ->
 
   class UsersView extends CollectionView
-    @assets
-      template: template
-    modelView: UserView
+    modelView: UserSmallView
 
     initialize: (options) ->
       @collection.on "sync", @sync, this
       @collection.on "reset", @populate_follow_state, this
 
-      @size = options.size ? "small"
       super options
 
     sync: ->

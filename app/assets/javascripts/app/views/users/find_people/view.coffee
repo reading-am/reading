@@ -2,8 +2,9 @@ define [
   "backbone"
   "app/models/user"
   "app/views/users/users/view"
+  "app/views/users/user/medium/view"
   "text!app/views/users/find_people/template.mustache"
-], (Backbone, User, UsersView, template) ->
+], (Backbone, User, UsersView, UserMediumView, template) ->
 
   class FindPeopleView extends Backbone.View
     @assets
@@ -15,8 +16,8 @@ define [
       @section = options.section
       @users_view = new UsersView
         collection: @collection
-        size: "medium"
         className: "r_users"
+        modelView: UserMediumView
 
     sync: ->
       if @collection.length is 0

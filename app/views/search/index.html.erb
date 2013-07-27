@@ -32,7 +32,12 @@
   </div>
 <% end %>
 
-<%= will_paginate @pages, :page_links => false %>
+<div class="row">
+  <div class="span7 offset1">
+    <%= will_paginate @pages, :page_links => false %>
+  </div>
+</div>
+
 </div>
 <% end %>
 

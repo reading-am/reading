@@ -1,4 +1,4 @@
-<div id="header_card" class="row r_user r_size_large {{#is_current_user}}r_current_user{{/is_current_user}}">
+<div id="header_card" class="row r_user {{^is_current_user}}w_rule{{/is_current_user}}">
   <a href="{{avatar_link_url}}" class="span1 r_avatar" {{#avatar_link_target}}target="{{avatar_link_target}}"{{/avatar_link_target}}>
     <img src="{{avatar_img_url}}" alt="avatar">
   </a>

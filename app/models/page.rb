@@ -230,7 +230,7 @@ public
     # PG will throw an error on some pages if you don't explicitly encode UTF-8
     # example: http://www-nc.nytimes.com/2009/09/11/world/americas/11hippo.html
     # fix from: http://stackoverflow.com/a/8873922/313561
-    self[:head_tags] = str_or_nodes.to_s.encode('UTF-16', 'UTF-8', :invalid => :replace, :replace => '').encode('UTF-8', 'UTF-16')
+    self[:head_tags] = str_or_nodes.to_s.encode(Encoding::UTF_16, Encoding::UTF_8, :invalid => :replace, :replace => '').encode(Encoding::UTF_8, Encoding::UTF_16)
   end
 
   def head_tags

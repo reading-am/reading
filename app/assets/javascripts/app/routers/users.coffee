@@ -74,6 +74,9 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         @user_show_view ?= new UserCardView
           el: $("#header_card.r_user")
           model: @model
+          rss_path: "#{username}/#{type}#{
+            if medium isnt "all" then "/#{medium}" else ""
+          }.rss"
 
         @user_subnav_view ?= new UserSubnavView
           el: $("#subnav")

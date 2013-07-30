@@ -14,6 +14,8 @@ define [
     initialize: (options) ->
       super options
 
+      @rss_path = options.rss_path
+
       User::current.following.params.user_ids = [@model.id]
       User::current.following.fetch success: (following) =>
         @model.set is_following: !!following.length
@@ -27,3 +29,4 @@ define [
         avatar_link_target: if has_avatar then "_blank" else false
         has_link:           !!@model.get "link"
         has_location:       !!@model.get "location"
+        rss_path:           @rss_path

@@ -7,7 +7,7 @@ define [
     type: "Relationship"
 
     params: ->
-      user_ids: [@get("subject").id]
+      user_ids: @get("subject").id
 
     endpoint: ->
       "users/#{@get("enactor").id}/following#{

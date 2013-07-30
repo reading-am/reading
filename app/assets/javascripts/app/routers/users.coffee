@@ -5,7 +5,7 @@ define [
   "app/models/user_with_current"
   "app/collections/users"
   "app/collections/posts"
-  "app/views/users/show/view"
+  "app/views/users/card/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
   "app/views/posts/medium_selector/view"
@@ -17,7 +17,7 @@ define [
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
   "extend/jquery/waypoints"
-], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
+], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
 LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
@@ -71,7 +71,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           }", trigger: true
 
       if username isnt "everybody"
-        @user_show_view ?= new UserShowView
+        @user_show_view ?= new UserCardView
           el: $("#header_card.r_user")
           model: @model
 

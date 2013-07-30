@@ -127,8 +127,6 @@ Reading::Application.routes.draw do
   get '/:username/export'   => 'users#export'
   get '/:username/following'=> 'users#followingers', defaults: { type: 'following' }
   get '/:username/followers'=> 'users#followingers', defaults: { type: 'followers' }
-  get '/:username/follow'   => 'relationships#create'
-  get '/:username/unfollow' => 'relationships#destroy'
   get '/:username/tumblr'   => 'blogs#show'
   get '/:username(/:type)(/:medium)(/page/:page)' => 'users#show',
     defaults: { type: 'posts' },

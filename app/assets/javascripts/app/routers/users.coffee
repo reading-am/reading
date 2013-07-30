@@ -71,7 +71,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           }", trigger: true
 
       if username isnt "everybody"
-        @user_show_view ?= new UserCardView
+        @user_card_view ?= new UserCardView
           el: $("#header_card.r_user")
           model: @model
           rss_path: "#{username}/#{type}#{

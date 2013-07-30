@@ -2,20 +2,12 @@
 class Api::UsersController < Api::APIController
 
   def index
-    if params[:user_id]
-      # list followers or following of a user
-      # users/1/followers
-      # users/1/following
-      @user = User.find(params[:user_id])
-      @users = @user.send(params[:type])
-    elsif params[:page_id]
-      # list users who have visited a page
-      # pages/1/users
-      @page = Page.find(params[:page_id])
-      @users = User.who_posted_to(@page)
-      # this is disabled until we get more users on the site
-      # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
-    end
+    # list users who have visited a page
+    # pages/1/users
+    @page = Page.find(params[:page_id])
+    @users = User.who_posted_to(@page)
+    # this is disabled until we get more users on the site
+    # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
 
     if params[:user_ids]
       @users = @users.where(id: params[:user_ids])

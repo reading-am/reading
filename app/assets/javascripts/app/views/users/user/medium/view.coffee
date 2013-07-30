@@ -1,8 +1,10 @@
 define [
+  "app/models/user_with_current"
+  "app/models/relationship"
   "app/views/users/user/view"
   "text!app/views/users/user/medium/template.mustache"
   "text!app/views/users/user/medium/styles.css"
-], (UserView, template, styles) ->
+], (User, Relationship, UserView, template, styles) ->
 
   is_retina = window.devicePixelRatio > 1
 
@@ -16,8 +18,17 @@ define [
 
     toggle_follow: (e) ->
       $tar = @$(e.target)
-      $tar.toggleClass "btn-success"
-      $tar.text if $tar.is ".btn-success" then "Follow" else "Unfollow"
+      rel  = new Relationship subject: @model, enactor: User::current
+
+      if $tar.is ".btn-success"
+        rel.save()
+        $tar.text "Unfollow"
+        $tar.removeClass "btn-success"
+      else
+        rel.isNew = -> false
+        rel.destroy()
+        $tar.text "Follow"
+        $tar.addClass "btn-success"
 
     json: ->
       json = super()

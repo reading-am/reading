@@ -22,7 +22,9 @@ class Api::RelationshipsController < Api::APIController
   def create
     show_400 and return if params[:user_id].to_i != current_user.id
 
-    @user = User.find(params[:user_ids])
+    # NOTE - we use request.POST here because :user_id is
+    # also the name of the route param which takes precedence
+    @user = User.find(request.POST[:user_id])
     current_user.follow!(@user)
 
     respond_to do |format|

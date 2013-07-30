@@ -6,7 +6,7 @@
   })
 
   if @user
-    has_avatar = @user != current_user or (@user == current_user and !@user.avatar.size.nil?)
+    has_avatar = @user != current_user or !@user.avatar.size.nil?
     locals.merge! @user.simple_obj
     locals.merge!({
       show_blank_slate:   (@user.posts.size == 0 or @user.following.size == 0),
@@ -14,7 +14,7 @@
       avatar_link_url:    has_avatar ? @user.avatar_url : "/settings/info",
       avatar_link_target: has_avatar ? "_blank" : false,
       you_or_name:        @user == current_user ? 'you' : @user.first_name,
-      is_following:       signed_in? && current_user.following?(@user) ? 'unfollow' : 'follow',
+      is_following:       signed_in? && current_user.following?(@user),
       has_followed:       @user.following.size > 0,
       has_link:           !@user.link.blank?,
       has_location:       !@user.location.blank?

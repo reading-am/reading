@@ -1,24 +1,19 @@
 define [
+  "app/models/user_with_current"
+  "app/models/relationship"
   "app/views/base/model"
   "app/constants"
   "app/views/users/overlay/view"
-  "text!app/views/users/user/template.mustache"
   "text!app/views/users/user/styles.css"
-], (ModelView, Constants, UserOverlayView, template, styles) ->
-
-  is_retina = window.devicePixelRatio > 1
+], (User, Relationship, ModelView, Constants, UserOverlayView, styles) ->
 
   class UserView extends ModelView
     @assets
       styles: styles
-      template: template
 
     events:
-      "click a:not(.r_tagalong)" : "show"
-
-    initialize: (options) ->
-      @size = options.size ? "medium"
-      super options
+      "click .event_show"           : "show"
+      "click .event_follow"  : "follow"
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0
@@ -26,19 +21,20 @@ define [
         overlay.render()
         false
 
-    render: =>
-      json = @model.toJSON()
-      json.size = @size
+    follow: (e) ->
+      $tar = @$(e.target)
+      rel  = new Relationship subject: @model, enactor: User::current
 
-      switch @size
-        when "small"
-          json.avatar = if is_retina then json.avatar_thumb else json.avatar_mini
-          delete json.bio
-          delete json.username
-        when "medium"
-          json.avatar = if is_retina then json.avatar_medium else json.avatar_thumb
+      if @model.get "is_following"
+        rel.isNew = -> false
+        rel.destroy()
+        @model.set
+          is_following: false
+          followers_count: @model.get("followers_count") - 1
+      else
+        rel.save()
+        @model.set
+          is_following: true
+          followers_count: @model.get("followers_count") + 1
 
-      @$el.html(@template(json))
-
-      return this
-
+      false

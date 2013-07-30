@@ -11,6 +11,8 @@ define [
       @collection.on "reset", @addAll, this
       @collection.on "add", @addOne, this
 
+      @modelView = options.modelView if options.modelView?
+
     addAll: (collection, options) ->
       # Insert the elements off the DOM
       $tmp_el = $("<div>")
@@ -20,7 +22,6 @@ define [
     addOne: (model, collection, options, $el=@$el, bulk) ->
       props = model: model
       props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
-      props.size = @size if @size?
 
       view = new @modelView props
       view.render()

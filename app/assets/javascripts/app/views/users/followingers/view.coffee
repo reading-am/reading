@@ -1,8 +1,9 @@
 define [
   "backbone"
   "app/views/users/users/view"
+  "app/views/users/user/medium/view"
   "text!app/views/users/followingers/template.mustache"
-], (Backbone, UsersView, template) ->
+], (Backbone, UsersView, UserMediumView, template) ->
 
   class FollowingersView extends Backbone.View
     @assets
@@ -12,8 +13,8 @@ define [
       @followers = options.followers
       @users_view = new UsersView
         collection: options.collection
-        size: "medium"
         className: "r_users"
+        modelView: UserMediumView
 
     render: ->
       @$el.html(@template(followers: @followers, user: @model.toJSON()))

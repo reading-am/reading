@@ -45,10 +45,16 @@ Reading::Application.routes.draw do
       resources :posts do
         get ':medium', on: :collection, action: 'index'
       end
-      resources :following, controller: 'users', defaults: { type: 'following' } do
-        get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index'
+      resources :following,
+        controller:   'relationships',
+        defaults:     { type: 'following' },
+        constraints:  { type: 'following' } do
+          get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index'
       end
-      resources :followers, controller: 'users', defaults: { type: 'followers' }
+      resources :followers,
+        controller:   'relationships',
+        defaults:     { type: 'followers' },
+        constraints:  { type: 'followers' }
     end
     resources :pages do
       get 'count', on: :collection
@@ -121,8 +127,6 @@ Reading::Application.routes.draw do
   get '/:username/export'   => 'users#export'
   get '/:username/following'=> 'users#followingers', defaults: { type: 'following' }
   get '/:username/followers'=> 'users#followingers', defaults: { type: 'followers' }
-  get '/:username/follow'   => 'relationships#create'
-  get '/:username/unfollow' => 'relationships#destroy'
   get '/:username/tumblr'   => 'blogs#show'
   get '/:username(/:type)(/:medium)(/page/:page)' => 'users#show',
     defaults: { type: 'posts' },

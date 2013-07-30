@@ -1,10 +1,10 @@
 define [
   "app/views/base/model"
-  "app/views/users/user/view"
+  "app/views/users/user/small/view"
   "app/views/pages/page/view"
   "text!app/views/posts/post/template.mustache"
   "text!app/views/posts/post/styles.css"
-], (ModelView, UserView, PageView, template, styles) ->
+], (ModelView, UserSmallView, PageView, template, styles) ->
 
   class PostView extends ModelView
     @assets
@@ -12,8 +12,14 @@ define [
       template: template
 
     initialize: (options) ->
-      @user_view = new UserView model: @model.get("user"), tagName: "div", size: "small"
-      @page_view = new PageView model: @model.get("page"), tagName: "div"
+      @user_view = new UserViewSmall
+        model: @model.get("user")
+        tagName: "div"
+        
+      @page_view = new PageView
+        model: @model.get("page")
+        tagName: "div"
+      
       super options
 
     render: =>

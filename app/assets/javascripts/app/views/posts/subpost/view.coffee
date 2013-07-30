@@ -1,10 +1,10 @@
 define [
   "app/models/user_with_current"
   "app/views/posts/post_on_page/view"
-  "app/views/users/user/view"
+  "app/views/users/user/small/view"
   "text!app/views/posts/subpost/template.mustache"
   "text!app/views/posts/subpost/styles.css"
-], (User, PostOnPageView, UserView, template, styles) ->
+], (User, PostOnPageView, UserSmallView, template, styles) ->
 
   class SubPostView extends PostOnPageView
     @assets
@@ -16,9 +16,8 @@ define [
 
     initialize: (options) ->
       if @model.get("referrer_post").get("user").get("id")
-        @ref_user_view = new UserView
+        @ref_user_view = new UserSmallView
           model: @model.get("referrer_post").get("user")
-          size: "small"
 
       super options
 

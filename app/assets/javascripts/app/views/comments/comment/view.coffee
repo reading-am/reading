@@ -7,7 +7,7 @@ define [
   "app/models/post"
   "app/models/uris/uri"
   "app/views/uris/uri/view"
-  "app/views/users/user/view"
+  "app/views/users/user/small/view"
   "app/views/users/overlay/view"
   "app/views/components/share_overlay/view"
   "text!app/views/comments/comment/template.mustache"
@@ -16,7 +16,7 @@ define [
   "app/views/uris/all"
   "extend/jquery/humane"
   "extend/jquery/highlight"
-], (_, $, Backbone, App, User, Post, URI, URIView, UserView, UserOverlayView, ShareOverlay, template, styles) ->
+], (_, $, Backbone, App, User, Post, URI, URIView, UserSmallView, UserOverlayView, ShareOverlay, template, styles) ->
 
   class CommentView extends Backbone.View
     @assets
@@ -37,7 +37,6 @@ define [
       @model.bind "destroy", @remove, this
       @model.bind "remove", @remove, this
 
-      @size = options.size ? "small"
       @uri_views = []
 
     show_user: (e) ->
@@ -132,9 +131,8 @@ define [
 
       @$("time").humaneDates()
 
-      author_view = new UserView
+      author_view = new UserSmallView
         el:     @$(".r_author")
-        size:   @size
         model:  @model.get('user')
       author_view.render()
 

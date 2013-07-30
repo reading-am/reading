@@ -247,23 +247,24 @@ class User < ActiveRecord::Base
 
   def simple_obj to_s=false
     {
-      :type       => 'User',
-      :id         => to_s ? id.to_s : id,
-      :username   => username,
-      :display_name => display_name,
-      :first_name => first_name,
-      :full_name  => name,
-      :bio        => bio,
-      :url        => url,
-      :avatar     => avatar_url,
-      :avatar_medium => avatar_url(:medium),
-      :avatar_thumb => avatar_url(:thumb),
-      :avatar_mini  => avatar_url(:mini),
-      :following_count => following.size,
-      :followers_count => followers.size,
-      :access     => access,
-      :created_at => created_at,
-      :updated_at => updated_at
+      type:         'User',
+      id:           to_s ? id.to_s : id,
+      url:          url,
+      username:     username,
+      display_name: display_name,
+      first_name:   first_name,
+      full_name:    name,
+      bio:          bio,
+      link:         link,
+      avatar:       avatar_url,
+      avatar_medium:   avatar_url(:medium),
+      avatar_thumb:    avatar_url(:thumb),
+      avatar_mini:     avatar_url(:mini),
+      following_count: following.size,
+      followers_count: followers.size,
+      access:     access,
+      created_at: created_at,
+      updated_at: updated_at
     }
   end
 end

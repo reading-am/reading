@@ -1,10 +1,10 @@
 define [
   "app/views/posts/post/view"
   "app/constants"
-  "app/views/users/user/view"
+  "app/views/users/user/small/view"
   "text!app/views/posts/post_on_page/template.mustache"
   "text!app/views/posts/post/styles.css"
-], (PostView, Constants, UserView, template, styles) ->
+], (PostView, Constants, UserSmallView, template, styles) ->
 
   class PostOnPageView extends PostView
     @assets
@@ -15,7 +15,8 @@ define [
       @model.on "change", @render, this
       @model.on "remove", @remove, this
 
-      @user_view = new UserView model: @model.get("user"), size: "small"
+      @user_view = new UserSmallView
+        model: @model.get("user")
 
     remove: ->
       @$el.slideUp => @$el.remove()

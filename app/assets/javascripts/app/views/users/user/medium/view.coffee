@@ -11,6 +11,14 @@ define [
       styles: styles
       template: template
 
+    events:
+      "click .r_follow_button .btn" : "toggle_follow"
+
+    toggle_follow: (e) ->
+      $tar = @$(e.target)
+      $tar.toggleClass "btn-success"
+      $tar.text if $tar.is ".btn-success" then "Follow" else "Unfollow"
+
     json: ->
       json = super()
       json.avatar = if is_retina then json.avatar_medium else json.avatar_thumb

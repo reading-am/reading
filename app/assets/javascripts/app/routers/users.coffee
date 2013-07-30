@@ -5,7 +5,7 @@ define [
   "app/models/user_with_current"
   "app/collections/users"
   "app/collections/posts"
-  "app/views/users/show/view"
+  "app/views/users/card/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
   "app/views/posts/medium_selector/view"
@@ -17,7 +17,7 @@ define [
   "app/views/users/followingers/view"
   "app/views/users/find_people/view"
   "extend/jquery/waypoints"
-], (_, $, Backbone, User, Users, Posts, UserShowView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
+], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
 LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
@@ -71,9 +71,12 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
           }", trigger: true
 
       if username isnt "everybody"
-        @user_show_view ?= new UserShowView
+        @user_card_view ?= new UserCardView
           el: $("#header_card.r_user")
           model: @model
+          rss_path: "#{username}/#{type}#{
+            if medium isnt "all" then "/#{medium}" else ""
+          }.rss"
 
         @user_subnav_view ?= new UserSubnavView
           el: $("#subnav")
@@ -157,7 +160,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         section: section
         collection: @collection
 
-      @view.collection.fetch()
+      @view.collection.fetch reset: true
 
       @$yield.html @view.render().el
       @view.after_insert()

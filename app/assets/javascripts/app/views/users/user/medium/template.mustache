@@ -1,0 +1,26 @@
+<div class="r_user r_size_medium row w_rule">
+  {{#avatar}}
+  <div class="r_avatar span1">
+    <a href="{{url}}" class="event_show">
+      <img src="{{avatar}}">
+    </a>
+  </div>
+  {{/avatar}}
+  <div class="r_info span4">
+    <a href="{{url}}" class="event_show">
+      <span class="r_name">{{display_name}}</span>
+      <span class="r_username">@{{username}}</span>
+    </a>
+    {{#bio}}<br><span class="r_bio">{{bio}}</span>{{/bio}}
+  </div>
+  <div class="r_follow_button span2">
+  {{#is_current_user}}
+    <div class="r_is_you">This is you!</div>
+  {{/is_current_user}}
+  {{^is_current_user}}
+    <div class="event_follow btn {{^is_following}}btn-success{{/is_following}}">
+      {{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}
+    </div>
+  {{/is_current_user}}
+  </div>
+</div>

@@ -20,15 +20,13 @@ define [
       $tar = @$(e.target)
       rel  = new Relationship subject: @model, enactor: User::current
 
-      if $tar.is ".btn-success"
-        rel.save()
-        $tar.text "Unfollow"
-        $tar.removeClass "btn-success"
-      else
+      if @model.get "is_following"
         rel.isNew = -> false
         rel.destroy()
-        $tar.text "Follow"
-        $tar.addClass "btn-success"
+        @model.set is_following: false
+      else
+        rel.save()
+        @model.set is_following: true
 
     json: ->
       json = super()

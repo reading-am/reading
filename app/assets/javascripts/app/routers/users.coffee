@@ -136,6 +136,10 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
     following: -> @followingers false
 
     followingers: (followers) ->
+      @user_card_view ?= new UserCardView
+        el: $("#header_card.r_user")
+        model: @model
+
       @view = new FollowingersView
         followers: followers
         model: @model

@@ -150,7 +150,7 @@ UserEditView, FindPeopleView) ->
         collection: @collection
         modelView: UserMediumView
 
-      @$yield.html @users_view.render().el
+      @$yield.prepend @users_view.render().el
 
       @loading_view.$el.hide()
 

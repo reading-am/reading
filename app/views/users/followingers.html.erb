@@ -1,7 +1,4 @@
 <%=
-  collection = @users
-  @users = false
-
   locals = mustache_helpers
   if params[:type] == "followers"
     locals[:section_followers] = true

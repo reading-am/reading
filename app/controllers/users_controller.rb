@@ -48,10 +48,14 @@ class UsersController < ApplicationController
   def followingers
     @user = User.find_by_username(params[:username])
 
-    @users = (params[:type] == 'followers') ? @user.followers : @user.following
-    @users = @users.limit(params[:limit])
-                   .offset(params[:offset])
-                   .order("created_at DESC")
+    users = (params[:type] == 'followers') ? @user.followers : @user.following
+    users = users.limit(params[:limit])
+                  .offset(params[:offset])
+                  .order("created_at DESC")
+
+    respond_to do |format|
+      format.html { render locals: { collection: users } }
+    end
   end
 
   def hooks

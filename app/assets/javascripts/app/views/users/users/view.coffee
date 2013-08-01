@@ -3,9 +3,13 @@ define [
   "app/models/user_with_current"
   "app/views/base/collection"
   "app/views/users/user/small/view"
-], (_, User, CollectionView, UserSmallView) ->
+  "text!app/views/users/users/template.mustache"
+], (_, User, CollectionView, UserSmallView, template) ->
 
   class UsersView extends CollectionView
+    @assets
+      template: template
+    
     modelView: UserSmallView
 
     initialize: (options) ->

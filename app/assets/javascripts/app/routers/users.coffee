@@ -13,12 +13,15 @@ define [
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
+  "app/views/users/users/view"
+  "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-  "app/views/users/followingers/view"
   "app/views/users/find_people/view"
   "extend/jquery/waypoints"
-], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
-LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
+], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
+SettingsSubnavView, MediumSelectorView, LoadingCollectionView, PagesView,
+PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
+UserEditView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
 
@@ -140,12 +143,31 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
         el: $("#header_card.r_user")
         model: @model
 
-      @view = new FollowingersView
-        followers: followers
-        model: @model
-        collection: @collection
+      @loading_view ?= new LoadingCollectionView
+        el: @$yield.find(".r_loading")
 
-      @$yield.html @view.render().el
+      @users_view ?= new UsersView
+        collection: @collection
+        modelView: UserMediumView
+
+      @$yield.html @users_view.render().el
+
+      @loading_view.$el.hide()
+
+      if @collection.length >= @collection.params.limit
+        @users_view.$el.waypoint (direction) =>
+          if direction is "down"
+            @loading_view.$el.show()
+            @users_view.$el.waypoint "disable"
+            @collection.fetchNextPage success: (collection, data) =>
+              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+              @loading_view.$el.hide()
+              # This is on a delay because the waypoints plugin will miscalculate
+              # the offset if rendering the new DOM elements hasn't finished
+              setTimeout =>
+                @users_view.$el.waypoint(if more then "enable" else "destroy")
+              , 2000
+        , {offset: "bottom-in-view"}
 
     recommended: ->
       @collection = Users::recommended()

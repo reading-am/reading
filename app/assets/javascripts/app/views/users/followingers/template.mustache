@@ -1,20 +1,26 @@
-<div>
-  <div id="subnav" class="row">
-    <nav class="span1">
-      <a href="/{{user.username}}">« read</a>
-    </nav>
-    <div class="span7">
-      <h3>
-        {{#followers}}
-          People Following {{user.first_name}}
-        {{/followers}}
-        {{^followers}}
-          People {{user.first_name}} is Following
-        {{/followers}}
-      </h3>
-    </div>
+{{>users/card/template}}
+
+<div id="subnav" class="row">
+  <nav class="span1">
+    <a href="/{{username}}">« read</a>
+  </nav>
+  <div class="span7">
+    <h3>
+      {{#section_followers}}
+        People Following {{first_name}}
+      {{/section_followers}}
+      {{#section_following}}
+        People {{first_name}} is Following
+      {{/section_following}}
+    </h3>
   </div>
-  <div class="row">
-    <div id="users" class="span7 offset1"></div>
+</div>
+
+<div class="row">
+  <div id="yield" class="span7 offset1">
+    {{^users}}
+      {{>components/loading_collection/template}}
+    {{/users}}
+    {{>users/users/template}}
   </div>
 </div>

@@ -144,7 +144,7 @@ UserEditView, FindPeopleView) ->
         model: @model
 
       @loading_view ?= new LoadingCollectionView
-        el: @$yield.find(".r_loading")
+        el: $(".r_loading")
 
       @users_view ?= new UsersView
         collection: @collection

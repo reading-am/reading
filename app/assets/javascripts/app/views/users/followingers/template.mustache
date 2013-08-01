@@ -18,9 +18,7 @@
 
 <div class="row">
   <div id="yield" class="span7 offset1">
-    {{^users}}
-      {{>components/loading_collection/template}}
-    {{/users}}
-    {{>users/users/template}}
+    {{#users}} {{>users/users/template}} {{/users}}
   </div>
 </div>
+{{^users}} {{>components/loading_collection/template}} {{/users}}

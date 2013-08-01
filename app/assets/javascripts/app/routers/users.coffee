@@ -31,8 +31,7 @@ UserEditView, FindPeopleView) ->
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
-      ":username/followers"   : "followers"
-      ":username/following"   : "following"
+      ":username/follow:suffix" : "followingers"
       "(:username)(/:type)(/:medium)" : "show"
 
     show: (username, type, medium) ->
@@ -135,10 +134,11 @@ UserEditView, FindPeopleView) ->
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
 
-    followers: -> @followingers true
-    following: -> @followingers false
+    followingers: (username, suffix) ->
+      c = @model["follow#{suffix}"]
+      c.reset @collection.models
+      @collection = c
 
-    followingers: (followers) ->
       @user_card_view ?= new UserCardView
         el: $("#header_card.r_user")
         model: @model

@@ -9,15 +9,15 @@ define [
   class UsersView extends CollectionView
     @assets
       template: template
-    
+
     modelView: UserSmallView
 
     initialize: (options) ->
       @collection.on "sync", @sync, this
-      @collection.on "reset", @populate_follow_state, this
+      #@collection.on "reset", @populate_follow_state, this
 
       # If the collection has been bootstrapped, get follow state
-      @populate_follow_state() if @collection.length
+      #@populate_follow_state() if @collection.length
 
       super options
 

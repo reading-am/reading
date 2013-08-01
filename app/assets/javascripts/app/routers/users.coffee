@@ -17,7 +17,6 @@ define [
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
   "app/views/users/find_people/view"
-  "extend/jquery/waypoints"
 ], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
 SettingsSubnavView, MediumSelectorView, LoadingCollectionView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
@@ -93,23 +92,10 @@ UserEditView, FindPeopleView) ->
       # Render
       after_render = =>
         @loading_view.$el.hide()
-        @pages_view.$el.waypoint "destroy" # reset any existing waypoint
         @pages_view.$(".r_pages").css opacity: 1
-
-        if @collection.length >= @collection.params.limit
-          @pages_view.$el.waypoint (direction) =>
-            if direction is "down"
-              @loading_view.$el.show()
-              @pages_view.$el.waypoint "disable"
-              @collection.fetchNextPage success: (collection, data) =>
-                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-                @loading_view.$el.hide()
-                # This is on a delay because the waypoints plugin will miscalculate
-                # the offset if rendering the new DOM elements hasn't finished
-                setTimeout =>
-                  @pages_view.$el.waypoint(if more then "enable" else "destroy")
-                , 2000
-          , {offset: "bottom-in-view"}
+        @pages_view.subview.infinite_scroll
+          loading_start:  => @loading_view.$el.show()
+          loading_finish: => @loading_view.$el.hide()
 
       if $.contains @$yield[0], @pages_view.el
         # Render with new data from API
@@ -153,21 +139,9 @@ UserEditView, FindPeopleView) ->
       @$yield.prepend @users_view.render().el
 
       @loading_view.$el.hide()
-
-      if @collection.length >= @collection.params.limit
-        @users_view.$el.waypoint (direction) =>
-          if direction is "down"
-            @loading_view.$el.show()
-            @users_view.$el.waypoint "disable"
-            @collection.fetchNextPage success: (collection, data) =>
-              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-              @loading_view.$el.hide()
-              # This is on a delay because the waypoints plugin will miscalculate
-              # the offset if rendering the new DOM elements hasn't finished
-              setTimeout =>
-                @users_view.$el.waypoint(if more then "enable" else "destroy")
-              , 2000
-        , {offset: "bottom-in-view"}
+      @users_view.infinite_scroll
+        loading_start:  => @loading_view.$el.show()
+        loading_finish: => @loading_view.$el.hide()
 
     recommended: ->
       @collection = Users::recommended()

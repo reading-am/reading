@@ -1,6 +1,7 @@
 define [
   "jquery"
   "backbone"
+  "extend/jquery/waypoints"
 ], ($, Backbone) ->
 
   class CollectionView extends Backbone.View
@@ -12,6 +13,28 @@ define [
       @collection.on "add", @add, this
 
       @modelView = options.modelView if options.modelView?
+
+    infinite_scroll: (options={}) ->
+      offset         = options.offset ? "bottom-in-view"
+      loading_start  = options.loading_start ? ->
+      loading_finish = options.loading_finish ? ->
+
+      @$el.waypoint "destroy" # reset any existing waypoint
+
+      if @collection.length >= @collection.params.limit
+        @$el.waypoint (direction) =>
+          if direction is "down"
+            @$el.waypoint "disable"
+            loading_start()
+            @collection.fetchNextPage success: (collection, data) =>
+              loading_finish()
+              # This is on a delay because the waypoints plugin will miscalculate
+              # the offset if rendering the new DOM elements hasn't finished
+              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+              setTimeout =>
+                @$el.waypoint(if more then "enable" else "destroy")
+              , 1500
+        , {offset: offset}
 
     addAll: (collection, options) ->
       # Insert the elements off the DOM

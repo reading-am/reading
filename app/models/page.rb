@@ -423,14 +423,11 @@ public
   def populate_remote_page_data
     # populate headers first, it's used by the others
     self.headers = remote_headers
+    self.head_tags = remote_head_tags if html?
 
     self.url = remote_normalized_url
     self.title = title_tag
     self.medium = parse_medium
-
-    if html?
-      self.head_tags = remote_head_tags
-    end
 
     return self
   end

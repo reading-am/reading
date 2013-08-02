@@ -14,19 +14,26 @@ define [
 
     initialize: (options) ->
       @collection.on "sync", @sync, this
-      #@collection.on "reset", @populate_follow_state, this
+      @collection.on "reset", @reset, this
 
       # If the collection has been bootstrapped, get follow state
-      #@populate_follow_state() if @collection.length
+      @reset @collection if @collection.length
 
       super options
 
-    sync: ->
+    sync: (collection, resp, options) ->
       if current = @collection.get User::current
         current.set is_current_user: true
 
-    populate_follow_state: ->
+      @populate_follow_state _.pluck(resp.users, "id")
+
+    reset: (collection) ->
+      @populate_follow_state collection.pluck("id")
+
+    populate_follow_state: (ids) ->
       users = @collection
-      User::current.following.params.user_ids = users.pluck "id"
+      User::current.following.params =
+        limit: ids.length
+        user_ids: ids
       User::current.following.fetch success: (following) ->
         following.each (user) -> users.get(user).set is_following: true

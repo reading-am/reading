@@ -13,12 +13,14 @@ define [
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
+  "app/views/users/users/view"
+  "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-  "app/views/users/followingers/view"
   "app/views/users/find_people/view"
-  "extend/jquery/waypoints"
-], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView, SettingsSubnavView, MediumSelectorView,
-LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, UserEditView, FollowingersView, FindPeopleView) ->
+], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
+SettingsSubnavView, MediumSelectorView, LoadingCollectionView, PagesView,
+PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
+UserEditView, FindPeopleView) ->
 
   class UsersRouter extends Backbone.Router
 
@@ -28,8 +30,7 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
-      ":username/followers"   : "followers"
-      ":username/following"   : "following"
+      ":username/follow:suffix" : "followingers"
       "(:username)(/:type)(/:medium)" : "show"
 
     show: (username, type, medium) ->
@@ -91,23 +92,10 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
       # Render
       after_render = =>
         @loading_view.$el.hide()
-        @pages_view.$el.waypoint "destroy" # reset any existing waypoint
         @pages_view.$(".r_pages").css opacity: 1
-
-        if @collection.length >= @collection.params.limit
-          @pages_view.$el.waypoint (direction) =>
-            if direction is "down"
-              @loading_view.$el.show()
-              @pages_view.$el.waypoint "disable"
-              @collection.fetchNextPage success: (collection, data) =>
-                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-                @loading_view.$el.hide()
-                # This is on a delay because the waypoints plugin will miscalculate
-                # the offset if rendering the new DOM elements hasn't finished
-                setTimeout =>
-                  @pages_view.$el.waypoint(if more then "enable" else "destroy")
-                , 2000
-          , {offset: "bottom-in-view"}
+        @pages_view.subview.infinite_scroll
+          loading_start:  => @loading_view.$el.show()
+          loading_finish: => @loading_view.$el.hide()
 
       if $.contains @$yield[0], @pages_view.el
         # Render with new data from API
@@ -132,20 +120,29 @@ LoadingCollectionView, PagesView, PagesWithInputView, PostsGroupedByPageView, Us
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
 
-    followers: -> @followingers true
-    following: -> @followingers false
+    followingers: (username, suffix) ->
+      c = @model["follow#{suffix}"]
+      c.reset @collection.models
+      @collection = c
 
-    followingers: (followers) ->
+      window.c = @collection
       @user_card_view ?= new UserCardView
         el: $("#header_card.r_user")
         model: @model
 
-      @view = new FollowingersView
-        followers: followers
-        model: @model
-        collection: @collection
+      @loading_view ?= new LoadingCollectionView
+        el: $(".r_loading")
 
-      @$yield.html @view.render().el
+      @users_view ?= new UsersView
+        collection: @collection
+        modelView: UserMediumView
+
+      @$yield.prepend @users_view.render().el
+
+      @loading_view.$el.hide()
+      @users_view.infinite_scroll
+        loading_start:  => @loading_view.$el.show()
+        loading_finish: => @loading_view.$el.hide()
 
     recommended: ->
       @collection = Users::recommended()

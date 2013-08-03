@@ -27,7 +27,7 @@ define [
       collection.each (model) => @group(model, tmp_collection, options)
       @subview.collection.reset(tmp_collection.models, options)
 
-    addOne: (model, collection, options, bulk) ->
+    add: (model, collection, options, bulk) ->
       @group model, @subview.collection, options
 
     render: ->

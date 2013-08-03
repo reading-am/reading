@@ -12,8 +12,8 @@ define [
       styles: styles
 
     events:
-      "click .event_show"           : "show"
-      "click .event_follow"  : "follow"
+      "click .event_show"   : "show"
+      "click .event_follow" : "follow"
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0
@@ -22,6 +22,10 @@ define [
         false
 
     follow: (e) ->
+      if !User::current.signed_in()
+        window.location = "/sign_in"
+        return false
+
       $tar = @$(e.target)
       rel  = new Relationship subject: @model, enactor: User::current
 

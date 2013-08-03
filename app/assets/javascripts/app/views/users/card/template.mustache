@@ -12,17 +12,15 @@
     <a href="/{{username}}/followers"{{#viewing_followers}} class="active"{{/viewing_followers}}>
       <span id="followers_count">{{followers_count}}</span> Followers
     </a>
-    {{#signed_in}}
-      {{#is_current_user}}
-        - <a href="/users/recommended" class="button">Find People<div class="new_badge">new</div></a>
-      {{/is_current_user}}
-      {{^is_current_user}}
-        - <a rel="tooltip" data-title="Add what {{first_name}} reads to your following feed" href="#" class="button event_follow">
-            <span>{{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}</span>
-            {{first_name}}
-          </a>
-      {{/is_current_user}}
-    {{/signed_in}}
+    {{#is_current_user}}
+      - <a href="/users/recommended" class="button">Find People<div class="new_badge">new</div></a>
+    {{/is_current_user}}
+    {{^is_current_user}}
+      - <a rel="tooltip" data-title="Add what {{first_name}} reads to your following feed" href="#" class="button event_follow">
+          <span>{{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}</span>
+          {{first_name}}
+        </a>
+    {{/is_current_user}}
   </nav>
   <div id="user_places" class="span6 offset1">
     {{location}} {{#has_link}}{{#has_location}}-{{/has_location}} <a href="{{link}}" target="_blank">{{link}}</a>{{/has_link}}

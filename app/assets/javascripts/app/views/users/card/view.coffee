@@ -15,12 +15,14 @@ define [
       super options
 
       @rss_path = options.rss_path
-      
-      if @model.id isnt User::current.id
+      @populate_follow_state()
+
+    populate_follow_state: ->
+      if User::current.signed_in() and @model.id isnt User::current.id
         User::current.following.params.user_ids = [@model.id]
         User::current.following.fetch success: (following) =>
           @model.set is_following: !!following.length
-
+        
     json: ->
       has_avatar = @model.id isnt User::current.id or @model.avatar.indexOf("/default/") is -1
       _.extend super(),

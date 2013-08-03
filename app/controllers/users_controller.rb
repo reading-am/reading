@@ -99,6 +99,5 @@ class UsersController < ApplicationController
   end
 
   def find_people
-    @users = Api::Users.recommended(params)
   end
 end

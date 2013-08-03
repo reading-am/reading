@@ -62,13 +62,17 @@ class Api::UsersController < Api::APIController
   add_transaction_tracer :expats
 
   def recommended
-    following_ids = %(SELECT followed_id FROM relationships
-                      WHERE follower_id = :user_id)
+    if signed_in?
+      following_ids = %(SELECT followed_id FROM relationships
+                        WHERE follower_id = :user_id)
+      @users = User.where("id NOT IN (#{following_ids}) AND id != :user_id", user_id: current_user)
+    else
+      @users = User.all
+    end
 
-    @users = User.where("id NOT IN (#{following_ids}) AND id != :user_id", user_id: current_user)
-                 .where("posts_count > ?", 300)
-                 .order("followers_count DESC")
-                 .limit(20)
+    @users = @users.where("posts_count > ?", 300)
+                   .order("followers_count DESC")
+                   .limit(20)
 
     respond_to do |format|
       format.json { render_json :users => @users.collect{ |u| u.simple_obj } }

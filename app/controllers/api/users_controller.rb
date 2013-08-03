@@ -2,23 +2,10 @@
 class Api::UsersController < Api::APIController
 
   def index
-    # list users who have visited a page
-    # pages/1/users
-    @page = Page.find(params[:page_id])
-    @users = User.who_posted_to(@page)
-    # this is disabled until we get more users on the site
-    # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
-
-    if params[:user_ids]
-      @users = @users.where(id: params[:user_ids])
-    end
-
-    @users = @users.limit(params[:limit])
-                   .offset(params[:offset])
-                   .order("created_at DESC")
-
     respond_to do |format|
-      format.json { render_json :users => @users.collect { |user| user.simple_obj } }
+      format.json do
+        render_json users: Api::Users.index(params).collect { |user| user.simple_obj }
+      end
     end
   end
   add_transaction_tracer :index
@@ -56,26 +43,14 @@ class Api::UsersController < Api::APIController
     @users.delete @user
 
     respond_to do |format|
-      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
+      format.json { render_json users: @users.collect{ |u| u.simple_obj } }
     end
   end
   add_transaction_tracer :expats
 
   def recommended
-    if signed_in?
-      following_ids = %(SELECT followed_id FROM relationships
-                        WHERE follower_id = :user_id)
-      @users = User.where("id NOT IN (#{following_ids}) AND id != :user_id", user_id: current_user)
-    else
-      @users = User.all
-    end
-
-    @users = @users.where("posts_count > ?", 300)
-                   .order("followers_count DESC")
-                   .limit(20)
-
     respond_to do |format|
-      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
+      format.json { render_json users: Api::Users.recommended(user_id: current_user).collect{ |u| u.simple_obj } }
     end
   end
   add_transaction_tracer :recommended

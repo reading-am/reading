@@ -25,10 +25,12 @@ define [
       if current = @collection.get User::current
         current.set is_current_user: true
 
-      @populate_follow_state _.pluck(resp.users, "id")
+      if User::current.signed_in()
+        @populate_follow_state _.pluck(resp.users, "id")
 
     reset: (collection) ->
-      @populate_follow_state collection.pluck("id")
+      if User::current.signed_in()
+        @populate_follow_state collection.pluck("id")
 
     populate_follow_state: (ids) ->
       users = @collection

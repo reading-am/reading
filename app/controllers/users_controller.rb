@@ -36,15 +36,16 @@ class UsersController < ApplicationController
   end
 
   def followingers
-    @user = User.find_by_username(params[:username])
+    @user = params[:username] ?
+              User.find_by_username(params[:username]) :
+              User.find(params[:id])
 
-    users = (params[:type] == 'followers') ? @user.followers : @user.following
-    users = users.limit(params[:limit])
-                  .offset(params[:offset])
-                  .order("created_at DESC")
+    params[:user_id] = @user.id
 
     respond_to do |format|
-      format.html { render locals: { collection: users } }
+      format.html { render locals: {
+        collection: Api::Relationships.index(params)
+      } }
     end
   end
 

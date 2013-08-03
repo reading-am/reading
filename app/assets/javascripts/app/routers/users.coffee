@@ -125,7 +125,6 @@ UserEditView, FindPeopleView) ->
       c.reset @collection.models
       @collection = c
 
-      window.c = @collection
       @user_card_view ?= new UserCardView
         el: $("#header_card.r_user")
         model: @model

@@ -1,5 +1,12 @@
-<%= render :file => 'users/card/template', :locals => mustache_helpers %>
+<%=
+  locals = mustache_helpers
+  if params[:type] == "followers"
+    locals[:section_followers] = true
+  else
+    locals[:section_following] = true
+  end
 
-<div id="yield"></div>
+  render :file => 'users/followingers/template', :locals => locals
+%>
 
-<%= render :partial => 'backbone/router', :locals => {:model => @user, :collection => @users} %>
+<%= render :partial => 'backbone/router', :locals => {:model => @user, :collection => collection} %>

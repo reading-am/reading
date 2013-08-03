@@ -1,13 +1,16 @@
 # encoding: utf-8
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show, :followingers, :delete_cookies, :tagalong, :find_people]
+  before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people]
+  before_filter :set_default_params, only: [:show, :followingers]
+
+  def set_default_params
+    params[:limit] = 50
+    params[:offset] = 0
+  end
 
   # GET /users/1
   # GET /users/1.xml
   def show
-    params[:limit] = 50
-    params[:offset] = 0
-
     if params[:username].blank? || params[:username] == 'everybody'
       @posts = Post.all
     else
@@ -44,7 +47,15 @@ class UsersController < ApplicationController
 
   def followingers
     @user = User.find_by_username(params[:username])
-    @users = (params[:type] == 'followers') ? @user.followers : @user.following
+
+    users = (params[:type] == 'followers') ? @user.followers : @user.following
+    users = users.limit(params[:limit])
+                  .offset(params[:offset])
+                  .order("created_at DESC")
+
+    respond_to do |format|
+      format.html { render locals: { collection: users } }
+    end
   end
 
   def hooks

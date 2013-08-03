@@ -7,4 +7,5 @@ define [
   class PostsView extends CollectionView
     @assets
       template: template
+
     modelView: PostView

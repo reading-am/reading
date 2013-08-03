@@ -16,7 +16,6 @@ define [
       @section = options.section
       @users_view = new UsersView
         collection: @collection
-        className: "r_users"
         modelView: UserMediumView
 
     sync: ->

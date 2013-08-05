@@ -3,7 +3,7 @@ define [
   "app/models/user_with_current"
   "app/views/base/collection"
   "app/views/users/user/small/view"
-  "text!app/views/users/users/template.mustache"
+  "text!app/views/users/users/small/template.mustache"
 ], (_, User, CollectionView, UserSmallView, template) ->
 
   class UsersView extends CollectionView

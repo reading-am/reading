@@ -41,11 +41,11 @@ class UsersController < ApplicationController
               User.find(params[:id])
 
     params[:user_id] = @user.id
+    collection = Api::Relationships.index(params)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
-      format.html { render locals: {
-        collection: Api::Relationships.index(params)
-      } }
+      format.html { render locals: { collection: collection } }
     end
   end
 

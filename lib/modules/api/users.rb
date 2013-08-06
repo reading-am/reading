@@ -33,4 +33,23 @@ module Api::Users
                  .limit(20)
   end
 
+  def self.expats params={}
+    users = []
+
+    Authorization.where(user_id: params[:user_id]).each do |a|
+      # TODO - this rescue is here because I still need to fix Facebook
+      # token renewal. Once they expire, it will kill this without rescue
+      users |= a.following rescue []
+    end
+
+    # don't include the user being queried on
+    users.delete_if { |u| u.id == params[:user_id] }
+
+    users
+  end
+
+  def self.search params={}
+    search = User.search do fulltext params[:q] end
+    search.results
+  end
 end

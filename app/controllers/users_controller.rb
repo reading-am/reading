@@ -49,6 +49,33 @@ class UsersController < ApplicationController
     end
   end
 
+  def recommended
+    collection = Api::Users.recommended(user_id: current_user)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+
+    respond_to do |format|
+      format.html { render 'find_people', locals: { section_recommended: true, collection: collection } }
+    end
+  end
+
+  def expats
+    collection = Api::Users.expats(user_id: current_user.id)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+
+    respond_to do |format|
+      format.html { render 'find_people', locals: { section_expats: true, collection: collection } }
+    end
+  end
+
+  def search
+    collection = Api::Users.search(params)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+
+    respond_to do |format|
+      format.html { render 'find_people', locals: { section_search: true, collection: collection } }
+    end
+  end
+
   def hooks
     @user = current_user
     @new_hook = Hook.new
@@ -99,6 +126,4 @@ class UsersController < ApplicationController
     end
   end
 
-  def find_people
-  end
 end

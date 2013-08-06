@@ -33,17 +33,8 @@ class Api::UsersController < Api::APIController
   add_transaction_tracer :show
 
   def expats
-    @user = User.find(params[:id])
-
-    @users = []
-    @user.authorizations.each do |a|
-      @users |= a.following
-    end
-    # don't include the user being queried on
-    @users.delete @user
-
     respond_to do |format|
-      format.json { render_json users: @users.collect{ |u| u.simple_obj } }
+      format.json { render_json users: Api::Users.expats(user_id: params[:id]).collect{ |u| u.simple_obj } }
     end
   end
   add_transaction_tracer :expats
@@ -56,11 +47,8 @@ class Api::UsersController < Api::APIController
   add_transaction_tracer :recommended
 
   def search
-    search = User.search do fulltext params[:q] end
-    @users = search.results
-
     respond_to do |format|
-      format.json { render_json :users => @users.collect{ |u| u.simple_obj } }
+      format.json { render_json :users => Api::Users.search(params).collect{ |u| u.simple_obj } }
     end
   end
   add_transaction_tracer :search

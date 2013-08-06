@@ -13,5 +13,5 @@ define [
 
     json: ->
       json = super()
-      json.avatar = if is_retina then json.avatar_medium else json.avatar_thumb
+      json.avatar_thumb = json.avatar_medium if is_retina
       json

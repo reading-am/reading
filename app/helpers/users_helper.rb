@@ -9,9 +9,9 @@ module UsersHelper
     data[:bookmarklet_url] = current_user ? bookmarklet_url(current_user) : ''
 
     if @user
-      data.merge! @user.simple_obj
+      user = @user.simple_obj
       has_avatar = @user != current_user or !@user.avatar.size.nil?
-      data.merge!({
+      user.merge!({
         show_blank_slate:   (@user.posts.size == 0 or @user.following.size == 0),
         is_current_user:    @user == current_user,
         avatar_link_url:    has_avatar ? @user.avatar_url : "/settings/info",
@@ -22,6 +22,7 @@ module UsersHelper
         has_link:           !@user.link.blank?,
         has_location:       !@user.location.blank?
       })
+      data[:user] = user
     end
 
     data

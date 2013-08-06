@@ -2,7 +2,7 @@
 class UsersController < ApplicationController
 
   before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people]
-  before_filter :set_default_params, only: [:show, :followingers]
+  before_filter :set_default_params
 
   def set_default_params
     params[:limit] = 50
@@ -50,7 +50,8 @@ class UsersController < ApplicationController
   end
 
   def recommended
-    collection = Api::Users.recommended(user_id: current_user)
+    params[:user_id] = current_user.id
+    collection = Api::Users.recommended(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -59,7 +60,8 @@ class UsersController < ApplicationController
   end
 
   def expats
-    collection = Api::Users.expats(user_id: current_user.id)
+    params[:user_id] = current_user.id
+    collection = Api::Users.expats(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|

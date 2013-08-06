@@ -256,6 +256,7 @@ class User < ActiveRecord::Base
       full_name:    name,
       bio:          bio,
       link:         link,
+      location:     location,
       avatar:       avatar_url,
       avatar_medium:   avatar_url(:medium),
       avatar_thumb:    avatar_url(:thumb),

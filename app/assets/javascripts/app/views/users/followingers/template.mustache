@@ -1,24 +1,26 @@
-{{>users/card/template}}
+{{#user}}
+  {{>users/card/template}}
 
-<div id="subnav" class="row">
-  <nav class="span1">
-    <a href="/{{username}}">« read</a>
-  </nav>
-  <div class="span7">
-    <h3>
-      {{#section_followers}}
-        People Following {{first_name}}
-      {{/section_followers}}
-      {{#section_following}}
-        People {{first_name}} is Following
-      {{/section_following}}
-    </h3>
+  <div id="subnav" class="row">
+    <nav class="span1">
+      <a href="/{{username}}">« read</a>
+    </nav>
+    <div class="span7">
+      <h3>
+        {{#section_followers}}
+          People Following {{first_name}}
+        {{/section_followers}}
+        {{#section_following}}
+          People {{first_name}} is Following
+        {{/section_following}}
+      </h3>
+    </div>
   </div>
-</div>
+{{/user}}
 
 <div class="row">
   <div id="yield" class="span7 offset1">
-    {{#users}} {{>users/users/template}} {{/users}}
+    {{>users/users/medium/template}}
   </div>
 </div>
 {{^users}} {{>components/loading_collection/template}} {{/users}}

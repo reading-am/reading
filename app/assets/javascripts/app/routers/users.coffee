@@ -16,11 +16,10 @@ define [
   "app/views/users/users/view"
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-  "app/views/users/find_people/view"
 ], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
 SettingsSubnavView, MediumSelectorView, LoadingCollectionView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
-UserEditView, FindPeopleView) ->
+UserEditView) ->
 
   class UsersRouter extends Backbone.Router
 
@@ -144,23 +143,19 @@ UserEditView, FindPeopleView) ->
         loading_finish: => @loading_view.$el.hide()
 
     recommended: ->
-      @collection = Users::recommended()
-      @find_people "recommended"
+      @find_people Users::recommended(), "recommended"
 
     friends: ->
-      @collection = User::current.expats
-      @find_people "friends"
+      @find_people User::current.expats, "expats"
 
     search: ->
-      @collection = Users::search @query_params().q
-      @find_people "search"
+      @find_people Users::search @query_params().q, "search"
 
-    find_people: (section) ->
-      @view = new FindPeopleView
-        section: section
+    find_people: (collection, section) ->
+      @collection = collection.reset @collection.models
+
+      @users_view ?= new UsersView
         collection: @collection
+        modelView: UserMediumView
 
-      @view.collection.fetch reset: true
-
-      @$yield.html @view.render().el
-      @view.after_insert()
+      @$yield.prepend @users_view.render().el

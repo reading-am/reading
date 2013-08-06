@@ -25,22 +25,22 @@ Reading::Application.routes.draw do
   end
 
   # sitemap
-  get '(/sitemaps)/sitemap(:partial).xml(.gz)', :controller => 'sitemap', :action => 'index'
+  get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
   # api
   namespace :api, :defaults => { :format => 'json' } do
     resources :posts do
-      get 'count', :on => :collection
-      get ':medium', on: :collection, action: 'index'
+      get 'count',    on: :collection
+      get ':medium',  on: :collection, action: 'index'
     end
     resources :comments do
-      get 'count', :on => :collection
+      get 'count',    on: :collection
     end
     resources :users do
-      get 'count', on: :collection
-      get 'search', on: :collection
+      get 'count',    on: :collection
+      get 'search',   on: :collection
       get 'recommended', on: :collection
-      get 'expats', on: :member
+      get 'expats',   on: :member
       resources :comments
       resources :posts do
         get ':medium', on: :collection, action: 'index'
@@ -99,9 +99,9 @@ Reading::Application.routes.draw do
   get '/extensions/safari/update' => 'extras#safari_update'
 
   get "/users"              => redirect("/")
-  get '/users/recommended'  => 'users#find_people'
-  get '/users/friends'      => 'users#find_people'
-  get '/users/search'       => 'users#find_people'
+  get '/users/recommended'  => 'users#recommended'
+  get '/users/friends'      => 'users#expats'
+  get '/users/search'       => 'users#search'
   resources :users do
     get 'tagalong'
     resources :posts

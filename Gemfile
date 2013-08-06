@@ -40,7 +40,7 @@ gem 'mime-types'
 ##############
 # Monitoring #
 ##############
-gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', '0.1.27' # v1.28 causes an error on search pages
 gem 'newrelic_rpm'
 
 ########

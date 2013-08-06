@@ -154,8 +154,16 @@ UserEditView) ->
     find_people: (collection, section) ->
       @collection = collection.reset @collection.models
 
+      @loading_view ?= new LoadingCollectionView
+        el: $(".r_loading")
+
       @users_view ?= new UsersView
         collection: @collection
         modelView: UserMediumView
 
       @$yield.prepend @users_view.render().el
+
+      @loading_view.$el.hide()
+      @users_view.infinite_scroll
+        loading_start:  => @loading_view.$el.show()
+        loading_finish: => @loading_view.$el.hide()

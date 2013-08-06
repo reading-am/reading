@@ -29,8 +29,9 @@ module Api::Users
     end
 
     users = users.where("posts_count > ?", 300)
+                 .limit(params[:limit])
+                 .offset(params[:offset])
                  .order("followers_count DESC")
-                 .limit(20)
   end
 
   def self.expats params={}
@@ -49,7 +50,11 @@ module Api::Users
   end
 
   def self.search params={}
-    search = User.search do fulltext params[:q] end
+    search = User.search do
+      fulltext params[:q]
+      paginate per_page: params[:limit], offset: params[:offset]
+    end
+
     search.results
   end
 end

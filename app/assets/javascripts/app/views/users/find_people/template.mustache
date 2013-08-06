@@ -9,16 +9,17 @@
   </div>
   <div id="subnav" class="row">
     <nav class="span7 offset1">
-      <a href="/users/recommended" {{#recommended}}class="active"{{/recommended}}>Recommended</a>
-      {{#signed_in}}<a href="/users/friends" {{#friends}}class="active"{{/friends}}>Outside Friends</a>{{/signed_in}}
-      <form class="search" action="/users/search" {{#search}}class="active"{{/search}}>
+      <a href="/users/recommended" {{#section_recommended}}class="active"{{/section_recommended}}>Recommended</a>
+      {{#signed_in}}<a href="/users/friends" {{#section_expats}}class="active"{{/section_expats}}>Outside Friends</a>{{/signed_in}}
+      <form class="search" action="/users/search" {{#section_search}}class="active"{{/section_search}}>
         <input type="text" name="q" value="{{query}}" placeholder="Search names and alter egos">
       </form>
     </nav>
   </div>
   <div class="row">
-    <div id="users" class="span7 offset1">
-      <div class="status">Loading Awesome People...</div>
+    <div id="yield" class="span7 offset1">
+      {{>users/users/medium/template}}
     </div>
   </div>
+  {{^users}} {{>components/loading_collection/template}} {{/users}}
 </div>

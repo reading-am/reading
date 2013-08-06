@@ -1,5 +1,6 @@
 # encoding: utf-8
 class UsersController < ApplicationController
+
   before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people]
   before_filter :set_default_params, only: [:show, :followingers]
 
@@ -11,29 +12,18 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    if params[:username].blank? || params[:username] == 'everybody'
-      @posts = Post.all
-    else
-      @user = params[:username] ? User.find_by_username(params[:username]) : User.find(params[:id])
+    if params[:username] && params[:username] != 'everybody'
+      @user = params[:username] ?
+                User.find_by_username(params[:username]) :
+                User.find(params[:id])
+
       if !@user then not_found end
+      params[:user_id] = @user.id
+
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
-      @posts = params[:type] == 'list' ? @user.feed : @user.posts
     end
 
-    @posts = @posts.limit(params[:limit])
-                   .offset(params[:offset])
-
-    if params[:medium] && params[:medium] != "all"
-      ids = @posts.joins(:page)
-                  .where(pages: {medium: params[:medium]})
-                  .order("posts.created_at DESC")
-                  .pluck(:id)
-
-      @posts = Post.where(id: ids)
-    end
-
-    @posts = @posts.includes(:user, :page, {referrer_post: :user})
-                   .order("posts.created_at DESC")
+    @posts = Api::Posts.index(params)
 
     respond_to do |format|
       format.html { render 'posts/index' }
@@ -46,15 +36,43 @@ class UsersController < ApplicationController
   end
 
   def followingers
-    @user = User.find_by_username(params[:username])
+    @user = params[:username] ?
+              User.find_by_username(params[:username]) :
+              User.find(params[:id])
 
-    users = (params[:type] == 'followers') ? @user.followers : @user.following
-    users = users.limit(params[:limit])
-                  .offset(params[:offset])
-                  .order("created_at DESC")
+    params[:user_id] = @user.id
+    collection = Api::Relationships.index(params)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
-      format.html { render locals: { collection: users } }
+      format.html { render locals: { collection: collection } }
+    end
+  end
+
+  def recommended
+    collection = Api::Users.recommended(user_id: current_user)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+
+    respond_to do |format|
+      format.html { render 'find_people', locals: { section_recommended: true, collection: collection } }
+    end
+  end
+
+  def expats
+    collection = Api::Users.expats(user_id: current_user.id)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+
+    respond_to do |format|
+      format.html { render 'find_people', locals: { section_expats: true, collection: collection } }
+    end
+  end
+
+  def search
+    collection = Api::Users.search(params)
+    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+
+    respond_to do |format|
+      format.html { render 'find_people', locals: { section_search: true, collection: collection } }
     end
   end
 
@@ -108,6 +126,4 @@ class UsersController < ApplicationController
     end
   end
 
-  def find_people
-  end
 end

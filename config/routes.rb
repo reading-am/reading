@@ -1,24 +1,24 @@
 Reading::Application.routes.draw do
-  root :to => "users#show"
+  root to: "users#show"
 
   devise_for :users,
-    :skip => [:sessions,:registrations],
-    :controllers => {
-      :registrations => 'registrations',
-      :omniauth_callbacks => 'omniauth'
+    skip: [:sessions,:registrations],
+    controllers: {
+      registrations: 'registrations',
+      omniauth_callbacks: 'omniauth'
     }
   # via: https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes/8c1825a5ba0b2fbe2f91a1c39aea0808a168800a
   as :user do
-    get   '/sign_in'  => 'devise/sessions#new',     :as => :new_user_session
-    post  '/sign_in'  => 'devise/sessions#create',  :as => :user_session
-    get   '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session,
+    get   '/sign_in'  => 'devise/sessions#new',     as: :new_user_session
+    post  '/sign_in'  => 'devise/sessions#create',  as: :user_session
+    get   '/sign_out' => 'devise/sessions#destroy', as: :destroy_user_session,
       :via => Devise.mappings[:user].sign_out_via
 
-    post    '/users'          => 'registrations#create',  :as => :user_registration
+    post    '/users'          => 'registrations#create',  as: :user_registration
     delete  '/users'          => 'registrations#destroy'
-    get     '/users/sign_up'  => 'registrations#new',     :as => :new_user_registration
-    get     '/users/cancel'   => 'registrations#cancel',  :as => :cancel_user_registration
-    get     '/settings/info'  => 'registrations#edit',    :as => :edit_user_registration
+    get     '/users/sign_up'  => 'registrations#new',     as: :new_user_registration
+    get     '/users/cancel'   => 'registrations#cancel',  as: :cancel_user_registration
+    get     '/settings/info'  => 'registrations#edit',    as: :edit_user_registration
     patch   '/settings/info'  => 'registrations#update'
     get     '/almost_ready'   => 'registrations#almost_ready'
     patch   '/almost_ready'   => 'registrations#almost_ready_update'
@@ -28,7 +28,7 @@ Reading::Application.routes.draw do
   get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
   # api
-  namespace :api, :defaults => { :format => 'json' } do
+  namespace :api, defaults: { format: 'json' } do
     resources :posts do
       get 'count',    on: :collection
       get ':medium',  on: :collection, action: 'index'
@@ -83,15 +83,15 @@ Reading::Application.routes.draw do
   # Notice the .rss negative lookahead that allows user RSS feeds to pass through
   # We're not currently supporting (/yn/:yn) "yep . nope" because it should be a user initiated action
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
-  get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', :constraints => {:url => /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i}
+  get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', constraints: { url: /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i }
 
   get   '/users/auth/loading/:provider'         => 'authorizations#loading'
   get   '/authorizations/:provider/:uid/places' => 'authorizations#places'
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
-  get '/domains/:domain_name' => 'domains#show', :constraints => { :domain_name => /[0-9A-Z\-\.]+/i }
-  resources :domains, :constraints => { :id => /[0-9A-Za-z\-\.]+/ } do
+  get '/domains/:domain_name' => 'domains#show', constraints: { domain_name: /[0-9A-Z\-\.]+/i }
+  resources :domains, constraints: { id: /[0-9A-Za-z\-\.]+/ } do
     resources :posts
     resources :pages
   end

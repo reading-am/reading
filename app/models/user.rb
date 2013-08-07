@@ -262,7 +262,7 @@ class User < ActiveRecord::Base
       avatar_thumb:    avatar_url(:thumb),
       avatar_mini:     avatar_url(:mini),
       posts_count:     posts.size,
-      followers_count: followers.size,
+      following_count: following.size,
       followers_count: followers.size,
       access:     access,
       created_at: created_at,

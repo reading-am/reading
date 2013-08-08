@@ -2,4 +2,7 @@
 {{#users}}
   {{>users/user/medium/template}}
 {{/users}}
+{{^users}}
+  {{>components/collection_status/template}}
+{{/users}}
 </ul>

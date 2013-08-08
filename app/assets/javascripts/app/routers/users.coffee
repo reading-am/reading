@@ -9,7 +9,6 @@ define [
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
   "app/views/posts/medium_selector/view"
-  "app/views/components/loading_collection/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
@@ -17,7 +16,7 @@ define [
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
 ], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
-SettingsSubnavView, MediumSelectorView, LoadingCollectionView, PagesView,
+SettingsSubnavView, MediumSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
 UserEditView) ->
 
@@ -54,10 +53,6 @@ UserEditView) ->
       @collection.medium = medium
       @collection.monitor()
 
-      # Setup views
-      @loading_view ?= new LoadingCollectionView
-        el: @$yield.find(".r_loading")
-
       @medium_selector_view ?= new MediumSelectorView
         el: $("#medium_selector")
         start_val: medium
@@ -88,24 +83,16 @@ UserEditView) ->
         @pages_view ?= new PostsGroupedByPageView
           collection: @collection
 
-      # Render
-      after_render = =>
-        @loading_view.$el.hide()
-        @pages_view.$(".r_pages").css opacity: 1
-        @pages_view.subview.infinite_scroll
-          loading_start:  => @loading_view.$el.show()
-          loading_finish: => @loading_view.$el.hide()
-
       if $.contains @$yield[0], @pages_view.el
         # Render with new data from API
         @pages_view.$(".r_pages").css opacity: 0.2
         @collection.fetch
           reset: true
-          success: after_render
+          success: => @pages_view.$(".r_pages").css opacity: 1
       else
         # Initial render with bootstrapped data
         @$yield.prepend @pages_view.render().el
-        after_render()
+        @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView
@@ -128,19 +115,11 @@ UserEditView) ->
         el: $("#header_card.r_user")
         model: @model
 
-      @loading_view ?= new LoadingCollectionView
-        el: $(".r_loading")
-
       @users_view ?= new UsersView
         collection: @collection
         modelView: UserMediumView
 
       @$yield.prepend @users_view.render().el
-
-      @loading_view.$el.hide()
-      @users_view.infinite_scroll
-        loading_start:  => @loading_view.$el.show()
-        loading_finish: => @loading_view.$el.hide()
 
     recommended: ->
       @find_people Users::recommended(), "recommended"
@@ -152,18 +131,12 @@ UserEditView) ->
       @find_people Users::search @query_params().q, "search"
 
     find_people: (collection, section) ->
-      @collection = collection.reset @collection.models
-
-      @loading_view ?= new LoadingCollectionView
-        el: $(".r_loading")
-
       @users_view ?= new UsersView
-        collection: @collection
+        el: @$yield.find(".r_users")[0]
+        collection: collection
         modelView: UserMediumView
 
-      @$yield.prepend @users_view.render().el
+      @collection = collection.reset @collection.models
+      @$yield.prepend @users_view.el
 
-      @loading_view.$el.hide()
-      @users_view.infinite_scroll
-        loading_start:  => @loading_view.$el.show()
-        loading_finish: => @loading_view.$el.hide()
+      @users_view.infinite_scroll()

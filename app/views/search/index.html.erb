@@ -8,9 +8,7 @@
   <% if bot? %>
     <%= render :file => 'pages/pages/template', :locals => { :pages => page_hashes_from_posts(@posts) } %>
   <% else %>
-    <div id="yield">
-      <%= render :file => 'components/loading_collection/template' %>
-    </div>
+    <div id="yield"></div>
     <%= render :partial => 'backbone/router', :locals => {:router => :search, :collection => @posts} %>
   <% end %>
 <% end %>

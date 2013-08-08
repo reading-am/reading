@@ -10,7 +10,7 @@ define [
 
     initialize: (options) ->
       @subview = new @groupView collection: new @groupCollection
-      @addAll @collection, silent: true # make this silent so it doesn't render automatically
+      @reset @collection, silent: true # make this silent so it doesn't render automatically
       @setElement @subview.el
       super options
 
@@ -22,7 +22,7 @@ define [
         model.get(@groupBy)[@groupUnder].add(model, options)
         collection.add(model.get(@groupBy), options)
 
-    addAll: (collection, options) ->
+    reset: (collection, options) ->
       tmp_collection = new @groupCollection
       collection.each (model) => @group(model, tmp_collection, options)
       @subview.collection.reset(tmp_collection.models, options)

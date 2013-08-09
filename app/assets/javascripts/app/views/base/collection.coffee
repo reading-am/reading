@@ -50,7 +50,8 @@ define [
 
     add: (model, collection, options, $el=@$el) ->
       props = model: model
-      props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
+      tag = @tagName.toLowerCase()
+      props.tagName = "li" if tag is "ul" or tag is "ol"
 
       i = @collection.indexOf(model)
       c_len = $el.children().not(".r_status").length

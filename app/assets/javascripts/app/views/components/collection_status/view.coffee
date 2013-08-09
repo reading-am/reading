@@ -20,11 +20,9 @@ define [
         @loading()
 
     request: ->
-      console.log "request"
       @loading()
 
     sync: (collection) ->
-      console.log "sync"
       @complete()
       @empty() if collection.length is 0
 

@@ -12,12 +12,11 @@ define [
 
     initialize: (options) ->
       @collection.on "request", @request, this
-      @collection.on "sync", @sync, this
-      @collection.on "reset", @sync, this
+      @collection.on "sync",    @sync,    this
+      @collection.on "reset",   @sync,    this
 
       # If already visible, animate the ellipsis
-      if @$(".r_loading").is(":visible")
-        @loading()
+      @loading() if @$(".r_loading").is(":visible")
 
     request: ->
       @loading()

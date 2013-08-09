@@ -1,5 +1,12 @@
+@import "variables";
 @import "mixins";
 
 .r_pages {
   .transition(opacity .2s ease-in-out);
+  > .r_status {
+    .makeRow();
+    > div {
+      margin-left: @gridColumnWidth + (@gridGutterWidth*2);
+    }
+  }
 }

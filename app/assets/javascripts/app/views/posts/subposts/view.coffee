@@ -1,5 +1,5 @@
 define [
-  "app/views/base/collection"
+  "app/views/base/collection/view"
   "app/views/posts/subpost/view"
   "text!app/views/posts/subposts/template.mustache"
   "text!app/views/posts/subposts/styles.css"

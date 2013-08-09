@@ -1,6 +1,6 @@
 define [
   "underscore"
-  "app/views/base/collection"
+  "app/views/base/collection/view"
   "app/models/post"
   "app/collections/posts"
   "app/views/posts/post_on_page/view"

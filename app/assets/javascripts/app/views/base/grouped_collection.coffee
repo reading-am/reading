@@ -1,5 +1,5 @@
 define [
-  "app/views/base/collection"
+  "app/views/base/collection/view"
 ], (CollectionView) ->
 
   class GroupedCollectionView extends CollectionView
@@ -13,10 +13,20 @@ define [
         el: options.el
         collection: new @groupCollection
 
-      @reset @collection, silent: true # make this silent so it doesn't render automatically
       @setElement @subview.el
 
+      # call super before the reset
       super options
+      # make this silent so it doesn't render automatically
+      @reset @collection, silent: true 
+
+    attach_status: ->
+      @subview.attach_status()
+      return this
+
+    infinite_scroll: ->
+      @subview.infinite_scroll()
+      return this
 
     group: (model, collection, options) ->
       existing = collection.get(model.get(@groupBy).id)

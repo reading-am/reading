@@ -14,7 +14,7 @@ define [
       @collection.on "reset", @reset, this
       @collection.on "add", @add, this
 
-      @modelView = options.modelView
+      @modelView = options.modelView if options.modelView?
 
       s_props =
         el: @$(".r_status")[0]
@@ -61,14 +61,11 @@ define [
       view.render()
       view.$el.hide() unless !@animate || bulk
 
-      # debugging
-      #console.log model.type, @collection.indexOf(model), i, c_len, @collection.length, model.get("id"), model
-
       # add models in order if we're only adding one of them
       if c_len is @collection.length-1 and i < c_len
         $el.children().eq(i).before(view.el)
-      else if $el.find(".r_status").length
-        $el.find(".r_status").before(view.el)
+      else if $el.find("> .r_status").length
+        $el.find("> .r_status").before(view.el)
       else
         $el.append(view.el)
 
@@ -78,3 +75,4 @@ define [
       @$el.append @status_view.render().el
       @reset @collection
       return this
+      # problem is with checking for .r_status when there are children .r_status in that dom element

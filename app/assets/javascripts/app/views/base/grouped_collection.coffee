@@ -9,9 +9,13 @@ define [
     groupCollection: {}
 
     initialize: (options) ->
-      @subview = new @groupView collection: new @groupCollection
+      @subview = new @groupView
+        el: options.el
+        collection: new @groupCollection
+
       @reset @collection, silent: true # make this silent so it doesn't render automatically
       @setElement @subview.el
+
       super options
 
     group: (model, collection, options) ->
@@ -27,7 +31,7 @@ define [
       collection.each (model) => @group(model, tmp_collection, options)
       @subview.collection.reset(tmp_collection.models, options)
 
-    add: (model, collection, options, bulk) ->
+    add: (model, collection, options) ->
       @group model, @subview.collection, options
 
     render: ->

@@ -43,18 +43,17 @@ UserEditView) ->
 
       # Setup collection
       @collection ?= new Posts
+      models = @collection.models
 
       if @model
         c = if type is "posts" then @model.posts else (@model.following.posts || @model.following.has_many("Posts"))
-        if @collection isnt c
-          c.reset @collection.models
-          @collection = c
+        @collection = c if @collection isnt c
 
       @collection.medium = medium
       @collection.monitor()
 
       @medium_selector_view ?= new MediumSelectorView
-        el: $("#medium_selector")
+        el: $("#medium_selector")[0]
         start_val: medium
         on_change: (medium) =>
           @navigate "#{
@@ -67,23 +66,27 @@ UserEditView) ->
 
       if username isnt "everybody"
         @user_card_view ?= new UserCardView
-          el: $("#header_card.r_user")
+          el: $("#header_card.r_user")[0]
           model: @model
           rss_path: "#{username}/#{type}#{
             if medium isnt "all" then "/#{medium}" else ""
           }.rss"
 
         @user_subnav_view ?= new UserSubnavView
-          el: $("#subnav")
+          el: $("#subnav")[0]
 
       if username is User::current.get("username")
         @pages_view ?= new PagesWithInputView
           collection: @collection
+          subview_el: $(".r_pages")[0]
       else
-        @pages_view ?= new PostsGroupedByPageView
+        @pages_view ?= new PostsGroupedByPageView p_props
           collection: @collection
+          el: $(".r_pages")[0]
 
-      if $.contains @$yield[0], @pages_view.el
+      rendered = $.contains @$yield[0], @pages_view.el
+
+      if rendered
         # Render with new data from API
         @pages_view.$(".r_pages").css opacity: 0.2
         @collection.fetch
@@ -91,7 +94,8 @@ UserEditView) ->
           success: => @pages_view.$(".r_pages").css opacity: 1
       else
         # Initial render with bootstrapped data
-        @$yield.prepend @pages_view.render().el
+        @collection.reset models
+        @$yield.prepend @pages_view.el
         @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->
@@ -131,12 +135,15 @@ UserEditView) ->
       @find_people Users::search @query_params().q, "search"
 
     find_people: (collection, section) ->
+      models = @collection.models
+      @collection = collection
+
       @users_view ?= new UsersView
         el: @$yield.find(".r_users")[0]
-        collection: collection
+        collection: @collection
         modelView: UserMediumView
 
-      @collection = collection.reset @collection.models
+      @collection.reset models
       @$yield.prepend @users_view.el
 
       @users_view.infinite_scroll()

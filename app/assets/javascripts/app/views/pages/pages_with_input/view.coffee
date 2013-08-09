@@ -15,11 +15,15 @@ define [
     events:
       "submit form": "submit"
 
-    initialize: ->
+    initialize: (options) ->
+      props =
+        collection: @collection
+        el: options.subview_el
+
       if @collection.type is "Posts"
-        @subview = new PostsGroupedByPageView collection: @collection
+        @subview = new PostsGroupedByPageView props
       else
-        @subview = new PagesView collection: @collection
+        @subview = new PagesView props
 
     toggle_loading: ->
       msg = "Posting..."

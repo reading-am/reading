@@ -20,14 +20,6 @@ define [
       # make this silent so it doesn't render automatically
       @reset @collection, silent: true 
 
-    attach_status: ->
-      @subview.attach_status()
-      return this
-
-    infinite_scroll: ->
-      @subview.infinite_scroll()
-      return this
-
     group: (model, collection, options) ->
       existing = collection.get(model.get(@groupBy).id)
       if existing
@@ -43,6 +35,14 @@ define [
 
     add: (model, collection, options) ->
       @group model, @subview.collection, options
+
+    attach_status: ->
+      @subview.attach_status()
+      return this
+
+    infinite_scroll: ->
+      @subview.infinite_scroll()
+      return this
 
     render: ->
       @subview.render()

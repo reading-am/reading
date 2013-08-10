@@ -21,34 +21,6 @@ define [
       @modelView = options.modelView if options.modelView?
       @attach_status()
 
-    attach_status: ->
-      if !@status_view
-        props =
-          el: @$(".r_status")[0]
-          collection: @status_collection ? @collection
-        props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
-        @status_view = new CollectionStatusView props
-
-      return this
-
-    infinite_scroll: ->
-      @$el.waypoint "destroy" # reset any existing waypoint
-
-      if @collection.length >= @collection.params.limit
-        @$el.waypoint (direction) =>
-          if direction is "down"
-            @$el.waypoint "disable"
-            @collection.fetchNextPage success: (collection, data) =>
-              # This is on a delay because the waypoints plugin will miscalculate
-              # the offset if rendering the new DOM elements hasn't finished
-              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-              setTimeout =>
-                @$el.waypoint(if more then "enable" else "destroy")
-              , 1500
-        , {offset: "bottom-in-view"}
-
-      return this
-
     reset: (collection, options) ->
       if collection.length
         # Insert the elements off the DOM for faster rendering
@@ -81,8 +53,35 @@ define [
 
       view.$el.slideDown() unless !@animate || bulk
 
+    attach_status: ->
+      if !@status_view
+        props =
+          el: @$(".r_status")[0]
+          collection: @status_collection ? @collection
+        props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
+        @status_view = new CollectionStatusView props
+
+      return this
+
+    infinite_scroll: ->
+      @$el.waypoint "destroy" # reset any existing waypoint
+
+      if @collection.length >= @collection.params.limit
+        @$el.waypoint (direction) =>
+          if direction is "down"
+            @$el.waypoint "disable"
+            @collection.fetchNextPage success: (collection, data) =>
+              # This is on a delay because the waypoints plugin will miscalculate
+              # the offset if rendering the new DOM elements hasn't finished
+              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+              setTimeout =>
+                @$el.waypoint(if more then "enable" else "destroy")
+              , 1500
+        , {offset: "bottom-in-view"}
+
+      return this
+
     render: ->
       @$el.append @status_view.render().el if @status_view
       @reset @collection
       return this
-      # problem is with checking for .r_status when there are children .r_status in that dom element

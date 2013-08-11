@@ -59,15 +59,15 @@ class Api::PostsController < Api::APIController
       yn    = params[:model][:yn]
     end
 
-    page = Page.find_or_create_by_url(:url => url, :title => title, :head_tags => head_tags)
+    page = Page.find_or_create_by_url(url: url, title: title, head_tags: head_tags)
     # A post is a duplicate if it's the exact same page and within 1hr of the last post
-    @post = Post.recent_by_user_and_page(user, page).first || Post.new({:user => user, :page => page, :referrer_post => ref, :yn => yn})
+    @post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
 
     respond_to do |format|
       if (@post.new_record? and @post.save) or @post.touch
-        format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
-        format.xml  { render :xml => @post, :status => :created, :location => @post }
-        format.json { render_json :post => @post.simple_obj }
+        format.html { redirect_to(@post, notice: 'Post was successfully created.') }
+        format.xml  { render xml: @post, status: :created, location: @post }
+        format.json { render_json post: @post.simple_obj }
       else
         # TODO clean up this auth hack. Ugh.
         status = @post.user.blank? ? :forbidden : :bad_request

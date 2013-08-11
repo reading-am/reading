@@ -67,12 +67,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def bot?
-    if @bot.nil?
-    end
-    @bot
-  end
-
   def is_mobile_safari_request? # from: http://www.ibm.com/developerworks/opensource/library/os-eclipse-iphoneruby1/
     request.user_agent =~ /(Mobile\/.+Safari)/
   end
@@ -84,23 +78,27 @@ class ApplicationController < ActionController::Base
   end
 
   def set_bot
-    # Alternatively, we could use this gem: https://github.com/biola/Voight-Kampff
-    agents = [
-      'msnbot',
-      'yahoo',
-      'y!', # Yahoo Japan
-      'google',
-      'facebook',
-      'bingbot',
-      'duckduckbot',
-      'yandex',
-      'teoma', # Ask.com
-      'baidu',
-      'gigabot',
-      'ia_archiver', # Alexia and Archive.org
-      'asterias', # AOL
-    ]
-    @bot = agents.detect {|bot| request.user_agent.include? bot }
+    if request.user_agent.blank?
+      @bot = 'no-agent'
+    else
+      # Alternatively, we could use this gem: https://github.com/biola/Voight-Kampff
+      agents = [
+        'msnbot',
+        'yahoo',
+        'y!', # Yahoo Japan
+        'google',
+        'facebook',
+        'bingbot',
+        'duckduckbot',
+        'yandex',
+        'teoma', # Ask.com
+        'baidu',
+        'gigabot',
+        'ia_archiver', # Alexia and Archive.org
+        'asterias', # AOL
+      ]
+      @bot = agents.detect {|bot| request.user_agent.include? bot }
+    end
   end
 
   def bot?

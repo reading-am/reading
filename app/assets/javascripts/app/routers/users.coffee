@@ -96,6 +96,7 @@ UserEditView) ->
         # Initial render with bootstrapped data
         @collection.reset models
         @$yield.prepend @pages_view.el
+        @pages_view.subview.infinite_scroll()
         @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->

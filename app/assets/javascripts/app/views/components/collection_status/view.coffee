@@ -11,15 +11,12 @@ define [
       template: template
 
     initialize: (options) ->
-      @collection.on "request", @request, this
+      @collection.on "request", @loading, this
       @collection.on "sync",    @sync,    this
       @collection.on "reset",   @sync,    this
 
       # If already visible, animate the ellipsis
       @loading() if @$(".r_loading").is(":visible")
-
-    request: ->
-      @loading()
 
     sync: (collection) ->
       @complete()
@@ -50,4 +47,5 @@ define [
 
     render: ->
       @$el.html(@template())
+      @complete() if @collection.length
       return this

@@ -36,12 +36,12 @@ define [
     add: (model, collection, options) ->
       @group model, @subview.collection, options
 
-    attach_status: ->
-      @subview.attach_status()
+    attach_status: (collection=@collection) ->
+      @subview.attach_status collection
       return this
 
-    infinite_scroll: ->
-      @subview.infinite_scroll()
+    infinite_scroll: (collection=@collection) ->
+      @subview.infinite_scroll collection
       return this
 
     render: ->

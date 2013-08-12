@@ -22,13 +22,11 @@ define [
       @attach_status()
 
     reset: (collection, options) ->
-      if collection.length
-        # Insert the elements off the DOM for faster rendering
-        $tmp_el = $("<div>")
-        @collection.each (model) => @add model, collection, options, $tmp_el
-        $tmp_el.append @status_view.el if @status_view
-
-        @$el.html($tmp_el.contents())
+      # Insert the elements off the DOM for faster rendering
+      $tmp_el = $("<div>")
+      @collection.each (model) => @add model, collection, options, $tmp_el
+      $tmp_el.append @status_view.el if @status_view
+      @$el.html($tmp_el.contents())
 
     add: (model, collection, options, $el=@$el) ->
       props = model: model
@@ -53,24 +51,26 @@ define [
 
       view.$el.slideDown() unless !@animate || bulk
 
-    attach_status: ->
-      if !@status_view
-        props =
-          el: @$(".r_status")[0]
-          collection: @status_collection ? @collection
-        props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
-        @status_view = new CollectionStatusView props
+    attach_status: (collection=@collection) ->
+      if @status_view then @status_view.remove()
 
+      props =
+        el: @$(".r_status")[0]
+        collection: collection
+      props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
+      @status_view = new CollectionStatusView props
+
+      @status_view.render()
       return this
 
-    infinite_scroll: ->
+    infinite_scroll: (collection=@collection) ->
       @$el.waypoint "destroy" # reset any existing waypoint
 
-      if @collection.length >= @collection.params.limit
+      if collection.length >= collection.params.limit
         @$el.waypoint (direction) =>
           if direction is "down"
             @$el.waypoint "disable"
-            @collection.fetchNextPage success: (collection, data) =>
+            collection.fetchNextPage success: (collection, data) =>
               # This is on a delay because the waypoints plugin will miscalculate
               # the offset if rendering the new DOM elements hasn't finished
               more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
@@ -82,6 +82,5 @@ define [
       return this
 
     render: ->
-      @$el.append @status_view.render().el if @status_view
       @reset @collection
       return this

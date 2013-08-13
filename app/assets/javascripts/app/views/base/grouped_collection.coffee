@@ -18,15 +18,15 @@ define [
       # call super before the reset
       super options
       # make this silent so it doesn't render automatically
-      @reset @collection, silent: true 
+      @reset @collection, silent: true
 
     group: (model, collection, options) ->
-      existing = collection.get(model.get(@groupBy).id)
-      if existing
-        existing[@groupUnder].add(model, options)
+      gb = model.get @groupBy
+      if existing = collection.get gb
+        if @groupUnder then existing[@groupUnder].add(model, options)
       else
-        model.get(@groupBy)[@groupUnder].add(model, options)
-        collection.add(model.get(@groupBy), options)
+        if @groupUnder then gb[@groupUnder].add(model, options)
+        collection.add gb, options
 
     reset: (collection, options) ->
       tmp_collection = new @groupCollection
@@ -34,6 +34,7 @@ define [
       @subview.collection.reset(tmp_collection.models, options)
 
     add: (model, collection, options) ->
+      delete options.remove # setOptions defaults remove to true
       @group model, @subview.collection, options
 
     attach_status: (collection=@collection) ->

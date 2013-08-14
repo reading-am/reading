@@ -14,6 +14,7 @@ define [
       template: template
 
     groupBy: "user"
+    groupUnder: "posts"
     groupView: UsersView
     groupCollection: Users
 

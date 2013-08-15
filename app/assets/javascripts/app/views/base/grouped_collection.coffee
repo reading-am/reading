@@ -8,7 +8,12 @@ define [
     groupView: {}
     groupCollection: {}
 
-    initialize: (options) ->
+    initialize: (options={}) ->
+      @groupBy          = options.groupBy if options.groupBy?
+      @groupUnder       = options.groupUnder if options.groupUnder?
+      @groupView        = options.groupView if options.groupView?
+      @groupCollection  = options.groupCollection if options.groupCollection?
+
       @subview = new @groupView
         el: options.el
         collection: new @groupCollection

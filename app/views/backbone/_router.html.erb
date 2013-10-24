@@ -10,7 +10,7 @@ props[:collection] = collection.collect{|v| v.simple_obj} if defined? collection
 <%= requirejs %>(["backbone", "app/routers/<%= router %>"], function(Backbone, Router){
   new Router(<%- if props.length > 0 %>
     {<% props.each_with_index do |key, i| %>
-      "<%= key[0] %>": Backbone.Model.prototype.factory(<%=j key[1].to_json.html_safe -%>)<%= ',' if i < props.length-1 %>
+      "<%= key[0] %>": Backbone.Model.prototype.factory(<%=j key[1].to_json.gsub(/\u2028/, '\u2028').gsub(/\u2029/, '\u2029').html_safe -%>)<%= ',' if i < props.length-1 %>
     <% end %>}
   <%- end %>);
   Backbone.history.start({pushState: true});

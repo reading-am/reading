@@ -122,6 +122,7 @@ Reading::Application.routes.draw do
   get '/admin' => redirect('/admin/dashboard')
   get '/admin/dashboard' => 'admin#dashboard'
   get '/admin/jobs' => DelayedJobWeb, anchor: false
+  get '/admin/become/:username' => 'admin#become'
 
   # These routes should be cleaned up
   get '/:username/export'   => 'users#export'

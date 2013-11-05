@@ -110,7 +110,7 @@ public
 
   def twitter post, event_fired
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
-    tweet = "✌ #{post.page.verb.capitalize} \"#{post.page.display_title}\""
+    tweet = "✌ @#{post.page.verb.capitalize} \"#{post.page.display_title}\""
     tweet_len = tweet.unpack('c*').length
     full_len = tweet_len + post.short_url.unpack('c*').length + 1 # plus one is the space
     buffer = 10 # 10 for good measure and because twitter drove me batty about being over the character limit

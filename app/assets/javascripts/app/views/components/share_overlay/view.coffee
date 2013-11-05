@@ -25,7 +25,7 @@ define [
         {
           subject: options.subject
           name: "Twitter"
-          url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20Reading%20{{title}}"
+          url_scheme: "https://twitter.com/share?url={{short_url}}&text=✌%20%40Reading%20{{title}}"
           action: ->
             popup @url(), 475, 345
         },{

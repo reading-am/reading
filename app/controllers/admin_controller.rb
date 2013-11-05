@@ -16,4 +16,10 @@ class AdminController < ApplicationController
     end
   end
 
+  # https://github.com/plataformatec/devise/wiki/How-To:-Sign-in-as-another-user-if-you-are-an-admin
+  def become
+    sign_in(:user, User.find_by_username(params[:username]))
+    redirect_to root_url
+  end
+
 end

@@ -3,7 +3,7 @@ if reading?.bypass_cf
   domain = "#{domain.split(".").slice(0,-1).reverse().join("-")}.herokuapp.com"
 
 c = <%= Rails.application.config.requirejs.run_config.to_json %>
-c.baseUrl = "//#{domain}/assets"
+c.baseUrl = "<%= PROTOCOL %>://#{domain}/assets"
 
 <% if !['production','staging'].include?(Rails.env) %>
 c.config = text: useXhr: -> true

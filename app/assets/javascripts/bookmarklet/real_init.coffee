@@ -127,7 +127,7 @@ require [
   #-----------------------------------------
   # Prompt to upgrade
 
-  upgrade = -> $.getScript "//#{Constants.domain}/assets/bookmarklet/upgrade.js"
+  upgrade = -> $.getScript "#{Constants.root_url}/assets/bookmarklet/upgrade.js"
 
   #-----------------------------------------
   # Check for jQuery and initialize

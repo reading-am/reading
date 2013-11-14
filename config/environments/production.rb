@@ -1,5 +1,6 @@
 DOMAIN = 'reading.am'
 #DOMAIN = '0.0.0.0:3000' # for testing
+PROTOCOL = 'https'
 
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb

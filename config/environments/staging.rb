@@ -1,4 +1,5 @@
 DOMAIN = 'staging.reading.am'
+PROTOCOL = 'https'
 
 Reading::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb

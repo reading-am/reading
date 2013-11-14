@@ -13,7 +13,7 @@ define [
 
   # Override the url method to append the absolute API route
   Backbone.Model::endpoint = Backbone.Model::url
-  Backbone.Model::url = -> "//#{Constants.domain}/api/#{_.result @,"endpoint"}"
+  Backbone.Model::url = -> "#{Constants.root_url}/api/#{_.result @,"endpoint"}"
   Backbone.Collection::url = Backbone.Model::url
 
   Backbone.Model::channel_name = -> _.result(@,"endpoint").replace(/\//g,".")

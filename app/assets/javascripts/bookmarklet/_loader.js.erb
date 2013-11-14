@@ -9,6 +9,6 @@ environment.context_class.instance_eval { include ApplicationHelper } if defined
       script = document.createElement('script'),
       domain = '<%= DOMAIN %>';
   if(reading.bypass_cf) domain = domain.split('.').slice(0,-1).reverse().join('-')+'.herokuapp.com';
-  script.src = '//'+domain+'<%= asset_path('bookmarklet/init.js') %>';
+  script.src = '<%= PROTOCOL %>://'+domain+'<%= asset_path('bookmarklet/init.js') %>';
   head.appendChild(script);
 })();

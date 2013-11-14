@@ -11,7 +11,7 @@ define [
 
   config = disableStats: true
 
-  config.authEndpoint = "//#{Constants.domain}/pusher/auth"
+  config.authEndpoint = "#{Constants.root_url}/pusher/auth"
   # Add the user's token if it's on the page, otherwise the endpoint defaults to current_user
   config.authEndpoint += "?token=#{reading.token}" if reading?.token?
 

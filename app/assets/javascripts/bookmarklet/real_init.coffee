@@ -19,6 +19,9 @@ require [
   #-----------------------------------------
   # Config Vars
 
+  if reading.bypass_cf
+    Constants.domain = "#{Constants.domain.split(".").slice(0,-1).reverse().join("-")}.herokuapp.com"
+
   reading.ready = false
   on_reading = window.location.host.indexOf(Constants.domain) is 0 or
                window.location.host.indexOf("staging.#{Constants.domain}") is 0 or

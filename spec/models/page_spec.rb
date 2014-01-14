@@ -68,7 +68,7 @@ describe Page do
             "http://25.media.tumblr.com/5253cd15777fbfb3adbaf225f61405d9/tumblr_mqaycmAF1W1qczbido1_500.gif"
           ],
           "video" => [
-            "http://istec.colostate.edu/me/facil/dynamics/files/drop.avi",
+            "https://ia600806.us.archive.org/11/items/TheOuterLimits-Tos-1x07-O.b.i.t.avi_90/TheOuterLimits-Tos-1x07-O.b.i.t.avi",
             "http://www.mediacollege.com/video-gallery/testclips/barsandtone.flv"
           ],
           "audio" => [

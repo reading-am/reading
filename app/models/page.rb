@@ -322,6 +322,13 @@ public
       agent = Mechanize.new
       agent.user_agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
       agent.follow_meta_refresh = true
+      
+      # https://github.com/sparklemotion/mechanize/pull/125
+      # trouble page: http://www.operationwardiary.org/
+      agent.content_encoding_hooks << lambda{|httpagent, uri, response, body_io|
+        response['content-encoding'] = '' if response['content-encoding'].downcase == 'utf-8'
+      }
+      
       if !crawl_timeout.blank?
         agent.open_timeout = agent.read_timeout = crawl_timeout
       end

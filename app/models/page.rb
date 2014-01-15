@@ -326,7 +326,8 @@ public
       # https://github.com/sparklemotion/mechanize/pull/125
       # trouble page: http://www.operationwardiary.org/
       agent.content_encoding_hooks << lambda{|httpagent, uri, response, body_io|
-        response['content-encoding'] = '' if response['content-encoding'].downcase == 'utf-8'
+        ce = response['content-encoding']
+        response['content-encoding'] = '' if ce.respond_to?(:downcase) && ce.downcase == 'utf-8'
       }
       
       if !crawl_timeout.blank?

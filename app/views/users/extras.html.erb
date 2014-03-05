@@ -59,10 +59,16 @@
   <div class="span7 offset1">
     <h3>Export</h3>
     <p>
-      Your data is your data and you should be able to do with it as you choose.
-      So here's a handy <%= link_to 'CSV', 'http://en.wikipedia.org/wiki/Comma-separated_values' %> containing all of your Reading posts.
+      Your data is your data and you should be able to do with it as you choose,
+      so here are a couple handy formats in which to download all of your Reading posts.
+    </p>
+    <p>
+      The <a href="http://fileformats.archiveteam.org/wiki/Netscape_bookmarks">HTML</a> can be
+      <a href="https://www.google.com/search?q=importing+bookmarks&oq=importing+bookmarks&aqs=chrome..69i57j0l5.2654j0j1&sourceid=chrome&espv=210&es_sm=91&ie=UTF-8#q=importing+bookmarks+from+html">imported</a> into your favorite web browser while the 
+      <a href="http://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> will work with your favorite spreadsheet app.
     </p>
     <div class="well">
+      <%= link_to 'Download HTML ⬇', "/#{current_user.username}/export.html", :class => 'btn' %>
       <%= link_to 'Download CSV ⬇', "/#{current_user.username}/export.csv", :class => 'btn' %>
     </div>
   </div>

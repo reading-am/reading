@@ -102,7 +102,37 @@ class UsersController < ApplicationController
     user = User.find_by_username(params[:username])
     if user == current_user
       respond_to do |format|
-        format.csv { render 'posts/export', :layout => false, :locals => {:posts => user.posts} }
+
+        format.csv do
+          require 'csv'
+          self.response.headers["Content-Type"] ||= 'text/csv'
+          self.response.headers["Content-Transfer-Encoding"] = "binary"
+          self.response.headers["Content-disposition"] = "attachment; filename=export.csv"
+          self.response_body = Enumerator.new do |y|
+            y << ["URL","Title","Date Posted", "Yep / Nope"].to_csv
+            user.posts.find_each do |post|
+              y << [post.page.url, post.page.title, post.created_at, post.yn.nil? ? nil : post.yn ? "yep" : "nope"].to_csv
+            end
+          end
+        end
+
+        format.html do
+          self.response.headers["Content-Type"] ||= 'text/html'
+          self.response.headers["Content-Transfer-Encoding"] = "binary"
+          self.response.headers["Content-disposition"] = "attachment; filename=export.html"
+          self.response_body = Enumerator.new do |y|
+            y << "<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" +
+                  "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">\n" +
+                  "<TITLE>Bookmarks</TITLE>\n" +
+                  "<H1>Bookmarks</H1>\n" +
+                  "<DL><p>\n"
+            user.posts.find_each do |post|
+              y << render_to_string(partial: 'posts/export_post', layout: false, locals: {post: post})
+            end
+            y << "</DL><p>"
+          end
+        end
+
       end
     else
       show_404

@@ -86,14 +86,4 @@ module PostsHelper
     the_sum / total_count
   end
 
-  def export_posts_to_csv posts
-    require 'csv'
-    CSV.generate(:headers => :first_row) do |csv|
-      csv << ["URL","Title","Date Posted", "Yep / Nope"]
-      posts.find_each do |post|
-        csv << [post.page.url, post.page.title, post.created_at, post.yn.nil? ? nil : post.yn ? "yep" : "nope"]
-      end
-    end
-  end
-
 end

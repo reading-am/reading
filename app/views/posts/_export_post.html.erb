@@ -1,0 +1,2 @@
+<DT><A HREF="<%= post.page.url %>" ADD_DATE="<%= post.created_at.to_i %>" TAGS="<%= post.yn.nil? ? "" : post.yn ? "yep" : "nope" %>"><%= post.page.title %></A>
+<% if post.page.description %><DD><%= post.page.description %><% end %>

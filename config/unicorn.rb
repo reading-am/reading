@@ -1,7 +1,10 @@
 # config/unicorn.rb
 worker_processes Integer(ENV['READING_UNICORN_WORKERS'] || 3)
-timeout 15
+timeout 120
 preload_app true
+
+port = (ENV["PORT"] || 3000).to_i
+listen port, tcp_nopush: false
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do

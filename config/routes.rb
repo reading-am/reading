@@ -125,7 +125,7 @@ Reading::Application.routes.draw do
   get '/admin/become/:username' => 'admin#become'
 
   # These routes should be cleaned up
-  get '/:username/export'   => 'users#export'
+  get '/:username/export'   => 'export#index'
   get '/:username/following'=> 'users#followingers', defaults: { type: 'following' }
   get '/:username/followers'=> 'users#followingers', defaults: { type: 'followers' }
   get '/:username/tumblr'   => 'blogs#show'

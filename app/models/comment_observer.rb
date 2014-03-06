@@ -1,7 +1,7 @@
 class CommentObserver < ActiveRecord::Observer
 
   def after_create comment
-    Broadcaster::signal :create, comment
+    Broadcaster.new.async.perform :create, comment
     comment.user.hooks.each do |hook| hook.run(comment, 'comment') end
 
     # Create adhoc users from the emails
@@ -22,11 +22,11 @@ class CommentObserver < ActiveRecord::Observer
   end
 
   def after_update comment
-    Broadcaster::signal :update, comment
+    Broadcaster.new.async.perform :update, comment
   end
 
   def after_destroy comment
-    Broadcaster::signal :destroy, comment
+    Broadcaster.new.async.perform :destroy, comment
   end
 
 end

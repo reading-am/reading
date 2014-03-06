@@ -4,7 +4,7 @@ class UserObserver < ActiveRecord::Observer
     # when it's a new user and they have a username
     if (user.username_was.blank? or user.email_was.blank?) and !user.username.blank? and !user.email.blank?
 
-      Broadcaster::signal :create, user
+      Broadcaster.new.async.perform :create, user
 
       # Tweet to ReadingArrivals
       if !user.joined_before_email? and Rails.env == 'production'
@@ -18,11 +18,11 @@ class UserObserver < ActiveRecord::Observer
   end
 
   def after_update user
-    Broadcaster::signal :update, user
+    Broadcaster.new.async.perform :update, user
   end
 
   def after_destroy user
-    Broadcaster::signal :destroy, user
+    Broadcaster.new.async.perform :destroy, user
 
     # This email can't be delayed because the user won't exist by the time delayed_job gets to it
     UserMailer.destroyed(user).deliver unless user.email.blank? or user.username.blank?

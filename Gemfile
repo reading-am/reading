@@ -4,9 +4,11 @@ ruby '2.0.0'
 #################
 # Core Services #
 #################
+gem 'dotenv-rails', :groups => [:development, :test]
 gem 'rails', '4.0.3'
 gem 'rails-observers'
-gem 'unicorn' # server
+gem 'foreman'
+gem 'puma' # server
 gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached
@@ -64,7 +66,7 @@ gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
 ####################
 # Async Processing #
 ####################
-gem 'girl_friday'
+gem 'sucker_punch'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'

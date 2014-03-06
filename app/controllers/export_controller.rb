@@ -10,7 +10,6 @@ class ExportController < ApplicationController
         format.csv do
           require 'csv'
           response.headers["Content-Type"] ||= 'text/csv'
-          response.headers["Content-Transfer-Encoding"] = "binary"
           response.headers["Content-disposition"] = "attachment; filename=export.csv"
           response.stream.write ["URL","Title","Date Posted", "Yep / Nope"].to_csv
           user.posts.find_each do |post|
@@ -21,7 +20,6 @@ class ExportController < ApplicationController
         format.html do
           # Use xml so the browser downloads the file immediately
           response.headers["Content-Type"] ||= 'text/xml'
-          response.headers["Content-Transfer-Encoding"] = "binary"
           response.headers["Content-disposition"] = "attachment; filename=export.html"
           response.stream.write(
                                 "<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" +
@@ -44,5 +42,12 @@ class ExportController < ApplicationController
   ensure
     response.stream.close
   end
-  
+
+  private
+
+  def set_headers
+    response.headers["Content-Transfer-Encoding"] = "binary"
+    set_no_cache_headers # needed to work with Cloudflare
+  end
+
 end

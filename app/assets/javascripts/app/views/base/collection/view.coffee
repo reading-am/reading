@@ -57,6 +57,8 @@ define [
       props =
         el: @$(".r_status")[0]
         collection: collection
+        loading_msg: @loading_msg
+        empty_msg: @empty_msg
       props.tagName = "li" if @tagName is "ul" or @tagName is "ol"
       @status_view = new CollectionStatusView props
 

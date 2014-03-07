@@ -11,6 +11,9 @@ define [
       template: template
 
     initialize: (options) ->
+      @loading_msg = options.loading_msg
+      @empty_msg = options.empty_msg
+
       @collection.on "request", @loading, this
       @collection.on "sync",    @sync,    this
       @collection.on "reset",   @sync,    this
@@ -61,7 +64,11 @@ define [
       @$(".r_loading").hide()
       return this
 
+    json: ->
+      loading_msg: @loading_msg
+      empty_msg: @empty_msg
+
     render: ->
-      @$el.html(@template())
+      @$el.html(@template(@json()))
       @complete() if @collection.length
       return this

@@ -49,7 +49,9 @@ define [
         type_view.collection.fetch success: =>
           type_view.$el.slideDown()
       else
-        type_view.subview.status_view.empty()
+        type_view.status_view?.sync() or
+        type_view.subview.status_view.sync()
+        
         type_view.$el.slideDown()
 
       false

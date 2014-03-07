@@ -75,14 +75,14 @@ UserEditView) ->
         @user_subnav_view ?= new UserSubnavView
           el: $("#subnav")[0]
 
+      p_props =
+        collection: @collection
+        subview_el: $(".r_pages")[0]
+
       if username is User::current.get("username")
-        @pages_view ?= new PagesWithInputView
-          collection: @collection
-          subview_el: $(".r_pages")[0]
+        @pages_view ?= new PagesWithInputView p_props
       else
         @pages_view ?= new PostsGroupedByPageView p_props
-          collection: @collection
-          el: $(".r_pages")[0]
 
       rendered = $.contains @$yield[0], @pages_view.el
 

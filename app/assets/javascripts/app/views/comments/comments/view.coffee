@@ -12,4 +12,4 @@ define [
 
     modelView: CommentView
     animate: false
-    empty_msg: "You're going to be the first to comment!"
+    empty_msg: "You get to be the first commenter! FIRST!"

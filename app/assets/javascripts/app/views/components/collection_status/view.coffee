@@ -14,30 +14,46 @@ define [
       @collection.on "request", @loading, this
       @collection.on "sync",    @sync,    this
       @collection.on "reset",   @sync,    this
+      @collection.on "add",     => @sync() # don't pass the model
+      @collection.on "remove",  => @sync() # don't pass the model
 
       # If already visible, animate the ellipsis
       @loading() if @$(".r_loading").is(":visible")
 
-    sync: (collection) ->
-      @complete()
-      @empty() if collection.length is 0
+    sync: (col_or_model=@collection)->
+      if col_or_model is @collection
+        @complete()
+        
+        if @collection.length is 0
+          @empty()
+        else
+          @not_empty()
 
     empty: ->
       @$(".r_empty").show()
       @$(".r_loading").hide()
       return this
 
-    loading: ->
+    not_empty: ->
       @$(".r_empty").hide()
-      @$(".r_loading").show()
+      @$(".r_loading").hide()
+      return this
 
-      $s = @$(".r_loading span")
-      t = $s.text()
-      unless @interval
-        @interval = setInterval ->
-          t = if t.length >= 3 then "." else "#{t}."
-          $s.text(t)
-        , 500
+    loading: (col_or_model=@collection) ->
+      # this method receives events for both the collection
+      # and its containing models
+      if col_or_model is @collection and @collection.length is 0
+        @$(".r_empty").hide()
+        @$(".r_loading").show()
+
+        $s = @$(".r_loading span")
+        t = $s.text()
+        unless @interval
+          @interval = setInterval ->
+            t = if t.length >= 3 then "." else "#{t}."
+            $s.text(t)
+          , 500
+
       return this
 
     complete: ->

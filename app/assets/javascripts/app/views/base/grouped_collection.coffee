@@ -1,6 +1,7 @@
 define [
+  "underscore"
   "app/views/base/collection/view"
-], (CollectionView) ->
+], (_, CollectionView) ->
 
   class GroupedCollectionView extends CollectionView
     groupBy: ""
@@ -14,14 +15,22 @@ define [
       @groupView        = options.groupView if options.groupView?
       @groupCollection  = options.groupCollection if options.groupCollection?
 
-      @subview = new @groupView
+      sub_props =
         el: options.el
         collection: new @groupCollection
+        attributes: _.extend @groupView.attributes, @attributes
 
+      # Assign the HTML template props that @assets asigns on the parent
+      for prop in ["id", "className"]
+        sub_props[prop] = @[prop] if @[prop]
+      if @tagName.toLowerCase() isnt "div"
+        sub_props.tagName = @tagName
+
+      @subview = new @groupView sub_props
       @setElement @subview.el
 
       # call super before the reset
-      super options
+      super
       # make this silent so it doesn't render automatically
       @reset @collection, silent: true
 

@@ -94,8 +94,9 @@ UserEditView) ->
           success: => @pages_view.$(".r_pages").css opacity: 1
       else
         # Initial render with bootstrapped data
-        @collection.reset models
-        @$yield.prepend @pages_view.el
+        @pages_view.render() # render shell before data
+        @collection.reset models # data renders the subviews
+        @$yield.prepend @pages_view.el # only now prepend so rendering completed off DOM
         @pages_view.subview.infinite_scroll()
         @pages_view.$(".r_pages").css opacity: 1
 

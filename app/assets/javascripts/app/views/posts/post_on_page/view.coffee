@@ -12,22 +12,20 @@ define [
       template: template
 
     initialize: (options) ->
-      @post = @model.posts.first()
-      
-      @post.on "change", @render, this
-      @post.on "remove", @remove, this
+      @model.on "change", @render, this
+      @model.on "remove", @remove, this
 
       @user_view = new UserSmallView
-        model: @model
+        model: @model.get("user")
 
     remove: ->
       @$el.slideUp => @$el.remove()
 
     json: ->
-      json = @post.toJSON()
+      json = @model.toJSON()
       json.domain = Constants.domain
-      json.yep = true if @post.get("yn") is true
-      json.nope = true if @post.get("yn") is false
+      json.yep = true if @model.get("yn") is true
+      json.nope = true if @model.get("yn") is false
       return json
 
     render: ->

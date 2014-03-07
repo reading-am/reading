@@ -1,7 +1,7 @@
 define [
   "app/views/users/users/view"
-  "app/views/posts/post_on_page/view"
-], (UsersView, PostOnPageView) ->
+  "app/views/users/user_post/view"
+], (UsersView, UserPostView) ->
 
   class UsersWithPosts extends UsersView
-    modelView: PostOnPageView
+    modelView: UserPostView

@@ -113,17 +113,16 @@ UserEditView) ->
         el: $("#subnav")
 
     followingers: (username, suffix) ->
-      c = @model["follow#{suffix}"]
-      c.reset @collection.models
-      @collection = c
-
       @user_card_view ?= new UserCardView
         el: $("#header_card.r_user")
         model: @model
 
       @users_view ?= new UsersView
-        collection: @collection
+        collection: @model["follow#{suffix}"]
         modelView: UserMediumView
+      # This populates the follow state and must happen
+      # after the collection has been added to the view
+      @users_view.collection.reset @collection.models
 
       @$yield.prepend @users_view.render().el
 

@@ -13,7 +13,7 @@ define [
     modelView: UserSmallView
 
     initialize: (options) ->
-      super options
+      super
       @collection.on "sync", (col, resp)  => @populate_follow_state _.pluck(resp.users, "id")
       @collection.on "reset", (col, opt)  => @populate_follow_state col.pluck("id")
 

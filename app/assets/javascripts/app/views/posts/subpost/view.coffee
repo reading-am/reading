@@ -15,11 +15,11 @@ define [
       "click .r_destroy": "destroy"
 
     initialize: (options) ->
+      super options
+
       if @model.get("referrer_post").get("user").get("id")
         @ref_user_view = new UserSmallView
           model: @model.get("referrer_post").get("user")
-
-      super options
 
     destroy: ->
       if confirm "Are you sure you want to delete this post?"

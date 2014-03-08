@@ -1,5 +1,5 @@
 define [
-  "app/views/base/collection"
+  "app/views/base/collection/view"
   "app/views/providers/provider/view"
   "text!app/views/providers/provider/template.mustache"
 ], (CollectionView, ProviderView, template) ->

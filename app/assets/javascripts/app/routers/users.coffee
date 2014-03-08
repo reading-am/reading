@@ -9,7 +9,6 @@ define [
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
   "app/views/posts/medium_selector/view"
-  "app/views/components/loading_collection/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
@@ -17,7 +16,7 @@ define [
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
 ], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
-SettingsSubnavView, MediumSelectorView, LoadingCollectionView, PagesView,
+SettingsSubnavView, MediumSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
 UserEditView) ->
 
@@ -44,22 +43,17 @@ UserEditView) ->
 
       # Setup collection
       @collection ?= new Posts
+      models = @collection.models
 
       if @model
         c = if type is "posts" then @model.posts else (@model.following.posts || @model.following.has_many("Posts"))
-        if @collection isnt c
-          c.reset @collection.models
-          @collection = c
+        @collection = c if @collection isnt c
 
       @collection.medium = medium
       @collection.monitor()
 
-      # Setup views
-      @loading_view ?= new LoadingCollectionView
-        el: @$yield.find(".r_loading")
-
       @medium_selector_view ?= new MediumSelectorView
-        el: $("#medium_selector")
+        el: $("#medium_selector")[0]
         start_val: medium
         on_change: (medium) =>
           @navigate "#{
@@ -72,40 +66,39 @@ UserEditView) ->
 
       if username isnt "everybody"
         @user_card_view ?= new UserCardView
-          el: $("#header_card.r_user")
+          el: $("#header_card.r_user")[0]
           model: @model
           rss_path: "#{username}/#{type}#{
             if medium isnt "all" then "/#{medium}" else ""
           }.rss"
 
         @user_subnav_view ?= new UserSubnavView
-          el: $("#subnav")
+          el: $("#subnav")[0]
+
+      p_props =
+        collection: @collection
+        subview_el: $(".r_pages")[0]
 
       if username is User::current.get("username")
-        @pages_view ?= new PagesWithInputView
-          collection: @collection
+        @pages_view ?= new PagesWithInputView p_props
       else
-        @pages_view ?= new PostsGroupedByPageView
-          collection: @collection
+        @pages_view ?= new PostsGroupedByPageView p_props
 
-      # Render
-      after_render = =>
-        @loading_view.$el.hide()
-        @pages_view.$(".r_pages").css opacity: 1
-        @pages_view.subview.infinite_scroll
-          loading_start:  => @loading_view.$el.show()
-          loading_finish: => @loading_view.$el.hide()
+      rendered = $.contains @$yield[0], @pages_view.el
 
-      if $.contains @$yield[0], @pages_view.el
+      if rendered
         # Render with new data from API
         @pages_view.$(".r_pages").css opacity: 0.2
         @collection.fetch
           reset: true
-          success: after_render
+          success: => @pages_view.$(".r_pages").css opacity: 1
       else
         # Initial render with bootstrapped data
-        @$yield.prepend @pages_view.render().el
-        after_render()
+        @pages_view.render() # render shell before data
+        @collection.reset models # data renders the subviews
+        @$yield.prepend @pages_view.el # only now prepend so rendering completed off DOM
+        @pages_view.subview.infinite_scroll()
+        @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->
       @settings_subnav_view = new SettingsSubnavView
@@ -120,27 +113,18 @@ UserEditView) ->
         el: $("#subnav")
 
     followingers: (username, suffix) ->
-      c = @model["follow#{suffix}"]
-      c.reset @collection.models
-      @collection = c
-
       @user_card_view ?= new UserCardView
         el: $("#header_card.r_user")
         model: @model
 
-      @loading_view ?= new LoadingCollectionView
-        el: $(".r_loading")
-
       @users_view ?= new UsersView
-        collection: @collection
+        collection: @model["follow#{suffix}"]
         modelView: UserMediumView
+      # This populates the follow state and must happen
+      # after the collection has been added to the view
+      @users_view.collection.reset @collection.models
 
       @$yield.prepend @users_view.render().el
-
-      @loading_view.$el.hide()
-      @users_view.infinite_scroll
-        loading_start:  => @loading_view.$el.show()
-        loading_finish: => @loading_view.$el.hide()
 
     recommended: ->
       @find_people Users::recommended(), "recommended"
@@ -152,18 +136,15 @@ UserEditView) ->
       @find_people Users::search @query_params().q, "search"
 
     find_people: (collection, section) ->
-      @collection = collection.reset @collection.models
-
-      @loading_view ?= new LoadingCollectionView
-        el: $(".r_loading")
+      models = @collection.models
+      @collection = collection
 
       @users_view ?= new UsersView
+        el: @$yield.find(".r_users")[0]
         collection: @collection
         modelView: UserMediumView
 
-      @$yield.prepend @users_view.render().el
+      @collection.reset models
+      @$yield.prepend @users_view.el
 
-      @loading_view.$el.hide()
-      @users_view.infinite_scroll
-        loading_start:  => @loading_view.$el.show()
-        loading_finish: => @loading_view.$el.hide()
+      @users_view.infinite_scroll()

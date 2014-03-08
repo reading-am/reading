@@ -14,15 +14,15 @@ define [
     read:   'GET'
 
   Backbone._sync = Backbone.sync
-  Backbone.sync = (method, model_or_coll, options) ->
-    _.log method, model_or_coll, options
+  Backbone.sync = (method, model, options) ->
+    _.log method, model, options
 
     # if you don't clone the options, they'll be modified and used by
     # BB to instantiate the objects and the url prop will be overwritten
     options         = if options then _.clone(options) else {}
 
     options.type    ?= methodMap[method]
-    options.url     ?= _.result(model_or_coll, 'url') || throw new Error 'A "url" property or function must be specified'
+    options.url     ?= _.result(model, 'url') || throw new Error 'A "url" property or function must be specified'
     options.data    ?= {}
     options.success ?= _.log
     options.error   ?= (jqXHR, textStatus, errorThrown) ->
@@ -36,11 +36,11 @@ define [
     if reading?.token?
       options.data.token = reading.token
 
-    if model_or_coll
-      if mp = _.result model_or_coll, "params"
+    if model
+      if mp = _.result model, "params"
         _.extend options.data, mp
       if (method == 'create' || method == 'update')
-        options.data.model = model_or_coll.toJSON()
+        options.data.model = model.toJSON()
 
     domain = /\/\/([A-Za-z0-9\-\.:]+)/.exec(options.url)[1]
     is_xdr = domain isnt window.location.host
@@ -63,6 +63,8 @@ define [
             jqXHR.responseText = data
             options.error jqXHR, textStatus, data.meta.msg
 
-    $.ajax options
+    xhr = $.ajax options
+    model.trigger 'request', model, xhr, options
+    return xhr
 
   return Backbone

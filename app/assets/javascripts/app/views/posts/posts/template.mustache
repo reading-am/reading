@@ -2,4 +2,7 @@
 {{#posts}}
   {{>posts/post/template}}
 {{/posts}}
+{{^posts}}
+  {{>components/collection_status/template}}
+{{/posts}}
 </ul>

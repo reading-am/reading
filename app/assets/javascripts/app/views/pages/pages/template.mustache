@@ -1,5 +1,8 @@
-<div class="r_pages">
+<ul class="r_pages r_collection">
 {{#pages}}
   {{>pages/page_row/template}}
 {{/pages}}
-</div>
+{{^pages}}
+  {{>components/collection_status/template}}
+{{/pages}}
+</ul>

@@ -1,5 +1,5 @@
 define [
-  "app/views/base/collection"
+  "app/views/base/collection/view"
   "app/views/comments/comment/view"
   "text!app/views/comments/comments/template.mustache"
   "text!app/views/comments/comments/styles.css"
@@ -12,3 +12,4 @@ define [
 
     modelView: CommentView
     animate: false
+    empty_msg: "You get to be the first commenter! FIRST!"

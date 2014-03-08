@@ -9,7 +9,7 @@ define [
   "app/views/posts/posts_grouped_by_user/view"
   "app/views/components/share_overlay/view"
   "text!app/views/bookmarklet/app/template.mustache"
-], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsView, ShareOverlay, template) ->
+], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsGroupedByUserView, ShareOverlay, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -83,7 +83,7 @@ define [
       @comments_view.make_images_draggable()
 
     get_readers: ->
-      @readers_view = new PostsView
+      @readers_view = new PostsGroupedByUserView
         id: "r_readers"
         collection: @model.get("page").posts
 

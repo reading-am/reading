@@ -23,6 +23,15 @@ define [
     # they'll get factoried in model.parse
     if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
 
+  Backbone.Collection::getEach = (objs) ->
+    objs = [objs] unless _.isArray objs
+    result = []
+    _.each objs, (o) => if o = @get(o) then result.push(o)
+    result
+
+  Backbone.Collection::setEach = (objs, key, val, options) ->
+    _.each @getEach(objs), (o) -> o.set key, val, options
+
   Backbone.Collection::monitor = ->
     # Do nothing on duplicate calls
     return if @channel?.name is @channel_name()

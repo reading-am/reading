@@ -157,6 +157,8 @@ public
         @api_user = Kippt::Client.new(username: info['username'], token: token)
       when 'flattr'
         @api_user = Flattr.new :access_token => token
+      when 'google_plus'
+        @api_user = GooglePlus::Person.get(123, access_token: token)
       end
     end
 

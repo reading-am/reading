@@ -62,6 +62,7 @@ gem 'omniauth-pocket'
 gem 'omniauth-flattr'
 gem 'omniauth-http-basic', github: 'leppert/omniauth-http-basic' #required by omniauth-kippt
 gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
+gem 'omniauth-google-oauth2'
 
 ####################
 # Async Processing #
@@ -90,6 +91,7 @@ gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
 gem 'kippt', github: 'leppert/kippt'
 gem 'flattr', github: 'smgt/flattr'
+gem 'google_plus'
 
 #################
 # Frontend HTML #

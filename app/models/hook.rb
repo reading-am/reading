@@ -213,6 +213,9 @@ EOF
     authorization.api.flattr post.page.url
   end
 
+  def google_plus post, event_fired
+  end
+  
   def url post, event_fired
     url = self.params['address']
     url = "http://#{url}" if url[0, 4] != "http"

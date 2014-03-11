@@ -324,6 +324,9 @@ GEM
       thor (>= 0.13.6)
     formatador (0.2.4)
     g (1.7.2)
+    google_plus (0.2.2)
+      json
+      rest-client (~> 1.6.1)
     haml (4.0.3)
       tilt
     hashie (2.0.5)
@@ -439,6 +442,9 @@ GEM
     omniauth-flattr (0.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
+    omniauth-google-oauth2 (0.2.2)
+      omniauth (~> 1.0)
+      omniauth-oauth2
     omniauth-instapaper (0.2.0)
       multi_json
       omniauth-xauth (~> 0.0.2)
@@ -531,6 +537,8 @@ GEM
     rdoc (4.0.1)
       json (~> 1.4)
     ref (1.0.5)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     roauth (0.0.8)
     rsolr (1.0.9)
       builder (>= 2.1.2)
@@ -658,6 +666,7 @@ DEPENDENCIES
   flattr!
   fog
   foreman
+  google_plus
   hipchat
   hirefire-resource
   instapaper!
@@ -681,6 +690,7 @@ DEPENDENCIES
   omniauth-evernote
   omniauth-facebook (= 1.4.0)
   omniauth-flattr
+  omniauth-google-oauth2
   omniauth-http-basic!
   omniauth-instapaper
   omniauth-kippt!

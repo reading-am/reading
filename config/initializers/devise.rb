@@ -218,6 +218,7 @@ Devise.setup do |config|
   config.omniauth :kippt,       "https://kippt.com/api", :form => OmniauthFormsController.action(:kippt)
   config.omniauth :pocket,      ENV['READING_POCKET_KEY']
   config.omniauth :flattr,      ENV['READING_FLATTR_KEY'], ENV['READING_FLATTR_SECRET'], scope: ['flattr']
+  config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_ID']
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

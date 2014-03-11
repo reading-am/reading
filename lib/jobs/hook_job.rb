@@ -4,7 +4,7 @@ class HookJob
 
   def perform hook, post, event_fired
     ActiveRecord::Base.connection_pool.with_connection do
-      hook.send(self.provider, post, event_fired)
+      hook.send(hook.provider, post, event_fired)
     end
   end
 

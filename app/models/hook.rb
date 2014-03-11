@@ -64,15 +64,8 @@ public
   end
 
   def run post, event_fired
-    # we first check to see if the provider responds to an event type
-    # before calling trigger_method which will insert a delayed_job
-    self.trigger_method(post, event_fired) if responds_to event_fired
+    HookJob.new.async.perform(self, post, event_fired.to_s) if responds_to event_fired
   end
-
-  def trigger_method post, event_fired
-    self.send(self.provider, post, event_fired.to_s)
-  end
-  handle_asynchronously :trigger_method unless Rails.env.development? || Rails.env.test?
 
   def facebook post, event_fired
     case params['permission']

@@ -42,6 +42,12 @@ define [
             popup @url(), 450, 430
         },{
           subject: options.subject
+          name: "Google +"
+          url_scheme: "https://plus.google.com/share?url={{wrapped_url}}"
+          action: ->
+            popup @url(), 500, 450
+        },{
+          subject: options.subject
           name: "Instapaper"
           url_scheme: "http://www.instapaper.com/hello2?url={{url}}&title={{title}}"
           action: ->

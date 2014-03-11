@@ -74,4 +74,25 @@ define [
     options.remove = false
     @fetch options
 
+  Backbone.Collection::fetchNRecords = (n, options={}) ->
+    @fetchNPages Math.ceil(n/@params.limit), options
+
+  Backbone.Collection::fetchNPages = (n, options={}) ->
+    i = 0
+    if options.success
+      _success = options.success
+      options.success = -> _success.apply(this, arguments) if --i is 0
+    if options.error
+      _error = options.error
+      options.error = ->
+        if i >= 0
+          i = -1 # prevents success and other errors from calling
+          _error.apply(this, arguments)
+
+    if @length is 0
+      @fetch options
+      i += 1
+    while i++ < n
+      @fetchNextPage options
+
   return Backbone

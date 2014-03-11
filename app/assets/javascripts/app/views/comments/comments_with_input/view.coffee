@@ -119,8 +119,10 @@ define [
             finish following
           else
             following = @user.following
-            if @user.get("following_count") > 0
-              following.fetch success: finish
+            count = @user.get("following_count")
+            if count > 0
+              following.params.limit = 200
+              following.fetchNRecords count, success: finish
             else
               finish following
 

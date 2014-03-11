@@ -1,4 +1,4 @@
-class Broadcaster
+class PusherJob
   include SuckerPunch::Job
   workers 4
 

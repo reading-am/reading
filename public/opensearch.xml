@@ -10,8 +10,8 @@
     <SyndicationRight>open</SyndicationRight>
     <Developer>Reading.am</Developer>
     <Tags>links images video articles</Tags>
-    <Image height="16" width="16" type="image/vnd.microsoft.icon">https://reading.am/favicon.ico</Image>
-    <Url type="text/html" template="https://reading.am/search">
+    <Image height="16" width="16" type="image/vnd.microsoft.icon">https://www.reading.am/favicon.ico</Image>
+    <Url type="text/html" template="https://www.reading.am/search">
       <Param name="q" value="{searchTerms}"/>
     </Url>
 </OpenSearchDescription>

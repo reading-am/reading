@@ -6,8 +6,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :protect_staging, :check_domain, :set_user_device,
-                :set_headers, :migrate_auth_token, :check_signed_in,
-                :set_bot, :profiler
+                :set_headers, :migrate_auth_token, :migrate_to_www,
+                :check_signed_in, :set_bot, :profiler
 
   helper_method :mobile_device?, :desktop_device?, :bot?
 
@@ -47,6 +47,16 @@ class ApplicationController < ActionController::Base
     if !token.blank? and user = User.find_by_auth_token(token) rescue false
       sign_in user
       remember_me user
+    end
+  end
+
+  def migrate_to_www
+    # scan for a root domain
+    if request.host.scan(/\w\.[a-z]/i).length == 1
+      if t = cookies[:remember_user_token]
+        cookies[:remember_user_token] = {value: t, domain: :all}
+      end
+      redirect_to request.url.sub(request.host, "www.#{request.host}"), status: :moved_permanently
     end
   end
 

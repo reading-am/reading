@@ -91,8 +91,9 @@ define [
 
     if @length is 0
       @fetch options
-      i += 1
-    while i++ < n
+      i++
+    while i < n
+      i++
       @fetchNextPage options
 
   return Backbone

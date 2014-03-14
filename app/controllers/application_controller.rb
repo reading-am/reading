@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
     # scan for a root domain
     if request.host.scan(/\w\.[a-z]/i).length == 1
       if t = cookies[:remember_user_token]
+        cookies.delete :remember_user_token
         cookies[:remember_user_token] = {value: t, domain: :all}
       end
       redirect_to request.url.sub(request.host, "www.#{request.host}"), status: :moved_permanently

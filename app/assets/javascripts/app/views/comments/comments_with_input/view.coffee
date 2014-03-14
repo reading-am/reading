@@ -7,6 +7,7 @@ define [
   "app/models/comment"
   "app/models/post"
   "app/models/user_with_current"
+  "app/collections/users"
   "text!app/views/comments/comments_with_input/template.mustache"
   "text!app/views/comments/comments_with_input/styles.css"
   "jquery_ui"
@@ -14,7 +15,7 @@ define [
   "extend/jquery/events.input"
   "extend/jquery/elastic"
   "extend/jquery/insert_at_caret"
-], (_, $, Backbone, Key, CommentsView, Comment, Post, User, template, styles) ->
+], (_, $, Backbone, Key, CommentsView, Comment, Post, User, Users, template, styles) ->
 
   class CommentsWithInputView extends Backbone.View
     @assets
@@ -93,7 +94,11 @@ define [
           @textarea.insertAtCaret ui.draggable[0].src
 
     attach_autocomplete: ->
-      following = false
+      # cache the users after fetching
+      ac_col = false
+      # cache the last callback so that, when user.following
+      # finally fetches, it's filtered against the current query string
+      last_cb = ->
 
       # this should only be called after it's been attached to the DOM
       @textarea.mentionsInput
@@ -115,16 +120,18 @@ define [
               user.username = "@#{user.username}"
               user
 
-          if following
-            finish following
-          else
-            following = @user.following
+          if !ac_col
+            # Seed it with users listed in "Other Readers"
+            ac_col = new Users(@page.posts.models.map (post) -> post.get("user"))
             count = @user.get("following_count")
             if count > 0
-              following.params.limit = 200
-              following.fetchNRecords count, success: finish
-            else
-              finish following
+              @user.following.params.limit = 200
+              @user.following.fetchNRecords count, success: (col) ->
+                ac_col.add col.models
+                last_cb ac_col
+
+          last_cb = finish
+          finish ac_col
 
     render: =>
       @$el.html(@template({signed_in: User::current.signed_in()}))

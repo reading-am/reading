@@ -6,7 +6,7 @@ task :send_digest => :environment do
   freq << 2 if Time.now.wday % 2 > 0 # every other day
   freq << 7 if Time.now.wday == 1 # if it's Monday, send to the weekly people
   User.digesting_on_day(freq).each do |user|
-    UserMailerDigestJob.new.async.perform(user)
+    UserMailer.delay.digest(user)
   end
   puts "done."
 end

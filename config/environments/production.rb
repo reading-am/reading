@@ -1,5 +1,5 @@
 DOMAIN = 'www.reading.am'
-#DOMAIN = '0.0.0.0:3000' # for testing
+#DOMAIN = 'www.reading.dev:3000' # for testing
 PROTOCOL = 'https'
 
 Reading::Application.configure do

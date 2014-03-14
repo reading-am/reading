@@ -74,7 +74,7 @@ public
     when 'publish_actions' # timeline
       action = post.page.imperative
       action = "read" if action == "listen" # we didn't get approved for listen
-      authorization.api.put_connections("me", "reading-am:#{action}", :website => post.wrapped_url.gsub('0.0.0.0:3000', 'www.reading.am'))
+      authorization.api.put_connections("me", "reading-am:#{action}", :website => post.wrapped_url.gsub('.dev:3000', '.am'))
     end
   end
 

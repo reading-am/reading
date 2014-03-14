@@ -1,4 +1,4 @@
-SitemapGenerator::Sitemap.default_host  = "https://#{DOMAIN}"
+SitemapGenerator::Sitemap.default_host  = ROOT_URL
 SitemapGenerator::Sitemap.public_path   = 'tmp/'
 SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new({

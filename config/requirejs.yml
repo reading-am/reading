@@ -17,7 +17,7 @@ paths:
   underscore: libs/lodash_extended
   backbone:   libs/backbone_extended
   mustache:   libs/mustache
-  pusher:     libs/pusher_extended
+  pusher:     libs/pusher/pusher_extended
 
 modules:
   - name: web/init
@@ -30,7 +30,7 @@ modules:
       - libs/lodash
       - libs/backbone
       - libs/mustache
-      - libs/pusher
+      - libs/pusher/pusher
 
   - name: bookmarklet/init
     create: true
@@ -43,7 +43,7 @@ modules:
       - libs/lodash
       - libs/backbone
       - libs/mustache
-      - libs/pusher
+      - libs/pusher/pusher
 
   - name: libs/jquery
 
@@ -60,7 +60,7 @@ modules:
 
   - name: libs/mustache
 
-  - name: libs/pusher
+  - name: libs/pusher/pusher
 
   # NOTE - silliness
   - name: etc/clippy

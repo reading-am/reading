@@ -1,7 +1,14 @@
 define [
-  "libs/pusher"
+  "libs/pusher/pusher"
   "app/constants"
 ], (Pusher, Constants) ->
+
+  cdn_url = "#{Constants.domain}/assets/libs/pusher"
+  Pusher.Dependencies = new Pusher.DependencyLoader
+    cdn_http: "http://#{cdn_url}"
+    cdn_https: "https://#{cdn_url}"
+    version: Pusher.VERSION
+    suffix: Pusher.dependency_suffix
 
   # Override the Pusher XHR so we can force cookies to be sent with the auth request
   Pusher.XHR = ->
@@ -25,9 +32,7 @@ define [
     config.encrypted = true
   else
     config.encrypted = false
-    Pusher.log = (message) ->
-      if window.console and window.console.log
-        window.console.log(message)
+    Pusher.log = (message) -> window.console?.log?(message)
 
     window.WEB_SOCKET_DEBUG = true # Flash fallback debug flag
 

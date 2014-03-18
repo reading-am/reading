@@ -83,29 +83,24 @@ define [
       false
 
     link_quotes: (html) ->
-      matches = html.match(/"(?:[^\\"]+|\\.)*"/gi)
+      $html = $("<div>#{html}</div>")
+      $quotes = $html.find("i")
 
-      if matches
+      if $quotes.length
         cname = "r_quoted"
         config = className: cname
         $body = $("body > *:not(#r_am)")
 
-        matches = _.map matches, (text) -> text.substring(1, text.length-1)
-        matches = _.filter matches, (text) ->
+        $quotes.each ->
+          $this = $(this)
+          text = $this.html()[1..-2]
           $body.highlight text, config
           if $body.find(".#{cname}").length
             $body.unhighlight config
-          else
-            false
+            $link = $("<a>").attr(class: "r_quoted", href: "#").html(text)
+            $this.html("\"").append($link).append("\"")
 
-        if matches
-          $html = $("<div>#{html}</div>")
-          config.element = "a"
-          $html.highlight matches, config
-          $html.find(".#{cname}").attr(href: "#")
-          html = $html.html()
-
-      return html
+      return $html.html()
 
     render: =>
       json = @model.toJSON()

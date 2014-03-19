@@ -22,7 +22,7 @@ module MailPipe
     type = class_to_letter(subject)
 
     hash = Digest::SHA1.hexdigest("#{type}#{subject.id}#{user.token}")
-    "#{action}+#{type}-#{subject.id}-#{hash}-#{user.id}@mailman.#{DOMAIN}"
+    "#{action}+#{type}-#{subject.id}-#{hash}-#{user.id}@mailman.#{ROOT_DOMAIN}"
   end
 
   def self.decode_mail_recipient recipient

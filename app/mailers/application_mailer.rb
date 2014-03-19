@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "Reading <mailman@#{DOMAIN}>"
+  default from: "Reading <mailman@#{ROOT_DOMAIN}>"
 
   ## HELPERS
   # these used to be in a separate file but they were being

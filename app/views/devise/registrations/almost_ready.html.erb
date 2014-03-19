@@ -10,7 +10,7 @@
       <blockquote>We have some cool features in the works and it'd be helpful
         if we were able to email you about them. We're a small community here,
         there are only a handful of us (okay, big handfuls, but still), and I hope
-        we can stick together. Questions? <%= mail_to "greg@#{DOMAIN}", 'Email me', :subject => 'About the emails', :encode => 'javascript' %>.
+        we can stick together. Questions? <%= mail_to "greg@#{ROOT_DOMAIN}", 'Email me', :subject => 'About the emails', :encode => 'javascript' %>.
         <small>Greg (p.s. you're my favorite)</small>
       </blockquote>
     <% elsif !resource.has_pass? and resource.joined_before_passwords? %>

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="span7 offset1">
     <footer>
-    <b>Huh? How? What?</b> <%= mail_to "hello@#{DOMAIN}", 'Email', :subject => 'Hey there Reading!', :encode => 'javascript', :class => 'email' %>, <%= link_to '@reading', 'http://twitter.com/reading' %> and our <%= link_to 'blog', "http://writing.#{DOMAIN}" %>.
+    <b>Huh? How? What?</b> <%= mail_to "hello@#{ROOT_DOMAIN}", 'Email', :subject => 'Hey there Reading!', :encode => 'javascript', :class => 'email' %>, <%= link_to '@reading', 'http://twitter.com/reading' %> and our <%= link_to 'blog', "http://writing.#{DOMAIN}" %>.
     </footer>
   </div>
 </div>

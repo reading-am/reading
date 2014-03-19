@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
 
   def migrate_to_www
     # scan for a root domain
-    if request.host.scan(/\w\.[a-z]/i).length == 1
+    if request.host != SHORT_DOMAIN && request.host.scan(/\w\.[a-z]/i).length == 1
       if t = cookies[:remember_user_token]
         cookies.delete :remember_user_token
         cookies[:remember_user_token] = {value: t, domain: :all}

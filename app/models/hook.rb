@@ -127,14 +127,14 @@ public
     end
     user = obj.user
 
-    user_link = "<a href='http://#{DOMAIN}/#{user.username}'>#{user.display_name}</a>"
+    user_link = "<a href='#{ROOT_URL}/#{user.username}'>#{user.display_name}</a>"
     post_link = "<a href='#{post.wrapped_url}'>#{post.page.display_title}</a>"
     post_link_truncated = "<a href='#{post.wrapped_url}'>#{truncate(post.page.display_title)}</a>"
 
     case event_fired
     when 'new'
       output = "✌ #{user_link} is #{post.page.verb} #{post_link}"
-      output += " because of <a href='http://#{DOMAIN}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
+      output += " because of <a href='#{ROOT_URL}/#{post.referrer_post.user.username}'>#{post.referrer_post.user.display_name}</a>" if post.referrer_post and post.user != post.referrer_post.user
     when 'yep', 'nope'
       output = "#{post.yn ? '✓' : '×'} #{user_link} said \"#{post.yn ? 'yep' : 'nope'}\" to #{post_link}"
     when 'comment'
@@ -182,7 +182,7 @@ EOF
     case event_fired
     when 'new'
       output = "✌ #{post.page.verb.capitalize} #{post_link}"
-      output += " because of #{post.referrer_post.user.display_name} (http://#{DOMAIN}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
+      output += " because of #{post.referrer_post.user.display_name} (#{ROOT_URL}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
     when 'yep', 'nope'
       output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
     end

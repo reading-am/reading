@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
       :medium => "140x140>",
       :large => "500x500>"
     },
-    :default_url => "http#{Rails.env == 'production' ? 's' : ''}://#{DOMAIN}/assets/users/:attachment/default_:style.png"
+    :default_url => "#{ROOT_URL}/assets/users/:attachment/default_:style.png"
 
   validates_attachment :avatar,
     :size => { :less_than => 2.megabytes },

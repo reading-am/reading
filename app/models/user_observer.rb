@@ -8,7 +8,7 @@ class UserObserver < ActiveRecord::Observer
 
       # Tweet to ReadingArrivals
       if !user.joined_before_email? and Rails.env == 'production'
-        tweet = "Everyone welcome #{user.username}! http://#{DOMAIN}/#{user.username}"
+        tweet = "Everyone welcome #{user.username}! #{ROOT_URL}/#{user.username}"
         TweetJob.new.async.perform ENV['READING_ARRIVALS_TOKEN'], ENV['READING_ARRIVALS_SECRET'], tweet
       end
 

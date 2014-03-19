@@ -1,4 +1,5 @@
-DOMAIN = 'www.reading.am'
+ROOT_DOMAIN = 'reading.am'
+DOMAIN = "www.#{ROOT_DOMAIN}"
 #DOMAIN = 'www.reading.dev:3000' # for testing
 PROTOCOL = 'https'
 

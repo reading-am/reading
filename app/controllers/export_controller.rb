@@ -7,7 +7,7 @@ class ExportController < ApplicationController
       timestamp: t,
       token: Digest::SHA1.hexdigest("#{t}#{current_user.token}#{Reading::Application.config.secret_key_base}")
     }
-    redirect_to "http://export.#{DOMAIN}/#{current_user.username}/posts.#{request.params[:format]}?#{query.to_query}"
+    redirect_to "http://export.#{ROOT_DOMAIN}/#{current_user.username}/posts.#{request.params[:format]}?#{query.to_query}"
   end
 
 end

@@ -1,4 +1,5 @@
-DOMAIN = 'staging.reading.am'
+ROOT_DOMAIN = 'staging.reading.am'
+DOMAIN = ROOT_DOMAIN
 PROTOCOL = 'https'
 
 Reading::Application.configure do

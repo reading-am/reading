@@ -1,4 +1,5 @@
-DOMAIN = 'www.reading.dev'
+ROOT_DOMAIN = 'reading.dev'
+DOMAIN = "www.#{ROOT_DOMAIN}"
 PROTOCOL = 'http'
 
 Reading::Application.configure do

@@ -13,12 +13,8 @@ class Page < ActiveRecord::Base
   validates_associated :domain
   validates_uniqueness_of :url
 
-  cattr_accessor :crawl_timeout
-
   before_validation :populate_domain
-  before_save :populate_medium, unless: :new_record?
   before_create :populate_remote_page_data
-  after_create :populate_remote_meta_data
 
   # search
   searchable do
@@ -30,11 +26,6 @@ class Page < ActiveRecord::Base
     end
   end
   handle_asynchronously :solr_index
-
-  META_TAG_NAMESPACES = ['og','twitter']
-
-  # NOTE - properties prefixed with r_ (r_title, r_excerpt)
-  # are from readability_data
 
 private
 
@@ -49,11 +40,6 @@ private
   end
 
 public
-
-  # initialize the parsed tag cache
-  after_initialize do |page|
-    page.head_tags = page.head_tags
-  end
 
   def self.cleanup_url(url)
     # the protocol will be missing its second slash if it's been pulled from the middle of a url
@@ -105,19 +91,6 @@ public
     page
   end
 
-  def mimetype
-    if headers
-      m = MIME::Types[headers['content-type'].split(';')[0]]
-    else
-      m = MIME::Types.type_for url
-    end
-    m[0] || MIME::Types['text/html'][0]
-  end
-
-  def html?
-    mimetype.sub_type == "html"
-  end
-
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
     if !trans_tags("title").blank?
@@ -131,81 +104,8 @@ public
     end
   end
 
-  def media_type
-    if !oembed.blank? && !oembed['type'].blank?
-      oembed['type']
-    elsif !meta_tags['og']['type'].blank?
-      # http://ogp.me/#types
-      # colon denotes a namespace, period a sub property
-      meta_tags['og']['type'].split(':').last.split('.').first
-    elsif !meta_tags['medium'].blank? # flickr uses this
-      meta_tags['medium'].blank?
-    else
-      mimetype.media_type
-    end
-  end
-
-  def image
-    mimetype.media_type == "image" ? url : trans_tags("image")
-  end
-
-  def embed
-    if medium != 'text'
-      if !oembed.blank? && oembed['html']
-        oembed['html']
-      elsif trans_tags("player") || trans_tags("video")
-        param = trans_tags("player") ? "player" : "video"
-        "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-      elsif media_type == "photo" || mimetype.media_type == "image"
-        "<img src=\"#{image}\">"
-      else
-        nil
-      end
-    end
-    # here's a sample :text embed should we decide to embed them
-    # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
-  end
-
-  def excerpt
-    r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
-  end
-
-  def description
-    if !trans_tags("description").blank?
-      trans_tags("description")
-    else
-      excerpt
-    end
-  end
-
   def wrapped_url
     "#{ROOT_URL}/#{self.url}"
-  end
-
-  def keywords
-    if !meta_tags['keywords'].blank?
-      delimiter = meta_tags['keywords'].include?(',') ? ',' : ' '
-      k = meta_tags['keywords'].split(delimiter)
-      k.collect{|x| x.strip}
-    else
-      []
-    end
-  end
-
-  def parse_medium
-    mediums = {
-      'audio' => ['music','song','album','sound'],
-      'video' => ['video','movie'],
-      'image' => ['photo'],
-      'text'  => ['article','book','quote']
-    }
-    m = 'text' # default
-    mediums.select! do |k,v|
-      m = k if media_type == k or
-            v.include?(media_type) or
-            (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
-    end
-    m
   end
 
   def verb
@@ -222,153 +122,6 @@ public
 
   def imperative
     verb.split(' ')[0][0..-4]
-  end
-
-  def head_tags=(str_or_nodes)
-    # clear the parsed tags
-    @tag_cache = {}
-    # PG will throw an error on some pages if you don't explicitly encode UTF-8
-    # example: http://www-nc.nytimes.com/2009/09/11/world/americas/11hippo.html
-    # fix from: http://stackoverflow.com/a/8873922/313561
-    self[:head_tags] = str_or_nodes.to_s.encode(Encoding::UTF_16, Encoding::UTF_8, :invalid => :replace, :replace => '').encode(Encoding::UTF_8, Encoding::UTF_16)
-  end
-
-  def head_tags
-    @tag_cache ||= {}
-    @tag_cache[:head_tags] ||= Nokogiri::HTML self[:head_tags]
-  end
-
-  def title_tag
-    @tag_cache[:title_tag] ||= (head_tags.search('title').first.text rescue '')
-  end
-
-  def trans_tags name
-    if !oembed.blank? and !oembed[name].blank?
-      oembed[name]
-    elsif !meta_tags["og"][name].blank?
-      meta_tags["og"][name]
-    elsif !meta_tags["twitter"][name].blank?
-      meta_tags["twitter"][name]
-    else !meta_tags[name].blank?
-      meta_tags[name]
-    end
-  end
-
-  # Relevant
-  # http://www.metatags.org/all_metatags
-  # http://en.wikipedia.org/wiki/Meta_element
-  def meta_tags
-    # this has a JS companion in bookmarklet/real_init.rb#get_meta_tags()
-    if @tag_cache[:meta_tags].blank?
-      @tag_cache[:meta_tags] = {'og'=>{},'twitter'=>{}}
-      regex = Regexp.new("^(#{META_TAG_NAMESPACES.join('|')}):(.+)$", true)
-      head_tags.search('meta').each do |m|
-        if m.attribute('property') || m.attribute('name') || m.attribute('itemprop')
-          key = (m.attribute('property') ? m.attribute('property') : m.attribute('name') ? m.attribute('name') : m.attribute('itemprop')).to_s
-          val = (m.attribute('content') ? m.attribute('content') : m.attribute('value')).to_s
-          if ['og','twitter'].include? key
-            # account for sites that have a meta tag named "og" or "twitter" along side subtags like "twitter:name"
-            @tag_cache[:meta_tags][key]["root"] = val
-          elsif key.match(regex)
-            @tag_cache[:meta_tags][$1][$2] = val
-          else
-            @tag_cache[:meta_tags][key] = val
-          end
-        end
-      end
-    end
-    @tag_cache[:meta_tags]
-  end
-
-  def link_tags
-    if @tag_cache[:link_tags].blank?
-      @tag_cache[:link_tags] = {}
-      head_tags.search('link').each do |m|
-        name = m.attribute('rel') ? m.attribute('rel').to_s : m.attribute('itemprop').to_s
-        if name != ''
-          @tag_cache[:link_tags][name] = m.attribute('href').to_s
-        end
-      end
-    end
-    @tag_cache[:link_tags]
-  end
-
-  def oembed_tags
-    if @tag_cache[:oembed_tags].blank?
-      @tag_cache[:oembed_tags] = {'json'=>false,'xml'=>false}
-      head_tags.search('link[rel=alternate][type$=oembed]').each do |n|
-        @tag_cache[:oembed_tags][n.attribute('type').to_s[/\/(.*)\+/,1]] = n.attribute('href').to_s
-      end
-    end
-    @tag_cache[:oembed_tags]
-  end
-
-  def crawl_url
-    a = Addressable::URI.parse(url)
-    # check for a hashbang: https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
-    if !a.fragment.blank? && a.fragment[0] == '!'
-      qv = a.query_values || {}
-      qv['_escaped_fragment_'] = a.fragment[1..-1]
-      a.query_values = qv
-      a.fragment = nil
-    end
-    a.to_s
-  end
-
-  def mech=(obj)
-    # this setter is used during testing
-    @mech = obj
-  end
-
-  def mech
-    if @mech.blank?
-      agent = Mechanize.new
-      agent.user_agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
-      agent.follow_meta_refresh = true
-      
-      # https://github.com/sparklemotion/mechanize/pull/125
-      # trouble page: http://www.operationwardiary.org/
-      agent.content_encoding_hooks << lambda{|httpagent, uri, response, body_io|
-        ce = response['content-encoding']
-        response['content-encoding'] = '' if ce.respond_to?(:downcase) && ce.downcase == 'utf-8'
-      }
-      
-      if !crawl_timeout.blank?
-        agent.open_timeout = agent.read_timeout = crawl_timeout
-      end
-
-      if html?
-        treat_as_html = true
-      else
-        @mech = agent.head crawl_url
-        m = Mime::Type.lookup @mech.header['content-type'].split(';')[0]
-        treat_as_html = m.html?
-      end
-
-      if treat_as_html
-        @mech = agent.get crawl_url
-      end
-    end
-    @mech
-  end
-
-  def remote_headers
-    mech.header
-  end
-
-  def remote_resolved_url
-    mech.uri.to_s
-  end
-
-  def remote_normalized_url
-    html? && remote_canonical_url ?
-      remote_canonical_url :
-      self.class.cleanup_url(remote_resolved_url)
-  end
-
-  # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
-  def remote_head_tags
-    mech.search('title,meta,link:not([rel=stylesheet])')
   end
 
   def remote_canonical_url
@@ -410,42 +163,7 @@ public
     canonical
   end
 
-  def remote_oembed
-    begin
-      curl = Curl::Easy.new oembed_tags['json'] || oembed_tags['xml']
-      curl.follow_location = true
-      curl.useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
-      curl.perform
-      oembed_tags['json'] ? ActiveSupport::JSON.decode(curl.body_str) : Hash.from_xml(curl.body_str)['oembed']
-    rescue
-      begin
-        OEmbed::Providers.register_all
-        OEmbed::Providers.get(url).fields
-      rescue
-        nil
-      end
-    end
-  end
-
-  def populate_medium
-    self.medium = parse_medium
-  end
-
-  def populate_remote_page_data
-    # populate headers first, it's used by the others
-    self.headers = remote_headers
-    self.head_tags = remote_head_tags if html?
-
-    self.url = remote_normalized_url
-    self.title = title_tag
-    self.medium = parse_medium
-
-    return self
-  end
-
   def populate_remote_meta_data
-    self.oembed = remote_oembed
-
     r = ReadabilityData.create :page => self
     self.r_title = r.title
     self.r_excerpt = r.excerpt

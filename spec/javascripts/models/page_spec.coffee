@@ -46,13 +46,13 @@ define [
 
         scenarios = [
           ""
-          "http://#{Constants.domain}/"
-          "http://#{Constants.domain}/p/AaBb123/"
-          "http://#{Constants.domain}/t/AaBb123/"
-          "http://#{Constants.domain}/t/AaBb123/p/AaBb123/"
-          "http://#{Constants.domain}/p/AaBb123/t/AaBb123/"
-          "http://#{Constants.domain}/t/-/p/AaBb123/"
-          "http://#{Constants.domain}/p/AaBb123/t/-/"
+          "#{Constants.root_url}/"
+          "#{Constants.root_url}/p/AaBb123/"
+          "#{Constants.root_url}/t/AaBb123/"
+          "#{Constants.root_url}/t/AaBb123/p/AaBb123/"
+          "#{Constants.root_url}/p/AaBb123/t/AaBb123/"
+          "#{Constants.root_url}/t/-/p/AaBb123/"
+          "#{Constants.root_url}/p/AaBb123/t/-/"
         ]
         urls = [
           "http://www.google.com"
@@ -63,7 +63,7 @@ define [
           "http://www.amazon.com/dp/393956611X/?tag=svpply01-20"
           "https://twitter.com/#!/tw1tt3rart"
           "http://www.youtube.com/watch?v=4-kJZGC7_9Q&feature=youtu.be&t=29s"
-          "http://#{Constants.domain}/greg"
+          "#{Constants.root_url}/greg"
         ]
 
         it "should correctly identify the posting url", ->

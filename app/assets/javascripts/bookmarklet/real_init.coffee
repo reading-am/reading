@@ -20,11 +20,11 @@ require [
   # Config Vars
 
   if reading.bypass_cf
-    Constants.domain = "#{Constants.domain.split(".").slice(0,-1).reverse().join("-")}.herokuapp.com"
+    Constants.domain = "#{Constants.domain.replace("www.","").split(".").slice(0,-1).reverse().join("-")}.herokuapp.com"
 
   reading.ready = false
   on_reading = window.location.host.indexOf(Constants.domain) is 0 or
-               window.location.host.indexOf("staging.#{Constants.domain}") is 0 or
+               window.location.host.indexOf("staging.#{Constants.root_domain}") is 0 or
                window.location.host.indexOf("0.0.0.0") is 0
   token = reading.token ? null
   platform = reading.platform ? (if on_reading then "redirect" else "bookmarklet")
@@ -50,6 +50,7 @@ require [
     Post::current.save params, success: (model) ->
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
+        # This is intentionally http rather than https for referrer purposes
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
         model.keep_fresh()

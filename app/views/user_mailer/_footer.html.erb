@@ -2,7 +2,7 @@
   <div class="span6">
     <p>
       <%= link_to '✌ Reading', "#{ROOT_URL}", :class => 'home' %> :
-      <%= mail_to "hello@#{DOMAIN}", 'Say hello', :subject => 'Well hello there Reading!', :class => 'email' %>,
+      <%= mail_to "hello@#{ROOT_DOMAIN}", 'Say hello', :subject => 'Well hello there Reading!', :class => 'email' %>,
       <%= link_to "do some reading", "#{ROOT_URL}/everybody" %>,
       or <%= link_to "follow someone new", "#{ROOT_URL}/users/recommended" %>.<br>
       Want fewer emails? <%= link_to "Change your settings", "#{ROOT_URL}/settings/info" %>.

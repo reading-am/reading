@@ -9,12 +9,12 @@ class Page < ActiveRecord::Base
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy
 
-  # validates_presence_of :url, :domain
-  # validates_associated :domain
+  validates_presence_of :url, :domain
+  validates_associated :domain
   validates_uniqueness_of :url
 
-  # before_validation :populate_domain
-  # before_create :populate_remote_data
+  before_validation :populate_domain
+  after_create :populate_remote_data
 
 private
 
@@ -151,9 +151,9 @@ public
   end
 
   def populate_remote_data
-    dd = DescribeData.create :page => self
-    self.r_title = dd.title
-    self.r_excerpt = dd.excerpt
+    dd = DescribeData.create page: self
+    self.title = dd.response["title"]
+    self.r_excerpt = dd.response["description"]
     self.save
   end
 
@@ -169,10 +169,10 @@ public
       :id             => to_s ? id.to_s : id,
       :url            => url,
       :title          => display_title,
-      :embed          => embed,
+      :embed          => oembed, # convert these stores to just embeds
       :medium         => medium,
-      :media_type     => media_type,
-      :description    => description,
+      :media_type     => medium, # convert media_type of existing models
+      :description    => r_excerpt,
       :posts_count    => posts_count,
       :comments_count => comments_count,
       :created_at     => created_at,

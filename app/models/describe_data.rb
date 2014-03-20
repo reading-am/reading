@@ -9,6 +9,6 @@ class DescribeData < ActiveRecord::Base
     c.url = "http://localhost:5000?" + {url: page.url, format: "json"}.to_query
     c.perform
     obj = ActiveSupport::JSON.decode c.body_str rescue nil
-    self.response = obj unless obj.blank? or obj['error']
+    self.response = obj["response"] unless obj.blank? or obj["error"]
   end
 end

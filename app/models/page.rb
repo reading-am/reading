@@ -4,28 +4,17 @@ class Page < ActiveRecord::Base
   serialize :oembed, JSON
 
   belongs_to :domain, counter_cache: true
-  has_one  :readability_data, dependent: :destroy
+  has_one  :describe_data, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy
 
-  validates_presence_of :url, :domain
-  validates_associated :domain
+  # validates_presence_of :url, :domain
+  # validates_associated :domain
   validates_uniqueness_of :url
 
-  before_validation :populate_domain
-  before_create :populate_remote_page_data
-
-  # search
-  searchable do
-    text :title, :url
-    text :content do
-      if readability_data
-        Sanitize.clean readability_data.content rescue nil
-      end
-    end
-  end
-  handle_asynchronously :solr_index
+  # before_validation :populate_domain
+  # before_create :populate_remote_data
 
 private
 
@@ -68,12 +57,12 @@ public
 
   def self.find_by_url(url, return_new=false)
     url = self.cleanup_url url
-    if page = where(:url => url).limit(1).first
+    if page = where(url: url).limit(1).first
       page
     else
-      page = self.new :url => url
-      page.url = page.remote_normalized_url
-      found = where(:url => page.url).limit(1).first
+      page = self.new url: url
+      # page.url = page.remote_normalized_url
+      found = where(url: page.url).limit(1).first
       # if the page isn't found, we return a new instance so
       # we don't have to make another round trip for remote data
       # when we find_or_create
@@ -93,9 +82,7 @@ public
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
-    if !trans_tags("title").blank?
-      trans_tags("title")
-    elsif !title.blank?
+    if !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
       r_title
@@ -163,10 +150,10 @@ public
     canonical
   end
 
-  def populate_remote_meta_data
-    r = ReadabilityData.create :page => self
-    self.r_title = r.title
-    self.r_excerpt = r.excerpt
+  def populate_remote_data
+    dd = DescribeData.create :page => self
+    self.r_title = dd.title
+    self.r_excerpt = dd.excerpt
     self.save
   end
 

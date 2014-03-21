@@ -56,12 +56,17 @@ public
 
   def self.find_by_url(url, return_new=false)
     url = self.cleanup_url url
-    if page = where(url: url).limit(1).first
+    # look for a cleaned up url
+    if page = where(url: url).first
       page
     else
+      # If nothing was found, send the url to Describe
+      # where it will be cleaned up further
       page = self.new url: url
-      # page.url = page.remote_normalized_url
-      found = where(url: page.url).limit(1).first
+      page.describe_data = DescribeData.new page: page
+      page.describe_data.fetch
+      # Now search again
+      found = where(url: page.describe_data.response["url"]).first
       # if the page isn't found, we return a new instance so
       # we don't have to make another round trip for remote data
       # when we find_or_create
@@ -106,14 +111,18 @@ public
   end
 
   def populate_remote_data
-    dd = DescribeData.create page: self
-    self.url = dd.response["url"]
-    self.title = dd.response["title"]
-    self.medium = dd.response["medium"]
-    self.media_type = dd.response["media_type"]
-    self.description = dd.response["description"]
-    self.embed = dd.response["embed"]
-    self.save
+    # This will create our DD if we just assigned it or
+    # if it was assigned through find_or_create_by_url
+    self.describe_data = DescribeData.new(page: self) if describe_data.blank?
+    describe_data.save if describe_data.changed?
+    # fetch happens during save, after which we get access to these attributes
+    self.url = describe_data.response["url"]
+    self.title = describe_data.response["title"]
+    self.medium = describe_data.response["medium"]
+    self.media_type = describe_data.response["media_type"]
+    self.description = describe_data.response["description"]
+    self.embed = describe_data.response["embed"]
+    save
   end
 
   def channels

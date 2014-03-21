@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319234013) do
+ActiveRecord::Schema.define(version: 20140320163604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20140319234013) do
     t.text     "oembed"
     t.string   "medium"
     t.text     "headers"
+    t.string   "media_type"
   end
 
   add_index "pages", ["medium"], name: "index_pages_on_medium", using: :btree

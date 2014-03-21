@@ -4,9 +4,7 @@ class Domain < ActiveRecord::Base
   has_many :posts, through: :pages
   has_many :users, through: :pages
 
-  validates_presence_of :name
-  validates_format_of :name, /\w\.[a-z]/i
-  validates_uniqueness_of :name, case_sensitive: false
+  validates :name, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\w\.[a-z]/i }
 
   def to_param
     name

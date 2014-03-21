@@ -89,14 +89,15 @@ public
   end
 
   def verb
-    if medium == 'audio'
-      'listening to'
-    elsif medium == 'video'
-      'watching'
-    elsif medium == 'image' or ['profile'].include?(media_type)
-      'looking at'
+    case medium
+    when "audio"
+      "listening to"
+    when "video"
+      "watching"
+    when "image", "mutli"
+      "looking at"
     else
-      'reading'
+      "reading"
     end
   end
 

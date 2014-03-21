@@ -105,45 +105,6 @@ public
     verb.split(' ')[0][0..-4]
   end
 
-  def remote_canonical_url
-    parsed_url = Addressable::URI.parse(remote_resolved_url)
-    domain = parsed_url.host.split(".")
-    domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
-    protocol = "#{parsed_url.scheme}:"
-    host = parsed_url.host
-
-    # this has a JS companion in bookmarklet/real_init.coffee#get_url()
-    search = mech.search("link[rel=canonical][href!='']")
-    if search.length > 0
-      canonical = search.attr('href').to_s
-    else
-      search = mech.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
-      if search.length > 0
-        canonical = search.attr('value').to_s
-      else
-        canonical = false
-      end
-    end
-
-    # this has a JS companion in app/models/page.coffee#parse_canonical()
-    if canonical.blank?
-      canonical = false
-    # protocol relative url
-    elsif canonical[0..1] == "//"
-      canonical = "#{protocol}#{canonical}"
-    # relative url
-    elsif canonical[0] == "/"
-      canonical = "#{protocol}//#{host}#{canonical}"
-    # sniff test for mangled urls
-    elsif !canonical.include?("//") or
-    # sniff test for urls on a different root domain
-    !canonical.include?(domain)
-      canonical = false
-    end
-
-    canonical
-  end
-
   def populate_remote_data
     dd = DescribeData.create page: self
     self.url = dd.response["url"]

@@ -22,7 +22,6 @@ private
     a = Addressable::URI.parse(url)
     # make sure the domain at least includes a period
     # and that it uses a valid protocol
-    # TODO - move these checks into a validation
     if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
       self.domain = Domain.where(name: a.host).first_or_create
     end
@@ -82,13 +81,7 @@ public
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
-    if !title.blank?
-      title
-    elsif !r_title.blank? and r_title != "(no title provided)"
-      r_title
-    else
-      url
-    end
+    title.blank? ? url : title
   end
 
   def wrapped_url
@@ -152,10 +145,12 @@ public
 
   def populate_remote_data
     dd = DescribeData.create page: self
+    self.url = dd.response["url"]
     self.title = dd.response["title"]
     self.medium = dd.response["medium"]
     self.media_type = dd.response["media_type"]
-    self.r_excerpt = dd.response["description"]
+    self.description = dd.response["description"]
+    self.embed = dd.response["embed"]
     self.save
   end
 
@@ -171,10 +166,10 @@ public
       :id             => to_s ? id.to_s : id,
       :url            => url,
       :title          => display_title,
-      :embed          => oembed, # convert these stores to just embeds
+      :embed          => embed,
       :medium         => medium,
       :media_type     => media_type,
-      :description    => r_excerpt,
+      :description    => description,
       :posts_count    => posts_count,
       :comments_count => comments_count,
       :created_at     => created_at,
@@ -232,20 +227,28 @@ public
   end
 
   def embed_migration
-    if medium != 'text'
-      if !oembed.blank? && oembed['html']
-        oembed['html']
-      elsif trans_tags("player") || trans_tags("video")
-        param = trans_tags("player") ? "player" : "video"
-        "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-      elsif media_type == "photo" || mimetype.media_type == "image"
-        "<img src=\"#{image}\">"
-      else
-        nil
-      end
+    if !oembed.blank? && oembed['html']
+      oembed['html']
+    elsif trans_tags("player") || trans_tags("video")
+      param = trans_tags("player") ? "player" : "video"
+      "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags("#{param}:secure_url") || trans_tags(param)}\"></iframe>"
+    elsif !oembed.blank? && oembed['type'] == "photo"
+      "<img width=\"#{oembed['width']}\" height=\"#{oembed['height']}\" src=\"#{oembed['url']}\">"
+    elsif mimetype.media_type == "image"
+      "<img src=\"#{url}\">"
+    elsif meta_tags['twitter']['card'] == "photo"
+      "<img width=\"#{meta_tags['twitter']["image:width"]}\" height=\"#{meta_tags['twitter']['image:height']}\" src=\"#{meta_tags['twitter']['image']}\">"
+    # elsif meta_tags['twitter']['card'] == "gallery"
+    #   i = 0
+    #   imgs = []
+    #   while !meta_tags['twitter']["image#{i}"].blank?
+    #     imgs.push "<img src=\"#{meta_tags['twitter']["image#{i}"]}\">"
+    #     i += 1
+    #   end
+    #   imgs.join("\n")
+    else
+      nil
     end
-    # here's a sample :text embed should we decide to embed them
-    # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
   end
 
   def excerpt_migration
@@ -256,7 +259,7 @@ public
     if !trans_tags("description").blank?
       trans_tags("description")
     else
-      excerpt
+      r_excerpt
     end
   end
   

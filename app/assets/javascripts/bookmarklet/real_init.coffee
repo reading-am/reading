@@ -66,12 +66,10 @@ require [
 
       if url = Page::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
       else if url = Page::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
-      else
-        url = window.location.href
+      else url = window.location.href
 
     Page::parse_url(url)
 
-  # this has a Ruby companion in models/page.rb#display_title()
   get_title = ->
     # if there's a hashbang, don't use the title metagtags since
     # they're usually not updated as the hashbang is changed
@@ -81,10 +79,16 @@ require [
       if title = $("meta[property='og:title']").attr("content")
       else if title = $("meta[property='twitter:title']").attr("content")
       else if title = $("meta[name='title']").attr("content")
-      else
-        title = window.document.title
+      else title = window.document.title
 
     title
+
+  get_desc = ->
+    if desc = $("meta[property='og:description']").attr("content")
+    else if desc = $("meta[property='twitter:description']").attr("content")
+    else desc = $("meta[name='description']").attr("content")
+
+    desc
 
   #-----------------------------------------
   # Initialize!
@@ -107,10 +111,12 @@ require [
           title = null
       else
         title = get_title()
+        desc = get_desc()
 
       submit
         url: get_url()
         title: title
+        description: desc
         referrer_id: reading.referrer_id ? 0
 
 

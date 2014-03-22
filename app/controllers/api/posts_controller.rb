@@ -52,13 +52,14 @@ class Api::PostsController < Api::APIController
     # standard post
     else
       url   = params[:model][:url]
-      title = params[:model][:title] unless params[:model][:title] == 'null'
+      title = params[:model][:title] unless params[:model][:title].blank? || params[:model][:title] == 'null'
+      desc  = params[:model][:description] unless params[:model][:description].blank? || params[:model][:description] == 'null'
       user  = params[:token] ? User.find_by_token(params[:token]) : current_user
       ref   = Post.find_by_id(params[:model][:referrer_id]) unless params[:model][:referrer_id].blank?
       yn    = params[:model][:yn]
     end
 
-    page = Page.find_or_create_by_url(url: url, title: title)
+    page = Page.find_or_create_by_url(url: url, title: title, description: desc)
     # A post is a duplicate if it's the exact same page and within 1hr of the last post
     @post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
 

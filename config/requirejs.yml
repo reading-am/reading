@@ -44,6 +44,7 @@ modules:
       - libs/backbone
       - libs/mustache
       - libs/pusher/pusher
+      - libs/lz-string
 
   - name: libs/jquery
 
@@ -61,6 +62,8 @@ modules:
   - name: libs/mustache
 
   - name: libs/pusher/pusher
+
+  - name: libs/lz-string
 
   # NOTE - silliness
   - name: etc/clippy

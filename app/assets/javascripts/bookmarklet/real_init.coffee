@@ -86,10 +86,6 @@ require [
 
     title
 
-  # this has a Ruby companion in models/page.rb#remote_head_tags()
-  get_head_tags = ->
-    $("<div>").append($("title,meta,link:not([rel=stylesheet])").clone()).html()
-
   #-----------------------------------------
   # Initialize!
 
@@ -116,7 +112,6 @@ require [
         url: get_url()
         title: title
         referrer_id: reading.referrer_id ? 0
-        head_tags: get_head_tags()
 
 
   #-----------------------------------------

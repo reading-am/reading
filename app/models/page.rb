@@ -64,9 +64,9 @@ public
       # where it will be cleaned up further
       page = self.new url: url
       page.describe_data = DescribeData.new page: page
-      page.describe_data.fetch
+      resp = page.describe_data.fetch
       # Now search again
-      found = where(url: page.describe_data.response["url"]).first
+      found = where(url: resp["url"]).first unless resp.blank?
       # if the page isn't found, we return a new instance so
       # we don't have to make another round trip for remote data
       # when we find_or_create
@@ -78,7 +78,7 @@ public
     attributes[:url] = self.cleanup_url attributes[:url]
     page = self.find_by_url(attributes[:url], true)
     if page.new_record?
-      page.attributes = attributes.merge(page.attributes)
+      page.assign_attributes attributes
       page.save
     end
     page
@@ -115,14 +115,18 @@ public
     # if it was assigned through find_or_create_by_url
     self.describe_data = DescribeData.new(page: self) if describe_data.blank?
     describe_data.save if describe_data.changed?
+
     # fetch happens during save, after which we get access to these attributes
-    self.url = describe_data.response["url"]
-    self.title = describe_data.response["title"]
-    self.medium = describe_data.response["medium"]
-    self.media_type = describe_data.response["media_type"]
-    self.description = describe_data.response["description"]
-    self.embed = describe_data.response["embed"]
-    save
+    if !describe_data.response.blank?
+      self.url = describe_data.response["url"]
+      self.title = describe_data.response["title"]
+      self.medium = describe_data.response["medium"]
+      self.media_type = describe_data.response["media_type"]
+      self.description = describe_data.response["description"]
+      self.embed = describe_data.response["embed"]
+    end
+
+    self.save if self.changed?
   end
 
   def channels

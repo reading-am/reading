@@ -3,6 +3,7 @@
 require [
   "underscore"
   "jquery"
+  "libs/lz-string"
   "app/constants"
   "app/models/post"
   "app/models/user"
@@ -12,7 +13,7 @@ require [
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/init.css"
-], (_, $, Constants, Post, User, Page, BookmarkletAppView, Helpers, Pages, Providers, css) ->
+], (_, $, LZString, Constants, Post, User, Page, BookmarkletAppView, Helpers, Pages, Providers, css) ->
 
   $("<style>").html(css).appendTo("head")
 
@@ -53,7 +54,18 @@ require [
         # This is intentionally http rather than https for referrer purposes
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
-        model.keep_fresh()
+        # Describe couldn't get the page for some reason
+        page = model.get("page")
+        if page.get("medium")
+          $html = $("html").clone()
+          $html.find("script, style").remove()
+
+          page.save {raw: LZString.compress($html.html())},
+            patch: true # only send the changed attribute
+            data: new FormData()
+            cache: false
+            contentType: false
+            processData: false
 
   # this has a Ruby companion in models/page.rb#remote_canonical_url()
   get_url = ->

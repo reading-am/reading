@@ -13,6 +13,17 @@ define [
     delete: 'DELETE',
     read:   'GET'
 
+  add_data = (data, name, val) ->
+    if data instanceof FormData
+      if _.isObject name
+        add_data(data, k, v) for k, v of name
+      else if _.isObject val
+        data.append("#{name}[#{k}]", v) for k, v of val
+      else
+        data.append name, val
+    else
+      data[name] = val
+
   Backbone._sync = Backbone.sync
   Backbone.sync = (method, model, options) ->
     _.log method, model, options
@@ -34,13 +45,14 @@ define [
           alert Constants.errors.forbidden
 
     if reading?.token?
-      options.data.token = reading.token
+      add_data options.data, "token", reading.token
 
     if model
+      # in a collection, params contains limit, offset, etc
       if mp = _.result model, "params"
-        _.extend options.data, mp
-      if (method == 'create' || method == 'update')
-        options.data.model = model.toJSON()
+        add_data options.data, mp
+      if (method == "create" || method == "update" || method is "patch")
+        add_data options.data, "model", (options.attrs || model.toJSON())
 
     domain = /\/\/([A-Za-z0-9\-\.:]+)/.exec(options.url)[1]
     is_xdr = domain isnt window.location.host
@@ -51,7 +63,7 @@ define [
         options.xhrFields ?= withCredentials: true
       else
         options.dataType = "jsonp"
-        options.data._method = options.type
+        add_data options.data, "_method", options.type
 
         _success = options.success
         options.success = (data, textStatus, jqXHR) ->
@@ -63,7 +75,7 @@ define [
             jqXHR.responseText = data
             options.error jqXHR, textStatus, data.meta.msg
 
-    xhr = $.ajax options
+    xhr = Backbone.ajax options
     model.trigger 'request', model, xhr, options
     return xhr
 

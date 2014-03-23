@@ -12,16 +12,31 @@ class DescribeData < ActiveRecord::Base
   end
 
   def parse html
-    file = Curl::PostField.content('file', html)
-    file.remote_file = 'page.html'
-    file.content_type = 'application/octet-stream'
+    temp = Tempfile.new("page.html")
+    temp.write html
+    begin
+      resp = Typhoeus.post "http://#{ENV['DESCRIBE_HOST']}:#{ENV['DESCRIBE_PORT']}",
+                           body: { format: 'json', url: page.url, file: File.open(temp.path, 'r') }
+      obj = ActiveSupport::JSON.decode resp.body
+      self.response = obj["response"] unless obj.blank? or obj["error"]
+    rescue Exception => e
+      puts e
+      nil
+    ensure
+      temp.close!
+    end
 
-    c = Curl::Easy.http_post("http://#{ENV['DESCRIBE_HOST']}:#{ENV['DESCRIBE_PORT']}",
-                             Curl::PostField.content('format', 'json'),
-                             Curl::PostField.content('url', page.url),
-                             file)
-    c.multipart_form_post = true
-    perform c
+    ## This works for curb / curl but multipart_form_post = true
+    ## causes a segfault
+    # file = Curl::PostField.content('file', html)
+    # file.remote_file = 'page.html'
+    # file.content_type = 'application/octet-stream'
+    # c = Curl::Easy.new("http://#{ENV['DESCRIBE_HOST']}:#{ENV['DESCRIBE_PORT']}")
+    # c.multipart_form_post = true
+    # c.http_post(Curl::PostField.content('format', 'json'),
+    #             Curl::PostField.content('url', page.url),
+    #             file)
+    # perform c
   end
 
   private

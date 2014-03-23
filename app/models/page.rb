@@ -9,14 +9,30 @@ class Page < ActiveRecord::Base
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy
 
-  validates_presence_of :url, :domain
+  validates_presence_of :url, :domain, :medium
   validates_associated :domain
   validates_uniqueness_of :url
 
-  before_validation :populate_domain
+  before_validation :populate_domain, :populate_medium
   after_create :populate_remote_data
 
 private
+
+  # This is a fallback to make sure every Page has a medium,
+  # even if Describe fails
+  def populate_medium
+    if medium.blank?
+      type = MIME::Types.type_for(url).first.media_type
+      case type
+      when 'audio', 'video', 'image', 'text'
+        type
+      when 'model', 'multipart'
+        'multi'
+      else
+        'text'
+      end
+    end
+  end
 
   def populate_domain
     a = Addressable::URI.parse(url)

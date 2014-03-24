@@ -64,6 +64,9 @@ public
     # Get rid of trailing hash
     parsed_url.fragment = nil if parsed_url.fragment.blank?
 
+    # Root paths should have a trailing /
+    parsed_url.path = "/" if parsed_url.path === ""
+
     # Consider removing trailing slashes
     # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
     # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201

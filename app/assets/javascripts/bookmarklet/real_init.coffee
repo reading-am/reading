@@ -57,7 +57,6 @@ require [
         # Describe couldn't get the page for some reason
         page = model.get("page")
         if !page.get("has_describe_data")
-          console.log "HEY GET THAT DATA"
           $html = $("html").clone()
           $html.find("script, style").remove()
           page.save {html: $html.html()}, patch: true

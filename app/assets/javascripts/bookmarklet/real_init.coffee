@@ -3,7 +3,6 @@
 require [
   "underscore"
   "jquery"
-  "libs/lz-string"
   "app/constants"
   "app/models/post"
   "app/models/user"
@@ -13,7 +12,7 @@ require [
   "app/collections/pages" # needs to be preloaded
   "app/collections/providers" # needs to be preloaded
   "text!bookmarklet/init.css"
-], (_, $, LZString, Constants, Post, User, Page, BookmarkletAppView, Helpers, Pages, Providers, css) ->
+], (_, $, Constants, Post, User, Page, BookmarkletAppView, Helpers, Pages, Providers, css) ->
 
   $("<style>").html(css).appendTo("head")
 
@@ -55,12 +54,12 @@ require [
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
         # Describe couldn't get the page for some reason
+        # so send a snapshot of the HTML for processing
         page = model.get("page")
         if !page.get("has_describe_data")
           $html = $("html").clone()
           $html.find("script, style").remove()
           page.save {html: $html.html()}, patch: true
-          # page.save {html: LZString.compressToBase64($html.html())}, patch: true
 
   # this has a Ruby companion in models/page.rb#remote_canonical_url()
   get_url = ->

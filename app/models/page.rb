@@ -14,7 +14,7 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation :populate_domain, :populate_medium
-  before_create :populate_remote_data
+  before_create :populate_describe_data
 
 private
 
@@ -130,11 +130,16 @@ public
     verb.split(' ')[0][0..-4]
   end
 
-  def populate_remote_data
+  def populate_describe_data html=nil
     # This will create our DD if we just assigned it or
     # if it was assigned through find_or_create_by_url
-    dd = describe_data.blank? ? DescribeData.new(page: self) : describe_data
-    dd.fetch if dd.response.blank?
+    dd = describe_data.blank? ? DescribeData.new : describe_data
+    dd.page = self
+
+    # If we haven't already queried for the data...
+    if dd.response.blank?
+      html.blank? ? dd.fetch : dd.parse(html)
+    end
 
     if !dd.response.blank?
       self.url = dd.response["url"]
@@ -157,8 +162,6 @@ public
           self.describe_data = dd
         end
       end
-
-      # The Page save will take care of saving the DD
     end
   end
 
@@ -180,6 +183,7 @@ public
       :description    => description,
       :posts_count    => posts_count,
       :comments_count => comments_count,
+      :has_describe_data => has_describe_data,
       :created_at     => created_at,
       :updated_at     => updated_at
     }

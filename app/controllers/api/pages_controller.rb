@@ -36,11 +36,8 @@ class Api::PagesController < Api::APIController
       if !@user
         response = :forbidden
       elsif page_params[:html]
-        # if you don't specifcy the page here, DescribeData
-        # parse will only have the id instead of the full model and will query
-        @page.build_describe_data page: @page if @page.describe_data.blank?
-        @page.describe_data.parse page_params[:html]
-        @page.populate_remote_data
+        @page.populate_describe_data page_params[:html]
+        @page.save
         response = @page.simple_obj
       elsif @page.update_attributes(page_params)
         response = :ok

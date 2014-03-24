@@ -56,16 +56,12 @@ require [
       else
         # Describe couldn't get the page for some reason
         page = model.get("page")
-        if page.get("medium")
+        if !page.get("has_describe_data")
+          console.log "HEY GET THAT DATA"
           $html = $("html").clone()
           $html.find("script, style").remove()
-
-          page.save {raw: LZString.compress($html.html())},
-            patch: true # only send the changed attribute
-            data: new FormData()
-            cache: false
-            contentType: false
-            processData: false
+          page.save {html: $html.html()}, patch: true
+          # page.save {html: LZString.compressToBase64($html.html())}, patch: true
 
   # this has a Ruby companion in models/page.rb#remote_canonical_url()
   get_url = ->

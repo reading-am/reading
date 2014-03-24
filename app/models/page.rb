@@ -22,14 +22,15 @@ private
   # even if Describe fails
   def populate_medium
     if medium.blank?
-      type = MIME::Types.type_for(url).first.media_type
+      type = MIME::Types.type_for(url).first
+      type = type.blank? ? 'text' : type.media_type
       case type
       when 'audio', 'video', 'image', 'text'
-        type
+        self.medium = type
       when 'model', 'multipart'
-        'multi'
+        self.medium = 'multi'
       else
-        'text'
+        self.medium = 'text'
       end
     end
   end

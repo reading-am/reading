@@ -144,12 +144,18 @@ public
       self.description = dd.response["description"]
       self.embed = dd.response["embed"]
 
-      # - Make sure the DD is valid, otherwise leave it off
+      # Make sure the DD is valid, otherwise leave it off
       # so that the Page will still save if DD is down.
-      # - If you try to reassign DD at this point, even if it's the same one,
-      # rails will throw a frozen hash error.
-      if dd.valid? && self.describe_data.blank?
-        self.describe_data = dd
+      if dd.valid?
+        # This increments on its own with a counter cache,
+        # but the model in memory won't reflect it yet
+        self.has_describe_data = 1
+
+        # If you try to reassign DD at this point, even if it's the same one,
+        # rails will throw a frozen hash error.
+        if self.describe_data.blank?
+          self.describe_data = dd
+        end
       end
 
       # The Page save will take care of saving the DD

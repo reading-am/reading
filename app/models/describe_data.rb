@@ -1,6 +1,6 @@
 class DescribeData < ActiveRecord::Base
   serialize :response, JSON
-  belongs_to :page
+  belongs_to :page, counter_cache: :has_describe_data
 
   validates_presence_of :page, :response
   before_validation { fetch if new_record? and response.blank? }

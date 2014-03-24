@@ -14,7 +14,7 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation :populate_domain, :populate_medium
-#  after_create :populate_remote_data
+  before_create :populate_remote_data
 
 private
 
@@ -80,10 +80,13 @@ public
       # If nothing was found, send the url to Describe
       # where it will be cleaned up further
       page = self.new url: url
-      page.describe_data = DescribeData.new page: page
-      resp = page.describe_data.fetch
+      dd = DescribeData.new page: page
+      dd.fetch
       # Now search again
-      found = where(url: resp["url"]).first unless resp.blank?
+      if !dd.response.blank? and dd.valid?
+        page.describe_data = dd
+        found = where(url: dd.response["url"]).first
+      end
       # if the page isn't found, we return a new instance so
       # we don't have to make another round trip for remote data
       # when we find_or_create
@@ -130,20 +133,27 @@ public
   def populate_remote_data
     # This will create our DD if we just assigned it or
     # if it was assigned through find_or_create_by_url
-    self.describe_data = DescribeData.new(page: self) if describe_data.blank?
-    describe_data.save if describe_data.changed?
+    dd = describe_data.blank? ? DescribeData.new(page: self) : describe_data
+    dd.fetch if dd.response.blank?
 
-    # fetch happens during save, after which we get access to these attributes
-    if !describe_data.response.blank?
-      self.url = describe_data.response["url"]
-      self.title = describe_data.response["title"]
-      self.medium = describe_data.response["medium"]
-      self.media_type = describe_data.response["media_type"]
-      self.description = describe_data.response["description"]
-      self.embed = describe_data.response["embed"]
+    if !dd.response.blank?
+      self.url = dd.response["url"]
+      self.title = dd.response["title"]
+      self.medium = dd.response["medium"]
+      self.media_type = dd.response["media_type"]
+      self.description = dd.response["description"]
+      self.embed = dd.response["embed"]
+
+      # - Make sure the DD is valid, otherwise leave it off
+      # so that the Page will still save if DD is down.
+      # - If you try to reassign DD at this point, even if it's the same one,
+      # rails will throw a frozen hash error.
+      if dd.valid? && self.describe_data.blank?
+        self.describe_data = dd
+      end
+
+      # The Page save will take care of saving the DD
     end
-
-    self.save if self.changed?
   end
 
   def channels

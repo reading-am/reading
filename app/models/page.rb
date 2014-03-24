@@ -14,7 +14,7 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :url
 
   before_validation :populate_domain, :populate_medium
-  after_create :populate_remote_data
+#  after_create :populate_remote_data
 
 private
 
@@ -22,7 +22,7 @@ private
   # even if Describe fails
   def populate_medium
     if medium.blank?
-      type = MIME::Types.type_for(url).first
+      type = MIME::Types.type_for(Addressable::URI.parse(url).path).first
       type = type.blank? ? 'text' : type.media_type
       case type
       when 'audio', 'video', 'image', 'text'

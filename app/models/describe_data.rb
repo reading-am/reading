@@ -5,7 +5,7 @@ class DescribeData < ActiveRecord::Base
   validates_presence_of :page, :response
   before_validation { fetch if new_record? and response.blank? }
 
-  ENDPOINT = "http://#{ENV['DESCRIBE_HOST']}:#{ENV['DESCRIBE_PORT']}"
+  ENDPOINT = "http://#{ENV['DESCRIBE_HOST']}" + (ENV['DESCRIBE_PORT'].blank? ? "" : ":#{ENV['DESCRIBE_PORT']}")
 
   def fetch
     request = Typhoeus::Request.new(ENDPOINT, params: {

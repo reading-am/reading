@@ -79,10 +79,11 @@ namespace :migrate do
   end
 
   desc "Migrate all attributes for Describe integration"
-  task :describe_full => :environment do
+  task :describe_full, [:start_id] => [:environment] do |t, args|
+    args.with_defaults start_id: 1
     ActiveRecord::Base.observers.disable :all
 
-    pages = Page.all
+    pages = Page.where("id >= ?", args.start_id)
     total = pages.count
     progress = 0
 

@@ -4,56 +4,47 @@ class Page < ActiveRecord::Base
   serialize :oembed, JSON
 
   belongs_to :domain, counter_cache: true
-  has_one  :readability_data, dependent: :destroy
+  has_one  :describe_data, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy
 
-  validates_presence_of :url, :domain
+  validates_presence_of :url, :domain, :medium
   validates_associated :domain
   validates_uniqueness_of :url
 
-  cattr_accessor :crawl_timeout
+  before_validation :populate_domain, :populate_medium
+  before_create :populate_describe_data
 
-  before_validation :populate_domain
-  before_save :populate_medium, unless: :new_record?
-  before_create :populate_remote_page_data
-  after_create :populate_remote_meta_data
+private
 
-  # search
-  searchable do
-    text :title, :url
-    text :content do
-      if readability_data
-        Sanitize.clean readability_data.content rescue nil
+  # This is a fallback to make sure every Page has a medium,
+  # even if Describe fails
+  def populate_medium
+    if medium.blank?
+      type = MIME::Types.type_for(Addressable::URI.parse(url).path).first
+      type = type.blank? ? 'text' : type.media_type
+      case type
+      when 'audio', 'video', 'image', 'text'
+        self.medium = type
+      when 'model', 'multipart'
+        self.medium = 'multi'
+      else
+        self.medium = 'text'
       end
     end
   end
-  handle_asynchronously :solr_index
-
-  META_TAG_NAMESPACES = ['og','twitter']
-
-  # NOTE - properties prefixed with r_ (r_title, r_excerpt)
-  # are from readability_data
-
-private
 
   def populate_domain
     a = Addressable::URI.parse(url)
     # make sure the domain at least includes a period
     # and that it uses a valid protocol
-    # TODO - move these checks into a validation
     if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
       self.domain = Domain.where(name: a.host).first_or_create
     end
   end
 
 public
-
-  # initialize the parsed tag cache
-  after_initialize do |page|
-    page.head_tags = page.head_tags
-  end
 
   def self.cleanup_url(url)
     # the protocol will be missing its second slash if it's been pulled from the middle of a url
@@ -73,6 +64,9 @@ public
     # Get rid of trailing hash
     parsed_url.fragment = nil if parsed_url.fragment.blank?
 
+    # Root paths should have a trailing /
+    parsed_url.path = "/" if parsed_url.path === ""
+
     # Consider removing trailing slashes
     # http://googlewebmastercentral.blogspot.com/2010/04/to-slash-or-not-to-slash.html
     # http://stackoverflow.com/questions/5948659/trailing-slash-in-urls-which-style-is-preferred/5949201
@@ -82,12 +76,20 @@ public
 
   def self.find_by_url(url, return_new=false)
     url = self.cleanup_url url
-    if page = where(:url => url).limit(1).first
+    # look for a cleaned up url
+    if page = where(url: url).first
       page
     else
-      page = self.new :url => url
-      page.url = page.remote_normalized_url
-      found = where(:url => page.url).limit(1).first
+      # If nothing was found, send the url to Describe
+      # where it will be cleaned up further
+      page = self.new url: url
+      dd = DescribeData.new page: page
+      dd.fetch
+      # Now search again
+      if !dd.response.blank? and dd.valid?
+        page.describe_data = dd
+        found = where(url: dd.response["url"]).first
+      end
       # if the page isn't found, we return a new instance so
       # we don't have to make another round trip for remote data
       # when we find_or_create
@@ -99,10 +101,107 @@ public
     attributes[:url] = self.cleanup_url attributes[:url]
     page = self.find_by_url(attributes[:url], true)
     if page.new_record?
-      page.attributes = attributes.merge(page.attributes)
+      page.assign_attributes attributes
       page.save
     end
     page
+  end
+
+  # this has a JS companion in bookmarklet/real_init.rb#get_title()
+  def display_title
+    title.blank? ? url : title
+  end
+
+  def wrapped_url
+    "#{ROOT_URL}/#{self.url}"
+  end
+
+  def verb
+    case medium
+    when "audio"
+      "listening to"
+    when "video"
+      "watching"
+    when "image", "mutli"
+      "looking at"
+    else
+      "reading"
+    end
+  end
+
+  def imperative
+    verb.split(' ')[0][0..-4]
+  end
+
+  def populate_describe_data html=nil
+    # This will create our DD if we just assigned it or
+    # if it was assigned through find_or_create_by_url
+    dd = describe_data.blank? ? DescribeData.new : describe_data
+    dd.page = self
+
+    # If we haven't already queried for the data...
+    if dd.response.blank?
+      html.blank? ? dd.fetch : dd.parse(html)
+    end
+
+    if !dd.response.blank?
+      self.url = dd.response["url"]
+      self.title = dd.response["title"]
+      self.medium = dd.response["medium"]
+      self.media_type = dd.response["media_type"]
+      self.description = dd.response["description"]
+      self.embed = dd.response["embed"]
+
+      # Make sure the DD is valid, otherwise leave it off
+      # so that the Page will still save if DD is down.
+      if dd.valid?
+        # This increments on its own with a counter cache,
+        # but the model in memory won't reflect it yet
+        self.has_describe_data = 1
+
+        # If you try to reassign DD at this point, even if it's the same one,
+        # rails will throw a frozen hash error.
+        if self.describe_data.blank?
+          self.describe_data = dd
+        end
+      end
+    end
+  end
+
+  def channels
+    [
+      "pages"
+    ]
+  end
+
+  def simple_obj to_s=false
+    {
+      :type           => 'Page',
+      :id             => to_s ? id.to_s : id,
+      :url            => url,
+      :title          => display_title,
+      :embed          => embed,
+      :medium         => medium,
+      :media_type     => media_type,
+      :description    => description,
+      :posts_count    => posts_count,
+      :comments_count => comments_count,
+      :has_describe_data => has_describe_data,
+      :created_at     => created_at,
+      :updated_at     => updated_at
+    }
+  end
+
+  ##################
+  # REMOVE AFTER DDD
+  ##################
+  has_one :readability_data, dependent: :destroy
+
+  META_TAG_NAMESPACES = ['og','twitter']
+
+  # initialize the parsed tag cache
+  after_initialize do |page|
+    page.head_tags = page.head_tags
   end
 
   def mimetype
@@ -118,71 +217,68 @@ public
     mimetype.sub_type == "html"
   end
 
-  # this has a JS companion in bookmarklet/real_init.rb#get_title()
-  def display_title
+  def title_migration
     if !trans_tags("title").blank?
       trans_tags("title")
     elsif !title.blank?
       title
     elsif !r_title.blank? and r_title != "(no title provided)"
       r_title
-    else
-      url
     end
   end
 
-  def media_type
-    if !oembed.blank? && !oembed['type'].blank?
-      oembed['type']
-    elsif !meta_tags['og']['type'].blank?
-      # http://ogp.me/#types
-      # colon denotes a namespace, period a sub property
-      meta_tags['og']['type'].split(':').last.split('.').first
-    elsif !meta_tags['medium'].blank? # flickr uses this
-      meta_tags['medium'].blank?
+  def media_type_migration
+    if !meta_tags['og']['type'].blank?
+      meta_tags['og']['type']
+    elsif ['app','product'].include? meta_tags['twitter']['card']
+      meta_tags['twitter']['card']
     else
-      mimetype.media_type
+      nil
     end
   end
 
-  def image
+  def image_migration
     mimetype.media_type == "image" ? url : trans_tags("image")
   end
 
-  def embed
-    if medium != 'text'
-      if !oembed.blank? && oembed['html']
-        oembed['html']
-      elsif trans_tags("player") || trans_tags("video")
-        param = trans_tags("player") ? "player" : "video"
-        "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags(param)}\"></iframe>"
-      elsif media_type == "photo" || mimetype.media_type == "image"
-        "<img src=\"#{image}\">"
-      else
-        nil
-      end
+  def embed_migration
+    if !oembed.blank? && oembed['html']
+      oembed['html']
+    elsif trans_tags("player") || trans_tags("video")
+      param = trans_tags("player") ? "player" : "video"
+      "<iframe width=\"#{trans_tags("#{param}:width")}\" height=\"#{trans_tags("#{param}:height")}\" src=\"#{trans_tags("#{param}:secure_url") || trans_tags(param)}\"></iframe>"
+    elsif !oembed.blank? && oembed['type'] == "photo"
+      "<img width=\"#{oembed['width']}\" height=\"#{oembed['height']}\" src=\"#{oembed['url']}\">"
+    elsif mimetype.media_type == "image"
+      "<img src=\"#{url}\">"
+    elsif meta_tags['twitter']['card'] == "photo"
+      "<img width=\"#{meta_tags['twitter']["image:width"]}\" height=\"#{meta_tags['twitter']['image:height']}\" src=\"#{meta_tags['twitter']['image']}\">"
+    # elsif meta_tags['twitter']['card'] == "gallery"
+    #   i = 0
+    #   imgs = []
+    #   while !meta_tags['twitter']["image#{i}"].blank?
+    #     imgs.push "<img src=\"#{meta_tags['twitter']["image#{i}"]}\">"
+    #     i += 1
+    #   end
+    #   imgs.join("\n")
+    else
+      nil
     end
-    # here's a sample :text embed should we decide to embed them
-    # http://hapgood.us/2013/05/21/reply-to-cole-pushing-back-vs-pushing-forward/
   end
 
-  def excerpt
+  def excerpt_migration
     r_excerpt.gsub(/(&nbsp;|\s|&#13;|\r|\n)+/, " ") unless r_excerpt.blank?
   end
 
-  def description
+  def description_migration
     if !trans_tags("description").blank?
       trans_tags("description")
     else
-      excerpt
+      r_excerpt
     end
   end
-
-  def wrapped_url
-    "#{ROOT_URL}/#{self.url}"
-  end
-
-  def keywords
+  
+  def keywords_migration
     if !meta_tags['keywords'].blank?
       delimiter = meta_tags['keywords'].include?(',') ? ',' : ' '
       k = meta_tags['keywords'].split(delimiter)
@@ -206,22 +302,6 @@ public
             (meta_tags['og']['type'] and v.include?(meta_tags['og']['type'].split(':').last))
     end
     m
-  end
-
-  def verb
-    if medium == 'audio'
-      'listening to'
-    elsif medium == 'video'
-      'watching'
-    elsif medium == 'image' or ['profile'].include?(media_type)
-      'looking at'
-    else
-      'reading'
-    end
-  end
-
-  def imperative
-    verb.split(' ')[0][0..-4]
   end
 
   def head_tags=(str_or_nodes)
@@ -302,176 +382,5 @@ public
     end
     @tag_cache[:oembed_tags]
   end
-
-  def crawl_url
-    a = Addressable::URI.parse(url)
-    # check for a hashbang: https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
-    if !a.fragment.blank? && a.fragment[0] == '!'
-      qv = a.query_values || {}
-      qv['_escaped_fragment_'] = a.fragment[1..-1]
-      a.query_values = qv
-      a.fragment = nil
-    end
-    a.to_s
-  end
-
-  def mech=(obj)
-    # this setter is used during testing
-    @mech = obj
-  end
-
-  def mech
-    if @mech.blank?
-      agent = Mechanize.new
-      agent.user_agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
-      agent.follow_meta_refresh = true
-      
-      # https://github.com/sparklemotion/mechanize/pull/125
-      # trouble page: http://www.operationwardiary.org/
-      agent.content_encoding_hooks << lambda{|httpagent, uri, response, body_io|
-        ce = response['content-encoding']
-        response['content-encoding'] = '' if ce.respond_to?(:downcase) && ce.downcase == 'utf-8'
-      }
-      
-      if !crawl_timeout.blank?
-        agent.open_timeout = agent.read_timeout = crawl_timeout
-      end
-
-      if html?
-        treat_as_html = true
-      else
-        @mech = agent.head crawl_url
-        m = Mime::Type.lookup @mech.header['content-type'].split(';')[0]
-        treat_as_html = m.html?
-      end
-
-      if treat_as_html
-        @mech = agent.get crawl_url
-      end
-    end
-    @mech
-  end
-
-  def remote_headers
-    mech.header
-  end
-
-  def remote_resolved_url
-    mech.uri.to_s
-  end
-
-  def remote_normalized_url
-    html? && remote_canonical_url ?
-      remote_canonical_url :
-      self.class.cleanup_url(remote_resolved_url)
-  end
-
-  # this has a JS companion in bookmarklet/real_init.coffee#get_head_tags()
-  def remote_head_tags
-    mech.search('title,meta,link:not([rel=stylesheet])')
-  end
-
-  def remote_canonical_url
-    parsed_url = Addressable::URI.parse(remote_resolved_url)
-    domain = parsed_url.host.split(".")
-    domain = "#{domain[domain.length-2]}.#{domain[domain.length-1]}"
-    protocol = "#{parsed_url.scheme}:"
-    host = parsed_url.host
-
-    # this has a JS companion in bookmarklet/real_init.coffee#get_url()
-    search = mech.search("link[rel=canonical][href!='']")
-    if search.length > 0
-      canonical = search.attr('href').to_s
-    else
-      search = mech.search("meta[property='og:url'][value!=''],meta[property='twitter:url'][value!='']")
-      if search.length > 0
-        canonical = search.attr('value').to_s
-      else
-        canonical = false
-      end
-    end
-
-    # this has a JS companion in app/models/page.coffee#parse_canonical()
-    if canonical.blank?
-      canonical = false
-    # protocol relative url
-    elsif canonical[0..1] == "//"
-      canonical = "#{protocol}#{canonical}"
-    # relative url
-    elsif canonical[0] == "/"
-      canonical = "#{protocol}//#{host}#{canonical}"
-    # sniff test for mangled urls
-    elsif !canonical.include?("//") or
-    # sniff test for urls on a different root domain
-    !canonical.include?(domain)
-      canonical = false
-    end
-
-    canonical
-  end
-
-  def remote_oembed
-    begin
-      curl = Curl::Easy.new oembed_tags['json'] || oembed_tags['xml']
-      curl.follow_location = true
-      curl.useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" # via: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=1061943
-      curl.perform
-      oembed_tags['json'] ? ActiveSupport::JSON.decode(curl.body_str) : Hash.from_xml(curl.body_str)['oembed']
-    rescue
-      begin
-        OEmbed::Providers.register_all
-        OEmbed::Providers.get(url).fields
-      rescue
-        nil
-      end
-    end
-  end
-
-  def populate_medium
-    self.medium = parse_medium
-  end
-
-  def populate_remote_page_data
-    # populate headers first, it's used by the others
-    self.headers = remote_headers
-    self.head_tags = remote_head_tags if html?
-
-    self.url = remote_normalized_url
-    self.title = title_tag
-    self.medium = parse_medium
-
-    return self
-  end
-
-  def populate_remote_meta_data
-    self.oembed = remote_oembed
-
-    r = ReadabilityData.create :page => self
-    self.r_title = r.title
-    self.r_excerpt = r.excerpt
-    self.save
-  end
-
-  def channels
-    [
-      "pages"
-    ]
-  end
-
-  def simple_obj to_s=false
-    {
-      :type           => 'Page',
-      :id             => to_s ? id.to_s : id,
-      :url            => url,
-      :title          => display_title,
-      :embed          => embed,
-      :medium         => medium,
-      :media_type     => media_type,
-      :description    => description,
-      :posts_count    => posts_count,
-      :comments_count => comments_count,
-      :created_at     => created_at,
-      :updated_at     => updated_at
-    }
-  end
+  
 end

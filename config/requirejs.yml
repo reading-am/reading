@@ -12,6 +12,7 @@ preserveLicenseComments: false
 paths:
   requireLib: require
   extend:     libs/extend
+  text:       libs/extend/require/text
   jquery:     libs/jquery_extended
   jquery_ui:  libs/jquery_ui
   underscore: libs/lodash_extended

@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130721195953) do
+ActiveRecord::Schema.define(version: 20140324030020) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "authorizations", force: true do |t|
     t.string   "provider"
@@ -69,6 +72,15 @@ ActiveRecord::Schema.define(version: 20130721195953) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "describe_data", force: true do |t|
+    t.text     "response"
+    t.integer  "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "describe_data", ["page_id"], name: "index_describe_data_on_page_id", using: :btree
+
   create_table "domains", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -99,12 +111,16 @@ ActiveRecord::Schema.define(version: 20130721195953) do
     t.datetime "updated_at"
     t.text     "r_title"
     t.string   "r_excerpt"
-    t.integer  "posts_count",    default: 0
-    t.integer  "comments_count", default: 0
+    t.integer  "posts_count",       default: 0
+    t.integer  "comments_count",    default: 0
     t.text     "head_tags"
     t.text     "oembed"
     t.string   "medium"
     t.text     "headers"
+    t.string   "media_type"
+    t.text     "description"
+    t.text     "embed"
+    t.integer  "has_describe_data", default: 0, null: false
   end
 
   add_index "pages", ["medium"], name: "index_pages_on_medium", using: :btree

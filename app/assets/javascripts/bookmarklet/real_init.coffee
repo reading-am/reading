@@ -53,7 +53,13 @@ require [
         # This is intentionally http rather than https for referrer purposes
         window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
       else
-        model.keep_fresh()
+        # Describe couldn't get the page for some reason
+        # so send a snapshot of the HTML for processing
+        page = model.get("page")
+        if !page.get("has_describe_data")
+          $html = $("html").clone()
+          $html.find("script, style").remove()
+          page.save {html: $html.html()}, patch: true
 
   # this has a Ruby companion in models/page.rb#remote_canonical_url()
   get_url = ->
@@ -66,12 +72,10 @@ require [
 
       if url = Page::parse_canonical $("link[rel=canonical]").attr("href"), window.location.host, window.location.protocol
       else if url = Page::parse_canonical $(selector).attr("content"), window.location.host, window.location.protocol
-      else
-        url = window.location.href
+      else url = window.location.href
 
     Page::parse_url(url)
 
-  # this has a Ruby companion in models/page.rb#display_title()
   get_title = ->
     # if there's a hashbang, don't use the title metagtags since
     # they're usually not updated as the hashbang is changed
@@ -81,14 +85,16 @@ require [
       if title = $("meta[property='og:title']").attr("content")
       else if title = $("meta[property='twitter:title']").attr("content")
       else if title = $("meta[name='title']").attr("content")
-      else
-        title = window.document.title
+      else title = window.document.title
 
     title
 
-  # this has a Ruby companion in models/page.rb#remote_head_tags()
-  get_head_tags = ->
-    $("<div>").append($("title,meta,link:not([rel=stylesheet])").clone()).html()
+  get_desc = ->
+    if desc = $("meta[property='og:description']").attr("content")
+    else if desc = $("meta[property='twitter:description']").attr("content")
+    else desc = $("meta[name='description']").attr("content")
+
+    desc
 
   #-----------------------------------------
   # Initialize!
@@ -111,12 +117,13 @@ require [
           title = null
       else
         title = get_title()
+        desc = get_desc()
 
       submit
         url: get_url()
         title: title
+        description: desc
         referrer_id: reading.referrer_id ? 0
-        head_tags: get_head_tags()
 
 
   #-----------------------------------------

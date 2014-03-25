@@ -78,6 +78,28 @@ namespace :migrate do
     end
   end
 
+  desc "Migrate all attributes for Describe integration"
+  task :describe_full => :environment do
+    ActiveRecord::Base.observers.disable :all
+
+    pages = Page.all
+    total = pages.count
+    progress = 0
+
+    pages.find_each do |page|
+      progress += 1
+      page.media_type = page.media_type_migration
+      page.description = page.description_migration
+      page.embed = page.embed_migration
+      page.title = page.title_migration
+      if page.changed?
+        puts_header page, total, progress
+        puts page.url
+        page.save
+      end
+    end
+  end
+  
   def puts_header model, total, progress
       puts "\n------- #{model.class.name} #{model.id}: #{"%0#{total.to_s.length}d" % progress} of #{total} -------\n"
   end

@@ -4,11 +4,11 @@ class Page < ActiveRecord::Base
   serialize :oembed, JSON
 
   belongs_to :domain, counter_cache: true
-  has_one  :describe_data, dependent: :destroy
-  has_one  :readability_data, dependent: :destroy
-  has_many :posts, dependent: :destroy
+  has_one  :describe_data #, dependent: :destroy # handled by foreign key
+  has_many :posts #, dependent: :destroy # handled by foreign key
+  has_one  :readability_data #, dependent: :destroy # handled by foreign key
   has_many :users, through: :posts
-  has_many :comments, dependent: :destroy
+  has_many :comments #, dependent: :destroy # handled by foreign key
 
   validates_presence_of :url, :domain, :medium
   validates_associated :domain

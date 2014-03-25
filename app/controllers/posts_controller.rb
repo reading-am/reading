@@ -38,7 +38,7 @@ class PostsController < ApplicationController
         @og_props = {
           :type => @ref.page.media_type,
           :title => @page_title,
-          :image => @ref.page.image,
+          # :image => @ref.page.image,
           :description => @ref.page.description
         }
       end

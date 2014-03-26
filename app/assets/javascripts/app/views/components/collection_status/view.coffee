@@ -45,7 +45,8 @@ define [
     loading: (col_or_model=@collection) ->
       # this method receives events for both the collection
       # and its containing models
-      if col_or_model is @collection and @collection.length is 0
+      if col_or_model is @collection and (@collection.length is 0 or
+      @collection.length < @collection.params.limit + @collection.params.offset)
         @$(".r_empty").hide()
         @$(".r_loading").show()
 

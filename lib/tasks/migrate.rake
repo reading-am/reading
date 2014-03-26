@@ -100,7 +100,21 @@ namespace :migrate do
       end
     end
   end
-  
+
+  desc "Delete associations with foreign keys that point to deleted records"
+  task :keys_missing_recs => :environment do
+    ActiveRecord::Base.observers.disable :all
+
+    c = Comment.includes(:post).where("comments.post_id IS NOT NULL AND posts.id IS NULL")
+    c.each {|comment| comment.update_attribute :post_id, nil}
+
+    p = Post.joins("LEFT JOIN posts AS refposts ON refposts.id = posts.referrer_post_id").where("posts.referrer_post_id IS NOT NULL AND refposts.id IS NULL").readonly(false)
+    p.each {|post| post.update_attribute :referrer_post_id, nil}
+
+    r = ReadabilityData.includes(:page).where("readability_data.page_id IS NOT NULL AND pages.id IS NULL")
+    r.each {|rd| rd.destroy}
+  end
+
   def puts_header model, total, progress
       puts "\n------- #{model.class.name} #{model.id}: #{"%0#{total.to_s.length}d" % progress} of #{total} -------\n"
   end

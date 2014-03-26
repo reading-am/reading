@@ -13,8 +13,11 @@ class Page < ActiveRecord::Base
   validates_associated :domain
   validates_uniqueness_of :url
 
-  before_validation :populate_domain, :populate_medium
-  before_create :populate_describe_data
+  # Don't use before_create here because we want populate_domain
+  # to fire after the url might have changed but before validation
+  before_validation :populate_describe_data, if: :new_record?
+  before_validation :populate_domain, if: :url_changed?
+  before_validation :populate_medium
 
 private
 

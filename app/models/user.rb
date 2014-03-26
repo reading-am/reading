@@ -26,16 +26,18 @@ class User < ActiveRecord::Base
   has_many :authorizations, -> { includes [:user] }, dependent: :destroy # also handled by foreign key
   has_many :posts, -> { includes [:user, :page, :domain, {:referrer_post => :user}] }, dependent: :destroy # also handled by foreign key
   has_many :domains, through: :posts
-  has_many :hooks, -> { includes [:user, :authorization] } #, dependent: :destroy # handled by foreign key
+  has_many :hooks, -> { includes [:user, :authorization] }, dependent: :destroy # handled by foreign key
   has_many :pages, through: :posts
   has_many :comments, dependent: :destroy # also handled by foreign key
 
   # from: http://ruby.railstutorial.org/chapters/following-users
-  has_many :relationships, foreign_key: "follower_id", dependent: :destroy # also handled by foreign key
+  has_many :relationships, foreign_key: "follower_id",
+                           dependent: :destroy # also handled by foreign key
   has_many :following, through: :relationships, source: :followed
 
   has_many :reverse_relationships, foreign_key: "followed_id",
-                                   class_name: "Relationship", dependent: :destroy # also handled by foreign key
+                                   class_name: "Relationship",
+                                   dependent: :destroy # also handled by foreign key
   has_many :followers, through: :reverse_relationships, source: :follower
 
   has_many :blogs, dependent: :destroy # also handled by foreign key

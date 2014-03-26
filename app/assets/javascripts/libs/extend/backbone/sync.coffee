@@ -14,10 +14,10 @@ define [
     read:   'GET'
 
   add_data = (data, name, val) ->
-    if data instanceof FormData
-      if _.isObject name
-        add_data(data, k, v) for k, v of name
-      else if _.isObject val
+    if _.isObject name
+      add_data(data, k, v) for k, v of name
+    else if data instanceof FormData
+      if _.isObject val
         data.append("#{name}[#{k}]", v) for k, v of val
       else
         data.append name, val
@@ -30,19 +30,19 @@ define [
 
     # if you don't clone the options, they'll be modified and used by
     # BB to instantiate the objects and the url prop will be overwritten
-    options         = if options then _.clone(options) else {}
-
-    options.type    ?= methodMap[method]
-    options.url     ?= _.result(model, 'url') || throw new Error 'A "url" property or function must be specified'
-    options.data    ?= {}
-    options.success ?= _.log
-    options.error   ?= (jqXHR, textStatus, errorThrown) ->
-      _.log jqXHR, textStatus, errorThrown
-      switch errorThrown
-        when "Bad Request"
-          alert Constants.errors.general
-        when "Forbidden"
-          alert Constants.errors.forbidden
+    options = if options then _.clone(options) else {}
+    _.defaults options,
+      type: methodMap[method]
+      url: _.result(model, 'url') || throw new Error 'A "url" property or function must be specified'
+      data: {}
+      success: _.log
+      error: (jqXHR, textStatus, errorThrown) ->
+        _.log jqXHR, textStatus, errorThrown
+        switch errorThrown
+          when "Bad Request"
+            alert Constants.errors.general
+          when "Forbidden"
+            alert Constants.errors.forbidden
 
     if reading?.token?
       add_data options.data, "token", reading.token

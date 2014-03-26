@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
 
   belongs_to :domain, counter_cache: true
   has_one  :describe_data, dependent: :destroy
+  has_one  :readability_data, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy

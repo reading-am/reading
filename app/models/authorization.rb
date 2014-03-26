@@ -5,7 +5,7 @@ class Authorization < ActiveRecord::Base
   serialize :permissions, JSON
 
   belongs_to :user
-  has_many :hooks, dependent: :destroy
+  has_many :hooks, dependent: :destroy # also handled by foreign key
 
   validates :provider, :uid, presence: true
   before_create :set_initial_perms

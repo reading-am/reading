@@ -64,7 +64,7 @@ class Api::PostsController < Api::APIController
     @post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
 
     respond_to do |format|
-      if (@post.new_record? and @post.save) or @post.touch
+      if (@post.new_record? and @post.save) or (!@post.new_record? and @post.touch)
         format.html { redirect_to(@post, notice: 'Post was successfully created.') }
         format.xml  { render xml: @post, status: :created, location: @post }
         format.json { render_json post: @post.simple_obj }
@@ -88,7 +88,7 @@ class Api::PostsController < Api::APIController
     end
 
     respond_to do |format|
-      if allowed and ((@post.changed? and @post.save) or @post.touch)
+      if allowed and ((@post.changed? and @post.save) or (!@post.changed? and @post.touch))
         status = :ok
       else
         status = allowed ? :bad_request : :forbidden

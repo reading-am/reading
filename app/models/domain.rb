@@ -1,6 +1,6 @@
 class Domain < ActiveRecord::Base
 
-  has_many :pages # ,dependent: :destroy # handled by foreign key
+  has_many :pages, dependent: :destroy # also handled by foreign key
   has_many :posts, through: :pages
   has_many :users, through: :pages
 

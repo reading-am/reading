@@ -142,7 +142,7 @@ public
     # updated in the model in memory so use loaded as a sign
     (
      association(:describe_data).loaded? and
-     !describe_data.blank? and # it can be loaded and nil
+     !describe_data.blank? and # it can be loaded but nil
      !describe_data.new_record? and
      !describe_data.destroyed?
     ) or

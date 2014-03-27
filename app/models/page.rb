@@ -137,10 +137,20 @@ public
     verb.split(' ')[0][0..-4]
   end
 
+  def has_describe_data
+    # When DD is first saved, the counter cache won't have been
+    # updated in the model in memory so use loaded as a sign
+    (association(:describe_data).loaded? and !describe_data.new_record? and !describe_data.destroyed?) or
+    read_attribute(:has_describe_data) > 0
+  end
+
   def populate_describe_data html=nil
+    # incurs a db query so cache result
+    was_blank = describe_data.blank? || describe_data.destroyed?
+
     # This will create our DD if we just assigned it or
     # if it was assigned through find_or_create_by_url
-    dd = describe_data.blank? ? DescribeData.new : describe_data
+    dd = was_blank ? DescribeData.new : describe_data
     dd.page = self
 
     # If we haven't already queried for the data...
@@ -157,18 +167,12 @@ public
       self.embed = dd.response["embed"]
 
       # Make sure the DD is valid, otherwise leave it off
-      # so that the Page will still save if DD is down.
-      if dd.valid?
-        # This increments on its own with a counter cache,
-        # but the model in memory won't reflect it yet
-        self.has_describe_data = 1
-
-        # If you try to reassign DD at this point, even if it's the same one,
-        # rails will throw a frozen hash error.
-        if self.describe_data.blank?
-          self.describe_data = dd
-        end
-      end
+      # so that the Page will still save if Describe is down.
+      # If you try to reassign DD at this point, even if it's the same one,
+      # rails will throw a frozen hash error. If there wasn't a DD already
+      # and the Page isn't new_record? then ActiveRecord will auto save the
+      # DD to the page.
+      self.describe_data = dd if dd.valid? and was_blank
     end
   end
 

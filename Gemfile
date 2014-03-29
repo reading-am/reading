@@ -91,6 +91,7 @@ gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
 gem 'kippt', github: 'leppert/kippt'
 gem 'flattr', github: 'smgt/flattr'
+gem 'ruby-thumbor'
 
 #################
 # Frontend HTML #

@@ -1,8 +1,4 @@
 class Page < ActiveRecord::Base
-
-  serialize :headers, JSON
-  serialize :oembed, JSON
-
   belongs_to :domain, counter_cache: true
   has_one  :describe_data, dependent: :destroy # also handled by foreign key
   has_many :posts, dependent: :destroy # also handled by foreign key
@@ -116,6 +112,18 @@ public
     title.blank? ? url : title
   end
 
+  def proxy_embed
+    if embed.blank?
+      embed
+    else
+      embed.gsub(/(<img [^>]*src=["'])(.+?)(["'])/i) do
+        Regexp.last_match[1] +
+        "https://#{ENV['READING_IMG_SERVER']}#{Thumbor::Cascade.new(Regexp.last_match[2]).generate}" +
+        Regexp.last_match[3]
+      end
+    end
+  end
+
   def wrapped_url
     "#{ROOT_URL}/#{self.url}"
   end
@@ -193,7 +201,7 @@ public
       :id             => to_s ? id.to_s : id,
       :url            => url,
       :title          => display_title,
-      :embed          => embed,
+      :embed          => proxy_embed,
       :medium         => medium,
       :media_type     => media_type,
       :description    => description,

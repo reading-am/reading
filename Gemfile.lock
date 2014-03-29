@@ -550,6 +550,7 @@ GEM
       uuid (~> 2.3, >= 2.3.5)
     ruby-hmac (0.4.0)
     ruby-oembed (0.8.8)
+    ruby-thumbor (1.2.1)
     safe_yaml (0.9.4)
     sanitize (2.0.6)
       nokogiri (>= 1.4.4)
@@ -707,6 +708,7 @@ DEPENDENCIES
   rspec-rails
   ruby-growl
   ruby-oembed
+  ruby-thumbor
   sanitize
   sitemap_generator
   spork-rails!

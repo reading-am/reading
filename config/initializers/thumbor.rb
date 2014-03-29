@@ -1,0 +1,1 @@
+Thumbor.key = ENV['THUMBOR_SECURITY_KEY']

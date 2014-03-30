@@ -162,8 +162,8 @@ namespace :cleanup do
   end
 
   desc "Populate DescribeData for pages missing it"
-  task :populate_describe_data, [:hours, :modify] => [:environment] do |t, args|
-    args.with_defaults hours: 48, modiy: false
+  task :populate_describe_data, [:modify, :hours] => [:environment] do |t, args|
+    args.with_defaults modiy: false, hours: 48
     args.modify = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.modify)
     ActiveRecord::Base.observers.disable :all
 

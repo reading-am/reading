@@ -163,26 +163,29 @@ namespace :cleanup do
 
   desc "Populate DescribeData for pages missing it"
   task :populate_describe_data, [:modify, :hours] => [:environment] do |t, args|
-    args.with_defaults modiy: false, hours: 48
-    args.modify = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.modify)
+    args.with_defaults modify: false, hours: 48
     ActiveRecord::Base.observers.disable :all
+    
+    modify = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.modify)
+    hours = args.hours.to_i
 
     pages = Page.where(has_describe_data: 0)
-    pages = pages.where("created_at >= ?", args.hours.to_i.hours.ago)
+    pages = pages.where("created_at >= ?", hours.hours.ago)
     total = pages.count
     progress = 0
+    populated = 0
 
     if total == 0
       puts "None found. Describe must be working swimmingly."
-    elsif !args.modify
-      puts "Preview Only\n------------\n\n"
+    elsif !modify
+      puts "*** Preview Only ***"
     end
 
     pages.find_each do |page|
       progress += 1
       puts_header page, total, progress
       puts "#{page.url}\n"
-      if args.modify
+      if modify
         page.populate_describe_data
         if page.describe_data.blank?
           puts "× There was an error.\n"
@@ -190,9 +193,12 @@ namespace :cleanup do
           page.save if page.changed?
           page.describe_data.save if page.describe_data.changed?
           puts "✔ Successfully populated.\n"
+          populated += 1
         end
       end
     end
+
+    puts "\n↪ #{populated} of #{total} populated\n" if modify
   end
 
   def puts_header model, total, progress

@@ -184,10 +184,11 @@ namespace :cleanup do
       puts "#{page.url}\n"
       if args.modify
         page.populate_describe_data
-        page.save
         if page.describe_data.blank?
           puts "× There was an error.\n"
         else
+          page.save if page.changed?
+          page.describe_data.save if page.describe_data.changed?
           puts "✔ Successfully populated.\n"
         end
       end

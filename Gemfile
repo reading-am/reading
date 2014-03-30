@@ -12,7 +12,7 @@ gem 'puma' # server
 gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached
-gem 'sunspot_rails', github: 'leppert/sunspot', branch: '2.0.0-rails4'
+gem 'textacular' # pg search
 gem 'rails_12factor', group: :production # needed by Heroku
 
 #############

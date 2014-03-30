@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 namespace :cleanup do
 
   desc "Convert unserialized Ruby objects to JSON"
@@ -156,6 +157,39 @@ namespace :cleanup do
         puts "## #{page.id} populated and saved"
       else
         puts "## #{page.id} destroyed"
+      end
+    end
+  end
+
+  desc "Populate DescribeData for pages missing it"
+  task :populate_describe_data, [:hours, :modify] => [:environment] do |t, args|
+    args.with_defaults hours: 48, modiy: false
+    args.modify = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.modify)
+    ActiveRecord::Base.observers.disable :all
+
+    pages = Page.where(has_describe_data: 0)
+    pages = pages.where("created_at >= ?", args.hours.to_i.hours.ago)
+    total = pages.count
+    progress = 0
+
+    if total == 0
+      puts "None found. Describe must be working swimmingly."
+    elsif !args.modify
+      puts "Preview Only\n------------\n\n"
+    end
+
+    pages.find_each do |page|
+      progress += 1
+      puts_header page, total, progress
+      puts "#{page.url}\n"
+      if args.modify
+        page.populate_describe_data
+        page.save
+        if page.describe_data.blank?
+          puts "× There was an error.\n"
+        else
+          puts "✔ Successfully populated.\n"
+        end
       end
     end
   end

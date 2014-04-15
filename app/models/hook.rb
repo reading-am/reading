@@ -214,9 +214,11 @@ EOF
   end
 
   def url post, event_fired
+    amap = {'get' => :params, 'post' => :body}
+    method = params['method']
     url = self.params['address']
     url = "http://#{url}" if url[0, 4] != "http"
-    Typhoeus::Request.send params['method'], url, :params => {:post => post.simple_obj(true)}
+    Typhoeus.send method, url, amap[method] => {:post => post.simple_obj(true)}
   end
 
 end

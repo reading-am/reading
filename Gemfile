@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.0'
 
 #################
 # Core Services #
 #################
 gem 'dotenv-rails', :groups => [:development, :test]
-gem 'rails', '4.0.3'
+gem 'rails', '4.1.1'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server

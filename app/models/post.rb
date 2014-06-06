@@ -23,7 +23,7 @@ class Post < ActiveRecord::Base
   # for will_paginate
   self.per_page = 100
 
-  searchable do
+  searchable auto_remove: false do
     boolean :yn
     integer :user_id
     text :page_title do
@@ -39,6 +39,8 @@ class Post < ActiveRecord::Base
     end
   end
   handle_asynchronously :solr_index
+  handle_asynchronously :solr_remove_from_index # for destroy
+  after_destroy :solr_remove_from_index # this is so deletes won't fail if there's a problem with solr
 
   private
 

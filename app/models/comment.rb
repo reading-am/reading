@@ -104,7 +104,7 @@ class Comment < ActiveRecord::Base
       :type   => "Comment",
       :id     => to_s ? id.to_s : id,
       :body   => body,
-      :url    => "#{ROOT_URL}/#{user.username}/comments/#{id}",
+      :url    => "http://#{DOMAIN}/#{user.username}/comments/#{id}", # needs to be http for the iframe
       :created_at => created_at,
       :updated_at => updated_at,
       :user   => user.simple_obj,

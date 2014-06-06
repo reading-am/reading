@@ -5,7 +5,6 @@ define [
   "app/constants"
   "libs/base58"
   "libs/twitter-text"
-  "app/models/page" # needed to make sure page loads before comment for factory
 ], ($, Backbone, App, Constants, Base58, TwitterText) ->
 
   class Comment extends Backbone.Model

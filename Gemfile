@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.0'
 
 #################
 # Core Services #
 #################
 gem 'dotenv-rails', :groups => [:development, :test]
-gem 'rails', '4.0.3'
+gem 'rails', '4.0.5'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server
@@ -130,7 +130,7 @@ gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configur
 group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
-  gem 'debugger'
+  # gem 'debugger'
   gem 'sunspot_solr', github: 'leppert/sunspot', branch: '2.0.0-rails4'
   gem 'progress_bar'
   gem 'better_errors'

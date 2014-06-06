@@ -10,8 +10,8 @@ class CommentsController < ApplicationController
       redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
     else
       respond_to do |format|
-        format.html { render :layout => 'backbone' }
-        format.xml  { render :xml => @comment }
+        format.html { render layout: 'backbone' }
+        format.xml  { render xml:    @comment }
       end
     end
   end

@@ -130,7 +130,7 @@ gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configur
 group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
-  # gem 'debugger'
+  # gem 'debugger' # throws segfault with ruby 2.1.0 at the moment
   gem 'sunspot_solr', github: 'leppert/sunspot', branch: '2.0.0-rails4'
   gem 'progress_bar'
   gem 'better_errors'

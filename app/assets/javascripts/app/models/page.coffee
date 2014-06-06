@@ -24,7 +24,7 @@ define [
       else
         'reading'
 
-  Page::meta_tag_namespaces = <%= Page::META_TAG_NAMESPACES.to_json %>
+  Page::meta_tag_namespaces = ['og','twitter']
 
   Page::parse_canonical = (canonical, host, protocol) ->
     domain = host.split(".")

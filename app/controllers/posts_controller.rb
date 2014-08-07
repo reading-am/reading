@@ -1,5 +1,6 @@
 # encoding: utf-8
 class PostsController < ApplicationController
+  force_ssl except: :visit
   before_filter :authenticate_user!, :except => [:visit]
 
   # A note about schema

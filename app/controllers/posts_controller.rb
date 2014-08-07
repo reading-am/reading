@@ -1,7 +1,11 @@
 # encoding: utf-8
 class PostsController < ApplicationController
-  force_ssl except: :visit
   before_filter :authenticate_user!, :except => [:visit]
+
+
+  # override force_ssl
+  def force_ssl_redirect(host_or_options = nil)
+  end
 
   # A note about schema
   # The original idea was that the referrer_id didn't

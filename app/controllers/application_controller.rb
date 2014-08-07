@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  force_ssl
+  force_ssl if: :ssl_configured?
 
   before_filter :protect_staging, :check_domain, :set_user_device,
                 :set_headers, :migrate_auth_token, :migrate_to_www,
@@ -16,6 +16,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
 
   private
+
+  def ssl_configured?
+    !Rails.env.development?
+  end
 
   def profiler
     Rack::MiniProfiler.authorize_request if defined?(Rack::MiniProfiler) && signed_in? && current_user.roles?(:admin)

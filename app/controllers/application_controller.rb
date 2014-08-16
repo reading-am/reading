@@ -69,7 +69,9 @@ class ApplicationController < ActionController::Base
 
   def check_signed_in
     if signed_in?
-      if (controller_path == 'users' or (controller_path == 'registrations' and action_name == 'edit') or (controller_path == 'posts' and action_name == 'index')) and (current_user.username.blank? or current_user.email.blank? or !current_user.has_pass?)
+      if current_user.suspended? and !(controller_path == 'users' and action_name == 'suspended')
+        redirect_to '/support/suspended'
+      elsif (controller_path == 'users' or (controller_path == 'registrations' and action_name == 'edit') or (controller_path == 'posts' and action_name == 'index')) and (current_user.username.blank? or current_user.email.blank? or !current_user.has_pass?)
         redirect_to '/almost_ready'
       elsif request.path_info == '/'
         redirect_to "/#{current_user.username}/list"

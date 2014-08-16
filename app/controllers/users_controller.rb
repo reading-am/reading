@@ -1,7 +1,7 @@
 # encoding: utf-8
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people]
+  before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
   before_filter :set_default_params
 
   def set_default_params
@@ -18,6 +18,7 @@ class UsersController < ApplicationController
                 User.find(params[:id])
 
       if !@user then not_found end
+      if @user.suspended? then return redirect_to '/support/suspended' end
       params[:user_id] = @user.id
 
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
@@ -121,7 +122,6 @@ class UsersController < ApplicationController
   end
 
   def suspended
-    render layout: "bare"
   end
 
 end

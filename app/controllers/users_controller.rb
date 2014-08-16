@@ -120,4 +120,8 @@ class UsersController < ApplicationController
     end
   end
 
+  def suspended
+    render layout: "bare"
+  end
+
 end

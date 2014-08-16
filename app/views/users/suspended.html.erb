@@ -1,11 +1,12 @@
-<div class="container">
-  <div class="row">
-    <div class="span8" style="margin-top:30px;">
-      Oh no! Your account has been suspended for one reason or another.
-      Fear not, getting unsuspended is probably pretty easy, just
-      <strong><%= mail_to "help@#{ROOT_DOMAIN}", 'click here', :subject => "Help! I've been suspended!", :body => "My account is #{ROOT_URL}/#{current_user.username} and I love using Reading for:", :encode => 'javascript', :class => 'email' %></strong>
-      to shoot us an email and we'll get you fixed right up. Make sure to
-      include a little bit about yourself so we know you're human.
-    </div>
-  </div>
+<div id="suspended" class="span8">
+  <p>
+    Awwww man, this account has been suspended for some reason or another.
+    Why not try visiting the <a href="/everybody">homepage</a> instead?
+  </p>
+  <p>
+  If this is your account, fear not—getting unsuspended is probably pretty easy, just
+  <%= mail_to "help@#{ROOT_DOMAIN}", 'click here', :subject => "Help! I've been suspended!", :body => "My account is #{ROOT_URL}/#{current_user.username rescue nil} and I love using Reading for:", :encode => 'javascript', :class => 'email' %>
+  to shoot us an email and we'll get you fixed right up. Make sure to
+  include a little bit about yourself so we know you're human with a healthy love of reading.
+  </p>
 </div>

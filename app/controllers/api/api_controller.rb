@@ -20,7 +20,7 @@ class Api::APIController < ActionController::Metal
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
   wrap_parameters format: [:json]
-  before_filter :map_method, :set_defaults
+  before_filter :map_method, :set_defaults, :check_signed_in
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
   rescue_from ActionController::ParameterMissing, :with => :show_400
 
@@ -86,6 +86,17 @@ class Api::APIController < ActionController::Metal
     end
 
     render :json => json, :callback => callback, :status => status
+  end
+
+  def check_signed_in
+    if signed_in?
+      if current_user.suspended?
+        respond_to do |format|
+          format.json { render_json 403 }
+          format.any { head :forbidden }
+        end
+      end
+    end
   end
 
 end

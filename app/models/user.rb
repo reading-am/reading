@@ -204,6 +204,10 @@ class User < ActiveRecord::Base
     username.blank?
   end
 
+  def suspended?
+    status == 1
+  end
+
   def channels
     [
       "users"

@@ -68,6 +68,7 @@ Reading::Application.routes.draw do
   post "/pusher/auth"            => "pusher#auth"
   post "/pusher/existence"       => "pusher#existence" # webhook
   get  "/support/delete_cookies" => "users#delete_cookies"
+  get  "/support/suspended"      => "users#suspended"
 
   resources :posts
   resources :blogs

@@ -92,6 +92,7 @@ gem 'evernote-thrift'
 gem 'kippt', github: 'leppert/kippt'
 gem 'flattr', github: 'smgt/flattr'
 gem 'ruby-thumbor'
+gem 'stripe'
 
 #################
 # Frontend HTML #

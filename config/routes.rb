@@ -114,6 +114,8 @@ Reading::Application.routes.draw do
   resources :hooks
   resources :footnotes
 
+  resources :charges
+
   # Settings
   get '/settings' => 'users#settings'
   get '/settings/hooks'  => 'users#hooks'

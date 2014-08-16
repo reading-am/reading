@@ -402,6 +402,7 @@ GEM
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.6.8)
+    netrc (0.7.7)
     newrelic_rpm (3.7.3.204)
     nilify_blanks (1.0.1)
       activerecord (>= 3.0.0)
@@ -524,6 +525,9 @@ GEM
     rdoc (4.0.1)
       json (~> 1.4)
     ref (1.0.5)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     roauth (0.0.8)
     rsolr (1.0.9)
       builder (>= 2.1.2)
@@ -566,6 +570,10 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    stripe (1.10.0)
+      mime-types (~> 1.25)
+      multi_json (>= 1.0.4, < 2)
+      rest-client (~> 1.4)
     sucker_punch (1.0.2)
       celluloid (~> 0.15.1)
     systemu (2.5.2)
@@ -702,6 +710,7 @@ DEPENDENCIES
   sanitize
   sitemap_generator
   spork-rails!
+  stripe
   sucker_punch
   sunspot_rails!
   sunspot_solr!

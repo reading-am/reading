@@ -2,6 +2,7 @@
 
 <%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
 
+<%= render 'charges/form' %>
 <%= render 'users/form' %>
 
 <%= render :partial => 'backbone/router', :locals => {:model => resource} %>

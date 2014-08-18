@@ -59,6 +59,10 @@ define [
       @subview.infinite_scroll collection
       return this
 
+    progressive_render: ->
+      @subview.progressive_render()
+      return this
+
     render: ->
       @subview.render()
       return this

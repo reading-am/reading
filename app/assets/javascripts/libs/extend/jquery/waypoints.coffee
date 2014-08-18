@@ -1,7 +1,7 @@
-###
-jQuery Waypoints - v2.0.2
-Copyright (c) 2011-2013 Caleb Troughton
-Dual licensed under the MIT license and GPL license.
+###!
+jQuery Waypoints - v2.0.5
+Copyright (c) 2011-2014 Caleb Troughton
+Licensed under the MIT license.
 https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
 ###
 ((root, factory) ->
@@ -103,7 +103,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
       
       # We need to keep a reference to this Context instance on the DOM node
       # so we can look it up later based on the node.
-      $element.data contextKey, @id
+      @element[contextKey] = @id
 
       # To do that look up, we need to have this instance in the global hash.
       contexts[@id] = this
@@ -317,7 +317,6 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
   #   See $.fn.waypoint.defaults for more information on those options.
   class Waypoint
     constructor: ($element, context, options) ->
-      options = $.extend {}, $.fn[wp].defaults, options
       if options.offset is 'bottom-in-view'
         options.offset = ->
           contextHeight = $[wps] 'viewportHeight'
@@ -342,9 +341,9 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
       allWaypoints[@axis][@id] = this
 
       # Add the waypoint's id to the element's waypoint id list.
-      idList = $element.data(waypointKey) ? []
+      idList = @element[waypointKey] ? []
       idList.push @id
-      $element.data waypointKey, idList
+      @element[waypointKey] = idList
     
     # trigger(array)
 
@@ -383,7 +382,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
     # Returns an array of all Waypoint instances attached to the "element"
     # HTMLNode. Returns an empty array if there are no attached waypoints.
     @getWaypointsByElement: (element) ->
-      ids = $(element).data waypointKey
+      ids = element[waypointKey]
       return [] unless ids
       all = $.extend {}, allWaypoints.horizontal, allWaypoints.vertical
       $.map ids, (id) ->
@@ -413,7 +412,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
     #   // Do things
     # }, { offset: '100%' });
     init: (f, options) ->
-      options ?= {}
+      options = $.extend {}, $.fn[wp].defaults, options
       options.handler ?= f
 
       @each ->
@@ -422,7 +421,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
         unless $.isWindow contextElement
           contextElement = $this.closest contextElement
         contextElement = $ contextElement
-        context = contexts[contextElement.data contextKey]
+        context = contexts[contextElement[0][contextKey]]
         context = new Context contextElement unless context
         new Waypoint $this, context, options
       $[wps] 'refresh'
@@ -430,9 +429,9 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
 
     # Disable, enable, and destroy all just delegate to the instance methods
     # of the waypoints attached to the subject elements.
-    disable: -> methods._invoke this, 'disable'
-    enable: -> methods._invoke this, 'enable'
-    destroy: -> methods._invoke this, 'destroy'
+    disable: -> methods._invoke.call this, 'disable'
+    enable: -> methods._invoke.call this, 'enable'
+    destroy: -> methods._invoke.call this, 'destroy'
 
     # .waypoint('prev', string, string|HTMLNode|jQuery)
 
@@ -469,8 +468,8 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
 
     # Internal: Finds all waypoints on a given set of "$elements" and invokes
     # "method" on each instance.
-    _invoke: ($elements, method) ->
-      $elements.each ->
+    _invoke: (method) ->
+      this.each ->
         waypoints = Waypoint.getWaypointsByElement this
         $.each waypoints, (i, waypoint) ->
           waypoint[method]()
@@ -576,7 +575,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
     aggregate: (contextSelector) ->
       collection = allWaypoints
       if contextSelector
-        collection = contexts[$(contextSelector).data contextKey]?.waypoints
+        collection = contexts[$(contextSelector)[0][contextKey]]?.waypoints
       return [] unless collection
       waypoints =
         horizontal: []
@@ -652,7 +651,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
     # "axis" axis are tested. As with .aggregate, the array is sorted by
     # calculated offset (trigger order).
     _filter: (selector, axis, test) ->
-      context = contexts[$(selector).data contextKey]
+      context = contexts[$(selector)[0][contextKey]]
       return [] unless context
       waypoints = []
       $.each context.waypoints[axis], (i, waypoint) ->
@@ -686,4 +685,4 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
     scrollThrottle: 30
 
   # Ensure a refresh on page load. Newly loaded images often shift layout.
-  $w.load -> $[wps] 'refresh'
+  $w.on 'load.waypoints', -> $[wps] 'refresh'

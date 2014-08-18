@@ -97,7 +97,7 @@ define [
               n = @num_rendered()
               if n < collection.length and direction is "down"
                 @add collection.at(n)
-                setTimeout set_wp, 500
+                setTimeout set_wp, 100
             offset: ->
               vh = $.waypoints('viewportHeight')
               vh - $(this).outerHeight() + vh/2

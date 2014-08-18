@@ -44,8 +44,8 @@ define [
       view.render()
       view.$el.hide() unless !@animation || bulk
 
-      # add models in order if we're only adding one of them
-      if c_len is @collection.length-1 and i < c_len
+      # prepending somewhere in the stack
+      if i < c_len-1
         $el.children().eq(i).before(view.el)
       else if $el.find("> .r_status").length
         $el.find("> .r_status").before(view.el)
@@ -99,6 +99,11 @@ define [
           triggerOnce: true
 
       collection.off "add", @add
+      collection.on "add", (model, collection) =>
+        # If it is being added to the end, render it
+        if collection.indexOf(model) < @num_rendered()-1
+          @add model
+
       collection.off "reset", @reset
       collection.on "reset", =>
         @$el.html("")

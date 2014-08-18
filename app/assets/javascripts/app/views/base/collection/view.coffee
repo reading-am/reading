@@ -86,21 +86,22 @@ define [
       return this
 
     progressive_render: (collection=@collection) ->
-      collection.off "reset", @reset
-      collection.on "reset", (collection, options) =>
-        @$el.html("")
-        set_wp = =>
-          @$el.waypoint
-            handler: (direction) =>
-              n = @num_rendered()
-              if direction is "down" and n < collection.length
-                @add collection.at(n)
-                setTimeout set_wp, 100
-            offset: ->
-              vh = $.waypoints('viewportHeight')
-              vh - $(this).outerHeight() + vh/2
-            triggerOnce: true
+      set_wp = =>
+        @$el.waypoint
+          handler: (direction) =>
+            n = @num_rendered()
+            if direction is "down" and n < collection.length
+              @add collection.at(n)
+            setTimeout set_wp, 100
+          offset: ->
+            vh = $.waypoints('viewportHeight')
+            vh - $(this).outerHeight() + vh/2
+          triggerOnce: true
 
+      collection.off "add", @add
+      collection.off "reset", @reset
+      collection.on "reset", =>
+        @$el.html("")
         set_wp()
 
       return this

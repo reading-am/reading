@@ -11,7 +11,7 @@ define [
       styles: styles
 
     tagName: "ul"
-    animate: true
+    animation: (view) -> view.$el.slideDown()
 
     initialize: (options) ->
       @collection.on "sync",  @sync,  this
@@ -28,18 +28,21 @@ define [
       $tmp_el.append @status_view.el if @status_view
       @$el.html($tmp_el.contents())
 
+    num_rendered: ($el=@$el) ->
+      $el.children().not(".r_status").length
+
     add: (model, collection, options, $el=@$el) ->
       props = model: model
       tag = @tagName.toLowerCase()
       props.tagName = "li" if tag is "ul" or tag is "ol"
 
       i = @collection.indexOf(model)
-      c_len = $el.children().not(".r_status").length
+      c_len = @num_rendered($el)
       bulk = c_len < @collection.length-1
 
       view = new @modelView props
       view.render()
-      view.$el.hide() unless !@animate || bulk
+      view.$el.hide() unless !@animation || bulk
 
       # add models in order if we're only adding one of them
       if c_len is @collection.length-1 and i < c_len
@@ -49,7 +52,7 @@ define [
       else
         $el.append(view.el)
 
-      view.$el.slideDown() unless !@animate || bulk
+      @animation view unless !@animation || bulk
 
     attach_status: (collection=@collection) ->
       if @status_view then @status_view.remove()
@@ -80,6 +83,26 @@ define [
                 @$el.waypoint(if more then "enable" else "destroy")
               , 1500
         , {offset: "bottom-in-view"}
+
+      return this
+
+    progressive_render: (collection=@collection) ->
+      collection.off "reset", @reset
+      collection.on "reset", (collection, options) =>
+        @$el.html("")
+        set_wp = =>
+          @$el.waypoint "destroy" # reset any existing waypoint
+          @$el.waypoint
+            handler: (direction) =>
+              n = @num_rendered()
+              if n < collection.length and direction is "down"
+                @add collection.at(n)
+                setTimeout set_wp, 500
+            offset: ->
+              vh = $.waypoints('viewportHeight')
+              vh - $(this).outerHeight() + vh/2
+
+        set_wp()
 
       return this
 

@@ -94,10 +94,13 @@ UserEditView) ->
           success: => @pages_view.$(".r_pages").css opacity: 1
       else
         # Initial render with bootstrapped data
-        @pages_view.render() # render shell before data
+        # @pages_view.render() # render shell before data
+        # @collection.reset models # data renders the subviews
+        # @$yield.prepend @pages_view.el # only now prepend so rendering completed off DOM
+        # @pages_view.subview.infinite_scroll()
+        @$yield.prepend @pages_view.render().el
+        @pages_view.subview.progressive_render()
         @collection.reset models # data renders the subviews
-        @$yield.prepend @pages_view.el # only now prepend so rendering completed off DOM
-        @pages_view.subview.infinite_scroll()
         @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->

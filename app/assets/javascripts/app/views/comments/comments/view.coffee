@@ -11,5 +11,5 @@ define [
       template: template
 
     modelView: CommentView
-    animate: false
+    animation: false
     empty_msg: "You get to be the first commenter! FIRST!"

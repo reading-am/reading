@@ -97,6 +97,7 @@ UserEditView) ->
         @$yield.prepend @pages_view.render().el
         @pages_view.subview.progressive_render()
         @collection.reset models # data renders the subviews
+        @pages_view.subview.infinite_scroll()
         @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->

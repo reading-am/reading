@@ -69,20 +69,19 @@ define [
       return this
 
     infinite_scroll: (collection=@collection) ->
-      @$el.waypoint "destroy" # reset any existing waypoint
-
       if collection.length >= collection.params.limit
-        @$el.waypoint (direction) =>
-          if direction is "down"
-            @$el.waypoint "disable"
-            collection.fetchNextPage success: (collection, data) =>
-              # This is on a delay because the waypoints plugin will miscalculate
-              # the offset if rendering the new DOM elements hasn't finished
-              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-              setTimeout =>
-                @$el.waypoint(if more then "enable" else "destroy")
-              , 1500
-        , {offset: "bottom-in-view"}
+        @$el.waypoint
+          handler: (direction) =>
+            if direction is "down" and @num_rendered() >= @collection.length
+              @$el.waypoint "disable"
+              collection.fetchNextPage success: (collection, data) =>
+                # This is on a delay because the waypoints plugin will miscalculate
+                # the offset if rendering the new DOM elements hasn't finished
+                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+                setTimeout =>
+                  @$el.waypoint(if more then "enable" else "destroy")
+                , 1500
+          offset: "bottom-in-view"
 
       return this
 
@@ -91,16 +90,16 @@ define [
       collection.on "reset", (collection, options) =>
         @$el.html("")
         set_wp = =>
-          @$el.waypoint "destroy" # reset any existing waypoint
           @$el.waypoint
             handler: (direction) =>
               n = @num_rendered()
-              if n < collection.length and direction is "down"
+              if direction is "down" and n < collection.length
                 @add collection.at(n)
                 setTimeout set_wp, 100
             offset: ->
               vh = $.waypoints('viewportHeight')
               vh - $(this).outerHeight() + vh/2
+            triggerOnce: true
 
         set_wp()
 

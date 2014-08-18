@@ -25,6 +25,8 @@ define [
         @model.get("medium") in ["audio","video"]
       )
         json.embed = false
+      else if json.embed
+        json.embed.replace "http://", "https://"
 
       return json
 

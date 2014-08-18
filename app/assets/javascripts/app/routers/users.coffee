@@ -81,8 +81,10 @@ UserEditView) ->
 
       if username is User::current.get("username")
         @pages_view ?= new PagesWithInputView p_props
+        col_view = @pages_view.subview
       else
         @pages_view ?= new PostsGroupedByPageView p_props
+        col_view = @pages_view
 
       rendered = $.contains @$yield[0], @pages_view.el
 
@@ -93,11 +95,17 @@ UserEditView) ->
           reset: true
           success: => @pages_view.$(".r_pages").css opacity: 1
       else
-        # Initial render with bootstrapped data
-        @$yield.prepend @pages_view.render().el
-        @pages_view.subview.progressive_render()
-        @collection.reset models # data renders the subviews
-        @pages_view.subview.infinite_scroll()
+        if User::current.access("media_feed")
+          # Initial render with bootstrapped data
+          @$yield.prepend @pages_view.render().el
+          col_view.progressive_render()
+          @collection.reset models # data renders the subviews
+        else
+          @pages_view.render()
+          @collection.reset models
+          @$yield.prepend @pages_view.el
+
+        col_view.infinite_scroll()
         @pages_view.$(".r_pages").css opacity: 1
 
     edit: ->

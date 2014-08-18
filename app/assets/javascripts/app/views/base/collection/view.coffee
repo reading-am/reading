@@ -11,7 +11,7 @@ define [
       styles: styles
 
     tagName: "ul"
-    animate: true
+    animation: (view) -> view.$el.slideDown()
 
     initialize: (options) ->
       @collection.on "sync",  @sync,  this
@@ -28,28 +28,31 @@ define [
       $tmp_el.append @status_view.el if @status_view
       @$el.html($tmp_el.contents())
 
+    num_rendered: ($el=@$el) ->
+      $el.children().not(".r_status").length
+
     add: (model, collection, options, $el=@$el) ->
       props = model: model
       tag = @tagName.toLowerCase()
       props.tagName = "li" if tag is "ul" or tag is "ol"
 
       i = @collection.indexOf(model)
-      c_len = $el.children().not(".r_status").length
+      c_len = @num_rendered($el)
       bulk = c_len < @collection.length-1
 
       view = new @modelView props
       view.render()
-      view.$el.hide() unless !@animate || bulk
+      view.$el.hide() unless !@animation || bulk
 
-      # add models in order if we're only adding one of them
-      if c_len is @collection.length-1 and i < c_len
+      # prepending somewhere in the stack
+      if i < c_len-1
         $el.children().eq(i).before(view.el)
       else if $el.find("> .r_status").length
         $el.find("> .r_status").before(view.el)
       else
         $el.append(view.el)
 
-      view.$el.slideDown() unless !@animate || bulk
+      @animation view unless !@animation || bulk
 
     attach_status: (collection=@collection) ->
       if @status_view then @status_view.remove()
@@ -66,20 +69,45 @@ define [
       return this
 
     infinite_scroll: (collection=@collection) ->
-      @$el.waypoint "destroy" # reset any existing waypoint
-
       if collection.length >= collection.params.limit
-        @$el.waypoint (direction) =>
-          if direction is "down"
-            @$el.waypoint "disable"
-            collection.fetchNextPage success: (collection, data) =>
-              # This is on a delay because the waypoints plugin will miscalculate
-              # the offset if rendering the new DOM elements hasn't finished
-              more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
-              setTimeout =>
-                @$el.waypoint(if more then "enable" else "destroy")
-              , 1500
-        , {offset: "bottom-in-view"}
+        @$el.waypoint
+          handler: (direction) =>
+            if direction is "down" and @num_rendered() >= @collection.length
+              @$el.waypoint "disable"
+              collection.fetchNextPage success: (collection, data) =>
+                # This is on a delay because the waypoints plugin will miscalculate
+                # the offset if rendering the new DOM elements hasn't finished
+                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+                setTimeout =>
+                  @$el.waypoint(if more then "enable" else "destroy")
+                , 1500
+          offset: "bottom-in-view"
+
+      return this
+
+    progressive_render: (collection=@collection) ->
+      set_wp = =>
+        @$el.waypoint
+          handler: (direction) =>
+            n = @num_rendered()
+            if direction is "down" and n < collection.length
+              @add collection.at(n)
+            setTimeout set_wp, 100
+          offset: ->
+            vh = $.waypoints('viewportHeight')
+            vh - $(this).outerHeight() + vh/2
+          triggerOnce: true
+
+      collection.off "add", @add
+      collection.on "add", (model, collection) =>
+        # If it is being added to the end, render it
+        if collection.indexOf(model) < @num_rendered()-1
+          @add model
+
+      collection.off "reset", @reset
+      collection.on "reset", =>
+        @$el.html("")
+        set_wp()
 
       return this
 

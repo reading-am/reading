@@ -8,12 +8,14 @@ define [
   "app/collections/posts"
   "app/views/comments/comments_with_input/view"
   "text!app/views/pages/page_row/template.mustache"
+  "text!app/views/pages/page_row/styles.css"
   "app/models/page" # this needs preloading
-], (_, $, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
+], (_, $, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template, styles) ->
 
   class PageRowView extends ModelView
     @assets
       template: template
+      styles: styles
 
     events:
       "click .posts_icon": "show_posts"
@@ -81,6 +83,7 @@ define [
       @body = @$(".posts_group")
       @body
         .append(@page_view.render().el)
+        .append("<div class=\"page_row_actions\">Post | Yep | Nope</div>")
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
 

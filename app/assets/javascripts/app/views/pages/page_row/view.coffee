@@ -22,6 +22,7 @@ define [
       "click .comments_icon": "show_comments"
 
     initialize: ->
+      super
       @model.posts.on "remove", => @remove() if @model.posts.length is 0
 
       @page_view = new PageView model: @model
@@ -75,7 +76,7 @@ define [
         json.yn_class = "nope"
         json.nope = true
 
-      @$el.append(@template(json))
+      @$el.html(@template(json))
 
       @posts_icon = @$(".posts_icon")
       @comments_icon = @$(".comments_icon")
@@ -83,7 +84,7 @@ define [
       @body = @$(".posts_group")
       @body
         .append(@page_view.render().el)
-        .append("<div class=\"page_row_actions\">Post | Yep | Nope</div>")
+        .append("<div class=\"page_row_actions\">#{if @model.get("has_posted") then "Delete" else "Post"} | Yep | Nope</div>")
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
 

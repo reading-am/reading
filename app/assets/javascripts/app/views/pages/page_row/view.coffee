@@ -4,13 +4,14 @@ define [
   "app/models/user"
   "app/views/base/model"
   "app/views/pages/page/view"
+  "app/views/pages/page_row_actions/view"
   "app/views/posts/subposts/view"
   "app/collections/posts"
   "app/views/comments/comments_with_input/view"
   "text!app/views/pages/page_row/template.mustache"
   "text!app/views/pages/page_row/styles.css"
   "app/models/page" # this needs preloading
-], (_, $, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template, styles) ->
+], (_, $, User, ModelView, PageView, PageRowActions, SubPostsView, Posts, CommentsWithInputView, template, styles) ->
 
   class PageRowView extends ModelView
     @assets
@@ -81,10 +82,14 @@ define [
       @posts_icon = @$(".posts_icon")
       @comments_icon = @$(".comments_icon")
 
+      post_actions = new PageRowActions
+        model: @model.get("post")
+        page: @model
+
       @body = @$(".posts_group")
       @body
         .append(@page_view.render().el)
-        .append("<div class=\"page_row_actions\">#{if @model.get("post") then "Delete" else "Post"} | Yep | Nope</div>")
+        .append(post_actions.render().el)
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
 

@@ -59,7 +59,7 @@ class Api::PostsController < Api::APIController
       yn    = params[:model][:yn]
     end
 
-    page = Page.find_or_create_by_url(url: url, title: title, description: desc)
+    page = params[:model][:page_id] ? Page.find(params[:model][:page_id]) : Page.find_or_create_by_url(url: url, title: title, description: desc)
     # A post is a duplicate if it's the exact same page and within 1hr of the last post
     @post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
 

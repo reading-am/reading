@@ -84,7 +84,7 @@ define [
       @body = @$(".posts_group")
       @body
         .append(@page_view.render().el)
-        .append("<div class=\"page_row_actions\">#{if @model.get("has_posted") then "Delete" else "Post"} | Yep | Nope</div>")
+        .append("<div class=\"page_row_actions\">#{if @model.get("post") then "Delete" else "Post"} | Yep | Nope</div>")
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
 

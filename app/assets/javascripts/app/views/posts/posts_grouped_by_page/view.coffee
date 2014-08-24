@@ -15,7 +15,7 @@ define [
     initialize: (options) ->
       super
       @collection.on "sync", (col, resp)  =>
-        @populate_follow_state _.map(resp.posts, (post) -> post.get("page").id)
+        @populate_follow_state _.map(resp.posts, (post) -> post.page.id)
       @collection.on "reset", (col, opt)  =>
         @populate_follow_state col.map((post) -> post.get("page").id)
 

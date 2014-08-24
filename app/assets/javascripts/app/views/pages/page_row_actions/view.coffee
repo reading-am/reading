@@ -1,11 +1,10 @@
 define [
+  "backbone"
   "app/models/post"
-  "app/models/user_with_current"
-  "app/views/base/model"
   "text!app/views/pages/page_row_actions/template.mustache"
-], (Post, User, ModelView, template) ->
+], (Backbone, Post, template) ->
 
-  class PageRowActionsView extends ModelView
+  class PageRowActionsView extends Backbone.View
     @assets
       template: template
 
@@ -14,8 +13,13 @@ define [
       "click .pa_destroy": "destroy"
 
     initialize: (options) ->
-      @model ?= new Post user: User::current, page: options.page
+      @user = options.user
+      @page = options.page
+      @bind() if @model
+
+    bind: =>
       @model.on "change", @render, this
+      @model.on "destroy", @remove, this
       @model.on "remove", @remove, this
 
     remove: ->
@@ -23,10 +27,22 @@ define [
       @$(".pa_destroy").hide()
 
     create: ->
-      @model.save()
+      @model = new Post
+        user: @user
+        page: @page
+
+      if @model.isValid()
+        @collection.create @model
+        @bind()
+
+      false
 
     destroy: ->
       if confirm "Are you sure you want to delete this post?"
         @model.destroy()
 
       false
+
+    render: ->
+      @$el.html(@template(@model?.toJSON()))
+      return this

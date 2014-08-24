@@ -84,6 +84,8 @@ define [
 
       post_actions = new PageRowActions
         model: @model.get("post")
+        collection: @model.posts
+        user: User::current
         page: @model
 
       @body = @$(".posts_group")

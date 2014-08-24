@@ -1,9 +1,9 @@
-<ul class="page_row_actions">
+<ul class="r_post_actions">
   {{^id}}<li><a href="#" class="pa_create">Post</a></li>{{/id}}
   {{#id}}
     <li><a href="#" class="pa_destroy">Delete</a></li>
-    <li><a href="#" class="pa_yep">Yep</a></li>
-    <li><a href="#" class="pa_nope">Nope</a></li>
+    <li><a href="#" class="pa_yep {{#yep}}r_active{{/yep}}">Yep</a></li>
+    <li><a href="#" class="pa_nope {{#nope}}r_active{{/nope}}">Nope</a></li>
   {{/id}}
   <li><a href="#" class="pa_share">Share</a></li>
 </ul>

@@ -1,16 +1,23 @@
 define [
-  "backbone"
+  "jquery"
+  "app/views/base/model"
   "app/models/post"
-  "text!app/views/pages/page_row_actions/template.mustache"
-], (Backbone, Post, template) ->
+  "app/views/components/share_overlay/view"
+  "text!app/views/posts/post_actions/template.mustache"
+  "text!app/views/posts/post_actions/styles.css"
+], ($, ModelView, Post, ShareOverlay, template, styles) ->
 
-  class PageRowActionsView extends Backbone.View
+  class PostActionsView extends ModelView
     @assets
       template: template
+      styles: styles
 
     events:
       "click .pa_create": "create"
       "click .pa_destroy": "destroy"
+      "click .pa_yep" : "yep"
+      "click .pa_nope" : "nope"
+      "click .pa_share" : "share"
 
     initialize: (options) ->
       @user = options.user
@@ -40,15 +47,29 @@ define [
       if post.isValid()
         @collection.create post
         @set_model()
-
       false
 
     destroy: ->
       if confirm "Are you sure you want to delete this post?"
         @model.destroy()
-
       false
 
-    render: ->
-      @$el.html(@template(@model?.toJSON()))
-      return this
+    yep: ->
+      @model.save yn: (if @model.get("yn") is true then null else true)
+      false
+
+    nope: ->
+      @model.save yn: (if @model.get("yn") is false then null else false)
+      false
+
+    share: ->
+      @share_view = new ShareOverlay subject: @model || @collection.first()
+      @share_view.render()
+      false
+
+    json: ->
+      if @model
+        data = @model.toJSON()
+        data.yep = @model.get("yn") is true
+        data.nope = @model.get("yn") is false
+      data

@@ -15,25 +15,31 @@ define [
     initialize: (options) ->
       @user = options.user
       @page = options.page
-      @bind() if @model
 
-    bind: =>
-      @model.on "change", @render, this
-      @model.on "destroy", @remove, this
-      @model.on "remove", @remove, this
+      @collection.on "add", @set_model, this
+      @set_model()
+
+    set_model: ->
+      post = @collection.find((post) => post.get("user").id is @user.id)
+      if post && post isnt @model
+        @model = post
+        @model.on "change", @render, this
+        @model.on "destroy", @remove, this
+        @model.on "remove", @remove, this
+        @render()
 
     remove: ->
-      @$(".pa_create").show()
-      @$(".pa_destroy").hide()
+      delete @model
+      @render()
 
     create: ->
-      @model = new Post
+      post = new Post
         user: @user
         page: @page
 
-      if @model.isValid()
-        @collection.create @model
-        @bind()
+      if post.isValid()
+        @collection.create post
+        @set_model()
 
       false
 

@@ -11,7 +11,7 @@ define [
   "text!app/views/pages/page_row/template.mustache"
   "text!app/views/pages/page_row/styles.css"
   "app/models/page" # this needs preloading
-], (_, $, User, ModelView, PageView, PageRowActions, SubPostsView, Posts, CommentsWithInputView, template, styles) ->
+], (_, $, User, ModelView, PageView, PageRowActionsView, SubPostsView, Posts, CommentsWithInputView, template, styles) ->
 
   class PageRowView extends ModelView
     @assets
@@ -27,6 +27,10 @@ define [
       @model.posts.on "remove", => @remove() if @model.posts.length is 0
 
       @page_view = new PageView model: @model
+      @post_actions = new PageRowActionsView
+        collection: @model.posts
+        user: User::current
+        page: @model
       @posts_view = new SubPostsView collection: @model.posts
       @comments_view = new CommentsWithInputView
         collection: @model.comments
@@ -82,16 +86,10 @@ define [
       @posts_icon = @$(".posts_icon")
       @comments_icon = @$(".comments_icon")
 
-      post_actions = new PageRowActions
-        model: @model.get("post")
-        collection: @model.posts
-        user: User::current
-        page: @model
-
       @body = @$(".posts_group")
       @body
         .append(@page_view.render().el)
-        .append(post_actions.render().el)
+        .append(@post_actions.render().el)
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
 

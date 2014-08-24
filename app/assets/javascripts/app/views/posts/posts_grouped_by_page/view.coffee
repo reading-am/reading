@@ -21,15 +21,14 @@ define [
 
     populate_follow_state: (ids) ->
       if User::current.signed_in()
-        curr_posts = @collection.filter((post) -> post.get("user").id is User.prototype.current.id)
-        _.each curr_posts, (post) => @subview.collection.get(post.get("page")).set post: post
-        
-        known_ids = curr_posts.map (post) -> post.get("page").id
-        unknown_ids = _.filter ids, (id) -> known_ids.indexOf(id) is -1
+        known_ids = @collection.filter((post) ->
+          post.get("user").id is User::current.id
+        ).map (post) ->
+          post.get("page").id
+        unknown_ids = _.difference ids, known_ids
 
         if unknown_ids.length
           User::current.posts.params =
-            limit: ids.length
+            limit: unknown_ids.length
             page_ids: unknown_ids
-          User::current.posts.fetch success: (posts) =>
-            posts.each (post) => @subview.collection.get(post.get("page")).set post: post
+          User::current.posts.fetch success: (posts) => @collection.add(posts)

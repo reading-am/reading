@@ -5,11 +5,11 @@ define [
   "pusher"
   "app/models/post"
   "app/models/user"
-  "app/views/posts/post_actions/view"
   "app/views/comments/comments_with_input/view"
   "app/views/posts/posts_grouped_by_user/view"
+  "app/views/components/share_overlay/view"
   "text!app/views/bookmarklet/app/template.mustache"
-], ($, _, Backbone, pusher, Post, User, PostActionsView, CommentsWithInputView, PostsGroupedByUserView, template) ->
+], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsGroupedByUserView, ShareOverlay, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -19,15 +19,15 @@ define [
       template: template
 
     events:
+      "click #r_yep, #r_nope" : "set_yn"
+      "click #r_share" : "showShare"
       "click #r_close" : "close"
 
     initialize: ->
+      @model.bind "change:yn", @render_yn, this
       @model.bind "change:id", @sub_presence, this
       @model.bind "change:id", @get_comments, this
       @model.bind "change:id", @get_readers, this
-
-      @post_actions = new PostActionsView
-        model: @model
 
       @prep_page()
       @render()
@@ -146,6 +146,23 @@ define [
           delete typing_timers[member.id]
         , typing_delay
 
+    set_yn: (e) ->
+      $tar = $(e.target)
+      @model.save
+        yn: (if @$el.hasClass($tar.attr("id")) then null else $tar.is("#r_yep"))
+
+    render_yn: ->
+      $this  = (if @model.get("yn") then @$("#r_yep") else @$("#r_nope"))
+
+      # set the UI
+      @$el.removeClass("r_yep r_nope")
+      if @model.get("yn") isnt null
+        @$el.addClass(if @model.get("yn") then "r_yep" else "r_nope")
+
+    showShare: ->
+      @share_view = new ShareOverlay subject: Post::current
+      @share_view.render()
+
     close: ->
       @intervals "clear"
       @model.intervals "clear"
@@ -159,5 +176,4 @@ define [
 
     render: =>
       @$el.html(@template(@model.toJSON()))
-      @$(".r_subtext").after(@post_actions.render().el)
       return this

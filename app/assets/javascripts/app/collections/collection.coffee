@@ -43,7 +43,7 @@ define [
     @channel.bind "create", (data) =>
       # since we're using optimistic creation of models,
       # there might already be an item in the collection from this user
-      # that doesn't yet have an id from the POST response. Remove it1
+      # that doesn't yet have an id from the POST response. Remove it.
       # TODO replace this with http://pusher.com/docs/server_api_guide/server_excluding_recipients
       no_id = @find (obj) -> !obj.id?
       if no_id? and data.user?.id? and no_id.get("user")?.id? and no_id.get("user").id is data.user.id

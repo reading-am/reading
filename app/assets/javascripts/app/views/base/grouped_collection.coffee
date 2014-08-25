@@ -34,6 +34,18 @@ define [
       # make this silent so it doesn't render automatically
       @reset @collection, silent: true
 
+      # When models are added to a subgroup collection, go back
+      # and add them to the master collection. This prevents things like
+      # adding a post to a subgroup collection and then it getting readded
+      # by Pusher to the master collection and trickling back down to the
+      # subcollection again.
+      @subview.collection.each @bind_bubble
+      @subview.collection.on "add", @bind_bubble, this
+      @subview.collection.on "reset", => @subview.collection.each @bind_bubble
+
+    bind_bubble: (model) =>
+      model[@groupUnder].on "add", (model) => @collection.add(model)
+
     group: (model, collection, options) ->
       gb = model.get @groupBy
       if existing = collection.get gb

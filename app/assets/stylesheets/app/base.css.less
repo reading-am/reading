@@ -2,11 +2,12 @@
 @import "mixins";
 
 html {
-  background: #F0F0F0;
+  background: @bg_grey;
+  height: 100%;
 }
 
 body {
-  #gradient > .vertical(@white, #F0F0F0, 0, 800px);
+  #gradient > .vertical(@white, @bg_grey, 0, 800px);
   height:100%;
   &#application_layout {
     padding-top:16px;

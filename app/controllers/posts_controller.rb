@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   end
 
   # A note about schema
-  # The original idea was that the referrer_id didn't
+  # The original idea was that the referrer_post_id didn't
   # have to dictate the :url param - that way we could
   # eventually mix and match 'because of' with different
   # end results. Otherwise we could just forward straight
@@ -20,15 +20,15 @@ class PostsController < ApplicationController
     # this is disabled while I look for some funny business
     #@token = if params[:token] then params[:token] elsif signed_in? then current_user.token else '' end
     @token = if params[:token] == '-' then params[:token] elsif signed_in? then current_user.token else '' end
-    @referrer_id = 0 # default
+    @referrer_post_id = 0 # default
 
     if !params[:id]
       # Pass through and post any domain, even
       # if it's not already in the system
       # schema: reading.am/http://example.com
     else
-      @referrer_id = Base58.decode(params[:id])
-      @ref = Post.find(@referrer_id)
+      @referrer_post_id = Base58.decode(params[:id])
+      @ref = Post.find(@referrer_post_id)
 
       if !params[:url]
         # Post from a referrer id only

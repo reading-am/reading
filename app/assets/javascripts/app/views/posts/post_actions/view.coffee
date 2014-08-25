@@ -37,6 +37,7 @@ define [
 
     remove: ->
       delete @model
+      @set_model() # there could be more than one
       @render()
 
     create: ->

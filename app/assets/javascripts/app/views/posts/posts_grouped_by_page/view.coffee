@@ -31,4 +31,4 @@ define [
           User::current.posts.params =
             limit: unknown_ids.length
             page_ids: unknown_ids
-          User::current.posts.fetch success: (posts) => @collection.add(posts)
+          User::current.posts.fetch success: (posts) => @collection.add(posts.models)

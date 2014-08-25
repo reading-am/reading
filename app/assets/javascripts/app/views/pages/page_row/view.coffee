@@ -86,7 +86,7 @@ define [
       @posts_icon = @$(".posts_icon")
       @comments_icon = @$(".comments_icon")
 
-      @body = @$(".posts_group")
+      @body = @$(".posts_group_wrapper")
       @body
         .append(@page_view.render().el)
         .append(@post_actions.render().el)

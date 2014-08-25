@@ -12,8 +12,10 @@
   {{/yn_class}}
   </div>
   <div class="span6 posts_group">
-    {{>pages/page/template}}
-    {{>posts/subposts/template}}
+    <div class="posts_group_wrapper">
+      {{>pages/page/template}}
+      {{>posts/subposts/template}}
+    </div>
   </div>
   <div class="span1 comment">
     <a href="{{url}}{{^url}}#{{/url}}" class="post_icon comments_icon{{#has_comments}} has_comments{{/has_comments}}{{^has_comments}} hasnt_comments{{/has_comments}}">

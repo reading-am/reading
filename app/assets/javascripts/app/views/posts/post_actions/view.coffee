@@ -44,6 +44,7 @@ define [
       post = new Post
         user: @user
         page: @page
+        referrer: @collection.first()
 
       if post.isValid()
         @collection.create post

@@ -1,9 +1,11 @@
-<ul class="r_post_actions">
-  {{^id}}<li><a href="#" class="pa_create">Post</a></li>{{/id}}
-  {{#id}}
-    <li><a href="#" class="pa_destroy">Delete</a></li>
-    <li><a href="#" class="pa_yep {{#yep}}r_active{{/yep}}">Yep</a></li>
-    <li><a href="#" class="pa_nope {{#nope}}r_active{{/nope}}">Nope</a></li>
+<div class="r_post_actions">
+  {{^id}}
+    <a href="#" class="pa_create">Post</a>
   {{/id}}
-  <li><a href="#" class="pa_share">Share</a></li>
-</ul>
+  {{#id}}
+    <a href="#" class="pa_destroy">Un-Post</a>
+    • <a href="#" class="pa_yep {{#yep}}r_active{{/yep}}">Yep</a>
+    • <a href="#" class="pa_nope {{#nope}}r_active{{/nope}}">Nope</a>
+  {{/id}}
+  • <a href="#" class="pa_share">Share</a>
+</div>

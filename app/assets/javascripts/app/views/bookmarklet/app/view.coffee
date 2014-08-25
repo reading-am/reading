@@ -5,10 +5,11 @@ define [
   "pusher"
   "app/models/post"
   "app/models/user"
+  "app/views/posts/post_actions/view"
   "app/views/comments/comments_with_input/view"
   "app/views/posts/posts_grouped_by_user/view"
   "text!app/views/bookmarklet/app/template.mustache"
-], ($, _, Backbone, pusher, Post, User, CommentsWithInputView, PostsGroupedByUserView, template) ->
+], ($, _, Backbone, pusher, Post, User, PostActionsView, CommentsWithInputView, PostsGroupedByUserView, template) ->
 
   active = "r_active"
   inactive = "r_inactive"
@@ -24,6 +25,9 @@ define [
       @model.bind "change:id", @sub_presence, this
       @model.bind "change:id", @get_comments, this
       @model.bind "change:id", @get_readers, this
+
+      @post_actions = new PostActionsView
+        model: @model
 
       @prep_page()
       @render()
@@ -155,4 +159,5 @@ define [
 
     render: =>
       @$el.html(@template(@model.toJSON()))
+      @$(".r_subtext").after(@post_actions.render().el)
       return this

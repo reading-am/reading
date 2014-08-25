@@ -55,7 +55,7 @@ class Api::PostsController < Api::APIController
       title = params[:model][:title] unless params[:model][:title].blank? || params[:model][:title] == 'null'
       desc  = params[:model][:description] unless params[:model][:description].blank? || params[:model][:description] == 'null'
       user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-      ref   = Post.find_by_id(params[:model][:referrer_id]) unless params[:model][:referrer_id].blank?
+      ref   = Post.find_by_id(params[:model][:referrer_post_id]) unless params[:model][:referrer_post_id].blank?
       yn    = params[:model][:yn]
     end
 

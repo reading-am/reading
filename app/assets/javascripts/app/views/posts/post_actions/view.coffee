@@ -44,10 +44,10 @@ define [
       post = new Post
         user: @user
         page: @page
-        referrer: @collection.first()
+        referrer_post: @collection.first()
 
       if post.isValid()
-        @collection.create post, {wait: true}
+        @collection.create post, wait: true
         @set_model()
       false
 

@@ -123,7 +123,7 @@ require [
         url: get_url()
         title: title
         description: desc
-        referrer_id: reading.referrer_id ? 0
+        referrer_post_id: reading.referrer_post_id ? 0
 
 
   #-----------------------------------------

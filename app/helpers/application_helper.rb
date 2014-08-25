@@ -84,7 +84,6 @@ module ApplicationHelper
   def mustache_helpers
     data = {
       signed_in: signed_in?,
-      access_media_feed: signed_in? && current_user.access?(:media_feed),
       rss_path:  params[:type] ? rss_path : false
     }
 

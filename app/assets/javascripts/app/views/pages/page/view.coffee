@@ -20,10 +20,7 @@ define [
 
       hostname = $("<a>", href: @model.get("url"))[0].hostname
       hostname = hostname.split(".")[-2..].join(".")
-      if !User::current.access("media_feed") or (
-        hostname not in PageView::safe_embed and
-        @model.get("medium") in ["audio","video"]
-      )
+      if hostname not in PageView::safe_embed and @model.get("medium") in ["audio","video"]
         json.embed = false
       else if json.embed
         json.embed.replace "http://", "https://"

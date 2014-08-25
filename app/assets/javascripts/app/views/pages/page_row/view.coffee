@@ -88,7 +88,8 @@ define [
 
       @body = @$(".posts_group_wrapper")
       @body.prepend(@page_view.render().el)
-      @$(".r_post_actions_wrapper").prepend(@post_actions.render().el) if User::current.signed_in()
+      @$(".r_post_actions_wrapper").prepend(@post_actions.render().el)
+      @$(".r_post_actions_wrapper").hide() unless User::current.signed_in()
       @body
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())

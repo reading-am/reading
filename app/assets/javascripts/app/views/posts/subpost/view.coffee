@@ -17,7 +17,7 @@ define [
     initialize: (options) ->
       super options
 
-      if @model.get("referrer_post").get("user").get("id")
+      if @model.get("referrer_post")?.get("user").get("id")
         @ref_user_view = new UserSmallView
           model: @model.get("referrer_post").get("user")
 

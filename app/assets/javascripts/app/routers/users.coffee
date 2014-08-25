@@ -95,15 +95,10 @@ UserEditView) ->
           reset: true
           success: => @pages_view.$(".r_pages").css opacity: 1
       else
-        if User::current.access("media_feed")
-          # Initial render with bootstrapped data
-          @$yield.prepend @pages_view.render().el
-          col_view.progressive_render()
-          @collection.reset models # data renders the subviews
-        else
-          @pages_view.render()
-          @collection.reset models
-          @$yield.prepend @pages_view.el
+        # Initial render with bootstrapped data
+        @$yield.prepend @pages_view.render().el
+        col_view.progressive_render()
+        @collection.reset models # data renders the subviews
 
         col_view.infinite_scroll()
         @pages_view.$(".r_pages").css opacity: 1

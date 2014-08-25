@@ -1,0 +1,29 @@
+@import "variables";
+@import "mixins";
+
+.page_row {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.posts_group {
+  background: @white;
+  border-radius: 5px;
+  border-bottom: 1px solid #DDD;
+}
+.posts_group_wrapper {
+  padding: 20px; 
+}
+
+.r_post_actions_wrapper {
+  margin: 15px 0;
+  padding: 10px 0;
+  border-top: 1px solid @light_grey;
+  border-bottom: 1px solid @light_grey;
+  .comment {
+    float: right;
+    .comments_icon {
+      margin-top: -2px;
+    }
+  }
+}

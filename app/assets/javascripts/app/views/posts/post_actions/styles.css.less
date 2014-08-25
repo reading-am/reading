@@ -1,0 +1,53 @@
+@import "variables";
+@import "mixins";
+
+.r_post_actions {
+  a, .r_dot {
+    margin-right: 3px;
+  }
+  .pa_create, .pa_destroy, .pa_yep.r_active, .pa_nope.r_active {
+    border-radius: 3px;
+    padding: 5px 7px;
+    &:hover {
+      text-decoration:none;
+    }
+  }
+  .pa_create {
+    background: @blue;
+    padding: 5px 15px;
+    &:hover {
+      background: lighten(@blue, 30%);
+    }
+  }
+  .pa_destroy {
+    background: @bright_green;
+    margin-right: 5px;
+    .r_hover {
+      display:none;
+    }
+    &:hover {
+      background: @red;
+      color: @white;
+      .r_default {
+        display: none;
+      }
+      .r_hover {
+        display: inline;
+      }
+    }
+  }
+  .pa_yep.r_active {
+    background: @eli_blue;
+    color: @white;
+    &:hover {
+      background: darken(@eli_blue, 10%);
+    }
+  }
+  .pa_nope.r_active {
+    background: @red;
+    color: @white;
+    &:hover {
+      background: darken(@red, 10%);
+    }
+  }
+}

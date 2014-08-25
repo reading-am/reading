@@ -47,7 +47,7 @@ define [
         referrer_post: @collection.first()
 
       if post.isValid()
-        @collection.create post, wait: true
+        @collection.create post
         @set_model()
       false
 

@@ -73,14 +73,6 @@ define [
         has_comments: !!@model.get("comments_count")
         comments_count: @model.get("comments_count")
 
-      yn_avg = @model.posts.yn_average()
-      if yn_avg > 0
-        json.yn_class = "yep"
-        json.yep = true
-      else if yn_avg < 0
-        json.yn_class = "nope"
-        json.nope = true
-
       @$el.html(@template(json))
 
       @posts_icon = @$(".posts_icon")

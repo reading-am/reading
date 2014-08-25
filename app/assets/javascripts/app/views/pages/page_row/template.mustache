@@ -1,16 +1,5 @@
 <div class="row page_row">
-  <div class="span1 date">
-  {{date}}
-  {{^date}}{{#yn_class}}
-    <h3 class="{{yn_class}}">
-      {{#yep}}&#10004;{{/yep}}
-      {{#nope}}&times;{{/nope}}
-    </h3>
-  {{/yn_class}}{{/date}}
-  {{^yn_class}}
-    &nbsp;
-  {{/yn_class}}
-  </div>
+  <div class="span1 date">{{date}}&nbsp;</div>
   <div class="span7 posts_group">
     <div class="posts_group_wrapper">
       {{>pages/page/template}}

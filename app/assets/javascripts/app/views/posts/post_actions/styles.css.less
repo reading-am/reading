@@ -2,20 +2,45 @@
 @import "mixins";
 
 .r_post_actions {
-  margin: 10px 0;
+  margin: 15px 0;
   border-bottom: 1px solid #EEE;
-  padding: 0 0 10px;
-  .r_active {
-    color: red;
+  padding: 0 0 15px;
+  a, span {
+    margin-right: 3px;
   }
-}
-
-.pa_create, .pa_destroy {
-  padding: 5px;
-}
-.pa_create {
-  background: #38ff7e;
-}
-.pa_destroy {
-  background: #E0E0E0;
+  .pa_create, .pa_destroy, .pa_yep.r_active, .pa_nope.r_active {
+    border-radius: 3px;
+    padding: 5px;
+    &:hover {
+      text-decoration:none;
+    }
+  }
+  .pa_create {
+    background: @bright_green;
+    padding: 5px 15px;
+    &:hover {
+      background: @dark_green;
+    }
+  }
+  .pa_destroy {
+    background: #E0E0E0;
+    margin-right: 5px;
+    &:hover {
+      background: #CCC;
+    }
+  }
+  .pa_yep.r_active {
+    background: @eli_blue;
+    color: @white;
+    &:hover {
+      background: darken(@eli_blue, 10%);
+    }
+  }
+  .pa_nope.r_active {
+    background: @red;
+    color: @white;
+    &:hover {
+      background: darken(@red, 10%);
+    }
+  }
 }

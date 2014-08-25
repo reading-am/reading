@@ -3,14 +3,15 @@
 
 .r_post_actions {
   margin: 15px 0;
-  border-bottom: 1px solid #EEE;
-  padding: 0 0 15px;
-  a, span {
+  padding: 10px 0;
+  border-top: 1px solid @light_grey;
+  border-bottom: 1px solid @light_grey;
+  a, .r_dot {
     margin-right: 3px;
   }
   .pa_create, .pa_destroy, .pa_yep.r_active, .pa_nope.r_active {
     border-radius: 3px;
-    padding: 5px;
+    padding: 5px 7px;
     &:hover {
       text-decoration:none;
     }
@@ -25,8 +26,18 @@
   .pa_destroy {
     background: #E0E0E0;
     margin-right: 5px;
+    .r_hover {
+      display:none;
+    }
     &:hover {
-      background: #CCC;
+      background: @red;
+      color: @white;
+      .r_default {
+        display: none;
+      }
+      .r_hover {
+        display: inline;
+      }
     }
   }
   .pa_yep.r_active {

@@ -4,25 +4,33 @@ define [
   "app/models/user"
   "app/views/base/model"
   "app/views/pages/page/view"
+  "app/views/posts/post_actions/view"
   "app/views/posts/subposts/view"
   "app/collections/posts"
   "app/views/comments/comments_with_input/view"
   "text!app/views/pages/page_row/template.mustache"
+  "text!app/views/pages/page_row/styles.css"
   "app/models/page" # this needs preloading
-], (_, $, User, ModelView, PageView, SubPostsView, Posts, CommentsWithInputView, template) ->
+], (_, $, User, ModelView, PageView, PostActionsView, SubPostsView, Posts, CommentsWithInputView, template, styles) ->
 
   class PageRowView extends ModelView
     @assets
       template: template
+      styles: styles
 
     events:
       "click .posts_icon": "show_posts"
       "click .comments_icon": "show_comments"
 
     initialize: ->
+      super
       @model.posts.on "remove", => @remove() if @model.posts.length is 0
 
       @page_view = new PageView model: @model
+      @post_actions = new PostActionsView
+        collection: @model.posts
+        user: User::current
+        page: @model
       @posts_view = new SubPostsView collection: @model.posts
       @comments_view = new CommentsWithInputView
         collection: @model.comments
@@ -73,14 +81,16 @@ define [
         json.yn_class = "nope"
         json.nope = true
 
-      @$el.append(@template(json))
+      @$el.html(@template(json))
 
       @posts_icon = @$(".posts_icon")
       @comments_icon = @$(".comments_icon")
 
-      @body = @$(".posts_group")
+      @body = @$(".posts_group_wrapper")
+      @body.prepend(@page_view.render().el)
+      @$(".r_post_actions_wrapper").prepend(@post_actions.render().el)
+      @$(".r_post_actions_wrapper").hide() unless User::current.signed_in()
       @body
-        .append(@page_view.render().el)
         .append(@posts_view.render().el)
         .append(@comments_view.render().$el.hide())
 

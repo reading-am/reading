@@ -41,6 +41,10 @@ module Api::Posts
       posts = Post.where(id: ids)
     end
 
+    if params[:page_ids]
+      posts = posts.where(page_id: params[:page_ids])
+    end
+
     posts = posts.includes(:user, :page, {referrer_post: :user})
                    .order("created_at DESC")
   end

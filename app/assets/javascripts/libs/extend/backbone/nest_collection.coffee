@@ -25,7 +25,7 @@ define [
     nestedCollection.bind 'remove', (initiative) =>
       updateObj = {}
       updateObj[attributeName] = _.without(@get(attributeName), initiative.attributes)
-      @set(updateObj)
+      @set(updateObj, silent: true)
 
     nestedCollection
 

@@ -14,7 +14,7 @@ define [
       @bind "destroy", => @intervals "clear"
 
     validate: (attr) ->
-      if !attr.url || attr.url is "about:blank"
+      if !attr.page && !attr.page_id && (!attr.url || attr.url is "about:blank")
         return Constants.errors.general
 
     short_url: ->

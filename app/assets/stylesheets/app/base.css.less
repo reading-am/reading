@@ -1,10 +1,15 @@
 @import "variables";
 @import "mixins";
 
+html {
+  background: #F0F0F0;
+}
+
 body {
+  #gradient > .vertical(@white, #F0F0F0);
   height:100%;
   &#application_layout {
-    margin-top:16px;
+    padding-top:16px;
     margin-bottom:50px;
   }
 }

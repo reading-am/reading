@@ -14,17 +14,19 @@
   <div class="span7 posts_group">
     <div class="posts_group_wrapper">
       {{>pages/page/template}}
+      <div class="r_post_actions_wrapper">
+        <div class="comment">
+          <a href="{{url}}{{^url}}#{{/url}}" class="post_icon comments_icon{{#has_comments}} has_comments{{/has_comments}}{{^has_comments}} hasnt_comments{{/has_comments}}">
+            {{#has_comments}}{{comments_count}}{{/has_comments}}
+            {{^has_comments}}+{{/has_comments}}
+            <div class="r_tri"></div>
+          </a>
+          <a class="post_icon posts_icon" href="#">
+            {{posts_count}}
+          </a>
+        </div>
+      </div>
       {{>posts/subposts/template}}
     </div>
-  </div>
-  <div class="span1 comment">
-    <a href="{{url}}{{^url}}#{{/url}}" class="post_icon comments_icon{{#has_comments}} has_comments{{/has_comments}}{{^has_comments}} hasnt_comments{{/has_comments}}">
-      {{#has_comments}}{{comments_count}}{{/has_comments}}
-      {{^has_comments}}+{{/has_comments}}
-      <div class="r_tri"></div>
-    </a>
-    <a class="post_icon posts_icon" href="#">
-      {{posts_count}}
-    </a>
   </div>
 </div>

@@ -1,6 +1,11 @@
 @import "variables";
 @import "mixins";
 
+html, body {
+  background: @white;
+  background-image: none;
+}
+
 .container {
   padding:0 30px;
 }
@@ -41,6 +46,7 @@ a:active, a:visited {
 }
 #footer {
   border-top:1px solid @light_grey;
+  border-bottom: none;
   margin-top:@baseLineHeight*2;
   padding-top:@baseLineHeight;
   &, a { color:@medium_grey; }

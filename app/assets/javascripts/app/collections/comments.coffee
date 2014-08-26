@@ -8,14 +8,4 @@ define [
     type: "Comments"
     model: Comment
 
-    comparator: (comment) ->
-      if comment.get("id")?
-        id = comment.get("id")
-      else if @first().get("id")?
-        id = @first().get("id")+1
-      else
-        # 999... is a hack so that the first new comment
-        # without an id will appear at the top
-        id = 9999999999
-
-      return -id
+    comparator: (comment) -> -(comment.get("created_at") || new Date)

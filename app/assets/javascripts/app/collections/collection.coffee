@@ -41,15 +41,13 @@ define [
     @channel = pusher.subscribe @channel_name()
 
     @channel.bind "create", (data) =>
-      # since we're using optimistic creation of models,
+      # Since we're using optimistic creation of models,
       # there might already be an item in the collection from this user
-      # that doesn't yet have an id from the POST response. Remove it.
-      # TODO replace this with http://pusher.com/docs/server_api_guide/server_excluding_recipients
+      # that doesn't yet have an id from the POST response. If so,
+      # don't add anything. TODO: consider replacing this with http://pusher.com/docs/server_api_guide/server_excluding_recipients
       no_id = @find (obj) -> !obj.id?
-      if no_id? and data.user?.id? and no_id.get("user")?.id? and no_id.get("user").id is data.user.id
-        @remove no_id
-
-      @add Backbone.Model::factory data
+      unless no_id? and data.user?.id? and no_id.get("user")?.id? and no_id.get("user").id is data.user.id
+        @add Backbone.Model::factory data
 
     @channel.bind "update", (data) =>
       obj = Backbone.Model::factory data

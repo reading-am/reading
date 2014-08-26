@@ -47,6 +47,7 @@ public
       case auth_hash.provider
       when 'evernote'
         # store these per: http://discussion.evernote.com/topic/26173-is-it-safe-to-cache-the-shard-under-oauth/
+        info = JSON.parse(info.to_json) # Seems to be the easiest way to make a hash of the Thrift response
         info['edam'] = {
           'noteStoreUrl'     => auth_hash[:extra][:access_token].params[:edam_noteStoreUrl],
           'webApiUrlPrefix'  => auth_hash[:extra][:access_token].params[:edam_webApiUrlPrefix]

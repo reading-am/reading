@@ -1,10 +1,11 @@
 define [
+  "jquery"
   "backbone"
   "app/init"
   "app/constants"
   "app/collections/users"
   "app/collections/comments"
-], (Backbone, App, Constants) ->
+], ($, Backbone, App, Constants) ->
 
   class Page extends Backbone.Model
     type: "Page"
@@ -13,6 +14,10 @@ define [
       @has_many "Users"
       @has_many "Posts"
       @has_many "Comments"
+
+    hostname: ->
+      hostname = $("<a>", href: @get("url"))[0].hostname
+      hostname.split(".")[-2..].join(".")
 
     verb: ->
       if @get("medium") is "audio"

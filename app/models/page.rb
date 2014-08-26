@@ -109,7 +109,7 @@ public
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
-    title.blank? ? url : title
+    title.blank? ? url : Sanitize.clean(title)
   end
 
   def display_description

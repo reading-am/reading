@@ -112,6 +112,10 @@ public
     title.blank? ? url : title
   end
 
+  def display_description
+    Sanitize.clean description
+  end
+
   def proxy_embed
     if embed.blank?
       embed
@@ -204,7 +208,7 @@ public
       :embed          => proxy_embed,
       :medium         => medium,
       :media_type     => media_type,
-      :description    => description,
+      :description    => display_description,
       :posts_count    => posts_count,
       :comments_count => comments_count,
       :has_describe_data => has_describe_data,

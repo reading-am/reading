@@ -9,7 +9,7 @@ define [
     type: "Posts"
     model: Post
 
-    comparator: (post) -> -post.get("id")
+    comparator: (post) -> -(post.get("created_at") || new Date)
 
     # there's a companion method in posts_helper.rb
     yn_average: ->

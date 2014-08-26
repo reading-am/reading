@@ -40,6 +40,7 @@ define [
     "vimeo.com"
     "soundcloud.com"
     "bandcamp.com"
+    "kickstarter.com"
     ]
 
   return PageView

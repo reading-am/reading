@@ -281,8 +281,6 @@ GEM
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
-    domain_name (0.5.15)
-      unf (>= 0.0.5, < 1.0.0)
     dotenv (0.10.0)
     dotenv-rails (0.10.0)
       dotenv (= 0.10.0)
@@ -334,8 +332,6 @@ GEM
     hirb (0.7.1)
     hirefire-resource (0.1.2)
     htmlentities (4.3.1)
-    http-cookie (1.0.2)
-      domain_name (~> 0.5)
     http_parser.rb (0.5.3)
     httparty (0.11.0)
       multi_json (~> 1.0)
@@ -381,15 +377,6 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mechanize (2.7.2)
-      domain_name (~> 0.5, >= 0.5.1)
-      http-cookie (~> 1.0.0)
-      mime-types (~> 1.17, >= 1.17.2)
-      net-http-digest_auth (~> 1.1, >= 1.1.1)
-      net-http-persistent (~> 2.5, >= 2.5.2)
-      nokogiri (~> 1.4)
-      ntlm-http (~> 0.1, >= 0.1.1)
-      webrobots (>= 0.0.9, < 0.2)
     memcachier (0.0.2)
     meta_request (0.2.7)
       callsite
@@ -404,8 +391,6 @@ GEM
     multi_json (1.7.9)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
-    net-http-digest_auth (1.4)
-    net-http-persistent (2.9)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.6.8)
@@ -415,7 +400,6 @@ GEM
       activesupport (>= 3.0.0)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
-    ntlm-http (0.1.1)
     oauth (0.4.7)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -622,7 +606,6 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     watchr (0.7)
-    webrobots (0.1.1)
     wirb (1.0.1)
       paint
     xpath (2.0.0)
@@ -667,7 +650,6 @@ DEPENDENCIES
   kippt!
   koala!
   less-rails
-  mechanize
   memcachier
   meta_request
   mime-types

@@ -44,8 +44,7 @@ define [
       view.render()
       view.$el.hide() unless !@animation || bulk
 
-      # prepending somewhere in the stack
-      if i < c_len-1
+      if i < c_len # prepending somewhere in the stack
         $el.children().eq(i).before(view.el)
       else if $el.find("> .r_status").length
         $el.find("> .r_status").before(view.el)

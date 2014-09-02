@@ -15,9 +15,13 @@ define [
       @has_many "Posts"
       @has_many "Comments"
 
-    hostname: ->
-      hostname = $("<a>", href: @get("url"))[0].hostname
-      hostname.split(".")[-2..].join(".")
+    parse_hostname: ->
+      h = $("<a>", href: @get("url"))[0].hostname
+      h = h[4..] if h[..3] is "www."
+      h
+
+    parse_root_domain: ->
+      @parse_hostname().split(".")[-2..].join(".")
 
     verb: ->
       if @get("medium") is "audio"

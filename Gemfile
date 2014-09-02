@@ -71,12 +71,13 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
+gem "workless"
 
 #####################
 # External Services #
 #####################
 gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
-gem 'hirefire-resource'
+gem 'bounscale'
 gem 'aws-sdk'
 gem 'hipchat'
 gem 'tinder', github: 'skirchmeier/tinder' # campfire. Only using this branch to bypass JSON dependency

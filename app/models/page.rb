@@ -129,6 +129,7 @@ public
       # Make all embeds secure, even if they aren't (better to fail on https than http)
       # but don't replace the http in images that are proxied
       e.gsub!(/('|")http:\/\//, '\1https://')
+      e
     end
   end
 

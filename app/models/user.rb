@@ -68,10 +68,11 @@ class User < ActiveRecord::Base
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
 
-  searchable do
-    text :name, :username, :email, :link
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+  def as_indexed_json(options={})
+    as_json(only: [:name, :username, :email, :link])
   end
-  handle_asynchronously :solr_index
 
   private
 

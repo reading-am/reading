@@ -23,24 +23,24 @@ class Post < ActiveRecord::Base
   # for will_paginate
   self.per_page = 100
 
-  searchable auto_remove: false do
-    boolean :yn
-    integer :user_id
-    text :page_title do
-      page.title
-    end
-    text :page_url do
-      page.url
-    end
-    text :page_content do
-      if page.readability_data
-        Sanitize.clean page.readability_data.content rescue nil
-      end
-    end
-  end
-  handle_asynchronously :solr_index
-  handle_asynchronously :solr_remove_from_index # for destroy
-  after_destroy :solr_remove_from_index # this is so deletes won't fail if there's a problem with solr
+  # searchable auto_remove: false do
+  #   boolean :yn
+  #   integer :user_id
+  #   text :page_title do
+  #     page.title
+  #   end
+  #   text :page_url do
+  #     page.url
+  #   end
+  #   text :page_content do
+  #     if page.readability_data
+  #       Sanitize.clean page.readability_data.content rescue nil
+  #     end
+  #   end
+  # end
+  # handle_asynchronously :solr_index
+  # handle_asynchronously :solr_remove_from_index # for destroy
+  # after_destroy :solr_remove_from_index # this is so deletes won't fail if there's a problem with solr
 
   private
 

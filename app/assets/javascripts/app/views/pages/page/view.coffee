@@ -31,8 +31,6 @@ define [
 
       if @model.parse_root_domain() not in PageView::safe_embed and @model.get("medium") in ["audio","video"]
         json.embed = false
-      else if json.embed
-        json.embed = json.embed.replace "http://", "https://"
 
       return json
 

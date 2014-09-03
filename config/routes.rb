@@ -58,7 +58,6 @@ Reading::Application.routes.draw do
     end
     resources :pages do
       get 'count', on: :collection
-      get 'search', on: :collection
       resources :users
       resources :comments
       resources :posts
@@ -107,9 +106,6 @@ Reading::Application.routes.draw do
     get 'tagalong'
     resources :posts
   end
-
-  # Search
-  get '/search' => 'search#index'
 
   resources :hooks
   resources :footnotes

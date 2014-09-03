@@ -49,19 +49,6 @@ class Api::PagesController < Api::APIController
   end
   add_transaction_tracer :update
 
-  def search
-    search = Page.search do
-      fulltext params[:q] do boost_fields :title => 3.0 end
-    end
-
-    @pages = search.results
-
-    respond_to do |format|
-      format.json { render_json :pages => @pages.collect { |page| page.simple_obj } }
-    end
-  end
-  add_transaction_tracer :search
-
   def count
     if current_user.roles? :admin
       respond_to do |format|

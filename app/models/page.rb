@@ -109,11 +109,11 @@ public
 
   # this has a JS companion in bookmarklet/real_init.rb#get_title()
   def display_title
-    title.blank? ? url : Sanitize.clean(title)
+    title.blank? ? url : Sanitize.strip_tags(title)
   end
 
   def display_description
-    Sanitize.clean description
+    Sanitize.strip_tags description
   end
 
   def proxy_embed

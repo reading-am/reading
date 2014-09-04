@@ -15,8 +15,9 @@ define [
     json: ->
       json = super()
       json.hostname = @model.parse_hostname()
+      domain = @model.parse_root_domain()
 
-      if @model.parse_root_domain() is "twitter.com" and json.embed
+      if domain is "twitter.com" and json.embed
         delete json.title
         delete json.description
       else if json.title is json.url and json.description
@@ -29,7 +30,7 @@ define [
       if @model.posts.length
         json.url = @model.posts.first().get("wrapped_url")
 
-      if @model.parse_root_domain() not in PageView::safe_embed and @model.get("medium") in ["audio","video"]
+      if domain not in PageView::safe_embed and @model.get("medium") in ["audio","video"]
         json.embed = false
 
       return json

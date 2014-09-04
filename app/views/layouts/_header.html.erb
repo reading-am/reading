@@ -8,7 +8,6 @@
     <%= link_to "You", "/#{current_user.username}/list", :class => ((request.path.split('/')[1] == current_user.username and !in_settings) ? 'active' : '') %>
     <span class="hide_iphone">-</span> <%= link_to "Everybody", '/everybody', :class => (params[:controller] != 'search' && params[:username] != current_user.username && !in_settings ? 'active' : '') %>
     <span class="hide_iphone">-</span> <%= link_to "Settings", edit_user_registration_path, :class => (in_settings ? 'active' : '') %>
-    <span class="hide_iphone">-</span> <%= render :partial => 'search/form' %>
   <% end %>
   </nav>
 </div>

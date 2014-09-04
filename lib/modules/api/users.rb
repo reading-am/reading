@@ -50,11 +50,7 @@ module Api::Users
   end
 
   def self.search params={}
-    search = User.search do
-      fulltext params[:q]
-      paginate per_page: params[:limit], offset: params[:offset]
-    end
-
-    search.results
+    search = User.search(params[:q], size: params[:limit], from: params[:offset])
+    search.records
   end
 end

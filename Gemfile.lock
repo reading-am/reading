@@ -388,7 +388,7 @@ GEM
     method_source (0.8.2)
     methodfinder (1.2.5)
     mime-types (1.25.1)
-    mini_portile (0.5.2)
+    mini_portile (0.6.0)
     minitest (4.7.5)
     multi_json (1.7.9)
     multi_xml (0.5.5)
@@ -400,8 +400,8 @@ GEM
     nilify_blanks (1.0.1)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
-    nokogiri (1.6.1)
-      mini_portile (~> 0.5.0)
+    nokogiri (1.6.3.1)
+      mini_portile (= 0.6.0)
     oauth (0.4.7)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -536,8 +536,6 @@ GEM
     rush (0.6.8)
       session
     safe_yaml (0.9.4)
-    sanitize (2.0.6)
-      nokogiri (>= 1.4.4)
     session (3.2.0)
     signature (0.1.7)
     simple_oauth (0.2.0)
@@ -697,7 +695,6 @@ DEPENDENCIES
   ruby-growl
   ruby-oembed
   ruby-thumbor
-  sanitize
   sitemap_generator
   spork-rails!
   sucker_punch

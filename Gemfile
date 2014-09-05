@@ -76,7 +76,6 @@ gem "workless"
 # External Services #
 #####################
 gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
-gem 'bounscale'
 gem 'aws-sdk'
 gem 'hipchat'
 gem 'tinder', github: 'skirchmeier/tinder' # campfire. Only using this branch to bypass JSON dependency

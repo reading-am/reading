@@ -209,8 +209,6 @@ GEM
     boson (1.2.4)
     boson-more (0.2.2)
       boson (>= 1.2.0)
-    bounscale (0.0.4)
-      json
     browser (0.2.0)
     builder (3.1.4)
     bullet (4.6.0)
@@ -628,7 +626,6 @@ DEPENDENCIES
   binding_of_caller
   bitmask_attributes!
   bootstrap-will_paginate
-  bounscale
   browser
   bullet
   coffee-rails

@@ -16,11 +16,15 @@ class Api::APIController < ActionController::Metal
   include ActionController::StrongParameters
   include Devise::Controllers::Helpers
   include Rails.application.routes.url_helpers
+  # for Doorkeeper oauth provider
+  # https://github.com/doorkeeper-gem/doorkeeper/blob/master/spec/dummy/app/controllers/metal_controller.rb
+  include ActionController::Head
+  include Doorkeeper::Rails::Helpers
   # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
   wrap_parameters format: [:json]
-  before_filter :map_method, :set_defaults, :check_signed_in
+  before_filter :map_method, :set_defaults, :check_signed_in, :doorkeeper_authorize!
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
   rescue_from ActionController::ParameterMissing, :with => :show_400
 

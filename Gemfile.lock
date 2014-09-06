@@ -529,7 +529,6 @@ GEM
     ruby-growl (4.0)
       uuid (~> 2.3, >= 2.3.5)
     ruby-hmac (0.4.0)
-    ruby-oembed (0.8.8)
     ruby-thumbor (1.2.1)
     rush (0.6.8)
       session
@@ -690,7 +689,6 @@ DEPENDENCIES
   requirejs-rails!
   rspec-rails
   ruby-growl
-  ruby-oembed
   ruby-thumbor
   sitemap_generator
   spork-rails!

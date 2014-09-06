@@ -34,7 +34,6 @@ gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/sup
 gem 'nilify_blanks'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
-gem 'ruby-oembed'
 gem 'text'
 gem 'mime-types'
 

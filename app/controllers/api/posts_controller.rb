@@ -20,6 +20,7 @@ class Api::PostsController < Api::APIController
       end
     end
   end
+  before_action -> { doorkeeper_authorize! :public }, only: :index
   add_transaction_tracer :index
 
   def show

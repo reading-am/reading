@@ -33,6 +33,13 @@ GIT
       multi_json
 
 GIT
+  remote: git://github.com/doorkeeper-gem/doorkeeper.git
+  revision: 9e64042a5862e72343cf25dd2a69cfa0cb64f43d
+  specs:
+    doorkeeper (1.4.0)
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/leppert/kippt.git
   revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
   specs:
@@ -268,8 +275,6 @@ GEM
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
-    doorkeeper (1.4.0)
-      railties (>= 3.1)
     dotenv (0.10.0)
     dotenv-rails (0.10.0)
       dotenv (= 0.10.0)
@@ -639,7 +644,7 @@ DEPENDENCIES
   delayed_job_active_record
   delayed_job_web
   devise
-  doorkeeper
+  doorkeeper!
   dotenv-rails
   elasticsearch-model
   escape_utils

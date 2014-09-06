@@ -21,7 +21,7 @@ class Post < ActiveRecord::Base
   scope :recent_by_user_and_page, lambda { |user, page, time=1.day.ago| where("user_id = ? and page_id = ? and created_at > ?", user, page, time) }
 
   # for will_paginate
-  self.per_page = 100
+  self.per_page = 100 if defined? self.per_page
 
   private
 

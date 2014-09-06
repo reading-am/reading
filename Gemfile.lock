@@ -467,7 +467,7 @@ GEM
     progress_bar (1.0.0)
       highline (~> 1.6.1)
       options (~> 2.3.0)
-    puma (2.8.0)
+    puma (2.9.1)
       rack (>= 1.1, < 2.0)
     pusher (0.12.0)
       httpclient (~> 2.3.0)

@@ -41,6 +41,7 @@ Reading::Application.routes.draw do
       get 'count',    on: :collection
     end
     resources :users do
+      get 'me',       on: :collection
       get 'count',    on: :collection
       get 'search',   on: :collection
       get 'recommended', on: :collection

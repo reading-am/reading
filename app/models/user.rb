@@ -24,7 +24,9 @@ class User < ActiveRecord::Base
   serialize :urls, JSON
 
 
+  has_many :oauth_access_tokens, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
+
   has_many :authorizations, -> { includes [:user] }, dependent: :destroy # also handled by foreign key
   has_many :posts, -> { includes [:user, :page, :domain, {:referrer_post => :user}] }, dependent: :destroy # also handled by foreign key
   has_many :domains, through: :posts

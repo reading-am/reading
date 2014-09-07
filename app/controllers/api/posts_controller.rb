@@ -30,6 +30,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json post: @post.simple_obj }
     end
   end
+  before_action -> { doorkeeper_authorize! :public }, only: :show
   add_transaction_tracer :show
 
   def create
@@ -76,6 +77,7 @@ class Api::PostsController < Api::APIController
       end
     end
   end
+  before_action -> { doorkeeper_authorize! :public }, only: :create
   add_transaction_tracer :create
 
   def update
@@ -97,6 +99,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json status }
     end
   end
+  before_action -> { doorkeeper_authorize! :public }, only: :update
   add_transaction_tracer :update
 
   def destroy
@@ -110,6 +113,7 @@ class Api::PostsController < Api::APIController
       format.json { render_json status }
     end
   end
+  before_action -> { doorkeeper_authorize! :public }, only: :destroy
   add_transaction_tracer :destroy
 
   def count
@@ -121,6 +125,7 @@ class Api::PostsController < Api::APIController
       show_404
     end
   end
+  before_action -> { doorkeeper_authorize! :public }, only: :count
   add_transaction_tracer :count
 
 end

@@ -1,5 +1,15 @@
-{{#has_apps}}
-  <div id="yield">
-    {{>oauth_apps/oauth_apps/template}}
+<div class="row">
+  <div class="span7 offset1">
+    Apps are awesome
   </div>
-{{/has_apps}}
+</div>
+
+<div class="row">
+  <div class="span7 offset1">
+  {{#has_apps}}
+    <div id="yield">
+      {{>oauth_apps/oauth_apps/template}}
+    </div>
+  {{/has_apps}}
+  </div>
+</div>

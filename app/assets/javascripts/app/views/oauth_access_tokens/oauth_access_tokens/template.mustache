@@ -1,0 +1,8 @@
+<ul class="r_oauth_access_tokens">
+{{#tokens}}
+  {{>oauth_access_tokens/oauth_access_token/template}}
+{{/tokens}}
+{{^tokens}}
+  {{>components/collection_status/template}}
+{{/tokens}}
+</ul>

@@ -87,10 +87,10 @@ class UsersController < ApplicationController
 
   def apps
     @user = current_user
-    @apps = @user.oauth_client_apps
+    @tokens = @user.oauth_access_tokens
 
     respond_to do |format|
-      format.html { render 'oauth_apps/index' }
+      format.html { render 'oauth_access_tokens/index' }
     end
   end
 

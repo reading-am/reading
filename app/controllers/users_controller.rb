@@ -90,7 +90,7 @@ class UsersController < ApplicationController
     @apps = @user.oauth_client_apps
 
     respond_to do |format|
-      format.html { render 'apps/index' }
+      format.html { render 'oauth_apps/index' }
     end
   end
 

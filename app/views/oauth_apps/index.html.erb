@@ -1,0 +1,19 @@
+<%=
+  locals = mustache_helpers.merge({
+    has_apps: @apps.to_a.size > 0, # run the query first with to_a so that it doesn't make a count() query
+  })
+
+  render file: 'oauth_apps/index/template', locals: locals
+%>
+
+<%=
+  if !bot?
+    locals = {collection: @apps}
+    if @user
+      locals[:model] = @user
+    else
+      locals[:router] = 'users'
+    end
+    render partial: 'backbone/router', locals: locals
+  end
+%>

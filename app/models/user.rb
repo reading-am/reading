@@ -25,7 +25,8 @@ class User < ActiveRecord::Base
 
 
   has_many :oauth_access_tokens, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
-  has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
+  has_many :oauth_client_apps, class_name: 'Doorkeeper::Application', through: :oauth_access_tokens, source: :application
+  has_many :oauth_owner_apps, class_name: 'Doorkeeper::Application', as: :owner
 
   has_many :authorizations, -> { includes [:user] }, dependent: :destroy # also handled by foreign key
   has_many :posts, -> { includes [:user, :page, :domain, {:referrer_post => :user}] }, dependent: :destroy # also handled by foreign key

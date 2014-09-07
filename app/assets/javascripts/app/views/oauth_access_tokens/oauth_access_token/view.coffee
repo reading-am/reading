@@ -10,9 +10,18 @@ define [
       styles: styles
       template: template
 
+    events:
+      "click .r_destroy": "destroy"
+
     initialize: ->
       @app_view = new OauthAppView
         model: @model.get("app")
+
+    destroy: ->
+      if confirm "Are you sure you want to revoke access to this application?"
+        @model.destroy()
+
+      false
 
     render: ->
       @$el.html(@template(@json()))

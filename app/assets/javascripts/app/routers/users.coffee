@@ -129,7 +129,7 @@ UserEditView, OauthAppsView) ->
       @apps_view = new OauthAppsView
         collection: @collection
 
-      @$yield.prepend @apps_view.render().el
+      @$yield.html @apps_view.render().el
 
     followingers: (username, suffix) ->
       @user_card_view ?= new UserCardView

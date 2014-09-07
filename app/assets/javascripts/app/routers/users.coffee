@@ -6,6 +6,7 @@ define [
   "app/models/domain"
   "app/collections/users"
   "app/collections/posts"
+  "app/collections/oauth_apps"
   "app/views/users/card/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
@@ -16,16 +17,18 @@ define [
   "app/views/users/users/view"
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-], (_, $, Backbone, User, Domain, Users, Posts, UserCardView, UserSubnavView,
+  "app/views/oauth_apps/oauth_apps/view"
+], (_, $, Backbone, User, Domain, Users, Posts, OauthApps, UserCardView, UserSubnavView,
 SettingsSubnavView, MediumSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
-UserEditView) ->
+UserEditView, OauthAppsView) ->
 
   class UsersRouter extends Backbone.Router
 
     routes:
       "settings/info"         : "edit"
-      "settings/extras"       : "extras"
+      "settings/apps"         : "apps"
+      "settings/extras"       : "settings"
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
@@ -118,6 +121,15 @@ UserEditView) ->
     settings: ->
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
+
+    apps: ->
+      @settings_subnav_view = new SettingsSubnavView
+        el: $("#subnav")
+      
+      @apps_view = new OauthAppsView
+        collection: @collection
+
+      @$yield.prepend @apps_view.render().el
 
     followingers: (username, suffix) ->
       @user_card_view ?= new UserCardView

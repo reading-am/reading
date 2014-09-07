@@ -1,6 +1,11 @@
+<%= render :partial => 'users/settings_subnav' if @user == current_user %>
+
+<%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
+
 <%=
-  locals = mustache_helpers.merge({
-    has_apps: @apps.to_a.size > 0, # run the query first with to_a so that it doesn't make a count() query
+locals = mustache_helpers.merge({
+    apps:     bot? ? @apps : false,
+    has_apps: @apps.to_a.size > 0 # run the query first with to_a so that it doesn't make a count() query
   })
 
   render file: 'oauth_apps/index/template', locals: locals

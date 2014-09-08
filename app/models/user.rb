@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
 
   serialize :urls, JSON
 
-
   has_many :oauth_access_tokens, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
+  has_many :active_oauth_access_tokens, -> { where("revoked_at IS NULL AND (expires_in IS NULL OR created_at > (now() - interval '1 second' * expires_in))") }, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
   has_many :oauth_client_apps, class_name: 'Doorkeeper::Application', through: :oauth_access_tokens, source: :application
   has_many :oauth_owner_apps, class_name: 'Doorkeeper::Application', as: :owner
 
@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
       :medium => "140x140>",
       :large => "500x500>"
     },
-    :default_url => "#{ROOT_URL}/assets/users/:attachment/default_:style.png"
+    :default_url => "#{ROOT_URL}/assets/users/:attachment/default/:style.png"
 
   validates_attachment :avatar,
     :size => { :less_than => 2.megabytes },

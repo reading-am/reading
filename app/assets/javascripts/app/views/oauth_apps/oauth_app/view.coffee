@@ -9,8 +9,3 @@ define [
     @assets
       styles: styles
       template: template
-
-    json: ->
-      json = super
-      json.icon_thumb = "https://s3.amazonaws.com/media.development.reading.am/oauth_apps/icons/default/original.png"
-      json

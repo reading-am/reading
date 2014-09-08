@@ -44,7 +44,7 @@ class Api::OauthAccessTokensController < Api::APIController
     @token = Doorkeeper::AccessToken.by_token(params[:id]) || Doorkeeper::AccessToken.by_refresh_token(params[:id])
 
     if @user == @token.user
-      if @token.expired? || @token.revoked?
+      if @token.revoked?
         status = :ok
       else
         @token.revoke

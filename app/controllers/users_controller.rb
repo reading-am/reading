@@ -87,7 +87,7 @@ class UsersController < ApplicationController
 
   def apps
     @user = current_user
-    @tokens = @user.oauth_access_tokens
+    @tokens = @user.active_oauth_access_tokens
 
     respond_to do |format|
       format.html { render 'oauth_access_tokens/index' }

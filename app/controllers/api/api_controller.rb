@@ -24,7 +24,7 @@ class Api::APIController < ActionController::Metal
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
   wrap_parameters format: [:json]
-  before_filter :map_method, :set_defaults, :check_signed_in, :doorkeeper_authorize!
+  before_filter :map_method, :set_defaults, :check_signed_in
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
   rescue_from ActionController::ParameterMissing, :with => :show_400
 

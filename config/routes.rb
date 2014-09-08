@@ -72,6 +72,7 @@ Reading::Application.routes.draw do
         get ':medium', on: :collection, action: 'index'
       end
     end
+    resources :oauth_access_tokens
   end
 
   post "/pusher/auth"            => "pusher#auth"

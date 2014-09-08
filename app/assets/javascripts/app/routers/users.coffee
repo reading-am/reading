@@ -123,6 +123,8 @@ UserEditView, OauthAccessTokensView) ->
         el: $("#subnav")
 
     apps: ->
+      @collection = new OauthAccessTokens if !@collection.length
+
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
       

@@ -27,9 +27,13 @@ class Doorkeeper::Application
     {
       type: 'OauthApp',
       name: name,
+      description: description,
+      website: website,
+      app_store_url:  app_store_url,
+      play_store_url: play_store_url,
       icon_medium:   icon_url(:medium),
       icon_thumb:    icon_url(:thumb),
-      icon_mini:     icon_url(:mini),
+      icon_mini:     icon_url(:mini)
     }
   end
 end

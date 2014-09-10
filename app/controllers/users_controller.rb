@@ -24,10 +24,7 @@ class UsersController < ApplicationController
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
     end
 
-    p = params.clone
-    p[:type] = "following" if params[:type] == "list"
-
-    @posts = Api::Posts.index(p)
+    @posts = Api::Posts.index(params)
 
     respond_to do |format|
       format.html { render 'posts/index' }

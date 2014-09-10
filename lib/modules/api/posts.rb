@@ -2,14 +2,10 @@ module Api::Posts
 
   def self.index params={}
     if params[:user_id]
-      if params[:type] == "following"
-        # list events from users the user is following
-        # users/1/following/posts
-        if params[:exclude_root_user]
-          posts = Post.from_users_followed_by(params[:user_id])
-        else
-          posts = Post.from_users_followed_by_including(params[:user_id])
-        end
+      if params[:type] == "list"
+        posts = Post.from_users_followed_by_including(params[:user_id])
+      elsif params[:type] == "following"
+        posts = Post.from_users_followed_by(params[:user_id])
       else
         # list a user's posts
         # users/1/posts

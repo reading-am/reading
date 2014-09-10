@@ -1,16 +1,16 @@
 <div class="r_oauth_app row w_rule">
   {{#icon_thumb}}
   <div class="r_avatar span1">
-    <a href="{{url}}" class="event_show">
+    <a href="{{website}}" class="event_show">
       <img src="{{icon_thumb}}">
     </a>
   </div>
   {{/icon_thumb}}
   <div class="r_info span4">
-    <a href="{{url}}" class="event_show">
+    <a href="{{website}}">
       <span class="r_name">{{name}}</span>
     </a>
-    {{#bio}}<br><span class="r_bio">{{bio}}</span>{{/bio}}
+    {{#description}}<br><span class="r_bio">{{description}}</span>{{/description}}
   </div>
   <div class="r_follow_button span2">
   {{#is_current_user}}

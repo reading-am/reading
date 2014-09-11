@@ -16,9 +16,7 @@ define [
       @has_many "Comments"
 
     parse_hostname: ->
-      h = $("<a>", href: @get("url"))[0].hostname
-      h = h[4..] if h[..3] is "www."
-      h
+      $("<a>", href: @get("url"))[0].hostname
 
     parse_root_domain: ->
       @parse_hostname().split(".")[-2..].join(".")

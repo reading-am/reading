@@ -15,6 +15,12 @@ define [
     json: ->
       json = super()
       json.hostname = @model.parse_hostname()
+      json.display_name =
+        if json.hostname[..3] is "www."
+          json.hostname[4..]
+        else
+          json.hostname
+
       domain = @model.parse_root_domain()
 
       if domain is "twitter.com" and json.embed

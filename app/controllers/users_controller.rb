@@ -2,12 +2,6 @@
 class UsersController < ApplicationController
 
   before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
-  before_filter :set_default_params
-
-  def set_default_params
-    params[:limit] = 50
-    params[:offset] = 0
-  end
 
   # GET /users/1
   # GET /users/1.xml

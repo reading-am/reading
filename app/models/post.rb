@@ -16,6 +16,7 @@ class Post < ActiveRecord::Base
   # Return posts from the users being followed by the given user.
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
   scope :from_users_followed_by_including, lambda { |user| followed_by_including(user) }
+  scope :from_domain, lambda { |domain| originating_from(domain) }
   # For digest. All posts from a users feed that they haven't read
   scope :unread_by_since, lambda { |user, datetime| unread_since(user, datetime) }
   # Used to check for duplicate entries
@@ -39,6 +40,14 @@ class Post < ActiveRecord::Base
                       WHERE follower_id = :user_id)
     where("posts.user_id IN (#{following_ids}) OR posts.user_id = :user_id",
           { :user_id => user })
+    .order("posts.created_at DESC")
+  end
+
+  def self.originating_from(domain)
+    page_ids = %(SELECT id FROM pages
+                 WHERE domain_id = :domain_id)
+    where("posts.page_id IN (#{page_ids})",
+          { domain_id: domain })
     .order("posts.created_at DESC")
   end
 

@@ -3,12 +3,13 @@ class DomainsController < ApplicationController
   # GET /domains/1
   # GET /domains/1.xml
   def show
-    @domain = Domain.find_by_name(params[:domain_name])
-    @posts = @domain.posts.order("created_at DESC").paginate(:page => params[:page])
+    @domain = Domain.find_by_name(params[:id])
+    params[:domain_id] = @domain.id
+    @posts = Api::Posts.index(params)
 
     respond_to do |format|
       format.html { render 'posts/index' }
-      format.xml  { render 'posts/index', :xml => @posts }
+      format.rss  { render 'posts/index' }
     end
   end
 

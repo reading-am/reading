@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :protect_staging, :check_domain, :set_user_device,
                 :set_headers, :migrate_auth_token, :migrate_to_www,
-                :check_signed_in, :set_bot, :profiler
+                :check_signed_in, :set_bot, :profiler, :set_default_params
 
   helper_method :mobile_device?, :desktop_device?, :bot?
 
@@ -153,6 +153,11 @@ class ApplicationController < ActionController::Base
       }
       format.any { head :not_found }
     end
+  end
+
+  def set_default_params
+    params[:limit] = 50
+    params[:offset] = 0
   end
 
 end

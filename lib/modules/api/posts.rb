@@ -11,6 +11,8 @@ module Api::Posts
         # users/1/posts
         posts = Post.where(user_id: params[:user_id])
       end
+    elsif params[:domain_id]
+      posts = Post.from_domain(params[:domain_id])
     elsif params[:page_id]
       # list a page's posts
       # pages/1/posts

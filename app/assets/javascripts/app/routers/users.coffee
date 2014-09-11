@@ -3,6 +3,7 @@ define [
   "jquery"
   "backbone"
   "app/models/user_with_current"
+  "app/models/domain"
   "app/collections/users"
   "app/collections/posts"
   "app/views/users/card/view"
@@ -15,7 +16,7 @@ define [
   "app/views/users/users/view"
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-], (_, $, Backbone, User, Users, Posts, UserCardView, UserSubnavView,
+], (_, $, Backbone, User, Domain, Users, Posts, UserCardView, UserSubnavView,
 SettingsSubnavView, MediumSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
 UserEditView) ->
@@ -28,6 +29,7 @@ UserEditView) ->
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
+      "domains/(:domain)(/:type)(/:medium)" : "show"
       ":username/follow:suffix" : "followingers"
       "(:username)(/:type)(/:medium)" : "show"
 

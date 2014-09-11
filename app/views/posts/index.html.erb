@@ -13,6 +13,9 @@
     locals = {collection: @posts}
     if @user
       locals[:model] = @user
+    elsif @domain
+      locals[:model] = @domain
+      locals[:router] = 'users'
     else
       locals[:router] = 'users'
     end

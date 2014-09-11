@@ -23,4 +23,16 @@ class Domain < ActiveRecord::Base
     read_attribute(:verb) || 'reading'
   end
 
+  def simple_obj to_s=false
+    {
+      type: 'Domain',
+      id: to_s ? id.to_s : id,
+      name: name,
+      verb: verb,
+      pages_count: pages_count,
+      created_at: created_at,
+      updated_at: updated_at
+    }
+  end
+
 end

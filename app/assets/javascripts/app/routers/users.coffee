@@ -59,6 +59,8 @@ UserEditView) ->
         start_val: medium
         on_change: (medium) =>
           @navigate "#{
+            if @model.type is "Domain" then "domains/" else ""
+          }#{
             username
           }#{
             if type is "list" then "/#{type}" else ""

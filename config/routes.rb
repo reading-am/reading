@@ -62,6 +62,11 @@ Reading::Application.routes.draw do
       resources :comments
       resources :posts
     end
+    resources :domains do
+      resources :posts do
+        get ':medium', on: :collection, action: 'index'
+      end
+    end
   end
 
   post "/pusher/auth"            => "pusher#auth"
@@ -90,8 +95,12 @@ Reading::Application.routes.draw do
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
-  get '/domains/:domain_name' => 'domains#show', constraints: { domain_name: /[0-9A-Z\-\.]+/i }
-  resources :domains, constraints: { id: /[0-9A-Za-z\-\.]+/ } do
+  resources :domains, constraints: { id: /[0-9A-Z\-\.]+/i } do
+    member do
+      get '(/:type)(/posts)(/:medium)(/page/:page)' => 'domains#show',
+        defaults: { type: 'posts' },
+        constraints: { type: /posts|list|following/ }
+    end
     resources :posts
     resources :pages
   end

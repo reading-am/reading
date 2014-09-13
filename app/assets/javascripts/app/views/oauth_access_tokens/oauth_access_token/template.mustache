@@ -1,3 +1,9 @@
-<div class="r_oauth_access_token">
-  <a href="#" class="r_destroy">Destroy!</a>
+<div class="r_oauth_access_token row w_rule">
+  <div class="span2">
+    <div class="r_destroy btn">Revoke Access</div>
+  </div>
+  <div class="span6 offset1">
+    <span class="r_scopes">Permissions: {{#scopes}}{{.}}{{/scopes}}</span>
+    | <span class="r_approved">Approved: {{created_at}}</span>
+  </div>
 </div>

@@ -33,7 +33,9 @@ class Doorkeeper::Application
       play_store_url: play_store_url,
       icon_medium:   icon_url(:medium),
       icon_thumb:    icon_url(:thumb),
-      icon_mini:     icon_url(:mini)
+      icon_mini:     icon_url(:mini),
+      created_at:    created_at,
+      updated_at:    updated_at
     }
   end
 end
@@ -45,7 +47,9 @@ class Doorkeeper::AccessToken
     {
       type: 'OauthAccessToken',
       token: token,
-      app: application.simple_obj
+      app: application.simple_obj,
+      created_at: created_at,
+      scopes: scopes
     }
   end
 end

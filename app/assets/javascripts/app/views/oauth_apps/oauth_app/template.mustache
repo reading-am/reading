@@ -1,6 +1,6 @@
-<div class="r_oauth_app row w_rule">
+<div class="r_oauth_app">
   {{#icon_thumb}}
-  <div class="r_avatar span1">
+  <div class="r_icon span1">
     <a href="{{website}}" class="event_show">
       <img src="{{icon_thumb}}">
     </a>
@@ -10,16 +10,8 @@
     <a href="{{website}}">
       <span class="r_name">{{name}}</span>
     </a>
-    {{#description}}<br><span class="r_bio">{{description}}</span>{{/description}}
-  </div>
-  <div class="r_follow_button span2">
-  {{#is_current_user}}
-    <div class="r_is_you">This is you!</div>
-  {{/is_current_user}}
-  {{^is_current_user}}
-    <div class="event_follow btn {{^is_following}}btn-success{{/is_following}}">
-      {{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}
-    </div>
-  {{/is_current_user}}
+    {{#description}}<br><span class="r_desc">{{description}}</span>{{/description}}
+    {{#app_store_url}}<br><a class="r_bio">{{app_store_url}}</a>{{/app_store_url}}
+    {{#play_store_url}}<br><a class="r_bio">{{play_store_url}}</a>{{/play_store_url}}
   </div>
 </div>

@@ -23,8 +23,13 @@ define [
 
       false
 
+    json: ->
+      json = super
+      json.created_at = @model.get("created_at").toDateString()
+      json
+
     render: ->
       @$el.html(@template(@json()))
-          .append(@app_view.render().el)
+          .prepend(@app_view.render().el)
 
       return this

@@ -2,7 +2,7 @@
 
 <%= render :partial => 'layouts/notice', :locals => {:notice => notice} %>
 
-<div id="hooks_blank" class="row">
+<div class="row intro section">
   <div class="span7 offset1">
     Hooks perform an action each time you do something, like posting to
     <%= link_to "Twitter", "http://twitter.com" %> or <%= link_to "Facebook", "http://facebook.com" %> when you <strong>read a page</strong>.
@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<div id="hooks">
+<div id="hooks" class="section">
   <div class="row">
     <div class="span7 offset1">
       <%= render :partial => 'hooks/form', :locals => {:hook => @new_hook} if @new_hook %>

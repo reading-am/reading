@@ -15,7 +15,7 @@ define [
       @user_view = new UserViewSmall
         model: @model.get("user")
         tagName: "div"
-        
+
       @page_view = new PageView
         model: @model.get("page")
         tagName: "div"

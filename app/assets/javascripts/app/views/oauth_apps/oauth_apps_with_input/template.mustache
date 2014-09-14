@@ -1,0 +1,50 @@
+<div class="r_oauth_apps_with_input">
+  {{#signed_in}}
+    <a href="#" class="r_create">Create a new app</a>
+    <form action="" class="form-horizontal">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label" for="app_name">Name</label>
+          <div class="controls">
+            <input class="input-xlarge" id="app_name" name="app[name]" type="text">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="app_website">Website</label>
+          <div class="controls">
+            <input class="input-xlarge" id="app_website" name="app[website]" type="text">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="app_app_store_url">App Store URL</label>
+          <div class="controls">
+            <input class="input-xlarge" id="app_app_store_url" name="app[app_store_url]" type="text">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="app_play_store_url">Google Play Store URL</label>
+          <div class="controls">
+            <input class="input-xlarge" id="app_play_store_url" name="app[play_store_url]" type="text">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="app_description">Description</label>
+          <div class="controls">
+            <textarea class="input-xlarge" id="app_description" name="app[description]" rows="3"></textarea>
+            <p class="help-block">Keep it under 255 characters</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="app_redirect_uri">Callback URI</label>
+          <div class="controls">
+            <input class="input-xlarge" id="app_redirect_uri" name="app[redirect_uri]" type="text">
+          </div>
+        </div>
+        <div class="form-actions">
+          <input class="btn btn-success" name="commit" type="submit" value="Create App">
+          <a href="#" class="r_cancel">Cancel</a>
+        </div>
+      </fieldset>
+    </form>
+  {{/signed_in}}
+</div>

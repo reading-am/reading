@@ -18,12 +18,12 @@ define [
   "app/views/users/users/view"
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-  "app/views/oauth_apps/oauth_apps/view"
+  "app/views/oauth_apps/oauth_apps_with_input/view"
   "app/views/oauth_access_tokens/oauth_access_tokens/view"
 ], (_, $, Backbone, User, Domain, Users, Posts, OauthApps, OauthAccessTokens, UserCardView, UserSubnavView,
 SettingsSubnavView, MediumSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
-UserEditView, OauthAppsView, OauthAccessTokensView) ->
+UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
 
   class UsersRouter extends Backbone.Router
 
@@ -142,7 +142,7 @@ UserEditView, OauthAppsView, OauthAccessTokensView) ->
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
       
-      @apps_view = new OauthAppsView
+      @apps_view = new OauthAppsWithInputView
         collection: @collection
 
       @$yield.html @apps_view.render().el

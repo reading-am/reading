@@ -24,6 +24,9 @@ define [
 
       false
 
+    remove: ->
+      @$el.slideUp => @$el.remove()
+
     json: ->
       json = super
       json.consumer_secret = "Click to show" #if json.consumer_secret

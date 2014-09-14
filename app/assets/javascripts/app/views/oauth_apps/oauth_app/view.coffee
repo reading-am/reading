@@ -9,3 +9,22 @@ define [
     @assets
       styles: styles
       template: template
+
+    events:
+      "click .r_secret": "show_secret"
+      "click .r_destroy": "destroy"
+
+    show_secret: ->
+      @$(".r_secret code").text @model.get("consumer_secret")
+      false
+
+    destroy: ->
+      if confirm "Are you sure you want to delete this app? All users will instantly lose access and you can't undo this."
+        @model.destroy()
+
+      false
+
+    json: ->
+      json = super
+      json.consumer_secret = "Click to show" #if json.consumer_secret
+      json

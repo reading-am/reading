@@ -14,10 +14,26 @@
       <br><span class="r_desc">{{description}}</span>
     {{/description}}
     {{#app_store_url}}
-      <br><a class="r_bio" href="{{app_store_url}}" target=_blank>View on the App Store</a>
+      <br><a class="r_app_store" href="{{app_store_url}}" target=_blank>View on the App Store</a>
     {{/app_store_url}}
     {{#play_store_url}}
-      <br><a class="r_bio" href="{{play_store_url}}" target=_blank>View on Google Play</a>
+      <br><a class="r_play_store" href="{{play_store_url}}" target=_blank>View on Google Play</a>
     {{/play_store_url}}
+    {{#consumer_key}}
+      <div class="r_key">
+        Consumer Key:<br>
+        <code>{{consumer_key}}</code>
+      </div>
+    {{/consumer_key}}
+    {{#consumer_secret}}
+      <div class="r_secret">
+        Consumer Secret:<br>
+        <code>{{consumer_secret}}</code>
+      </div>
+    {{/consumer_secret}}
+  </div>
+  <div class="span2 r_admin">
+    <div class="r_destroy btn">Edit</div>
+    <div class="r_destroy btn btn-danger">Delete</div>
   </div>
 </div>

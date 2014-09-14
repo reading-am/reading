@@ -26,6 +26,7 @@ class Doorkeeper::Application
   def simple_obj
     {
       type: 'OauthApp',
+      consumer_key: uid,
       name: name,
       description: description,
       website: website,

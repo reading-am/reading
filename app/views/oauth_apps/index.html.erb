@@ -11,14 +11,31 @@ locals = mustache_helpers.merge({
   render file: 'oauth_apps/index/template', locals: locals
 %>
 
-<%=
-  if !bot?
-    locals = {collection: @apps}
-    if @user
-      locals[:model] = @user
-    else
-      locals[:router] = 'users'
-    end
-    render partial: 'backbone/router', locals: locals
+<% if !bot? %>
+
+<script>
+
+<%
+# NOTE: we're basically overriding the backbone/router partial view
+# in order to add the consumer_secret to the json
+
+props = {
+  model: @user.simple_obj,
+  collection: @apps.collect do |v|
+    obj = v.simple_obj
+    obj[:consumer_secret] = v.secret if v.owner == current_user
+    obj
   end
+}
 %>
+
+<%= requirejs %>(["backbone", "app/routers/users"], function(Backbone, Router){
+  new Router({<% props.each_with_index do |key, i| %>
+      "<%= key[0] %>": Backbone.Model.prototype.factory(<%=j key[1].to_json.html_safe -%>)<%= ',' if i < props.length-1 %>
+    <% end %>});
+  Backbone.history.start({pushState: true});
+});
+
+</script>
+
+<% end %>

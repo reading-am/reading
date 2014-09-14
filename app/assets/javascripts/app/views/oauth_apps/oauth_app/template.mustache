@@ -10,8 +10,14 @@
     <a href="{{website}}">
       <span class="r_name">{{name}}</span>
     </a>
-    {{#description}}<br><span class="r_desc">{{description}}</span>{{/description}}
-    {{#app_store_url}}<br><a class="r_bio">{{app_store_url}}</a>{{/app_store_url}}
-    {{#play_store_url}}<br><a class="r_bio">{{play_store_url}}</a>{{/play_store_url}}
+    {{#description}}
+      <br><span class="r_desc">{{description}}</span>
+    {{/description}}
+    {{#app_store_url}}
+      <br><a class="r_bio" href="{{app_store_url}}" target=_blank>View on the App Store</a>
+    {{/app_store_url}}
+    {{#play_store_url}}
+      <br><a class="r_bio" href="{{play_store_url}}" target=_blank>View on Google Play</a>
+    {{/play_store_url}}
   </div>
 </div>

@@ -8,7 +8,7 @@ define [
   "app/views/oauth_apps/form/view"
   "text!app/views/oauth_apps/oauth_apps_with_input/template.mustache"
   "text!app/views/oauth_apps/oauth_apps_with_input/styles.css"
-], (_, $, Backbone, User, OauthApp, OauthAppsView, OauthAppForm, template, styles) ->
+], (_, $, Backbone, User, OauthApp, OauthAppsView, OauthAppFormView, template, styles) ->
 
   class OauthAppsWithInputView extends Backbone.View
     @assets
@@ -22,7 +22,7 @@ define [
 
     initialize: (options) ->
       @subview = new OauthAppsView collection: @collection
-      @form_view = new OauthAppForm model: new OauthApp owner: options.owner
+      @form_view = new OauthAppFormView model: new OauthApp owner: options.owner
 
     toggle_input: ->
       @$(".r_create").toggle()

@@ -129,6 +129,7 @@ Reading::Application.routes.draw do
   get '/settings'        => 'users#settings'
   get '/settings/hooks'  => 'users#hooks'
   get '/settings/apps'   => 'users#apps'
+  get '/settings/apps/dev' => 'users#dev_apps'
   get '/settings/extras' => 'users#extras'
 
   # Admin

@@ -1,15 +1,16 @@
-<div class="row">
+<div class="row intro section">
   <div class="span7 offset1">
-    Apps are awesome
+    These apps can access your Reading account.
+    <br>Interested in creating an app? Visit our <a href="#">developer page</a>.
   </div>
 </div>
 
-<div class="row">
+<div class="row section">
   <div class="span7 offset1">
-  {{#has_apps}}
-    <div id="yield">
-      {{>oauth_apps/oauth_apps/template}}
-    </div>
-  {{/has_apps}}
+    {{#has_apps}}
+      <div id="yield">
+        {{>oauth_apps/oauth_apps/template}}
+      </div>
+    {{/has_apps}}
   </div>
 </div>

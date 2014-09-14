@@ -94,6 +94,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def dev_apps
+    @user = current_user
+    @apps = @user.oauth_owner_apps
+
+    respond_to do |format|
+      format.html { render 'oauth_apps/index' }
+    end
+  end
+
   def delete_cookies
     cookies.each do |k, v| cookies.delete k end
     redirect_to '/'

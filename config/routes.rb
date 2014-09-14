@@ -73,6 +73,7 @@ Reading::Application.routes.draw do
       end
     end
     resources :oauth_access_tokens
+    resources :oauth_applications
   end
 
   post "/pusher/auth"            => "pusher#auth"

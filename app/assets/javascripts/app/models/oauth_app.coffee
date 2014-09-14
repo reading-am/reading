@@ -5,7 +5,7 @@ define [
 
   class OauthApp extends Backbone.Model
     type: "OauthApp"
-    urlName: "oauth_app"
+    urlName: "oauth_application"
     idAttribute: "consumer_key"
 
   App.Models.OauthApp = OauthApp

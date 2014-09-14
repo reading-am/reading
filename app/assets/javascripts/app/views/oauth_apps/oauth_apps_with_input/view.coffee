@@ -22,7 +22,7 @@ define [
 
     initialize: (options) ->
       @subview = new OauthAppsView collection: @collection
-      @user = options.user
+      @owner = options.owner
 
     toggle_input: ->
       @$(".r_create").toggle()
@@ -31,7 +31,7 @@ define [
 
     submit: ->
       app = new OauthApp @form.serializeObject().app
-      app.set "user", @user
+      app.set "owner", @owner
 
       if app.isValid()
         @subview.collection.create app

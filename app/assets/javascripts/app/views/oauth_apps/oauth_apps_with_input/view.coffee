@@ -24,7 +24,7 @@ define [
 
     toggle_input: ->
       @$(".r_create").toggle()
-      @$("form").toggle()
+      @$("form").toggle()[0].reset()
       false
 
     submit: ->

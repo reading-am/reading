@@ -7,6 +7,7 @@ define [
   "app/views/oauth_apps/oauth_apps/view"
   "text!app/views/oauth_apps/oauth_apps_with_input/template.mustache"
   "text!app/views/oauth_apps/oauth_apps_with_input/styles.css"
+  "extend/jquery/serialize-object"
 ], (_, $, Backbone, User, OauthApp, OauthAppsView, template, styles) ->
 
   class OauthAppsWithInputView extends Backbone.View
@@ -17,6 +18,7 @@ define [
     events:
       "click .r_create": "toggle_input"
       "click .r_cancel": "toggle_input"
+      "submit form": "submit"
 
     initialize: (options) ->
       @subview = new OauthAppsView collection: @collection
@@ -24,24 +26,16 @@ define [
 
     toggle_input: ->
       @$(".r_create").toggle()
-      @$("form").toggle()[0].reset()
+      @form.toggle()[0].reset()
       false
 
     submit: ->
-      app = new OauthApp
-        body: @textarea.val(),
-        user: @user
+      app = new OauthApp @form.serializeObject().app
+      app.set "user", @user
 
       if app.isValid()
         @subview.collection.create app
-
-        @textarea
-          .val("")
-          .mentionsInput("reset")
-
-      @$("ul").animate
-        scrollTop: 0
-        duration: "fast"
+        @toggle_input()
 
       false
 

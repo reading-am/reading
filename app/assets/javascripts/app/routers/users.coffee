@@ -144,6 +144,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
       
       @apps_view = new OauthAppsWithInputView
         collection: @collection
+        user: User::current
 
       @$yield.html @apps_view.render().el
 

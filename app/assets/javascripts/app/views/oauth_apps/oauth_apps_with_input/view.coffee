@@ -5,10 +5,10 @@ define [
   "app/models/user_with_current"
   "app/models/oauth_app"
   "app/views/oauth_apps/oauth_apps/view"
+  "app/views/oauth_apps/form/view"
   "text!app/views/oauth_apps/oauth_apps_with_input/template.mustache"
   "text!app/views/oauth_apps/oauth_apps_with_input/styles.css"
-  "extend/jquery/serialize-object"
-], (_, $, Backbone, User, OauthApp, OauthAppsView, template, styles) ->
+], (_, $, Backbone, User, OauthApp, OauthAppsView, OauthAppForm, template, styles) ->
 
   class OauthAppsWithInputView extends Backbone.View
     @assets
@@ -22,19 +22,18 @@ define [
 
     initialize: (options) ->
       @subview = new OauthAppsView collection: @collection
-      @owner = options.owner
+      @form_view = new OauthAppForm model: new OauthApp owner: options.owner
 
     toggle_input: ->
       @$(".r_create").toggle()
-      @form.toggle()[0].reset()
+      @form_view.$el.toggle()
+      @form_view.reset()
       false
 
     submit: ->
-      app = new OauthApp @form.serializeObject().app
-      app.set "owner", @owner
-
-      if app.isValid()
-        @subview.collection.create app
+      @form_view.set_data()
+      if @form_view.model.isValid()
+        @subview.collection.create @form_view.model
         @toggle_input()
 
       false
@@ -42,7 +41,6 @@ define [
     render: ->
       @$el.html(@template({signed_in: User::current.signed_in()}))
           .prepend(@subview.render().el)
-
-      @form = @$("form")
+          .find(".r_create").after(@form_view.render().el)
 
       return this

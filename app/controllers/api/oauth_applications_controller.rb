@@ -42,7 +42,9 @@ class Api::OauthApplicationsController < Api::APIController
 
     respond_to do |format|
       if @app.save
-        format.json { render_json({oauth_application: @app.simple_obj}, :created) }
+        obj = @app.simple_obj
+        obj[:consumer_secret] = @app.secret
+        format.json { render_json({oauth_application: obj}, :created) }
       else
         status = @app.owner.blank? ? :forbidden : :bad_request
         format.json { render_json status }

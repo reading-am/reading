@@ -55,6 +55,22 @@ class Api::OauthApplicationsController < Api::APIController
   add_transaction_tracer :create
 
   def update
+    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
+    @app = Doorkeeper::Application.by_uid(params[:id])
+
+    respond_to do |format|
+      if @user == @app.owner
+        if @app.update_attributes(app_params)
+          obj = @app.simple_obj
+          obj[:consumer_secret] = @app.secret
+          format.json { render_json({oauth_application: obj}, :ok) }
+        else
+          format.json { render_json :bad_request }
+        end
+      else
+        format.json { render_json :forbidden }
+      end
+    end
   end
   # before_action -> { doorkeeper_authorize! :public }, only: :update
   add_transaction_tracer :update

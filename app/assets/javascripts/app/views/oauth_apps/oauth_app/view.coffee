@@ -14,6 +14,7 @@ define [
     events:
       "click .r_secret": "show_secret"
       "click .r_edit": "edit"
+      "submit .r_oauth_app_form": "update"
       "click .r_cancel": "render"
       "click .r_destroy": "destroy"
 
@@ -24,6 +25,14 @@ define [
     edit: ->
       @form_view = new OauthAppFormView model: @model
       @$el.html @form_view.render().el
+
+    update: ->
+      @model.set @form_view.data()
+      if @model.isValid()
+        @model.save()
+        @render()
+
+      false
 
     destroy: ->
       if confirm "Are you sure you want to delete this app? All users will instantly lose access and you can't undo this."

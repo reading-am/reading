@@ -30,6 +30,7 @@ class Doorkeeper::Application
       name: name,
       description: description,
       website: website,
+      redirect_uri: redirect_uri,
       app_store_url:  app_store_url,
       play_store_url: play_store_url,
       icon_medium:   icon_url(:medium),

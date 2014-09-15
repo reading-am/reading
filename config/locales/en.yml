@@ -3,3 +3,8 @@
 
 en:
   hello: "Hello world"
+  doorkeeper:
+    scopes:
+      public: 'Access your public data'
+      write: 'Update your information'
+      admin: 'Change your preferences'

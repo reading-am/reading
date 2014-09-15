@@ -1,0 +1,46 @@
+<form action="" class="form-horizontal r_oauth_app_form" method="post">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="name">Name</label>
+      <div class="controls">
+        <input class="input-xlarge" id="name" name="name" type="text" value="{{name}}" placeholder="required">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="website">Website</label>
+      <div class="controls">
+        <input class="input-xlarge" id="website" name="website" type="text" value="{{website}}" placeholder="optional">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="app_store_url">App Store URL</label>
+      <div class="controls">
+        <input class="input-xlarge" id="app_store_url" name="app_store_url" type="text" value="{{app_store_url}}" placeholder="optional">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="play_store_url">Google Play Store URL</label>
+      <div class="controls">
+        <input class="input-xlarge" id="play_store_url" name="play_store_url" type="text" value="{{play_store_url}}" placeholder="optional">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="description">Description</label>
+      <div class="controls">
+        <textarea class="input-xlarge" id="description" name="description" rows="3">{{description}}</textarea>
+        <p class="help-block">Required</p>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="redirect_uri">Callback URI</label>
+      <div class="controls">
+        <input class="input-xlarge" id="redirect_uri" name="redirect_uri" type="text" value="{{redirect_uri}}" placeholder="required">
+      </div>
+    </div>
+    <div class="form-actions">
+      <input class="btn btn-success" name="commit" type="submit" value="{{^consumer_key}}Create App{{/consumer_key}}{{#consumer_key}}Save{{/consumer_key}}">
+      <a href="#" class="btn r_cancel">Cancel</a>
+      {{#consumer_key}}<a href="#" class="r_destroy">Delete</a>{{/consumer_key}}
+    </div>
+  </fieldset>
+</form>

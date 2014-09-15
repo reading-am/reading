@@ -1,0 +1,16 @@
+@import "variables";
+@import "mixins";
+
+.r_oauth_apps {
+  list-style: none;
+  margin:0;
+  .r_oauth_app {
+    .makeRow();
+    padding:@gridGutterWidth 0;
+    border-bottom:1px solid @light_grey;
+    padding-top:@baseLineHeight;
+    .r_app_store, .r_play_store {
+      display: none;
+    }
+  }
+}

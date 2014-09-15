@@ -1,0 +1,8 @@
+<ul class="r_oauth_apps">
+{{#apps}}
+  {{>oauth_apps/oauth_app/template}}
+{{/apps}}
+{{^apps}}
+  {{>components/collection_status/template}}
+{{/apps}}
+</ul>

@@ -1,9 +1,7 @@
 Reading::Application.routes.draw do
   root to: "users#show"
 
-  use_doorkeeper do
-    controllers :applications => 'oauth/applications'
-  end
+  use_doorkeeper
 
   devise_for :users,
     skip: [:sessions,:registrations],

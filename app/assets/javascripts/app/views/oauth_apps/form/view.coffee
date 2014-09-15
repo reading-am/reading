@@ -12,4 +12,3 @@ define [
 
     reset: -> @el.reset()
     data: -> @$el.serializeObject()
-    set_data: -> @model.set @data()

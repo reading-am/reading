@@ -21,7 +21,8 @@ define [
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses
     # they'll get factoried in model.parse
-    if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
+    prop = _.result(@model, "urlRoot") || @type.toLowerCase()
+    if response[prop]? then response[prop] else response
 
   Backbone.Collection::getEach = (objs) ->
     objs = [objs] unless _.isArray objs

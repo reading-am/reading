@@ -5,7 +5,7 @@ class Api::UsersController < Api::APIController
     @user = User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
     format.json { render_json user: @user.simple_obj }
   end
-  before_action -> { doorkeeper_authorize! :public }, only: :me
+  # before_action -> { doorkeeper_authorize! :public }, only: :me
   add_transaction_tracer :me
 
   def index

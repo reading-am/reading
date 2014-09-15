@@ -38,8 +38,9 @@
       </div>
     </div>
     <div class="form-actions">
-      <input class="btn btn-success" name="commit" type="submit" value="{{^consumer_key}}Create{{/consumer_key}}{{#consumer_key}}Save{{/consumer_key}} App">
-      <a href="#" class="r_cancel">Cancel</a>
+      <input class="btn btn-success" name="commit" type="submit" value="{{^consumer_key}}Create App{{/consumer_key}}{{#consumer_key}}Save{{/consumer_key}}">
+      <a href="#" class="btn r_cancel">Cancel</a>
+      {{#consumer_key}}<a href="#" class="r_destroy">Delete</a>{{/consumer_key}}
     </div>
   </fieldset>
 </form>

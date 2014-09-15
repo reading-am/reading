@@ -13,6 +13,6 @@ define [
     json: ->
       @model.toJSON()
 
-    render: =>
+    render: ->
       @$el.html(@template(@json())) if @template?
       return this

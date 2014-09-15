@@ -16,6 +16,10 @@ class Api::APIController < ActionController::Metal
   include ActionController::StrongParameters
   include Devise::Controllers::Helpers
   include Rails.application.routes.url_helpers
+  # for Doorkeeper oauth provider
+  # https://github.com/doorkeeper-gem/doorkeeper/blob/master/spec/dummy/app/controllers/metal_controller.rb
+  include ActionController::Head
+  include Doorkeeper::Rails::Helpers
   # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 

@@ -5,7 +5,7 @@ define [
   "pusher"
 ], (_, Constants, Backbone, pusher) ->
 
-  Backbone.Collection::endpoint = -> _.result @,"urlName"
+  Backbone.Collection::endpoint = -> _.result @, "urlName"
 
   default_limit = 50
   Backbone.Collection::params = {limit:default_limit, offset:0}
@@ -21,7 +21,7 @@ define [
   Backbone.Collection::parse = (response) ->
     # don't factory collection API responses
     # they'll get factoried in model.parse
-    if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
+    if response[@model.urlRoot()]? then response[@model.urlRoot()] else response
 
   Backbone.Collection::getEach = (objs) ->
     objs = [objs] unless _.isArray objs

@@ -68,7 +68,7 @@ class Api::CommentsController < Api::APIController
 
     respond_to do |format|
       if @comment.save
-        format.json { render_json({:comment => @comment.simple_obj}, :created) }
+        format.json { render_json({comment: @comment.simple_obj}, :created) }
       else
         # TODO clean up this auth hack. Ugh.
         status = @comment.user.blank? ? :forbidden : :bad_request

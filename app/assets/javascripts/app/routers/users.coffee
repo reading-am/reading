@@ -6,6 +6,8 @@ define [
   "app/models/domain"
   "app/collections/users"
   "app/collections/posts"
+  "app/collections/oauth_apps"
+  "app/collections/oauth_access_tokens"
   "app/views/users/card/view"
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
@@ -16,16 +18,20 @@ define [
   "app/views/users/users/view"
   "app/views/users/user/medium/view"
   "app/views/users/edit/view"
-], (_, $, Backbone, User, Domain, Users, Posts, UserCardView, UserSubnavView,
+  "app/views/oauth_apps/oauth_apps_with_input/view"
+  "app/views/oauth_access_tokens/oauth_access_tokens/view"
+], (_, $, Backbone, User, Domain, Users, Posts, OauthApps, OauthAccessTokens, UserCardView, UserSubnavView,
 SettingsSubnavView, MediumSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
-UserEditView) ->
+UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
 
   class UsersRouter extends Backbone.Router
 
     routes:
       "settings/info"         : "edit"
-      "settings/extras"       : "extras"
+      "settings/apps"         : "apps"
+      "settings/apps/dev"     : "dev_apps"
+      "settings/extras"       : "settings"
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
@@ -118,6 +124,30 @@ UserEditView) ->
     settings: ->
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
+
+    apps: ->
+      @collection = new OauthAccessTokens if !@collection.length
+
+      @settings_subnav_view = new SettingsSubnavView
+        el: $("#subnav")
+      
+      @tokens_view = new OauthAccessTokensView
+        collection: @collection
+
+      @$yield.html @tokens_view.render().el
+
+    dev_apps: ->
+      @collection = new OauthApps if !@collection.length
+
+      @settings_subnav_view = new SettingsSubnavView
+        el: $("#subnav")
+      
+      @apps_view = new OauthAppsWithInputView
+        collection: @collection
+        owner: User::current
+
+      @apps_view.collection.trigger "reset" # updates the status
+      @$yield.html @apps_view.render().el
 
     followingers: (username, suffix) ->
       @user_card_view ?= new UserCardView

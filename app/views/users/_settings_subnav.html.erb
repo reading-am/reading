@@ -2,6 +2,7 @@
   <nav class="span7 offset1">
     <a href="/settings/info"<% if ['edit','update'].include? params[:action] %> class="active"<% end %>>Info</a>
     <a href="/settings/hooks"<% if params[:action] == 'hooks' %> class="active"<% end %>>Hooks</a>
+    <% if current_user.access? :apps %><a href="/settings/apps"<% if params[:action] == 'apps' || params[:action] == 'dev_apps' %> class="active"<% end %>>Apps</a><% end %>
     <a href="/settings/extras"<% if params[:action] == 'extras' %> class="active"<% end %>>Extras</a>
     <%= link_to "Sign Out", destroy_user_session_path, :id => 'signout' %>
   </nav>

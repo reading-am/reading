@@ -60,6 +60,7 @@ gem 'omniauth-pocket'
 gem 'omniauth-flattr'
 gem 'omniauth-http-basic', github: 'leppert/omniauth-http-basic' #required by omniauth-kippt
 gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
+gem 'doorkeeper', github: 'doorkeeper-gem/doorkeeper'
 
 ####################
 # Async Processing #

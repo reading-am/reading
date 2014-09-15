@@ -1,6 +1,8 @@
 Reading::Application.routes.draw do
   root to: "users#show"
 
+  use_doorkeeper
+
   devise_for :users,
     skip: [:sessions,:registrations],
     controllers: {
@@ -37,6 +39,7 @@ Reading::Application.routes.draw do
       get 'count',    on: :collection
     end
     resources :users do
+      get 'me',       on: :collection
       get 'count',    on: :collection
       get 'search',   on: :collection
       get 'recommended', on: :collection
@@ -67,6 +70,8 @@ Reading::Application.routes.draw do
         get ':medium', on: :collection, action: 'index'
       end
     end
+    resources :oauth_access_tokens
+    resources :oauth_applications
   end
 
   post "/pusher/auth"            => "pusher#auth"
@@ -120,8 +125,10 @@ Reading::Application.routes.draw do
   resources :footnotes
 
   # Settings
-  get '/settings' => 'users#settings'
+  get '/settings'        => 'users#settings'
   get '/settings/hooks'  => 'users#hooks'
+  get '/settings/apps'   => 'users#apps'
+  get '/settings/apps/dev' => 'users#dev_apps'
   get '/settings/extras' => 'users#extras'
 
   # Admin

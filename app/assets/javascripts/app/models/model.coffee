@@ -43,7 +43,7 @@ define [
     @_set key, value, options
 
   Backbone.Model::parse = (response) ->
-    obj = if response[@type.toLowerCase()]? then response[@type.toLowerCase()] else response
+    obj = if response[_.result(@, "urlName")]? then response[_.result(@, "urlName")] else response
     Backbone.Model::factory(obj).attributes # return the attributes else Model.defaults won't work
 
   Backbone.Model::toJSON = (nested_to_id=true) ->

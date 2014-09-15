@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
     :tagalong,
     :comments,
     :media_feed,
-    :tumblr_templates
+    :tumblr_templates,
+    :apps
   ]
 
   serialize :urls, JSON

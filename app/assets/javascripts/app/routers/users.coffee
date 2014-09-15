@@ -146,6 +146,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         collection: @collection
         owner: User::current
 
+      @apps_view.collection.trigger "reset" # updates the status
       @$yield.html @apps_view.render().el
 
     followingers: (username, suffix) ->

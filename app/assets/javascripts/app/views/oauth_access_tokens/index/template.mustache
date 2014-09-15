@@ -1,6 +1,7 @@
 <div class="row intro section">
   <div class="span7 offset1">
-    These apps can access your Reading account.
+    {{#has_tokens}}These apps can access your Reading account.{{/has_tokens}}
+    {{^has_tokens}}This is where you'll see apps that can access your Reading account, but you don't have any yet.<br>{{/has_tokens}}
     <br>Interested in creating an app? Visit our <a href="/settings/apps/dev">developer page</a>.
   </div>
 </div>

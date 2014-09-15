@@ -11,4 +11,4 @@ define [
       template: template
 
     modelView: OauthAppView
-    empty_msg: "You don't have any apps yet"
+    empty_msg: "You don't have any apps yet."

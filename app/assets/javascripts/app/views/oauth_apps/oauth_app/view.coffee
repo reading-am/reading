@@ -15,7 +15,7 @@ define [
       "click .r_secret": "show_secret"
       "click .r_edit": "edit"
       "submit .r_oauth_app_form": "update"
-      "click .r_cancel": "render"
+      "click .r_cancel": "cancel"
       "click .r_destroy": "destroy"
 
     show_secret: ->
@@ -25,6 +25,7 @@ define [
     edit: ->
       @form_view = new OauthAppFormView model: @model
       @$el.html @form_view.render().el
+      false
 
     update: ->
       @model.set @form_view.data()
@@ -32,6 +33,10 @@ define [
         @model.save()
         @render()
 
+      false
+
+    cancel: ->
+      @render()
       false
 
     destroy: ->

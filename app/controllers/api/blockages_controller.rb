@@ -25,7 +25,7 @@ class Api::BlockagesController < Api::APIController
     show_400 and return if blockage_params[:blocker_id].to_i != current_user.id
 
     @blocked = User.find(blockage_params[:blocked_id])
-    current_user.unfollow!(@blocked)
+    current_user.unblock!(@blocked)
 
     respond_to do |format|
       format.json { render_json user: @blocked.simple_obj }

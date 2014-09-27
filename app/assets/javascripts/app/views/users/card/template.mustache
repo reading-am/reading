@@ -17,9 +17,13 @@
     {{/is_current_user}}
     {{^is_current_user}}
       - <a rel="tooltip" data-title="Add what {{first_name}} reads to your following feed" href="#" class="button event_follow">
-          <span>{{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}</span>
-          {{first_name}}
-        </a>
+      <span>{{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}</span>
+      {{first_name}}
+      </a>
+      - <a href="#" class="button r_block">
+        <span>{{#is_blocking}}Unblock{{/is_blocking}}{{^is_blocking}}Block{{/is_blocking}}</span>
+        {{first_name}}
+      </a>
     {{/is_current_user}}
   </nav>
   <div id="user_places" class="span6 offset1">

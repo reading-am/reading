@@ -1,11 +1,12 @@
 define [
   "app/models/user_with_current"
   "app/models/relationship"
+  "app/models/blockage"
   "app/views/base/model"
   "app/constants"
   "app/views/users/overlay/view"
   "text!app/views/users/user/styles.css"
-], (User, Relationship, ModelView, Constants, UserOverlayView, styles) ->
+], (User, Relationship, Blockage, ModelView, Constants, UserOverlayView, styles) ->
 
   class UserView extends ModelView
     @assets
@@ -14,6 +15,7 @@ define [
     events:
       "click .event_show"   : "show"
       "click .event_follow" : "follow"
+      "click .r_block" : "block"
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0
@@ -21,12 +23,11 @@ define [
         overlay.render()
         false
 
-    follow: (e) ->
+    follow: ->
       if !User::current.signed_in()
         window.location = "/sign_in"
         return false
 
-      $tar = @$(e.target)
       rel  = new Relationship subject: @model, enactor: User::current
 
       if @model.get "is_following"
@@ -40,5 +41,15 @@ define [
         @model.set
           is_following: true
           followers_count: @model.get("followers_count") + 1
+
+      false
+
+    block: ->
+      if !User::current.signed_in()
+        window.location = "/sign_in"
+        return false
+
+      blk = new Blockage blocker: User::current, blocked: @model
+      blk.save()
 
       false

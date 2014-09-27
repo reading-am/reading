@@ -46,6 +46,16 @@ class User < ActiveRecord::Base
                                    dependent: :destroy # also handled by foreign key
   has_many :followers, through: :reverse_relationships, source: :follower
 
+  # Blocking
+  has_many :blockages, foreign_key: "blocker_id",
+                       dependent: :destroy # also handled by foreign key
+  has_many :blocking, through: :blockages, source: :blocked
+
+  has_many :reverse_blockages, foreign_key: "blocked_id",
+                               class_name: "Blockage",
+                               dependent: :destroy # also handled by foreign key
+  has_many :blockers, through: :reverse_blockages, source: :blocker
+
   has_many :blogs, dependent: :destroy # also handled by foreign key
 
   has_attached_file :avatar,

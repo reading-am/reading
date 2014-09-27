@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140927041131) do
+ActiveRecord::Schema.define(version: 20140927041639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,6 +280,9 @@ ActiveRecord::Schema.define(version: 20140927041131) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "authorizations", "users", name: "authorizations_user_id_fk", dependent: :delete
+
+  add_foreign_key "blockages", "users", name: "blockages_blocked_id_fk", column: "blocked_id", dependent: :delete
+  add_foreign_key "blockages", "users", name: "blockages_blocker_id_fk", column: "blocker_id", dependent: :delete
 
   add_foreign_key "blogs", "users", name: "blogs_user_id_fk", dependent: :delete
 

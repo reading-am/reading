@@ -188,11 +188,19 @@ class User < ActiveRecord::Base
   end
 
   def follow!(followed)
-    relationships.create!(followed_id: followed.id) unless id == followed.id
+    relationships.create!(followed: followed) unless id == followed.id
   end
 
   def unfollow!(followed)
     relationships.find_by_followed_id(followed).destroy unless id == followed.id
+  end
+
+  def block!(blocked)
+    blockages.create!(blocked: blocked) unless id == blocked.id
+  end
+
+  def unblock!(blocked)
+    relationships.find_by_followed_id(blocked).destroy unless id == blocked.id
   end
 
   def feed

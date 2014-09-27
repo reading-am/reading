@@ -68,6 +68,7 @@ Reading::Application.routes.draw do
         get ':medium', on: :collection, action: 'index'
       end
     end
+    resources :blockages
     resources :oauth_access_tokens
     resources :oauth_applications
   end

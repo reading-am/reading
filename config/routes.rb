@@ -56,6 +56,14 @@ Reading::Application.routes.draw do
         controller:   'relationships',
         defaults:     { type: 'followers' },
         constraints:  { type: 'followers' }
+      resources :blocking,
+        controller:   'blockages',
+        defaults:     { type: 'blocking' },
+        constraints:  { type: 'blocking' }
+      resources :blockers,
+        controller:   'blockages',
+        defaults:     { type: 'blockers' },
+        constraints:  { type: 'blockers' }
     end
     resources :pages do
       get 'count', on: :collection
@@ -68,7 +76,6 @@ Reading::Application.routes.draw do
         get ':medium', on: :collection, action: 'index'
       end
     end
-    resources :blockages
     resources :oauth_access_tokens
     resources :oauth_applications
   end

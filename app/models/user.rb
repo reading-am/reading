@@ -200,7 +200,7 @@ class User < ActiveRecord::Base
   end
 
   def unblock!(blocked)
-    relationships.find_by_followed_id(blocked).destroy unless id == blocked.id
+    blockages.find_by_blocked_id(blocked).destroy unless id == blocked.id
   end
 
   def feed
@@ -296,6 +296,8 @@ class User < ActiveRecord::Base
       posts_count:     posts.size,
       following_count: following.size,
       followers_count: followers.size,
+      blocking_count: blocking.size,
+      blockers_count: blockers.size,
       access:     access,
       created_at: created_at,
       updated_at: updated_at

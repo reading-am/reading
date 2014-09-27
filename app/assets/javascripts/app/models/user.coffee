@@ -11,6 +11,8 @@ define [
       @has_many "Posts"
       @has_many "Following", "Users"
       @has_many "Followers", "Users"
+      @has_many "Blocking", "Users"
+      @has_many "Blockers", "Users"
       @has_many "Expats", "Users"
 
     signed_in: ->

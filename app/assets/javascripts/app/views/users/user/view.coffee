@@ -28,10 +28,10 @@ define [
         window.location = "/sign_in"
         return false
 
-      rel  = new Relationship subject: @model, enactor: User::current
+      rel = new Relationship follower: User::current, followed: @model
 
       if @model.get "is_following"
-        rel.isNew = -> false
+        rel.isNew = -> false # needed to make destroy work
         rel.destroy()
         @model.set
           is_following: false
@@ -50,6 +50,13 @@ define [
         return false
 
       blk = new Blockage blocker: User::current, blocked: @model
-      blk.save()
+
+      if @model.get "is_blocking"
+        blk.isNew = -> false # needed to make destroy work
+        blk.destroy()
+        @model.set is_blocking: false
+      else
+        blk.save()
+        @model.set is_blocking: true
 
       false

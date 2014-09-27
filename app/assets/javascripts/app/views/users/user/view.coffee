@@ -52,11 +52,13 @@ define [
       blk = new Blockage blocker: User::current, blocked: @model
 
       if @model.get "is_blocking"
-        blk.isNew = -> false # needed to make destroy work
-        blk.destroy()
-        @model.set is_blocking: false
+        if confirm "Are you sure you'd like to unblock this user? Once you do, you'll both be able to see each other's posts and comments."
+          blk.isNew = -> false # needed to make destroy work
+          blk.destroy()
+          @model.set is_blocking: false
       else
-        blk.save()
-        @model.set is_blocking: true
+        if confirm "Would you like to block this user? Blocking a user will hide your posts and comments from their view and vice versa. It's here to help protect our community members but is in no way a perfect solution. If you continue to have trouble, please don't hesitate to contact us so we can nip it in the bud."
+          blk.save()
+          @model.set is_blocking: true
 
       false

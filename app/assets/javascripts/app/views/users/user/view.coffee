@@ -37,10 +37,12 @@ define [
           is_following: false
           followers_count: @model.get("followers_count") - 1
       else
-        rel.save()
-        @model.set
-          is_following: true
-          followers_count: @model.get("followers_count") + 1
+        if !@model.get("is_blocking") or confirm "Following this user will unblock them. Are you sure you want to continue?"
+          rel.save()
+          @model.set
+            is_following: true
+            is_blocking: false
+            followers_count: @model.get("followers_count") + 1
 
       false
 
@@ -59,6 +61,8 @@ define [
       else
         if confirm "Would you like to block this user? Blocking a user will hide your posts and comments from their view and vice versa. It's here to help protect our community members but is in no way a perfect solution. If you continue to have trouble, please don't hesitate to contact us so we can nip it in the bud."
           blk.save()
-          @model.set is_blocking: true
+          @model.set
+            is_blocking: true
+            is_following: false
 
       false

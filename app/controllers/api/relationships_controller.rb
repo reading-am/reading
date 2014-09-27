@@ -23,6 +23,7 @@ class Api::RelationshipsController < Api::APIController
 
     @followed = User.find(rel_params[:followed_id])
     current_user.follow!(@followed)
+    current_user.unblock!(@followed) if current_user.blocking_count > 0 rescue nil
 
     respond_to do |format|
       format.json { render_json user: @followed.simple_obj }

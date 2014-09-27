@@ -22,6 +22,7 @@ class Api::BlockagesController < Api::APIController
     show_400 and return if params[:user_id].to_i != current_user.id
 
     @blocked = User.find(blockage_params[:blocked_id])
+    current_user.unfollow!(@blocked) rescue nil
     current_user.block!(@blocked)
 
     respond_to do |format|

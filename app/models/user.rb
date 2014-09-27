@@ -203,6 +203,11 @@ class User < ActiveRecord::Base
     blockages.find_by_blocked_id(blocked).destroy unless id == blocked.id
   end
 
+  def can_play_with(user)
+    # check blockers first since a the person who did the blocking probably won't be interacting as much
+    !((blockers_count > 0 and blockers.include? user) or (blocking_count > 0 and blocking.include? user))
+  end
+
   def feed
     Post.from_users_followed_by(self)
   end

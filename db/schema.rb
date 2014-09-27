@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140908204043) do
+ActiveRecord::Schema.define(version: 20140927041131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20140908204043) do
   end
 
   add_index "authorizations", ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", using: :btree
+
+  create_table "blockages", force: true do |t|
+    t.integer  "blocker_id"
+    t.integer  "blocked_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "blogs", force: true do |t|
     t.integer  "user_id"
@@ -262,6 +269,8 @@ ActiveRecord::Schema.define(version: 20140908204043) do
     t.string   "last_sign_in_ip"
     t.boolean  "feed_present",           default: false
     t.integer  "status"
+    t.integer  "blocking_count",         default: 0
+    t.integer  "blockers_count",         default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

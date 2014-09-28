@@ -18,7 +18,7 @@ class Api::CommentsController < Api::APIController
 
     respond_to do |format|
       format.json do
-        render_json posts: comments.map { |comment| comment.simple_obj }
+        render_json comments: comments.map { |comment| comment.simple_obj }
       end
     end
   end

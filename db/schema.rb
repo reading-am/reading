@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140908204043) do
+ActiveRecord::Schema.define(version: 20140927153546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 20140908204043) do
   end
 
   add_index "authorizations", ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", using: :btree
+
+  create_table "blockages", force: true do |t|
+    t.integer  "blocker_id"
+    t.integer  "blocked_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "blockages", ["blocked_id"], name: "index_blockages_on_blocked_id", using: :btree
+  add_index "blockages", ["blocker_id", "blocked_id"], name: "index_blockages_on_blocker_id_and_blocked_id", unique: true, using: :btree
+  add_index "blockages", ["blocker_id"], name: "index_blockages_on_blocker_id", using: :btree
 
   create_table "blogs", force: true do |t|
     t.integer  "user_id"
@@ -262,6 +273,8 @@ ActiveRecord::Schema.define(version: 20140908204043) do
     t.string   "last_sign_in_ip"
     t.boolean  "feed_present",           default: false
     t.integer  "status"
+    t.integer  "blocking_count",         default: 0
+    t.integer  "blockers_count",         default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
@@ -271,6 +284,9 @@ ActiveRecord::Schema.define(version: 20140908204043) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "authorizations", "users", name: "authorizations_user_id_fk", dependent: :delete
+
+  add_foreign_key "blockages", "users", name: "blockages_blocked_id_fk", column: "blocked_id", dependent: :delete
+  add_foreign_key "blockages", "users", name: "blockages_blocker_id_fk", column: "blocker_id", dependent: :delete
 
   add_foreign_key "blogs", "users", name: "blogs_user_id_fk", dependent: :delete
 

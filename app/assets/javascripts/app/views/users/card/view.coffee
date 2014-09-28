@@ -16,12 +16,19 @@ define [
 
       @rss_path = options.rss_path
       @populate_follow_state()
+      @populate_blockage_state()
 
     populate_follow_state: ->
       if User::current.signed_in() and @model.id isnt User::current.id
         User::current.following.params.user_ids = [@model.id]
         User::current.following.fetch success: (following) =>
           @model.set is_following: !!following.length
+
+    populate_blockage_state: ->
+      if User::current.signed_in() and User::current.get("blocking_count") > 0 and @model.id isnt User::current.id
+        User::current.blocking.params.user_ids = [@model.id]
+        User::current.blocking.fetch success: (blocking) =>
+          @model.set is_blocking: !!blocking.length
 
     json: ->
       has_avatar = @model.id isnt User::current.id or @model.avatar.indexOf("/default/") is -1

@@ -76,7 +76,7 @@ define [
               collection.fetchNextPage success: (collection, data) =>
                 # This is on a delay because the waypoints plugin will miscalculate
                 # the offset if rendering the new DOM elements hasn't finished
-                more = data?[collection.type.toLowerCase()]?.length >= collection.params.limit
+                more = !!data?[collection.type.toLowerCase()]?.length
                 setTimeout =>
                   @$el.waypoint(if more then "enable" else "destroy")
                 , 1500

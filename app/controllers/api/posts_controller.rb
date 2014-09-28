@@ -14,9 +14,15 @@ class Api::PostsController < Api::APIController
   # Will spin out when we aggregate in comments.
 
   def index
+    posts = Api::Posts.index(params)
+
+    if signed_in?
+      posts = posts.select { |post| current_user.can_play_with(post.user) }
+    end
+
     respond_to do |format|
       format.json do
-        render_json posts: Api::Posts.index(params).map { |post| post.simple_obj }
+        render_json posts: posts.map { |post| post.simple_obj }
       end
     end
   end

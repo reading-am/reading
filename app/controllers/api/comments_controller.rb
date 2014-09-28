@@ -10,33 +10,19 @@ class Api::CommentsController < Api::APIController
   public
 
   def index
-    if params[:page_id]
-      where = {
-        :cond => "page_id = :page_id",
-        :params => {
-          :page_id => params[:page_id]
-        }
-      }
-      if !params[:after_created_at].blank?
-        where[:cond] += " AND created_at > :after_created_at"
-        where[:params][:after_created_at] = params[:after_created_at]
-      end
-      if !params[:after_id].blank?
-        where[:cond] += " AND id > :after_id"
-        where[:params][:after_id] = params[:after_id]
-      end
-      @comments = Comment.where(where[:cond], where[:params])
-    else
-      @comments =  Comment.order("created_at DESC")
-                          .paginate(:page => params[:page])
-    end
+    comments = Api::Comments.index(params)
 
-    @comments = @comments.includes([:user, :page])
+    if signed_in?
+      comments = comments.select { |comment| current_user.can_play_with(comment.user) }
+    end
 
     respond_to do |format|
-      format.json { render_json :comments => @comments.collect { |comment| comment.simple_obj } }
+      format.json do
+        render_json posts: comments.map { |comment| comment.simple_obj }
+      end
     end
   end
+  # before_action -> { doorkeeper_authorize! :public }, only: :index
   add_transaction_tracer :index
 
   def show

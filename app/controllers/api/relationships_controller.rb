@@ -1,6 +1,14 @@
 # encoding: utf-8
 class Api::RelationshipsController < Api::APIController
 
+  private
+
+  def rel_params
+    params.require(:model).permit(:follower_id, :followed_id)
+  end
+
+  public
+
   def index
     respond_to do |format|
       format.json do
@@ -13,13 +21,12 @@ class Api::RelationshipsController < Api::APIController
   def create
     show_400 and return if params[:user_id].to_i != current_user.id
 
-    # NOTE - we use request.POST here because :user_id is
-    # also the name of the route param which takes precedence
-    @user = User.find(request.POST[:user_id])
-    current_user.follow!(@user)
+    @followed = User.find(rel_params[:followed_id])
+    current_user.follow!(@followed)
+    current_user.unblock!(@followed) if current_user.blocking_count > 0 rescue nil
 
     respond_to do |format|
-      format.json { render_json user: @user.simple_obj }
+      format.json { render_json user: @followed.simple_obj }
     end
   end
   add_transaction_tracer :create
@@ -27,11 +34,11 @@ class Api::RelationshipsController < Api::APIController
   def destroy
     show_400 and return if params[:user_id].to_i != current_user.id
 
-    @user = User.find(params[:id])
-    current_user.unfollow!(@user)
+    @followed = User.find(params[:id])
+    current_user.unfollow!(@followed)
 
     respond_to do |format|
-      format.json { render_json user: @user.simple_obj }
+      format.json { render_json user: @followed.simple_obj }
     end
   end
   add_transaction_tracer :destroy

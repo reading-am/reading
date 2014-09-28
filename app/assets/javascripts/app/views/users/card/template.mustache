@@ -16,11 +16,19 @@
       - <a href="/users/recommended" class="button">Find People</a>
     {{/is_current_user}}
     {{^is_current_user}}
-      - <a rel="tooltip" data-title="Add what {{first_name}} reads to your following feed" href="#" class="button event_follow">
-      <span>{{#is_following}}Unfollow{{/is_following}}{{^is_following}}Follow{{/is_following}}</span>
+      - <a href="#" class="button {{^is_blocking}}event_follow{{/is_blocking}} {{#is_blocking}}is_blocking{{/is_blocking}}">
+      <span>
+        {{#is_following}}Unfollow{{/is_following}}
+        {{^is_following}}
+          {{#is_blocking}}Blocking{{/is_blocking}}
+          {{^is_blocking}}Follow{{/is_blocking}}
+        {{/is_following}}
+      </span>
       {{first_name}}
       </a>
-      <a href="#" class="r_block {{#is_blocking}}is_blocking{{/is_blocking}}">⊘</a>
+      {{^is_blocking}}
+        <a href="#" class="r_block">⊘</a>
+      {{/is_blocking}}
     {{/is_current_user}}
   </nav>
   <div id="user_places" class="span6 offset1">

@@ -15,7 +15,7 @@ define [
     events:
       "click .event_show"   : "show"
       "click .event_follow" : "follow"
-      "click .r_block" : "block"
+      "click .r_block, .is_blocking" : "block"
 
     show: ->
       if window.location.host.indexOf(Constants.domain) isnt 0

@@ -14,7 +14,7 @@ class CommentObserver < ActiveRecord::Observer
 
     # Send mention emails
     comment.mentioned_users.where('id != ?', comment.user_id).each do |user|
-      if !user.email.blank? and user.email_when_mentioned
+      if !user.email.blank? and user.email_when_mentioned and comment.user.can_play_with(user)
         comment.is_a_show ? UserMailerShownAPageJob.new.async.perform(comment, user)
                           : UserMailerMentionedJob.new.async.perform(comment, user)
       end

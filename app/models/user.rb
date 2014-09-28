@@ -46,6 +46,16 @@ class User < ActiveRecord::Base
                                    dependent: :destroy # also handled by foreign key
   has_many :followers, through: :reverse_relationships, source: :follower
 
+  # Blocking
+  has_many :blockages, foreign_key: "blocker_id",
+                       dependent: :destroy # also handled by foreign key
+  has_many :blocking, through: :blockages, source: :blocked
+
+  has_many :reverse_blockages, foreign_key: "blocked_id",
+                               class_name: "Blockage",
+                               dependent: :destroy # also handled by foreign key
+  has_many :blockers, through: :reverse_blockages, source: :blocker
+
   has_many :blogs, dependent: :destroy # also handled by foreign key
 
   has_attached_file :avatar,
@@ -178,11 +188,24 @@ class User < ActiveRecord::Base
   end
 
   def follow!(followed)
-    relationships.create!(followed_id: followed.id) unless id == followed.id
+    relationships.create!(followed: followed) unless id == followed.id
   end
 
   def unfollow!(followed)
     relationships.find_by_followed_id(followed).destroy unless id == followed.id
+  end
+
+  def block!(blocked)
+    blockages.create!(blocked: blocked) unless id == blocked.id
+  end
+
+  def unblock!(blocked)
+    blockages.find_by_blocked_id(blocked).destroy unless id == blocked.id
+  end
+
+  def can_play_with(user)
+    # check blockers first since a the person who did the blocking probably won't be interacting as much
+    !((blockers_count > 0 and blockers.include? user) or (blocking_count > 0 and blocking.include? user))
   end
 
   def feed
@@ -278,6 +301,8 @@ class User < ActiveRecord::Base
       posts_count:     posts.size,
       following_count: following.size,
       followers_count: followers.size,
+      blocking_count: blocking.size,
+      blockers_count: blockers.size,
       access:     access,
       created_at: created_at,
       updated_at: updated_at

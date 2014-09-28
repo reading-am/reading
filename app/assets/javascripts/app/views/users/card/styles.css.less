@@ -39,14 +39,17 @@
       background-color:@dark_green;
     }
   }
+  .is_blocking {
+    background-color: @ghost_grey;
+    &:hover {
+      background-color: @light_grey;
+    }
+  }
   .r_block {
     border: none;
     margin-left: 6px;
     font-size: 20px;
     color: @medium_light_grey;
-    &.is_blocking {
-      color: @red;
-    }
   }
 }
 #avatar, #avatar:hover {

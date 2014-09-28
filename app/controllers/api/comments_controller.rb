@@ -33,6 +33,10 @@ class Api::CommentsController < Api::APIController
 
     @comments = @comments.includes([:user, :page])
 
+    if signed_in?
+      @comments = @comments.select { |comment| current_user.can_play_with(comment.user) }
+    end
+
     respond_to do |format|
       format.json { render_json :comments => @comments.collect { |comment| comment.simple_obj } }
     end

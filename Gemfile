@@ -135,6 +135,8 @@ group :development do
   gem 'irbtools', require: false
   gem 'terminal-notifier', require: false # or else irbtools will complain
   gem 'meta_request' # for RailsPanel
+  gem 'spring'
+  gem 'spring-watcher-listen'
 end
 
 group :development, :test do

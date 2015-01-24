@@ -387,6 +387,10 @@ GEM
       actionpack (>= 3.1)
       less (~> 2.3.1)
     libv8 (3.11.8.17)
+    listen (1.3.1)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+      rb-kqueue (>= 0.2)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     macaddr (1.6.1)
@@ -537,6 +541,11 @@ GEM
     rake (10.4.2)
     rash (0.4.0)
       hashie (~> 2.0.0)
+    rb-fsevent (0.9.4)
+    rb-inotify (0.9.5)
+      ffi (>= 0.5.0)
+    rb-kqueue (0.2.3)
+      ffi (>= 0.5.0)
     rdoc (4.0.1)
       json (~> 1.4)
     ref (1.0.5)
@@ -575,6 +584,10 @@ GEM
     spoon (0.0.4)
       ffi
     spork (1.0.0rc3)
+    spring (1.2.0)
+    spring-watcher-listen (1.0.0)
+      listen (~> 1.0)
+      spring (~> 1.2)
     sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -721,6 +734,8 @@ DEPENDENCIES
   ruby-thumbor
   sitemap_generator
   spork-rails!
+  spring
+  spring-watcher-listen
   sucker_punch
   tapout
   teaspoon!

@@ -33,13 +33,6 @@ GIT
       multi_json
 
 GIT
-  remote: git://github.com/doorkeeper-gem/doorkeeper.git
-  revision: 9e64042a5862e72343cf25dd2a69cfa0cb64f43d
-  specs:
-    doorkeeper (1.4.0)
-      railties (>= 3.1)
-
-GIT
   remote: git://github.com/leppert/kippt.git
   revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
   specs:
@@ -203,10 +196,11 @@ GEM
     ansi (1.4.3)
     arel (6.0.0)
     awesome_print (1.1.0)
-    aws-sdk (1.11.1)
+    aws-sdk (1.61.0)
+      aws-sdk-v1 (= 1.61.0)
+    aws-sdk-v1 (1.61.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
-      uuidtools (~> 2.1)
     base58 (0.1.0)
     bcrypt (3.1.9)
     better_errors (0.9.0)
@@ -281,6 +275,8 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
+    doorkeeper (1.4.0)
+      railties (>= 3.1)
     dotenv (0.10.0)
     dotenv-rails (0.10.0)
       dotenv (= 0.10.0)
@@ -304,7 +300,7 @@ GEM
     eventmachine (1.0.3)
     evernote-thrift (1.25.1)
     every_day_irb (1.5.0)
-    excon (0.25.3)
+    excon (0.25.1)
     execjs (2.0.2)
     fancy_irb (0.7.3)
       paint (>= 0.8.1)
@@ -317,7 +313,7 @@ GEM
     faye-websocket (0.4.7)
       eventmachine (>= 0.12.0)
     ffi (1.9.3)
-    fog (1.14.0)
+    fog (1.15.0)
       builder
       excon (~> 0.25.0)
       formatador (~> 0.2.0)
@@ -332,7 +328,7 @@ GEM
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
-    formatador (0.2.4)
+    formatador (0.2.5)
     g (1.7.2)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
@@ -411,9 +407,9 @@ GEM
     multi_json (1.7.9)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
-    net-scp (1.1.2)
+    net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.8)
+    net-ssh (2.9.2)
     newrelic_rpm (3.7.3.204)
     nilify_blanks (1.0.1)
       activerecord (>= 3.0.0)
@@ -640,7 +636,6 @@ GEM
     uniform_notifier (1.6.2)
     uuid (2.3.7)
       macaddr (~> 1.0)
-    uuidtools (2.1.4)
     warden (1.2.3)
       rack (>= 1.0)
     watchr (0.7)
@@ -678,7 +673,7 @@ DEPENDENCIES
   delayed_job_active_record
   delayed_job_web
   devise
-  doorkeeper!
+  doorkeeper
   dotenv-rails
   elasticsearch-model
   escape_utils

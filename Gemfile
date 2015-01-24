@@ -128,7 +128,8 @@ gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configur
 group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
-  gem 'debugger' # throws segfault with ruby 2.1.0 at the moment
+  gem 'pry'
+  gem 'pry-doc'
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors

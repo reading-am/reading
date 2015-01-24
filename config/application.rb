@@ -58,5 +58,8 @@ module Reading
  
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Migrate Rails 4.0 cookies to new Rails 4.1 JSON syntax
+    config.action_dispatch.cookies_serializer = :hybrid
   end
 end

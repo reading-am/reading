@@ -5,7 +5,7 @@ ruby '2.1.0'
 # Core Services #
 #################
 gem 'dotenv-rails', :groups => [:development, :test]
-gem 'rails', '4.0.5'
+gem 'rails', '4.2.0'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server
@@ -106,7 +106,7 @@ gem 'tuml', github: 'leppert/tuml'
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', github: 'leppert/requirejs-rails', branch: 'rails4' # using an older ref because the new one balloons the precompile time, which takes forever on Heroku
+gem 'requirejs-rails'
 gem 'rails-backbone'
 gem 'jquery-rails'
 

@@ -63,5 +63,8 @@ module Reading
 
     # Migrate Rails 4.0 cookies to new Rails 4.1 JSON syntax
     config.action_dispatch.cookies_serializer = :hybrid
+
+    # Soon to be the default in Rails 5
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end

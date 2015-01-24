@@ -639,6 +639,11 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     watchr (0.7)
+    web-console (2.0.0)
+      activemodel (~> 4.0)
+      binding_of_caller (>= 0.7.2)
+      railties (~> 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
     wirb (1.0.1)
       paint
     workless (1.2.3)
@@ -747,5 +752,6 @@ DEPENDENCIES
   typhoeus
   uglifier
   watchr
+  web-console
   will_paginate!
   workless

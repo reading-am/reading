@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 ShimMech = Struct.new 'ShimMech', :uri, :body_str do
   def search *args

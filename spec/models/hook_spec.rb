@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe Hook do
   fixtures :users, :hooks, :posts, :pages, :domains, :authorizations

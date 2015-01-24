@@ -145,7 +145,8 @@ group :development, :test do
   gem 'teaspoon', github: 'modeset/teaspoon'
   gem 'tapout'
   gem 'rspec-rails'
-  gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'
   gem 'pry-byebug'
+  gem 'capybara'
+  gem 'selenium-webdriver'
 end

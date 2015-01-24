@@ -13,7 +13,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached
 gem 'elasticsearch-model'
-gem 'rails_12factor', group: :production # needed by Heroku
+gem 'rails_12factor', group: [:staging, :production] # needed by Heroku
 
 #############
 # Core Libs #
@@ -145,7 +145,7 @@ group :development, :test do
   gem 'teaspoon', github: 'modeset/teaspoon'
   gem 'tapout'
   gem 'rspec-rails'
-  #gem 'rspec-ontap'
   gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'
+  gem 'pry-byebug'
 end

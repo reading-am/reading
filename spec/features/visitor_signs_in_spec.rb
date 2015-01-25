@@ -49,6 +49,6 @@ feature 'Signing in' do
     popup = page.driver.browser.window_handles.last
     page.driver.browser.switch_to.window(popup)
 
-    expect(current_path).to eq('/twitter')
+    expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
   end
 end

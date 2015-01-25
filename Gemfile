@@ -142,7 +142,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'teaspoon', github: 'modeset/teaspoon'
+  gem 'teaspoon'
   gem 'tapout'
   gem 'rspec-rails'
   gem 'watchr'

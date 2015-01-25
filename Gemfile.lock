@@ -89,13 +89,6 @@ GIT
     will_paginate (3.0.4)
 
 GIT
-  remote: git://github.com/modeset/teaspoon.git
-  revision: 83440f080185d495e48dfc35420cffeb8596c7b1
-  specs:
-    teaspoon (0.8.0)
-      railties (>= 3.2.5, < 5)
-
-GIT
   remote: git://github.com/skirchmeier/tinder.git
   revision: 740af8c53540eb188367ac3e33421880229b0388
   specs:
@@ -603,6 +596,8 @@ GEM
     tapout (0.4.2)
       ansi
       json
+    teaspoon (0.8.0)
+      railties (>= 3.2.5, < 5)
     terminal-notifier (1.4.2)
     text (1.2.1)
     therubyracer (0.11.4)
@@ -747,7 +742,7 @@ DEPENDENCIES
   spring-watcher-listen
   sucker_punch
   tapout
-  teaspoon!
+  teaspoon
   terminal-notifier
   text
   therubyracer

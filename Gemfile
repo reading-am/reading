@@ -30,7 +30,7 @@ gem 'foreigner' # DB foreign keys
 #####################
 # Ruby Conveniences #
 #####################
-gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/support_rails_4'
+gem 'bitmask_attributes', github: 'joelmoss/bitmask_attributes'
 gem 'nilify_blanks'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
@@ -120,7 +120,7 @@ gem 'fog'
 ##########
 # Assets #
 ##########
-gem 'less-rails'
+gem 'less-rails', '2.3.3' # Can be upgraded when twitter_bootstrap_rails is upgraded. See: https://github.com/metaskills/less-rails/issues/71
 gem 'therubyracer' # Required by less-rails
 gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml

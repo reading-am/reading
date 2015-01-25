@@ -39,4 +39,16 @@ feature 'Signing in' do
     expect(current_path).to eq('/sign_in')
     expect(page).to have_content 'Invalid'
   end
+
+  scenario 'Signing in with Twitter' do
+    visit '/'
+
+    click_link 't Twitter'
+    expect(page.driver.browser.window_handles.length).to eq(2)
+
+    popup = page.driver.browser.window_handles.last
+    page.driver.browser.switch_to.window(popup)
+
+    expect(current_path).to eq('/twitter')
+  end
 end

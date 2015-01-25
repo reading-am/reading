@@ -98,7 +98,7 @@ gem 'will_paginate', github: 'mislav/will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
-gem 'premailer-rails', github: 'leppert/premailer-rails', branch: 'patch-1'
+gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
 gem "musterb", github: 'leppert/musterb'
 gem 'tuml', github: 'leppert/tuml'

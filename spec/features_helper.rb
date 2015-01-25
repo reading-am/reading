@@ -35,7 +35,7 @@ module CapybaraExtensions
     return "requirejs failed to load" if page.execute_script('return typeof require == "undefined"')
     return "The primary init js file failed to load" if page.execute_script('try { return require.defined("web/init") == false } catch(e) { return false }')
     return "jQuery failed to load" if page.execute_script('try { return require.defined("jquery") == false } catch(e) { return false }')
-    return "document.ready failed to fire" if page.execute_script('try { return require("jquery").isReady } catch(e) { return false }')
+    return "document.ready failed to fire" if page.execute_script('try { return require("jquery").isReady != true } catch(e) { return false }')
     return "XHR failed to complete" if page.execute_script('try { require("jquery").active != 0 } catch(e) { return false }')
     return "Animation failed to complete" if page.execute_script('try { return require("jquery")(":animated").length != 0 } catch(e) { return false }')
   end

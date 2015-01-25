@@ -14,7 +14,7 @@ module CapybaraExtensions
   end
 
   def reload
-    visit current_path
+    visit current_url
   end
 
   # http://robots.thoughtbot.com/automatically-wait-for-ajax-with-capybara

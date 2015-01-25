@@ -51,4 +51,16 @@ feature 'Signing in' do
 
     expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
   end
+
+  scenario 'Signing in with Twitter' do
+    visit '/'
+
+    click_link 'f Facebook'
+    expect(page.driver.browser.window_handles.length).to eq(2)
+
+    popup = page.driver.browser.window_handles.last
+    page.driver.browser.switch_to.window(popup)
+
+    expect(current_url).to start_with('https://www.facebook.com/dialog/oauth')
+  end
 end

@@ -2,7 +2,7 @@ require 'rake'
 require 'capybara/rspec'
 Capybara.default_wait_time = 10
 Capybara.javascript_driver = :selenium
-Capybara.current_driver = Capybara.javascript_driver
+Capybara.default_driver = Capybara.javascript_driver
 
 class JSTimeoutError < StandardError
 end

@@ -13,13 +13,7 @@ greg:
   description: Design'n. Develop'n. Cofound'n Svpply.com. Weekend'n Reading.am.
   image: http://a0.twimg.com/profile_images/1609147766/302644_10150294503584070_500384069_7411310_1065630111_n_normal.jpeg
   phone: 
-  urls: ! '--- !ruby/hash:Hashie::Mash
-
-    Website: http://leppert.me
-
-    Twitter: http://twitter.com/leppert
-
-'
+  urls: ! '{"Website": "http://leppert.me", "Twitter": "http://twitter.com/leppert"}'
   email_when_followed: t
   avatar_file_name: tabo.png
   avatar_content_type: image/png
@@ -35,7 +29,7 @@ greg:
   comments_count: '680'
   email_when_mentioned: t
   roles: '1'
-  encrypted_password: aslssssfjkdslafjsl
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: '2013-03-22 15:30:02.413549'
@@ -60,7 +54,7 @@ howard:
   description: 
   image: http://graph.facebook.com/517880926/picture?type=square
   phone: 
-  urls: ! "--- \nFacebook: http://www.facebook.com/quiet\nWebsite: \n"
+  urls: ! '{"Facebook": "http://www.facebook.com/quiet", "Website": null}'
   email_when_followed: t
   avatar_file_name: howard_hughes.png
   avatar_content_type: image/png
@@ -76,7 +70,7 @@ howard:
   comments_count: '262'
   email_when_mentioned: t
   roles: 
-  encrypted_password: afjdsklafjdsklfjkl
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: '2012-12-16 14:50:02.906465'

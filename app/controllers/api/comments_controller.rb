@@ -29,7 +29,7 @@ class Api::CommentsController < Api::APIController
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      format.json { render_json :comment => @comment }
+      format.json { render_json comment: @comment.simple_obj }
     end
   end
   add_transaction_tracer :show

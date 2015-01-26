@@ -13,4 +13,5 @@ define [
 
       shared
         type: Users
+        methods: [] # we don't list all users via the API
         search_term: "greg"

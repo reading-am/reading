@@ -4,6 +4,8 @@ Capybara.default_wait_time = 10
 Capybara.javascript_driver = :selenium
 Capybara.default_driver = Capybara.javascript_driver
 
+include Warden::Test::Helpers
+
 class JSTimeoutError < StandardError
 end
 

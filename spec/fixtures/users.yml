@@ -1,5 +1,4 @@
 greg:
-  id: '1'
   name: Greg Leppert
   username: greg
   created_at: '2011-08-08 11:43:22.496678'
@@ -40,7 +39,6 @@ greg:
   last_sign_in_ip: 127.0.0.1
 
 howard:
-  id: '2'
   name: Howards
   username: howard
   created_at: '2011-08-08 11:49:08.733713'

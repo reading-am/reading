@@ -1,5 +1,9 @@
 daringfireball:
-  id: 20
   name: daringfireball.net
   verb: ~
   pages_count: 103
+
+metafilter:
+  name: metafilter.com
+  verb: ~
+  pages_count: 1

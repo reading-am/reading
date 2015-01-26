@@ -16,6 +16,8 @@ class Page < ActiveRecord::Base
   before_validation :populate_domain, if: :url_changed?
   before_validation :populate_medium
 
+  MEDIUMS = %w(all text images video audio)
+
 private
 
   # This is a fallback to make sure every Page has a medium,

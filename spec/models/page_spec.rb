@@ -12,17 +12,17 @@ describe Page do
   context "when cleaning up the url" do
 
     it "restores missing slashes in the protocol" do
-      Page.cleanup_url("http:/testing.com/http:/here").should eq("http://testing.com/http:/here")
-      Page.cleanup_url("https:/testing.com/http:/here").should eq("https://testing.com/http:/here")
-      Page.cleanup_url("https://testing.com").should eq("https://testing.com")
+      expect(Page.cleanup_url("http:/testing.com/http:/here")).to eq("http://testing.com/http:/here")
+      expect(Page.cleanup_url("https:/testing.com/http:/here")).to eq("https://testing.com/http:/here")
+      expect(Page.cleanup_url("https://testing.com")).to eq("https://testing.com")
     end
 
     it "adds a protocol when one is missing" do
-      Page.cleanup_url("testing.com/here/is").should eq("http://testing.com/here/is")
+      expect(Page.cleanup_url("testing.com/here/is")).to eq("http://testing.com/here/is")
     end
 
     it "lowercases the scheme/protocol and host" do
-      Page.cleanup_url("HTTPs://teSTing.com/HERE/is").should eq("https://testing.com/HERE/is")
+      expect(Page.cleanup_url("HTTPs://teSTing.com/HERE/is")).to eq("https://testing.com/HERE/is")
     end
 
   end
@@ -45,15 +45,15 @@ describe Page do
       ].each do |url|
         page = Page.new url: url
         page.save
-        page.new_record?.should be_true
-        page.errors.messages[:domain].should be_true
+        expect(page.new_record?).to be true
+        expect(page.errors.messages[:domain]).to be true
       end
     end
 
     it "resolves the canonical url when present" do
       page = pages(:youtube_short)
       page.mech = ShimMech.new URI.parse('http://www.youtube.com/watch?v=sIy4KsWq-FA&feature=youtu.be&t=1m36s'), page.head_tags.to_s
-      page.remote_canonical_url.should eq("http://www.youtube.com/watch?v=sIy4KsWq-FA")
+      expect(page.remote_canonical_url).to eq("http://www.youtube.com/watch?v=sIy4KsWq-FA")
     end
 
     it "identifies files without html wrappers" do
@@ -78,8 +78,8 @@ describe Page do
         }.each do |medium, urls|
           urls.each do |url|
             page = Page.new url: url
-            page.save.should be_true
-            page.medium.should eq medium
+            expect(page.save).to be true
+            expect(page.medium).to eq(medium)
           end
         end
       end
@@ -87,17 +87,17 @@ describe Page do
 
     it "accurately parses the title tag when present" do
       page = pages(:youtube_short)
-      page.title_tag.should eq("Slint - \"Nosferatu Man\" - YouTube")
+      expect(page.title_tag).to eq("Slint - \"Nosferatu Man\" - YouTube")
     end
 
     it "accurately parses the media type when present" do
       page = pages(:youtube_short)
-      page.media_type.should eq("video")
+      expect(page.media_type).to eq("video")
     end
 
     it "accurately parses the keywords into an array when present" do
       page = pages(:youtube_short)
-      page.keywords.should eq([
+      expect(page.keywords).to eq([
         'slint','louisville','indie',
         'punk','rock','hardcore',
         'kentucky','reunion','pajo',
@@ -107,7 +107,7 @@ describe Page do
 
     it "accurately parses the meta tags when present" do
       page = pages(:youtube_short)
-      page.meta_tags.should eq({
+      expect(page.meta_tags).to eq({
         "og" => {
           "url" => "http://www.youtube.com/watch?v=sIy4KsWq-FA",
           "title" => "Slint - \"Nosferatu Man\"",
@@ -145,7 +145,7 @@ describe Page do
 
     it "accurately parses the link tags when present" do
       page = pages(:youtube_short)
-      page.link_tags.should eq({
+      expect(page.link_tags).to eq({
         "search" => "http://www.youtube.com/opensearch?locale=en_US",
         "shortcut icon" => "http://s.ytimg.com/yts/img/favicon-vfldLzJxy.ico",
         "icon" => "//s.ytimg.com/yts/img/favicon_32-vflWoMFGx.png",

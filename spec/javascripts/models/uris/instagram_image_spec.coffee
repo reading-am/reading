@@ -12,7 +12,7 @@ define [
 
         beforeEach ->
           @ids = [
-            "Lq8xzYBvXC"
+            "yL_7PwBBH1"
             "LmGhlTMo88"
             "XgS1tuPf3l"
           ]
@@ -35,7 +35,7 @@ define [
           it "should get data from the API", (done) ->
             @model.fetch 
               success: (model, response) ->
-                model.get("title").should.equal("Mint Julip in Louisville.")
+                model.get("title").should.equal("White privilege")
                 done()
               error: (model, response) ->
                 throw response.responseText

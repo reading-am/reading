@@ -10,7 +10,7 @@ define [
 
     sync: (method, model, options) ->
       options.dataType = "jsonp"
-      options.url = "https://api.instagram.com/oembed?url=http://instagr.am/p/#{@id}/"
+      options.url = "https://api.instagram.com/oembed?url=http://instagram.com/p/#{@id}/"
       $.ajax options
 
   App.Models.URIs.InstagramImage = InstagramImage

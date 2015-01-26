@@ -1,11 +1,15 @@
 # encoding: utf-8
 class Api::APIController < ActionController::Metal
+  # Needed for > Rails 4.0; order matters
+  include AbstractController::Rendering
+  include ActionView::Rendering
   # Bare metal rails controllers: http://www.slideshare.net/artellectual/developing-api-with-rails-metal
   include ActionController::Helpers
   include ActionController::Redirecting
   include ActionController::Rendering
   include ActionController::Renderers::All
   include ActionController::ConditionalGet
+  include ActionController::RackDelegation
   # need this for responding to different types .json .xml etc...
   include ActionController::MimeResponds
   include AbstractController::Callbacks

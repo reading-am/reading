@@ -13,4 +13,4 @@ define [
 
       shared
         type: Pages
-        search_term: "test"
+        # search_term: "test" # TODO: uncomment when we bring back page search

@@ -10,7 +10,7 @@ define [
     describe "User", ->
 
       beforeEach ->
-        @model = new User id: 2
+        @model = new User id: 1
 
       shared
         methods: ["read"]

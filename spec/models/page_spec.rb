@@ -37,6 +37,7 @@ describe Page do
         "nvalt://make/?txt=http%3A%2F%2Fcarl.flax.ie%2Fdothingstellpeople.html",
         "yorufukurou://pasteurl/'The%20Fifth%20Floor'%20(El%20Quinto%20Piso)%3A%20Who%20Will%20Rebuild%20the%20House%20of%20Puerto%20Rico%3F%20-%20Forbes%20http%3A%2F%2Fwww.forbes.com%2Fsites%2Fgiovannirodriguez%2F2013%2F01%2F16%2Fthe-fifth-floor-el-quinto-piso-who-will-rebuild-the-house-of-puerto-rico%2F"
       ].each do |url|
+        # Don't hit Describe
         Page.skip_callback(:validation, :before, :populate_describe_data)
         page = Page.new url: url
         page.save

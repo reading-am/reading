@@ -30,7 +30,7 @@ class Api::PagesController < Api::APIController
 
   def update
     @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @page = Page.find(params[:id], include: :describe_data)
+    @page = Page.includes(:describe_data).find(params[:id])
 
     respond_to do |format|
       if !@user

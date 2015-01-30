@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe Hook do
-  fixtures :hooks, :posts
+  fixtures :users, :authorizations, :hooks, :domains, :pages, :posts
 
   context "when run" do
 

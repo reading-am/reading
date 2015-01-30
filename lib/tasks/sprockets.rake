@@ -4,8 +4,8 @@ Rake::Task['assets:precompile'].enhance do
   manifest_path = Dir[File.join("#{Rails.root}/public/assets", "manifest*.json")].max { |a,b| test(?M, a) <=> test(?M, b) }
   rjs_path = Dir[File.join("#{Rails.root}/public/assets", "rjs-manifest*.json")].max { |a,b| test(?M, a) <=> test(?M, b) }
 
-  manifest = ActiveSupport::JSON.decode(File.new(manifest_path)) rescue {}
-  rjs_manifest = ActiveSupport::JSON.decode(File.new(rjs_path)) rescue {}
+  manifest = ActiveSupport::JSON.decode(File.new(manifest_path).read) rescue {}
+  rjs_manifest = ActiveSupport::JSON.decode(File.new(rjs_path).read) rescue {}
 
   manifest.deep_merge! rjs_manifest
 

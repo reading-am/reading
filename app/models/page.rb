@@ -16,7 +16,7 @@ class Page < ActiveRecord::Base
   before_validation :populate_domain, if: :url_changed?
   before_validation :populate_medium
 
-  MEDIUMS = %w(all text images video audio)
+  MEDIUMS = %w(all text image video audio)
 
 private
 

@@ -13,12 +13,12 @@ class ApplicationController < ActionController::Base
 
   helper_method :mobile_device?, :desktop_device?, :bot?
 
-  rescue_from ActiveRecord::RecordNotFound, :with => :show_404
+  rescue_from ActiveRecord::RecordNotFound, with: :show_404
 
   private
 
   def ssl_configured?
-    !Rails.env.development?
+    %w(production staging).include? Rails.env
   end
 
   def profiler

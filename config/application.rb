@@ -2,7 +2,9 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-Bundler.require(:default, Rails.env)
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
 
 module Reading
   class Application < Rails::Application
@@ -39,9 +41,6 @@ module Reading
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
-    # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
-
     # Enable the asset pipeline
     # Even though this is true by default for Rails 4, something is
     # overwriting it unless set here. Maybe requirejs?
@@ -55,8 +54,8 @@ module Reading
     config.requirejs.logical_asset_filter += [/\.mustache$/,/\.css$/]
 
     config.cache_store = :dalli_store
- 
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+
+    # Soon to be the default in Rails 5
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end

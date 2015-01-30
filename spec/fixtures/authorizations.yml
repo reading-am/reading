@@ -35,13 +35,12 @@ tumblr:
   updated_at: 2012-10-25 01:10:33
 
 evernote: # this is a sandbox.evernote.com user
-  id: '2373'
   provider: evernote
   uid: '210108'
-  user_id: '1'
+  user: greg
   created_at: '2013-03-23 17:26:40.647688'
   updated_at: '2013-03-23 17:26:40.647688'
-  token: S=s1:U=334bc:E=144effa6e5d:C=13d9849425e:P=81:A=reading-am:V=2:H=30e6a71c57c11f904c823bf46d3d43aa
+  token: S=s1:U=334bc:E=152906628b1:C=14b38b4fbc0:P=81:A=reading-am:V=2:H=9687b24074ee291218aafc58dff973d8
   secret: ''
   permissions: ! '["read","write"]'
   info: ! '{"id":210108,"username":"reading","privilege":1,"active":true,"shardId":"s1","accounting":{"uploadLimit":62914560,"uploadLimitEnd":1365922800000,"uploadLimitNextMonth":62914560,"premiumServiceStatus":0},"edam":{"noteStoreUrl":"https://sandbox.evernote.com/shard/s1/notestore","webApiUrlPrefix":"https://sandbox.evernote.com/shard/s1/"}}'

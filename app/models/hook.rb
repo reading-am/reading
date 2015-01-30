@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
@@ -63,8 +63,13 @@ public
     events.include?(event) and (!SINGLE_FIRE.include?(provider) or (event == 'new' or !events.include?('new')))
   end
 
-  def run post, event_fired
-    HookJob.new.async.perform(self, post, event_fired.to_s) if responds_to event_fired
+  def run(post, event_fired)
+    return unless responds_to event_fired
+    if Rails.env.test?
+      send(provider, post, event_fired)
+    else
+      HookJob.perform_later(self, post, event_fired.to_s)
+    end
   end
 
   def facebook post, event_fired

@@ -1,11 +1,16 @@
 # Teaspoon includes some support files, but you can use anything from your own support path too.
 # require support/expect
 # require support/sinon
+# require support/chai
 # require support/your-support-file
 #
+# PhantomJS (Teaspoons default driver) doesn't have support for Function.prototype.bind, which has caused confusion.
+# Use this polyfill to avoid the confusion.
+#= require support/bind-poly
+#
 # Deferring execution
-# If you're using CommonJS, RequireJS or some other asynchronous library you can defer execution. Call Teaspoon.execute()
-# after everything has been loaded. Simple example of a timeout:
+# If you're using CommonJS, RequireJS or some other asynchronous library you can defer execution. Call
+# Teaspoon.execute() after everything has been loaded. Simple example of a timeout:
 #
 # Teaspoon.defer = true
 # setTimeout(Teaspoon.execute, 1000)
@@ -21,5 +26,16 @@
 #
 # For more information: http://github.com/modeset/teaspoon
 #
-# You can require javascript files here. A good place to start is by requiring your application.js.
+# Chai
+# If you're using Chai, you'll probably want to initialize your preferred assertion style. You can read more about Chai
+# at: http://chaijs.com/guide/styles
+#
+# window.assert = chai.assert
+# window.expect = chai.expect
+# window.should = chai.should()
+#
+# You can require your own javascript files here. By default this will include everything in application, however you
+# may get better load performance if you require the specific files that are being used in the spec that tests them.
+
+# We're using RequireJS so this is the only addition we need
 #= require require

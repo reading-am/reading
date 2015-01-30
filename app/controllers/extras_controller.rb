@@ -1,10 +1,15 @@
 # encoding: utf-8
 class ExtrasController < ActionController::Metal
+  include AbstractController::Rendering
+  include ActionView::Rendering
   include ActionController::Helpers
   include ActionController::Rendering
   include ActionController::Renderers::All
   include ActionController::ConditionalGet
   include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
+
+  append_view_path File.join('/')
+  append_view_path File.join(Rails.root, "app", "views")
 
   helper :application
 

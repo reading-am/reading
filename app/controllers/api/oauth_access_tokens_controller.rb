@@ -40,10 +40,9 @@ class Api::OauthAccessTokensController < Api::APIController
   add_transaction_tracer :update
 
   def destroy
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     @token = Doorkeeper::AccessToken.by_token(params[:id]) || Doorkeeper::AccessToken.by_refresh_token(params[:id])
 
-    if @user == @token.user
+    if current_user == @token.user
       if @token.revoked?
         status = :ok
       else

@@ -2,41 +2,49 @@ facebook:
   provider: facebook
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"publish_actions"}'
+  authorization: facebook
 
 twitter:
   provider: twitter
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write"}'
+  authorization: twitter
 
 tumblr:
   provider: tumblr
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write","place":{"id":"besttest","name":"The Best Test Blog"}}'
+  authorization: tumblr
 
 evernote:
   provider: evernote
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write","place":{"id":"8d75caf8-06d3-4dc2-949c-903ed24b5304","name":"reading''s notebook"}}'
+  authorization: evernote
 
 readability:
   provider: readability
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write"}'
+  authorization: readability
 
 instapaper:
   provider: instapaper
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write"}'
+  authorization: instapaper
 
 pocket:
   provider: pocket
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write"}'
+  authorization: pocket
 
 kippt:
   provider: kippt
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write","place":{"id":"216120","name":"Inbox"}}'
+  authorization: kippt
 
 hipchat:
   provider: hipchat
@@ -47,6 +55,7 @@ tssignals:
   provider: tssignals
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write","place":{"id":"452867","name":"Room 1"}}'
+  authorization: tssignals
 
 pinboard:
   provider: pinboard
@@ -57,3 +66,4 @@ flattr:
   provider: flattr
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write"}'
+  authorization: flattr

@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
-ruby '2.1.0'
+ruby '2.1.4'
 
 #################
 # Core Services #
 #################
 gem 'dotenv-rails', :groups => [:development, :test]
-gem 'rails', '4.0.5'
+gem 'rails', '4.2.0'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server
@@ -13,7 +13,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached
 gem 'elasticsearch-model'
-gem 'rails_12factor', group: :production # needed by Heroku
+gem 'rails_12factor', group: [:staging, :production] # needed by Heroku
 
 #############
 # Core Libs #
@@ -30,7 +30,7 @@ gem 'foreigner' # DB foreign keys
 #####################
 # Ruby Conveniences #
 #####################
-gem 'bitmask_attributes', github: 'zlx/bitmask_attributes', branch: 'feature/support_rails_4'
+gem 'bitmask_attributes', github: 'joelmoss/bitmask_attributes'
 gem 'nilify_blanks'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
@@ -60,7 +60,7 @@ gem 'omniauth-pocket'
 gem 'omniauth-flattr'
 gem 'omniauth-http-basic', github: 'leppert/omniauth-http-basic' #required by omniauth-kippt
 gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
-gem 'doorkeeper', github: 'doorkeeper-gem/doorkeeper'
+gem 'doorkeeper'
 
 ####################
 # Async Processing #
@@ -98,7 +98,7 @@ gem 'will_paginate', github: 'mislav/will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
-gem 'premailer-rails', github: 'leppert/premailer-rails', branch: 'patch-1'
+gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
 gem "musterb", github: 'leppert/musterb'
 gem 'tuml', github: 'leppert/tuml'
@@ -106,7 +106,7 @@ gem 'tuml', github: 'leppert/tuml'
 ###############
 # Frontend JS #
 ###############
-gem 'requirejs-rails', github: 'leppert/requirejs-rails', branch: 'rails4' # using an older ref because the new one balloons the precompile time, which takes forever on Heroku
+gem 'requirejs-rails'
 gem 'rails-backbone'
 gem 'jquery-rails'
 
@@ -120,7 +120,7 @@ gem 'fog'
 ##########
 # Assets #
 ##########
-gem 'less-rails'
+gem 'less-rails', '2.3.3' # Can be upgraded when twitter_bootstrap_rails is upgraded. See: https://github.com/metaskills/less-rails/issues/71
 gem 'therubyracer' # Required by less-rails
 gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
@@ -128,20 +128,26 @@ gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configur
 group :development do
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
-  gem 'debugger' # throws segfault with ruby 2.1.0 at the moment
+  gem 'pry'
+  gem 'pry-doc'
   gem 'progress_bar'
   gem 'better_errors'
   gem 'binding_of_caller' # for better_errors
   gem 'irbtools', require: false
   gem 'terminal-notifier', require: false # or else irbtools will complain
   gem 'meta_request' # for RailsPanel
+  gem 'spring'
+  gem 'spring-watcher-listen'
+  gem 'web-console'
 end
 
 group :development, :test do
-  gem 'teaspoon', github: 'modeset/teaspoon'
+  gem 'teaspoon'
   gem 'tapout'
   gem 'rspec-rails'
-  #gem 'rspec-ontap'
-  gem 'spork-rails', github: 'A-gen/spork-rails'
   gem 'watchr'
+  gem 'pry-byebug'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'spring-commands-rspec'
 end

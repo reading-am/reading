@@ -28,10 +28,11 @@ Reading::Application.routes.draw do
   get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
   # api
+  medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
   namespace :api, defaults: { format: 'json' } do
     resources :posts do
       get 'count',    on: :collection
-      get ':medium',  on: :collection, action: 'index'
+      get ':medium',  on: :collection, action: 'index', constraints: medium_constraints
     end
     resources :comments do
       get 'count',    on: :collection
@@ -44,13 +45,13 @@ Reading::Application.routes.draw do
       get 'expats',   on: :member
       resources :comments
       resources :posts do
-        get ':medium', on: :collection, action: 'index'
+        get ':medium', on: :collection, action: 'index', constraints: medium_constraints
       end
       resources :following,
         controller:   'relationships',
         defaults:     { type: 'following' },
         constraints:  { type: 'following' } do
-          get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index'
+          get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index', constraints: medium_constraints
       end
       resources :followers,
         controller:   'relationships',

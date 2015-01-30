@@ -6,6 +6,7 @@ define [
   chai.should()
 
   type = vals.type
+  methods = vals.methods ? ["create","read","update","destroy"]
   search_term = vals.search_term
 
   cors_support = $.support.cors
@@ -17,23 +18,25 @@ define [
       before -> $.support.cors = k
       after  -> $.support.cors = cors_support
 
-      describe "#fetch()", ->
+      if _.include methods, "read"
 
-        it "should get data from the API", (done) ->
-          @collection.fetch
-            success: (collection, response) ->
-              collection.length.should.not.be.empty
-              done()
-            error: (collection, response) ->
-              throw response.responseText.meta.msg
+        describe "#fetch()", ->
 
-        it "should factory JSON from API", (done) ->
-          @collection.fetch
-            success: (collection, response) ->
-              collection.first().should.be.instanceof(collection.model)
-              done()
-            error: (collection, response) ->
-              throw response.responseText.meta.msg
+          it "should get data from the API", (done) ->
+            @collection.fetch
+              success: (collection, response) ->
+                collection.length.should.not.be.empty
+                done()
+              error: (collection, response) ->
+                throw response.responseText.meta.msg
+
+          it "should factory JSON from API", (done) ->
+            @collection.fetch
+              success: (collection, response) ->
+                collection.first().should.be.instanceof(collection.model)
+                done()
+              error: (collection, response) ->
+                throw response.responseText.meta.msg
 
       if search_term
 

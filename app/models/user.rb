@@ -204,8 +204,10 @@ class User < ActiveRecord::Base
   end
 
   def can_play_with(user)
-    # check blockers first since a the person who did the blocking probably won't be interacting as much
-    !((blockers_count > 0 and blockers.include? user) or (blocking_count > 0 and blocking.include? user))
+    # check blockers first since a the person who did the blocking
+    # probably won't be interacting as much
+    !((blockers_count > 0 and blockers.include? user) or
+      (blocking_count > 0 and blocking.include? user))
   end
 
   def feed

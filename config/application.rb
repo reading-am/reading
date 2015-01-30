@@ -41,9 +41,6 @@ module Reading
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
-    # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
-
     # Enable the asset pipeline
     # Even though this is true by default for Rails 4, something is
     # overwriting it unless set here. Maybe requirejs?
@@ -57,12 +54,6 @@ module Reading
     config.requirejs.logical_asset_filter += [/\.mustache$/,/\.css$/]
 
     config.cache_store = :dalli_store
- 
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-
-    # Migrate Rails 4.0 cookies to new Rails 4.1 JSON syntax
-    config.action_dispatch.cookies_serializer = :hybrid
 
     # Soon to be the default in Rails 5
     config.active_record.raise_in_transactional_callbacks = true

@@ -158,7 +158,7 @@ describe Hook do
       post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
-      expect(response).to be true
+      expect(response.code).to eq(200)
       # cleanup
       response = Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/delete',
         :params => {

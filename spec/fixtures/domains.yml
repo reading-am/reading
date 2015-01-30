@@ -7,3 +7,8 @@ metafilter:
   name: metafilter.com
   verb: ~
   pages_count: 1
+
+github:
+  name: github.com
+  verb: ~
+  pages_count: 1

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe Hook do
-  fixtures :users, :hooks, :domains, :pages, :posts, :authorizations
+  fixtures :hooks, :posts
 
   context "when run" do
 
@@ -10,10 +10,7 @@ describe Hook do
     it "posts to Twitter" do
       # setup
       hook = hooks(:twitter)
-      hook.authorization = authorizations(:twitter)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response).to be_an_instance_of Twitter::Tweet
@@ -25,10 +22,7 @@ describe Hook do
     it "posts to Tumblr" do
       # setup
       hook = hooks(:tumblr)
-      hook.authorization = authorizations(:tumblr)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.meta.status).to eq(201)
@@ -40,10 +34,7 @@ describe Hook do
     it "posts to Evernote" do
       # setup
       hook = hooks(:evernote)
-      hook.authorization = authorizations(:evernote)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response).to be_an_instance_of Evernote::EDAM::Type::Note
@@ -55,10 +46,7 @@ describe Hook do
     it "posts to Readability" do
       # setup
       hook = hooks(:readability)
-      hook.authorization = authorizations(:readability)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.status).to eq("202")
@@ -70,10 +58,7 @@ describe Hook do
     it "posts to Instapaper" do
       # setup
       hook = hooks(:instapaper)
-      hook.authorization = authorizations(:instapaper)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.bookmark_id).to be_an_instance_of(Fixnum)
@@ -85,10 +70,7 @@ describe Hook do
     it "posts to Pocket" do
       # setup
       hook = hooks(:pocket)
-      hook.authorization = authorizations(:pocket)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.code).to eq(200)
@@ -109,10 +91,7 @@ describe Hook do
     it "posts to Kippt" do
       # setup
       hook = hooks(:kippt)
-      hook.authorization = authorizations(:kippt)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.id).to be_an_instance_of(Fixnum)
@@ -125,9 +104,6 @@ describe Hook do
       # setup
       hook = hooks(:hipchat)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
-      post.user = users(:greg)
       # test
       response = hook.run(post, 'new')
       expect(response).to be true
@@ -138,10 +114,7 @@ describe Hook do
     it "posts to Campfire" do
       # setup
       hook = hooks(:tssignals)
-      hook.authorization = authorizations(:tssignals)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.message.type).to eq("TextMessage")
@@ -154,8 +127,6 @@ describe Hook do
       # setup
       hook = hooks(:pinboard)
       post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
       # test
       response = hook.run(post, 'new')
       expect(response.code).to eq(200)
@@ -171,20 +142,10 @@ describe Hook do
     it "posts to Flattr" do
       # setup
       hook = hooks(:flattr)
-      hook.authorization = authorizations(:flattr)
-      post = posts(:one)
-      post.page = pages(:daringfireball)
-      post.page.domain = domains(:daringfireball)
+      post = posts(:three)
       # test
-      # NOTE - it's kind of screwy that we want this to throw an error
-      # but I don't know of a better way to test it without adding funds
-      # to flattr.com. A funds error at least means we made a round trip
-      begin
-        hook.run(post, 'new')
-        raise Flattr::Error::BadRequest.new
-      rescue Flattr::Error::Unauthorized => e
-        expect(e.message).to eq("You don't have any money to flattr with")
-      end
+      response = hook.run(post, 'new')
+      expect(response).to be true
     end
 
   end

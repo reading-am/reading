@@ -12,5 +12,12 @@ metafilter:
   comments_count: 2
   domain: metafilter
 
+github:
+  url: https://github.com/rails/rails
+  title: rails/rails
+  posts_count: 0
+  comments_count: 0
+  domain: github
+
 youtube_short:
   url: http://youtu.be/sIy4KsWq-FA?t=1m36s

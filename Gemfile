@@ -149,4 +149,5 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'spring-commands-rspec'
 end

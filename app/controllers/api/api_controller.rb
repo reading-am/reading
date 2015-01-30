@@ -32,6 +32,10 @@ class Api::APIController < ActionController::Metal
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
   rescue_from ActionController::ParameterMissing, :with => :show_400
 
+  def current_user
+    @current_user || @current_user = params[:token] ? User.find_by_token(params[:token]) : super
+  end
+
   private
 
   def map_method

@@ -1,11 +1,11 @@
 <%= render :partial => 'layouts/notice', :locals => {:notice => flash[:alert] || notice} %>
 
 <div class="row" id="email_signup_signin">
-  <div class="span3 offset1" id="signup_form">
+  <div class="span3 offset1" id="signup_form_wrapper">
     <h4>Sign up</h4>
     <%= render :partial => 'devise/registrations/new_form', :locals => {:abbrv => true} %>
   </div>
-  <div class="span3 offset1">
+  <div class="span3 offset1" id="signin_form_wrapper">
     <h4>Sign in</h4>
     <%= render :partial => 'new_form' %>
     <%= link_to "Forgot your password?", new_password_path(resource_name), {:class => 'help-block'} %>

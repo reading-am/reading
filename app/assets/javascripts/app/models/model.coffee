@@ -44,7 +44,8 @@ define [
 
   Backbone.Model::parse = (response) ->
     obj = if response[_.result(@, "urlName")]? then response[_.result(@, "urlName")] else response
-    Backbone.Model::factory(obj).attributes # return the attributes else Model.defaults won't work
+    # return the attributes else Model.defaults won't work
+    Backbone.Model::factory(obj).attributes || obj
 
   Backbone.Model::toJSON = (nested_to_id=true) ->
     Backbone.Model::deconstruct this, nested_to_id

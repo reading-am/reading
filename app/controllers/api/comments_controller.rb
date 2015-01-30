@@ -29,7 +29,7 @@ class Api::CommentsController < Api::APIController
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      format.json { render_json :comment => @comment }
+      format.json { render_json comment: @comment.simple_obj }
     end
   end
   add_transaction_tracer :show
@@ -47,7 +47,7 @@ class Api::CommentsController < Api::APIController
     else
       # Note - an associated post is not required
       @comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
-      @comment.user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      @comment.user  = current_user
       @comment.page  = Page.find(params[:model][:page_id])
       @comment.body  = params[:model][:body]
     end
@@ -65,11 +65,10 @@ class Api::CommentsController < Api::APIController
   add_transaction_tracer :create
 
   def update
-    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      if @user != @comment.user
+      if current_user != @comment.user
         status = :forbidden
       elsif @comment.update_attributes(comment_params)
         status = :ok
@@ -82,10 +81,9 @@ class Api::CommentsController < Api::APIController
   add_transaction_tracer :update
 
   def destroy
-    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
     @comment = Comment.find(params[:id])
 
-    @comment.destroy if @user == @comment.user
+    @comment.destroy if current_user == @comment.user
 
     respond_to do |format|
       status = @comment.destroyed? ? :ok : :forbidden

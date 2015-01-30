@@ -1,11 +1,15 @@
 # encoding: utf-8
 class Api::APIController < ActionController::Metal
+  # Needed for > Rails 4.0; order matters
+  include AbstractController::Rendering
+  include ActionView::Rendering
   # Bare metal rails controllers: http://www.slideshare.net/artellectual/developing-api-with-rails-metal
   include ActionController::Helpers
   include ActionController::Redirecting
   include ActionController::Rendering
   include ActionController::Renderers::All
   include ActionController::ConditionalGet
+  include ActionController::RackDelegation
   # need this for responding to different types .json .xml etc...
   include ActionController::MimeResponds
   include AbstractController::Callbacks
@@ -27,6 +31,10 @@ class Api::APIController < ActionController::Metal
   before_filter :map_method, :set_defaults, :check_signed_in
   rescue_from ActiveRecord::RecordNotFound, :with => :show_404
   rescue_from ActionController::ParameterMissing, :with => :show_400
+
+  def current_user
+    @current_user || @current_user = params[:token] ? User.find_by_token(params[:token]) : super
+  end
 
   private
 

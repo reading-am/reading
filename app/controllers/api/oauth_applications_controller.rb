@@ -36,9 +36,8 @@ class Api::OauthApplicationsController < Api::APIController
   add_transaction_tracer :show
 
   def create
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     @app = Doorkeeper::Application.new(app_params)
-    @app.owner = @user
+    @app.owner = current_user
 
     respond_to do |format|
       if @app.save
@@ -55,11 +54,10 @@ class Api::OauthApplicationsController < Api::APIController
   add_transaction_tracer :create
 
   def update
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     @app = Doorkeeper::Application.by_uid(params[:id])
 
     respond_to do |format|
-      if @user == @app.owner
+      if current_user == @app.owner
         if @app.update_attributes(app_params)
           obj = @app.simple_obj
           obj[:consumer_secret] = @app.secret
@@ -76,10 +74,9 @@ class Api::OauthApplicationsController < Api::APIController
   add_transaction_tracer :update
 
   def destroy
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     @app = Doorkeeper::Application.by_uid(params[:id])
 
-    @app.destroy if @user == @app.owner
+    @app.destroy if current_user == @app.owner
 
     respond_to do |format|
       status = @app.destroyed? ? :ok : :forbidden

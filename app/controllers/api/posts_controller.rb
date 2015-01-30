@@ -62,7 +62,7 @@ class Api::PostsController < Api::APIController
       url   = params[:model][:url]
       title = params[:model][:title] unless params[:model][:title].blank? || params[:model][:title] == 'null'
       desc  = params[:model][:description] unless params[:model][:description].blank? || params[:model][:description] == 'null'
-      user  = params[:token] ? User.find_by_token(params[:token]) : current_user
+      user  = current_user
       ref   = Post.find_by_id(params[:model][:referrer_post_id]) unless params[:model][:referrer_post_id].blank?
       yn    = params[:model][:yn]
     end
@@ -88,10 +88,9 @@ class Api::PostsController < Api::APIController
 
   def update
     @post = Post.find(params[:id])
-    user = params[:token] ? User.find_by_token(params[:token]) : current_user
 
     pms = post_params
-    if allowed = (user == @post.user)
+    if allowed = (current_user == @post.user)
       pms[:yn] = nil if !pms[:yn].nil? and pms[:yn] == 'null'
       @post.yn = pms[:yn]
     end
@@ -109,10 +108,9 @@ class Api::PostsController < Api::APIController
   add_transaction_tracer :update
 
   def destroy
-    @user = params[:token] ? User.find_by_token(params[:token]) : current_user
     @post = Post.find(params[:id])
 
-    @post.destroy if @user == @post.user
+    @post.destroy if current_user == @post.user
 
     respond_to do |format|
       status = @post.destroyed? ? :ok : :forbidden

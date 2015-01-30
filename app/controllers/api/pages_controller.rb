@@ -29,11 +29,10 @@ class Api::PagesController < Api::APIController
   add_transaction_tracer :show
 
   def update
-    @user  = params[:token] ? User.find_by_token(params[:token]) : current_user
-    @page = Page.find(params[:id], include: :describe_data)
+    @page = Page.includes(:describe_data).find(params[:id])
 
     respond_to do |format|
-      if !@user
+      if !current_user
         response = :forbidden
       elsif page_params[:html]
         @page.populate_describe_data page_params[:html]

@@ -8,6 +8,6 @@ feature "User's feed" do
     login_as user, scope: :user
 
     visit '/'
-    expect(page).to have_selector('.page_row', count: 2)
+    expect(page).to have_selector('.page_row', count: user.posts.count)
   end
 end

@@ -118,7 +118,7 @@ describe Hook do
       expect(response.id).to be_an_instance_of(Fixnum)
       # cleanup
       response = response.destroy
-      expect(response).to be_true
+      expect(response).to be true
     end
 
     it "posts to HipChat" do

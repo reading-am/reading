@@ -1,6 +1,9 @@
+Rails.application.config.to_prepare do
+  Devise::Mailer.layout 'application_mailer'
+end
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
-Devise::Mailer.layout 'application_mailer'
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,

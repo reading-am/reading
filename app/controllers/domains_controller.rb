@@ -5,7 +5,7 @@ class DomainsController < ApplicationController
   def show
     @domain = Domain.find_by_name(params[:id])
     params[:domain_id] = @domain.id
-    @posts = Api::Posts.index(params)
+    @posts = Posts.index(params)
 
     respond_to do |format|
       format.html { render 'posts/index' }

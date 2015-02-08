@@ -28,57 +28,83 @@ Reading::Application.routes.draw do
   get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
   # api
-  medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
-  namespace :api, defaults: { format: 'json' } do
-    resources :posts do
-      get 'count',    on: :collection
-      get ':medium',  on: :collection, action: 'index', constraints: medium_constraints
-    end
-    resources :comments do
-      get 'count',    on: :collection
-    end
-    resources :users do
-      get 'me',       on: :collection
-      get 'count',    on: :collection
-      get 'search',   on: :collection
-      get 'recommended', on: :collection
-      get 'expats',   on: :member
-      resources :comments
-      resources :posts do
-        get ':medium', on: :collection, action: 'index', constraints: medium_constraints
+  concern :api do
+    # No content at root - send to our primary domain
+    get '/', to: redirect("//#{ENV['APP_ROOT_URL']}")
+    # Controller namespace
+    scope module: 'api', defaults: { format: 'json' } do
+      # version beta
+      namespace :v1 do
+        medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
+        resources :posts do
+          get 'count', on: :collection
+          get ':medium',
+              on:          :collection,
+              action:      'index',
+              constraints: medium_constraints
+        end
+        resources :comments do
+          get 'count',    on: :collection
+        end
+        resources :users do
+          get 'me',       on: :collection
+          get 'count',    on: :collection
+          get 'search',   on: :collection
+          get 'recommended', on: :collection
+          get 'expats',   on: :member
+          resources :comments
+          resources :posts do
+            get ':medium',
+                on: :collection,
+                action: 'index',
+                constraints: medium_constraints
+          end
+          resources :following,
+                    controller:   'relationships',
+                    defaults:     { type: 'following' },
+                    constraints:  { type: 'following' } do
+            get 'posts(/:medium)',
+                on:         :collection,
+                controller: 'posts',
+                action:     'index',
+                constraints: medium_constraints
+          end
+          resources :followers,
+                    controller:   'relationships',
+                    defaults:     { type: 'followers' },
+                    constraints:  { type: 'followers' }
+          resources :blocking,
+                    controller:   'blockages',
+                    defaults:     { type: 'blocking' },
+                    constraints:  { type: 'blocking' }
+          resources :blockers,
+                    controller:   'blockages',
+                    defaults:     { type: 'blockers' },
+                    constraints:  { type: 'blockers' }
+        end
+        resources :pages do
+          get 'count', on: :collection
+          resources :users
+          resources :comments
+          resources :posts
+        end
+        resources :domains do
+          resources :posts do
+            get ':medium', on: :collection, action: 'index'
+          end
+        end
+        resources :oauth_access_tokens
+        resources :oauth_applications
       end
-      resources :following,
-        controller:   'relationships',
-        defaults:     { type: 'following' },
-        constraints:  { type: 'following' } do
-          get 'posts(/:medium)', on: :collection, controller: 'posts', action: 'index', constraints: medium_constraints
-      end
-      resources :followers,
-        controller:   'relationships',
-        defaults:     { type: 'followers' },
-        constraints:  { type: 'followers' }
-      resources :blocking,
-        controller:   'blockages',
-        defaults:     { type: 'blocking' },
-        constraints:  { type: 'blocking' }
-      resources :blockers,
-        controller:   'blockages',
-        defaults:     { type: 'blockers' },
-        constraints:  { type: 'blockers' }
     end
-    resources :pages do
-      get 'count', on: :collection
-      resources :users
-      resources :comments
-      resources :posts
-    end
-    resources :domains do
-      resources :posts do
-        get ':medium', on: :collection, action: 'index'
-      end
-    end
-    resources :oauth_access_tokens
-    resources :oauth_applications
+  end
+
+  constraints subdomain: 'api' do
+    concerns :api
+  end
+
+  scope :api do
+    concerns :api
   end
 
   post "/pusher/auth"            => "pusher#auth"

@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
     end
 
-    @posts = Api::Posts.index(params)
+    @posts = Posts.index(params)
 
     respond_to do |format|
       format.html { render 'posts/index' }
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
               User.find(params[:id])
 
     params[:user_id] = @user.id
-    collection = Api::Relationships.index(params)
+    collection = Relationships.index(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
 
   def recommended
     params[:user_id] = current_user.id
-    collection = Api::Users.recommended(params)
+    collection = Users.recommended(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 
   def expats
     params[:user_id] = current_user.id
-    collection = Api::Users.expats(params)
+    collection = Users.expats(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    collection = Api::Users.search(params)
+    collection = Users.search(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|

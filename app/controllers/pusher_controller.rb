@@ -1,6 +1,6 @@
 # From: http://pusher.com/docs/authenticating_users
 # Using https://github.com/pusher/pusher-gem
-class PusherController < Api::APIController
+class PusherController < Api::V1::ApiController
 
   def auth
     @user = params[:token] ? User.find_by_token(params[:token]) : current_user

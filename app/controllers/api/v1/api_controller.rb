@@ -38,7 +38,15 @@ module Api::V1
     rescue_from ActionController::ParameterMissing, :with => :show_400
 
     def current_user
-      @current_user || @current_user = params[:token] ? User.find_by_token(params[:token]) : super
+      return @current_user if @current_user
+
+      if doorkeeper_token
+        @current_user = User.find(doorkeeper_token.resource_owner_id)
+      elsif params[:token]
+        @current_user = User.find_by_token(params[:token])
+      else
+        @current_user = super
+      end
     end
 
     private

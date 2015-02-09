@@ -12,7 +12,7 @@ module Api::V1
 
     def index
       @users = Blockages.index(params)
-      render
+      render 'users/index'
     end
     add_transaction_tracer :index
 
@@ -23,9 +23,8 @@ module Api::V1
       current_user.unfollow!(@blocked) rescue nil
       current_user.block!(@blocked)
 
-      respond_to do |format|
-        format.json { render_json user: @blocked.simple_obj }
-      end
+      @user = @blocked
+      render 'users/show'
     end
     add_transaction_tracer :create
 
@@ -35,9 +34,8 @@ module Api::V1
       @blocked = User.find(params[:id])
       current_user.unblock!(@blocked)
 
-      respond_to do |format|
-        format.json { render_json user: @blocked.simple_obj }
-      end
+      @user = @blocked
+      render 'users/show'
     end
     add_transaction_tracer :destroy
   end

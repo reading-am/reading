@@ -22,17 +22,4 @@ class Domain < ActiveRecord::Base
     # from: http://stackoverflow.com/questions/373731/override-activerecord-attribute-methods
     read_attribute(:verb) || 'reading'
   end
-
-  def simple_obj to_s=false
-    {
-      type: 'Domain',
-      id: to_s ? id.to_s : id,
-      name: name,
-      verb: verb,
-      pages_count: pages_count,
-      created_at: created_at,
-      updated_at: updated_at
-    }
-  end
-
 end

@@ -72,7 +72,7 @@ public
     end
   end
 
-  def facebook post, event_fired
+  def facebook(post, event_fired)
     case params['permission']
     when 'publish_stream' # wall
       authorization.api.put_object("me", "links", :link => post.wrapped_url, :message => "✌ #{post.page.verb.capitalize} \"#{post.page.display_title}\"") rescue nil
@@ -83,15 +83,15 @@ public
     end
   end
 
-  def instapaper post, event_fired
+  def instapaper(post, event_fired)
     authorization.api.add_bookmark post.page.url rescue nil
   end
 
-  def readability post, event_fired
+  def readability(post, event_fired)
     authorization.api.bookmark :url => post.page.url
   end
 
-  def pinboard post, event_fired
+  def pinboard(post, event_fired)
     Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/add',
       :params => {
         :auth_token => "#{self.params['user']}:#{self.params['token']}",
@@ -101,12 +101,12 @@ public
       }
   end
 
-  def tumblr post, event_fired
+  def tumblr(post, event_fired)
     # this must use string rather than symbol keys in the options hash
     authorization.api.link "#{self.place[:id]}.tumblr.com", post.wrapped_url, {"title" => "✌ #{post.page.display_title}", "description" => post.page.description, "state" => params["state"] || "published"}
   end
 
-  def twitter post, event_fired
+  def twitter(post, event_fired)
     # grabbed a zero width space from here: http://en.wikipedia.org/wiki/Space_(punctuation)#Spaces_in_Unicode
     tweet = "✌ @#{post.page.verb.capitalize} \"#{post.page.display_title}\""
     tweet_len = tweet.unpack('c*').length
@@ -123,7 +123,7 @@ public
     authorization.api.update tweet rescue nil
   end
 
-  def hipchat obj, event_fired
+  def hipchat(obj, event_fired)
     case event_fired
     when 'new', 'yep', 'nope'
       post = obj
@@ -159,13 +159,13 @@ public
 
   # For legacy support. If you finally remove this, also remove
   # the room param from tssignals and the ||= assignment
-  def campfire post, event_fired
+  def campfire(post, event_fired)
     campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
     room = campfire.find_or_create_room_by_name(self.place[:id])
     self.tssignals post, event_fired, room
   end
 
-  def evernote post, event_fired
+  def evernote(post, event_fired)
     note = Evernote::EDAM::Type::Note.new
     note.notebookGuid = place[:id]
     note.title = post.page.title
@@ -182,7 +182,7 @@ EOF
     authorization.api.createNote authorization.token, note
   end
 
-  def tssignals post, event_fired, room=nil
+  def tssignals(post, event_fired, room=nil)
     post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
     case event_fired
     when 'new'
@@ -196,7 +196,7 @@ EOF
     room.speak output if !room.nil?
   end
 
-  def kippt post, event_fired
+  def kippt(post, event_fired)
     clip = authorization.api.clips.build
     clip.url = post.page.url
     clip.list = place[:id]
@@ -204,26 +204,25 @@ EOF
     clip
   end
 
-  def pocket post, event_fired
+  def pocket(post, event_fired)
     Typhoeus::Request.post 'https://getpocket.com/v3/add',
-      :params => {
-        :consumer_key => ENV['READING_POCKET_KEY'],
-        :access_token => authorization.token,
-        :url => post.page.url,
-        :tags => '✌ Reading'
-      }
+                           params: {
+                             consumer_key: ENV['READING_POCKET_KEY'],
+                             access_token: authorization.token,
+                             url: post.page.url,
+                             tags: '✌ Reading'
+                           }
   end
 
-  def flattr post, event_fired
+  def flattr(post, event_fired)
     authorization.api.flattr post.page.url
   end
 
-  def url post, event_fired
-    amap = {'get' => :params, 'post' => :body}
+  def url(post, event_fired)
+    amap = { 'get' => :params, 'post' => :body }
     method = params['method']
-    url = self.params['address']
-    url = "http://#{url}" if url[0, 4] != "http"
-    Typhoeus.send method, url, amap[method] => {:post => post.simple_obj(true)}
+    url = params['address']
+    url = "http://#{url}" if url[0, 4] != 'http'
+    Typhoeus.send method, url, amap[method] => { post: post.simple_obj(true) }
   end
-
 end

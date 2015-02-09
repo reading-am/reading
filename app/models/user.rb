@@ -284,31 +284,4 @@ class User < ActiveRecord::Base
       "#{base}/#{sprintf('%09d', id).gsub(/(\d{3})(?=\d)/, '\\1/')}/#{style}/#{avatar_file_name}?#{avatar_updated_at.to_time.to_i}"
     end
   end
-
-  def simple_obj to_s=false
-    {
-      type:         'User',
-      id:           to_s ? id.to_s : id,
-      url:          url,
-      username:     username,
-      display_name: display_name,
-      first_name:   first_name,
-      full_name:    name,
-      bio:          bio,
-      link:         link,
-      location:     location,
-      avatar:       avatar_url,
-      avatar_medium:   avatar_url(:medium),
-      avatar_thumb:    avatar_url(:thumb),
-      avatar_mini:     avatar_url(:mini),
-      posts_count:     posts.size,
-      following_count: following.size,
-      followers_count: followers.size,
-      blocking_count: blocking.size,
-      blockers_count: blockers.size,
-      access:     access,
-      created_at: created_at,
-      updated_at: updated_at
-    }
-  end
 end

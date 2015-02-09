@@ -27,6 +27,7 @@ gem 'oj' # fast JSON parser
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'base58'
 gem 'foreigner' # DB foreign keys
+gem 'jbuilder' # json templates
 
 #####################
 # Ruby Conveniences #

@@ -28,6 +28,10 @@ module Api::V1
     # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
+    # Add a search path for our views
+    append_view_path File.join(Rails.root, "app", "views")
+    append_view_path File.join(Rails.root, "app", "views", self.to_s.deconstantize.underscore)
+
     wrap_parameters format: [:json]
     before_filter :map_method, :set_defaults, :check_signed_in
     rescue_from ActiveRecord::RecordNotFound, :with => :show_404

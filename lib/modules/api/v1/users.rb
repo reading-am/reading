@@ -8,7 +8,7 @@ module Api::V1
         users = User.who_posted_to(params[:page_id])
 
         # this is disabled until we get more users on the site
-        # :following => @post.user.following_who_posted_to(@post.page).collect { |user| user.simple_obj }
+        # Use user.following_who_posted_to to limit to user's following list
       end
 
       if params[:user_ids]

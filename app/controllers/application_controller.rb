@@ -160,4 +160,7 @@ class ApplicationController < ActionController::Base
     params[:offset] = 0
   end
 
+  def api
+    "Api::V#{API_VERSION}".constantize
+  end
 end

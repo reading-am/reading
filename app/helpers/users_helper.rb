@@ -9,7 +9,7 @@ module UsersHelper
     data[:bookmarklet_url] = current_user ? bookmarklet_url(current_user) : ''
 
     if @user
-      user = @user.simple_obj
+      user = api_json 'users/user', user: @user
       has_avatar = @user != current_user or !@user.avatar.size.nil?
       user.merge!({
         show_blank_slate:   (@user.posts.size == 0 or @user.following.size == 0),

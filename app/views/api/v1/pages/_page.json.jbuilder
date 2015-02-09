@@ -1,0 +1,13 @@
+json.type               'Page'
+json.id                 page.id
+json.url                page.url
+json.title              page.display_title
+json.embed              page.proxy_embed
+json.medium             page.medium
+json.media_type         page.media_type
+json.description        page.display_description
+json.posts_count        page.posts_count
+json.comments_count     page.comments_count
+json.has_describe_data  page.has_describe_data
+json.created_at         page.created_at
+json.updated_at         page.updated_at

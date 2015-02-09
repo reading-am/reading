@@ -82,31 +82,4 @@ class Post < ActiveRecord::Base
       "users.#{user.id}.posts"
     ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.posts"}
   end
-
-  def simple_obj to_s=false
-    has_ref = !referrer_post.nil?
-    {
-      :type   => "Post",
-      :id     => to_s ? id.to_s : id,
-      :title  => page.display_title,
-      :url    => page.url,
-      :yn     => yn,
-      :wrapped_url => wrapped_url,
-      :created_at => created_at,
-      :updated_at => updated_at,
-      :user => user.simple_obj(to_s),
-      :page => page.simple_obj(to_s),
-      :referrer_post => {
-        :type => "Post",
-        :id => has_ref ? (to_s ? referrer_post.id.to_s : referrer_post.id) : '',
-        :user => {
-          :type         => "User",
-          :id           => has_ref ? (to_s ? referrer_post.user.id.to_s : referrer_post.user.id) : '',
-          :username     => has_ref ? referrer_post.user.username : '',
-          :display_name => has_ref ? referrer_post.user.display_name : '',
-          :url          => has_ref ? referrer_post.user.url : ''
-        }
-      }
-    }
-  end
 end

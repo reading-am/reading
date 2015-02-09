@@ -15,17 +15,13 @@ module Api::V1
     # Will spin out when we aggregate in comments.
 
     def index
-      posts = Posts.index(params)
+      @posts = Posts.index(params)
 
       if signed_in?
-        posts = posts.select { |post| current_user.can_play_with(post.user) }
+        @posts = posts.select { |post| current_user.can_play_with(post.user) }
       end
 
-      respond_to do |format|
-        format.json do
-          render_json posts: posts.map { |post| post.simple_obj }
-        end
-      end
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index

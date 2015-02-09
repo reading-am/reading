@@ -101,4 +101,8 @@ module ApplicationHelper
 
     data
   end
+
+  def api_json(path, locals)
+    JSON.parse render(partial: "api/v1/#{path}", formats: :json, locals: locals), symbolize_names: true
+  end
 end

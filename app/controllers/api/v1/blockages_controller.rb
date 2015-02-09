@@ -11,11 +11,8 @@ module Api::V1
     public
 
     def index
-      respond_to do |format|
-        format.json do
-          render_json users: Blockages.index(params).collect { |user| user.simple_obj }
-        end
-      end
+      @users = Blockages.index(params)
+      render
     end
     add_transaction_tracer :index
 

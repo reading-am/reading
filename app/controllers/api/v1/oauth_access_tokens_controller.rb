@@ -11,21 +11,15 @@ module Api::V1
     public
 
     def index
-      respond_to do |format|
-        format.json do
-          render_json oauth_access_tokens: OauthAccessTokens.index(params).map { |token| token.simple_obj }
-        end
-      end
+      @tokens = OauthAccessTokens.index(params)
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
       @token = Doorkeeper::AccessToken.find(params[:id])
-
-      respond_to do |format|
-        format.json { render_json oauth_access_token: @token.simple_obj }
-      end
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show

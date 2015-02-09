@@ -11,27 +11,20 @@ module Api::V1
     public
 
     def index
-      comments = Comments.index(params)
+      @comments = Comments.index(params)
 
       if signed_in?
-        comments = comments.select { |comment| current_user.can_play_with(comment.user) }
+        @comments = @comments.select { |comment| current_user.can_play_with(comment.user) }
       end
 
-      respond_to do |format|
-        format.json do
-          render_json comments: comments.map { |comment| comment.simple_obj }
-        end
-      end
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
       @comment = Comment.find(params[:id])
-
-      respond_to do |format|
-        format.json { render_json comment: @comment.simple_obj }
-      end
+      render
     end
     add_transaction_tracer :show
 

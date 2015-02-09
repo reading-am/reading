@@ -28,10 +28,7 @@ module Api::V1
 
     def show
       @post = Post.find(params[:id])
-
-      respond_to do |format|
-        format.json { render_json post: @post.simple_obj }
-      end
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show

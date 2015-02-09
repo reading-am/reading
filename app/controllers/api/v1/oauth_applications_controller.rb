@@ -17,21 +17,15 @@ module Api::V1
     public
 
     def index
-      respond_to do |format|
-        format.json do
-          render_json oauth_applications: OauthApplications.index(params).map { |app| app.simple_obj }
-        end
-      end
+      @apps = OauthApplications.index(params)
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
       @app = Doorkeeper::Application.find_by_uid(params[:id])
-
-      respond_to do |format|
-        format.json { render_json oauth_application: @app.simple_obj }
-      end
+      render
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show

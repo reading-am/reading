@@ -18,12 +18,8 @@ class UsersController < ApplicationController
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
     end
 
-    @posts = Posts.index(params)
-
-    respond_to do |format|
-      format.html { render 'posts/index' }
-      format.rss  { render 'posts/index' }
-    end
+    @posts = api::Posts.index(params)
+    render 'posts/index'
   end
 
   def settings
@@ -36,7 +32,7 @@ class UsersController < ApplicationController
               User.find(params[:id])
 
     params[:user_id] = @user.id
-    collection = Relationships.index(params)
+    collection = api::Relationships.index(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -46,7 +42,7 @@ class UsersController < ApplicationController
 
   def recommended
     params[:user_id] = current_user.id
-    collection = Users.recommended(params)
+    collection = api::Users.recommended(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -56,7 +52,7 @@ class UsersController < ApplicationController
 
   def expats
     params[:user_id] = current_user.id
-    collection = Users.expats(params)
+    collection = api::Users.expats(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|
@@ -65,7 +61,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    collection = Users.search(params)
+    collection = api::Users.search(params)
     @users = collection.to_a.map { |u| u.simple_obj } if bot?
 
     respond_to do |format|

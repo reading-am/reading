@@ -15,20 +15,19 @@ module Api::V1
     # Will spin out when we aggregate in comments.
 
     def index
-      @posts = Posts.index(params)
+      posts = Posts.index(params)
 
       if signed_in?
-        @posts = posts.select { |post| current_user.can_play_with(post.user) }
+        posts = posts.select { |post| current_user.can_play_with(post.user) }
       end
 
-      render
+      render locals: { posts: posts }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
-      @post = Post.find(params[:id])
-      render
+      render locals: { post: Post.find(params[:id]) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show
@@ -63,16 +62,16 @@ module Api::V1
 
       page = params[:model] && params[:model][:page_id] ? Page.find(params[:model][:page_id]) : Page.find_or_create_by_url(url: url, title: title, description: desc)
       # A post is a duplicate if it's the exact same page and within 1hr of the last post
-      @post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
+      post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
 
       respond_to do |format|
-        if (@post.new_record? and @post.save) or (!@post.new_record? and @post.touch)
-          format.html { redirect_to(@post, notice: 'Post was successfully created.') }
-          format.xml  { render xml: @post, status: :created, location: @post }
-          format.json { render_json post: @post.simple_obj }
+        if (post.new_record? and post.save) or (!post.new_record? and post.touch)
+          format.html { redirect_to(post, notice: 'Post was successfully created.') }
+          format.xml  { render xml: post, status: :created, location: post }
+          format.json { render_json post: post.simple_obj }
         else
           # TODO clean up this auth hack. Ugh.
-          status = @post.user.blank? ? :forbidden : :bad_request
+          status = post.user.blank? ? :forbidden : :bad_request
           format.json { render_json status }
         end
       end
@@ -81,16 +80,16 @@ module Api::V1
     add_transaction_tracer :create
 
     def update
-      @post = Post.find(params[:id])
+      post = Post.find(params[:id])
 
       pms = post_params
-      if allowed = (current_user == @post.user)
+      if allowed = (current_user == post.user)
         pms[:yn] = nil if !pms[:yn].nil? and pms[:yn] == 'null'
-        @post.yn = pms[:yn]
+        post.yn = pms[:yn]
       end
 
       respond_to do |format|
-        if allowed and ((@post.changed? and @post.save) or (!@post.changed? and @post.touch))
+        if allowed and ((post.changed? and post.save) or (!post.changed? and post.touch))
           status = :ok
         else
           status = allowed ? :bad_request : :forbidden
@@ -102,12 +101,12 @@ module Api::V1
     add_transaction_tracer :update
 
     def destroy
-      @post = Post.find(params[:id])
+      post = Post.find(params[:id])
 
-      @post.destroy if current_user == @post.user
+      post.destroy if current_user == post.user
 
       respond_to do |format|
-        status = @post.destroyed? ? :ok : :forbidden
+        status = post.destroyed? ? :ok : :forbidden
         format.json { render_json status }
       end
     end

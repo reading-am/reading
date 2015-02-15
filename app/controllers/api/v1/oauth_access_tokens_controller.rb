@@ -11,15 +11,13 @@ module Api::V1
     public
 
     def index
-      @tokens = OauthAccessTokens.index(params)
-      render
+      render locals: { tokens: OauthAccessTokens.index(params) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
-      @token = Doorkeeper::AccessToken.find(params[:id])
-      render
+      render locals: { token: Doorkeeper::AccessToken.find(params[:id]) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show
@@ -35,14 +33,14 @@ module Api::V1
     add_transaction_tracer :update
 
     def destroy
-      @token = Doorkeeper::AccessToken.by_token(params[:id]) || Doorkeeper::AccessToken.by_refresh_token(params[:id])
+      token = Doorkeeper::AccessToken.by_token(params[:id]) || Doorkeeper::AccessToken.by_refresh_token(params[:id])
 
-      if current_user == @token.user
-        if @token.revoked?
+      if current_user == token.user
+        if token.revoked?
           status = :ok
         else
-          @token.revoke
-          status = @token.revoked? ? :ok : :internal_server_error
+          token.revoke
+          status = token.revoked? ? :ok : :internal_server_error
         end
       else
         status = :forbidden

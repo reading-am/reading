@@ -1,1 +1,1 @@
-json.post { json.partial! 'post', post: @post }
+json.post { json.partial! 'posts/post', post: post }

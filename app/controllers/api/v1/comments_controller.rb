@@ -11,47 +11,46 @@ module Api::V1
     public
 
     def index
-      @comments = Comments.index(params)
+      comments = Comments.index(params)
 
       if signed_in?
-        @comments = @comments.select { |comment| current_user.can_play_with(comment.user) }
+        comments = comments.select { |comment| current_user.can_play_with(comment.user) }
       end
 
-      render
+      render locals: { comments: comments }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
-      @comment = Comment.find(params[:id])
-      render
+      render locals: { comment: Comment.find(params[:id]) }
     end
     add_transaction_tracer :show
 
     def create
-      @comment = Comment.new
+      comment = Comment.new
 
       if params[:recipient]
-        @comment.body = params['stripped-text'] # this comes from mailgun
+        comment.body = params['stripped-text'] # this comes from mailgun
         if bits = MailPipe::decode_mail_recipient(params[:recipient])
-          @comment.user   = bits[:user]
-          @comment.parent = bits[:subject]
-          @comment.page   = @comment.parent.page
+          comment.user   = bits[:user]
+          comment.parent = bits[:subject]
+          comment.page   = comment.parent.page
         end
       else
         # Note - an associated post is not required
-        @comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
-        @comment.user  = current_user
-        @comment.page  = Page.find(params[:model][:page_id])
-        @comment.body  = params[:model][:body]
+        comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
+        comment.user  = current_user
+        comment.page  = Page.find(params[:model][:page_id])
+        comment.body  = params[:model][:body]
       end
 
       respond_to do |format|
-        if @comment.save
-          render :show, status: :created
+        if comment.save
+          render :show, status: :created, locals: { comment: comment }
         else
           # TODO clean up this auth hack. Ugh.
-          status = @comment.user.blank? ? :forbidden : :bad_request
+          status = comment.user.blank? ? :forbidden : :bad_request
           format.json { render_json status }
         end
       end
@@ -59,12 +58,12 @@ module Api::V1
     add_transaction_tracer :create
 
     def update
-      @comment = Comment.find(params[:id])
+      comment = Comment.find(params[:id])
 
       respond_to do |format|
-        if current_user != @comment.user
+        if current_user != comment.user
           status = :forbidden
-        elsif @comment.update_attributes(comment_params)
+        elsif comment.update_attributes(comment_params)
           status = :ok
         else
           status = :unprocessable_entity
@@ -75,12 +74,12 @@ module Api::V1
     add_transaction_tracer :update
 
     def destroy
-      @comment = Comment.find(params[:id])
+      comment = Comment.find(params[:id])
 
-      @comment.destroy if current_user == @comment.user
+      comment.destroy if current_user == comment.user
 
       respond_to do |format|
-        status = @comment.destroyed? ? :ok : :forbidden
+        status = comment.destroyed? ? :ok : :forbidden
         format.json { render_json status }
       end
     end

@@ -11,7 +11,7 @@
 
 <%=
   if !bot?
-    locals = {collection: @posts}
+    locals = {collection: render_api('posts/index', posts: @posts)['posts']}
     if @user
       locals[:model] = @user
     elsif @domain

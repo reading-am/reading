@@ -1,1 +1,1 @@
-json.posts @comments, partial: 'comment', as: :comment
+json.posts comments, partial: 'comments/comment', as: :comment

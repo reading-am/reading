@@ -17,30 +17,28 @@ module Api::V1
     public
 
     def index
-      @apps = OauthApplications.index(params)
-      render
+      render locals: { apps: OauthApplications.index(params) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
-      @app = Doorkeeper::Application.find_by_uid(params[:id])
-      render
+      render locals: { app: Doorkeeper::Application.find_by_uid(params[:id]) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show
 
     def create
-      @app = Doorkeeper::Application.new(app_params)
-      @app.owner = current_user
+      app = Doorkeeper::Application.new(app_params)
+      app.owner = current_user
 
       respond_to do |format|
-        if @app.save
-          obj = @app.simple_obj
-          obj[:consumer_secret] = @app.secret
+        if app.save
+          obj = app.simple_obj
+          obj[:consumer_secret] = app.secret
           format.json { render_json({oauth_application: obj}, :created) }
         else
-          status = @app.owner.blank? ? :forbidden : :bad_request
+          status = app.owner.blank? ? :forbidden : :bad_request
           format.json { render_json status }
         end
       end
@@ -49,13 +47,13 @@ module Api::V1
     add_transaction_tracer :create
 
     def update
-      @app = Doorkeeper::Application.by_uid(params[:id])
+      app = Doorkeeper::Application.by_uid(params[:id])
 
       respond_to do |format|
-        if current_user == @app.owner
-          if @app.update_attributes(app_params)
-            obj = @app.simple_obj
-            obj[:consumer_secret] = @app.secret
+        if current_user == app.owner
+          if app.update_attributes(app_params)
+            obj = app.simple_obj
+            obj[:consumer_secret] = app.secret
             format.json { render_json({oauth_application: obj}, :ok) }
           else
             format.json { render_json :bad_request }
@@ -69,12 +67,12 @@ module Api::V1
     add_transaction_tracer :update
 
     def destroy
-      @app = Doorkeeper::Application.by_uid(params[:id])
+      app = Doorkeeper::Application.by_uid(params[:id])
 
-      @app.destroy if current_user == @app.owner
+      app.destroy if current_user == app.owner
 
       respond_to do |format|
-        status = @app.destroyed? ? :ok : :forbidden
+        status = app.destroyed? ? :ok : :forbidden
         format.json { render_json status }
       end
     end

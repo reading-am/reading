@@ -1,1 +1,1 @@
-json.pages @pages, partial: 'page', as: :page
+json.pages pages, partial: 'pages/page', as: :page

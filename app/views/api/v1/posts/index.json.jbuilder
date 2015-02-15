@@ -1,1 +1,1 @@
-json.posts @posts, partial: 'post', as: :post
+json.posts posts, partial: 'posts/post', as: :post

@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "required": ["post"],
+    "properties": {
+        "post" : {
+            "type" : "object",
+            "required" : [
+                "type",
+                "id",
+                "title",
+                "url",
+                "yn",
+                "wrapped_url",
+                "created_at",
+                "updated_at",
+                "user",
+                "page"
+            ],
+            "properties" : {
+                "type": { "type" : "string" },
+                "id" : { "type" : "integer" },
+                "title" : { "type" : "string" },
+                "url" : { "type" : "string" },
+                "yn" : { "type" : ["boolean", "null"] },
+                "wrapped_url" : { "type" : "string" },
+                "created_at" : { "type" : "string", "format": "date-time" },
+                "updated_at" : { "type" : "string", "format": "date-time" },
+                "user" : { "type" : "object" },
+                "page" : { "type" : "object" }
+            }
+        }
+    }
+}

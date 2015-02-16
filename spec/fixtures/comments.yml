@@ -1,11 +1,23 @@
 single_mention:
-  body: "This is a comment where @greg has been mentioned"
+  user: greg
+  post: one
+  page: daringfireball
+  body: "This is a comment where @howard has been mentioned"
 
 single_show:
-  body: "@greg"
+  user: greg
+  post: one
+  page: daringfireball
+  body: "@howard"
 
 multiple_show:
-  body: "@greg   \t\n @howard,@foxhole , @richard"
+  user: greg
+  post: one
+  page: daringfireball
+  body: "@justin   \t\n @howard,@foxhole , @richard"
 
 single_email:
+  user: greg
+  post: one
+  page: daringfireball
   body: "greg@reading.am"

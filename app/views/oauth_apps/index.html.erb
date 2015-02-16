@@ -20,10 +20,10 @@ locals = mustache_helpers.merge({
 # in order to add the consumer_secret to the json
 
 props = {
-  model: @user.simple_obj,
+  model: render_api(partial: 'users/user', user: @user),
   collection: @apps.collect do |v|
-    obj = v.simple_obj
-    obj[:consumer_secret] = v.secret if v.owner == current_user
+    obj = render_api(partial: 'oauth_applications/oauth_application', app: v)
+    obj['consumer_secret'] = v.secret if v.owner == current_user
     obj
   end
 }

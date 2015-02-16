@@ -33,17 +33,15 @@ class UsersController < ApplicationController
 
     params[:user_id] = @user.id
     collection = api::Relationships.index(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    @users = render_api('users/index', users: collection)['users'] if bot?
 
-    respond_to do |format|
-      format.html { render locals: { collection: collection } }
-    end
+    render locals: { collection: collection }
   end
 
   def recommended
     params[:user_id] = current_user.id
     collection = api::Users.recommended(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    @users = render_api('users/index', users: collection)['users'] if bot?
 
     respond_to do |format|
       format.html { render 'find_people', locals: { section_recommended: true, collection: collection } }
@@ -53,7 +51,7 @@ class UsersController < ApplicationController
   def expats
     params[:user_id] = current_user.id
     collection = api::Users.expats(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    @users = render_api('users/index', users: collection)['users'] if bot?
 
     respond_to do |format|
       format.html { render 'find_people', locals: { section_expats: true, collection: collection } }
@@ -62,7 +60,7 @@ class UsersController < ApplicationController
 
   def search
     collection = api::Users.search(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    @users = render_api('users/index', users: collection)['users'] if bot?
 
     respond_to do |format|
       format.html { render 'find_people', locals: { section_search: true, collection: collection } }

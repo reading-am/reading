@@ -4,18 +4,6 @@
     "properties": {
         "post" : {
             "type" : "object",
-            "required" : [
-                "type",
-                "id",
-                "title",
-                "url",
-                "yn",
-                "wrapped_url",
-                "created_at",
-                "updated_at",
-                "user",
-                "page"
-            ],
             "properties" : {
                 "type": { "type" : "string" },
                 "id" : { "type" : "integer" },

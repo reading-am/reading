@@ -101,16 +101,16 @@ module Api::V1
         json = payload
       else
         json = {
-          :meta => {
-            :status => status,
-            :msg => Rack::Utils::HTTP_STATUS_CODES[status]
+          meta: {
+            status: status,
+            msg: Rack::Utils::HTTP_STATUS_CODES[status]
           },
-          :response => payload
+          response: payload
         }
         status = :ok
       end
 
-      render :json => json, :callback => callback, :status => status
+      render json: json, callback: callback, status: status
     end
 
     def check_signed_in

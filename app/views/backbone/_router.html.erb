@@ -2,14 +2,14 @@
 props = {}
 
 if defined? model
-  name = model.class.name.downcase
+  name = model.class.table_name.singularize
   props[:model] = render_api(partial: "#{name.pluralize}/#{name}", :"#{name}" => model)
 
-  router = name.pluralize if router.blank?
+  router = model.class.table_name if router.blank?
 end
 
 if defined? collection
-  name = collection.first.class.name.downcase.pluralize
+  name = collection.first.class.table_name
   props[:collection] = render_api("#{name}/index", :"#{name}" => collection)[name]
 end
 %>

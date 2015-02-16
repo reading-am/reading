@@ -17,13 +17,13 @@ module Api::V1
     public
 
     def index
-      render locals: { apps: OauthApplications.index(params) }
+      render locals: { oauth_applications: OauthApplications.index(params) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :index
     add_transaction_tracer :index
 
     def show
-      render locals: { app: Doorkeeper::Application.find_by_uid(params[:id]) }
+      render locals: { oauth_application: Doorkeeper::Application.find_by_uid(params[:id]) }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :show
     add_transaction_tracer :show

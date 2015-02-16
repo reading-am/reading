@@ -4,7 +4,6 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'features_helper'
-require 'devise'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -52,5 +51,9 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-(and-RSpec)#controller-specs
+  require 'devise'
   config.include Devise::TestHelpers, type: :controller
+
+  # http://makandracards.com/makandra/17775-rspec-where-to-put-custom-matchers-and-other-support-code
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 end

@@ -1,8 +1,17 @@
 <%
-router = model.class.name.downcase.pluralize if router.blank?
 props = {}
-props[:model] = model if defined? model
-props[:collection] = collection if defined? collection
+
+if defined? model
+  name = model.class.name.downcase
+  props[:model] = render_api(partial: "#{name.pluralize}/#{name}", :"#{name}" => model)
+
+  router = name.pluralize if router.blank?
+end
+
+if defined? collection
+  name = collection.first.class.name.downcase.pluralize
+  props[:collection] = render_api("#{name}/index", :"#{name}" => collection)[name]
+end
 %>
 
 <script>

@@ -1,7 +1,7 @@
 module Api::V1
   module Comments
     
-    def self.index params={}
+    def self.index(params = {})
       if params[:user_id]
         comments = Comment.where(user_id: params[:user_id])
       elsif params[:page_id]

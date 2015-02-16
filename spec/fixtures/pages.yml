@@ -3,6 +3,9 @@ daringfireball:
   title: Daring Fireball
   posts_count: 54
   comments_count: 85
+  medium: text
+  media_type: article
+  description: Something about Apple
   domain: daringfireball
 
 metafilter:

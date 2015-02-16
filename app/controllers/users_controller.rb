@@ -73,10 +73,7 @@ class UsersController < ApplicationController
     @hooks = @user.hooks
     @authorizations = @user.authorizations
 
-    respond_to do |format|
-      format.html { render 'hooks/index' }
-      format.rss  { render 'hooks/index' }
-    end
+    render 'hooks/index'
   end
 
   def apps

@@ -16,7 +16,7 @@ describe Api::V1::OauthAccessTokensController do
   end
 
   describe 'GET show' do
-    it 'returns a JSON object of a oauth access token' do
+    it 'returns a JSON object of an oauth access token' do
       get :show,
           format: :json,
           id: oauth_access_tokens(:one).id

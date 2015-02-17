@@ -2,14 +2,6 @@
 module Api::V1
   class OauthAccessTokensController < ApiController
 
-    private
-
-    def token_params
-      params.require(:model).permit(:yn)
-    end
-
-    public
-
     def index
       render locals: { oauth_access_tokens: OauthAccessTokens.index(params) }
     end

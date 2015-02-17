@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "required": ["oauth_access_token"],
+    "properties": {
+        "oauth_access_token" : {
+            "type" : "object",
+            "properties" : {
+                "type" : { "type" : "string" },
+                "token" : { "type" : "string" },
+                "scopes" : { "type" : "array" },
+                "created_at" : { "type" : "string", "format": "date-time" },
+                "app" : { "type" : "object" }
+            }
+        }
+    }
+}

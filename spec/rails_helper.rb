@@ -56,4 +56,9 @@ RSpec.configure do |config|
 
   # http://makandracards.com/makandra/17775-rspec-where-to-put-custom-matchers-and-other-support-code
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+  config.before(:all) do
+    self.class.set_fixture_class oauth_access_tokens: Doorkeeper::AccessToken,
+                                 oauth_applications:  Doorkeeper::Application
+  end
 end

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe Comment do
-  fixtures :comments
+  fixtures :pages, :posts, :comments
 
   context "when body contains only mentions and whitespace or commas" do
     it "should be recognized as a single 'show'" do

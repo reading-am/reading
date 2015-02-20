@@ -12,6 +12,7 @@ define [
   "app/views/users/subnav/view"
   "app/views/users/settings_subnav/view"
   "app/views/posts/medium_selector/view"
+  "app/views/posts/yn_selector/view"
   "app/views/pages/pages/view"
   "app/views/pages/pages_with_input/view"
   "app/views/posts/posts_grouped_by_page/view"
@@ -21,7 +22,7 @@ define [
   "app/views/oauth_apps/oauth_apps_with_input/view"
   "app/views/oauth_access_tokens/oauth_access_tokens/view"
 ], (_, $, Backbone, User, Domain, Users, Posts, OauthApps, OauthAccessTokens, UserCardView, UserSubnavView,
-SettingsSubnavView, MediumSelectorView, PagesView,
+SettingsSubnavView, MediumSelectorView, YnSelectorView, PagesView,
 PagesWithInputView, PostsGroupedByPageView, UsersView, UserMediumView,
 UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
 
@@ -35,19 +36,18 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
       "users/recommended"     : "recommended"
       "users/friends"         : "friends"
       "users/search"          : "search"
-      "domains/(:domain)(/:type)(/:medium)" : "show"
+      "domains/(:domain)(/:type)(/:medium)(/:yn)" : "show"
       ":username/follow:suffix" : "followingers"
-      "(:username)(/:type)(/:medium)" : "show"
+      "(:username)(/:type)(/:medium)(/:yn)" : "show"
 
-    show: (username, type, medium) ->
+    show: (username, type, medium="all", yn="any") ->
       # Parse params
       if !username
         username = "everybody"
       if type isnt "list" and type isnt "posts"
+        yn = medium
         medium = type
         type = "posts"
-      if !medium
-        medium = "all"
 
       # Setup collection
       @collection ?= new Posts
@@ -58,21 +58,36 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         @collection = c if @collection isnt c
 
       @collection.medium = medium
+      @collection.params.yn = yn
+
       @collection.monitor()
 
       @medium_selector_view ?= new MediumSelectorView
         el: $("#medium_selector")[0]
         start_val: medium
         on_change: (medium) =>
-          @navigate "#{
-            if @model?.type is "Domain" then "domains/" else ""
-          }#{
-            username
-          }#{
-            if type is "list" then "/#{type}" else ""
-          }#{
-            if medium isnt "all" then "/#{medium}" else ""
-          }", trigger: true
+          @navigate construct_url(), trigger: true
+
+      @yn_selector_view ?= new YnSelectorView
+        el: $("#yn_selector")[0]
+        start_val: yn
+        on_change: (yn) =>
+          @navigate construct_url(), trigger: true
+
+      construct_url = =>
+        medium = @medium_selector_view.value()
+        yn = @yn_selector_view.value()
+        "#{
+          if @model?.type is "Domain" then "domains/" else ""
+        }#{
+          username
+        }#{
+          if type is "list" then "/#{type}" else ""
+        }#{
+          if yn isnt "any" or medium isnt "all" then "/#{medium}" else ""
+        }#{
+          if yn isnt "any" then "/#{yn}" else ""
+        }"
 
       if username isnt "everybody"
         @user_card_view ?= new UserCardView

@@ -149,7 +149,9 @@ Reading::Application.routes.draw do
   get '/:username/following'=> 'users#followingers', defaults: { type: 'following' }
   get '/:username/followers'=> 'users#followingers', defaults: { type: 'followers' }
   get '/:username/tumblr'   => 'blogs#show'
-  get '/:username(/:type)(/posts)(/:medium)(/page/:page)' => 'users#show',
+  get '/:username(/:type)(/posts)(/:medium)(/:yn)(/page/:page)' => 'users#show',
     defaults: { type: 'posts' },
-    constraints: { type: /posts|list|following/ }
+    constraints: { type: /posts|list|following/,
+                   medium: medium_constraints[:medium],
+                   yn: /any|yeps|nopes|neutral/ }
 end

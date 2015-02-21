@@ -35,20 +35,12 @@ module Api::Posts
       posts = posts.where("id <= ?", params[:max_id])
     end
 
-    posts = posts.limit(params[:limit])
-                   .offset(params[:offset])
-
-    if params[:medium] && params[:medium] != "all"
-      ids = posts.joins(:page)
-                  .where(pages: {medium: params[:medium]})
-                  .order("posts.created_at DESC")
-                  .pluck(:id)
-
-      posts = Post.where(id: ids)
-    end
-
     if params[:yn] && params[:yn] != 'any'
       posts = posts.where(yn: YN_MAP[params[:yn]])
+    end
+
+    if params[:medium] && params[:medium] != "all"
+      posts = posts.where(pages: {medium: params[:medium]})
     end
 
     if params[:page_ids]
@@ -56,7 +48,9 @@ module Api::Posts
     end
 
     posts = posts.includes(:user, :page, {referrer_post: :user})
-                   .order("created_at DESC")
+            .limit(params[:limit])
+            .offset(params[:offset])
+            .order("posts.created_at DESC")
   end
 
 end

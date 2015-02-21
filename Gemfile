@@ -21,6 +21,7 @@ gem 'rails_12factor', group: [:staging, :production] # needed by Heroku
 gem 'escape_utils' # fast string escaping lib used by Github
 gem 'curb' # CURL bindings
 gem 'nokogiri' # HTML / XML parsing
+gem 'loofah' # for escaping html tags. Also in Rails core but needed independently
 gem 'addressable' # URI parsing
 gem 'oj' # fast JSON parser
 gem 'typhoeus' # HTTP request gem recommended by koala

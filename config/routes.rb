@@ -1,3 +1,5 @@
+medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
+
 Reading::Application.routes.draw do
   root to: "users#show"
 
@@ -35,7 +37,6 @@ Reading::Application.routes.draw do
     scope module: 'api', defaults: { format: 'json' } do
       # version beta
       namespace :v1 do
-        medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
         resources :posts do
           get 'count', on: :collection
           get ':medium',

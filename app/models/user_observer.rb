@@ -12,7 +12,7 @@ class UserObserver < ActiveRecord::Observer
         TweetJob.new.async.perform ENV['READING_ARRIVALS_TOKEN'], ENV['READING_ARRIVALS_SECRET'], tweet
       end
 
-      UserMailerWelcomeJob.new.async.perform(user) unless user.joined_before_email?
+      UserMailer.welcome(user).deliver_later unless user.joined_before_email?
 
     end
   end
@@ -25,7 +25,7 @@ class UserObserver < ActiveRecord::Observer
     PusherJob.new.async.perform :destroy, user
 
     # This email can't be delayed because the user won't exist by the time it's processed
-    UserMailer.destroyed(user).deliver unless user.email.blank? or user.username.blank?
+    UserMailer.destroyed(user).deliver_now unless user.email.blank? or user.username.blank?
   end
 
 end

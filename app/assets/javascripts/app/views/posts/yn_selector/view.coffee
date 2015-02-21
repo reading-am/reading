@@ -1,12 +1,10 @@
 define [
   "app/views/components/selector/view"
-  "text!app/views/posts/medium_selector/template.mustache"
-  "text!app/views/posts/medium_selector/styles.css"
-], (SelectorView, template, styles) ->
+  "text!app/views/posts/yn_selector/template.mustache"
+], (SelectorView, template) ->
 
   class YnSelectorView extends SelectorView
     @assets
-      styles: styles
       template: template
 
     json: ->

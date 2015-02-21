@@ -1,14 +1,12 @@
-<div id="medium_selector" class="row">
-  <form class="span7 offset1">
-    <label>
-      Show me
-      <select name="medium">
-        <option value="all"   {{#medium_all}}selected{{/medium_all}}>everything</option>
-        <option value="text"  {{#medium_text}}selected{{/medium_text}}>text</option>
-        <option value="image" {{#medium_image}}selected{{/medium_image}}>images</option>
-        <option value="video" {{#medium_video}}selected{{/medium_video}}>video</option>
-        <option value="audio" {{#medium_audio}}selected{{/medium_audio}}>audio</option>
-      </select>
-    </label>
-  </form>
-</div>
+<form id="medium_selector" class="r_selector">
+  <label>
+    Show me
+    <select name="medium">
+      <option value="all"   {{#medium_all}}selected{{/medium_all}}>everything</option>
+      <option value="text"  {{#medium_text}}selected{{/medium_text}}>text</option>
+      <option value="image" {{#medium_image}}selected{{/medium_image}}>images</option>
+      <option value="video" {{#medium_video}}selected{{/medium_video}}>video</option>
+      <option value="audio" {{#medium_audio}}selected{{/medium_audio}}>audio</option>
+    </select>
+  </label>
+</form>

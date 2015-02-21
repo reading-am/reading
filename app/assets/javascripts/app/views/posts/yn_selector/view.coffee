@@ -1,13 +1,13 @@
 define [
   "app/views/components/selector/view"
-  "text!app/views/posts/medium_selector/template.mustache"
+  "text!app/views/posts/yn_selector/template.mustache"
 ], (SelectorView, template) ->
 
-  class MediumSelectorView extends SelectorView
+  class YnSelectorView extends SelectorView
     @assets
       template: template
 
     json: ->
       j = {}
-      j["medium_#{@start_val}"] = true
+      j["yn_#{@start_val}"] = true
       return j

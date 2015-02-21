@@ -1,5 +1,9 @@
 module Api::Posts
 
+  YN_MAP = { 'yeps'    => true,
+             'nopes'   => false,
+             'neutral' => nil }
+
   def self.index params={}
     if params[:user_id]
       if params[:type] == "list"
@@ -41,6 +45,10 @@ module Api::Posts
                   .pluck(:id)
 
       posts = Post.where(id: ids)
+    end
+
+    if params[:yn] && params[:yn] != 'any'
+      posts = posts.where(yn: YN_MAP[params[:yn]])
     end
 
     if params[:page_ids]

@@ -1,11 +1,11 @@
 class BlockageObserver < ActiveRecord::Observer
 
   def after_create(blk)
-    AdminMailerNewBlockageJob.new.async.perform(blk.blocked, blk.blocker)
+    AdminMailer.new_blockage(blk.blocked, blk.blocker).deliver_later
   end
 
   def after_destroy(blk)
-    AdminMailerBlockageRemovedJob.new.async.perform(blk.blocked, blk.blocker)
+    AdminMailer.blockage_removed(blk.blocked, blk.blocker).deliver_later
   end
 
 end

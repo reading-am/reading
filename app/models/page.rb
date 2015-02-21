@@ -121,20 +121,21 @@ public
   end
 
   def proxy_embed
-    if embed.blank?
-      embed
-    else
-      e = embed
-      e.gsub!(/(<img [^>]*src=["'])(.+?)(["'])/i) do
-        Regexp.last_match[1] +
-        "https://#{ENV['READING_IMG_SERVER']}#{Thumbor::Cascade.new(Regexp.last_match[2]).generate}" +
-        Regexp.last_match[3]
+    unless @proxy_embed
+      @proxy_embed = embed
+      if embed.present?
+        @proxy_embed.gsub!(/(<img [^>]*src=["'])(.+?)(["'])/i) do
+          Regexp.last_match[1] +
+          "https://#{ENV['READING_IMG_SERVER']}#{Thumbor::Cascade.new(Regexp.last_match[2]).generate}" +
+          Regexp.last_match[3]
+        end
+        # Make all embeds secure, even if they aren't (better to fail on https than http)
+        # but don't replace the http in images that are proxied
+        @proxy_embed.gsub!(/('|")http:\/\//, '\1https://')
       end
-      # Make all embeds secure, even if they aren't (better to fail on https than http)
-      # but don't replace the http in images that are proxied
-      e.gsub!(/('|")http:\/\//, '\1https://')
-      e
     end
+
+    @proxy_embed
   end
 
   def wrapped_url

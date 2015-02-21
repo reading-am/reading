@@ -151,7 +151,7 @@ group :development, :test do
   gem 'watchr'
   gem 'pry-byebug'
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '2.45.0.dev3' # fixes arguments[0] bug with FF 34
   gem 'spring-commands-rspec'
   gem 'json-schema'
 end

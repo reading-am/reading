@@ -1,8 +1,11 @@
 define [
   "backbone"
-], (Backbone) ->
+  "text!app/views/components/selector/styles.css"
+], (Backbone, styles) ->
 
   class SelectorView extends Backbone.View
+    @assets
+      styles: styles
 
     events:
       "change select" : "changed"

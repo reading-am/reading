@@ -7,8 +7,7 @@
     {{>users/blank_slate/template}}
   {{/show_blank_slate}}
   {{^show_blank_slate}}
-    {{>posts/medium_selector/template}}
-    {{>posts/yn_selector/template}}
+    {{>posts/filters/template}}
   {{/show_blank_slate}}
 {{/user}}
 
@@ -28,8 +27,7 @@
     {{/domain}}
     </div>
   </div>
-  {{>posts/medium_selector/template}}
-  {{>posts/yn_selector/template}}
+  {{>posts/filters/template}}
 {{/user}}
 
 {{#has_posts}}

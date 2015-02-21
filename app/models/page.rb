@@ -111,9 +111,11 @@ public
     page
   end
 
-  # this has a JS companion in bookmarklet/real_init.rb#get_title()
+  # This has a JS companion in bookmarklet/real_init.rb#get_title()
+  # Was using ActionController::Base.helpers.strip_tags but Rails 4.2
+  # escapes special chars: https://github.com/rails/rails-html-sanitizer/issues/28
   def display_title
-    title.blank? ? url : ActionController::Base.helpers.strip_tags(title)
+    title.blank? ? url : Loofah.fragment(title).text(encode_special_chars: false)
   end
 
   def display_description

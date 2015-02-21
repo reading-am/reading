@@ -690,6 +690,7 @@ DEPENDENCIES
   kippt!
   koala!
   less-rails (= 2.3.3)
+  loofah
   memcachier
   meta_request
   mime-types

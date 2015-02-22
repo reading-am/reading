@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Signing in' do
   fixtures :users
 
-  scenario 'Signing in with correct username credentials' do
+  scenario 'with correct username credentials' do
     user = users(:greg)
 
     visit '/sign_in'
@@ -15,7 +15,7 @@ feature 'Signing in' do
     expect(current_path).to eq("/#{user.username}/list")
   end
 
-  scenario 'Signing in with correct email credentials' do
+  scenario 'with correct email credentials' do
     user = users(:greg)
 
     visit '/sign_in'
@@ -27,7 +27,7 @@ feature 'Signing in' do
     expect(current_path).to eq("/#{user.username}/list")
   end
 
-  scenario 'Signing in with incorrect credentials' do
+  scenario 'with incorrect credentials' do
     user = users(:greg)
 
     visit '/sign_in'
@@ -40,7 +40,7 @@ feature 'Signing in' do
     expect(page).to have_content 'Invalid'
   end
 
-  scenario 'Signing in with Twitter' do
+  scenario 'with Twitter' do
     visit '/'
 
     click_link 't Twitter'
@@ -52,7 +52,7 @@ feature 'Signing in' do
     end
   end
 
-  scenario 'Signing in with Facebook' do
+  scenario 'with Facebook' do
     visit '/'
 
     click_link 'f Facebook'

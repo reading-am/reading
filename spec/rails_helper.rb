@@ -33,7 +33,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  # config.use_transactional_fixtures = true
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -52,6 +52,7 @@ RSpec.configure do |config|
 
   # https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-(and-RSpec)#controller-specs
   require 'devise'
+  Devise.stretches = 1
   config.include Devise::TestHelpers, type: :controller
 
   # http://makandracards.com/makandra/17775-rspec-where-to-put-custom-matchers-and-other-support-code

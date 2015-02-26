@@ -45,11 +45,9 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # Mailcatcher https://github.com/sj26/mailcatcher
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.delivery_method = :letter_opener
   # Needed by Devise
-  config.action_mailer.default_url_options = { :host => DOMAIN }
+  config.action_mailer.default_url_options = { host: DOMAIN }
 
   config.after_initialize do
     Bullet.enable = true

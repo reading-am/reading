@@ -122,6 +122,12 @@ public
     ActionController::Base.helpers.strip_tags description
   end
 
+  def content
+    has_describe_data && describe_data.response['content'].present? ?
+      describe_data.response['content'] :
+      nil rescue nil
+  end
+
   def proxy_embed
     unless @proxy_embed
       @proxy_embed = embed

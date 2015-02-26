@@ -3,14 +3,14 @@
 <%= stylesheet_link_tag 'email/overrides' %>
 <%= stylesheet_link_tag 'email/mentioned' %>
 
-<%= render :partial => 'join_bandana', :locals => {:user => @enactor } if @subject.is_adhoc? %>
+<%= render partial: 'join_bandana', locals: {user: @enactor } if @subject.is_adhoc? %>
 
 <div class="container">
 
   <div class="row">
     <div class="span6">
       <p>
-        <%= link_to "#{ROOT_URL}/#{@enactor.username}", :class => 'r_user' do %>
+        <%= link_to "#{ROOT_URL}/#{@enactor.username}", class: 'r_user' do %>
           <span class="r_name"><%= @enactor.display_name %></span>
           <% if !@enactor.name.blank? %>
             <span class="r_username">(@<%= @enactor.username %>)</span>
@@ -23,10 +23,10 @@
 
   <div class="row">
     <div class="span6">
-      <%= render :file => 'pages/page/template', :locals => {:title => @comment.page.display_title, :description => @comment.page.description, :url => @url} %>
+      <%= render file: 'pages/page/template', locals: {title: @comment.page.display_title, description: @comment.page.description, url: @url} %>
     </div>
   </div>
 
-  <%= render :partial => 'footer' %>
+  <%= render partial: 'footer' %>
 
 </div>

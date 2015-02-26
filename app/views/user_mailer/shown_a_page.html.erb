@@ -23,7 +23,18 @@
 
   <div class="row">
     <div class="span6">
-      <%= render file: 'pages/page/template', locals: {title: @comment.page.display_title, description: @comment.page.description, url: @url} %>
+      <%
+      locals = {url: @url,
+                title: @comment.page.display_title,
+                }
+
+      if @comment.page.content
+          locals[:content] = @comment.page.content
+      else
+          locals[:description] = @comment.page.description
+      end
+      %>
+      <%= render file: 'pages/page/template', locals: locals %>
     </div>
   </div>
 

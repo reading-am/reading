@@ -26,7 +26,7 @@
       <%
       locals = {url: @url,
                 title: @comment.page.display_title,
-                }
+                medium: @comment.page.medium }
 
       if @comment.page.content
           locals[:content] = @comment.page.content

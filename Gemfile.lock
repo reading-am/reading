@@ -343,7 +343,7 @@ GEM
       paint (>= 0.8.6)
       wirb (>= 1.0.1)
       zucker (>= 13.1)
-    jbuilder (2.2.6)
+    jbuilder (2.2.11)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (2.1.4)

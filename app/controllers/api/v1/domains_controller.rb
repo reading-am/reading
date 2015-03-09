@@ -2,22 +2,22 @@
 module Api::V1
   class DomainsController < ApiController
 
-    add_transaction_tracer :index
-    require_scope_for :index, :public
     def index
       render locals: { domains: Domains.index(params) }
     end
+    require_scope_for :index, :public
+    add_transaction_tracer :index
 
-    add_transaction_tracer :show
-    require_scope_for :show, :public
     def show
       render locals: { domain: Domain.find(params[:id]) }
     end
+    require_scope_for :show, :public
+    add_transaction_tracer :show
 
-    add_transaction_tracer :count
-    require_scope_for :count, :admin
     def count
       render_json total_comments: Domain.count
     end
+    require_scope_for :count, :admin
+    add_transaction_tracer :count
   end
 end

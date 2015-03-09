@@ -2,6 +2,7 @@
 include ActionView::Helpers::TextHelper
 
 class Hook < ActiveRecord::Base
+  include RenderApi
 
   serialize :events, JSON
   serialize :params, JSON
@@ -223,6 +224,6 @@ EOF
     method = params['method']
     url = params['address']
     url = "http://#{url}" if url[0, 4] != 'http'
-    Typhoeus.send method, url, amap[method] => { post: post.simple_obj(true) }
+    Typhoeus.send method, url, amap[method] => { post: render_api(post) }
   end
 end

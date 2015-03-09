@@ -26,20 +26,14 @@ module Api::V1
     def update
       page = Page.includes(:describe_data).find(params[:id])
 
-      respond_to do |format|
-        if !current_user
-          resp = :forbidden
-        elsif page_params[:html]
-          page.populate_describe_data page_params[:html]
-          page.save
-          resp = page.simple_obj
-        elsif page.update_attributes(page_params)
-          resp = :ok
-        else
-          resp = :unprocessable_entity
-        end
-        format.json { render_json resp }
+      if page_params[:html]
+        page.populate_describe_data page_params[:html]
+        page.save
+      else
+        page.update_attributes(page_params)
       end
+
+      render :show, locals: { page: page }
     end
     add_transaction_tracer :update
 

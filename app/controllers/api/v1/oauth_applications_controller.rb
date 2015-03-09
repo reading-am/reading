@@ -31,37 +31,17 @@ module Api::V1
     def create
       app = Doorkeeper::Application.new(app_params)
       app.owner = current_user
+      app.save
 
-      respond_to do |format|
-        if app.save
-          obj = app.simple_obj
-          obj[:consumer_secret] = app.secret
-          format.json { render_json({oauth_application: obj}, :created) }
-        else
-          status = app.owner.blank? ? :forbidden : :bad_request
-          format.json { render_json status }
-        end
-      end
+      render locals: { oauth_application: app }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :create
     add_transaction_tracer :create
 
     def update
-      app = Doorkeeper::Application.by_uid(params[:id])
-
-      respond_to do |format|
-        if current_user == app.owner
-          if app.update_attributes(app_params)
-            obj = app.simple_obj
-            obj[:consumer_secret] = app.secret
-            format.json { render_json({oauth_application: obj}, :ok) }
-          else
-            format.json { render_json :bad_request }
-          end
-        else
-          format.json { render_json :forbidden }
-        end
-      end
+      app = Doorkeeper::Application.by_uid_and_owner(params[:id], current_user)
+      app.update_attributes(app_params)
+      render :create, locals: { oauth_application: app }
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :update
     add_transaction_tracer :update

@@ -64,16 +64,12 @@ module Api::V1
       # A post is a duplicate if it's the exact same page and within 1hr of the last post
       post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, referrer_post: ref, yn: yn)
 
-      respond_to do |format|
-        if (post.new_record? and post.save) or (!post.new_record? and post.touch)
-          format.html { redirect_to(post, notice: 'Post was successfully created.') }
-          format.xml  { render xml: post, status: :created, location: post }
-          format.json { render_json post: post.simple_obj }
-        else
-          # TODO clean up this auth hack. Ugh.
-          status = post.user.blank? ? :forbidden : :bad_request
-          format.json { render_json status }
-        end
+      if (post.new_record? and post.save) or (!post.new_record? and post.touch)
+        render :show, locals: { post: post }
+      else
+        # TODO clean up this auth hack. Ugh.
+        status = post.user.blank? ? :forbidden : :bad_request
+        render_json status
       end
     end
     # before_action -> { doorkeeper_authorize! :public }, only: :create

@@ -14,6 +14,8 @@ module Api::V1
     # the only events we have right now are posts.
     # Will spin out when we aggregate in comments.
 
+    add_transaction_tracer :index
+    require_scope_for :index, :public
     def index
       posts = Posts.index(params)
 
@@ -23,15 +25,15 @@ module Api::V1
 
       render locals: { posts: posts }
     end
-    # before_action -> { doorkeeper_authorize! :public }, only: :index
-    add_transaction_tracer :index
 
+    add_transaction_tracer :show
+    require_scope_for :show, :public
     def show
       render locals: { post: Post.find(params[:id]) }
     end
-    # before_action -> { doorkeeper_authorize! :public }, only: :show
-    add_transaction_tracer :show
 
+    add_transaction_tracer :create
+    require_scope_for :create, :write
     def create
       user, url, title, page, ref, yn = nil
 
@@ -72,9 +74,9 @@ module Api::V1
         render_json status
       end
     end
-    # before_action -> { doorkeeper_authorize! :public }, only: :create
-    add_transaction_tracer :create
 
+    add_transaction_tracer :update
+    require_scope_for :update, :write
     def update
       post = Post.find(params[:id])
 
@@ -93,9 +95,9 @@ module Api::V1
         format.json { render_json status }
       end
     end
-    # before_action -> { doorkeeper_authorize! :public }, only: :update
-    add_transaction_tracer :update
 
+    add_transaction_tracer :destroy
+    require_scope_for :destroy, :write
     def destroy
       post = Post.find(params[:id])
 
@@ -106,19 +108,11 @@ module Api::V1
         format.json { render_json status }
       end
     end
-    # before_action -> { doorkeeper_authorize! :public }, only: :destroy
-    add_transaction_tracer :destroy
 
-    def count
-      if current_user.roles? :admin
-        respond_to do |format|
-          format.json { render_json :total_posts => Post.count }
-        end
-      else
-        show_404
-      end
-    end
-    # before_action -> { doorkeeper_authorize! :public }, only: :count
     add_transaction_tracer :count
+    require_scope_for :count, :admin
+    def count
+      render_json total_posts: Posts.count
+    end
   end
 end

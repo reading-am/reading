@@ -29,13 +29,15 @@ module Api::V1
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
     # Add a search path for our views
-    append_view_path File.join(Rails.root, "app", "views")
-    append_view_path File.join(Rails.root, "app", "views", self.to_s.deconstantize.underscore)
+    append_view_path File.join(Rails.root, 'app', 'views')
+    append_view_path File.join(Rails.root, 'app', 'views', self.name.deconstantize.underscore)
 
     wrap_parameters format: [:json]
     before_filter :map_method, :set_defaults, :check_signed_in
-    rescue_from ActiveRecord::RecordNotFound, :with => :show_404
-    rescue_from ActionController::ParameterMissing, :with => :show_400
+    rescue_from ActiveRecord::RecordNotFound, with: :show_404
+    rescue_from ActionController::ParameterMissing, with: :show_400
+
+    DEVISE_SCOPES = [:public, :write]
 
     def current_user
       return @current_user if @current_user
@@ -124,5 +126,22 @@ module Api::V1
       end
     end
 
+    def devise_session?
+      # if there's no doorkeeper token but a current user is present,
+      # that current user came through Devise
+      !doorkeeper_token && current_user.present?
+    end
+
+    def authorize!(*scopes)
+      if devise_session?
+        head :forbidden unless scopes.all? { |s| DEVISE_SCOPES.include?(s.to_sym) }
+      else
+        doorkeeper_authorize!(*scopes)
+      end
+    end
+
+    def self.require_scope_for(method, scope)
+      before_action -> { authorize! scope }, only: method
+    end
   end
 end

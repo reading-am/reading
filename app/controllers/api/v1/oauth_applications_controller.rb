@@ -17,20 +17,18 @@ module Api::V1
     public
 
 
-    add_transaction_tracer :index
-    require_scope_for :index, :public
     def index
       render locals: { oauth_applications: OauthApplications.index(params) }
     end
+    require_scope_for :index, :public
+    add_transaction_tracer :index
 
-    add_transaction_tracer :show
-    require_scope_for :show, :public
     def show
       render locals: { oauth_application: Doorkeeper::Application.find_by_uid(params[:id]) }
     end
+    require_scope_for :show, :public
+    add_transaction_tracer :show
 
-    add_transaction_tracer :create
-    require_scope_for :create, :write
     def create
       app = Doorkeeper::Application.new(app_params)
       app.owner = current_user
@@ -38,17 +36,17 @@ module Api::V1
 
       render locals: { oauth_application: app }
     end
+    require_scope_for :create, :write
+    add_transaction_tracer :create
 
-    add_transaction_tracer :update
-    require_scope_for :update, :write
     def update
       app = Doorkeeper::Application.by_uid_and_owner(params[:id], current_user)
       app.update_attributes(app_params)
       render :create, locals: { oauth_application: app }
     end
+    require_scope_for :update, :write
+    add_transaction_tracer :update
 
-    add_transaction_tracer :destroy
-    require_scope_for :destroy, :write
     def destroy
       app = Doorkeeper::Application.by_uid(params[:id])
 
@@ -59,5 +57,7 @@ module Api::V1
         format.json { render_json status }
       end
     end
+    require_scope_for :destroy, :write
+    add_transaction_tracer :destroy
   end
 end

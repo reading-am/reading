@@ -2,20 +2,18 @@
 module Api::V1
   class UsersController < ApiController
 
-    add_transaction_tracer :me
-    require_scope_for :me, :public
     def me
       render :show, locals: { user: current_user }
     end
+    require_scope_for :me, :public
+    add_transaction_tracer :me
 
-    add_transaction_tracer :index
-    require_scope_for :index, :public
     def index
       render locals: { users: Users.index(params) }
     end
+    require_scope_for :index, :public
+    add_transaction_tracer :index
 
-    add_transaction_tracer :show
-    require_scope_for :show, :public
     def show
       if params[:user_id]
         # check if a user is following or follows another user
@@ -35,31 +33,33 @@ module Api::V1
         show_404
       end
     end
+    require_scope_for :show, :public
+    add_transaction_tracer :show
 
-    add_transaction_tracer :expats
-    require_scope_for :expats, :public
     def expats
       params[:user_id] = params[:id]
       render :index, { users: Users.expats(params) }
     end
+    require_scope_for :expats, :public
+    add_transaction_tracer :expats
 
-    add_transaction_tracer :recommended
-    require_scope_for :recommended, :public
     def recommended
       params[:user_id] = current_user.id
       render :index, { users: Users.recommended(params) }
     end
+    require_scope_for :recommended, :public
+    add_transaction_tracer :recommended
 
-    add_transaction_tracer :search
-    require_scope_for :search, :public
     def search
       render :index, { users: Users.search(params) }
     end
+    require_scope_for :search, :public
+    add_transaction_tracer :search
 
-    add_transaction_tracer :count
-    require_scope_for :count, :admin
     def count
       render_json total_users: User.count
     end
+    require_scope_for :count, :admin
+    add_transaction_tracer :count
   end
 end

@@ -2,6 +2,7 @@
 class ApplicationController < ActionController::Base
   # needed for migrate_auth_token
   include Devise::Controllers::Rememberable
+  include RenderApi
 
   protect_from_forgery
 
@@ -162,28 +163,5 @@ class ApplicationController < ActionController::Base
 
   def api
     "Api::V#{API_VERSION}".constantize
-  end
-
-  def render_api(path=nil, **args, &block)
-    path_root = Rails.root.join("app", "views", "api", "v#{API_VERSION}")
-    view = ApplicationController.view_context_class.new(path_root)
-
-    return JbuilderTemplate.new(view).tap(&block) if block
-
-    unless path
-      path = args.delete(:partial)
-      parts = path.split('/')
-      # add an underscore for the partial
-      parts[-1] = "_#{parts[-1]}" unless parts[-1][0] == '_'
-      path = parts.join('/')
-    end
-
-    JbuilderTemplate.new(view).tap do |json|
-      args_string = ''
-      (args || {}).keys.each do |k|
-        args_string += "#{k} = args[:#{k}]\n"
-      end
-      eval(args_string + File.open(path_root.join(path + '.json.jbuilder')).read)
-    end
   end
 end

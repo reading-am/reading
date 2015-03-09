@@ -1,13 +1,13 @@
-class PusherJob
-  include SuckerPunch::Job
-  workers 4
+class PusherJob < ActiveJob::Base
+  include RenderApi
+  queue_as :default
 
-  def perform action, obj
+  def perform(action, obj)
     ActiveRecord::Base.connection_pool.with_connection do
-      obj.channels.each_slice(100).to_a.each do |channels| # Pusher can only take channels in groups of 100 or less
-        Pusher.trigger(channels, action.to_s, obj.simple_obj)
+      # Pusher can only take channels in groups of 100 or less
+      obj.channels.each_slice(100).to_a.each do |channels|
+        Pusher.trigger(channels, action.to_s, render_api(obj))
       end
     end
   end
-
 end

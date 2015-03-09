@@ -10,6 +10,8 @@ module Api::V1
 
     public
 
+    add_transaction_tracer :index
+    require_scope_for :index, :public
     def index
       comments = Comments.index(params)
 
@@ -19,14 +21,15 @@ module Api::V1
 
       render locals: { comments: comments }
     end
-    # before_action -> { doorkeeper_authorize! :public }, only: :index
-    add_transaction_tracer :index
 
+    add_transaction_tracer :show
+    require_scope_for :show, :public
     def show
       render locals: { comment: Comment.find(params[:id]) }
     end
-    add_transaction_tracer :show
 
+    add_transaction_tracer :create
+    require_scope_for :create, :write
     def create
       comment = Comment.new
 
@@ -55,8 +58,9 @@ module Api::V1
         end
       end
     end
-    add_transaction_tracer :create
 
+    add_transaction_tracer :update
+    require_scope_for :update, :write
     def update
       comment = Comment.find(params[:id])
 
@@ -71,8 +75,9 @@ module Api::V1
         format.json { render_json status }
       end
     end
-    add_transaction_tracer :update
 
+    add_transaction_tracer :destroy
+    require_scope_for :destroy, :write
     def destroy
       comment = Comment.find(params[:id])
 
@@ -83,18 +88,11 @@ module Api::V1
         format.json { render_json status }
       end
     end
-    add_transaction_tracer :destroy
 
-    def count
-      if current_user.roles? :admin
-        respond_to do |format|
-          format.json { render_json :total_comments => Comment.count }
-        end
-      else
-        show_404
-      end
-    end
     add_transaction_tracer :count
-
+    require_scope_for :count, :admin
+    def count
+      render_json total_comments: Comment.count
+    end
   end
 end

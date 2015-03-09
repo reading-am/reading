@@ -10,19 +10,23 @@ module Api::V1
 
     public
 
+    add_transaction_tracer :index
+    require_scope_for :index, :public
     def index
       pages = Page.order('created_at DESC')
               .paginate(page: params[:page])
 
       render locals: { pages: pages }
     end
-    add_transaction_tracer :index
 
+    add_transaction_tracer :show
+    require_scope_for :show, :public
     def show
       render locals: { page: Page.find(params[:id]) }
     end
-    add_transaction_tracer :show
 
+    add_transaction_tracer :update
+    require_scope_for :update, :write
     def update
       page = Page.includes(:describe_data).find(params[:id])
 
@@ -35,17 +39,11 @@ module Api::V1
 
       render :show, locals: { page: page }
     end
-    add_transaction_tracer :update
 
-    def count
-      if current_user.roles? :admin
-        respond_to do |format|
-          format.json { render_json total_pages: Page.count }
-        end
-      else
-        show_404
-      end
-    end
     add_transaction_tracer :count
+    require_scope_for :count, :admin
+    def count
+      render_json total_pages: Page.count
+    end
   end
 end

@@ -64,6 +64,7 @@ module PostsHelper
         _page[:posts] << _post
       end
       _page[:has_comments] = _page[:comments_count] > 0
+      _page[:access_page_permalinks] = signed_in? && current_user.access?(:page_permalinks)
       _pages << _page
     end
     _pages

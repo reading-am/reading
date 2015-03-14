@@ -1,20 +1,14 @@
 <div id="content">
-  <h4 class="breadcrumb"><%= link_to @page.domain.name, "#{ROOT_URL}/domains/#{@page.domain.name}" %> » <span class="active"><%= @page.display_title %></span></h4>
-  <%= link_to @page.url, @page.url, :class => 'external' %>
+  <%
+  locals = {url: @page.wrapped_url,
+            title: @page.display_title,
+            medium: @page.medium }
 
-  <h5><%= pluralize @page.users.uniq.count, 'Reader' %></h5>
-  <table id="readers">
-  <% @page.users.uniq.each do |user| %>
-    <tr>
-      <td><%= render :partial => 'users/user', :locals => { :user => user } %></td>
-    </tr>
-  <% end %>
-  </table>
+  if @page.content
+      locals[:content] = @page.content
+  else
+      locals[:description] = @page.description
+  end
+  %>
+  <%= render file: 'pages/page/template', locals: locals %>
 </div>
-<div id="pages"></div>
-<script type="text/javascript">
-  $(function() {
-    window.router = new Reading.Routers.Pages({model: <%=j @page.to_json.html_safe -%>});
-    Backbone.history.start();
-  });
-</script>

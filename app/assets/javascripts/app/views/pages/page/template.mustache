@@ -1,14 +1,26 @@
 <div class="r_page">
-  <a class="r_page_hostname" href="/domains/{{hostname}}">{{display_name}}</a>
+  <div class="r_page_header">
+    <a class="r_page_hostname" href="/domains/{{hostname}}">{{display_name}}</a>
+    {{#access_page_permalinks}}
+      <a class="r_page_permalink" href="/domains/{{hostname}}/pages/{{id}}">{{id}}</a>
+    {{/access_page_permalinks}}
+  </div>
   <div class="r_page_{{medium}} {{#embed}}r_has_embed{{/embed}}">
     {{#embed}}<a href="{{url}}" class="r_embed">{{{embed}}}</a>{{/embed}}
-    <h2>
+    <h2 class="r_title">
       <a href="{{url}}" target="_blank">
         <span>{{title}}</span>
       </a>
     </h2>
-    <p class="r_description" title="{{description}}">
-      {{description}}
-    </p>
+    {{#description}}
+      <p class="r_description" title="{{description}}">
+        {{description}}
+      </p>
+    {{/description}}
+    {{#content}}
+      <div class="r_content">
+        {{{content}}}
+      </div>
+    {{/content}}
   </div>
 </div>

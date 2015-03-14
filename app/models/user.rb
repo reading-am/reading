@@ -9,17 +9,18 @@ class User < ActiveRecord::Base
 
   attr_accessor :email_required, :password_required
 
-  bitmask :roles, :as => [
+  bitmask :roles, as: [
     :admin
   ]
 
-  bitmask :access, :as => [
+  bitmask :access, as: [
     :digest,
     :tagalong,
     :comments,
     :media_feed,
     :tumblr_templates,
-    :apps
+    :apps,
+    :page_permalinks
   ]
 
   serialize :urls, JSON

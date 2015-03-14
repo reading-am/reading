@@ -39,6 +39,8 @@ define [
       if domain not in PageView::safe_embed and @model.get("medium") in ["audio","video"]
         json.embed = false
 
+      json.access_page_permalinks = User::current.access('page_permalinks')
+
       return json
 
   PageView::safe_embed = [

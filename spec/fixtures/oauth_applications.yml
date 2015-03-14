@@ -3,3 +3,9 @@ ios:
   uid: fjdklsafjkdlsafjklsad
   secret: azjfjaeklwjewiojfioew
   redirect_uri: urn:ietf:wg:oauth:2.0:oob
+
+third_party:
+  name: A Third Party App With Limited Access
+  uid: ajfjkdlsafjewjiofjdioasjfkl
+  secret: ajfejfawfjidosfjewklafjsdkl
+  redirect_uri: urn:ietf:wg:oauth:2.0:oob

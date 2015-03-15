@@ -33,7 +33,9 @@ module Api::V1
     append_view_path File.join(Rails.root, 'app', 'views', self.name.deconstantize.underscore)
 
     wrap_parameters format: [:json]
-    before_filter :map_method, :set_defaults, :block_suspended
+    before_action :map_method, :set_defaults, :block_suspended
+    before_action { request.format = 'json' }
+
     rescue_from ActiveRecord::RecordNotFound, with: :show_404
     rescue_from ActionController::ParameterMissing, with: :show_400
 

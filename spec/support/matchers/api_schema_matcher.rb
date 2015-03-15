@@ -3,6 +3,7 @@ RSpec::Matchers.define :match_response_schema do |schema|
     module_path = response.request.env["action_controller.instance"].class.name.deconstantize.underscore
     schema_directory = "#{Dir.pwd}/spec/schemas/#{module_path}"
     schema_path = "#{schema_directory}/#{schema}.json"
-    JSON::Validator.validate!(schema_path, response.body, strict: true, list: response.body[0] == '[')
+    json = JSON.parse(response.body)
+    JSON::Validator.validate!(schema_path, json, strict: true, list: json.is_a?(Array))
   end
 end

@@ -1,1 +1,1 @@
-json.pages pages, partial: 'pages/page', as: :page
+json.array! pages, partial: 'pages/page', as: :page

@@ -1,1 +1,1 @@
-json.domains domains, partial: 'domains/domain', as: :domain
+json.array! domains, partial: 'domains/domain', as: :domain

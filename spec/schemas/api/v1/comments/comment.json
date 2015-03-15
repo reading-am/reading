@@ -1,18 +1,13 @@
 {
-    "type": "object",
-    "required": ["comment"],
+    "type" : "object",
     "properties": {
-        "comment" : {
-            "type" : "object",
-            "properties" : {
-                "type" : { "type" : "string" },
-                "id" : { "type" : "integer" },
-                "body" : { "type" : "string" },
-                "url" : { "type" : "string" },
-                "created_at" : { "type" : "string", "format": "date-time" },
-                "updated_at" : { "type" : "string", "format": "date-time" },
-                "user" : { "type" : "object" }
-            }
-        }
+        "type" : { "type" : "string" },
+        "id" : { "type" : "integer" },
+        "body" : { "type" : "string" },
+        "url" : { "type" : "string" },
+        "created_at" : { "type" : "string", "format": "date-time" },
+        "updated_at" : { "type" : "string", "format": "date-time" },
+        "user" : { "type" : "object" }
     }
 }
+

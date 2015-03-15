@@ -1,1 +1,1 @@
-json.authorizations authorizations, partial: 'authorizations/authorization', as: :authorization
+json.array! authorizations, partial: 'authorizations/authorization', as: :authorization

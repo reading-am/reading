@@ -1,1 +1,1 @@
-json.comments comments, partial: 'comments/comment', as: :comment
+json.array! comments, partial: 'comments/comment', as: :comment

@@ -10,7 +10,7 @@ end
 
 if defined?(collection) && collection.present?
   name = collection.first.class.table_name
-  props[:collection] = render_api("#{name}/index", :"#{name}" => collection)[name]
+  props[:collection] = render_api("#{name}/index", :"#{name}" => collection)
 end
 %>
 

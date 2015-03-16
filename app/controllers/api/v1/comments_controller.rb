@@ -46,14 +46,10 @@ module Api::V1
         comment.body  = params[:model][:body]
       end
 
-      respond_to do |format|
-        if comment.save
-          render :show, status: :created, locals: { comment: comment }
-        else
-          # TODO clean up this auth hack. Ugh.
-          status = comment.user.blank? ? :forbidden : :bad_request
-          format.json { render_json status }
-        end
+      if comment.save
+        render :show, status: :created, locals: { comment: comment }
+      else
+        head :bad_request
       end
     end
     require_scope_for :create, :write
@@ -62,15 +58,12 @@ module Api::V1
     def update
       comment = Comment.find(params[:id])
 
-      respond_to do |format|
-        if current_user != comment.user
-          status = :forbidden
-        elsif comment.update_attributes(comment_params)
-          status = :ok
-        else
-          status = :unprocessable_entity
-        end
-        format.json { render_json status }
+      if current_user != comment.user
+        head :forbidden
+      elsif comment.update_attributes(comment_params)
+        render :show, locals: { comment: comment }
+      else
+        head :unprocessable_entity
       end
     end
     require_scope_for :update, :write
@@ -80,11 +73,7 @@ module Api::V1
       comment = Comment.find(params[:id])
 
       comment.destroy if current_user == comment.user
-
-      respond_to do |format|
-        status = comment.destroyed? ? :ok : :forbidden
-        format.json { render_json status }
-      end
+      head :no_content
     end
     require_scope_for :destroy, :write
     add_transaction_tracer :destroy

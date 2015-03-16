@@ -21,7 +21,7 @@ shared_context 'a response that renders JSON' do |schema|
 end
 
 shared_context 'a successful request' do
-  it 'returns an OK (200) status code' do
+  it 'returns an successful (2xx) status code' do
     send(req_params[0], req_params[1], **req_params[2])
     expect(response).to have_http_status(:success)
   end

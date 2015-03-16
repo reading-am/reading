@@ -26,4 +26,18 @@ describe Api::V1::CommentsController do
     it_behaves_like 'a successful request'
     it_behaves_like 'a response that renders JSON', 'comments/comment'
   end
+
+  describe '#create' do
+    let(:req_params) do
+      [:post, :create, { access_token: ios_user_token.token,
+                         model: {
+                           body: 'This is a test comment',
+                           page_id: pages(:daringfireball).id
+                         } }]
+    end
+
+    it_behaves_like 'a restricted endpoint', 'write'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON', 'comments/comment'
+  end
 end

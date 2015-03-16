@@ -5,13 +5,16 @@ define [
   "pusher"
 ], (_, Constants, Backbone, pusher) ->
 
-  Backbone.Collection::endpoint = -> _.result @, "urlName"
-
   default_limit = 50
-  Backbone.Collection::params = {limit:default_limit, offset:0}
+
+  Backbone.Collection::initialize = ->
+    @params = {limit:default_limit, offset:0}
+
   Backbone.Collection::reset_paging = ->
     @params.limit = default_limit
     @params.offset = 0
+
+  Backbone.Collection::endpoint = -> _.result @, "urlName"
 
   Backbone.Collection::_fetch = Backbone.Collection::fetch
   Backbone.Collection::fetch = (options) ->

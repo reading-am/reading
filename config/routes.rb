@@ -38,18 +38,18 @@ Reading::Application.routes.draw do
       # version beta
       namespace :v1 do
         resources :posts do
-          get 'count', on: :collection
+          get 'stats', on: :collection
           get ':medium',
               on:          :collection,
               action:      'index',
               constraints: medium_constraints
         end
         resources :comments do
-          get 'count',    on: :collection
+          get 'stats',    on: :collection
         end
         resources :users do
           get 'me',       on: :collection
-          get 'count',    on: :collection
+          get 'stats',    on: :collection
           get 'search',   on: :collection
           get 'recommended', on: :collection
           get 'expats',   on: :member
@@ -84,12 +84,13 @@ Reading::Application.routes.draw do
                     constraints:  { type: 'blockers' }
         end
         resources :pages do
-          get 'count', on: :collection
+          get 'stats', on: :collection
           resources :users
           resources :comments
           resources :posts
         end
         resources :domains do
+          get 'stats', on: :collection
           resources :posts do
             get ':medium', on: :collection, action: 'index'
           end

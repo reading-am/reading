@@ -2,27 +2,13 @@ require 'rails_helper'
 
 describe Api::V1::DomainsController do
   render_views
-  fixtures :domains
+  fixtures :oauth_access_tokens, :domains
 
-  describe 'GET index' do
-    it 'returns a JSON array of domains' do
-      get :index,
-          format: :json
+  let(:token) { oauth_access_tokens(:ios_user_token) }
+  let(:schema) { 'domains/domain' }
+  let(:resource) { domains(:daringfireball) }
 
-      expect(response).to have_http_status(:success)
-      json = JSON.parse(response.body)['domains']
-      expect(json).not_to be_empty
-    end
-  end
-
-  describe 'GET show' do
-    it 'returns a JSON object of a domain' do
-      get :show,
-          format: :json,
-          id: domains(:daringfireball).id
-
-      expect(response).to have_http_status(:success)
-      expect(response).to match_response_schema('domains/domain')
-    end
-  end
+  it_behaves_like 'an index'
+  it_behaves_like 'a show'
+  it_behaves_like 'stats'
 end

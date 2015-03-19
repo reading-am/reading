@@ -3,65 +3,24 @@ require 'support/shared_api_contexts'
 
 describe Api::V1::CommentsController do
   render_views
-  fixtures :users, :pages, :posts, :comments
-  include_context 'api tokens'
+  fixtures :oauth_access_tokens, :pages, :comments
 
-  let(:default_schema) { 'comments/comment' }
+  let(:token) { oauth_access_tokens(:ios_user_token) }
+  let(:schema) { 'comments/comment' }
+  let(:resource) { comments(:single_mention) }
 
-  describe '#index' do
-    let(:req_params) do
-      [:get, :index, { access_token: ios_user_token.token }]
-    end
+  it_behaves_like 'an index'
+  it_behaves_like 'a show'
+  it_behaves_like 'a delete'
 
-    it_behaves_like 'a restricted endpoint', 'public'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
+  let(:create_params) do
+    { body: 'This is a test comment',
+      page_id: pages(:daringfireball).id }
   end
+  it_behaves_like 'a create'
 
-  describe '#show' do
-    let(:req_params) do
-      [:get, :show, { access_token: ios_user_token.token,
-                      id: comments(:single_mention).id }]
-    end
+  let(:update_params) { { body: 'This is an updated comment' } }
+  it_behaves_like 'an update'
 
-    it_behaves_like 'a restricted endpoint', 'public'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
-  end
-
-  describe '#create' do
-    let(:req_params) do
-      [:post, :create, { access_token: ios_user_token.token,
-                         model: {
-                           body: 'This is a test comment',
-                           page_id: pages(:daringfireball).id
-                         } }]
-    end
-
-    it_behaves_like 'a restricted endpoint', 'write'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
-  end
-
-  describe '#update' do
-    let(:req_params) do
-      [:patch, :update, { access_token: ios_user_token.token,
-                          id: comments(:single_mention).id,
-                          model: { body: 'This is a test comment' } }]
-    end
-
-    it_behaves_like 'a restricted endpoint', 'write'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
-  end
-
-  describe '#destroy' do
-    let(:req_params) do
-      [:delete, :destroy, { access_token: ios_user_token.token,
-                            id: comments(:single_mention).id }]
-    end
-
-    it_behaves_like 'a restricted endpoint', 'write'
-    it_behaves_like 'a successful request'
-  end
+  it_behaves_like 'stats'
 end

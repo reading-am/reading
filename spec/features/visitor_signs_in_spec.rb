@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Signing in' do
+feature 'Signing in', js: true do
   fixtures :users
 
   scenario 'with correct username credentials' do

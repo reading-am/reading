@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "User's feed" do
+feature "User's feed", js: true do
   fixtures :users, :domains, :pages, :posts
 
   scenario 'Visiting displays posts' do

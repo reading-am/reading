@@ -2,7 +2,6 @@ require 'rake'
 require 'capybara/rspec'
 Capybara.default_wait_time = 10
 Capybara.javascript_driver = :selenium
-Capybara.default_driver = Capybara.javascript_driver
 
 include Warden::Test::Helpers
 
@@ -54,7 +53,9 @@ RSpec.configure do |c|
   end
 
   c.before(:each) do
-    # JS elements won't load if we don't correct the domain
-    stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
+    if Capybara.current_session.server
+      # JS elements won't load if we don't correct the domain
+      stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
+    end
   end
 end

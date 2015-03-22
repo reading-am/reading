@@ -5,7 +5,7 @@ describe Api::V1::BlockagesController, type: :api do
   fixtures :users, :blockages
 
   let(:resource) { users(:max) }
-  let(:endpoint) { "#{url_base}/users/#{users(:greg).id}/blocking" }
+  let(:list_endpoint) { "#{url_base}/users/#{users(:greg).id}/blocking" }
 
   describe 'index' do
     it_behaves_like 'a restricted endpoint', 'public'

@@ -154,4 +154,5 @@ group :development, :test do
   gem 'selenium-webdriver', '2.45.0.dev3' # fixes arguments[0] bug with FF 34
   gem 'spring-commands-rspec'
   gem 'json-schema'
+  gem 'rack-test'
 end

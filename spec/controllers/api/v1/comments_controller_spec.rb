@@ -1,26 +1,56 @@
 require 'rails_helper'
-require 'support/shared_api_contexts'
 
-describe Api::V1::CommentsController do
-  render_views
-  fixtures :oauth_access_tokens, :pages, :comments
+describe Api::V1::CommentsController, type: :api do
+  include_context 'api defaults'
+  fixtures :pages, :comments
 
-  let(:token) { oauth_access_tokens(:ios_user_token) }
-  let(:schema) { 'comments/comment' }
   let(:resource) { comments(:single_mention) }
 
-  it_behaves_like 'an index'
-  it_behaves_like 'a show'
-  it_behaves_like 'a delete'
-
-  let(:create_params) do
-    { body: 'This is a test comment',
-      page_id: pages(:daringfireball).id }
+  describe 'index' do
+    it_behaves_like 'a restricted endpoint', 'public'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
   end
-  it_behaves_like 'a create'
 
-  let(:update_params) { { body: 'This is an updated comment' } }
-  it_behaves_like 'an update'
+  describe 'show' do
+    let(:endpoint) { detail_endpoint }
+    it_behaves_like 'a restricted endpoint', 'public'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
+  end
 
-  it_behaves_like 'stats'
+  describe 'create' do
+    let(:method) { :post }
+    let(:params) do
+      { model: { body: 'This is a test comment',
+                 page_id: pages(:daringfireball).id } }
+    end
+    it_behaves_like 'a restricted endpoint', 'write'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
+  end
+
+  describe 'update' do
+    let(:method) { :patch }
+    let(:endpoint) { detail_endpoint }
+    let(:params) { { model: { body: 'This is an updated comment' } } }
+    it_behaves_like 'a restricted endpoint', 'write'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
+  end
+
+  describe 'delete' do
+    let(:method) { :delete }
+    let(:endpoint) { detail_endpoint }
+    it_behaves_like 'a restricted endpoint', 'write'
+    it_behaves_like 'a successful request'
+  end
+
+  describe 'stats' do
+    let(:schema) { 'shared/stats' }
+    let(:endpoint) { "#{list_endpoint}/stats" }
+    it_behaves_like 'a restricted endpoint', 'admin'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
+  end
 end

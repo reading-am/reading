@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-describe Api::V1::DomainsController, type: :api do
+describe Api::V1::BlockagesController, type: :api do
   include_context 'api defaults'
-  fixtures :domains
+  fixtures :users, :blockages
 
-  let(:resource) { domains(:daringfireball) }
+  let(:resource) { users(:max) }
+  let(:endpoint) { "#{url_base}/users/#{users(:greg).id}/blocking" }
 
   describe 'index' do
     it_behaves_like 'a restricted endpoint', 'public'
@@ -15,14 +16,6 @@ describe Api::V1::DomainsController, type: :api do
   describe 'show' do
     let(:endpoint) { detail_endpoint }
     it_behaves_like 'a restricted endpoint', 'public'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
-  end
-
-  describe 'stats' do
-    let(:schema) { 'shared/stats' }
-    let(:endpoint) { "#{list_endpoint}/stats" }
-    it_behaves_like 'a restricted endpoint', 'admin'
     it_behaves_like 'a successful request'
     it_behaves_like 'a response that renders JSON'
   end

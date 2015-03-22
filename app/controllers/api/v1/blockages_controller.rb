@@ -1,6 +1,9 @@
 # encoding: utf-8
 module Api::V1
   class BlockagesController < ApiController
+    # only allow admins to see who is blocking someone
+    before_action -> { authorize! :admin },  if:     -> { params[:type] == 'blockers' }
+    before_action -> { authorize! :public }, unless: -> { params[:type] == 'blockers' }
 
     private
 
@@ -13,7 +16,6 @@ module Api::V1
     def index
       render 'users/index', locals: { users: Blockages.index(params) }
     end
-    require_scope_for :index, :public
     add_transaction_tracer :index
 
     def create

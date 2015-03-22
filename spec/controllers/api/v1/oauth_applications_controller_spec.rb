@@ -1,28 +1,22 @@
 require 'rails_helper'
 
-describe Api::V1::OauthApplicationsController do
-  render_views
+describe Api::V1::OauthApplicationsController, type: :api do
+  include_context 'api defaults'
   fixtures :oauth_applications
 
-  describe 'GET index' do
-    it 'returns a JSON array of oauth applications' do
-      get :index,
-          format: :json
+  let(:resource) { oauth_applications(:ios) }
+  let(:detail_endpoint) { "#{list_endpoint}/#{resource.uid}" }
 
-      expect(response).to have_http_status(:success)
-      json = JSON.parse(response.body)['oauth_applications']
-      expect(json).not_to be_empty
-    end
+  describe 'index' do
+    it_behaves_like 'a restricted endpoint', 'public'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
   end
 
-  describe 'GET show' do
-    it 'returns a JSON object of an oauth application' do
-      get :show,
-          format: :json,
-          id: oauth_applications(:ios).uid
-
-      expect(response).to have_http_status(:success)
-      expect(response).to match_response_schema('oauth_applications/oauth_application')
-    end
+  describe 'show' do
+    let(:endpoint) { detail_endpoint }
+    it_behaves_like 'a restricted endpoint', 'public'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
   end
 end

@@ -5,12 +5,11 @@ shared_context 'api defaults' do
   let(:token) { oauth_access_tokens(:ios_user_token) }
   let(:method) { :get }
   let(:params) { {} }
-  let(:list_endpoint) { "#{url_base}/#{resource.class.name.downcase.pluralize}" }
+  let(:list_endpoint) { "#{url_base}/#{resource.class.table_name}" }
   let(:detail_endpoint) { "#{list_endpoint}/#{resource.id}" }
   let(:endpoint) { list_endpoint }
   let(:schema) do
-    name = resource.class.name.downcase
-    "#{name.pluralize}/#{name}"
+    "#{resource.class.table_name}/#{resource.class.table_name.singularize}"
   end
 end
 

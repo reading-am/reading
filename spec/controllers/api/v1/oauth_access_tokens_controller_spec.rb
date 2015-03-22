@@ -1,13 +1,21 @@
 require 'rails_helper'
 
-describe Api::V1::OauthAccessTokensController do
-  render_views
+describe Api::V1::OauthAccessTokensController, type: :api do
+  include_context 'api defaults'
   fixtures :oauth_access_tokens
 
-  let(:token) { oauth_access_tokens(:ios_user_token) }
-  let(:schema) { 'oauth_access_tokens/oauth_access_token' }
   let(:resource) { oauth_access_tokens(:ios_user_token) }
 
-  it_behaves_like 'an index'
-  it_behaves_like 'a show'
+  describe 'index' do
+    it_behaves_like 'a restricted endpoint', 'public'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
+  end
+
+  describe 'show' do
+    let(:endpoint) { detail_endpoint }
+    it_behaves_like 'a restricted endpoint', 'public'
+    it_behaves_like 'a successful request'
+    it_behaves_like 'a response that renders JSON'
+  end
 end

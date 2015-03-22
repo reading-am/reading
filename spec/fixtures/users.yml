@@ -30,6 +30,7 @@ howard:
   token: fjdskalfjasdkl
   auth_token: afjdskalfjdsaklfjdsakl
   email: greg@formasfunction.com
+  location: Nowhere
   image: http://graph.facebook.com/517880926/picture?type=square
   urls: ! '{"Facebook": "http://www.facebook.com/quiet", "Website": null}'
   email_when_followed: t

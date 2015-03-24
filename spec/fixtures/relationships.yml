@@ -1,0 +1,7 @@
+greg_max:
+  follower: greg
+  followed: max
+
+max_greg:
+  follower: max
+  followed: greg

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Api::V1::PostsController, type: :api do
   include_context 'api defaults'
-  fixtures :users, :domains, :pages, :posts
+  fixtures :users, :relationships, :domains, :pages, :posts
 
   let(:resource) { posts(:one) }
 
@@ -83,7 +83,7 @@ describe Api::V1::PostsController, type: :api do
   end
 
   describe '/users/:id/following/posts' do
-    let(:list_endpoint) { "#{url_base}/users/#{users(:greg).id}/following/posts" }
+    let(:list_endpoint) { "#{url_base}/users/#{users(:max).id}/following/posts" }
 
     describe 'index' do
       it_behaves_like 'a restricted endpoint', 'public'

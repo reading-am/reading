@@ -8,6 +8,33 @@ daringfireball:
   description: Something about Apple
   domain: daringfireball
 
+daringfireball_image:
+  url: http://daringfireball.net/graphics/logos/
+  title: A test image
+  posts_count: 1
+  comments_count: 0
+  medium: image
+  description: Logo
+  domain: daringfireball
+
+daringfireball_video:
+  url: http://daringfireball.net/video
+  title: A test video
+  posts_count: 1
+  comments_count: 0
+  medium: video
+  description: A fake video
+  domain: daringfireball
+
+daringfireball_audio:
+  url: http://daringfireball.net/audio
+  title: A test audio
+  posts_count: 1
+  comments_count: 0
+  medium: audio
+  description: A fake audio
+  domain: daringfireball
+
 metafilter:
   url: http://www.metafilter.com/
   title: MetaFilter | Community Weblog

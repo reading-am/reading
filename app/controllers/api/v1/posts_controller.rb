@@ -67,9 +67,7 @@ module Api::V1
       if (post.new_record? and post.save) or (!post.new_record? and post.touch)
         render :show, locals: { post: post }
       else
-        # TODO clean up this auth hack. Ugh.
-        status = post.user.blank? ? :forbidden : :bad_request
-        render_json status
+        render_json post.user.blank? ? :forbidden : :bad_request
       end
     end
     require_scope_for :create, :write
@@ -84,13 +82,10 @@ module Api::V1
         post.yn = pms[:yn]
       end
 
-      respond_to do |format|
-        if allowed and ((post.changed? and post.save) or (!post.changed? and post.touch))
-          status = :ok
-        else
-          status = allowed ? :bad_request : :forbidden
-        end
-        format.json { render_json status }
+      if allowed and ((post.changed? and post.save) or (!post.changed? and post.touch))
+        render :show, locals: { post: post }
+      else
+        render_json allowed ? :bad_request : :forbidden
       end
     end
     require_scope_for :update, :write

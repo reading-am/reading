@@ -109,10 +109,10 @@ module Api::V1
     require_scope_for :destroy, :write
     add_transaction_tracer :destroy
 
-    def count
-      render_json total_posts: Posts.count
+    def stats
+      render 'shared/stats', locals: { model: Post }
     end
-    require_scope_for :count, :admin
-    add_transaction_tracer :count
+    require_scope_for :stats, :admin
+    add_transaction_tracer :stats
   end
 end

@@ -54,7 +54,7 @@ Reading::Application.routes.draw do
           get 'recommended', on: :collection
           get 'expats',   on: :member
           resources :comments
-          resources :posts do
+          resources :posts, only: :index do
             get ':medium',
                 on: :collection,
                 action: 'index',
@@ -64,6 +64,8 @@ Reading::Application.routes.draw do
                     controller:   'relationships',
                     defaults:     { type: 'following' },
                     constraints:  { type: 'following' } do
+            # Using a get string here rather than resources
+            # because rails limits nesting of resources
             get 'posts(/:medium)',
                 on:         :collection,
                 controller: 'posts',
@@ -85,14 +87,17 @@ Reading::Application.routes.draw do
         end
         resources :pages do
           get 'stats', on: :collection
-          resources :users
-          resources :comments
-          resources :posts
+          resources :users, only: :index
+          resources :comments, only: :index
+          resources :posts, only: :index
         end
         resources :domains do
           get 'stats', on: :collection
-          resources :posts do
-            get ':medium', on: :collection, action: 'index'
+          resources :posts, only: :index do
+            get ':medium',
+                on: :collection,
+                action: 'index',
+                constraints: medium_constraints
           end
         end
         resources :oauth_access_tokens

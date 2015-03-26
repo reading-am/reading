@@ -28,6 +28,7 @@ gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'base58'
 gem 'foreigner' # DB foreign keys
 gem 'jbuilder' # json templates
+gem 'versionist' # api versioning
 
 #####################
 # Ruby Conveniences #

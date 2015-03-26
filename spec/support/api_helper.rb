@@ -22,7 +22,7 @@ module ApiHelper
   end
 
   def url_base
-    '/api/v1'
+    '/api'
   end
 end
 

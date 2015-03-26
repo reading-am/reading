@@ -31,78 +31,77 @@ Reading::Application.routes.draw do
 
   # api
   concern :api do
-    # No content at root - send to our primary domain
-    get '/', to: redirect("//#{ENV['APP_ROOT_URL']}")
-    # Controller namespace
-    scope module: 'api', defaults: { format: 'json' } do
-      # version beta
-      namespace :v1 do
-        resources :posts do
-          get 'stats', on: :collection
+    api_version(module: 'Api::V1',
+                header: { name: 'Accept', value: 'application/vnd.reading.v1' },
+                defaults: { format: 'json' },
+                default: true) do
+      # No content at root - send to our primary domain
+      get '/', to: redirect("//#{ENV['APP_ROOT_URL']}")
+      resources :posts do
+        get 'stats', on: :collection
+        get ':medium',
+            on:          :collection,
+            action:      'index',
+            constraints: medium_constraints
+      end
+      resources :comments do
+        get 'stats',    on: :collection
+      end
+      resources :users do
+        get 'me',       on: :collection
+        get 'stats',    on: :collection
+        get 'search',   on: :collection
+        get 'recommended', on: :collection
+        get 'expats',   on: :member
+        resources :comments
+        resources :posts, only: :index do
           get ':medium',
-              on:          :collection,
-              action:      'index',
+              on: :collection,
+              action: 'index',
               constraints: medium_constraints
         end
-        resources :comments do
-          get 'stats',    on: :collection
+        resources :following,
+                  controller:   'relationships',
+                  defaults:     { type: 'following' },
+                  constraints:  { type: 'following' } do
+          # Using a get string here rather than resources
+          # because rails limits nesting of resources
+          get 'posts(/:medium)',
+              on:         :collection,
+              controller: 'posts',
+              action:     'index',
+              constraints: medium_constraints
         end
-        resources :users do
-          get 'me',       on: :collection
-          get 'stats',    on: :collection
-          get 'search',   on: :collection
-          get 'recommended', on: :collection
-          get 'expats',   on: :member
-          resources :comments
-          resources :posts, only: :index do
-            get ':medium',
-                on: :collection,
-                action: 'index',
-                constraints: medium_constraints
-          end
-          resources :following,
-                    controller:   'relationships',
-                    defaults:     { type: 'following' },
-                    constraints:  { type: 'following' } do
-            # Using a get string here rather than resources
-            # because rails limits nesting of resources
-            get 'posts(/:medium)',
-                on:         :collection,
-                controller: 'posts',
-                action:     'index',
-                constraints: medium_constraints
-          end
-          resources :followers,
-                    controller:   'relationships',
-                    defaults:     { type: 'followers' },
-                    constraints:  { type: 'followers' }
-          resources :blocking,
-                    controller:   'blockages',
-                    defaults:     { type: 'blocking' },
-                    constraints:  { type: 'blocking' }
-          resources :blockers,
-                    controller:   'blockages',
-                    defaults:     { type: 'blockers' },
-                    constraints:  { type: 'blockers' }
-        end
-        resources :pages do
-          get 'stats', on: :collection
-          resources :users, only: :index
-          resources :comments, only: :index
-          resources :posts, only: :index
-        end
-        resources :domains do
-          get 'stats', on: :collection
-          resources :posts, only: :index do
-            get ':medium',
-                on: :collection,
-                action: 'index',
-                constraints: medium_constraints
-          end
-        end
-        resources :oauth_access_tokens
-        resources :oauth_applications
+        resources :followers,
+                  controller:   'relationships',
+                  defaults:     { type: 'followers' },
+                  constraints:  { type: 'followers' }
+        resources :blocking,
+                  controller:   'blockages',
+                  defaults:     { type: 'blocking' },
+                  constraints:  { type: 'blocking' }
+        resources :blockers,
+                  controller:   'blockages',
+                  defaults:     { type: 'blockers' },
+                  constraints:  { type: 'blockers' }
       end
+      resources :pages do
+        get 'stats', on: :collection
+        resources :users, only: :index
+        resources :comments, only: :index
+        resources :posts, only: :index
+      end
+      resources :domains do
+        get 'stats', on: :collection
+        resources :posts, only: :index do
+          get ':medium',
+              on: :collection,
+              action: 'index',
+              constraints: medium_constraints
+        end
+      end
+      resources :oauth_access_tokens
+      resources :oauth_applications
     end
   end
 

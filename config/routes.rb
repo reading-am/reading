@@ -85,7 +85,7 @@ Reading::Application.routes.draw do
       resource :user, defaults: { add_current_user_id: true } do
         concerns :api_v1_users
       end
-      resources :users do
+      resources :users, only: [:show, :update] do
         get 'stats',       on: :collection
         get 'search',      on: :collection
         get 'recommended', on: :collection

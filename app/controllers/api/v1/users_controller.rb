@@ -62,5 +62,11 @@ module Api::V1
     end
     require_scope_for :count, :admin
     add_transaction_tracer :count
+
+    private
+
+    def user_params
+      params.permit(:name)
+    end
   end
 end

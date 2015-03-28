@@ -23,6 +23,7 @@ greg:
   comments_count: '680'
   email_when_mentioned: t
   roles: '1'
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
 
 howard:
   name: Howards
@@ -47,6 +48,7 @@ howard:
   followers_count: '21'
   comments_count: '262'
   email_when_mentioned: t
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
 
 max:
   name: Max Fenton
@@ -54,3 +56,4 @@ max:
   bio: Just a person doing some reading
   link: ''
   location: NYC
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting

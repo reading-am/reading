@@ -57,23 +57,45 @@ describe Api::V1::CommentsController, type: :api do
     end
   end
 
-  describe '/users/:id/comments' do
-    let(:list_endpoint) { "#{url_base}/users/#{users(:greg).id}/comments" }
+  describe '/user' do
+    let(:url_base) { "#{super()}/user"}
 
-    describe 'index' do
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
+    describe '/comments' do
+      let(:list_endpoint) { "#{url_base}/comments" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
     end
   end
 
-  describe '/pages/:id/comments' do
-    let(:list_endpoint) { "#{url_base}/pages/#{pages(:daringfireball).id}/comments" }
+  describe '/users' do
+    let(:url_base) { "#{super()}/users"}
 
-    describe 'index' do
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
+    describe '/:id/comments' do
+      let(:list_endpoint) { "#{url_base}/#{users(:greg).id}/comments" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+    end
+  end
+
+  describe '/pages' do
+    let(:url_base) { "#{super()}/pages"}
+
+    describe '/:id/comments' do
+      let(:list_endpoint) { "#{url_base}/#{pages(:daringfireball).id}/comments" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
     end
   end
 end

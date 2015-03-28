@@ -2,6 +2,13 @@
 module Api::V1
   class UsersController < ApiController
 
+    # Override from api_controller so that :id will be set when missing
+    def add_current_user_id
+      return unless params[:add_current_user_id] && current_user
+      params[:user_id] ||= current_user.id if params[:id].present?
+      params[:id] ||= current_user.id
+    end
+
     def me
       render :show, locals: { user: current_user }
     end

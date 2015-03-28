@@ -29,6 +29,45 @@ Reading::Application.routes.draw do
   # sitemap
   get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
+  concern :api_v1_users do
+    # get 'me',       on: :collection
+    # get 'stats',    on: :collection
+    # get 'search',   on: :collection
+    # get 'recommended', on: :collection
+    # get 'expats',   on: :member
+    resources :comments
+    resources :posts, only: :index do
+      get ':medium',
+          on: :collection,
+          action: 'index',
+          constraints: medium_constraints
+    end
+    resources :following,
+              controller:   'relationships',
+              defaults:     { type: 'following' },
+              constraints:  { type: 'following' } do
+      # Using a get string here rather than resources
+      # because rails limits nesting of resources
+      get 'posts(/:medium)',
+          on:         :collection,
+          controller: 'posts',
+          action:     'index',
+          constraints: medium_constraints
+    end
+    resources :followers,
+              controller:   'relationships',
+              defaults:     { type: 'followers' },
+              constraints:  { type: 'followers' }
+    resources :blocking,
+              controller:   'blockages',
+              defaults:     { type: 'blocking' },
+              constraints:  { type: 'blocking' }
+    resources :blockers,
+              controller:   'blockages',
+              defaults:     { type: 'blockers' },
+              constraints:  { type: 'blockers' }
+  end
+
   # api
   concern :api do
     api_version(module: 'Api::V1',
@@ -47,43 +86,11 @@ Reading::Application.routes.draw do
       resources :comments do
         get 'stats',    on: :collection
       end
+      resource :user, defaults: { add_current_user_id: true } do
+        concerns :api_v1_users
+      end
       resources :users do
-        get 'me',       on: :collection
-        get 'stats',    on: :collection
-        get 'search',   on: :collection
-        get 'recommended', on: :collection
-        get 'expats',   on: :member
-        resources :comments
-        resources :posts, only: :index do
-          get ':medium',
-              on: :collection,
-              action: 'index',
-              constraints: medium_constraints
-        end
-        resources :following,
-                  controller:   'relationships',
-                  defaults:     { type: 'following' },
-                  constraints:  { type: 'following' } do
-          # Using a get string here rather than resources
-          # because rails limits nesting of resources
-          get 'posts(/:medium)',
-              on:         :collection,
-              controller: 'posts',
-              action:     'index',
-              constraints: medium_constraints
-        end
-        resources :followers,
-                  controller:   'relationships',
-                  defaults:     { type: 'followers' },
-                  constraints:  { type: 'followers' }
-        resources :blocking,
-                  controller:   'blockages',
-                  defaults:     { type: 'blocking' },
-                  constraints:  { type: 'blocking' }
-        resources :blockers,
-                  controller:   'blockages',
-                  defaults:     { type: 'blockers' },
-                  constraints:  { type: 'blockers' }
+        concerns :api_v1_users
       end
       resources :pages do
         get 'stats', on: :collection

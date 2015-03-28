@@ -70,49 +70,89 @@ describe Api::V1::PostsController, type: :api do
     end
   end
 
-  describe '/users/:id/posts' do
-    let(:list_endpoint) { "#{url_base}/users/#{users(:greg).id}/posts" }
+  describe '/user' do
+    let(:url_base) { "#{super()}/user"}
 
-    describe 'index' do
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
+    describe '/:id/posts' do
+      let(:list_endpoint) { "#{url_base}/posts" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+
+      it_behaves_like 'a medium filter'
     end
 
-    it_behaves_like 'a medium filter'
+    describe '/:id/following/posts' do
+      let(:list_endpoint) { "#{url_base}/following/posts" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+
+      it_behaves_like 'a medium filter'
+    end
   end
 
-  describe '/users/:id/following/posts' do
-    let(:list_endpoint) { "#{url_base}/users/#{users(:max).id}/following/posts" }
+  describe '/users' do
+    let(:url_base) { "#{super()}/users"}
 
-    describe 'index' do
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
+    describe '/:id/posts' do
+      let(:list_endpoint) { "#{url_base}/#{users(:greg).id}/posts" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+
+      it_behaves_like 'a medium filter'
     end
 
-    it_behaves_like 'a medium filter'
-  end
+    describe '/:id/following/posts' do
+      let(:list_endpoint) { "#{url_base}/#{users(:max).id}/following/posts" }
 
-  describe '/domains/:id/posts' do
-    let(:list_endpoint) { "#{url_base}/domains/#{domains(:daringfireball).id}/posts" }
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
 
-    describe 'index' do
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
+      it_behaves_like 'a medium filter'
     end
-
-    it_behaves_like 'a medium filter'
   end
 
-  describe '/pages/:id/posts' do
-    let(:list_endpoint) { "#{url_base}/pages/#{pages(:daringfireball).id}/posts" }
+  describe '/domains' do
+    let(:url_base) { "#{super()}/domains"}
 
-    describe 'index' do
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
+    describe '/:id/posts' do
+      let(:list_endpoint) { "#{url_base}/#{domains(:daringfireball).id}/posts" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+
+      it_behaves_like 'a medium filter'
+    end
+  end
+
+  describe '/pages' do
+    let(:url_base) { "#{super()}/pages"}
+
+    describe '/:id/posts' do
+      let(:list_endpoint) { "#{url_base}/#{pages(:daringfireball).id}/posts" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
     end
   end
 end

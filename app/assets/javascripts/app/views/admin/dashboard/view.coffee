@@ -1,7 +1,6 @@
 define [
   "jquery"
   "backbone"
-  "app/constants"
   "app/collections/users"
   "app/collections/posts"
   "app/collections/comments"
@@ -10,7 +9,7 @@ define [
   "app/views/comments/comments/view"
   "text!app/views/admin/dashboard/template.mustache"
   "text!app/views/admin/dashboard/styles.css"
-], ($, Backbone, Constants, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, styles) ->
+], ($, Backbone, Users, Posts, Comments, UsersView, PostsView, CommentsView, template, styles) ->
 
   class DashboardView extends Backbone.View
     @assets
@@ -42,7 +41,7 @@ define [
       # Fill in the counts
       @$(".count").each (i, el) ->
         type = $(el).parents(".module").attr("id")
-        $.ajax("/api/v#{Constants.api_version}/#{type}/count").done (msg) ->
+        $.ajax("/api/#{type}/count").done (msg) ->
           $(el).html msg["total_#{type}"]
 
       return this

@@ -6,24 +6,27 @@ describe Api::V1::DomainsController, type: :api do
 
   let(:resource) { domains(:daringfireball) }
 
-  describe 'index' do
-    it_behaves_like 'a restricted endpoint', 'public'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
-  end
+  describe '/domains' do
 
-  describe 'show' do
-    let(:endpoint) { detail_endpoint }
-    it_behaves_like 'a restricted endpoint', 'public'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
-  end
+    describe 'index' do
+      it_behaves_like 'a restricted endpoint', 'public'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
 
-  describe 'stats' do
-    let(:schema) { 'shared/stats' }
-    let(:endpoint) { "#{list_endpoint}/stats" }
-    it_behaves_like 'a restricted endpoint', 'admin'
-    it_behaves_like 'a successful request'
-    it_behaves_like 'a response that renders JSON'
+    describe 'show' do
+      let(:endpoint) { detail_endpoint }
+      it_behaves_like 'a restricted endpoint', 'public'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
+
+    describe 'stats' do
+      let(:schema) { 'shared/stats' }
+      let(:endpoint) { "#{list_endpoint}/stats" }
+      it_behaves_like 'a restricted endpoint', 'admin'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
   end
 end

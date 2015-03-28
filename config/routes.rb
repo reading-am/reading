@@ -32,6 +32,7 @@ Reading::Application.routes.draw do
   concern :api_v1_users do
     get 'expats' # move this to /user
     resources :comments
+    resources :pages, only: :index
     resources :posts, only: :index do
       get ':medium',
           on: :collection,
@@ -99,6 +100,7 @@ Reading::Application.routes.draw do
       end
       resources :domains do
         get 'stats', on: :collection
+        resources :pages, only: :index
         resources :posts, only: :index do
           get ':medium',
               on: :collection,

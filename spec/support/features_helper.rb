@@ -56,6 +56,7 @@ RSpec.configure do |c|
     if Capybara.current_session.server
       # JS elements won't load if we don't correct the domain
       stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
+      stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
     end
   end
 end

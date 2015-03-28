@@ -1,22 +1,23 @@
 require 'rails_helper'
 
-describe Api::V1::BlockagesController, type: :api do
+describe Api::V1::RelationshipsController, type: :api do
   include_context 'api defaults'
-  fixtures :users, :blockages
+  fixtures :users, :relationships
 
-  let(:resource) { users(:max) }
+  let(:resource) { users(:greg) }
 
   describe '/users' do
-    describe '/blocking' do
-      let(:endpoint) { "#{detail_endpoint}/blocking" }
-      it_behaves_like 'a restricted endpoint', 'admin'
+
+    describe '/followers' do
+      let(:endpoint) { "#{detail_endpoint}/followers" }
+      it_behaves_like 'a restricted endpoint', 'public'
       it_behaves_like 'a successful request'
       it_behaves_like 'a response that renders JSON'
     end
 
-    describe '/blockers' do
-      let(:endpoint) { "#{detail_endpoint}/blocking" }
-      it_behaves_like 'a restricted endpoint', 'admin'
+    describe '/following' do
+      let(:endpoint) { "#{detail_endpoint}/following" }
+      it_behaves_like 'a restricted endpoint', 'public'
       it_behaves_like 'a successful request'
       it_behaves_like 'a response that renders JSON'
     end
@@ -25,8 +26,15 @@ describe Api::V1::BlockagesController, type: :api do
   describe '/user' do
     let(:detail_endpoint) { "#{url_base}/user" }
 
-    describe '/blocking' do
-      let(:endpoint) { "#{detail_endpoint}/blocking" }
+    describe '/followers' do
+      let(:endpoint) { "#{detail_endpoint}/followers" }
+      it_behaves_like 'a restricted endpoint', 'public'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
+
+    describe '/following' do
+      let(:endpoint) { "#{detail_endpoint}/following" }
 
       describe 'index' do
         it_behaves_like 'a restricted endpoint', 'public'

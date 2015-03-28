@@ -33,8 +33,11 @@ module Api::V1
     append_view_path File.join(Rails.root, 'app', 'views', self.name.deconstantize.underscore)
 
     wrap_parameters format: [:json]
-    before_action :map_method, :set_defaults, :block_suspended
     before_action { request.format = 'json' }
+    before_action :map_method,
+                  :set_defaults,
+                  :block_suspended,
+                  :add_current_user_id
 
     rescue_from ActiveRecord::RecordNotFound, with: :show_404
     rescue_from ActionController::ParameterMissing, with: :show_400
@@ -54,6 +57,11 @@ module Api::V1
     end
 
     private
+
+    def add_current_user_id
+      return unless params[:add_current_user_id] && current_user
+      params[:user_id] ||= current_user.id
+    end
 
     def map_method
       # for JSONP requests

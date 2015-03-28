@@ -1,28 +1,83 @@
 require 'rails_helper'
 
-describe Api::V1::PagesController do
-  render_views
-  fixtures :pages
+describe Api::V1::PagesController, type: :api do
+  include_context 'api defaults'
+  fixtures :users, :domains, :pages
 
-  describe 'GET index' do
-    it 'returns a JSON array of pages' do
-      get :index,
-          format: :json
+  let(:resource) { pages(:daringfireball) }
 
-      expect(response).to have_http_status(:success)
-      json = JSON.parse(response.body)['pages']
-      expect(json).not_to be_empty
+  describe '/pages' do
+
+    describe 'index' do
+      it_behaves_like 'a restricted endpoint', 'public'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
+
+    describe 'show' do
+      let(:endpoint) { detail_endpoint }
+      it_behaves_like 'a restricted endpoint', 'public'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
+
+    describe 'update' do
+      let(:method) { :patch }
+      let(:endpoint) { detail_endpoint }
+      let(:params) { { model: { body: 'This is an updated comment' } } }
+      it_behaves_like 'a restricted endpoint', 'write'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
+    end
+
+    describe 'stats' do
+      let(:schema) { 'shared/stats' }
+      let(:endpoint) { "#{list_endpoint}/stats" }
+      it_behaves_like 'a restricted endpoint', 'admin'
+      it_behaves_like 'a successful request'
+      it_behaves_like 'a response that renders JSON'
     end
   end
 
-  describe 'GET show' do
-    it 'returns a JSON object of a page' do
-      get :show,
-          format: :json,
-          id: pages(:daringfireball).id
+  describe '/user' do
+    let(:url_base) { "#{super()}/user"}
 
-      expect(response).to have_http_status(:success)
-      expect(response).to match_response_schema('pages/page')
+    describe '/pages' do
+      let(:list_endpoint) { "#{url_base}/pages" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+    end
+  end
+
+  describe '/users' do
+    let(:url_base) { "#{super()}/users"}
+
+    describe '/:id/pages' do
+      let(:list_endpoint) { "#{url_base}/#{users(:greg).id}/pages" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
+    end
+  end
+
+  describe '/domains' do
+    let(:url_base) { "#{super()}/domains"}
+
+    describe '/:id/pages' do
+      let(:list_endpoint) { "#{url_base}/#{domains(:daringfireball).id}/pages" }
+
+      describe 'index' do
+        it_behaves_like 'a restricted endpoint', 'public'
+        it_behaves_like 'a successful request'
+        it_behaves_like 'a response that renders JSON'
+      end
     end
   end
 end

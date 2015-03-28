@@ -5,6 +5,7 @@ shared_context 'api defaults' do
   let(:token) { oauth_access_tokens(:ios_user_token) }
   let(:method) { :get }
   let(:params) { {} }
+  let(:url_base) { '/api' }
   let(:list_endpoint) { "#{url_base}/#{resource.class.table_name}" }
   let(:detail_endpoint) { "#{list_endpoint}/#{resource.id}" }
   let(:endpoint) { list_endpoint }

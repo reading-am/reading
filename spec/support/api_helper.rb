@@ -20,10 +20,6 @@ module ApiHelper
   def set_auth_header(t=nil)
     header 'Authorization', "Bearer #{(t || token).token}"
   end
-
-  def url_base
-    '/api'
-  end
 end
 
 RSpec.configure { |c| c.include ApiHelper, type: :api }

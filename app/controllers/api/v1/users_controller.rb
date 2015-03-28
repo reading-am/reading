@@ -9,12 +9,6 @@ module Api::V1
       params[:id] ||= current_user.id
     end
 
-    def me
-      render :show, locals: { user: current_user }
-    end
-    require_scope_for :me, :public
-    add_transaction_tracer :me
-
     def index
       render locals: { users: Users.index(params) }
     end

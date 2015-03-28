@@ -30,11 +30,6 @@ Reading::Application.routes.draw do
   get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
   concern :api_v1_users do
-    # get 'me',       on: :collection
-    # get 'stats',    on: :collection
-    # get 'search',   on: :collection
-    # get 'recommended', on: :collection
-    # get 'expats',   on: :member
     resources :comments
     resources :posts, only: :index do
       get ':medium',
@@ -87,9 +82,13 @@ Reading::Application.routes.draw do
         get 'stats',    on: :collection
       end
       resource :user, defaults: { add_current_user_id: true } do
+        get 'expats'
         concerns :api_v1_users
       end
       resources :users do
+        get 'stats',       on: :collection
+        get 'search',      on: :collection
+        get 'recommended', on: :collection
         concerns :api_v1_users
       end
       resources :pages do

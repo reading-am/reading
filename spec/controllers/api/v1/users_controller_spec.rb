@@ -7,7 +7,6 @@ describe Api::V1::UsersController, type: :api do
   let(:resource) { users(:greg) }
 
   describe '/users' do
-
     describe 'show' do
       let(:endpoint) { detail_endpoint }
       it_behaves_like 'a restricted endpoint', 'public'
@@ -18,7 +17,11 @@ describe Api::V1::UsersController, type: :api do
     describe 'update' do
       let(:method) { :patch }
       let(:endpoint) { detail_endpoint }
-      let(:params) { { model: { yn: true } } }
+      let(:params) { { first_name: 'John',
+                       last_name: 'Smith',
+                       bio: 'A new bio',
+                       link: 'http://example.com',
+                       location: 'Boston, MA' } }
       it_behaves_like 'a restricted endpoint', 'admin'
       it_behaves_like 'a successful request'
       it_behaves_like 'a response that renders JSON'
@@ -28,20 +31,6 @@ describe Api::V1::UsersController, type: :api do
       let(:schema) { 'shared/stats' }
       let(:endpoint) { "#{list_endpoint}/stats" }
       it_behaves_like 'a restricted endpoint', 'admin'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
-    end
-
-    describe '/followers' do
-      let(:endpoint) { "#{detail_endpoint}/followers" }
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
-    end
-
-    describe '/following' do
-      let(:endpoint) { "#{detail_endpoint}/following" }
-      it_behaves_like 'a restricted endpoint', 'public'
       it_behaves_like 'a successful request'
       it_behaves_like 'a response that renders JSON'
     end
@@ -60,29 +49,12 @@ describe Api::V1::UsersController, type: :api do
     describe 'update' do
       let(:method) { :patch }
       let(:endpoint) { detail_endpoint }
-      let(:params) { { model: { yn: true } } }
+      let(:params) { { first_name: 'John',
+                       last_name: 'Smith',
+                       bio: 'A new bio',
+                       link: 'http://example.com',
+                       location: 'Boston, MA' } }
       it_behaves_like 'a restricted endpoint', 'write'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
-    end
-
-    describe '/followers' do
-      let(:endpoint) { "#{detail_endpoint}/followers" }
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
-    end
-
-    describe '/following' do
-      let(:endpoint) { "#{detail_endpoint}/following" }
-      it_behaves_like 'a restricted endpoint', 'public'
-      it_behaves_like 'a successful request'
-      it_behaves_like 'a response that renders JSON'
-    end
-
-    describe '/blocking' do
-      let(:endpoint) { "#{detail_endpoint}/blocking" }
-      it_behaves_like 'a restricted endpoint', 'public'
       it_behaves_like 'a successful request'
       it_behaves_like 'a response that renders JSON'
     end
@@ -91,7 +63,7 @@ describe Api::V1::UsersController, type: :api do
   describe '/pages' do
     let(:url_base) { "#{super()}/pages"}
 
-    describe '/:id/posts' do
+    describe '/:id/users' do
       let(:list_endpoint) { "#{url_base}/#{pages(:daringfireball).id}/users" }
 
       describe 'index' do

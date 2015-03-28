@@ -1,15 +1,6 @@
 # encoding: utf-8
 module Api::V1
   class PostsController < ApiController
-
-    private
-
-    def post_params
-      params.require(:model).permit(:yn)
-    end
-
-    public
-
     # NOTE - this is also being used for events as
     # the only events we have right now are posts.
     # Will spin out when we aggregate in comments.
@@ -109,5 +100,11 @@ module Api::V1
     end
     require_scope_for :stats, :admin
     add_transaction_tracer :stats
+
+    private
+
+    def post_params
+      params.require(:model).permit(:yn)
+    end
   end
 end

@@ -37,13 +37,16 @@ feature "User's feed", js: true do
     visit '/'
     row = first('.has_comments').find(:xpath, 'ancestor::*[contains(concat(" ",normalize-space(@class)," ")," page_row ")]')
     within(row) do
+      body = 'This is a comment'
       find('.comments_icon').click
       find_field('Add a comment')
-        .send_keys('This is a comment')
+        .send_keys(body)
         .send_keys(:return)
       wait_for_js
+
+      expect(first('.r_comment')).to have_text(body), "Comment wasn't added to the DOM"
     end
 
-    expect(Comment.count).to eq(count + 1)
+    expect(Comment.count).to eq(count + 1), "Comment wasn't added to the database"
   end
 end

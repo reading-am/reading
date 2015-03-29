@@ -42,6 +42,31 @@ module CapybaraExtensions
   end
 end
 
+module Capybara
+  module Node
+    class Element
+      # This comes closer to simulating actual key presses,
+      # fixing issues with Stripe's JS formatting.
+      # See also: http://stackoverflow.com/q/25613905/313561
+      def send_keys(keys)
+        begin
+          # Selenium - send one character at a time to allow JS events
+          if [:return].include? keys
+            native.send_keys keys
+          else
+            keys.each_char { |c| native.send_keys(c) }
+          end
+        rescue
+          # Webkit
+          session.execute_script(%{ $(document.evaluate("#{path}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val("#{keys}").keydown().keypress().keyup().change().blur(); })
+        end
+
+        return self
+      end
+    end
+  end
+end
+
 RSpec.configure do |c|
   c.include CapybaraExtensions
 

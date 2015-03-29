@@ -1,19 +1,20 @@
 daringfireball:
   name: daringfireball.net
-  verb: ~
-  pages_count: 103
+  pages_count: 4
 
 metafilter:
   name: metafilter.com
-  verb: ~
   pages_count: 1
 
 github:
   name: github.com
-  verb: ~
   pages_count: 1
 
 vimeo:
   name: vimeo.com
-  verb: ~
+  verb: watch
+  pages_count: 1
+
+dribbble:
+  name: dribbble.com
   pages_count: 1

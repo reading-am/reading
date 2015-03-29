@@ -24,6 +24,12 @@ three:
   created_at: 2014-08-23 23:09:52
   updated_at: 2014-08-23 23:10:37
 
+four:
+  user: greg
+  page: daringfireball
+  referring_posts_count: 1
+  comments_count: 1
+
 daringfireball_image:
   user: greg
   page: daringfireball_image

@@ -12,3 +12,8 @@ github:
   name: github.com
   verb: ~
   pages_count: 1
+
+vimeo:
+  name: vimeo.com
+  verb: ~
+  pages_count: 1

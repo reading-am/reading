@@ -51,3 +51,10 @@ github:
 
 youtube_short:
   url: http://youtu.be/sIy4KsWq-FA?t=1m36s
+
+vimeo_union_glacier:
+  url: https://vimeo.com/107231188
+  title: Welcome to Union Glacier
+  posts_count: 0
+  comments_count: 0
+  domain: vimeo

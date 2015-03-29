@@ -53,3 +53,11 @@ greg_vimeo:
 max_dribbble:
   user: max
   page: dribbble_kdy
+
+max_twitter:
+  user: max
+  page: twitter_ftrain
+
+max_amazon:
+  user: max
+  page: amazon_whoopie

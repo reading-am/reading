@@ -57,6 +57,11 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         c = if type is "posts" then @model.posts else (@model.following.posts || @model.following.has_many("Posts"))
         @collection = c if @collection isnt c
 
+      # If a limit was specified as a query param, use it for the collection.
+      # Mostly useful for testing infinite scroll in integration tests
+      if @query_params().limit
+        @collection.params.limit = +@query_params().limit
+
       @collection.medium = medium
       @collection.params.yn = yn
 

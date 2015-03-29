@@ -65,3 +65,17 @@ dribbble_kdy:
   posts_count: 1
   comments_count: 0
   domain: dribbble
+
+twitter_ftrain:
+  url: https://twitter.com/ftrain
+  title: Paul Ford (@ftrain) | Twitter
+  posts_count: 1
+  comments_count: 0
+  domain: twitter
+
+amazon_whoopie:
+  url: http://www.amazon.com/dp/B001EA206M
+  title: Westminster Self-Inflating Whoopee Cushion
+  posts_count: 1
+  comments_count: 0
+  domain: amazon

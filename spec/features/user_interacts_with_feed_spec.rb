@@ -15,6 +15,16 @@ feature "User's feed", js: true do
     expect(page).to have_selector('.page_row')
   end
 
+  scenario 'scrolling progressively renders posts' do
+    login_as users(:greg), scope: :user
+
+    visit '/'
+    dom_count = all('.page_row').count
+    expect(dom_count).to be > 0, 'No page rows were found'
+    scroll_to_bottom
+    expect(all('.page_row').count).to be > dom_count, "Additional page rows weren't added after scroll"
+  end
+
   scenario 'clicking a post icon toggles between comments and posts' do
     login_as users(:greg), scope: :user
 

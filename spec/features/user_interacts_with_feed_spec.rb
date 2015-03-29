@@ -4,7 +4,8 @@ feature "User's feed", js: true do
   fixtures :users, :relationships, :domains, :pages, :posts, :comments
 
   def first_row_containing(selector)
-    first(selector).find(:xpath, 'ancestor::*[contains(concat(" ",normalize-space(@class)," ")," page_row ")]')
+    el = selector.is_a?(Capybara::Node::Element) ? selector : first(selector)
+    el.find(:xpath, 'ancestor::*[contains(concat(" ",normalize-space(@class)," ")," page_row ")]')
   end
 
   scenario 'visiting displays posts' do
@@ -42,7 +43,7 @@ feature "User's feed", js: true do
     scroll_to_bottom
     within(first_row_containing('.has_comments')) do
       body = 'This is a comment'
-      click_link('.comments_icon')
+      find('.comments_icon').click
       find_field('Add a comment')
         .send_keys(body)
         .send_keys(:return)
@@ -60,6 +61,7 @@ feature "User's feed", js: true do
 
     visit '/'
     scroll_to_bottom
+
     within(first_row_containing('.pa_create')) do
       dom_count = all('.r_subpost').count
       find('.pa_create').click
@@ -69,5 +71,58 @@ feature "User's feed", js: true do
     end
 
     expect(Post.count).to eq(db_count + 1), "Post wasn't added to the database"
+  end
+
+  scenario 'clicking a post delete button deletes a post' do
+    login_as users(:greg), scope: :user
+    db_count = Post.count
+
+    visit '/'
+    scroll_to_bottom
+
+    row = nil
+    all('.pa_destroy').each do |el|
+      row = first_row_containing(el)
+      if row.all('.r_subpost').count > 1
+        break
+      else
+        row = nil
+      end
+    end
+
+    within(row) do
+      dom_count = all('.r_subpost').count
+      find('.pa_destroy').click
+      page.driver.browser.switch_to.alert.accept
+      wait_for_js
+      expect(page).to have_selector('.pa_create'), "Post button didn't change state"
+      expect(page).to have_selector('.r_subpost', count: dom_count - 1)
+    end
+
+    expect(Post.count).to eq(db_count - 1), "Post wasn't removed from the database"
+  end
+
+  scenario 'deleting the last post removes the page from the DOM' do
+    login_as users(:greg), scope: :user
+    db_count = Post.count
+
+    visit '/'
+    scroll_to_bottom
+    dom_count = all('.page_row').count
+
+    row = nil
+    all('.pa_destroy').each do |el|
+      row = first_row_containing(el)
+      break if row.all('.r_subpost').count == 1
+    end
+
+    within(row) do
+      find('.pa_destroy').click
+      page.driver.browser.switch_to.alert.accept
+      wait_for_js
+    end
+
+    expect(all('.page_row').count).to eq(dom_count - 1), "Page wasn't removed from the DOM"
+    expect(Post.count).to eq(db_count - 1), "Post wasn't removed from the database"
   end
 end

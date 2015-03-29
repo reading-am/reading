@@ -28,6 +28,9 @@ module Api::V1
     # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
+    # Concerns
+    include DefaultParams
+
     # Add a search path for our views
     append_view_path File.join(Rails.root, 'app', 'views')
     append_view_path File.join(Rails.root, 'app', 'views', self.name.deconstantize.underscore)
@@ -35,7 +38,6 @@ module Api::V1
     wrap_parameters format: [:json]
     before_action { request.format = 'json' }
     before_action :map_method,
-                  :set_defaults,
                   :block_suspended,
                   :add_current_user_id
 
@@ -74,16 +76,6 @@ module Api::V1
         key = "#{action_name}##{params[:_method].upcase}"
         send map[key] if !map[key].blank? and respond_to? map[key]
       end
-    end
-
-    def set_defaults
-      # [lower_bound, (param || default), upper_bound]
-      params[:limit]  = [1, (params[:limit] || 20).to_i, 200].sort[1]
-
-      params[:offset] = params[:offset].to_i
-
-      # Limit arrays of ids to 100 at a time
-      params.each { |k,v| params[k] = params[k][0..99] if params[k].kind_of?(Array) }
     end
 
     def show_400

@@ -90,6 +90,8 @@ feature "User's feed", js: true do
       end
     end
 
+    expect(row).to be_truthy, "A page with more than one subpost wasn't found"
+
     within(row) do
       dom_count = all('.r_subpost').count
       find('.pa_destroy').click
@@ -116,6 +118,8 @@ feature "User's feed", js: true do
       break if row.all('.r_subpost').count == 1
     end
 
+    expect(row).to be_truthy, "A page with only one subpost wasn't found"
+
     within(row) do
       find('.pa_destroy').click
       page.driver.browser.switch_to.alert.accept
@@ -124,5 +128,41 @@ feature "User's feed", js: true do
 
     expect(all('.page_row').count).to eq(dom_count - 1), "Page wasn't removed from the DOM"
     expect(Post.count).to eq(db_count - 1), "Post wasn't removed from the database"
+  end
+
+  scenario 'clicking a yep button toggles yep on a post' do
+    login_as users(:greg), scope: :user
+    db_count = Post.where(yn: true).count
+
+    visit '/'
+    scroll_to_bottom
+
+    row = nil
+    all('.pa_destroy').each do |el|
+      row = first_row_containing(el)
+      if row.all('.pa_yep.r_active').count == 0
+        break
+      else
+        row = nil
+      end
+    end
+
+    expect(row).to be_truthy, "A posted page that wasn't already yepped wasn't found"
+
+    within(row) do
+      dom_count = all('.r_subpost .r_yep').count
+      
+      find('.pa_yep').click
+      wait_for_js
+      expect(page).to have_selector('.pa_yep.r_active'), "Yep button didn't change state"
+      expect(page).to have_selector('.r_subpost .r_yep', count: dom_count + 1), "A post wasn't newly marked as 'yep'"
+      expect(Post.where(yn: true).count).to eq(db_count + 1), "Post wasn't maked as yepped in the database"
+
+      find('.pa_yep').click
+      wait_for_js
+      expect(page).not_to have_selector('.pa_yep.r_active'), "Yep button didn't change state"
+      expect(page).to have_selector('.r_subpost .r_yep', count: dom_count), "'Yep' wasn't removed from the subpost DOM"
+      expect(Post.where(yn: true).count).to eq(db_count), "'Yep' wasn't removed from the post in the database"
+    end
   end
 end

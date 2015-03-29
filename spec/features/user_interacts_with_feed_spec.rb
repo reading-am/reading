@@ -25,6 +25,19 @@ feature "User's feed", js: true do
     expect(all('.page_row').count).to be > dom_count, "Additional page rows weren't added after scroll"
   end
 
+  scenario 'scrolling is infinite / loads and renders more posts when the end of the page is reached' do
+    limit = 3
+    user = users(:greg)
+    login_as user, scope: :user
+
+    visit "/#{user.username}/list?limit=#{limit}"
+
+    dom_count = all('.r_subpost').count
+    expect(dom_count).to eq(limit), 'Not enough posts were found'
+    scroll_to_bottom
+    expect(all('.r_subpost').count).to eq(limit * 2), "Additional page rows weren't added after scroll"
+  end
+
   scenario 'clicking a post icon toggles between comments and posts' do
     login_as users(:greg), scope: :user
 

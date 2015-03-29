@@ -5,10 +5,10 @@ define [
   "pusher"
 ], (_, Constants, Backbone, pusher) ->
 
-  default_limit = 50
+  default_limit = 20
 
   Backbone.Collection::initialize = ->
-    @params = {limit:default_limit, offset:0}
+    @params = {limit: default_limit, offset: 0}
 
   Backbone.Collection::reset_paging = ->
     @params.limit = default_limit

@@ -18,3 +18,11 @@ vimeo:
 dribbble:
   name: dribbble.com
   pages_count: 1
+
+twitter:
+  name: twitter.com
+  pages_count: 1
+
+amazon:
+  name: amazon.com
+  pages_count: 1

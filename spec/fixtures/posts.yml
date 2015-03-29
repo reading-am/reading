@@ -41,3 +41,7 @@ daringfireball_video:
 daringfireball_audio:
   user: greg
   page: daringfireball_audio
+
+max_youtube:
+  user: max
+  page: vimeo_union_glacier

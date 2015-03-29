@@ -40,6 +40,11 @@ module CapybaraExtensions
     return "XHR failed to complete" if page.execute_script('try { require("jquery").active != 0 } catch(e) { return false }')
     return "Animation failed to complete" if page.execute_script('try { return require("jquery")(":animated").length != 0 } catch(e) { return false }')
   end
+
+  def scroll_to_bottom
+    page.execute_script 'window.scrollBy(0,10000)'
+    wait_for_js
+  end
 end
 
 module Capybara

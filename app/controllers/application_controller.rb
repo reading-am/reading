@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # needed for migrate_auth_token
   include Devise::Controllers::Rememberable
   include RenderApi
+  include DefaultParams
 
   protect_from_forgery
 
@@ -154,11 +155,6 @@ class ApplicationController < ActionController::Base
       }
       format.any { head :not_found }
     end
-  end
-
-  def set_default_params
-    params[:limit] = 50
-    params[:offset] = 0
   end
 
   def api

@@ -42,7 +42,7 @@ module CapybaraExtensions
   end
 
   def scroll_to_bottom
-    page.execute_script 'window.scrollBy(0,10000)'
+    page.execute_script 'require("jquery")("html, body").animate({scrollTop: require("jquery")(document).height()});'
     wait_for_js
   end
 end

@@ -35,7 +35,7 @@ feature "User's feed", js: true do
     dom_count = all('.r_subpost').count
     expect(dom_count).to eq(limit), 'Not enough posts were found'
     scroll_to_bottom
-    expect(all('.r_subpost').count).to eq(limit * 2), "Additional page rows weren't added after scroll"
+    expect(all('.r_subpost').count).to be > limit, "Additional page rows weren't added after scroll"
   end
 
   scenario 'clicking a post icon toggles between comments and posts' do

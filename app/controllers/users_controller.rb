@@ -3,9 +3,10 @@ class UsersController < ApplicationController
 
   before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
 
-  # GET /users/1
-  # GET /users/1.xml
   def show
+    # The web url uses 'list' to denote posts from users you're following
+    params[:type] = 'following' if params[:type] == 'list'
+
     if params[:username] && params[:username] != 'everybody'
       @user = params[:username] ?
                 User.find_by_username(params[:username]) :

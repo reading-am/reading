@@ -38,6 +38,24 @@ feature "User's feed", js: true do
     expect(all('.r_subpost').count).to be > limit, "Additional page rows weren't added after scroll"
   end
 
+  scenario 'clicking the Post a Link button allows a new post to be created' do
+    login_as users(:greg), scope: :user
+
+    visit '/'
+    db_count = Post.count
+    dom_count = all('.page_row').count
+    
+    click_link 'Post a Link'
+    wait_for_js
+    fill_in "Enter the url you'd like to post", with: 'http://example.com'
+    click_button 'Add Post'
+    wait_for_js
+
+    expect(page).not_to have_selector('#new_post_row'), "The new post input wasn't hidden"
+    expect(all('.page_row').count).to eq(dom_count + 1), "A new page wasn't added to the DOM"
+    expect(Post.count).to eq(db_count + 1), "A new post wasn't added to the database"
+  end
+
   scenario 'clicking a post icon toggles between comments and posts' do
     login_as users(:greg), scope: :user
 

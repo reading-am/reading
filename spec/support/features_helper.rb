@@ -22,6 +22,7 @@ module CapybaraExtensions
   # This is especially helpful if you choose to use the PhantomJS driver
   # as it often fails to wait for JS to load
   def wait_for_js
+    sleep 0.1 # gives the JS a moment to fire
     waiting_on = nil
     begin
       Timeout.timeout(Capybara.default_wait_time) do

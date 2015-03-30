@@ -4,9 +4,6 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
 
   def show
-    # The web url uses 'list' to denote posts from users you're following
-    params[:type] = 'following' if params[:type] == 'list'
-
     if params[:username] && params[:username] != 'everybody'
       @user = params[:username] ?
                 User.find_by_username(params[:username]) :
@@ -19,7 +16,12 @@ class UsersController < ApplicationController
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
     end
 
-    @posts = api::Posts.index(params)
+    # The web url uses 'list' to denote posts from users you're following
+    @posts = api::Posts.index(if params[:type] == 'list'
+                                params.merge(type: 'following')
+                              else
+                                params
+                              end)
     render 'posts/index'
   end
 

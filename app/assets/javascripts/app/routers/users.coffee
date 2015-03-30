@@ -53,6 +53,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
       @collection ?= new Posts
       models = @collection.models
 
+      # if a model was specified, use the nested collection
       if @model
         c = if type is "posts" then @model.posts else (@model.following.posts || @model.following.has_many("Posts"))
         @collection = c if @collection isnt c

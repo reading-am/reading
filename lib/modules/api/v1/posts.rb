@@ -7,10 +7,8 @@ module Api::V1
 
     def self.index params={}
       if params[:user_id]
-        if params[:type] == "list"
+        if params[:type] == 'following'
           posts = Post.from_users_followed_by_including(params[:user_id])
-        elsif params[:type] == "following"
-          posts = Post.from_users_followed_by(params[:user_id])
         else
           # list a user's posts
           # users/1/posts

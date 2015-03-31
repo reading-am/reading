@@ -55,5 +55,18 @@ feature "User's settings", js: true do
       expect(page).to have_selector("input[value='#{new_name}']")
       expect(user.reload.name).to eq(new_name), "The name wasn't update in the database"
     end
+
+    scenario 'updates user avatar' do
+      user = users(:greg)
+      login_as user, scope: :user
+      old_file = user.avatar_file_name
+
+      visit url
+      attach_file 'user_avatar', Rails.root.join('spec/fixtures/test.jpg')
+      click_button 'Update Me'
+
+      expect(page).to have_selector('#avatar img')
+      expect(user.reload.avatar_file_name).not_to eq(old_file)
+    end
   end
 end

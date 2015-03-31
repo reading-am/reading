@@ -40,7 +40,20 @@ feature "User's settings", js: true do
 
   describe 'info form' do
 
-    scenario 'updates user info' do
+    scenario 'updates user avatar' do
+      user = users(:greg)
+      login_as user, scope: :user
+      old_file = user.avatar_file_name
+
+      visit url
+      attach_file 'user_avatar', Rails.root.join('spec/fixtures/test.jpg')
+      click_button 'Update Me'
+
+      expect(page).to have_selector('#avatar img')
+      expect(user.reload.avatar_file_name).not_to eq(old_file)
+    end
+
+    scenario 'updates user info without password' do
       user = users(:greg)
       login_as user, scope: :user
       old_name = user.name
@@ -56,17 +69,25 @@ feature "User's settings", js: true do
       expect(user.reload.name).to eq(new_name), "The name wasn't update in the database"
     end
 
-    scenario 'updates user avatar' do
+    scenario 'requires password to update email' do
       user = users(:greg)
       login_as user, scope: :user
-      old_file = user.avatar_file_name
+      old_email = user.email
+      new_email = 'new_email@example.com'
+      expect(new_email).not_to eq(old_email)
 
       visit url
-      attach_file 'user_avatar', Rails.root.join('spec/fixtures/test.jpg')
+      expect(page).to have_selector("input[value='#{old_email}']")
+      fill_in 'Email', with: new_email
       click_button 'Update Me'
 
-      expect(page).to have_selector('#avatar img')
-      expect(user.reload.avatar_file_name).not_to eq(old_file)
+      expect(page).to have_field("Current password")
+      expect(find('#user_current_password_controls')).to have_content("can't be blank")
+
+      fill_in 'Current password', with: 'testingtesting'
+      click_button 'Update Me'
+      expect(page).to have_selector("input[value='#{new_email}']")
+      expect(user.reload.email).to eq(new_email), "The email wasn't update in the database"
     end
   end
 

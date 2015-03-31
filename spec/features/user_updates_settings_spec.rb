@@ -4,6 +4,7 @@ feature "User's settings", js: true do
   fixtures :users, :authorizations
 
   let(:url) { '/settings/info' }
+  let(:password) { 'testingtesting' }
 
   describe 'delete button' do
     let(:button_text) { 'I respectfully request to be destroyed.' }
@@ -56,38 +57,62 @@ feature "User's settings", js: true do
     scenario 'updates user info without password' do
       user = users(:greg)
       login_as user, scope: :user
-      old_name = user.name
-      new_name = 'A new name'
-      expect(new_name).not_to eq(old_name)
+      old_val = user.name
+      new_val = 'A new name'
+      expect(new_val).not_to eq(old_val)
 
       visit url
-      expect(page).to have_selector("input[value='#{old_name}']")
-      fill_in 'Name', with: new_name
+      expect(page).to have_selector("input[value='#{old_val}']")
+      fill_in 'Name', with: new_val
       click_button 'Update Me'
 
-      expect(page).to have_selector("input[value='#{new_name}']")
-      expect(user.reload.name).to eq(new_name), "The name wasn't update in the database"
+      expect(page).to have_selector("input[value='#{new_val}']")
+      expect(user.reload.name).to eq(new_val), "The name wasn't update in the database"
     end
 
     scenario 'requires password to update email' do
       user = users(:greg)
       login_as user, scope: :user
-      old_email = user.email
-      new_email = 'new_email@example.com'
-      expect(new_email).not_to eq(old_email)
+      old_val = user.email
+      new_val = 'new_email@example.com'
+      expect(new_val).not_to eq(old_val)
 
       visit url
-      expect(page).to have_selector("input[value='#{old_email}']")
-      fill_in 'Email', with: new_email
+      expect(page).to have_selector("input[value='#{old_val}']")
+      fill_in 'Email', with: new_val
       click_button 'Update Me'
 
       expect(page).to have_field("Current password")
       expect(find('#user_current_password_controls')).to have_content("can't be blank")
 
-      fill_in 'Current password', with: 'testingtesting'
+      fill_in 'Current password', with: password
       click_button 'Update Me'
-      expect(page).to have_selector("input[value='#{new_email}']")
-      expect(user.reload.email).to eq(new_email), "The email wasn't update in the database"
+      expect(page).to have_selector("input[value='#{new_val}']")
+      expect(user.reload.email).to eq(new_val), "The email wasn't updated in the database"
+    end
+
+    scenario 'requires current password to update password' do
+      user = users(:greg)
+      login_as user, scope: :user
+      old_val = user.encrypted_password
+      new_val = 'this is a new password'
+
+      visit url
+      expect(page).not_to have_selector('#confirm_password_fields'), "Password confirmation fields weren't hidden by default"
+      fill_in 'New Password', with: new_val
+      expect(page).to have_selector('#confirm_password_fields'), "Password confirmation fields weren't shown after password input"
+      fill_in 'Password confirmation', with: new_val
+      click_button 'Update Me'
+
+      expect(page).to have_field("Current password")
+      expect(find('#user_current_password_controls')).to have_content("can't be blank")
+
+      fill_in 'New Password', with: new_val
+      fill_in 'Password confirmation', with: new_val
+      fill_in 'Current password', with: password
+      click_button 'Update Me'
+
+      expect(user.reload.encrypted_password).not_to eq(old_val), "The password wasn't updated in the database"
     end
   end
 

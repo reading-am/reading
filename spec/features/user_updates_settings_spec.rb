@@ -78,11 +78,24 @@ feature "User's settings", js: true do
     db_count = Authorization.count
     dom_count = all('.authorization').count
 
-    find('.provider.tumblr').hover
+    first('.authorization').hover
     click_link('Disconnect')
     page.driver.browser.switch_to.alert.accept
 
     expect(all('.authorization').count).to eq(dom_count - 1), "Authorization wasn't removed from the DOM"
     expect(Authorization.count).to eq(db_count - 1), "Authorization wasn't deleted from the database"
+  end
+
+  scenario 'connection cannot be removed if it is the only one' do
+    user = users(:greg)
+    auth = user.authorizations.last
+    user.authorizations.each { |a| a.destroy unless a == auth }
+    user.authorizations.reload
+
+    login_as user, scope: :user
+
+    visit url
+    find('.authorization').hover
+    expect(page).not_to have_link('Disconnect')
   end
 end

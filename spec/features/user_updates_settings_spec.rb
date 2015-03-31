@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature "User's settings", js: true do
-  fixtures :users
+  fixtures :users, :authorizations
 
   let(:url) { '/settings/info' }
 
@@ -68,5 +68,21 @@ feature "User's settings", js: true do
       expect(page).to have_selector('#avatar img')
       expect(user.reload.avatar_file_name).not_to eq(old_file)
     end
+  end
+
+  scenario 'connection disconnect button removes connection' do
+    user = users(:greg)
+    login_as user, scope: :user
+
+    visit url
+    db_count = Authorization.count
+    dom_count = all('.authorization').count
+
+    find('.provider.tumblr').hover
+    click_link('Disconnect')
+    page.driver.browser.switch_to.alert.accept
+
+    expect(all('.authorization').count).to eq(dom_count - 1), "Authorization wasn't removed from the DOM"
+    expect(Authorization.count).to eq(db_count - 1), "Authorization wasn't deleted from the database"
   end
 end

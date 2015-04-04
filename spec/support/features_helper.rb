@@ -11,7 +11,9 @@ end
 module CapybaraExtensions
   def visit(path)
     super
-    wait_for_js
+    # Only wait for JS if it's a request on our site
+    host = URI.parse(path).host
+    wait_for_js unless host && host != Capybara.current_session.server.host
   end
 
   def reload
@@ -35,7 +37,6 @@ module CapybaraExtensions
 
   def outstanding_js_tasks
     return "requirejs failed to load" if page.execute_script('return typeof require == "undefined"')
-    return "The primary init js file failed to load" if page.execute_script('try { return require.defined("web/init") == false } catch(e) { return false }')
     return "jQuery failed to load" if page.execute_script('try { return require.defined("jquery") == false } catch(e) { return false }')
     return "document.ready failed to fire" if page.execute_script('try { return require("jquery").isReady != true } catch(e) { return false }')
     return "XHR failed to complete" if page.execute_script('try { require("jquery").active != 0 } catch(e) { return false }')
@@ -73,21 +74,30 @@ module Capybara
   end
 end
 
-RSpec.configure do |c|
-  c.include CapybaraExtensions
+RSpec.configure do |config|
+  config.include CapybaraExtensions
+  config.use_transactional_fixtures = false
 
-  c.before(:all) do
+  config.before(:suite) do
     # Clobber the assets else require's baseUrl will be wrong since
     # the port will have changed but the coffee.erb file won't have been rebuilt
     Rake.load_rakefile Rails.root.join('Rakefile')
     Rake::Task['assets:clobber'].invoke
+
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  c.before(:each) do
+  config.before(:each) do
     if Capybara.current_session.server
       # JS elements won't load if we don't correct the domain
       stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
       stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
     end
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
+    DatabaseCleaner.cleaning { example.run }
+    Capybara.reset_sessions!
   end
 end

@@ -14,7 +14,7 @@ feature "User's settings", js: true do
   describe 'delete button' do
     let(:button_text) { 'I respectfully request to be destroyed.' }
 
-    scenario 'clicking counts down and then deletes user' do
+    scenario 'counts down after click and then deletes user' do
       db_count = User.count
       visit url
 

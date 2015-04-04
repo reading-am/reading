@@ -26,3 +26,7 @@ twitter:
 amazon:
   name: amazon.com
   pages_count: 1
+
+example:
+  name: example.com
+  pages_count: 1

@@ -60,7 +60,7 @@ feature "User's hooks", js: true do
 
   scenario 'adds a new authentication when creating a hook' do
     # Remove twitter auth so we can add it back
-    user.authorizations.where(provider: 'twitter').each { |auth| auth.destroy }
+    user.authorizations.where(provider: 'twitter').delete_all
 
     visit url
 

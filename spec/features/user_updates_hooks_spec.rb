@@ -41,7 +41,7 @@ feature "User's hooks", js: true do
     click_button('Thanks!')
 
     expect(all('.hook').count).to eq dom_count + 1
-    expect(user.reload.hooks.count).to eq db_count + 1
+    expect(user.hooks.reload.count).to eq db_count + 1
   end
 
   scenario 'delete button deletes a hook' do
@@ -55,6 +55,37 @@ feature "User's hooks", js: true do
     page.driver.browser.switch_to.alert.accept
 
     expect(all('.hook').count).to eq dom_count - 1
-    expect(user.reload.hooks.count).to eq db_count - 1
+    expect(user.hooks.reload.count).to eq db_count - 1
+  end
+
+  scenario 'adds a new authentication when creating a hook' do
+    # Remove twitter auth so we can add it back
+    user.authorizations.where(provider: 'twitter').each { |auth| auth.destroy }
+
+    visit url
+
+    dom_count = all('.hook').count
+    auth_count = user.authorizations.count
+    hook_count = user.hooks.count
+
+    select 'Twitter', from: 'hook_provider'
+    select '+ connect new', from: 'hook_params_account'
+    click_button('Thanks!')
+
+    expect(windows.length).to eq(2)
+    expect(page).to have_selector '#loading'
+
+    within_window(windows.last) do
+      expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
+      fill_in 'Username or email', with: ENV['TWITTER_TEST_ACCOUNT_EMAIL']
+      fill_in 'Password', with: ENV['TWITTER_TEST_ACCOUNT_PASS']
+      click_button 'Authorize app'
+    end
+
+    expect(page).not_to have_selector('#loading'), "Page didn't reload after auth was added"
+    expect(windows.length).to eq(1)
+    expect(user.authorizations.reload.count).to eq(auth_count + 1), "A new authorization wasn't added"
+    expect(all('.hook').count).to eq dom_count + 1
+    expect(user.hooks.reload.count).to eq hook_count + 1
   end
 end

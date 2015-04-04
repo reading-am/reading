@@ -133,7 +133,7 @@ feature "User's settings", js: true do
 
     scenario 'cannot be removed if there is only one' do
       auth = user.authorizations.last
-      user.authorizations.each { |a| a.destroy unless a == auth }
+      user.authorizations.where.not(id: auth.id).delete_all
       user.authorizations.reload
 
       visit url

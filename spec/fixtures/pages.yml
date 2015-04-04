@@ -79,3 +79,10 @@ amazon_whoopie:
   posts_count: 1
   comments_count: 0
   domain: amazon
+
+example:
+  url: http://www.example.com/
+  title: Example Domain
+  posts_count: 0
+  comments_count: 0
+  domain: example

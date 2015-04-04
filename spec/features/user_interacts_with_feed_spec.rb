@@ -8,17 +8,20 @@ feature "User's feed", js: true do
     el.find(:xpath, 'ancestor::*[contains(concat(" ",normalize-space(@class)," ")," page_row ")]')
   end
 
-  scenario 'visiting displays posts' do
-    login_as users(:greg), scope: :user
+  let(:url) { '/' }
+  let(:user) { users(:greg) }
 
-    visit '/'
+  before(:each) do
+    login_as user, scope: :user
+  end
+
+  scenario 'visiting displays posts' do
+    visit url
     expect(page).to have_selector('.page_row')
   end
 
   scenario 'scrolling progressively renders posts' do
-    login_as users(:greg), scope: :user
-
-    visit '/'
+    visit url
     dom_count = all('.page_row').count
     expect(dom_count).to be > 0, 'No page rows were found'
     scroll_to_bottom
@@ -27,9 +30,6 @@ feature "User's feed", js: true do
 
   scenario 'scrolling is infinite / loads and renders more posts when the end of the page is reached' do
     limit = 3
-    user = users(:greg)
-    login_as user, scope: :user
-
     visit "/#{user.username}/list?limit=#{limit}"
 
     dom_count = all('.r_subpost').count
@@ -41,9 +41,7 @@ feature "User's feed", js: true do
   describe 'header' do
 
     scenario 'clicking the Post a Link button allows a new post to be created' do
-      login_as users(:greg), scope: :user
-
-      visit '/'
+      visit url
       db_count = Post.count
       dom_count = all('.page_row').count
 
@@ -59,9 +57,7 @@ feature "User's feed", js: true do
     end
 
     scenario 'selecting a medium filters the posts' do
-      login_as users(:greg), scope: :user
-
-      visit '/'
+      visit url
 
       dom_count = all('.page_row').count
       expect(dom_count).to be > 0, "No posts were rendered"
@@ -74,9 +70,7 @@ feature "User's feed", js: true do
     end
 
     scenario 'selecting yep or nope filters the posts' do
-      login_as users(:greg), scope: :user
-
-      visit '/'
+      visit url
 
       dom_count = all('.page_row').count
       expect(dom_count).to be > 0, "No posts were rendered"
@@ -92,9 +86,7 @@ feature "User's feed", js: true do
   describe 'page row' do
 
     scenario 'clicking a post icon toggles between comments and posts' do
-      login_as users(:greg), scope: :user
-
-      visit '/'
+      visit url
       scroll_to_bottom
       within(first_row_containing('.has_comments')) do
         button = find('.comments_icon')
@@ -112,10 +104,9 @@ feature "User's feed", js: true do
     end
 
     scenario 'clicking a comment icon displays comments' do
-      login_as users(:greg), scope: :user
       count = Comment.count
 
-      visit '/'
+      visit url
       scroll_to_bottom
       within(first_row_containing('.has_comments')) do
         body = 'This is a comment'
@@ -132,10 +123,9 @@ feature "User's feed", js: true do
     end
 
     scenario 'clicking a post button posts a page' do
-      login_as users(:greg), scope: :user
       db_count = Post.count
 
-      visit '/'
+      visit url
       scroll_to_bottom
 
       within(first_row_containing('.pa_create')) do
@@ -150,10 +140,9 @@ feature "User's feed", js: true do
     end
 
     scenario 'clicking a post delete button deletes a post' do
-      login_as users(:greg), scope: :user
       db_count = Post.count
 
-      visit '/'
+      visit url
       scroll_to_bottom
 
       row = nil
@@ -181,10 +170,9 @@ feature "User's feed", js: true do
     end
 
     scenario 'deleting the last post removes the page from the DOM' do
-      login_as users(:greg), scope: :user
       db_count = Post.count
 
-      visit '/'
+      visit url
       scroll_to_bottom
       dom_count = all('.page_row').count
 
@@ -208,11 +196,10 @@ feature "User's feed", js: true do
 
     shared_context 'a yep nope button' do |yn|
       scenario "clicking a #{yn} button toggles #{yn} on a post" do
-        login_as users(:greg), scope: :user
         query = Post.where(yn: yn.to_s == 'yep')
         db_count = query.count
 
-        visit '/'
+        visit url
         scroll_to_bottom
 
         row = nil
@@ -249,9 +236,7 @@ feature "User's feed", js: true do
     it_behaves_like 'a yep nope button', :nope
 
     scenario "clicking a share button brings up a share sheet" do
-      login_as users(:greg), scope: :user
-
-      visit '/'
+      visit url
 
       click_link('Share', match: :first)
       expect(page).to have_selector('#r_share_menu'), "Share menu wasn't displayed"

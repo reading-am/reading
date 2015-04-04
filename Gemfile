@@ -156,4 +156,5 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'json-schema'
   gem 'rack-test'
+  gem 'database_cleaner'
 end

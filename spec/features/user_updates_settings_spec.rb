@@ -4,13 +4,17 @@ feature "User's settings", js: true do
   fixtures :users, :authorizations
 
   let(:url) { '/settings/info' }
+  let(:user) { users(:greg) }
   let(:password) { 'testingtesting' }
+
+  before(:each) do
+    login_as user, scope: :user
+  end
 
   describe 'delete button' do
     let(:button_text) { 'I respectfully request to be destroyed.' }
 
     scenario 'clicking counts down and then deletes user' do
-      login_as users(:greg), scope: :user
       db_count = User.count
       visit url
 
@@ -26,7 +30,6 @@ feature "User's settings", js: true do
     end
 
     scenario 'clicking after count down begins cancels delete' do
-      login_as users(:greg), scope: :user
       db_count = User.count
       visit url
 
@@ -42,8 +45,6 @@ feature "User's settings", js: true do
   describe 'info form' do
 
     scenario 'updates user avatar' do
-      user = users(:greg)
-      login_as user, scope: :user
       old_file = user.avatar_file_name
 
       visit url
@@ -55,8 +56,6 @@ feature "User's settings", js: true do
     end
 
     scenario 'updates user info without password' do
-      user = users(:greg)
-      login_as user, scope: :user
       old_val = user.name
       new_val = 'A new name'
       expect(new_val).not_to eq(old_val)
@@ -71,8 +70,6 @@ feature "User's settings", js: true do
     end
 
     scenario 'requires password to update email' do
-      user = users(:greg)
-      login_as user, scope: :user
       old_val = user.email
       new_val = 'new_email@example.com'
       expect(new_val).not_to eq(old_val)
@@ -92,8 +89,6 @@ feature "User's settings", js: true do
     end
 
     scenario 'requires current password to update password' do
-      user = users(:greg)
-      login_as user, scope: :user
       old_val = user.encrypted_password
       new_val = 'this is a new password'
 
@@ -116,32 +111,34 @@ feature "User's settings", js: true do
     end
   end
 
-  scenario 'connection disconnect button removes connection' do
-    user = users(:greg)
-    login_as user, scope: :user
+  describe 'connections' do
 
-    visit url
-    db_count = Authorization.count
-    dom_count = all('.authorization').count
+    scenario 'are listed' do
+      visit url
+      expect(all('.authorization').count).to eq user.authorizations.count
+    end
 
-    first('.authorization').hover
-    click_link('Disconnect')
-    page.driver.browser.switch_to.alert.accept
+    scenario 'disconnect button removes connection' do
+      visit url
+      db_count = user.authorizations.count
+      dom_count = all('.authorization').count
 
-    expect(all('.authorization').count).to eq(dom_count - 1), "Authorization wasn't removed from the DOM"
-    expect(Authorization.count).to eq(db_count - 1), "Authorization wasn't deleted from the database"
-  end
+      first('.authorization').hover
+      click_link('Disconnect')
+      page.driver.browser.switch_to.alert.accept
 
-  scenario 'connection cannot be removed if it is the only one' do
-    user = users(:greg)
-    auth = user.authorizations.last
-    user.authorizations.each { |a| a.destroy unless a == auth }
-    user.authorizations.reload
+      expect(all('.authorization').count).to eq(dom_count - 1), "Authorization wasn't removed from the DOM"
+      expect(user.authorizations.reload.count).to eq(db_count - 1), "Authorization wasn't deleted from the database"
+    end
 
-    login_as user, scope: :user
+    scenario 'cannot be removed if there is only one' do
+      auth = user.authorizations.last
+      user.authorizations.each { |a| a.destroy unless a == auth }
+      user.authorizations.reload
 
-    visit url
-    find('.authorization').hover
-    expect(page).not_to have_link('Disconnect')
+      visit url
+      find('.authorization').hover
+      expect(page).not_to have_link('Disconnect')
+    end
   end
 end

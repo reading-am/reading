@@ -31,4 +31,30 @@ feature "User's hooks", js: true do
       current_window.close
     end
   end
+
+  scenario 'submit button creates a new hook' do
+    visit url
+
+    dom_count = all('.hook').count
+    db_count = user.hooks.count
+
+    click_button('Thanks!')
+
+    expect(all('.hook').count).to eq dom_count + 1
+    expect(user.reload.hooks.count).to eq db_count + 1
+  end
+
+  scenario 'delete button deletes a hook' do
+    visit url
+
+    dom_count = all('.hook').count
+    db_count = user.hooks.count
+
+    first('.hook').hover
+    click_link('Delete')
+    page.driver.browser.switch_to.alert.accept
+
+    expect(all('.hook').count).to eq dom_count - 1
+    expect(user.reload.hooks.count).to eq db_count - 1
+  end
 end

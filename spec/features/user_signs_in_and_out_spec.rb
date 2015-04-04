@@ -3,12 +3,13 @@ require 'rails_helper'
 feature 'User authentication', js: true do
   fixtures :users
 
+  let(:url) { '/sign_in' }
+  let(:user) { users(:greg) }
+
   describe 'signing in' do
 
     scenario 'with correct username credentials' do
-      user = users(:greg)
-
-      visit '/sign_in'
+      visit url
       within('#signin_form_wrapper') do
         fill_in 'Username or email', with: user.username
         fill_in 'Password', with: 'testingtesting'
@@ -18,9 +19,7 @@ feature 'User authentication', js: true do
     end
 
     scenario 'with correct email credentials' do
-      user = users(:greg)
-
-      visit '/sign_in'
+      visit url
       within('#signin_form_wrapper') do
         fill_in 'Username or email', with: user.email
         fill_in 'Password', with: 'testingtesting'
@@ -30,15 +29,13 @@ feature 'User authentication', js: true do
     end
 
     scenario 'with incorrect credentials' do
-      user = users(:greg)
-
-      visit '/sign_in'
+      visit url
       within('#signin_form_wrapper') do
         fill_in 'Username or email', with: user.username
         fill_in 'Password', with: 'incorrectpassword'
       end
       click_button 'Sign in'
-      expect(current_path).to eq('/sign_in')
+      expect(current_path).to eq(url)
       expect(page).to have_content 'Invalid'
     end
 
@@ -70,7 +67,7 @@ feature 'User authentication', js: true do
   describe 'signing out' do
 
     scenario 'from settings page' do
-      login_as users(:greg), scope: :user
+      login_as user, scope: :user
       visit '/settings/info'
       click_link 'Sign Out'
       page.driver.browser.switch_to.alert.accept

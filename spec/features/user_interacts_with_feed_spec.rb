@@ -137,7 +137,7 @@ feature "User's logged in feed", js: true do
         end
       end
 
-      scenario 'domain visits the domain page when clicked' do
+      scenario 'domain visits the domain endpoint when clicked' do
         visit url
         domain = first('.r_page_hostname')
         name = domain.text # must cache since element will disappear after click
@@ -145,6 +145,17 @@ feature "User's logged in feed", js: true do
 
         # we hide www when displaying the domain name if it exists
         expect(["/domains/#{name}", "/domains/www.#{name}"]).to include(current_path)
+      end
+
+      scenario 'id visits the page endpoint when clicked' do
+        visit url
+        domain = first('.r_page_hostname').text
+        page = first('.r_page_permalink')
+        id = page.text # must cache since element will disappear after click
+        page.click
+
+        # we hide www when displaying the domain name if it exists
+        expect(["/domains/#{domain}/pages/#{id}", "/domains/www.#{domain}/pages/#{id}"]).to include(current_path)
       end
     end
 

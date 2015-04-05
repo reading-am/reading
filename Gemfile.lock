@@ -286,7 +286,7 @@ GEM
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
     fattr (2.2.1)
-    ffi (1.9.6)
+    ffi (1.9.8)
     fog (1.15.0)
       builder
       excon (~> 0.25.0)
@@ -563,7 +563,7 @@ GEM
     rush (0.6.8)
       session
     safe_yaml (0.9.4)
-    selenium-webdriver (2.45.0.dev3)
+    selenium-webdriver (2.45.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -751,7 +751,7 @@ DEPENDENCIES
   rspec-rails
   ruby-growl
   ruby-thumbor
-  selenium-webdriver (= 2.45.0.dev3)
+  selenium-webdriver
   sitemap_generator
   spring
   spring-commands-rspec

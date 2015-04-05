@@ -290,6 +290,27 @@ feature "User's logged in feed", js: true do
       end
     end
 
+    describe 'subposts' do
+
+      scenario 'are rendered on initial load' do
+        visit url
+
+        row = first('.page_row')
+        expect(row).to have_selector('.r_subposts')
+        expect(row.all('.r_post').count).to be > 0
+      end
+
+      scenario 'visit user when username is clicked' do
+        visit url
+        el = first('.r_post .r_name')
+        name = el.text
+        el.click
+
+        expect(current_path.split('/').length).to eq(2), "Path wasn't a user base url"
+        expect(first('h1')).to have_text(name)
+      end
+    end
+
     describe 'comments' do
 
       scenario 'input creates a new comment' do

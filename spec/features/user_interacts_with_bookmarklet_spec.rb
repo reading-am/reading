@@ -43,4 +43,20 @@ feature "User's bookmarklet", js: true do
 
   it_behaves_like 'a yep nope button', :yep
   it_behaves_like 'a yep nope button', :nope
+
+  scenario "clicking a share button brings up a share sheet" do
+    visit url
+
+    trigger_bookmarklet_for user
+    click_link('Share', match: :first)
+    expect(page).to have_selector('#r_share_menu'), "Share menu wasn't displayed"
+
+    click_link('Twitter')
+    expect(windows.length).to eq(2)
+
+    within_window(windows.last) do
+      expect(current_url).to start_with('https://twitter.com/intent')
+      current_window.close
+    end
+  end
 end

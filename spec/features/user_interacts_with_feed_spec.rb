@@ -254,20 +254,15 @@ feature "User's logged in feed", js: true do
         expect(row.all('.r_post').count).to be > 0
       end
 
-      scenario 'visit user when username is clicked' do
-        visit url
-        el = first('.r_post .r_name')
-        name = el.text
-        el.click
-
-        expect(current_path.split('/').length).to eq(2), "Path wasn't a user base url"
-        expect(first('h1')).to have_text(name)
+      it_behaves_like 'visits user' do
+        let(:user_link) do
+          visit url
+          first('.r_post .r_name')
+        end
       end
     end
 
     describe 'comments' do
-
-      let(:comment_el) { first('.r_comment') }
 
       scenario 'input creates a new comment' do
         count = user.comments.count
@@ -290,9 +285,6 @@ feature "User's logged in feed", js: true do
       end
 
       scenario 'delete button deletes a comment' do
-        find('.comments_icon').click
-        comment_el.hover
-        comment_el.click_link('Share')
       end
 
       it_behaves_like 'is shareable' do
@@ -309,9 +301,31 @@ feature "User's logged in feed", js: true do
       end
 
       scenario 'permalink goes to the comment page' do
+        visit url
+        scroll_to_bottom
+        within(first_row_containing('.has_comments')) do
+          find('.comments_icon').click
+          comment = first('.r_comment')
+          comment.hover
+          comment.click_link('#')
+        end
+
+        expect(windows.length).to eq(2)
+
+        within_window(windows.last) do
+          expect(current_path).to match(/\/[^\/]+\/comments\/\d+/)
+        end
       end
 
-      scenario 'visit user when username is clicked' do
+      it_behaves_like 'visits user' do
+        let(:user_link) do
+          visit url
+          scroll_to_bottom
+          within(first_row_containing('.has_comments')) do
+            find('.comments_icon').click
+            first('.r_comment .r_name')
+          end
+        end
       end
     end
   end

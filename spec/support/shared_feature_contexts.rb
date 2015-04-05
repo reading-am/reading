@@ -52,3 +52,13 @@ shared_context 'is shareable' do
     end
   end
 end
+
+shared_context 'visits user' do
+  scenario 'by navigating to user page upon click' do
+    name = user_link.text
+    user_link.click
+
+    expect(current_path).to match(/\/[^\/]+/), "Path wasn't a root user path"
+    expect(first('h1')).to have_text(name)
+  end
+end

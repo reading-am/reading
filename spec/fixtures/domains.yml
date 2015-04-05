@@ -24,9 +24,9 @@ twitter:
   pages_count: 1
 
 amazon:
-  name: amazon.com
+  name: www.amazon.com
   pages_count: 1
 
 example:
-  name: example.com
+  name: www.example.com
   pages_count: 1

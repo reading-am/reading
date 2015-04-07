@@ -4,7 +4,7 @@ describe Api::V1::BlockagesController, type: :api do
   include_context 'api defaults'
   fixtures :users, :blockages
 
-  let(:resource) { users(:max) }
+  let(:resource) { users(:jon) }
 
   describe '/users' do
     describe '/blocking' do

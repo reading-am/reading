@@ -21,12 +21,13 @@ greg:
   following_count: '142'
   followers_count: '157'
   comments_count: '680'
+  blocking_count: 1
   email_when_mentioned: t
   roles: '1'
   encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
 
 howard:
-  name: Howards
+  name: Howard
   username: howard
   token: fjdskalfjasdkl
   auth_token: afjdskalfjdsaklfjdsakl
@@ -57,3 +58,12 @@ max:
   link: ''
   location: NYC
   encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
+
+jon:
+  name: Jon Cowley
+  username: jon
+  bio: The roommiest person
+  link: ''
+  location: NYC
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
+  blockers_count: 1

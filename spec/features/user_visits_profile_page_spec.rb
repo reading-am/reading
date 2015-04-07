@@ -31,4 +31,25 @@ feature "User profile page", js: true do
       expect(user.blocking.count).to eq(db_count - 1)
     end
   end
+
+  describe 'following' do
+
+    scenario 'button follows a user' do
+      subject = users(:howard)
+      visit "/#{subject.username}"
+      db_count = user.following.count
+      click_link("Follow #{subject.first_name}")
+      expect(page).to have_link("Unfollow #{subject.first_name}")
+      expect(user.following.count).to eq(db_count + 1)
+    end
+
+    scenario 'button unfollows a user' do
+      subject = users(:max)
+      visit "/#{subject.username}"
+      db_count = user.following.count
+      click_link("Unfollow #{subject.first_name}")
+      expect(page).to have_link("Follow #{subject.first_name}")
+      expect(user.following.count).to eq(db_count - 1)
+    end
+  end
 end

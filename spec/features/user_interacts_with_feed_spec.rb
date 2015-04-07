@@ -3,11 +3,6 @@ require 'rails_helper'
 feature "User's logged in feed", js: true do
   fixtures :users, :relationships, :domains, :pages, :posts, :comments
 
-  def first_row_containing(selector)
-    el = selector.is_a?(Capybara::Node::Element) ? selector : first(selector)
-    el.find(:xpath, 'ancestor::*[contains(concat(" ",normalize-space(@class)," ")," page_row ")]')
-  end
-
   let(:url) { '/' }
   let(:user) { users(:greg) }
 
@@ -88,7 +83,7 @@ feature "User's logged in feed", js: true do
     scenario 'clicking a post icon toggles between comments and posts' do
       visit url
       scroll_to_bottom
-      within(first_row_containing('.has_comments')) do
+      within(first_parent_with_class_containing('page_row', first('.has_comments'))) do
         button = find('.comments_icon')
         count = button.text
         button.click
@@ -110,7 +105,7 @@ feature "User's logged in feed", js: true do
         visit url
         scroll_to_bottom
 
-        within(first_row_containing('.pa_create')) do
+        within(first_parent_with_class_containing('page_row', first('.pa_create'))) do
           find('.r_title a').click
         end
 
@@ -167,7 +162,7 @@ feature "User's logged in feed", js: true do
         visit url
         scroll_to_bottom
 
-        within(first_row_containing('.pa_create')) do
+        within(first_parent_with_class_containing('page_row', first('.pa_create'))) do
           dom_count = all('.r_subpost').count
           find('.pa_create').click
           wait_for_js
@@ -186,7 +181,7 @@ feature "User's logged in feed", js: true do
 
         row = nil
         all('.pa_destroy').each do |el|
-          row = first_row_containing(el)
+          row = first_parent_with_class_containing('page_row', el)
           if row.all('.r_subpost').count > 1
             break
           else
@@ -217,7 +212,7 @@ feature "User's logged in feed", js: true do
 
         row = nil
         all('.pa_destroy').each do |el|
-          row = first_row_containing(el)
+          row = first_parent_with_class_containing('page_row', el)
           break if row.all('.r_subpost').count == 1
         end
 
@@ -266,7 +261,7 @@ feature "User's logged in feed", js: true do
       before(:each) do
         visit url
         scroll_to_bottom
-        within(first_row_containing('.has_comments')) do
+        within(first_parent_with_class_containing('page_row', first('.has_comments'))) do
           find('.comments_icon').click
         end
       end

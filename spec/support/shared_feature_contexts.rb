@@ -10,7 +10,7 @@ shared_context 'a yep nope button' do |yn|
 
     row = nil
     all('.pa_destroy').each do |el|
-      row = first_row_containing(el)
+      row = first_parent_with_class_containing('page_row', el)
       if row.all(".pa_#{yn}.r_active").count == 0
         break
       else
@@ -88,6 +88,12 @@ end
 
 shared_context 'comment delete button' do
   scenario 'deletes a comment' do
+    db_count = user.comments.count
+    first_parent_with_class_containing('r_comment', first('.r_comment .r_name', text: user.name)).hover
+    click_link('Delete')
+    page.driver.browser.switch_to.alert.accept
+    wait_for_js
+    expect(user.comments.count).to eq(db_count - 1)
   end
 end
 

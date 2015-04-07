@@ -47,6 +47,11 @@ module CapybaraExtensions
     page.execute_script 'require("jquery")("html, body").animate({scrollTop: require("jquery")(document).height()});'
     wait_for_js
   end
+
+  def first_parent_with_class_containing(cname, selector)
+    el = selector.is_a?(Capybara::Node::Element) ? selector : first(selector)
+    el.find(:xpath, "ancestor::*[contains(concat(' ',normalize-space(@class),' '),' #{cname} ')]")
+  end
 end
 
 module Capybara

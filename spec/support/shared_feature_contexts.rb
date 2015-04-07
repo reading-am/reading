@@ -89,10 +89,13 @@ end
 shared_context 'comment delete button' do
   scenario 'deletes a comment' do
     db_count = user.comments.count
+    dom_count = all('.r_comment').count
+
     first_parent_with_class_containing('r_comment', first('.r_comment .r_name', text: user.name)).hover
     click_link('Delete')
     page.driver.browser.switch_to.alert.accept
-    wait_for_js
+
+    expect(all('.r_comment').count).to eq(dom_count - 1)
     expect(user.comments.count).to eq(db_count - 1)
   end
 end

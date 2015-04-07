@@ -21,3 +21,9 @@ single_email:
   post: one
   page: daringfireball
   body: "greg@reading.am"
+
+max_example:
+  user: max
+  post: max_example
+  page: example
+  body: "What a dope comment!"

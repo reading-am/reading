@@ -61,3 +61,7 @@ max_twitter:
 max_amazon:
   user: max
   page: amazon_whoopie
+
+max_example:
+  user: max
+  page: example

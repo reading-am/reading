@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "User's bookmarklet", js: true do
   include UsersHelper
-  fixtures :users, :domains, :pages
+  fixtures :users, :domains, :pages, :comments
 
   let(:url) { 'http://www.example.com' }
   let(:user) { users(:greg) }
@@ -57,6 +57,39 @@ feature "User's bookmarklet", js: true do
     within_window(windows.last) do
       expect(current_url).to start_with('https://twitter.com/intent')
       current_window.close
+    end
+  end
+
+  describe 'comments' do
+
+    before(:each) do
+      visit url
+      trigger_bookmarklet_for user
+    end
+
+    it_behaves_like 'comment input'
+
+    it_behaves_like 'comment delete button'
+
+    it_behaves_like 'comment permalink button'
+
+    it_behaves_like 'is shareable' do
+      let(:share_link) do
+        comment = first('.r_comment')
+        comment.hover
+        return comment.find_link('Share')
+      end
+    end
+
+    scenario 'visits user by navigating to user page upon click' do
+      user_link = first('.r_comment .r_name')
+      name = user_link.text
+      user_link.click
+
+      within_frame('r_user_overlay') do
+        expect(current_path).to match(/\/[^\/]+/), "Path wasn't a root user path"
+        expect(first('h1')).to have_text(name)
+      end
     end
   end
 end

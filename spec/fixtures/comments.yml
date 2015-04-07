@@ -22,6 +22,12 @@ single_email:
   page: daringfireball
   body: "greg@reading.am"
 
+greg_example:
+  user: greg
+  post: greg_example
+  page: example
+  body: "You're all awesome!"
+
 max_example:
   user: max
   post: max_example

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "User's bookmarklet", js: true do
   include UsersHelper
-  fixtures :users, :domains, :pages, :comments
+  fixtures :users, :domains, :pages, :posts, :comments
 
   let(:url) { 'http://www.example.com' }
   let(:user) { users(:greg) }
@@ -60,6 +60,23 @@ feature "User's bookmarklet", js: true do
     end
   end
 
+  describe 'subposts' do
+
+    before(:each) do
+      visit url
+      trigger_bookmarklet_for user
+    end
+
+    scenario 'are rendered on initial load' do
+      expect(page).to have_selector('#r_readers')
+      expect(page.all('.r_post').count).to be > 0
+    end
+
+    it_behaves_like 'visits user', :iframe do
+      let(:user_link) { first('.r_post .r_name') }
+    end
+  end
+
   describe 'comments' do
 
     before(:each) do
@@ -81,15 +98,8 @@ feature "User's bookmarklet", js: true do
       end
     end
 
-    scenario 'visits user by navigating to user page upon click' do
-      user_link = first('.r_comment .r_name')
-      name = user_link.text
-      user_link.click
-
-      within_frame('r_user_overlay') do
-        expect(current_path).to match(/\/[^\/]+/), "Path wasn't a root user path"
-        expect(first('h1')).to have_text(name)
-      end
+    it_behaves_like 'visits user', :iframe do
+      let(:user_link) { first('.r_comment .r_name') }
     end
   end
 end

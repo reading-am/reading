@@ -246,19 +246,18 @@ feature "User's logged in feed", js: true do
 
     describe 'subposts' do
 
-      scenario 'are rendered on initial load' do
+      before(:each) do
         visit url
+      end
 
+      scenario 'are rendered on initial load' do
         row = first('.page_row')
         expect(row).to have_selector('.r_subposts')
         expect(row.all('.r_post').count).to be > 0
       end
 
       it_behaves_like 'visits user' do
-        let(:user_link) do
-          visit url
-          first('.r_post .r_name')
-        end
+        let(:user_link) { first('.r_post .r_name') }
       end
     end
 

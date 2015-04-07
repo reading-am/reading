@@ -53,13 +53,20 @@ shared_context 'is shareable' do
   end
 end
 
-shared_context 'visits user' do
+shared_context 'visits user' do |iframe|
   scenario 'by navigating to user page upon click' do
     name = user_link.text
     user_link.click
 
-    expect(current_path).to match(/\/[^\/]+/), "Path wasn't a root user path"
-    expect(first('h1')).to have_text(name)
+    if iframe
+      within_frame('r_user_overlay') do
+        expect(current_path).to match(/\/[^\/]+/), "Path wasn't a root user path"
+        expect(first('h1')).to have_text(name)
+      end
+    else
+      expect(current_path).to match(/\/[^\/]+/), "Path wasn't a root user path"
+      expect(first('h1')).to have_text(name)
+    end
   end
 end
 

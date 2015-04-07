@@ -259,8 +259,10 @@ feature "User's logged in feed", js: true do
     describe 'comments' do
 
       before(:each) do
+        # Remove other posts just to make it easier
+        Post.where.not(id: user.comments.first.post.id).destroy_all
+
         visit url
-        scroll_to_bottom
         within(first_parent_with_class_containing('page_row', first('.has_comments'))) do
           find('.comments_icon').click
         end

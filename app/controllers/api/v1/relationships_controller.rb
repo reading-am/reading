@@ -2,14 +2,6 @@
 module Api::V1
   class RelationshipsController < ApiController
 
-    private
-
-    def rel_params
-      params.require(:model).permit(:follower_id, :followed_id)
-    end
-
-    public
-
     def index
       render 'users/index', locals: { users: Relationships.index(params) }
     end
@@ -23,7 +15,7 @@ module Api::V1
       current_user.follow!(followed)
       current_user.unblock!(followed) if current_user.blocking_count > 0 rescue nil
 
-      render 'users/show', user: followed
+      render 'users/show', locals: { user: followed }
     end
     require_scope_for :create, :write
     add_transaction_tracer :create
@@ -34,9 +26,15 @@ module Api::V1
       followed = User.find(params[:id])
       current_user.unfollow!(followed)
 
-      render 'users/show', user: followed
+      render 'users/show', locals: { user: followed }
     end
     require_scope_for :destroy, :write
     add_transaction_tracer :destroy
+
+    private
+
+    def rel_params
+      params.require(:model).permit(:follower_id, :followed_id)
+    end
   end
 end

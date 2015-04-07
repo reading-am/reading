@@ -30,6 +30,13 @@ feature "User's bookmarklet", js: true do
     expect(user.posts.reload.count).to eq(db_count + 1), "A post wasn't added to the database"
   end
 
+  scenario 'is closed when the close button is clicked', :skip_before do
+    visit url
+    trigger_bookmarklet_for user
+    click_link('r_close')
+    expect(page).not_to have_selector('#r_am'), "Bookmarklet wasn't removed from the page"
+  end
+
   describe 'post' do
 
     shared_context 'a yep nope button' do |yn|

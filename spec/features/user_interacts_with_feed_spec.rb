@@ -264,68 +264,30 @@ feature "User's logged in feed", js: true do
 
     describe 'comments' do
 
-      scenario 'input creates a new comment' do
-        count = user.comments.count
-        body = 'This is a comment'
-
+      before(:each) do
         visit url
         scroll_to_bottom
         within(first_row_containing('.has_comments')) do
           find('.comments_icon').click
-          find_field('Add a comment')
-            .send_keys(body)
-            .send_keys(:return)
-          wait_for_js
-
-          expect(first('.r_comment')).to have_text(body), "Comment wasn't added to the DOM"
         end
-
-        expect(user.comments.count).to eq(count + 1), "Comment wasn't added to the database"
-        expect(user.comments.last.body).to eq(body)
       end
 
-      scenario 'delete button deletes a comment' do
-      end
+      it_behaves_like 'comment input'
+
+      it_behaves_like 'comment delete button'
+
+      it_behaves_like 'comment permalink button'
 
       it_behaves_like 'is shareable' do
         let(:share_link) do
-          visit url
-          scroll_to_bottom
-          within(first_row_containing('.has_comments')) do
-            find('.comments_icon').click
-            comment = first('.r_comment')
-            comment.hover
-            return comment.find_link('Share')
-          end
-        end
-      end
-
-      scenario 'permalink goes to the comment page' do
-        visit url
-        scroll_to_bottom
-        within(first_row_containing('.has_comments')) do
-          find('.comments_icon').click
           comment = first('.r_comment')
           comment.hover
-          comment.click_link('#')
-        end
-
-        expect(windows.length).to eq(2)
-
-        within_window(windows.last) do
-          expect(current_path).to match(/\/[^\/]+\/comments\/\d+/)
+          return comment.find_link('Share')
         end
       end
 
       it_behaves_like 'visits user' do
-        let(:user_link) do
-          visit url
-          scroll_to_bottom
-          within(first_row_containing('.has_comments')) do
-            find('.comments_icon').click
-            first('.r_comment .r_name')
-          end
-        end
+        let(:user_link) { first('.r_comment .r_name') }
       end
     end
   end

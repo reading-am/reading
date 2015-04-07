@@ -62,3 +62,39 @@ shared_context 'visits user' do
     expect(first('h1')).to have_text(name)
   end
 end
+
+shared_context 'comment input' do
+  scenario 'creates a new comment' do
+    count = user.comments.count
+    body = 'This is a comment'
+
+    find_field('Add a comment')
+      .send_keys(body)
+      .send_keys(:return)
+    wait_for_js
+
+    expect(first('.r_comment')).to have_text(body), "Comment wasn't added to the DOM"
+    expect(user.comments.count).to eq(count + 1), "Comment wasn't added to the database"
+    expect(user.comments.last.body).to eq(body)
+  end
+end
+
+shared_context 'comment delete button' do
+  scenario 'deletes a comment' do
+  end
+end
+
+shared_context 'comment permalink button' do
+  scenario 'goes to the comment page' do
+    comment = first('.r_comment')
+    comment.hover
+    comment.click_link('#')
+
+    expect(windows.length).to eq(2)
+
+    within_window(windows.last) do
+      expect(current_path).to match(/\/[^\/]+\/comments\/\d+/)
+      current_window.close
+    end
+  end
+end

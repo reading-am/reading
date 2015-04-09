@@ -157,4 +157,5 @@ group :development, :test do
   gem 'json-schema'
   gem 'rack-test'
   gem 'database_cleaner'
+  gem 'elasticsearch-extensions'
 end

@@ -1,9 +1,8 @@
-class SearchIndexJob
-  include SuckerPunch::Job
-  workers 4
+class SearchIndexJob < ActiveJob::Base
+  queue_as :default
 
   def perform action, obj
-    case action.to_s
+    case action
     when /create/
       obj.__elasticsearch__.index_document
     when /update/

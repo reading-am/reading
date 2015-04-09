@@ -9,11 +9,16 @@ class JSTimeoutError < StandardError
 end
 
 module CapybaraExtensions
-  def visit(path)
-    super
-    # Only wait for JS if it's a request on our site
-    host = URI.parse(path).host
-    wait_for_js unless host && host != Capybara.current_session.server.host
+  def visit(path, wait: true)
+    super path
+
+    if wait
+      # Only wait for JS if it's a request on our site
+      host = URI.parse(path).host
+      wait = host && host != Capybara.current_session.server.host
+    end
+
+    wait_for_js if wait
   end
 
   def reload

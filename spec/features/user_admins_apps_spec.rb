@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 feature 'User admins apps', js: true do
-  fixtures :users, :oauth_applications
+  fixtures :users, :oauth_applications, :oauth_access_tokens
 
   let(:user) { users(:greg) }
+  let(:app) { oauth_applications(:ios) }
 
   before(:each) do
     login_as user, scope: :user
@@ -58,6 +59,39 @@ feature 'User admins apps', js: true do
   end
 
   describe 'as a consumer' do
-    
+
+    scenario 'creates an oauth token' do
+      user.oauth_access_tokens.destroy_all
+      db_count = user.oauth_access_tokens.count
+
+      visit "/oauth/authorize?client_id=#{app.uid}&redirect_uri=#{app.redirect_uri}&response_type=code", wait: false
+      click_button 'Authorize'
+      code = find('#authorization_code').text
+
+      Typhoeus.post "#{ROOT_URL}/oauth/token", body: { grant_type: 'authorization_code',
+                                                       client_id: app.uid,
+                                                       client_secret: app.secret,
+                                                       code: code,
+                                                       redirect_uri: app.redirect_uri }
+
+      expect(user.oauth_access_tokens.count).to eq(db_count + 1)
+
+      visit '/settings/apps'
+      expect(page).to have_text(app.name)
+    end
+
+    scenario 'revokes an oauth token' do
+      visit '/settings/apps'
+
+      db_count = user.active_oauth_access_tokens.count
+      dom_count = all('.r_oauth_access_token').count
+
+      first('.btn', text: /Revoke Access/).click
+      page.driver.browser.switch_to.alert.accept
+      wait_for_js
+
+      expect(all('.r_oauth_access_token').count).to eq(dom_count - 1)
+      expect(user.active_oauth_access_tokens.count).to eq(db_count - 1)
+    end
   end
 end

@@ -2,21 +2,6 @@
 module Api::V1
   class OauthApplicationsController < ApiController
 
-    private
-
-    def app_params
-      params.require(:model).permit(:name,
-                                    :redirect_uri,
-                                    :description,
-                                    :website,
-                                    :app_store_url,
-                                    :play_store_url
-                                   )
-    end
-
-    public
-
-
     def index
       render locals: { oauth_applications: OauthApplications.index(params) }
     end
@@ -40,7 +25,7 @@ module Api::V1
     add_transaction_tracer :create
 
     def update
-      app = Doorkeeper::Application.by_uid_and_owner(params[:id], current_user)
+      app = Doorkeeper::Application.find_by(uid: params[:id], owner: current_user)
       app.update_attributes(app_params)
       render :create, locals: { oauth_application: app }
     end
@@ -59,5 +44,16 @@ module Api::V1
     end
     require_scope_for :destroy, :write
     add_transaction_tracer :destroy
+
+    private
+
+    def app_params
+      params.require(:model).permit(:name,
+                                    :redirect_uri,
+                                    :description,
+                                    :website,
+                                    :app_store_url,
+                                    :play_store_url)
+    end
   end
 end

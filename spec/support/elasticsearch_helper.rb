@@ -10,7 +10,7 @@ RSpec.configure do |config|
   end
 
   config.after :each, elasticsearch: true do
-    Elasticsearch::Model.client.indices.delete index: 'all'
+    Elasticsearch::Model.client.indices.delete index: '_all'
   end
 
   config.after :suite do

@@ -47,6 +47,7 @@ feature "User following", js: true do
     scenario 'the button unfollows a user', elasticsearch: true do
       User.__elasticsearch__.create_index! index: User.index_name
       User.import
+      sleep 1
 
       visit "/users/search?q=#{users(:max).first_name}"
       db_count = user.following.count

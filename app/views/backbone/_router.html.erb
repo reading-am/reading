@@ -1,14 +1,14 @@
 <%
 props = {}
 
-if defined?(model)
+if defined?(model) && model.present?
   model_template ||= model.class.table_name.singularize
   props[:model] = render_api(partial: "#{model_template.pluralize}/#{model_template}", :"#{model_template}" => model)
 
   router ||= model.class.table_name
 end
 
-if defined?(collection)
+if defined?(collection) && collection.present?
   collection_template ||= collection.first.class.table_name
   props[:collection] = render_api("#{collection_template}/index", :"#{collection_template}" => collection)
 end

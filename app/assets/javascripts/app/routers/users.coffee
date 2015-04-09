@@ -147,7 +147,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         el: $("#subnav")
 
     apps: ->
-      @collection = new OauthAccessTokens if !@collection.length
+      @collection = new OauthAccessTokens unless @collection?.length
 
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
@@ -158,7 +158,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
       @$yield.html @tokens_view.render().el
 
     dev_apps: ->
-      @collection = new OauthApps if !@collection.length
+      @collection = new OauthApps unless @collection?.length
 
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")

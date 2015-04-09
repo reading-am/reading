@@ -1,6 +1,7 @@
 medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
 
 Reading::Application.routes.draw do
+  use_doorkeeper
   root to: "users#show"
 
   devise_for :users,

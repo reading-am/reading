@@ -32,4 +32,40 @@ feature 'User registers for an account', js: true do
     expect(new_user.email).to eq(email)
     expect(new_user.username).to eq(username)
   end
+
+  scenario 'via Twitter' do
+    db_count = User.count
+    name = 'Reading Test'
+    email = 'test@example.com'
+    username = 'reading_test'
+
+    visit '/'
+    click_link 't Twitter'
+
+    expect(windows.length).to eq(2)
+    expect(page).to have_selector '#loading'
+
+    within_window(windows.last) do
+      expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
+      fill_in 'Username or email', with: ENV['TWITTER_TEST_ACCOUNT_EMAIL']
+      fill_in 'Password', with: ENV['TWITTER_TEST_ACCOUNT_PASS']
+      click_button 'Authorize app'
+    end
+
+    expect(page).not_to have_selector('#loading'), "Page didn't reload after auth was added"
+    expect(windows.length).to eq(1)
+
+    fill_in 'Email', with: email
+    fill_in 'Password', with: 'testingtesting'
+    fill_in 'Password Confirm', with: 'testingtesting'
+    click_button 'All done'
+
+    expect(page).to have_selector('#blank_slate')
+    expect(User.count).to eq(db_count + 1)
+
+    new_user = User.last
+    expect(new_user.name).to eq(name)
+    expect(new_user.email).to eq(email)
+    expect(new_user.username).to eq(username)
+  end
 end

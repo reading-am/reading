@@ -265,6 +265,7 @@ feature "User's logged in feed", js: true do
         visit url
         within(first_parent_with_class_containing('page_row', first('.has_comments'))) do
           find('.comments_icon').click
+          wait_for_js
         end
       end
 

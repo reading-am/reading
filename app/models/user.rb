@@ -87,9 +87,10 @@ class User < ActiveRecord::Base
 
   # Search
   include Elasticsearch::Model
-  after_create  { SearchIndexJob.new.async.perform(:create,  self) }
-  after_update  { SearchIndexJob.new.async.perform(:update,  self) }
-  after_destroy { SearchIndexJob.new.async.perform(:destroy, self) }
+  index_name    "users-#{Rails.env}" if Rails.env.test?
+  after_create  { SearchIndexJob.perform_later('create',  self) }
+  after_update  { SearchIndexJob.perform_later('update',  self) }
+  after_destroy { SearchIndexJob.perform_later('destroy', self) }
   def as_indexed_json(options={})
     as_json(only: [:name, :username, :email, :link])
   end

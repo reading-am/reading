@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature "User profile page", js: true do
-  fixtures :users, :relationships, :blockages
+feature "User blocking", js: true do
+  fixtures :users, :blockages
 
   let(:user) { users(:greg) }
 
@@ -9,7 +9,7 @@ feature "User profile page", js: true do
     login_as user, scope: :user
   end
 
-  describe 'blocking' do
+  describe 'on a profile page' do
 
     scenario 'button blocks a user' do
       subject = users(:howard)
@@ -29,27 +29,6 @@ feature "User profile page", js: true do
       page.driver.browser.switch_to.alert.accept
       expect(page).to have_selector('.r_block')
       expect(user.blocking.count).to eq(db_count - 1)
-    end
-  end
-
-  describe 'following' do
-
-    scenario 'button follows a user' do
-      subject = users(:howard)
-      visit "/#{subject.username}"
-      db_count = user.following.count
-      click_link("Follow #{subject.first_name}")
-      expect(page).to have_link("Unfollow #{subject.first_name}")
-      expect(user.following.count).to eq(db_count + 1)
-    end
-
-    scenario 'button unfollows a user' do
-      subject = users(:max)
-      visit "/#{subject.username}"
-      db_count = user.following.count
-      click_link("Unfollow #{subject.first_name}")
-      expect(page).to have_link("Follow #{subject.first_name}")
-      expect(user.following.count).to eq(db_count - 1)
     end
   end
 end

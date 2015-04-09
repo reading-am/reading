@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User authentication', js: true do
-  fixtures :users
+  fixtures :users, :authorizations
 
   let(:url) { '/sign_in' }
   let(:user) { users(:greg) }
@@ -44,11 +44,18 @@ feature 'User authentication', js: true do
 
       click_link 't Twitter'
       expect(windows.length).to eq(2)
+      expect(page).to have_selector '#loading'
 
       within_window(windows.last) do
         expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
-        current_window.close
+        fill_in 'Username or email', with: ENV['TWITTER_TEST_ACCOUNT_EMAIL']
+        fill_in 'Password', with: ENV['TWITTER_TEST_ACCOUNT_PASS']
+        click_button 'Authorize app'
       end
+
+      expect(page).not_to have_selector('#loading'), "Page didn't reload after auth was added"
+      expect(windows.length).to eq(1)
+      expect(current_path).to eq("/#{user.username}/list")
     end
 
     scenario 'with Facebook' do

@@ -108,6 +108,11 @@ RSpec.configure do |config|
   config.around(:each) do |example|
     DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
     DatabaseCleaner.cleaning { example.run }
+  end
+
+  config.after(:each) do
+    # close all remaining open windows
+    windows.last.close while windows.length > 1
     Capybara.reset_sessions!
   end
 end

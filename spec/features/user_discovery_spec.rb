@@ -19,6 +19,7 @@ feature "User discovery page", js: true do
   scenario 'allows users to be searched for', elasticsearch: true do
     User.__elasticsearch__.create_index! index: User.index_name
     User.import
+    sleep 1
 
     visit "/users/search?q=#{users(:max).first_name}"
     expect(page).to have_text(users(:max).username)

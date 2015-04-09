@@ -15,7 +15,7 @@ module CapybaraExtensions
     if wait
       # Only wait for JS if it's a request on our site
       host = URI.parse(path).host
-      wait = host && host != Capybara.current_session.server.host
+      wait = !host || host == Capybara.current_session.server.host
     end
 
     wait_for_js if wait

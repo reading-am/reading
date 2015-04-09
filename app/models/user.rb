@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
   has_many :oauth_access_tokens, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
   has_many :active_oauth_access_tokens, -> { where("revoked_at IS NULL AND (expires_in IS NULL OR created_at > (now() - interval '1 second' * expires_in))") }, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
-  has_many :oauth_client_apps, class_name: 'Doorkeeper::Application', through: :oauth_access_tokens, source: :application
+  has_many :oauth_client_apps, class_name: 'Doorkeeper::Application', through: :active_oauth_access_tokens, source: :application
   has_many :oauth_owner_apps, class_name: 'Doorkeeper::Application', as: :owner
 
   has_many :authorizations, -> { includes [:user] }, dependent: :destroy # also handled by foreign key

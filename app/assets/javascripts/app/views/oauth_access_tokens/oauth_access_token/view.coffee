@@ -14,6 +14,7 @@ define [
       "click .r_destroy": "destroy"
 
     initialize: ->
+      super
       @app_view = new OauthAppView
         model: @model.get("app")
 

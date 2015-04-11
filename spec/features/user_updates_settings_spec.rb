@@ -25,7 +25,7 @@ feature "User's settings", js: true do
       (0..5).to_a.reverse.each { |i| find_link("Self destruct in #{i} (click to cancel)") }
       sleep 1 # because the last number in the count down will pause for 1 second
 
-      assert_equal '/sign_in', current_path
+      assert_equal '/', current_path
       expect(User.count).to eq(db_count - 1), "User wasn't deleted from the database"
     end
 

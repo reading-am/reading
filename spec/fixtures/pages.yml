@@ -1,8 +1,38 @@
 daringfireball:
   url: http://daringfireball.net/
   title: Daring Fireball
-  posts_count: 54
-  comments_count: 85
+  posts_count: 2
+  comments_count: 4
+  medium: text
+  media_type: article
+  description: Something about Apple
+  domain: daringfireball
+
+daringfireball_image:
+  url: http://daringfireball.net/graphics/logos/
+  title: A test image
+  posts_count: 1
+  comments_count: 0
+  medium: image
+  description: Logo
+  domain: daringfireball
+
+daringfireball_video:
+  url: http://daringfireball.net/video
+  title: A test video
+  posts_count: 1
+  comments_count: 0
+  medium: video
+  description: A fake video
+  domain: daringfireball
+
+daringfireball_audio:
+  url: http://daringfireball.net/audio
+  title: A test audio
+  posts_count: 1
+  comments_count: 0
+  medium: audio
+  description: A fake audio
   domain: daringfireball
 
 metafilter:
@@ -21,3 +51,38 @@ github:
 
 youtube_short:
   url: http://youtu.be/sIy4KsWq-FA?t=1m36s
+
+vimeo_union_glacier:
+  url: https://vimeo.com/107231188
+  title: Welcome to Union Glacier
+  posts_count: 2
+  comments_count: 0
+  domain: vimeo
+
+dribbble_kdy:
+  url: https://dribbble.com/keithdavisyoung
+  title: Dribbble - Keith Davis Young
+  posts_count: 1
+  comments_count: 0
+  domain: dribbble
+
+twitter_ftrain:
+  url: https://twitter.com/ftrain
+  title: Paul Ford (@ftrain) | Twitter
+  posts_count: 1
+  comments_count: 0
+  domain: twitter
+
+amazon_whoopie:
+  url: http://www.amazon.com/dp/B001EA206M
+  title: Westminster Self-Inflating Whoopee Cushion
+  posts_count: 1
+  comments_count: 0
+  domain: amazon
+
+example:
+  url: http://www.example.com/
+  title: Example Domain
+  posts_count: 0
+  comments_count: 0
+  domain: example

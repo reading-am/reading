@@ -13,7 +13,7 @@ locals = mustache_helpers.merge({
 
 <%=
   if !bot?
-    locals = {collection: @tokens}
+    locals = { collection: @tokens }
     if @user
       locals[:model] = @user
     else

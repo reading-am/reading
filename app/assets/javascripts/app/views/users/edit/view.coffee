@@ -44,6 +44,7 @@ define [
           if i >= 0
             @$destroy.text "Self destruct in #{i--} (click to cancel)"
           else
+            clearInterval @destroy_timer
             $.rails.handleMethod @$destroy
         , 1000
 

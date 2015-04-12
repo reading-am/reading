@@ -5,7 +5,7 @@ ruby '2.1.4'
 # Core Services #
 #################
 gem 'dotenv-rails', groups: [:development, :test]
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.1'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server
@@ -26,7 +26,8 @@ gem 'addressable' # URI parsing
 gem 'oj' # fast JSON parser
 gem 'typhoeus' # HTTP request gem recommended by koala
 gem 'base58'
-gem 'foreigner' # DB foreign keys
+gem 'jbuilder' # json templates
+gem 'versionist' # api versioning
 
 #####################
 # Ruby Conveniences #
@@ -41,7 +42,7 @@ gem 'mime-types'
 ##############
 # Monitoring #
 ##############
-gem 'rack-mini-profiler', '0.1.27' # v1.28 causes an error on search pages
+gem 'rack-mini-profiler'
 gem 'newrelic_rpm'
 
 ########
@@ -151,5 +152,11 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'capybara-webkit'
+  gem 'capybara-screenshot'
   gem 'spring-commands-rspec'
+  gem 'json-schema'
+  gem 'rack-test'
+  gem 'database_cleaner'
+  gem 'elasticsearch-extensions'
 end

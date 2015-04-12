@@ -1,7 +1,7 @@
 class CommentObserver < ActiveRecord::Observer
 
   def after_create comment
-    PusherJob.new.async.perform :create, comment
+    PusherJob.perform_later 'create', comment
     comment.user.hooks.each do |hook| hook.run(comment, 'comment') end
 
     # Create adhoc users from the emails
@@ -22,11 +22,11 @@ class CommentObserver < ActiveRecord::Observer
   end
 
   def after_update comment
-    PusherJob.new.async.perform :update, comment
+    PusherJob.perform_later 'update', comment
   end
 
   def after_destroy comment
-    PusherJob.new.async.perform :destroy, comment
+    PusherJob.perform_later 'destroy', comment
   end
 
 end

@@ -216,22 +216,4 @@ public
       "pages"
     ]
   end
-
-  def simple_obj to_s=false
-    {
-      :type           => 'Page',
-      :id             => to_s ? id.to_s : id,
-      :url            => url,
-      :title          => display_title,
-      :embed          => proxy_embed,
-      :medium         => medium,
-      :media_type     => media_type,
-      :description    => display_description,
-      :posts_count    => posts_count,
-      :comments_count => comments_count,
-      :has_describe_data => has_describe_data,
-      :created_at     => created_at,
-      :updated_at     => updated_at
-    }
-  end
 end

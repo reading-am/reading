@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
   has_many :oauth_access_tokens, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
   has_many :active_oauth_access_tokens, -> { where("revoked_at IS NULL AND (expires_in IS NULL OR created_at > (now() - interval '1 second' * expires_in))") }, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
-  has_many :oauth_client_apps, class_name: 'Doorkeeper::Application', through: :oauth_access_tokens, source: :application
+  has_many :oauth_client_apps, class_name: 'Doorkeeper::Application', through: :active_oauth_access_tokens, source: :application
   has_many :oauth_owner_apps, class_name: 'Doorkeeper::Application', as: :owner
 
   has_many :authorizations, -> { includes [:user] }, dependent: :destroy # also handled by foreign key
@@ -87,9 +87,10 @@ class User < ActiveRecord::Base
 
   # Search
   include Elasticsearch::Model
-  after_create  { SearchIndexJob.new.async.perform(:create,  self) }
-  after_update  { SearchIndexJob.new.async.perform(:update,  self) }
-  after_destroy { SearchIndexJob.new.async.perform(:destroy, self) }
+  index_name    "users-#{Rails.env}" if Rails.env.test?
+  after_create  { SearchIndexJob.perform_later('create',  self) }
+  after_update  { SearchIndexJob.perform_later('update',  self) }
+  after_destroy { SearchIndexJob.perform_later('destroy', self) }
   def as_indexed_json(options={})
     as_json(only: [:name, :username, :email, :link])
   end
@@ -283,32 +284,5 @@ class User < ActiveRecord::Base
     else
       "#{base}/#{sprintf('%09d', id).gsub(/(\d{3})(?=\d)/, '\\1/')}/#{style}/#{avatar_file_name}?#{avatar_updated_at.to_time.to_i}"
     end
-  end
-
-  def simple_obj to_s=false
-    {
-      type:         'User',
-      id:           to_s ? id.to_s : id,
-      url:          url,
-      username:     username,
-      display_name: display_name,
-      first_name:   first_name,
-      full_name:    name,
-      bio:          bio,
-      link:         link,
-      location:     location,
-      avatar:       avatar_url,
-      avatar_medium:   avatar_url(:medium),
-      avatar_thumb:    avatar_url(:thumb),
-      avatar_mini:     avatar_url(:mini),
-      posts_count:     posts.size,
-      following_count: following.size,
-      followers_count: followers.size,
-      blocking_count: blocking.size,
-      blockers_count: blockers.size,
-      access:     access,
-      created_at: created_at,
-      updated_at: updated_at
-    }
   end
 end

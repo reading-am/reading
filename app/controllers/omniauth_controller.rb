@@ -60,11 +60,13 @@ class OmniauthController < Devise::OmniauthCallbacksController
       remember_me auth.user
     end
 
-    data = {:status => status, :authResponse => auth_hash, :auth => auth.nil? ? nil : auth.simple_obj}
+    data = { status: status,
+             authResponse: auth_hash,
+             auth: auth.nil? ? nil : render_api(partial: 'authorizations/authorization', authorization: auth) }
     if !params[:return_type].nil? and params[:return_type] == 'json'
-      render :text => data.to_json
+      render text: data.to_json
     else
-      render "redirect", :locals => data, :layout => false
+      render "redirect", locals: data, layout: false
     end
   end
 

@@ -2,6 +2,8 @@
 class ApplicationController < ActionController::Base
   # needed for migrate_auth_token
   include Devise::Controllers::Rememberable
+  include RenderApi
+  include DefaultParams
 
   protect_from_forgery
 
@@ -11,7 +13,7 @@ class ApplicationController < ActionController::Base
                 :set_headers, :migrate_auth_token, :migrate_to_www,
                 :check_signed_in, :set_bot, :profiler, :set_default_params
 
-  helper_method :mobile_device?, :desktop_device?, :bot?
+  helper_method :mobile_device?, :desktop_device?, :bot?, :render_api
 
   rescue_from ActiveRecord::RecordNotFound, with: :show_404
 
@@ -155,9 +157,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_default_params
-    params[:limit] = 50
-    params[:offset] = 0
+  def api
+    "Api::V#{API_VERSION}".constantize
   end
-
 end

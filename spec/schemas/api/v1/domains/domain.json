@@ -1,0 +1,12 @@
+{
+    "type" : "object",
+    "properties" : {
+        "type" : { "type" : "string" },
+        "id" : { "type" : "integer" },
+        "name" : { "type" : "string" },
+        "verb" : { "type" : ["string", "null"] },
+        "pages_count" : { "type" : "integer" },
+        "created_at" : { "type" : "string", "format": "date-time" },
+        "updated_at" : { "type" : "string", "format": "date-time" }
+    }
+}

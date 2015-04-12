@@ -1,0 +1,7 @@
+{
+    "type" : "object",
+    "properties": {
+        "total" : { "type" : "integer" },
+        "last_created_at" : { "type" : "string", "format": "date-time" }
+    }
+}

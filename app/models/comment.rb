@@ -98,17 +98,4 @@ class Comment < ActiveRecord::Base
 
     html.html_safe
   end
-
-  def simple_obj to_s=false
-    {
-      :type   => "Comment",
-      :id     => to_s ? id.to_s : id,
-      :body   => body,
-      :url    => "http://#{DOMAIN}/#{user.username}/comments/#{id}", # needs to be http for the iframe
-      :created_at => created_at,
-      :updated_at => updated_at,
-      :user   => user.simple_obj,
-      :page   => page.simple_obj
-    }
-  end
 end

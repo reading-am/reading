@@ -24,10 +24,11 @@ feature "User's bookmarklet", js: true do
   end
 
   scenario 'loads and posts from a site', :skip_before do
+    user.posts.destroy_all
     db_count = user.posts.count
     visit url
     trigger_bookmarklet_for user
-    expect(user.posts.reload.count).to eq(db_count + 1), "A post wasn't added to the database"
+    expect(user.posts.count).to eq(db_count + 1), "A post wasn't added to the database"
   end
 
   scenario 'is closed when the close button is clicked', :skip_before do

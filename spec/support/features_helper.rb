@@ -1,7 +1,7 @@
 require 'rake'
 require 'capybara/rspec'
 Capybara.default_wait_time = 10
-Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :selenium
 
 # Only take screenshots with webkit
 if Capybara.javascript_driver == :webkit

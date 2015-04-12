@@ -51,8 +51,7 @@ feature "User's hooks", js: true do
     db_count = user.hooks.count
 
     first('.hook').hover
-    click_link('Delete')
-    page.driver.browser.switch_to.alert.accept
+    accept_confirm { click_link('Delete') }
 
     expect(all('.hook').count).to eq dom_count - 1
     expect(user.hooks.reload.count).to eq db_count - 1

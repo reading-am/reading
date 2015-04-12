@@ -76,8 +76,7 @@ feature 'User authentication', js: true do
     scenario 'from settings page' do
       login_as user, scope: :user
       visit '/settings/info'
-      click_link 'Sign Out'
-      page.driver.browser.switch_to.alert.accept
+      accept_confirm { click_link 'Sign Out' }
       expect(current_path).to eq('/')
       expect(page).to have_content('Sign up or in')
     end

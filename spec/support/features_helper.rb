@@ -25,6 +25,16 @@ module CapybaraExtensions
     visit current_url
   end
 
+  def accept_confirm(&block)
+    case Capybara.javascript_driver
+    when :webkit
+      super
+    when :selenium
+      block.call
+      page.driver.browser.switch_to.alert.accept
+    end
+  end
+
   # http://robots.thoughtbot.com/automatically-wait-for-ajax-with-capybara
   # This is especially helpful if you choose to use the PhantomJS driver
   # as it often fails to wait for JS to load
@@ -41,11 +51,15 @@ module CapybaraExtensions
   end
 
   def outstanding_js_tasks
-    return "requirejs failed to load" if page.execute_script('return typeof require == "undefined"')
-    return "jQuery failed to load" if page.execute_script('try { return require.defined("jquery") == false } catch(e) { return false }')
-    return "document.ready failed to fire" if page.execute_script('try { return require("jquery").isReady != true } catch(e) { return false }')
-    return "XHR failed to complete" if page.execute_script('try { require("jquery").active != 0 } catch(e) { return false }')
-    return "Animation failed to complete" if page.execute_script('try { return require("jquery")(":animated").length != 0 } catch(e) { return false }')
+    send_js = page.method Capybara.javascript_driver == :webkit ?
+                            'evaluate_script' :
+                            'execute_script'
+
+    return "requirejs failed to load" if send_js.call('return typeof require == "undefined"')
+    return "jQuery failed to load" if send_js.call('try { return require.defined("jquery") == false } catch(e) { return false }')
+    return "document.ready failed to fire" if send_js.call('try { return require("jquery").isReady != true } catch(e) { return false }')
+    return "XHR failed to complete" if send_js.call('try { return require("jquery").active != 0 } catch(e) { return false }')
+    return "Animation failed to complete" if send_js.call('try { return require("jquery")(":animated").length != 0 } catch(e) { return false }')
   end
 
   def scroll_to_bottom

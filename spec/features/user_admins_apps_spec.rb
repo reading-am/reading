@@ -49,8 +49,7 @@ feature 'User admins apps', js: true do
       dom_count = all('.r_oauth_app').count
 
       first('.btn', text: /Edit/).click
-      click_link 'Delete'
-      page.driver.browser.switch_to.alert.accept
+      accept_confirm { click_link 'Delete' }
       wait_for_js
 
       expect(all('.r_oauth_app').count).to eq(dom_count - 1)
@@ -86,8 +85,7 @@ feature 'User admins apps', js: true do
       db_count = user.active_oauth_access_tokens.count
       dom_count = all('.r_oauth_access_token').count
 
-      first('.btn', text: /Revoke Access/).click
-      page.driver.browser.switch_to.alert.accept
+      accept_confirm { first('.btn', text: /Revoke Access/).click }
       wait_for_js
 
       expect(all('.r_oauth_access_token').count).to eq(dom_count - 1)

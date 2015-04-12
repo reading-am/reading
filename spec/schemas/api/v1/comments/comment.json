@@ -1,0 +1,12 @@
+{
+    "type" : "object",
+    "properties": {
+        "type" : { "type" : "string" },
+        "id" : { "type" : "integer" },
+        "body" : { "type" : "string" },
+        "url" : { "type" : "string" },
+        "created_at" : { "type" : "string", "format": "date-time" },
+        "updated_at" : { "type" : "string", "format": "date-time" },
+        "user" : { "type" : "object" }
+    }
+}

@@ -1,0 +1,15 @@
+ios:
+  owner: greg
+  owner_type: User
+  name: Official Reading iOS App
+  uid: fjdklsafjkdlsafjklsad
+  secret: azjfjaeklwjewiojfioew
+  redirect_uri: urn:ietf:wg:oauth:2.0:oob
+
+third_party:
+  owner: howard
+  owner_type: User
+  name: A Third Party App With Limited Access
+  uid: ajfjkdlsafjewjiofjdioasjfkl
+  secret: ajfejfawfjidosfjewklafjsdkl
+  redirect_uri: urn:ietf:wg:oauth:2.0:oob

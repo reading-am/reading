@@ -1,0 +1,13 @@
+json.type           'OauthApp'
+json.consumer_key   oauth_application.uid
+json.name           oauth_application.name
+json.description    oauth_application.description
+json.website        oauth_application.website
+json.redirect_uri   oauth_application.redirect_uri
+json.app_store_url  oauth_application.app_store_url
+json.play_store_url oauth_application.play_store_url
+json.icon_medium    oauth_application.icon_url(:medium)
+json.icon_thumb     oauth_application.icon_url(:thumb)
+json.icon_mini      oauth_application.icon_url(:mini)
+json.created_at     oauth_application.created_at
+json.updated_at     oauth_application.updated_at

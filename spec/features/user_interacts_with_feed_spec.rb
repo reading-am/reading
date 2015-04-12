@@ -193,8 +193,7 @@ feature "User's logged in feed", js: true do
 
         within(row) do
           dom_count = all('.r_subpost').count
-          find('.pa_destroy').click
-          page.driver.browser.switch_to.alert.accept
+          accept_confirm { find('.pa_destroy').click }
           wait_for_js
           expect(page).to have_selector('.pa_create'), "Post button didn't change state"
           expect(page).to have_selector('.r_subpost', count: dom_count - 1)
@@ -219,8 +218,7 @@ feature "User's logged in feed", js: true do
         expect(row).to be_truthy, "A page with only one subpost wasn't found"
 
         within(row) do
-          find('.pa_destroy').click
-          page.driver.browser.switch_to.alert.accept
+          accept_confirm { find('.pa_destroy').click }
           wait_for_js
         end
 

@@ -203,6 +203,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.5.0)
+      capybara (>= 2.3.0, < 2.5.0)
+      json
     celluloid (0.15.2)
       timers (~> 1.1.0)
     childprocess (0.5.5)
@@ -681,6 +684,7 @@ DEPENDENCIES
   browser
   bullet
   capybara
+  capybara-webkit
   coffee-rails
   crack
   curb

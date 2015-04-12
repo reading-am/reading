@@ -18,8 +18,7 @@ feature "User's settings", js: true do
       db_count = User.count
       visit url
 
-      click_link button_text
-      page.driver.browser.switch_to.alert.accept
+      accept_confirm { click_link button_text }
 
       # waits for the count down
       (0..5).to_a.reverse.each { |i| find_link("Self destruct in #{i} (click to cancel)") }
@@ -33,8 +32,7 @@ feature "User's settings", js: true do
       db_count = User.count
       visit url
 
-      click_link button_text
-      page.driver.browser.switch_to.alert.accept
+      accept_confirm { click_link button_text }
       click_link("Self destruct in 5 (click to cancel)")
 
       expect(page).to have_link(button_text)
@@ -124,8 +122,7 @@ feature "User's settings", js: true do
       dom_count = all('.authorization').count
 
       first('.authorization').hover
-      click_link('Disconnect')
-      page.driver.browser.switch_to.alert.accept
+      accept_confirm { click_link('Disconnect') }
 
       expect(all('.authorization').count).to eq(dom_count - 1), "Authorization wasn't removed from the DOM"
       expect(user.authorizations.reload.count).to eq(db_count - 1), "Authorization wasn't deleted from the database"

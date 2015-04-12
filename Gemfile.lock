@@ -203,6 +203,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-screenshot (1.0.9)
+      capybara (>= 1.0, < 3)
+      launchy
     capybara-webkit (1.5.0)
       capybara (>= 2.3.0, < 2.5.0)
       json
@@ -684,6 +687,7 @@ DEPENDENCIES
   browser
   bullet
   capybara
+  capybara-screenshot
   capybara-webkit
   coffee-rails
   crack

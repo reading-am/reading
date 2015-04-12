@@ -1,7 +1,13 @@
 require 'rake'
 require 'capybara/rspec'
 Capybara.default_wait_time = 10
-Capybara.javascript_driver = :selenium
+Capybara.javascript_driver = :webkit
+
+# Only take screenshots with webkit
+if Capybara.javascript_driver == :webkit
+  require 'capybara-screenshot/rspec'
+  Capybara::Screenshot.prune_strategy = :keep_last_run
+end
 
 include Warden::Test::Helpers
 
@@ -60,6 +66,7 @@ module CapybaraExtensions
     return "document.ready failed to fire" if send_js.call('try { return require("jquery").isReady != true } catch(e) { return false }')
     return "XHR failed to complete" if send_js.call('try { return require("jquery").active != 0 } catch(e) { return false }')
     return "Animation failed to complete" if send_js.call('try { return require("jquery")(":animated").length != 0 } catch(e) { return false }')
+    return nil
   end
 
   def scroll_to_bottom
@@ -125,8 +132,12 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    # close all remaining open windows
     windows.last.close while windows.length > 1
+  end
+
+  # Sessions must be in an append_after
+  # for screenshots to work
+  config.append_after(:each) do
     Capybara.reset_sessions!
   end
 end

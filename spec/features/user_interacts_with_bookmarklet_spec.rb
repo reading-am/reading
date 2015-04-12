@@ -24,7 +24,9 @@ feature "User's bookmarklet", js: true do
   end
 
   scenario 'loads and posts from a site', :skip_before do
-    user.posts.destroy_all
+    # user already has an example.com post for other tests
+    # so kill it so a new one will get created
+    user.posts.where(page: pages(:example)).destroy_all
     db_count = user.posts.count
     visit url
     trigger_bookmarklet_for user
@@ -42,7 +44,7 @@ feature "User's bookmarklet", js: true do
 
     shared_context 'a yep nope button' do |yn|
       scenario "clicking a #{yn} button toggles #{yn} on a post" do
-        post = user.posts.last
+        post = user.posts.where(page: pages(:example)).last
         expect(post.yn).to eq(nil)
 
         within('#r_am') do

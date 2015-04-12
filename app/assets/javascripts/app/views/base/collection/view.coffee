@@ -80,7 +80,9 @@ define [
                 setTimeout =>
                   @$el.waypoint(if more then "enable" else "destroy")
                 , 1500
-          offset: "bottom-in-view"
+          offset: ->
+            vh = $.waypoints('viewportHeight')
+            vh - $(this).outerHeight() + vh/2
 
       return this
 
@@ -94,7 +96,7 @@ define [
             setTimeout set_wp, 100
           offset: ->
             vh = $.waypoints('viewportHeight')
-            vh - $(this).outerHeight() + vh/2
+            (vh * 2) - $(this).outerHeight()
           triggerOnce: true
 
       collection.off "add", @add

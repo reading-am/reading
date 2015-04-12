@@ -1,0 +1,21 @@
+ios_client_token:
+  application: ios
+  token: as09as09fd9ds0dsafff
+  scopes: register one_time_token
+
+third_party_client_token:
+  application: third_party
+  token: dsa90f90f90sd90sd
+
+ios_user_token:
+  user: greg
+  application: ios
+  token: afjdklsjaklfdjsakl
+  refresh_token: aaajdfjakslfjdsakl
+  scopes: public write admin
+
+third_party_user_token:
+  user: greg
+  application: third_party
+  token: al90djsa0jfkdlajfdja
+  refresh_token: u90fdjaicjadk3290vc

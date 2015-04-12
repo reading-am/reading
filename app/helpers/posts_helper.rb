@@ -20,51 +20,53 @@ module PostsHelper
     }[medium] || 'reading'
   end
 
-  def page_hashes_from_posts posts
+  def page_hashes_from_posts(posts)
     _pages = []
     date = ''
     posts.group_by(&:page).each_with_index do |(page, subposts), i|
-      _page = page.simple_obj
-      _page[:url] = subposts.first.wrapped_url
-      _page[:posts] = []
+      _page = render_api partial: 'pages/page', page: page
+      _page['url'] = subposts.first.wrapped_url
+      _page['posts'] = []
 
-      if date != subposts.first.created_at.strftime("%m/%d")
-        _page[:date] = date = subposts.first.created_at.strftime("%m/%d")
+      if date != subposts.first.created_at.strftime('%m/%d')
+        _page['date'] = date = subposts.first.created_at.strftime('%m/%d')
       else
         yn_avg = yn_average subposts
         if yn_avg > 0
-          _page[:yn_class] = "yep"
-          _page[:yep] = true
+          _page['yn_class'] = 'yep'
+          _page['yep'] = true
         elsif yn_avg < 0
-          _page[:yn_class] = "nope"
-          _page[:nope] = true
+          _page['yn_class'] = 'nope'
+          _page['nope'] = true
         end
       end
 
       subposts.each do |post|
-        _post = post.simple_obj
+        _post = render_api partial: 'posts/post', post: post
 
-        _post[:yep] = post.yn === true
-        _post[:nope] = post.yn === false
+        _post['yep'] = post.yn === true
+        _post['nope'] = post.yn === false
 
-        _post[:page][:verb] = page.verb
+        _post['page']['verb'] = page.verb
 
-        _post[:user][:avatar] = _post[:user][:avatar_thumb]
-        _post[:user].delete(:username)
-        _post[:user].delete(:bio)
+        _post['user']['avatar'] = _post['user']['avatar_thumb']
+        _post['user'].delete('username')
+        _post['user'].delete('bio')
 
         if post.referrer_post_id
-          _post[:referrer_post][:user][:avatar] = _post[:referrer_post][:user][:avatar_thumb]
-          _post[:referrer_post][:user].delete(:username)
-          _post[:referrer_post][:user].delete(:bio)
+          _post['referrer_post']['user']['avatar'] = _post['referrer_post']['user']['avatar_thumb']
+          _post['referrer_post']['user'].delete('username')
+          _post['referrer_post']['user'].delete('bio')
         else
-          _post.delete(:referrer_post)
+          _post.delete('referrer_post')
         end
 
-        _page[:posts] << _post
+        _page['posts'] << _post
       end
-      _page[:has_comments] = _page[:comments_count] > 0
-      _page[:access_page_permalinks] = signed_in? && current_user.access?(:page_permalinks)
+
+      _page['has_comments'] = _page['comments_count'] > 0
+      _page['access_page_permalinks'] = signed_in? && current_user.access?(:page_permalinks)
+
       _pages << _page
     end
     _pages

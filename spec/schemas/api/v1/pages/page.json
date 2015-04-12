@@ -1,0 +1,18 @@
+{
+    "type" : "object",
+    "properties" : {
+        "type" : { "type" : "string" },
+        "id" : { "type" : "integer" },
+        "url" : { "type" : "string" },
+        "title" : { "type" : "string" },
+        "embed" : { "type" : ["string", "null"] },
+        "medium" : { "type" : "string" },
+        "media_type" : { "type" : "string" },
+        "description" : { "type" : "string" },
+        "posts_count" : { "type" : "integer" },
+        "comments_count" : { "type" : "integer" },
+        "has_describe_data" : { "type" : "boolean" },
+        "created_at" : { "type" : "string", "format": "date-time" },
+        "updated_at" : { "type" : "string", "format": "date-time" }
+    }
+}

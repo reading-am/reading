@@ -53,9 +53,15 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
       @collection ?= new Posts
       models = @collection.models
 
+      # if a model was specified, use the nested collection
       if @model
         c = if type is "posts" then @model.posts else (@model.following.posts || @model.following.has_many("Posts"))
         @collection = c if @collection isnt c
+
+      # If a limit was specified as a query param, use it for the collection.
+      # Mostly useful for testing infinite scroll in integration tests
+      if @query_params().limit
+        @collection.params.limit = +@query_params().limit
 
       @collection.medium = medium
       @collection.params.yn = yn
@@ -141,7 +147,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         el: $("#subnav")
 
     apps: ->
-      @collection = new OauthAccessTokens if !@collection.length
+      @collection = new OauthAccessTokens unless @collection?.length
 
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")
@@ -152,7 +158,7 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
       @$yield.html @tokens_view.render().el
 
     dev_apps: ->
-      @collection = new OauthApps if !@collection.length
+      @collection = new OauthApps unless @collection?.length
 
       @settings_subnav_view = new SettingsSubnavView
         el: $("#subnav")

@@ -177,17 +177,4 @@ public
     uids = uids.collect{|i| i.to_s}
     User.where("id IN (SELECT user_id FROM authorizations WHERE provider = :provider AND uid IN (:uids))", { :provider => provider, :uids => uids })
   end
-
-  def simple_obj to_s=false
-    {
-      :type         => 'Authorization',
-      :provider     => provider,
-      :uid          => to_s ? uid.to_s : uid,
-      :permissions  => permissions,
-      :info         => provider == 'tssignals' ? accounts.first : info,
-      :created_at   => created_at,
-      :updated_at   => updated_at
-    }
-  end
-
 end

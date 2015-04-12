@@ -3,8 +3,6 @@ class UsersController < ApplicationController
 
   before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
 
-  # GET /users/1
-  # GET /users/1.xml
   def show
     if params[:username] && params[:username] != 'everybody'
       @user = params[:username] ?
@@ -18,12 +16,13 @@ class UsersController < ApplicationController
       @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})" << " on ✌ Reading"
     end
 
-    @posts = Api::Posts.index(params)
-
-    respond_to do |format|
-      format.html { render 'posts/index' }
-      format.rss  { render 'posts/index' }
-    end
+    # The web url uses 'list' to denote posts from users you're following
+    @posts = api::Posts.index(if params[:type] == 'list'
+                                params.merge(type: 'following')
+                              else
+                                params
+                              end)
+    render 'posts/index'
   end
 
   def settings
@@ -36,18 +35,16 @@ class UsersController < ApplicationController
               User.find(params[:id])
 
     params[:user_id] = @user.id
-    collection = Api::Relationships.index(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    collection = api::Relationships.index(params)
+    @users = render_api('users/index', users: collection) if bot?
 
-    respond_to do |format|
-      format.html { render locals: { collection: collection } }
-    end
+    render locals: { collection: collection }
   end
 
   def recommended
     params[:user_id] = current_user.id
-    collection = Api::Users.recommended(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    collection = api::Users.recommended(params)
+    @users = render_api('users/index', users: collection) if bot?
 
     respond_to do |format|
       format.html { render 'find_people', locals: { section_recommended: true, collection: collection } }
@@ -56,8 +53,8 @@ class UsersController < ApplicationController
 
   def expats
     params[:user_id] = current_user.id
-    collection = Api::Users.expats(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    collection = api::Users.expats(params)
+    @users = render_api('users/index', users: collection) if bot?
 
     respond_to do |format|
       format.html { render 'find_people', locals: { section_expats: true, collection: collection } }
@@ -65,8 +62,8 @@ class UsersController < ApplicationController
   end
 
   def search
-    collection = Api::Users.search(params)
-    @users = collection.to_a.map { |u| u.simple_obj } if bot?
+    collection = api::Users.search(params)
+    @users = render_api('users/index', users: collection) if bot?
 
     respond_to do |format|
       format.html { render 'find_people', locals: { section_search: true, collection: collection } }
@@ -79,19 +76,14 @@ class UsersController < ApplicationController
     @hooks = @user.hooks
     @authorizations = @user.authorizations
 
-    respond_to do |format|
-      format.html { render 'hooks/index' }
-      format.rss  { render 'hooks/index' }
-    end
+    render 'hooks/index'
   end
 
   def apps
     @user = current_user
     @tokens = @user.active_oauth_access_tokens
 
-    respond_to do |format|
-      format.html { render 'oauth_access_tokens/index' }
-    end
+    render 'oauth_access_tokens/index'
   end
 
   def dev_apps

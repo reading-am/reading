@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140927153546) do
+ActiveRecord::Schema.define(version: 20150409145606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "authorizations", force: true do |t|
-    t.string   "provider"
-    t.string   "uid"
+  create_table "authorizations", force: :cascade do |t|
+    t.string   "provider",      limit: 255
+    t.string   "uid",           limit: 255
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "token"
     t.text     "secret"
-    t.string   "permissions"
+    t.string   "permissions",   limit: 255
     t.text     "info"
     t.datetime "expires_at"
     t.text     "refresh_token"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20140927153546) do
 
   add_index "authorizations", ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", using: :btree
 
-  create_table "blockages", force: true do |t|
+  create_table "blockages", force: :cascade do |t|
     t.integer  "blocker_id"
     t.integer  "blocked_id"
     t.datetime "created_at"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20140927153546) do
   add_index "blockages", ["blocker_id", "blocked_id"], name: "index_blockages_on_blocker_id_and_blocked_id", unique: true, using: :btree
   add_index "blockages", ["blocker_id"], name: "index_blockages_on_blocker_id", using: :btree
 
-  create_table "blogs", force: true do |t|
+  create_table "blogs", force: :cascade do |t|
     t.integer  "user_id"
     t.text     "template"
     t.datetime "created_at", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20140927153546) do
 
   add_index "blogs", ["user_id"], name: "index_blogs_on_user_id", using: :btree
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "post_id"
     t.text     "body"
@@ -67,23 +67,23 @@ ActiveRecord::Schema.define(version: 20140927153546) do
   add_index "comments", ["post_id"], name: "index_comments_on_post_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",               default: 0
+    t.integer  "attempts",               default: 0
     t.text     "handler"
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string   "locked_by"
+    t.string   "locked_by",  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "queue"
+    t.string   "queue",      limit: 255
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
-  create_table "describe_data", force: true do |t|
+  create_table "describe_data", force: :cascade do |t|
     t.text     "response"
     t.integer  "page_id"
     t.datetime "created_at"
@@ -92,97 +92,98 @@ ActiveRecord::Schema.define(version: 20140927153546) do
 
   add_index "describe_data", ["page_id"], name: "index_describe_data_on_page_id", using: :btree
 
-  create_table "domains", force: true do |t|
-    t.string   "name"
+  create_table "domains", force: :cascade do |t|
+    t.string   "name",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "verb"
-    t.integer  "pages_count", default: 0
+    t.string   "verb",        limit: 255
+    t.integer  "pages_count",             default: 0
   end
 
   add_index "domains", ["name"], name: "index_domains_on_name", unique: true, using: :btree
 
-  create_table "hooks", force: true do |t|
-    t.string   "provider"
+  create_table "hooks", force: :cascade do |t|
+    t.string   "provider",         limit: 255
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "params"
-    t.string   "events"
+    t.string   "params",           limit: 255
+    t.string   "events",           limit: 255
     t.integer  "authorization_id"
   end
 
   add_index "hooks", ["user_id", "provider"], name: "index_hooks_on_user_id_and_provider", using: :btree
 
-  create_table "oauth_access_grants", force: true do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
+  create_table "oauth_access_grants", force: :cascade do |t|
+    t.integer  "resource_owner_id",             null: false
+    t.integer  "application_id",                null: false
+    t.string   "token",             limit: 255, null: false
+    t.integer  "expires_in",                    null: false
+    t.text     "redirect_uri",                  null: false
+    t.datetime "created_at",                    null: false
     t.datetime "revoked_at"
-    t.string   "scopes"
+    t.string   "scopes",            limit: 255
   end
 
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
-  create_table "oauth_access_tokens", force: true do |t|
+  create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id"
     t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
+    t.string   "token",             limit: 255, null: false
+    t.string   "refresh_token",     limit: 255
     t.integer  "expires_in"
     t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
+    t.datetime "created_at",                    null: false
+    t.string   "scopes",            limit: 255
   end
 
   add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
   add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
-  create_table "oauth_applications", force: true do |t|
-    t.string   "name",              null: false
-    t.string   "uid",               null: false
-    t.string   "secret",            null: false
-    t.text     "redirect_uri",      null: false
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string   "name",              limit: 255,              null: false
+    t.string   "uid",               limit: 255,              null: false
+    t.string   "secret",            limit: 255,              null: false
+    t.text     "redirect_uri",                               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
-    t.string   "owner_type"
-    t.string   "icon_file_name"
-    t.string   "icon_content_type"
+    t.string   "owner_type",        limit: 255
+    t.string   "icon_file_name",    limit: 255
+    t.string   "icon_content_type", limit: 255
     t.integer  "icon_file_size"
     t.datetime "icon_updated_at"
-    t.string   "website"
+    t.string   "website",           limit: 255
     t.text     "description"
-    t.string   "app_store_url"
-    t.string   "play_store_url"
+    t.string   "app_store_url",     limit: 255
+    t.string   "play_store_url",    limit: 255
+    t.string   "scopes",                        default: "", null: false
   end
 
   add_index "oauth_applications", ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type", using: :btree
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
-  create_table "pages", force: true do |t|
+  create_table "pages", force: :cascade do |t|
     t.text     "url"
     t.text     "title"
     t.integer  "domain_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "posts_count",       default: 0
-    t.integer  "comments_count",    default: 0
-    t.string   "medium"
-    t.string   "media_type"
+    t.integer  "posts_count",                   default: 0
+    t.integer  "comments_count",                default: 0
+    t.string   "medium",            limit: 255
+    t.string   "media_type",        limit: 255
     t.text     "description"
     t.text     "embed"
-    t.integer  "has_describe_data", default: 0, null: false
+    t.integer  "has_describe_data",             default: 0, null: false
   end
 
   add_index "pages", ["medium"], name: "index_pages_on_medium", using: :btree
   add_index "pages", ["url"], name: "index_pages_on_url", unique: true, using: :btree
 
-  create_table "posts", force: true do |t|
+  create_table "posts", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -193,12 +194,12 @@ ActiveRecord::Schema.define(version: 20140927153546) do
     t.integer  "comments_count",        default: 0
   end
 
-  create_table "readability_data", force: true do |t|
+  create_table "readability_data", force: :cascade do |t|
     t.text     "content"
-    t.string   "domain"
+    t.string   "domain",         limit: 255
     t.text     "author"
     t.text     "url"
-    t.string   "short_url"
+    t.string   "short_url",      limit: 255
     t.text     "title"
     t.integer  "total_pages"
     t.integer  "word_count"
@@ -206,15 +207,15 @@ ActiveRecord::Schema.define(version: 20140927153546) do
     t.integer  "page_id"
     t.integer  "next_page_id"
     t.integer  "rendered_pages"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.string   "excerpt"
-    t.string   "direction"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "excerpt",        limit: 255
+    t.string   "direction",      limit: 255
     t.text     "dek"
     t.text     "lead_image_url"
   end
 
-  create_table "relationships", force: true do |t|
+  create_table "relationships", force: :cascade do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
     t.datetime "created_at"
@@ -225,56 +226,49 @@ ActiveRecord::Schema.define(version: 20140927153546) do
   add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
 
-  create_table "rss_feeds", force: true do |t|
-    t.integer  "page_id"
-    t.text     "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "username"
+  create_table "users", force: :cascade do |t|
+    t.string   "name",                   limit: 255
+    t.string   "username",               limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "token"
-    t.string   "auth_token"
-    t.string   "email"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "location"
-    t.string   "description"
-    t.string   "image"
-    t.string   "phone"
-    t.string   "urls"
-    t.boolean  "email_when_followed",    default: true
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
+    t.string   "token",                  limit: 255
+    t.string   "auth_token",             limit: 255
+    t.string   "email",                  limit: 255
+    t.string   "first_name",             limit: 255
+    t.string   "last_name",              limit: 255
+    t.string   "location",               limit: 255
+    t.string   "description",            limit: 255
+    t.string   "image",                  limit: 255
+    t.string   "phone",                  limit: 255
+    t.string   "urls",                   limit: 255
+    t.boolean  "email_when_followed",                default: true
+    t.string   "avatar_file_name",       limit: 255
+    t.string   "avatar_content_type",    limit: 255
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "bio"
-    t.string   "link"
+    t.string   "bio",                    limit: 255
+    t.string   "link",                   limit: 255
     t.integer  "mail_digest"
     t.integer  "access"
-    t.integer  "posts_count",            default: 0
-    t.integer  "following_count",        default: 0
-    t.integer  "followers_count",        default: 0
-    t.integer  "comments_count",         default: 0
-    t.boolean  "email_when_mentioned",   default: true
+    t.integer  "posts_count",                        default: 0
+    t.integer  "following_count",                    default: 0
+    t.integer  "followers_count",                    default: 0
+    t.integer  "comments_count",                     default: 0
+    t.boolean  "email_when_mentioned",               default: true
     t.integer  "roles"
-    t.string   "encrypted_password",     default: "",    null: false
-    t.string   "reset_password_token"
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer  "sign_in_count",                      default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.boolean  "feed_present",           default: false
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.boolean  "feed_present",                       default: false
     t.integer  "status"
-    t.integer  "blocking_count",         default: 0
-    t.integer  "blockers_count",         default: 0
+    t.integer  "blocking_count",                     default: 0
+    t.integer  "blockers_count",                     default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
@@ -283,32 +277,22 @@ ActiveRecord::Schema.define(version: 20140927153546) do
   add_index "users", ["token"], name: "index_users_on_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
-  add_foreign_key "authorizations", "users", name: "authorizations_user_id_fk", dependent: :delete
-
-  add_foreign_key "blockages", "users", name: "blockages_blocked_id_fk", column: "blocked_id", dependent: :delete
-  add_foreign_key "blockages", "users", name: "blockages_blocker_id_fk", column: "blocker_id", dependent: :delete
-
-  add_foreign_key "blogs", "users", name: "blogs_user_id_fk", dependent: :delete
-
+  add_foreign_key "authorizations", "users", name: "authorizations_user_id_fk", on_delete: :cascade
+  add_foreign_key "blockages", "users", column: "blocked_id", name: "blockages_blocked_id_fk", on_delete: :cascade
+  add_foreign_key "blockages", "users", column: "blocker_id", name: "blockages_blocker_id_fk", on_delete: :cascade
+  add_foreign_key "blogs", "users", name: "blogs_user_id_fk", on_delete: :cascade
   add_foreign_key "comments", "comments", name: "comments_comment_id_fk"
-  add_foreign_key "comments", "pages", name: "comments_page_id_fk", dependent: :delete
-  add_foreign_key "comments", "posts", name: "comments_post_id_fk", dependent: :nullify
-  add_foreign_key "comments", "users", name: "comments_user_id_fk", dependent: :delete
-
-  add_foreign_key "describe_data", "pages", name: "describe_data_page_id_fk", dependent: :delete
-
-  add_foreign_key "hooks", "authorizations", name: "hooks_authorization_id_fk", dependent: :delete
-  add_foreign_key "hooks", "users", name: "hooks_user_id_fk", dependent: :delete
-
-  add_foreign_key "pages", "domains", name: "pages_domain_id_fk", dependent: :delete
-
-  add_foreign_key "posts", "pages", name: "posts_page_id_fk", dependent: :delete
-  add_foreign_key "posts", "posts", name: "posts_referrer_post_id_fk", column: "referrer_post_id", dependent: :nullify
-  add_foreign_key "posts", "users", name: "posts_user_id_fk", dependent: :delete
-
-  add_foreign_key "readability_data", "pages", name: "readability_data_page_id_fk", dependent: :delete
-
-  add_foreign_key "relationships", "users", name: "relationships_followed_id_fk", column: "followed_id", dependent: :delete
-  add_foreign_key "relationships", "users", name: "relationships_follower_id_fk", column: "follower_id", dependent: :delete
-
+  add_foreign_key "comments", "pages", name: "comments_page_id_fk", on_delete: :cascade
+  add_foreign_key "comments", "posts", name: "comments_post_id_fk", on_delete: :nullify
+  add_foreign_key "comments", "users", name: "comments_user_id_fk", on_delete: :cascade
+  add_foreign_key "describe_data", "pages", name: "describe_data_page_id_fk", on_delete: :cascade
+  add_foreign_key "hooks", "authorizations", name: "hooks_authorization_id_fk", on_delete: :cascade
+  add_foreign_key "hooks", "users", name: "hooks_user_id_fk", on_delete: :cascade
+  add_foreign_key "pages", "domains", name: "pages_domain_id_fk", on_delete: :cascade
+  add_foreign_key "posts", "pages", name: "posts_page_id_fk", on_delete: :cascade
+  add_foreign_key "posts", "posts", column: "referrer_post_id", name: "posts_referrer_post_id_fk", on_delete: :nullify
+  add_foreign_key "posts", "users", name: "posts_user_id_fk", on_delete: :cascade
+  add_foreign_key "readability_data", "pages", name: "readability_data_page_id_fk", on_delete: :cascade
+  add_foreign_key "relationships", "users", column: "followed_id", name: "relationships_followed_id_fk", on_delete: :cascade
+  add_foreign_key "relationships", "users", column: "follower_id", name: "relationships_follower_id_fk", on_delete: :cascade
 end

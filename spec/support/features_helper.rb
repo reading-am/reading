@@ -106,38 +106,29 @@ module Capybara
 end
 
 RSpec.configure do |config|
-  config.include CapybaraExtensions
+  config.include CapybaraExtensions, type: :feature
   config.use_transactional_fixtures = false
 
-  config.before(:suite) do
+  config.before(:suite, type: :feature) do
     # Clobber the assets else require's baseUrl will be wrong since
     # the port will have changed but the coffee.erb file won't have been rebuilt
     Rake.load_rakefile Rails.root.join('Rakefile')
     Rake::Task['assets:clobber'].invoke
-
-    DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before(:each) do
-    if Capybara.current_session.server
-      # JS elements won't load if we don't correct the domain
-      stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
-      stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
-    end
+  config.before(:each, type: :feature) do
+    # JS elements won't load if we don't correct the domain
+    stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
+    stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
   end
 
-  config.around(:each) do |example|
-    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
-    DatabaseCleaner.cleaning { example.run }
-  end
-
-  config.after(:each) do
+  config.after(:each, type: :feature) do
     windows.last.close while windows.length > 1
   end
 
   # Sessions must be in an append_after
   # for screenshots to work
-  config.append_after(:each) do
+  config.append_after(:each, type: :feature) do
     Capybara.reset_sessions!
   end
 end

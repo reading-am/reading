@@ -37,8 +37,7 @@ describe Api::V1::PostsController, type: :api do
     describe 'create' do
       let(:method) { :post }
       let(:params) do
-        { model: { body: 'This is a test comment',
-                   page_id: pages(:daringfireball).id } }
+        { model: { page_id: pages(:daringfireball).id } }
       end
       it_behaves_like 'a restricted endpoint', 'write'
       it_behaves_like 'a successful request'

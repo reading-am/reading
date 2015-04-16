@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Api::V1::CommentsController, type: :api do
   include_context 'api defaults'
-  fixtures :users, :pages, :comments
+  fixtures :users, :domains, :pages, :posts, :comments
 
   let(:resource) { comments(:single_mention) }
 

@@ -30,6 +30,15 @@ Reading::Application.routes.draw do
   # sitemap
   get '(/sitemaps)/sitemap(:partial).xml(.gz)' => 'sitemap#index'
 
+  constraints subdomain: 'mailman' do
+    scope module: :mailman do
+      scope :api do
+        resources :posts, only: :create
+        resources :comments, only: :create
+      end
+    end
+  end
+
   concern :api_v1_users do
     get 'expats' # move this to /user
     resources :comments

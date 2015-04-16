@@ -24,32 +24,12 @@ module Api::V1
     add_transaction_tracer :show
 
     def create
-      user, url, title, page, ref, yn = nil
-
-      # post via email
-      if params[:recipient]
-        text = params['stripped-text'] # this comes from mailgun
-        url = Twitter::Extractor::extract_urls(text)[0]
-
-        # check to see if the body contains yep or nope
-        if !text.match(/(^|\s)yep($|\s|:)/i).nil?
-          yn = true
-        elsif !text.match(/(^|\s)nope($|\s|:)/i).nil?
-          yn = false
-        end
-
-        if bits = MailPipe::decode_mail_recipient(params[:recipient])
-          user = bits[:user] if bits[:user] == bits[:subject] # make sure the user is posting to their own account
-        end
-      # standard post
-      else
-        url   = params[:model][:url]
-        title = params[:model][:title] unless params[:model][:title].blank? || params[:model][:title] == 'null'
-        desc  = params[:model][:description] unless params[:model][:description].blank? || params[:model][:description] == 'null'
-        user  = current_user
-        ref   = Post.find_by_id(params[:model][:referrer_post_id]) unless params[:model][:referrer_post_id].blank?
-        yn    = params[:model][:yn]
-      end
+      url   = params[:model][:url]
+      title = params[:model][:title] unless params[:model][:title].blank? || params[:model][:title] == 'null'
+      desc  = params[:model][:description] unless params[:model][:description].blank? || params[:model][:description] == 'null'
+      user  = current_user
+      ref   = Post.find_by_id(params[:model][:referrer_post_id]) unless params[:model][:referrer_post_id].blank?
+      yn    = params[:model][:yn]
 
       page = params[:model] && params[:model][:page_id] ? Page.find(params[:model][:page_id]) : Page.find_or_create_by_url(url: url, title: title, description: desc)
       # A post is a duplicate if it's the exact same page and within 1hr of the last post

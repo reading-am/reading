@@ -31,20 +31,11 @@ module Api::V1
     def create
       comment = Comment.new
 
-      if params[:recipient]
-        comment.body = params['stripped-text'] # this comes from mailgun
-        if bits = MailPipe::decode_mail_recipient(params[:recipient])
-          comment.user   = bits[:user]
-          comment.parent = bits[:subject]
-          comment.page   = comment.parent.page
-        end
-      else
-        # Note - an associated post is not required
-        comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
-        comment.user  = current_user
-        comment.page  = Page.find(params[:model][:page_id])
-        comment.body  = params[:model][:body]
-      end
+      # Note - an associated post is not required
+      comment.post  = Post.find(params[:model][:post_id]) unless params[:model][:post_id].blank?
+      comment.user  = current_user
+      comment.page  = Page.find(params[:model][:page_id])
+      comment.body  = params[:model][:body]
 
       if comment.save
         render :show, status: :created, locals: { comment: comment }

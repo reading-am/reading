@@ -10,6 +10,8 @@ module Mailman
         yn = true
       elsif !text.match(/(^|\s)nope($|\s|:)/i).nil?
         yn = false
+      else
+        yn = nil
       end
 
       if bits = MailPipe::decode_mail_recipient(params[:recipient])

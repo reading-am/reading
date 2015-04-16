@@ -55,8 +55,17 @@ RSpec.configure do |config|
   Devise.stretches = 1
   config.include Devise::TestHelpers, type: :controller
 
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
   config.before(:all) do
     self.class.set_fixture_class oauth_access_tokens: Doorkeeper::AccessToken,
                                  oauth_applications:  Doorkeeper::Application
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
+    DatabaseCleaner.cleaning { example.run }
   end
 end

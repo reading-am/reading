@@ -29,7 +29,10 @@ namespace :logs do
           yn = nil
         end
 
-        page = Page.find_or_create_by_url(url: Twitter::Extractor::extract_urls(text)[0])
+        url = Twitter::Extractor::extract_urls(text)[0]
+        next if url.blank?
+
+        page = Page.find_or_create_by_url(url: url)
         # A post is a duplicate if it's the exact same page and within 1hr of the last post
         post = Post.recent_by_user_and_page(user, page, 7.days.ago).first || Post.new(user: user, page: page, yn: yn)
 

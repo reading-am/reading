@@ -36,6 +36,10 @@ Reading::Application.routes.draw do
         resources :posts, only: :create
         resources :comments, only: :create
       end
+
+      scope :debug do
+        post :echo_params, to: "debug#echo_params"
+      end
     end
   end
 

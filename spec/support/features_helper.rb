@@ -108,7 +108,7 @@ module Capybara
           end
         rescue
           # Webkit
-          session.execute_script(%{ $(document.evaluate("#{path}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val("#{keys}").keydown().keypress().keyup().change().blur(); })
+          session.evaluate_script(%{ $(document.evaluate("#{path}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val("#{keys}").keydown().keypress().keyup().change().blur(); })
         end
 
         return self

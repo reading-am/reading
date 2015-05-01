@@ -14,6 +14,8 @@ feature 'User admins apps', js: true do
 
     before(:each) do
       visit '/settings/apps/dev'
+      # wait for elements to render
+      expect(page).not_to have_selector('.r_loading')
     end
 
     scenario 'creates an app' do
@@ -24,6 +26,7 @@ feature 'User admins apps', js: true do
       fill_in 'Name', with: 'My New App'
       fill_in 'Callback URI', with: 'https://example.com'
       click_button 'Create App'
+      wait_for_js
 
       expect(all('.r_oauth_app').count).to eq(dom_count + 1)
       expect(user.oauth_owner_apps.count).to eq(db_count + 1)
@@ -38,6 +41,7 @@ feature 'User admins apps', js: true do
       first('.btn', text: /Edit/).click
       fill_in 'Name', with: new_val
       click_button 'Save'
+      wait_for_js
 
       expect(page).not_to have_text(old_val)
       expect(page).to have_text(new_val)
@@ -81,6 +85,7 @@ feature 'User admins apps', js: true do
 
     scenario 'revokes an oauth token' do
       visit '/settings/apps'
+      expect(page).not_to have_selector('.r_loading')
 
       db_count = user.active_oauth_access_tokens.count
       dom_count = all('.r_oauth_access_token').count

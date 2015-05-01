@@ -3,8 +3,12 @@ require 'capybara/rspec'
 Capybara.default_wait_time = 10
 Capybara.javascript_driver = :selenium
 
+def using_webkit?
+  [:webkit, :webkit_debug].include? Capybara.javascript_driver
+end
+
 # Only take screenshots with webkit
-if Capybara.javascript_driver == :webkit
+if using_webkit?
   require 'capybara-screenshot/rspec'
   Capybara::Screenshot.prune_strategy = :keep_last_run
 end
@@ -33,7 +37,7 @@ module CapybaraExtensions
 
   def accept_confirm(&block)
     case Capybara.javascript_driver
-    when :webkit
+    when :webkit, :webkit_debug
       super
     when :selenium
       block.call
@@ -56,22 +60,30 @@ module CapybaraExtensions
     end
   end
 
-  def outstanding_js_tasks
-    send_js = page.method Capybara.javascript_driver == :webkit ?
-                            'evaluate_script' :
-                            'execute_script'
+  def js_returns_true(code)
+    if using_webkit?
+      page.evaluate_script "try { #{code} } catch(e) { false }"
+    else
+      page.execute_script "try { return #{code} } catch(e) { return false }"
+    end
+  end
 
-    return "requirejs failed to load" if send_js.call('return typeof require == "undefined"')
-    return "jQuery failed to load" if send_js.call('try { return require.defined("jquery") == false } catch(e) { return false }')
-    return "document.ready failed to fire" if send_js.call('try { return require("jquery").isReady != true } catch(e) { return false }')
-    return "XHR failed to complete" if send_js.call('try { return require("jquery").active != 0 } catch(e) { return false }')
-    return "Animation failed to complete" if send_js.call('try { return require("jquery")(":animated").length != 0 } catch(e) { return false }')
+  def outstanding_js_tasks
+    return "requirejs failed to load" if js_returns_true('typeof require == "undefined"')
+    return "jQuery failed to load" if js_returns_true('require.defined("jquery") == false')
+    return "document.ready failed to fire" if js_returns_true('require("jquery").isReady != true')
+    return "XHR failed to complete" if js_returns_true('require("jquery").active != 0')
+    return "Animation failed to complete" if js_returns_true('require("jquery")(":animated").length != 0')
     return nil
   end
 
   def scroll_to_bottom
     page.execute_script 'require("jquery")("html, body").animate({scrollTop: require("jquery")(document).height()});'
     wait_for_js
+  end
+
+  def xpath_with_class(cname)
+    "//*[contains(concat(' ', normalize-space(@class), ' '), ' #{cname} ')]"
   end
 
   def first_parent_with_class_containing(cname, selector)
@@ -120,6 +132,10 @@ RSpec.configure do |config|
     # JS elements won't load if we don't correct the domain
     stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
     stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
+  end
+
+  config.before(:each, js: true) do
+    page.driver.block_unknown_urls if using_webkit?
   end
 
   config.after(:each, type: :feature) do

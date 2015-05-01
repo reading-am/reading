@@ -32,3 +32,8 @@ define
     # Taken from: http://www.regular-expressions.info/email.html
     # This has a ruby companion in comment.rb
     email: /\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/ig
+
+<% if Rails.env.test? %>
+  capybara:
+    javascript_driver: "<%= Capybara.javascript_driver %>"
+<% end %>

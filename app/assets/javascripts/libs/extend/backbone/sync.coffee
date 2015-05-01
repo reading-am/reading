@@ -75,6 +75,12 @@ define [
             jqXHR.responseText = data
             options.error jqXHR, textStatus, data.meta.msg
 
+    # capybara-webkit doesn't support sending params in patch or delete requests
+    # see: http://stackoverflow.com/a/17870287
+    if Constants.env is "test" and Constants.capybara.javascript_driver in ["webkit", "webkit_debug"] and options.type in ["PATCH","DELETE"]
+      add_data options.data, "_method", options.type
+      options.type = "POST"
+
     xhr = Backbone.ajax options
     model.trigger 'request', model, xhr, options
     return xhr

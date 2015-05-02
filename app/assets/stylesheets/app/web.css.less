@@ -31,11 +31,13 @@
   color:@white;
   border-radius:2px;
   font-size:12px;
-  opacity: 0;
-  .transition(opacity .25s ease-in-out);
+  visibility:hidden;
+  opacity:0;
+  transition:opacity 0.25s ease-in-out;
 }
 .row:hover .admin.action, .row:hover li:hover .admin.action {
-  opacity: 1;
+  visibility:visible;
+  opacity:1;
 }
 
 .edit_user .field_with_errors {

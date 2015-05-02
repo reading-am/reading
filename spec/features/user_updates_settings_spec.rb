@@ -105,6 +105,7 @@ feature "User's settings", js: true do
       fill_in 'Current password', with: password
       click_button 'Update Me'
 
+      expect(page).to have_text('You updated your account successfully.')
       expect(user.reload.encrypted_password).not_to eq(old_val), "The password wasn't updated in the database"
     end
   end

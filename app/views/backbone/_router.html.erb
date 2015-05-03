@@ -16,8 +16,12 @@ end
 
 <script>
 
+<% if Rails.env.test? %>
+  window.router = {executed: false};
+<% end %>
+
 <%= requirejs %>(["backbone", "app/routers/<%= router %>"], function(Backbone, Router){
-  new Router(<%- if props.length > 0 %>
+  window.router = new Router(<%- if props.length > 0 %>
     {<% props.each_with_index do |key, i| %>
       "<%= key[0] %>": Backbone.Model.prototype.factory(<%=j key[1].to_json.html_safe -%>)<%= ',' if i < props.length-1 %>
     <% end %>}

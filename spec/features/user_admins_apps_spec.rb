@@ -14,8 +14,6 @@ feature 'User admins apps', js: true do
 
     before(:each) do
       visit '/settings/apps/dev'
-      # wait for elements to render
-      expect(page).not_to have_selector('.r_loading')
     end
 
     scenario 'creates an app' do
@@ -85,7 +83,6 @@ feature 'User admins apps', js: true do
 
     scenario 'revokes an oauth token' do
       visit '/settings/apps'
-      expect(page).not_to have_selector('.r_loading')
 
       db_count = user.active_oauth_access_tokens.count
       dom_count = all('.r_oauth_access_token').count

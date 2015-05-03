@@ -44,7 +44,6 @@ howard:
   link: ''
   mail_digest: '1'
   access: '7'
-  posts_count: '2625'
   following_count: '13'
   followers_count: '21'
   comments_count: '262'
@@ -58,6 +57,7 @@ max:
   link: ''
   location: NYC
   encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
+  posts_count: 5
 
 jon:
   name: Jon Cowley
@@ -67,3 +67,12 @@ jon:
   location: NYC
   encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
   blockers_count: 1
+
+roger_recommended:
+  name: Roger Recommended
+  username: roger
+  bio: Good for recommending to people
+  link: ''
+  location: SF
+  encrypted_password: $2a$10$QZrmgXRe/UtUjVfEQYOZK.mzyQ7dC/eGWtWQTH7v9kzAUZYR2dFGy # testingtesting
+  posts_count: 301 # the threshold for recommended is 300

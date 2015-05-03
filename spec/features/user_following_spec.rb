@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature "User following", js: true do
-  fixtures :users, :relationships
+  fixtures :users, :relationships, :pages, :posts
 
   let(:user) { users(:greg) }
 
@@ -15,7 +15,10 @@ feature "User following", js: true do
       subject = users(:howard)
       visit "/#{subject.username}"
       db_count = user.following.count
+
       click_link("Follow #{subject.first_name}")
+      wait_for_js
+
       expect(page).to have_link("Unfollow #{subject.first_name}")
       expect(user.following.count).to eq(db_count + 1)
     end
@@ -24,7 +27,10 @@ feature "User following", js: true do
       subject = users(:max)
       visit "/#{subject.username}"
       db_count = user.following.count
+
       click_link("Unfollow #{subject.first_name}")
+      wait_for_js
+
       expect(page).to have_link("Follow #{subject.first_name}")
       expect(user.following.count).to eq(db_count - 1)
     end
@@ -40,6 +46,8 @@ feature "User following", js: true do
       user_el = first_parent_with_class_containing('r_user', button)
 
       button.click
+      wait_for_js
+
       expect(user_el).to have_selector('.btn', text: /Unfollow/)
       expect(user.following.count).to eq(db_count + 1)
     end
@@ -56,6 +64,8 @@ feature "User following", js: true do
       user_el = first_parent_with_class_containing('r_user', button)
 
       button.click
+      wait_for_js
+
       expect(user_el).to have_selector('.btn', text: /Follow/)
       expect(user.following.count).to eq(db_count - 1)
     end

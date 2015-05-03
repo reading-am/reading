@@ -49,6 +49,20 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         medium = type
         type = "posts"
 
+      if username isnt "everybody"
+        @user_card_view ?= new UserCardView
+          el: $("#header_card.r_user")[0]
+          model: @model
+          rss_path: "#{username}/#{type}#{
+            if medium isnt "all" then "/#{medium}" else ""
+          }.rss"
+
+        @user_subnav_view ?= new UserSubnavView
+          el: $("#subnav")[0]
+
+      # Early exit if there's a blank slate i.e. there are no posts
+      return if $("#blank_slate").length
+
       # Setup collection
       @collection ?= new Posts
       models = @collection.models
@@ -94,17 +108,6 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         }#{
           if yn isnt "any" then "/#{yn}" else ""
         }"
-
-      if username isnt "everybody"
-        @user_card_view ?= new UserCardView
-          el: $("#header_card.r_user")[0]
-          model: @model
-          rss_path: "#{username}/#{type}#{
-            if medium isnt "all" then "/#{medium}" else ""
-          }.rss"
-
-        @user_subnav_view ?= new UserSubnavView
-          el: $("#subnav")[0]
 
       p_props =
         collection: @collection

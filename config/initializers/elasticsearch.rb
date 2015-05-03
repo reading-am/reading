@@ -3,7 +3,7 @@
 # require 'typhoeus/adapters/faraday'
 
 transport_configuration = lambda do |f|
-  f.response :logger
+  f.response :logger unless Rails.env.test?
   f.adapter  :net_http
 end
 

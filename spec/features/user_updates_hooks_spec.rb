@@ -58,6 +58,8 @@ feature "User's hooks", js: true do
   end
 
   scenario 'adds a new authentication when creating a hook' do
+    whitelist 'https://api.twitter.com/oauth/*'
+
     # Remove twitter auth so we can add it back
     user.authorizations.where(provider: 'twitter').destroy_all
 

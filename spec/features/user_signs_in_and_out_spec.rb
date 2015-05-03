@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User authentication', js: true do
-  fixtures :users, :authorizations
+  fixtures :users, :authorizations, :pages, :posts
 
   let(:url) { '/sign_in' }
   let(:user) { users(:greg) }
@@ -40,6 +40,7 @@ feature 'User authentication', js: true do
     end
 
     scenario 'with Twitter' do
+      whitelist 'https://api.twitter.com/oauth/*'
       visit '/'
 
       click_link 't Twitter'
@@ -59,6 +60,7 @@ feature 'User authentication', js: true do
     end
 
     scenario 'with Facebook' do
+      whitelist '*.facebook.*'
       visit '/'
 
       click_link 'f Facebook'

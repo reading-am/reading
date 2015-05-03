@@ -91,6 +91,10 @@ module CapybaraExtensions
     el = selector.is_a?(Capybara::Node::Element) ? selector : first(selector)
     el.find(:xpath, "ancestor::*[contains(concat(' ',normalize-space(@class),' '),' #{cname} ')]")
   end
+
+  def whitelist url
+    page.driver.allow_url url if using_webkit?
+  end
 end
 
 module Capybara

@@ -14,8 +14,11 @@ feature "User blocking", js: true do
     scenario 'button blocks a user' do
       subject = users(:howard)
       visit "/#{subject.username}"
+
       db_count = user.blocking.count
       accept_confirm { find('.r_block').click }
+      wait_for_js
+
       expect(page).to have_link("Blocking #{subject.first_name}")
       expect(user.blocking.count).to eq(db_count + 1)
     end
@@ -25,6 +28,8 @@ feature "User blocking", js: true do
       visit "/#{subject.username}"
       db_count = user.blocking.count
       accept_confirm { click_link("Blocking #{subject.first_name}") }
+      wait_for_js
+
       expect(page).to have_selector('.r_block')
       expect(user.blocking.count).to eq(db_count - 1)
     end

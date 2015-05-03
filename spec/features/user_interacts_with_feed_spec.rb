@@ -100,6 +100,7 @@ feature "User's logged in feed", js: true do
 
     describe 'page' do
       scenario 'title posts the page and redirects to the page source when clicked' do
+        whitelist '*'
         db_count = user.posts.count
 
         visit url
@@ -120,6 +121,7 @@ feature "User's logged in feed", js: true do
       end
 
       scenario 'title redirects logged out visitor to the page source when clicked' do
+        whitelist '*'
         logout(:user)
         visit url
         first('.r_title a').click

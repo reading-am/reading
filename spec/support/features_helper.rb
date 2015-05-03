@@ -1,7 +1,7 @@
 require 'rake'
 require 'capybara/rspec'
 Capybara.default_wait_time = 10
-Capybara.javascript_driver = :selenium
+Capybara.javascript_driver = :webkit
 
 def using_webkit?
   [:webkit, :webkit_debug].include? Capybara.javascript_driver

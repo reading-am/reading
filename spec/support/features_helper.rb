@@ -72,6 +72,7 @@ module CapybaraExtensions
     return "requirejs failed to load" if js_returns_true('typeof require == "undefined"')
     return "jQuery failed to load" if js_returns_true('require.defined("jquery") == false')
     return "document.ready failed to fire" if js_returns_true('require("jquery").isReady != true')
+    return "Backbone failed to render" if js_returns_true('router.executed != true')
     return "XHR failed to complete" if js_returns_true('require("jquery").active != 0')
     return "Animation failed to complete" if js_returns_true('require("jquery")(":animated").length != 0')
     return nil

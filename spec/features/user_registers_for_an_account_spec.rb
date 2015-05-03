@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User registers for an account', js: true do
-  fixtures :users
+  fixtures :users, :pages, :posts
 
   let(:user) { users(:greg) }
 
@@ -34,6 +34,8 @@ feature 'User registers for an account', js: true do
   end
 
   scenario 'via Twitter' do
+    whitelist 'https://api.twitter.com/oauth/*'
+
     db_count = User.count
     name = 'Reading Test'
     email = 'test@example.com'

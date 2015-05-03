@@ -40,6 +40,7 @@ end
 
 shared_context 'is shareable' do
   scenario 'by displaying a share sheet after clicking a share button' do
+    whitelist 'https://twitter.com/*'
     share_link.click
     expect(page).to have_selector('#r_share_menu'), "Share menu wasn't displayed"
 
@@ -93,6 +94,7 @@ shared_context 'comment delete button' do
 
     first_parent_with_class_containing('r_comment', first('.r_comment .r_name', text: user.name)).hover
     accept_confirm { click_link('Delete') }
+    wait_for_js
 
     expect(all('.r_comment').count).to eq(dom_count - 1)
     expect(user.comments.count).to eq(db_count - 1)

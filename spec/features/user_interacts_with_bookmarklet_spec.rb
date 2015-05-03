@@ -18,6 +18,7 @@ feature "User's bookmarklet", js: true do
 
   before(:each) do |example|
     unless example.metadata[:skip_before]
+      whitelist url
       visit url
       trigger_bookmarklet_for user
     end

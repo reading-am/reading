@@ -13,6 +13,17 @@ if using_webkit?
   Capybara::Screenshot.prune_strategy = :keep_last_run
 end
 
+# Otherwise you'll get a nesting error
+# http://stackoverflow.com/a/11013407
+module JSON
+  class << self
+    def parse(source, opts = {})
+      opts = ({max_nesting: 500}).merge(opts)
+      Parser.new(source, opts).parse
+    end
+  end
+end
+
 include Warden::Test::Helpers
 
 class JSTimeoutError < StandardError
@@ -113,7 +124,13 @@ module Capybara
           end
         rescue
           # Webkit
-          session.evaluate_script(%{ $(document.evaluate("#{path}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).val("#{keys}").keydown().keypress().keyup().change().blur(); })
+          cmd = %{require("jquery")(document.evaluate("#{path}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue)}
+          if keys == :return
+            cmd += %{.trigger(require("jquery").Event("keypress", {keyCode: 13}))}
+          else
+            cmd += %{.val("#{keys}").keydown().keypress().keyup().change().blur()}
+          end
+          session.evaluate_script(cmd)
         end
 
         return self

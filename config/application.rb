@@ -50,7 +50,8 @@ module Reading
     config.assets.precompile += ['*.css*','bookmarklet/loader.js']
 
     # per: https://github.com/jwhitley/requirejs-rails/#build-time-asset-filter
-    config.requirejs.logical_asset_filter += [/\.mustache$/,/\.css$/]
+    # name change: https://github.com/jwhitley/requirejs-rails/issues/229
+    config.requirejs.logical_path_patterns += [/\.mustache$/,/\.css$/]
 
     config.cache_store = :dalli_store
 

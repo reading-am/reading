@@ -44,6 +44,7 @@ gem 'mime-types'
 ##############
 gem 'rack-mini-profiler'
 gem 'newrelic_rpm'
+gem 'rollbar'
 
 ########
 # Auth #

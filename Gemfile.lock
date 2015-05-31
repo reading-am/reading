@@ -284,7 +284,7 @@ GEM
     evernote-thrift (1.25.1)
     every_day_irb (1.5.0)
     excon (0.25.3)
-    execjs (2.0.2)
+    execjs (2.5.2)
     fancy_irb (0.7.3)
       paint (>= 0.8.1)
       unicode-display_width (>= 0.1.1)
@@ -359,11 +359,13 @@ GEM
       multi_json (>= 1.5)
     launchy (2.4.3)
       addressable (~> 2.3)
-    less (2.3.2)
-      commonjs (~> 0.2.6)
-    less-rails (2.3.3)
-      actionpack (>= 3.1)
-      less (~> 2.3.1)
+    less (2.6.0)
+      commonjs (~> 0.2.7)
+    less-rails (2.7.0)
+      actionpack (>= 4.0)
+      less (~> 2.6.0)
+      sprockets (> 2, < 4)
+      tilt
     letter_opener (1.2.0)
       launchy (~> 2.2)
     libv8 (3.16.14.7)
@@ -614,7 +616,7 @@ GEM
       faraday (~> 0.8, < 0.10)
       multi_json (~> 1.0)
       simple_oauth (~> 0.2)
-    twitter-bootstrap-rails (2.2.7)
+    twitter-bootstrap-rails (2.2.8)
       actionpack (>= 3.1)
       execjs
       rails (>= 3.1)
@@ -706,7 +708,7 @@ DEPENDENCIES
   json-schema
   kippt!
   koala!
-  less-rails (= 2.3.3)
+  less-rails
   letter_opener
   loofah
   memcachier
@@ -766,7 +768,7 @@ DEPENDENCIES
   tumblr-ruby!
   tuml!
   twitter
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails (= 2.2.8)
   twitter-text
   twitter_bootstrap_form_for!
   typhoeus

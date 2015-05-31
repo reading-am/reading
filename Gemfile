@@ -97,7 +97,7 @@ gem 'ruby-thumbor'
 # Frontend HTML #
 #################
 gem 'will_paginate', github: 'mislav/will_paginate'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '2.2.8'
 gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
 gem 'premailer-rails'
@@ -122,7 +122,7 @@ gem 'fog'
 ##########
 # Assets #
 ##########
-gem 'less-rails', '2.3.3' # Can be upgraded when twitter_bootstrap_rails is upgraded. See: https://github.com/metaskills/less-rails/issues/71
+gem 'less-rails'
 gem 'therubyracer' # Required by less-rails
 gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml

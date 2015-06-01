@@ -18,7 +18,7 @@ class Page < ActiveRecord::Base
 
   MEDIUMS = %w(all text image video audio)
 
-private
+  private
 
   # This is a fallback to make sure every Page has a medium,
   # even if Describe fails
@@ -46,10 +46,14 @@ private
     end
   end
 
-public
+  public
 
   def self.cleanup_url(url)
-    return url unless ['http', 'https', nil].include? Addressable::URI.parse(url.downcase).scheme
+    unless url.respond_to?(:downcase) &&
+           ['http', 'https', nil].include?(
+             Addressable::URI.parse(url.downcase).scheme)
+      return url
+    end
 
     # the protocol will be missing its second slash if it's been pulled from the middle of a url
     if !/^\w+:\/\w/.match(url).blank?

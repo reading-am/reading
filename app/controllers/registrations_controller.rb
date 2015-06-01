@@ -66,21 +66,21 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def almost_ready
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    redirect_to root_url && return unless signed_in?
 
-    if !signed_in?
-      redirect_to root_url and return
-    elsif !resource.username.blank? and !resource.email.blank? and resource.has_pass?
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    if !resource.username.blank? and !resource.email.blank? and resource.has_pass?
       redirect_to "/settings/info" and return
     end
   end
 
   def almost_ready_update
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    redirect_to root_url && return unless signed_in?
 
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     if resource.send("update_with#{change_requires_password ? '' : 'out'}_password", account_update_params)
-      sign_in resource_name, resource, :bypass => true
-      redirect_to("/#{resource.username}/list", :notice => 'User was successfully updated.')
+      sign_in resource_name, resource, bypass: true
+      redirect_to("/#{resource.username}/list", notice: 'User was successfully updated.')
     else
       clean_up_passwords resource
       render :almost_ready

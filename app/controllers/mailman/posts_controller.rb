@@ -19,7 +19,10 @@ module Mailman
         user = bits[:user] if bits[:user] == bits[:subject]
       end
 
-      page = Page.find_or_create_by_url(url: Twitter::Extractor::extract_urls(text)[0])
+      url = Twitter::Extractor::extract_urls(text)[0]
+      return head :bad_request unless url.present?
+
+      page = Page.find_or_create_by_url(url: url)
       # A post is a duplicate if it's the exact same page and within 1hr of the last post
       post = Post.recent_by_user_and_page(user, page).first || Post.new(user: user, page: page, yn: yn)
 

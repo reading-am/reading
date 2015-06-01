@@ -138,8 +138,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.find_by_username(username)
-    where("lower(username) = ?", username.downcase).limit(1).first
+  def self.find_by_username!(username)
+    where("lower(username) = ?", username.downcase).first!
   end
 
   def self.transform_auth_hash auth_hash

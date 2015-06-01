@@ -6,10 +6,9 @@ class UsersController < ApplicationController
   def show
     if params[:username] && params[:username] != 'everybody'
       @user = params[:username] ?
-                User.find_by_username(params[:username]) :
+                User.find_by_username!(params[:username]) :
                 User.find(params[:id])
 
-      if !@user then not_found end
       if @user.suspended? then return redirect_to '/support/suspended' end
       params[:user_id] = @user.id
 
@@ -31,7 +30,7 @@ class UsersController < ApplicationController
 
   def followingers
     @user = params[:username] ?
-              User.find_by_username(params[:username]) :
+              User.find_by_username!(params[:username]) :
               User.find(params[:id])
 
     params[:user_id] = @user.id

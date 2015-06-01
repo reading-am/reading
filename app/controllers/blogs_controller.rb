@@ -12,8 +12,7 @@ class BlogsController < ApplicationController
   def show
     if !current_user.access?(:tumblr_templates) then not_found end
 
-    @user = User.find_by_username(params[:username])
-    if !@user then not_found end
+    @user = User.find_by_username!(params[:username])
 
     @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})"
     @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|

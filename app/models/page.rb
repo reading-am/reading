@@ -39,9 +39,10 @@ class Page < ActiveRecord::Base
 
   def populate_domain
     a = Addressable::URI.parse(url)
+    return unless a.present?
     # make sure the domain at least includes a period
     # and that it uses a valid protocol
-    if !a.host.blank? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
+    if a.host.present? && a.host.include?('.') && (a.scheme.blank? || ['http','https'].include?(a.scheme))
       self.domain = Domain.where(name: a.host).first_or_create
     end
   end

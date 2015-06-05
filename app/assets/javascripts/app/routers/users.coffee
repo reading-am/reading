@@ -60,12 +60,14 @@ UserEditView, OauthAppsWithInputView, OauthAccessTokensView) ->
         @user_subnav_view ?= new UserSubnavView
           el: $("#subnav")[0]
 
-      # Early exit if there's a blank slate i.e. there are no posts
-      return if $("#blank_slate").length
-
       # Setup collection
       @collection ?= new Posts
       models = @collection.models
+
+      # Early exit if there's a blank slate and there are no posts
+      if $("#blank_slate").length && @collection.length is 0
+        $(".r_loading").hide()
+        return
 
       # if a model was specified, use the nested collection
       if @model

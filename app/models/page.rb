@@ -50,21 +50,17 @@ class Page < ActiveRecord::Base
   public
 
   def self.cleanup_url(url)
-    unless url.respond_to?(:downcase) &&
-           ['http', 'https', nil].include?(
-             Addressable::URI.parse(url.downcase).scheme)
+    begin
+      # this parse adds an http scheme if needed
+      parsed_url = Addressable::URI.heuristic_parse(url)
+    rescue Addressable::URI::InvalidURIError
       return url
     end
 
-    # the protocol will be missing its second slash if it's been pulled from the middle of a url
-    if !/^\w+:\/\w/.match(url).blank?
-      url = url.sub(":/", "://")
-    # add http if the url doesn't include a protocol
-    elsif !url.include?("://") or (url.include?(".") and url.index("://") > url.index("."))
-      url = "http://#{url}"
+    unless parsed_url.scheme &&
+           %w(http https).include?(parsed_url.scheme.downcase)
+      return url
     end
-
-    parsed_url = Addressable::URI.parse(url)
 
     # protocols and hosts aren't case sensitive: http://stackoverflow.com/questions/2148603/is-the-protocol-name-in-urls-case-sensitive
     parsed_url.scheme = parsed_url.scheme.downcase unless parsed_url.scheme.blank?

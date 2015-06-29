@@ -39,20 +39,20 @@ module Api::V1
 
     def expats
       params[:user_id] = params[:id]
-      render :index, { users: Users.expats(params) }
+      render :index, locals: { users: Users.expats(params) }
     end
     require_scope_for :expats, :public
     add_transaction_tracer :expats
 
     def recommended
       params[:user_id] = current_user.id
-      render :index, { users: Users.recommended(params) }
+      render :index, locals: { users: Users.recommended(params) }
     end
     require_scope_for :recommended, :public
     add_transaction_tracer :recommended
 
     def search
-      render :index, { users: Users.search(params) }
+      render :index, locals: { users: Users.search(params) }
     end
     require_scope_for :search, :public
     add_transaction_tracer :search

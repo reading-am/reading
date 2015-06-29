@@ -51,6 +51,8 @@ class Page < ActiveRecord::Base
 
   def self.cleanup_url(url)
     begin
+      # some browsers encode the colon if passed in the url
+      url = url.sub(/^(https?)%3A\/\//, '\1://')
       # this parse adds an http scheme if needed
       parsed_url = Addressable::URI.heuristic_parse(url)
     rescue Addressable::URI::InvalidURIError

@@ -586,7 +586,7 @@ GEM
     slop (3.6.0)
     spoon (0.0.4)
       ffi
-    spring (1.3.5)
+    spring (1.3.6)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
     spring-watcher-listen (1.0.0)
@@ -782,3 +782,6 @@ DEPENDENCIES
   web-console
   will_paginate!
   workless
+
+BUNDLED WITH
+   1.10.5

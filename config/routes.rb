@@ -156,7 +156,7 @@ Reading::Application.routes.draw do
   # Notice the .rss negative lookahead that allows user RSS feeds to pass through
   # We're not currently supporting (/yn/:yn) "yep . nope" because it should be a user initiated action
   # rather than a trickster potentially formatting a link with yn already in there and promoting a link
-  get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', constraints: { url: /(?:(?:http|https|ftp):\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i }
+  get '(/t/:token)(/p/:id)(/:url)' => 'posts#visit', constraints: { url: /(?:(?:http|https|ftp)(:|%3A)\/\/?)*[0-9A-Z\-\.]*(?!\.rss)(?:\.[A-Z]+)+.*/i }
 
   get   '/users/auth/loading/:provider'         => 'authorizations#loading'
   get   '/authorizations/:provider/:uid/places' => 'authorizations#places'

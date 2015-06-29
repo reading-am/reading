@@ -64,6 +64,9 @@ define [
 
     # don't lob off reading.am if they're reading a Reading page (a user profile, for instance)
     url = reg_url unless reg_url.indexOf('.') is -1
+    # some browsers encode the colon if passed in the url
+    url = url.replace(/^(https?)%3A\/\//, '$1://')
+    # Add a protocol if it's missing
     url = "http://#{url}" if url.indexOf('://') is -1
 
     return url

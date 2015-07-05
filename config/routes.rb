@@ -163,7 +163,7 @@ Reading::Application.routes.draw do
   resources :authorizations
 
   # via: http://stackoverflow.com/questions/5222760/rails-rest-routing-dots-in-the-resource-item-id
-  resources :domains, constraints: { id: /[0-9A-Z\-\.]+/i } do
+  resources :domains, only: [:show], constraints: { id: /[0-9A-Z\-\.]+/i } do
     member do
       get '(/:type)(/posts)(/:medium)(/page/:page)' => 'domains#show',
         defaults: { type: 'posts' },

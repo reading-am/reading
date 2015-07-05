@@ -4,6 +4,7 @@ module Mailman
 
     def create
       text = params['stripped-text'] # this comes from mailgun
+      return head :bad_request unless text.present?
 
       # check to see if the body contains yep or nope
       if !text.match(/(^|\s)yep($|\s|:)/i).nil?

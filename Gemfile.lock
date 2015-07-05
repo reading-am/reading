@@ -491,6 +491,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack-timeout (0.2.4)
     rails (4.2.3)
       actionmailer (= 4.2.3)
       actionpack (= 4.2.3)
@@ -747,6 +748,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rack-test
+  rack-timeout
   rails (= 4.2.3)
   rails-backbone
   rails-observers

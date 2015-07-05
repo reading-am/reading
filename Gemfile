@@ -9,6 +9,7 @@ gem 'rails', '4.2.3'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server
+gem 'rack-timeout' # time out puma on heroku
 gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached

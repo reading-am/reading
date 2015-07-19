@@ -38,7 +38,12 @@ class Page < ActiveRecord::Base
   end
 
   def populate_domain
-    a = Addressable::URI.parse(url)
+    a = begin
+          Addressable::URI.parse(url)
+        rescue Addressable::URI::InvalidURIError
+          nil
+        end
+
     return unless a.present?
     # make sure the domain at least includes a period
     # and that it uses a valid protocol

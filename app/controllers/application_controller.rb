@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   def protect_staging
     if Rails.env == 'staging'
       authenticate_or_request_with_http_basic do |user_name, password|
-        user_name == ENV['READING_AUTH_BASIC_USER'] && password == ENV['READING_AUTH_BASIC_PASS']
+        user_name == ENV['AUTH_BASIC_USER'] && password == ENV['AUTH_BASIC_PASS']
       end
     end
   end

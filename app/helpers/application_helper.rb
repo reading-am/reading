@@ -74,8 +74,9 @@ module ApplicationHelper
   end
 
   def js_manifest
-    json = YAML.load(File.new(Rails.application.config.requirejs.manifest_path))
-    Hash[json.collect { |key, val| [key[0..-4], val[0..-4]] }].to_json.html_safe
+    # via: https://github.com/jwhitley/requirejs-rails/blob/60231146fa7ab38b858e231aa41ad6dc4fa46370/lib/requirejs/rails/engine.rb#L59
+    rjs_digests = YAML.load(ERB.new(File.new(Rails.application.config.requirejs.manifest_path).read).result)
+    Hash[rjs_digests.collect { |key, val| [key[0..-4], val[0..-4]] }].to_json.html_safe
   rescue
     '{}'.html_safe
   end

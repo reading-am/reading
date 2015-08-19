@@ -75,8 +75,7 @@ module ApplicationHelper
 
   def js_manifest
     manifest = {}
-    path = Dir[File.join("#{Rails.root}/public/assets", "rjs-manifest*.json")].max { |a,b| test(?M, a) <=> test(?M, b) }
-    json = ActiveSupport::JSON.decode(File.new(path)) rescue {'files' => {}, 'assets' => {}}
+    json = YAML.load(File.new(Rails.application.config.requirejs.manifest_path)) rescue {'files' => {}, 'assets' => {}}
     json['assets'].each {|key, val| manifest[key[0..-4]] = val[0..-4] }
     manifest.to_json.html_safe
   end

@@ -74,10 +74,10 @@ module ApplicationHelper
   end
 
   def js_manifest
-    manifest = {}
-    json = YAML.load(File.new(Rails.application.config.requirejs.manifest_path)) rescue {'files' => {}, 'assets' => {}}
-    json['assets'].each {|key, val| manifest[key[0..-4]] = val[0..-4] }
-    manifest.to_json.html_safe
+    json = YAML.load(File.new(Rails.application.config.requirejs.manifest_path))
+    Hash[json.collect { |key, val| [key[0..-4], val[0..-4]] }].to_json.html_safe
+  rescue
+    '{}'.html_safe
   end
 
   def mustache_helpers

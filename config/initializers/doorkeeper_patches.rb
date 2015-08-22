@@ -15,7 +15,7 @@ class Doorkeeper::Application
   def icon_url style=:original
     # URL generation through the paperclip gem is slooowwwww. This is a swifter workaround.
     # https://github.com/thoughtbot/paperclip/issues/909
-    base = "https://s3.amazonaws.com/#{ENV['READING_S3_BUCKET']}/oauth_apps/icons"
+    base = "https://s3.amazonaws.com/#{ENV['S3_BUCKET']}/oauth_apps/icons"
     if icon_file_name.blank?
       "#{base}/default/#{style}.png"
     else

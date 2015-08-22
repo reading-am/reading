@@ -29,8 +29,8 @@ process management so starting the app is as easy as running:
 ...with one caveat. Slanger [doesn't seem to play well with Foreman](https://github.com/stevegraham/slanger/issues/77)
 and needs to be started on its own using:
 
-`slanger --app_key $READING_SLANGER_KEY --secret
-$READING_SLANGER_SECRET --webhook_url
+`slanger --app_key $SLANGER_KEY --secret
+$SLANGER_SECRET --webhook_url
 http://0.0.0.0:3000/pusher/existence`
 
 ## Testing

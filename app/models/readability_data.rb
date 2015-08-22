@@ -5,7 +5,7 @@ class ReadabilityData < ActiveRecord::Base
   def remote
     c = Curl::Easy.new
     c.follow_location = true
-    c.url = "https://www.readability.com/api/content/v1/parser?token=#{ENV['READING_READABILITY_TOKEN']}&url=#{page.url}"
+    c.url = "https://www.readability.com/api/content/v1/parser?token=#{ENV['READABILITY_TOKEN']}&url=#{page.url}"
     c.perform
     c.body_str
   end

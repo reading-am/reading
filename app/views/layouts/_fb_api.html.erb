@@ -2,7 +2,7 @@
 <script>
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : '<%= ENV['READING_FACEBOOK_KEY'] %>', // App ID
+      appId      : '<%= ENV['FACEBOOK_KEY'] %>', // App ID
       channelUrl : '//<%= DOMAIN %>/channel.html', // Channel File
       status     : true, // check login status
       cookie     : true, // enable cookies to allow the server to access the session

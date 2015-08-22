@@ -61,9 +61,9 @@ module ApplicationHelper
       when 'chrome'
         link = 'https://chrome.google.com/webstore/detail/npjdbbeldblbjenemjdeplmlaieifjhk'
       when 'safari'
-        link = "http://#{ENV['READING_S3_BUCKET']}/extensions/reading.safariextz"
+        link = "http://#{ENV['S3_BUCKET']}/extensions/reading.safariextz"
       when 'firefox'
-        link = "http://#{ENV['READING_S3_BUCKET']}/extensions/reading.xpi"
+        link = "http://#{ENV['S3_BUCKET']}/extensions/reading.xpi"
     end
     link_to text, link, :class => "btn #{browser}-install"
   end
@@ -74,11 +74,11 @@ module ApplicationHelper
   end
 
   def js_manifest
-    manifest = {}
-    path = Dir[File.join("#{Rails.root}/public/assets", "rjs-manifest*.json")].max { |a,b| test(?M, a) <=> test(?M, b) }
-    json = ActiveSupport::JSON.decode(File.new(path)) rescue {'files' => {}, 'assets' => {}}
-    json['assets'].each {|key, val| manifest[key[0..-4]] = val[0..-4] }
-    manifest.to_json.html_safe
+    # via: https://github.com/jwhitley/requirejs-rails/blob/60231146fa7ab38b858e231aa41ad6dc4fa46370/lib/requirejs/rails/engine.rb#L59
+    rjs_digests = YAML.load(ERB.new(File.new(Rails.application.config.requirejs.manifest_path).read).result)
+    Hash[rjs_digests.collect { |key, val| [key[0..-4], val[0..-4]] }].to_json.html_safe
+  rescue
+    '{}'.html_safe
   end
 
   def mustache_helpers

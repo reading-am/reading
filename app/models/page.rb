@@ -142,7 +142,7 @@ class Page < ActiveRecord::Base
       if embed.present?
         @proxy_embed.gsub!(/(<img [^>]*src=["'])(.+?)(["'])/i) do
           Regexp.last_match[1] +
-          "https://#{ENV['READING_IMG_SERVER']}#{Thumbor::Cascade.new(Regexp.last_match[2]).generate}" +
+          "https://#{ENV['IMG_SERVER']}#{Thumbor::Cascade.new(Regexp.last_match[2]).generate}" +
           Regexp.last_match[3]
         end
         # Make all embeds secure, even if they aren't (better to fail on https than http)

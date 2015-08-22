@@ -2,9 +2,9 @@ SitemapGenerator::Sitemap.default_host  = ROOT_URL
 SitemapGenerator::Sitemap.public_path   = 'tmp/'
 SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new({
-  aws_access_key_id:      ENV['READING_S3_KEY'],
-  aws_secret_access_key:  ENV['READING_S3_SECRET'],
-  fog_directory:          ENV['READING_S3_BUCKET'],
+  aws_access_key_id:      ENV['S3_KEY'],
+  aws_secret_access_key:  ENV['S3_SECRET'],
+  fog_directory:          ENV['S3_BUCKET'],
   fog_provider:           'AWS'
 })
 

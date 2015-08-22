@@ -208,7 +208,7 @@ EOF
   def pocket(post, event_fired)
     Typhoeus::Request.post 'https://getpocket.com/v3/add',
                            params: {
-                             consumer_key: ENV['READING_POCKET_KEY'],
+                             consumer_key: ENV['POCKET_KEY'],
                              access_token: authorization.token,
                              url: post.page.url,
                              tags: '✌ Reading'

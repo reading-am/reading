@@ -84,8 +84,8 @@ public
       # per: https://developers.facebook.com/roadmap/offline-access-removal/
       url = "https://graph.facebook.com/oauth/access_token"
       params = {
-        :client_id      => ENV['READING_FACEBOOK_KEY'],
-        :client_secret  => ENV['READING_FACEBOOK_SECRET'],
+        :client_id      => ENV['FACEBOOK_KEY'],
+        :client_secret  => ENV['FACEBOOK_SECRET'],
         :grant_type     => "fb_exchange_token",
         :fb_exchange_token => self.token
       }
@@ -131,16 +131,16 @@ public
         @api_user = Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
       when 'instapaper'
         Instapaper.configure do |config|
-          config.consumer_key = ENV['READING_INSTAPAPER_KEY']
-          config.consumer_secret = ENV['READING_INSTAPAPER_SECRET']
+          config.consumer_key = ENV['INSTAPAPER_KEY']
+          config.consumer_secret = ENV['INSTAPAPER_SECRET']
           config.oauth_token = token
           config.oauth_token_secret = secret
         end
         @api_user = Instapaper
       when 'tumblr'
         @api_user = Tumblr::Client.new do |client|
-          client.consumer_key = ENV['READING_TUMBLR_KEY']
-          client.consumer_secret = ENV['READING_TUMBLR_SECRET']
+          client.consumer_key = ENV['TUMBLR_KEY']
+          client.consumer_secret = ENV['TUMBLR_SECRET']
           client.oauth_token = token
           client.oauth_token_secret = secret
         end

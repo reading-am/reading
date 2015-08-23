@@ -2,11 +2,6 @@
 class PostsController < ApplicationController
   before_filter :authenticate_user!, :except => [:visit]
 
-
-  # override force_ssl
-  def force_ssl_redirect(host_or_options = nil)
-  end
-
   # A note about schema
   # The original idea was that the referrer_post_id didn't
   # have to dictate the :url param - that way we could

@@ -128,7 +128,12 @@ public
       when 'facebook'
         @api_user = Koala::Facebook::API.new(token)
       when 'twitter'
-        @api_user = Twitter::Client.new(:oauth_token => token, :oauth_token_secret => secret) rescue nil
+        @api_user = Twitter::REST::Client.new do |config|
+          config.consumer_key = ENV['TWITTER_KEY']
+          config.consumer_secret =  ENV['TWITTER_SECRET']
+          config.access_token = token
+          config.access_token_secret = secret
+        end
       when 'instapaper'
         Instapaper.configure do |config|
           config.consumer_key = ENV['INSTAPAPER_KEY']

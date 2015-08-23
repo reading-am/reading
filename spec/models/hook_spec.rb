@@ -76,15 +76,13 @@ describe Hook do
       expect(response.code).to eq(200)
       # cleanup
       body = ActiveSupport::JSON.decode response.body
-      response = Typhoeus::Request.post 'https://getpocket.com/v3/send',
-        :params => {
-          :consumer_key => ENV['READING_POCKET_KEY'],
-          :access_token => hook.authorization.token,
-          :actions => [{
-            :action => 'delete',
-            :item_id => body["item"]["item_id"]
-          }].to_json
-        }
+      response = Typhoeus::Request.post(
+        'https://getpocket.com/v3/send',
+        params: { consumer_key: ENV['POCKET_KEY'],
+                  access_token: hook.authorization.token,
+                  actions: [{ action: 'delete',
+                              item_id: body['item']['item_id'] }].to_json }
+      )
       expect(response.code).to eq(200)
     end
 

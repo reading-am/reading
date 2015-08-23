@@ -1,3 +1,3 @@
 test:
   override:
-    - rspec spec/models
+    - bundle exec rspec spec/models

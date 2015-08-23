@@ -73,7 +73,7 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'daemons' # for delayed_job
-gem "workless" # boots up workers on Heroku when needed
+gem 'workless' # boots up workers on Heroku when needed
 
 #####################
 # External Services #
@@ -91,7 +91,7 @@ gem 'tumblr-ruby', github: 'weheartit/tumblr', require: 'tumblr'
 gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
 gem 'kippt', github: 'leppert/kippt'
-gem 'flattr', github: 'smgt/flattr'
+gem 'flattr', github: 'leppert/flattr'
 gem 'ruby-thumbor'
 
 #################

@@ -15,7 +15,7 @@ describe Hook do
       response = hook.run(post, 'new')
       expect(response).to be_an_instance_of Twitter::Tweet
       # cleanup
-      response = hook.authorization.api.status_destroy(response.id)
+      response = hook.authorization.api.destroy_status(response.id)
       expect(response.first).to be_an_instance_of Twitter::Tweet
     end
 

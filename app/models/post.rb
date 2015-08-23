@@ -63,21 +63,20 @@ class Post < ActiveRecord::Base
 
   public
 
-  #TODO consider moving this to a view helper
-  def wrapped_url(token=false)
-    # This is intentionally http, not https
-    url = "http://#{DOMAIN}"
+  # TODO: consider moving this to a view helper
+  def wrapped_url(token = false)
+    url = ROOT_URL
     url += "/t/#{token}" if token
-    url += "/p/#{Base58.encode(self.id)}/#{self.page.url}"
+    url + "/p/#{Base58.encode(id)}/#{page.url}"
   end
 
   def short_url
-    "#{SHORT_DOMAIN}/p/#{Base58.encode(self.id)}"
+    "#{SHORT_DOMAIN}/p/#{Base58.encode(id)}"
   end
 
   def channels
     [
-      "posts",
+      'posts',
       "pages.#{page_id}.posts",
       "users.#{user.id}.posts"
     ].concat [user.id].concat(user.followers.where(:feed_present => true).pluck(:id)).map{|id| "users.#{id}.following.posts"}

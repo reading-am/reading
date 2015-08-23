@@ -50,8 +50,7 @@ require [
     Post::current.save params, success: (model) ->
       if platform is "redirect"
         # forward back through to Reading so that the user's token doesn't show up in the referrer
-        # This is intentionally http rather than https for referrer purposes
-        window.location = if window.location.href.indexOf('/t/') > -1 then "http://#{Constants.domain}/t/-/#{params.url}" else params.url
+        window.location = if window.location.href.indexOf('/t/') > -1 then "#{Constants.root_url}/t/-/#{params.url}" else params.url
       else
         # Describe couldn't get the page for some reason
         # so send a snapshot of the HTML for processing

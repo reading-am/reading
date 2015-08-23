@@ -51,12 +51,12 @@ define [
       html = html.replace Constants.regexes.email,'<a href="mailto:$1" class="r_email">$1</a>'
       # link urls and @mentions
       html = TwitterText.autoLink html,
-        urlClass:       "r_url",
-        usernameClass:  "r_mention",
-        hashtagClass:   "r_tag",
-        usernameUrlBase:"//#{Constants.domain}/",
-        listUrlBase:    "//#{Constants.domain}/",
-        hashtagUrlBase: "//#{Constants.domain}/search?q="
+        urlClass:        "r_url",
+        usernameClass:   "r_mention",
+        hashtagClass:    "r_tag",
+        usernameUrlBase: "#{Constants.root_url}/",
+        listUrlBase:     "#{Constants.root_url}/",
+        hashtagUrlBase:  "#{Constants.root_url}/search?q="
       # embed images
       $html = $("<div>#{html}</div>")
       $html.find("a[href*=\\.#{["jpg","jpeg","png","gif"].join("],a[href*=\\.")}]").each ->

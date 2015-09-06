@@ -3,17 +3,26 @@
 require 'rake'
 require 'elasticsearch/extensions/test/cluster/tasks'
 
+ELASTICSEARCH_PORT = 9200
+
 RSpec.configure do |config|
-  # Snipped other config.
-  config.before :each, elasticsearch: true do
-    Elasticsearch::Extensions::Test::Cluster.start(port: 9200, nodes: 1) unless Elasticsearch::Extensions::Test::Cluster.running?(on: 9200)
+  config.before(:each, elasticsearch: true) { start }
+  config.after(:each, elasticsearch: true) { reset! }
+  config.after(:suite) { stop }
+
+  def start
+    Elasticsearch::Extensions::Test::Cluster.start(port: ELASTICSEARCH_PORT, nodes: 1) unless running?
   end
 
-  config.after :each, elasticsearch: true do
-    Elasticsearch::Model.client.indices.delete index: '_all'
+  def stop
+    Elasticsearch::Extensions::Test::Cluster.stop(port: ELASTICSEARCH_PORT) if running?
   end
 
-  config.after :suite do
-    Elasticsearch::Extensions::Test::Cluster.stop(port: 9200) if Elasticsearch::Extensions::Test::Cluster.running?(on: 9200)
+  def reset!
+    Elasticsearch::Model.client.indices.delete index: '_all' if running?
+  end
+
+  def running?
+    Elasticsearch::Extensions::Test::Cluster.running?(on: ELASTICSEARCH_PORT)
   end
 end

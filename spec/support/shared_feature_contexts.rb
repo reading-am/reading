@@ -44,10 +44,10 @@ shared_context 'is shareable' do
     share_link.click
     expect(page).to have_selector('#r_share_menu'), "Share menu wasn't displayed"
 
-    click_link('Twitter')
+    twitter_win = window_opened_by { click_link('Twitter') }
     expect(windows.length).to eq(2)
 
-    within_window(windows.last) do
+    within_window(twitter_win) do
       expect(current_url).to start_with('https://twitter.com/intent')
       current_window.close
     end
@@ -106,11 +106,10 @@ shared_context 'comment permalink button' do
     body = first('.r_comment_body')
     comment = first_parent_with_class_containing('r_comment', body)
     comment.hover
-    comment.click_link('#')
-
+    comment_win = window_opened_by { comment.click_link('#') }
     expect(windows.length).to eq(2)
 
-    within_window(windows.last) do
+    within_window(comment_win) do
       expect(current_path).to match(/\/[^\/]+\/comments\/\d+/)
       current_window.close
     end

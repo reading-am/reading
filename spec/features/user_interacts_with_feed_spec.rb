@@ -106,13 +106,14 @@ feature "User's logged in feed", js: true do
         visit url
         scroll_to_bottom
 
-        within(first_parent_with_class_containing('page_row', first('.pa_create'))) do
-          find('.r_title a').click
+        dest_win = window_opened_by do
+          within(first_parent_with_class_containing('page_row', first('.pa_create'))) do
+            find('.r_title a').click
+          end
         end
-
         expect(windows.length).to eq(2)
 
-        within_window(windows.last) do
+        within_window(dest_win) do
           expect(URI.parse(current_url).host).not_to eq(Capybara.current_session.server.host)
           current_window.close
         end
@@ -124,11 +125,11 @@ feature "User's logged in feed", js: true do
         whitelist '*'
         logout(:user)
         visit url
-        first('.r_title a').click
 
+        dest_win = window_opened_by { first('.r_title a').click }
         expect(windows.length).to eq(2)
 
-        within_window(windows.last) do
+        within_window(dest_win) do
           expect(URI.parse(current_url).host).not_to eq(Capybara.current_session.server.host)
           current_window.close
         end

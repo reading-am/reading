@@ -23,10 +23,10 @@ feature "User's hooks", js: true do
 
   scenario 'detail button opens window with explanation' do
     visit url
-    click_link('Details')
+    details_win = window_opened_by { click_link('Details') }
     expect(windows.length).to eq(2)
 
-    within_window(windows.last) do
+    within_window(details_win) do
       expect(current_path).to start_with('/footnotes')
       current_window.close
     end
@@ -71,12 +71,12 @@ feature "User's hooks", js: true do
 
     select 'Twitter', from: 'hook_provider'
     select '+ connect new', from: 'hook_params_account'
-    click_button('Thanks!')
+    twitter_win = window_opened_by { click_button('Thanks!') }
 
     expect(windows.length).to eq(2)
     expect(page).to have_selector '#loading'
 
-    within_window(windows.last) do
+    within_window(twitter_win) do
       expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
       fill_in 'Username or email', with: ENV['TWITTER_TEST_ACCOUNT_EMAIL']
       fill_in 'Password', with: ENV['TWITTER_TEST_ACCOUNT_PASS']

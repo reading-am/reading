@@ -1,10 +1,10 @@
 require 'rake'
 require 'capybara/rspec'
-Capybara.default_wait_time = 10
+Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
 
 def using_webkit?
-  [:webkit, :webkit_debug].include? Capybara.javascript_driver
+  Capybara.javascript_driver == :webkit
 end
 
 # Only take screenshots with webkit
@@ -48,7 +48,7 @@ module CapybaraExtensions
 
   def accept_confirm(&block)
     case Capybara.javascript_driver
-    when :webkit, :webkit_debug
+    when :webkit
       super
     when :selenium
       block.call
@@ -63,7 +63,7 @@ module CapybaraExtensions
     sleep 0.1 # gives the JS a moment to fire
     waiting_on = nil
     begin
-      Timeout.timeout(Capybara.default_wait_time) do
+      Timeout.timeout(Capybara.default_max_wait_time) do
         loop until (waiting_on = outstanding_js_tasks).blank?
       end
     rescue Timeout::Error
@@ -103,8 +103,12 @@ module CapybaraExtensions
     el.find(:xpath, "ancestor::*[contains(concat(' ',normalize-space(@class),' '),' #{cname} ')]")
   end
 
-  def whitelist url
-    page.driver.allow_url url if using_webkit?
+  def whitelist(url)
+    return unless using_webkit?
+    # This bypasses capybara-webkit depreciation warnings
+    # NOTE: @browser is reset at the end of the test: https://github.com/thoughtbot/capybara-webkit/blob/519d90306b5113b78f10e3fc18b32989f4894be8/spec/support/app_runner.rb#L70
+    browser = page.driver.instance_variable_get(:@browser)
+    browser.allow_url url
   end
 end
 
@@ -143,21 +147,21 @@ RSpec.configure do |config|
   config.include CapybaraExtensions, type: :feature
   config.use_transactional_fixtures = false
 
-  config.before(:suite, type: :feature) do
+  clobbered = false
+  config.before(:all, type: :feature) do
     # Clobber the assets else require's baseUrl will be wrong since
     # the port will have changed but the coffee.erb file won't have been rebuilt
-    Rake.load_rakefile Rails.root.join('Rakefile')
-    Rake::Task['assets:clobber'].invoke
+    unless clobbered # only run once
+      Rake.load_rakefile Rails.root.join('Rakefile')
+      Rake::Task['assets:clobber'].invoke
+      clobbered = true
+    end
   end
 
   config.before(:each, type: :feature) do
     # JS elements won't load if we don't correct the domain
     stub_const('DOMAIN', "#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}")
     stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
-  end
-
-  config.before(:each, js: true) do
-    page.driver.block_unknown_urls if using_webkit?
   end
 
   config.after(:each, type: :feature) do
@@ -168,5 +172,13 @@ RSpec.configure do |config|
   # for screenshots to work
   config.append_after(:each, type: :feature) do
     Capybara.reset_sessions!
+  end
+end
+
+if using_webkit?
+  Capybara::Webkit.configure do |config|
+    config.debug = false
+    config.block_unknown_urls
+    config.skip_image_loading
   end
 end

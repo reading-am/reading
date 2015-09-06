@@ -110,7 +110,6 @@ feature "User's logged in feed", js: true do
             find('.r_title a').click
           end
         end
-        expect(windows.length).to eq(2)
 
         within_window(dest_win) do
           # Causes test to wait for redirect before checking host 
@@ -127,8 +126,6 @@ feature "User's logged in feed", js: true do
         visit url
 
         dest_win = window_opened_by_js { first('.r_title a').click }
-        expect(windows.length).to eq(2)
-
         within_window(dest_win) do
           # Causes test to wait for redirect before checking host 
           expect(page).not_to have_content('Loading')

@@ -103,7 +103,8 @@ end
 
 shared_context 'comment permalink button' do
   scenario 'goes to the comment page' do
-    comment = first('.r_comment')
+    body = first('.r_comment_body')
+    comment = first_parent_with_class_containing('r_comment', body)
     comment.hover
     comment.click_link('#')
 

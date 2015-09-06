@@ -43,10 +43,8 @@ feature 'User authentication', js: true do
       whitelist 'https://api.twitter.com/oauth/*'
       visit '/'
 
-      twitter_win = window_opened_by_js do
-        click_link 't Twitter'
-        expect(page).to have_selector '#loading'
-      end
+      twitter_win = window_opened_by_js { click_link 't Twitter' }
+      expect(page).to have_selector '#loading'
 
       within_window(twitter_win) do
         expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
@@ -64,10 +62,8 @@ feature 'User authentication', js: true do
       whitelist '*.facebook.*'
       visit '/'
 
-      facebook_win = window_opened_by_js do
-        click_link 'f Facebook'
-        expect(page).to have_selector '#loading'
-      end
+      facebook_win = window_opened_by_js { click_link 'f Facebook' }
+      expect(page).to have_selector '#loading'
 
       within_window(facebook_win) do
         expect(current_url).to start_with('https://www.facebook.com/dialog/oauth')

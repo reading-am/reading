@@ -14,6 +14,8 @@ feature "User's bookmarklet", js: true do
     expect(page).to have_selector('#r_am'), "Initial bookmarklet load failed"
     # Causes the test to wait for the post to be created
     expect(page).to have_selector('.r_comments_with_input'), "UI didn't reflect that a post was created"
+    # Slower environments like cirlceci need this
+    wait_for_js
   end
 
   before(:each) do |example|

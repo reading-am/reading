@@ -187,7 +187,7 @@ end
 
 if using_webkit?
   Capybara::Webkit.configure do |config|
-    config.debug = false
+    config.debug = [true, 'true'].include? ENV['TEST_WEBKIT_DEBUG']
     config.block_unknown_urls
     config.skip_image_loading
   end

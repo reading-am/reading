@@ -42,7 +42,7 @@ feature 'User registers for an account', js: true do
     username = 'reading_test'
 
     visit '/'
-    twitter_win = window_opened_by { click_link 't Twitter' }
+    twitter_win = window_opened_by_js { click_link 't Twitter' }
     expect(windows.length).to eq(2)
     expect(page).to have_selector '#loading'
 

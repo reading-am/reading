@@ -29,7 +29,12 @@ feature "User's logged in feed", js: true do
 
     dom_count = all('.r_subpost').count
     expect(dom_count).to eq(limit), 'Not enough posts were found'
+
+    # Initial window size fits page length
+    # Make smaller to allow room to scroll
+    resize_window 700, 300
     scroll_to_bottom
+
     expect(all('.r_subpost').count).to be > limit, "Additional page rows weren't added after scroll"
   end
 

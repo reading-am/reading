@@ -120,6 +120,11 @@ module CapybaraExtensions
       wait_for_js
     end
   end
+
+  def resize_window(width, height, handle = nil)
+    handle ||= Capybara.current_session.driver.current_window_handle
+    Capybara.current_session.driver.resize_window_to(handle, width, height)
+  end
 end
 
 module Capybara

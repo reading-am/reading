@@ -513,7 +513,7 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
-    oj (2.1.4)
+    oj (2.12.13)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)

@@ -155,6 +155,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'capybara-webkit'
   gem 'capybara-screenshot'
+  gem 'rspec_junit_formatter', '0.2.2' # needed by circleci
   gem 'spring-commands-rspec'
   gem 'json-schema'
   gem 'rack-test'

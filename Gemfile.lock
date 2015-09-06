@@ -664,6 +664,9 @@ GEM
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.2)
+    rspec_junit_formatter (0.2.2)
+      builder (< 4)
+      rspec-core (>= 2, < 4, != 2.12.0)
     ruby-growl (4.0)
       uuid (~> 2.3, >= 2.3.5)
     ruby-prof (0.15.6)
@@ -865,6 +868,7 @@ DEPENDENCIES
   requirejs-rails
   rollbar
   rspec-rails
+  rspec_junit_formatter (= 0.2.2)
   ruby-growl
   ruby-thumbor
   selenium-webdriver

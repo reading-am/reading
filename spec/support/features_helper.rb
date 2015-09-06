@@ -113,6 +113,13 @@ module CapybaraExtensions
     browser = page.driver.instance_variable_get(:@browser)
     browser.allow_url url
   end
+
+  def window_opened_by_js
+    window_opened_by do
+      yield
+      wait_for_js
+    end
+  end
 end
 
 module Capybara

@@ -100,13 +100,12 @@ feature "User's logged in feed", js: true do
 
     describe 'page' do
       scenario 'title posts the page and redirects to the page source when clicked' do
-        whitelist '*'
         db_count = user.posts.count
 
         visit url
         scroll_to_bottom
 
-        dest_win = window_opened_by do
+        dest_win = window_opened_by_js do
           within(first_parent_with_class_containing('page_row', first('.pa_create'))) do
             find('.r_title a').click
           end
@@ -114,6 +113,8 @@ feature "User's logged in feed", js: true do
         expect(windows.length).to eq(2)
 
         within_window(dest_win) do
+          # Causes test to wait for redirect before checking host 
+          expect(page).not_to have_content('Loading')
           expect(URI.parse(current_url).host).not_to eq(Capybara.current_session.server.host)
           current_window.close
         end
@@ -122,14 +123,15 @@ feature "User's logged in feed", js: true do
       end
 
       scenario 'title redirects logged out visitor to the page source when clicked' do
-        whitelist '*'
         logout(:user)
         visit url
 
-        dest_win = window_opened_by { first('.r_title a').click }
+        dest_win = window_opened_by_js { first('.r_title a').click }
         expect(windows.length).to eq(2)
 
         within_window(dest_win) do
+          # Causes test to wait for redirect before checking host 
+          expect(page).not_to have_content('Loading')
           expect(URI.parse(current_url).host).not_to eq(Capybara.current_session.server.host)
           current_window.close
         end

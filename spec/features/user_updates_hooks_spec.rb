@@ -23,7 +23,7 @@ feature "User's hooks", js: true do
 
   scenario 'detail button opens window with explanation' do
     visit url
-    details_win = window_opened_by { click_link('Details') }
+    details_win = window_opened_by_js { click_link('Details') }
     expect(windows.length).to eq(2)
 
     within_window(details_win) do
@@ -71,7 +71,7 @@ feature "User's hooks", js: true do
 
     select 'Twitter', from: 'hook_provider'
     select '+ connect new', from: 'hook_params_account'
-    twitter_win = window_opened_by { click_button('Thanks!') }
+    twitter_win = window_opened_by_js { click_button('Thanks!') }
 
     expect(windows.length).to eq(2)
     expect(page).to have_selector '#loading'

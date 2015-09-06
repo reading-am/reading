@@ -44,7 +44,7 @@ shared_context 'is shareable' do
     share_link.click
     expect(page).to have_selector('#r_share_menu'), "Share menu wasn't displayed"
 
-    twitter_win = window_opened_by { click_link('Twitter') }
+    twitter_win = window_opened_by_js { click_link('Twitter') }
     expect(windows.length).to eq(2)
 
     within_window(twitter_win) do
@@ -106,7 +106,7 @@ shared_context 'comment permalink button' do
     body = first('.r_comment_body')
     comment = first_parent_with_class_containing('r_comment', body)
     comment.hover
-    comment_win = window_opened_by { comment.click_link('#') }
+    comment_win = window_opened_by_js { comment.click_link('#') }
     expect(windows.length).to eq(2)
 
     within_window(comment_win) do

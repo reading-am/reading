@@ -43,7 +43,7 @@ feature 'User authentication', js: true do
       whitelist 'https://api.twitter.com/oauth/*'
       visit '/'
 
-      twitter_win = window_opened_by { click_link 't Twitter' }
+      twitter_win = window_opened_by_js { click_link 't Twitter' }
       expect(windows.length).to eq(2)
       expect(page).to have_selector '#loading'
 
@@ -63,7 +63,7 @@ feature 'User authentication', js: true do
       whitelist '*.facebook.*'
       visit '/'
 
-      facebook_win = window_opened_by { click_link 'f Facebook' }
+      facebook_win = window_opened_by_js { click_link 'f Facebook' }
       expect(windows.length).to eq(2)
 
       within_window(facebook_win) do

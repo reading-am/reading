@@ -69,10 +69,8 @@ feature "User's hooks", js: true do
 
     select 'Twitter', from: 'hook_provider'
     select '+ connect new', from: 'hook_params_account'
-    twitter_win = window_opened_by_js do
-      click_button('Thanks!')
-      expect(page).to have_selector '#loading'
-    end
+    twitter_win = window_opened_by_js { click_button('Thanks!') }
+    expect(page).to have_selector '#loading'
 
     within_window(twitter_win) do
       expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')

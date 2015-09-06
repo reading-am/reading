@@ -174,8 +174,9 @@ RSpec.configure do |config|
     stub_const('ROOT_URL', "#{PROTOCOL}://#{DOMAIN}")
   end
 
-  config.after(:each, type: :feature) do
+  config.after(:each, type: :feature) do |example|
     windows.last.close while windows.length > 1
+    Rails.logger.debug page.driver.error_messages.to_yaml if example.exception
   end
 
   # Sessions must be in an append_after

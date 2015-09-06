@@ -42,9 +42,10 @@ feature 'User registers for an account', js: true do
     username = 'reading_test'
 
     visit '/'
-    twitter_win = window_opened_by_js { click_link 't Twitter' }
-    expect(windows.length).to eq(2)
-    expect(page).to have_selector '#loading'
+    twitter_win = window_opened_by_js do
+      click_link 't Twitter'
+      expect(page).to have_selector '#loading'
+    end
 
     within_window(twitter_win) do
       expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')

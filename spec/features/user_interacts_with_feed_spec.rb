@@ -280,7 +280,8 @@ feature "User's logged in feed", js: true do
 
       it_behaves_like 'is shareable' do
         let(:share_link) do
-          comment = first('.r_comment')
+          body = first('.r_comment_body')
+          comment = first_parent_with_class_containing('r_comment', body)
           comment.hover
           return comment.find_link('Share')
         end

@@ -11,6 +11,9 @@ end
 if using_webkit?
   require 'capybara-screenshot/rspec'
   Capybara::Screenshot.prune_strategy = :keep_last_run
+  if ENV['CIRCLE_ARTIFACTS'].present? # for circleci
+    Capybara.save_and_open_page_path = File.join(ENV['CIRCLE_ARTIFACTS'], 'capybara')
+  end
 end
 
 # Otherwise you'll get a nesting error

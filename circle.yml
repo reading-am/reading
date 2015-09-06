@@ -1,3 +1,6 @@
+machine:
+  environment:
+    PATH: ${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/elasticsearch-1.0.1/bin
 test:
   override:
     - bundle exec rspec spec/models

@@ -43,11 +43,11 @@ feature 'User authentication', js: true do
       whitelist 'https://api.twitter.com/oauth/*'
       visit '/'
 
-      click_link 't Twitter'
+      twitter_win = window_opened_by { click_link 't Twitter' }
       expect(windows.length).to eq(2)
       expect(page).to have_selector '#loading'
 
-      within_window(windows.last) do
+      within_window(twitter_win) do
         expect(current_url).to start_with('https://api.twitter.com/oauth/authorize')
         fill_in 'Username or email', with: ENV['TWITTER_TEST_ACCOUNT_EMAIL']
         fill_in 'Password', with: ENV['TWITTER_TEST_ACCOUNT_PASS']
@@ -63,10 +63,10 @@ feature 'User authentication', js: true do
       whitelist '*.facebook.*'
       visit '/'
 
-      click_link 'f Facebook'
+      facebook_win = window_opened_by { click_link 'f Facebook' }
       expect(windows.length).to eq(2)
 
-      within_window(windows.last) do
+      within_window(facebook_win) do
         expect(current_url).to start_with('https://www.facebook.com/dialog/oauth')
         current_window.close
       end

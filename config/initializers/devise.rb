@@ -218,7 +218,6 @@ Devise.setup do |config|
   config.omniauth :readability, ENV['READABILITY_KEY'], ENV['READABILITY_SECRET']
   config.omniauth :evernote,    ENV['EVERNOTE_KEY'],    ENV['EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
   config.omniauth "37signals",  ENV['SIGNALS37_KEY'],   ENV['SIGNALS37_SECRET']
-  config.omniauth :kippt,       "https://kippt.com/api", :form => OmniauthFormsController.action(:kippt)
   config.omniauth :pocket,      ENV['POCKET_KEY']
   config.omniauth :flattr,      ENV['FLATTR_KEY'], ENV['FLATTR_SECRET'], scope: ['flattr']
 

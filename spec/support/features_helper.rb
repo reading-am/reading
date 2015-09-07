@@ -181,7 +181,12 @@ RSpec.configure do |config|
 
   config.after(:each, type: :feature) do |example|
     windows.last.close while windows.length > 1
-    Rails.logger.debug page.driver.error_messages.to_yaml if example.exception
+
+    # On error
+    if example.exception
+      Rails.logger.debug page.driver.error_messages.to_yaml
+      Rails.logger.debug page.driver.console_messages.to_yaml
+    end
   end
 
   # Sessions must be in an append_after

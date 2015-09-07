@@ -13,8 +13,6 @@ class AuthorizationsController < ApplicationController
         places = @auth.api.listNotebooks @auth.token
       when 'tssignals'
         places = @auth.api.rooms
-      when 'kippt'
-        places = @auth.api.lists.all(limit: 0) # forces all to be listed rather than paginated
       end
     end
     respond_to do |format|

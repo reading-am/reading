@@ -41,37 +41,12 @@ GIT
       multi_json (~> 1.7)
 
 GIT
-  remote: git://github.com/leppert/kippt.git
-  revision: 328ff28bc1ac65e181db4941b32e3949ee66540f
-  specs:
-    kippt (1.1.0)
-      faraday
-      faraday_middleware
-      multi_json
-
-GIT
   remote: git://github.com/leppert/musterb.git
   revision: b823ceaef050ba027ebc93159e288ac7a3553138
   specs:
     musterb (1.0.1)
       erubis
       hashie
-
-GIT
-  remote: git://github.com/leppert/omniauth-http-basic.git
-  revision: 23e13a439fd148fe02636ca60adc5ef68270f55d
-  specs:
-    omniauth-http-basic (1.0.0)
-      faraday
-      omniauth
-
-GIT
-  remote: git://github.com/leppert/omniauth-kippt.git
-  revision: 4cedf110660ad254ff0ed65cbd758777c134db54
-  specs:
-    omniauth-kippt (1.0.1)
-      multi_json
-      omniauth
 
 GIT
   remote: git://github.com/leppert/tuml.git
@@ -822,7 +797,6 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   json-schema
-  kippt!
   koala!
   less-rails
   letter_opener
@@ -841,9 +815,7 @@ DEPENDENCIES
   omniauth-evernote
   omniauth-facebook (= 1.4.0)
   omniauth-flattr
-  omniauth-http-basic!
   omniauth-instapaper
-  omniauth-kippt!
   omniauth-pocket
   omniauth-readability!
   omniauth-tumblr

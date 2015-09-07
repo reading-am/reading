@@ -5,7 +5,7 @@ ruby '2.2.2'
 # Core Services #
 #################
 gem 'dotenv-rails', groups: [:development, :test]
-gem 'rails', '4.2.3'
+gem 'rails', '4.2.4'
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server

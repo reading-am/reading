@@ -61,8 +61,6 @@ gem 'omniauth-readability', github: '29decibel/omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
-gem 'omniauth-http-basic', github: 'leppert/omniauth-http-basic' #required by omniauth-kippt
-gem 'omniauth-kippt', github: 'leppert/omniauth-kippt'
 gem 'doorkeeper'
 
 ####################
@@ -90,7 +88,6 @@ gem 'instapaper', github: 'spagalloco/instapaper'
 gem 'tumblr-ruby', github: 'weheartit/tumblr', require: 'tumblr'
 gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
-gem 'kippt', github: 'leppert/kippt'
 gem 'flattr', github: 'leppert/flattr'
 gem 'ruby-thumbor'
 

@@ -86,18 +86,6 @@ describe Hook do
       expect(response.code).to eq(200)
     end
 
-    it "posts to Kippt" do
-      # setup
-      hook = hooks(:kippt)
-      post = posts(:one)
-      # test
-      response = hook.run(post, 'new')
-      expect(response.id).to be_an_instance_of(Fixnum)
-      # cleanup
-      response = response.destroy
-      expect(response).to be true
-    end
-
     it "posts to HipChat" do
       # setup
       hook = hooks(:hipchat)

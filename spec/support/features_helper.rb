@@ -184,8 +184,8 @@ RSpec.configure do |config|
 
     # On error
     if example.exception
-      Rails.logger.debug page.driver.error_messages.to_yaml
-      Rails.logger.debug page.driver.console_messages.to_yaml
+      puts page.driver.error_messages.to_yaml
+      puts page.driver.console_messages.to_yaml
     end
   end
 

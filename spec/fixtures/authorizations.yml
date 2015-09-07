@@ -86,18 +86,6 @@ pocket:
   created_at: 2012-11-19 19:43:56
   updated_at: 2012-11-19 19:43:56
 
-kippt:
-  provider: kippt
-  uid: 40115
-  token: bbb63b9a988dc5eb6264f04441e450a4c024022e
-  secret: ~
-  permissions: ! '["read","write"]'
-  info: ! '{"username":"reading","app_url":"/reading","lists":"/api/users/reading/lists/","avatar_url":"https://secure.gravatar.com/avatar/9ea76da6ac2721230ea2d0a49b38e468/?default=https%3A%2F%2Fkippt.com%2Fstatic%2Fimg%2Fdefault-avatar.jpg&amp;s=160","api_token":"bbb63b9a988dc5eb6264f04441e450a4c024022e","id":40115,"resource_uri":"/api/users/40115/"}'
-  expires_at: ~
-  refresh_token: ~
-  created_at: 2012-11-19 21:26:41
-  updated_at: 2012-11-19 21:26:41
-
 tssignals:
   provider: tssignals
   uid: 329528

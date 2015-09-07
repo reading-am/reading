@@ -45,12 +45,6 @@ pocket:
   params: ! '{"permission":"write"}'
   authorization: pocket
 
-kippt:
-  provider: kippt
-  events: ! '["new","yep","nope","comment"]'
-  params: ! '{"permission":"write","place":{"id":"216120","name":"Inbox"}}'
-  authorization: kippt
-
 hipchat:
   provider: hipchat
   events: ! '["new","yep","nope","comment"]'

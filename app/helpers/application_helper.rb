@@ -37,8 +37,6 @@ module ApplicationHelper
         output = content_tag :span, '♣', :class => 'icon'
       when 'evernote'
         output = content_tag :span, 'E', :class => 'icon'
-      when 'kippt'
-        output = content_tag :span, 'k', :class => 'icon'
       when 'pocket'
         output = content_tag :span, '▾', :class => 'icon'
       when 'flattr'

@@ -21,7 +21,6 @@ class Hook < ActiveRecord::Base
 
   PLACE_TYPES = {
     'tumblr'  => 'blog',
-    'kippt'   => 'list',
     'campfire'=> 'room',
     'evernote'=> 'notebook'
   }
@@ -33,7 +32,6 @@ class Hook < ActiveRecord::Base
     'tumblr',
     'pinboard',
     'evernote',
-    'kippt',
     'pocket',
     'flattr'
   ]
@@ -195,14 +193,6 @@ EOF
 
     room ||= authorization.api.find_room_by_id(self.params['place']['id'].to_i)
     room.speak output if !room.nil?
-  end
-
-  def kippt(post, event_fired)
-    clip = authorization.api.clips.build
-    clip.url = post.page.url
-    clip.list = place[:id]
-    clip.save
-    clip
   end
 
   def pocket(post, event_fired)

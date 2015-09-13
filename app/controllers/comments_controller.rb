@@ -1,8 +1,6 @@
 # encoding: utf-8
 class CommentsController < ApplicationController
 
-  # GET /comments/1
-  # GET /comments/1.json
   def show
     @comment = Comment.find(params[:id])
 
@@ -16,10 +14,9 @@ class CommentsController < ApplicationController
     end
   end
 
-
   def shortener
-    @comment = Comment.find(Base58.decode(params[:id]))
+    id = Base58.decode(params[:id]) rescue nil
+    @comment = Comment.find(id)
     redirect_to "/#{@comment.user.username}/comments/#{@comment.id}"
   end
-
 end

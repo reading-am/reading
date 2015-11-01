@@ -2,7 +2,7 @@ class PageObserver < ActiveRecord::Observer
 
   def after_create page
     PusherJob.perform_later 'create', page
-    WaybackJob.new.async.perform page.url
+    WaybackJob.perform_later page.url
   end
 
   def after_update page

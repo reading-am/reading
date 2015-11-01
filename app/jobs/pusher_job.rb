@@ -1,6 +1,5 @@
 class PusherJob < ActiveJob::Base
   include RenderApi
-  queue_as :default
 
   def perform(action, obj)
     ActiveRecord::Base.connection_pool.with_connection do

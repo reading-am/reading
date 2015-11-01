@@ -9,9 +9,9 @@ class UserObserver < ActiveRecord::Observer
     # Tweet to ReadingArrivals
     return unless Rails.env.production?
     tweet = "Everyone welcome #{user.username}! #{ROOT_URL}/#{user.username}"
-    TweetJob.new.async.perform ENV['READING_ARRIVALS_TOKEN'],
-                               ENV['READING_ARRIVALS_SECRET'],
-                               tweet
+    TweetJob.perform_later ENV['READING_ARRIVALS_TOKEN'],
+                           ENV['READING_ARRIVALS_SECRET'],
+                           tweet
   end
 
   def after_update(user)

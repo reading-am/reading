@@ -1,7 +1,4 @@
-class TweetJob
-  include SuckerPunch::Job
-  workers 4
-
+class TweetJob < ActiveJob::Base
   def perform(token, secret, tweet)
     client = Twitter::REST::Client.new do |config|
       config.consumer_key = ENV['TWITTER_KEY']
@@ -9,7 +6,6 @@ class TweetJob
       config.access_token = token
       config.access_token_secret = secret
     end
-
     client.update tweet
   end
 end

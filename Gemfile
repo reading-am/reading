@@ -66,12 +66,7 @@ gem 'doorkeeper'
 ####################
 # Async Processing #
 ####################
-gem 'sucker_punch'
-gem 'delayed_job'
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
-gem 'daemons' # for delayed_job
-gem 'workless' # boots up workers on Heroku when needed
+gem 'sidekiq'
 
 #####################
 # External Services #

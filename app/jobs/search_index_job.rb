@@ -1,6 +1,4 @@
 class SearchIndexJob < ActiveJob::Base
-  queue_as :default
-
   def perform action, obj
     case action
     when /create/

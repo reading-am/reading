@@ -1,9 +1,5 @@
-class WaybackJob
-  include SuckerPunch::Job
-  workers 4
-
+class WaybackJob < ActiveJob::Base
   def perform url
     Curl.get "http://web.archive.org/save/#{url}"
   end
-
 end

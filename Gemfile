@@ -6,6 +6,7 @@ ruby '2.2.2'
 #################
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'rails', '4.2.4'
+gem 'sinatra', require: nil # for sidekiq web UI
 gem 'rails-observers'
 gem 'foreman'
 gem 'puma' # server

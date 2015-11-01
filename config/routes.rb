@@ -195,10 +195,14 @@ Reading::Application.routes.draw do
   get '/settings/extras' => 'users#extras'
 
   # Admin
-  get '/admin' => redirect('/admin/dashboard')
-  get '/admin/dashboard' => 'admin#dashboard'
-  get '/admin/jobs' => DelayedJobWeb, anchor: false
-  get '/admin/become/:username' => 'admin#become'
+  scope :admin do
+    authenticate :user, -> (u) { u.roles?(:admin) } do
+      require 'sidekiq/web'; mount Sidekiq::Web => '/jobs'
+      get '/' => redirect('/admin/dashboard')
+      get '/dashboard' => 'admin#dashboard'
+      get '/become/:username' => 'admin#become'
+    end
+  end
 
   # These routes should be cleaned up
   get '/:username/export'   => 'export#index'

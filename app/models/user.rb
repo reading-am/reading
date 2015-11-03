@@ -85,6 +85,34 @@ class User < ActiveRecord::Base
   scope :who_posted_to, lambda { |page| posted_to(page) }
   scope :digesting_on_day, lambda { |freq| digesting(freq) }
 
+  after_commit on: [:create, :update] do
+    next unless was_new_user?
+
+    PusherJob.perform_later 'create', self
+    UserMailer.welcome(self).deliver_later
+
+    # Tweet to ReadingArrivals
+    next unless Rails.env.production?
+    tweet = "Everyone welcome #{username}! #{ROOT_URL}/#{username}"
+    TweetJob.perform_later ENV['READING_ARRIVALS_TOKEN'],
+                           ENV['READING_ARRIVALS_SECRET'],
+                           tweet
+  end
+
+  after_commit on: :update do
+    PusherJob.perform_later 'update', self
+  end
+
+  after_destroy do
+    PusherJob.perform_later 'destroy', self
+
+    # Don't perform any more callbacks if this was an aborted registration
+    next if email.blank? || username.blank?
+
+    # This can't be delayed because user won't exist by the time it's processed
+    UserMailer.destroyed(self).deliver_now
+  end
+
   # Search
   include Elasticsearch::Model
   index_name    "users-#{Rails.env}" if Rails.env.test?
@@ -118,6 +146,14 @@ class User < ActiveRecord::Base
 
   def password_required?
     if password_required.nil? then super else password_required end
+  end
+
+  def was_new_user?
+    (
+      (previous_changes['username'] && previous_changes['username'][0].blank?) ||
+      (previous_changes['email'] && previous_changes['email'][0].blank? && !joined_before_email?)
+    ) &&
+      username.present? && email.present?
   end
 
   public

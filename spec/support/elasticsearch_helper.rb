@@ -11,15 +11,22 @@ RSpec.configure do |config|
   config.after(:suite) { stop }
 
   def start
-    Elasticsearch::Extensions::Test::Cluster.start(port: ELASTICSEARCH_PORT, nodes: 1) unless running?
+    return if running?
+    Elasticsearch::Extensions::Test::Cluster.start(port: ELASTICSEARCH_PORT, nodes: 1)
   end
 
   def stop
-    Elasticsearch::Extensions::Test::Cluster.stop(port: ELASTICSEARCH_PORT) if running?
+    return unless running?
+    Elasticsearch::Extensions::Test::Cluster.stop(port: ELASTICSEARCH_PORT)
   end
 
   def reset!
-    Elasticsearch::Model.client.indices.delete index: '_all' if running?
+    return unless running?
+    begin
+      Elasticsearch::Model.client.indices.delete index: '_all'
+    rescue
+      puts "Elasticsearch isn't configured to allow mass index deletion"
+    end
   end
 
   def running?

@@ -154,4 +154,5 @@ group :development, :test do
   gem 'rack-test'
   gem 'database_cleaner'
   gem 'elasticsearch-extensions'
+  gem 'rspec-activejob'
 end

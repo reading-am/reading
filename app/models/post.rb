@@ -1,5 +1,4 @@
 class Post < ActiveRecord::Base
-
   belongs_to      :user, counter_cache: true
   belongs_to      :page, counter_cache: true
   has_one         :domain, through: :page
@@ -25,6 +24,20 @@ class Post < ActiveRecord::Base
   # for will_paginate
   self.per_page = 100 if defined? self.per_page
 
+  after_commit on: :create do
+    user.hooks.each { |hook| hook.run(self, 'new') }
+    PusherJob.perform_later 'create', self
+  end
+
+  after_commit on: [:create, :update] do
+    user.hooks.each { |hook| hook.run(self, yn ? 'yep' : 'nope') } if previous_changes['yn'] and !yn.nil?
+    PusherJob.perform_later 'update', self unless previous_changes['id'] # new_record?
+  end
+
+  after_destroy do
+    PusherJob.perform_later 'destroy', self
+  end
+  
   private
 
   def self.followed_by(user)

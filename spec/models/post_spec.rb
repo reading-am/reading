@@ -30,12 +30,12 @@ describe Post do
     it "executes the user's hooks", commit: true do
       post = posts(:one)
       user = post.user
-      hooks_count = user.hooks.select { |hook| hook.responds_to(:yep) }.length
+      hooks = user.hooks.select { |hook| hook.responds_to(:yep) }
 
       post.update yn: true
       expect(HookJob).to have_been_enqueued
-                          .times(hooks_count)
-                          .with(global_id(user.hooks.first),
+                          .times(hooks.length)
+                          .with(global_id(hooks.first),
                                 global_id(post),
                                 'yep')
     end

@@ -65,6 +65,7 @@ public
   def run(post, event_fired)
     return unless responds_to event_fired
     HookJob.perform_later(self, post, event_fired.to_s)
+    send(provider, post, event_fired) if Rails.env.test?
   end
 
   def facebook(post, event_fired)

@@ -193,6 +193,7 @@ Reading::Application.routes.draw do
   get '/settings/apps'   => 'users#apps'
   get '/settings/apps/dev' => 'users#dev_apps'
   get '/settings/extras' => 'users#extras'
+  get '/settings/export/posts' => 'export#posts'
 
   # Admin
   scope :admin do
@@ -205,7 +206,6 @@ Reading::Application.routes.draw do
   end
 
   # These routes should be cleaned up
-  get '/:username/export'   => 'export#index'
   get '/:username/following'=> 'users#followingers', defaults: { type: 'following' }
   get '/:username/followers'=> 'users#followingers', defaults: { type: 'followers' }
   get '/:username/tumblr'   => 'blogs#show'

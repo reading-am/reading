@@ -19,9 +19,5 @@ test:
   min_messages: warning
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  database: reading_development #reading_production
-  pool: 5
-  username: myuser
-  password: 'jq6UT6U9164dS6PC491ozVv1Ad'
+  url:  <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>

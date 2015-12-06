@@ -11,8 +11,10 @@ module Api::V1
     public
 
     def index
-      pages = Page.order('created_at DESC')
-              .paginate(page: params[:page])
+      pages = Page
+              .limit(params[:limit])
+              .offset(params[:offset])
+              .order('created_at DESC')
 
       render locals: { pages: pages }
     end

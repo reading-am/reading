@@ -26,7 +26,7 @@ be set. Copy this file to `.env` and set the appropriate values.
 We're using [Foreman](https://github.com/ddollar/foreman) for
 process management so starting the app is as easy as running:
 
-`foreman start`
+`foreman start -f Procfile.dev`
 
 ...with one caveat. Slanger [doesn't seem to play well with Foreman](https://github.com/stevegraham/slanger/issues/77)
 and needs to be started on its own using:

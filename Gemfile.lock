@@ -695,6 +695,8 @@ GEM
       json (~> 1.0)
       redis (~> 3.2, >= 3.2.1)
       redis-namespace (~> 1.5, >= 1.5.2)
+    sidekiq-limit_fetch (2.4.2)
+      sidekiq (>= 2.6.5, < 4.0)
     signature (0.1.8)
     simple_oauth (0.2.0)
     sinatra (1.4.6)
@@ -875,6 +877,7 @@ DEPENDENCIES
   ruby-thumbor
   selenium-webdriver
   sidekiq
+  sidekiq-limit_fetch
   sinatra
   sitemap_generator
   spring

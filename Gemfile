@@ -68,6 +68,7 @@ gem 'doorkeeper'
 # Async Processing #
 ####################
 gem 'sidekiq'
+gem 'sidekiq-limit_fetch'
 
 #####################
 # External Services #

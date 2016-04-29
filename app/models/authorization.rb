@@ -19,7 +19,8 @@ class Authorization < ActiveRecord::Base
     'evernote',
     'tssignals',
     'pocket',
-    'flattr'
+    'flattr',
+    'slack'
   ]
 
 private

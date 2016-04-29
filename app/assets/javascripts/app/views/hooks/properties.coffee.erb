@@ -16,13 +16,21 @@ define [
 
   "events":<%= events.to_json %>,
   "providers":[
-    {"text":"Facebook", "params":[
-      {"text":"account", "options":User::current.get("authorizations").facebook.accounts(), "datatype":"account"},
-      {"name":"permission", "options":[{text:"the timeline",value:"publish_actions"},{text:"the wall",value:"publish_stream"}]}
-    ]},
     {"text":"Twitter", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":User::current.get("authorizations").twitter.accounts(), "datatype":"account"}
+    ]},
+    {"text":"Slack", "value":"slack", "params":[
+      {"name":"permission", "value":"write", "type":"hidden"},
+      {"text":"account", "options":User::current.get("authorizations").slack.accounts(), "datatype":"account"}
+      {"scope":"place", "params":[
+        {"text":"room", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
+        {"name":"name", "type":"hidden"}
+      ]}
+    ]},
+    {"text":"Facebook", "params":[
+      {"text":"account", "options":User::current.get("authorizations").facebook.accounts(), "datatype":"account"},
+      {"name":"permission", "options":[{text:"the timeline",value:"publish_actions"},{text:"the wall",value:"publish_stream"}]}
     ]},
     {"text":"Tumblr", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},

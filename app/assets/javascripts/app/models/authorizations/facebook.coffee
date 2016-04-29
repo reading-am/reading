@@ -22,9 +22,7 @@ define [
   class FacebookAuth extends Authorization
     type: "FacebookAuth"
     provider: "facebook"
-
-    set_default_perms: (@permissions) ->
-      @permissions = _.uniq(@permissions.concat(["email"])) if !@uid or @uid is "new"
+    default_perms: ["email"]
 
     login: (params={}) ->
       perms   = params.permissions ? []
@@ -57,7 +55,7 @@ define [
           else
             @sync_to_current_session success, error
 
-        , {scope: perms.join ','}
+        , {scope: perms.join(',')}
 
 
     _check_authResponse: (authResponse) ->

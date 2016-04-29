@@ -108,6 +108,8 @@ public
     case provider
     when 'tssignals'
       accounts.first["name"]
+    when 'slack'
+      "#{info['team']} / #{info['user']}"
     else
       i = info || {}
       i['username'] || i['screen_name'] || uid

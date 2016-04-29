@@ -7,13 +7,14 @@ define [
   class SlackAuth extends Authorization
     type: "SlackAuth"
     provider: "slack"
+    default_perms: ["identify", "channels:read", "chat:write:bot"]
     _login: SlackProv::login
 
     initialize: (options) ->
       super
 
       if @info?
-        @name = "#{@info.team.name} - #{@info.user.name}"
+        @name = "#{@info.team} - #{@info.user}"
 
     places: (params) ->
       # transform the return val

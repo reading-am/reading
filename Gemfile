@@ -62,6 +62,7 @@ gem 'omniauth-readability', github: '29decibel/omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
+gem 'omniauth-slack'
 gem 'doorkeeper'
 
 ####################

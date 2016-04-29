@@ -54,7 +54,7 @@ gem 'devise'
 gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
-gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
+gem 'omniauth-facebook'
 gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'

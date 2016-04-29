@@ -298,7 +298,7 @@ GEM
     fancy_irb (0.7.3)
       paint (>= 0.8.1)
       unicode-display_width (>= 0.1.1)
-    faraday (0.8.10)
+    faraday (0.8.11)
       multipart-post (~> 1.2.0)
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
@@ -425,7 +425,6 @@ GEM
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
-    httpauth (0.2.1)
     httpclient (2.6.0.1)
     i18n (0.7.0)
     inflecto (0.0.2)
@@ -460,8 +459,7 @@ GEM
     json (1.8.3)
     json-schema (2.5.1)
       addressable (~> 2.3.7)
-    jwt (0.1.13)
-      multi_json (>= 1.5)
+    jwt (1.5.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     less (2.6.0)
@@ -497,7 +495,7 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.6.2)
     minitest (5.8.0)
-    multi_json (1.11.2)
+    multi_json (1.11.3)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     nenv (0.2.0)
@@ -511,16 +509,16 @@ GEM
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     oauth (0.4.7)
-    oauth2 (0.8.1)
-      faraday (~> 0.8)
-      httpauth (~> 0.1)
-      jwt (~> 0.1.4)
-      multi_json (~> 1.0)
-      rack (~> 1.2)
+    oauth2 (1.1.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0, < 1.5.2)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
     oj (2.12.13)
-    omniauth (1.2.2)
+    omniauth (1.3.1)
       hashie (>= 1.2, < 4)
-      rack (~> 1.0)
+      rack (>= 1.0, < 3)
     omniauth-37signals (1.0.5)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
@@ -528,8 +526,8 @@ GEM
       evernote-thrift
       multi_json (~> 1.0)
       omniauth-oauth (~> 1.0)
-    omniauth-facebook (1.4.0)
-      omniauth-oauth2 (~> 1.0.2)
+    omniauth-facebook (3.0.0)
+      omniauth-oauth2 (~> 1.2)
     omniauth-flattr (0.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
@@ -539,12 +537,14 @@ GEM
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
-    omniauth-oauth2 (1.0.3)
-      oauth2 (~> 0.8.0)
-      omniauth (~> 1.0)
+    omniauth-oauth2 (1.3.1)
+      oauth2 (~> 1.0)
+      omniauth (~> 1.2)
     omniauth-pocket (0.1.0)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
+    omniauth-slack (2.3.0)
+      omniauth-oauth2 (~> 1.3.1)
     omniauth-tumblr (1.1)
       omniauth-oauth (~> 1.0)
     omniauth-twitter (1.0.0)
@@ -844,11 +844,12 @@ DEPENDENCIES
   omniauth
   omniauth-37signals
   omniauth-evernote
-  omniauth-facebook (= 1.4.0)
+  omniauth-facebook
   omniauth-flattr
   omniauth-instapaper
   omniauth-pocket
   omniauth-readability!
+  omniauth-slack
   omniauth-tumblr
   omniauth-twitter
   paperclip

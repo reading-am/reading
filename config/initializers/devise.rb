@@ -220,7 +220,7 @@ Devise.setup do |config|
   config.omniauth "37signals",  ENV['SIGNALS37_KEY'],   ENV['SIGNALS37_SECRET']
   config.omniauth :pocket,      ENV['POCKET_KEY']
   config.omniauth :flattr,      ENV['FLATTR_KEY'],      ENV['FLATTR_SECRET'], scope: ['flattr']
-  config.omniauth :slack,       ENV["SLACK_KEY"],       ENV["SLACK_SECRET"], scope: 'identify channels:read chat:write:user'
+  config.omniauth :slack,       ENV["SLACK_KEY"],       ENV["SLACK_SECRET"], scope: ['identify', 'channels:read', 'chat:write:user'].join(' ')
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

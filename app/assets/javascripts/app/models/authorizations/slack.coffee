@@ -18,7 +18,7 @@ define [
       if params.success?
         success = params.success
         params.success = (places) ->
-          success ({text:place.name, value:place.guid} for place in places)
+          success ({text: place.name, value: place.id} for place in places)
 
       super params
 

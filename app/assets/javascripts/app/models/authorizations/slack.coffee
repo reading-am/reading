@@ -8,6 +8,11 @@ define [
     type: "SlackAuth"
     provider: "slack"
     _login: SlackProv::login
+
+    initialize: (options) ->
+      super
+      @name = "#{options.info.team.name} - #{options.info.user.name}"
+
     places: (params) ->
       # transform the return val
       if params.success?

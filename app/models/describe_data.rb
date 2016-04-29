@@ -5,7 +5,7 @@ class DescribeData < ActiveRecord::Base
   validates_presence_of :page, :response
   before_validation { fetch if new_record? and response.blank? }
 
-  ENDPOINT = (ENV['DESCRIBE_PROTOCOL'].blank? ? "https" : ENV['DESCRIBE_PORTPROTOCOL']) +
+  ENDPOINT = (ENV['DESCRIBE_PROTOCOL'].blank? ? "https" : ENV['DESCRIBE_PROTOCOL']) +
              "://#{ENV['DESCRIBE_HOST']}" +
              (ENV['DESCRIBE_PORT'].blank? ? "" : ":#{ENV['DESCRIBE_PORT']}")
 

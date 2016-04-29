@@ -206,6 +206,13 @@ EOF
     authorization.api.flattr post.page.url
   end
 
+  def slack(obj, event_fired)
+    output = "testing"
+    authorization.api.chat_postMessage channel: params['place']['id'],
+                                       text: output,
+                                       as_user: true
+  end
+
   def url(post, event_fired)
     amap = { 'get' => :params, 'post' => :body }
     method = params['method']

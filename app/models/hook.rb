@@ -22,7 +22,8 @@ class Hook < ActiveRecord::Base
   PLACE_TYPES = {
     'tumblr'  => 'blog',
     'campfire'=> 'room',
-    'evernote'=> 'notebook'
+    'evernote'=> 'notebook',
+    'slack'   => 'room'
   }
 
   SINGLE_FIRE = [

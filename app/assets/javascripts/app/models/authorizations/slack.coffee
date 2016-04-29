@@ -11,7 +11,9 @@ define [
 
     initialize: (options) ->
       super
-      @name = "#{options.info.team.name} - #{options.info.user.name}"
+
+      if @info?
+        @name = "#{@info.team.name} - #{@info.user.name}"
 
     places: (params) ->
       # transform the return val

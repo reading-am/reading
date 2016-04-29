@@ -14,7 +14,7 @@ define [
       super
 
       if @info?
-        @name = "#{@info.team} - #{@info.user}"
+        @name = "#{@info.team} / #{@info.user}"
 
     places: (params) ->
       # transform the return val

@@ -88,6 +88,7 @@ gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
 gem 'flattr', github: 'leppert/flattr'
 gem 'ruby-thumbor'
+gem 'slack-ruby-client'
 
 #################
 # Frontend HTML #

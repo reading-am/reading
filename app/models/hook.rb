@@ -150,13 +150,13 @@ public
     }
 
     client = HipChat::Client.new(params['token'])
-    client[params['room']].send('Reading.am', output, :color => colors[event_fired], :notify => (event_fired == 'new')) # only notify if this is not a post update
+    client[params['room']].send('Reading.am', output, color: colors[event_fired], notify: (event_fired == 'new')) # only notify if this is not a post update
   end
 
   # For legacy support. If you finally remove this, also remove
   # the room param from tssignals and the ||= assignment
   def campfire(post, event_fired)
-    campfire = Tinder::Campfire.new self.params['subdomain'], :token => self.params['token']
+    campfire = Tinder::Campfire.new self.params['subdomain'], token: self.params['token']
     room = campfire.find_or_create_room_by_name(self.place[:id])
     self.tssignals post, event_fired, room
   end

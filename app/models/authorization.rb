@@ -56,13 +56,13 @@ public
     end
 
     {
-      :provider   => auth_hash[:provider],
-      :uid        => auth_hash[:uid],
-      :token      => auth_hash[:credentials][:token],
-      :refresh_token => auth_hash[:credentials][:refresh_token],
-      :secret     => auth_hash[:credentials][:secret],
-      :expires_at => expires_at,
-      :info       => info
+      provider:    auth_hash[:provider],
+      uid:         auth_hash[:uid],
+      token:       auth_hash[:credentials][:token],
+      refresh_token:  auth_hash[:credentials][:refresh_token],
+      secret:      auth_hash[:credentials][:secret],
+      expires_at:  expires_at,
+      info:        info
     }
   end
 

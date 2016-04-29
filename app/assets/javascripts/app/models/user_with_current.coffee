@@ -10,6 +10,7 @@ define [
   "app/models/providers/tssignals"
   "app/models/providers/pocket"
   "app/models/providers/flattr"
+  "app/models/providers/slack"
   "app/models/authorizations/twitter"
   "app/models/authorizations/facebook"
   "app/models/authorizations/tumblr"
@@ -19,8 +20,9 @@ define [
   "app/models/authorizations/tssignals"
   "app/models/authorizations/pocket"
   "app/models/authorizations/flattr"
+  "app/models/authorizations/slack"
   "app/collections/users" # needed from within models/user
-], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, TssignalsProv, PocketProv, FlattrProv) ->
+], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, TssignalsProv, PocketProv, FlattrProv, SlackProv) ->
 
   if window.current_user_seed?
     User::current = new User window.current_user_seed
@@ -38,6 +40,7 @@ define [
     tssignals:  new TssignalsProv
     pocket:     new PocketProv
     flattr:     new FlattrProv
+    slack:      new SlackProv
 
   if window.authorizations_seed?
     auths[auth.provider].set(auth.uid, Authorization::factory(auth)) for auth in window.authorizations_seed

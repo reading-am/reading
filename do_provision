@@ -1,0 +1,57 @@
+#!/bin/bash
+# Run this file as root
+
+# Add swap space
+fallocate -l 4G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+swapon -s
+# Retain swap on reboot
+echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+
+# Tweak swap behavior settings
+sysctl vm.swappiness=10
+sysctl vm.vfs_cache_pressure=50
+echo "vm.swappiness=10" >> /etc/sysctl.conf
+echo "vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
+
+# Install dokku
+wget https://raw.githubusercontent.com/dokku/dokku/v0.4.13/bootstrap.sh
+DOKKU_TAG=v0.4.13 bash bootstrap.sh
+rm bootstrap.sh
+
+# Install dokku plugins
+dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+
+###########
+# READING #
+###########
+
+dokku apps:create reading
+# dokku config:set reading ...
+# deploy app locally or have it pull from github? Must be done before letsencrypt
+
+# Isolate domain that needs SSL cert so as to avoid letsencrypt rate limits
+dokku domains:add reading reading-picasso.r-o-b-o-t.us 
+dokku domains:remove reading reading.r-o-b-o-t.us
+# Run letsencrypt to get cert
+dokku letsencrypt:email reading hello@reading.am
+dokku letsencrypt reading
+# Add additional domain names
+dokku domains:add reading reading.am www.reading.am mailman.reading.am direct.reading.am
+
+############
+# DESCRIBE #
+############
+
+dokku apps:create describe
+# dokku config:set describe ...
+dokku domains:add describe describe-monet.r-o-b-o-t.us
+dokku domains:remove describe describe.r-o-b-o-t.us
+dokku letsencrypt:email describe hello@reading.am
+dokku letsencrypt describe
+dokku domains:add describe describ.ing.am
+
+159.203.113.161
+162.243.184.94

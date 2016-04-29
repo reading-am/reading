@@ -39,22 +39,15 @@ public
       expires_at = auth_hash[:credentials][:expires_at]
     end
 
-    if auth_hash.provider == 'slack'
-      info = {}
-      auth_hash[:extra]
-        .keys
-        .select { |k| k =~ /.+_info$/ && k != 'raw_info' }
-        .each do |k|
-        sub_k = k[0..-6] # lob off _info
-        data = auth_hash[:extra][k][sub_k]
-        info[sub_k] = data if data
-      end
-    elsif auth_hash[:extra][:raw_info].nil?
+    if auth_hash[:extra][:raw_info].nil?
       info = nil
     else
       info = auth_hash[:extra][:raw_info]
 
       case auth_hash.provider
+      when 'slack'
+        info.delete("ok")
+        info.merge(auth_hash[:info].select { |k, v|  !v.nil? })
       when 'evernote'
         # store these per: http://discussion.evernote.com/topic/26173-is-it-safe-to-cache-the-shard-under-oauth/
         info = JSON.parse(info.to_json) # Seems to be the easiest way to make a hash of the Thrift response

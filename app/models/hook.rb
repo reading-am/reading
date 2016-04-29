@@ -207,10 +207,26 @@ EOF
   end
 
   def slack(obj, event_fired)
-    output = "testing"
+    case event_fired
+    when 'new', 'yep', 'nope'
+      post = obj
+    when 'comment'
+      post = obj.post
+    end
+
+    text = "✌ #{post.page.verb.capitalize}:"
+    body = {
+      color: '#fff300',
+      title: post.page.display_title,
+      title_link: post.wrapped_url,
+      text: post.page.description
+    }
+
     authorization.api.chat_postMessage channel: params['place']['id'],
-                                       text: output,
-                                       as_user: true
+                                       text: text,
+                                       attachments: [body],
+                                       as_user: true,
+                                       unfurl_links: true
   end
 
   def url(post, event_fired)

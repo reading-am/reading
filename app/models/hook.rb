@@ -214,19 +214,23 @@ EOF
       post = obj.post
     end
 
-    text = "✌ #{post.page.verb.capitalize}:"
+    pretext = "✌ #{post.page.verb.capitalize}:"
     body = {
       color: '#fff300',
+      pretext: pretext,
       title: post.page.display_title,
       title_link: post.wrapped_url,
-      text: post.page.description
+      text: post.page.display_description,
+      fallback: "#{pretext} #{post.page.display_title} | #{post.wrapped_url}",
+      image_url: post.page.primary_image,
+      author_name: post.page.author['name'],
+      author_link: post.page.author['url'],
+      author_icon: post.page.author['avatar']['url']
     }
 
     authorization.api.chat_postMessage channel: params['place']['id'],
-                                       text: text,
                                        attachments: [body],
-                                       as_user: true,
-                                       unfurl_links: true
+                                       as_user: true
   end
 
   def url(post, event_fired)

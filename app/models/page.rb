@@ -224,4 +224,23 @@ class Page < ActiveRecord::Base
       "pages"
     ]
   end
+
+  def primary_image
+    url = nil
+    thumbnails = describe_data['response']['thumbnails']
+
+    if thumbnails.present?
+      url = thumbnails[0]['url']
+    else
+      url = (describe_data['response']['media'] || []).select { |m| m['type'] == 'image' }.first.try(:[], 'url')
+    end
+
+    url
+  end
+
+  def author
+    author = describe_data['response']['author'] || {}
+    author['avatar'] ||= {}
+    author
+  end
 end

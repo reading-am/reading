@@ -5,8 +5,7 @@ class Page < ActiveRecord::Base
   has_one  :readability_data, dependent: :destroy # also handled by foreign key
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy # also handled by foreign key
-  has_many :tagged_pages, dependent: :destroy # also handled by foreign key
-  has_many :tags, through: :tagged_pages
+  has_many :tags, dependent: :destroy # also handled by foreign key
 
   validates_presence_of :url, :domain, :medium
   validates_associated :domain
@@ -19,6 +18,16 @@ class Page < ActiveRecord::Base
   before_validation :populate_medium
 
   MEDIUMS = %w(all text image video audio)
+
+  class << self
+    def with_tag(name)
+      joins(:tags).where(tags: {name: name})
+    end
+
+    def with_tag_from_user(name, user)
+      with_tag(name).where(tags: {user: user})
+    end
+  end
 
   private
 

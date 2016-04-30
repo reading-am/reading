@@ -59,8 +59,7 @@ class User < ActiveRecord::Base
 
   has_many :blogs, dependent: :destroy # also handled by foreign key
 
-  has_many :tagged_pages, dependent: :destroy # also handled by foreign key
-  has_many :tags, through: :tagged_pages
+  has_many :tags, dependent: :destroy # also handled by foreign key
 
   has_attached_file :avatar,
     :styles => {

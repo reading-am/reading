@@ -47,6 +47,7 @@ Reading::Application.routes.draw do
     get 'expats' # move this to /user
     resources :comments
     resources :pages, only: :index
+    resources :tags, only: :index
     resources :posts, only: :index do
       get ':medium',
           on: :collection,

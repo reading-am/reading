@@ -1,7 +1,10 @@
 class Tag < ActiveRecord::Base
-  has_many :tagged_pages, dependent: :destroy # also handled by foreign key
-  has_many :pages, through: :tagged_pages
-  has_many :users, through: :tagged_pages
+  belongs_to :user, counter_cache: true
+  belongs_to :page, counter_cache: true
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true
+  validates :user_id, presence: true
+  validates :page_id, presence: true
+
+  #strip_attributes only: [:name]
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409145606) do
+ActiveRecord::Schema.define(version: 20160430135156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.text     "description"
     t.text     "embed"
     t.integer  "has_describe_data",             default: 0, null: false
+    t.integer  "tags_count"
   end
 
   add_index "pages", ["medium"], name: "index_pages_on_medium", using: :btree
@@ -226,6 +227,20 @@ ActiveRecord::Schema.define(version: 20150409145606) do
   add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
 
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "page_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
+  add_index "tags", ["page_id"], name: "index_tags_on_page_id", using: :btree
+  add_index "tags", ["user_id", "name"], name: "index_tags_on_user_id_and_name", using: :btree
+  add_index "tags", ["user_id", "page_id"], name: "index_tags_on_user_id_and_page_id", using: :btree
+  add_index "tags", ["user_id"], name: "index_tags_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
     t.string   "username",               limit: 255
@@ -269,6 +284,7 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.integer  "status"
     t.integer  "blocking_count",                     default: 0
     t.integer  "blockers_count",                     default: 0
+    t.integer  "tags_count"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
@@ -295,4 +311,6 @@ ActiveRecord::Schema.define(version: 20150409145606) do
   add_foreign_key "readability_data", "pages", name: "readability_data_page_id_fk", on_delete: :cascade
   add_foreign_key "relationships", "users", column: "followed_id", name: "relationships_followed_id_fk", on_delete: :cascade
   add_foreign_key "relationships", "users", column: "follower_id", name: "relationships_follower_id_fk", on_delete: :cascade
+  add_foreign_key "tags", "pages", on_delete: :cascade
+  add_foreign_key "tags", "users", on_delete: :cascade
 end

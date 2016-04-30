@@ -11,11 +11,7 @@ module Api::V1
     public
 
     def index
-      pages = Page
-              .limit(params[:limit])
-              .offset(params[:offset])
-              .order('created_at DESC')
-
+      pages = Pages.index(params)
       render locals: { pages: pages }
     end
     require_scope_for :index, :public

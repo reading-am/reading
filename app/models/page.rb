@@ -5,6 +5,8 @@ class Page < ActiveRecord::Base
   has_one  :readability_data, dependent: :destroy # also handled by foreign key
   has_many :users, through: :posts
   has_many :comments, dependent: :destroy # also handled by foreign key
+  has_many :tagged_pages, dependent: :destroy # also handled by foreign key
+  has_many :tags, through: :tagged_pages
 
   validates_presence_of :url, :domain, :medium
   validates_associated :domain

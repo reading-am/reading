@@ -35,6 +35,7 @@ gem 'versionist' # api versioning
 #####################
 gem 'bitmask_attributes', github: 'joelmoss/bitmask_attributes'
 gem 'nilify_blanks'
+gem 'strip_attributes'
 gem 'paperclip' # file attachments
 gem 'browser' # browser detection
 gem 'text'

@@ -6,5 +6,5 @@ class Tag < ActiveRecord::Base
   validates :user_id, presence: true
   validates :page_id, presence: true
 
-  #strip_attributes only: [:name]
+  strip_attributes only: [:name]
 end

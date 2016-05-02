@@ -37,17 +37,6 @@ class Hook < ActiveRecord::Base
     'flattr'
   ]
 
-private
-
-  def parse_pinboard_token
-    if provider == 'pinboard' and !self.params['auth_token'].blank?
-      bits = self.params['auth_token'].split(':')
-      self.params = {:user => bits[0], :token => bits[1]}
-    end
-  end
-
-public
-
   def place
     unless params['place'].blank?
       {
@@ -60,7 +49,7 @@ public
 
   def responds_to event
     event = event.to_s
-    events.include?(event) and (!SINGLE_FIRE.include?(provider) or (event == 'new' or !events.include?('new')))
+    events.include?(event) && (!SINGLE_FIRE.include?(provider) || (event == 'new' || !events.include?('new')))
   end
 
   def run(post, event_fired)
@@ -214,21 +203,40 @@ EOF
       post = obj.post
     end
 
-    pretext = "✌ #{post.page.verb.capitalize}:"
+    # https://api.slack.com/docs/attachments
     body = {
-      color: '#fff300',
-      pretext: pretext,
       title: post.page.display_title,
       title_link: post.wrapped_url,
-      text: post.page.display_description,
-      fallback: "#{pretext} #{post.page.display_title} | #{post.wrapped_url}",
-      image_url: post.page.primary_image,
-      author_name: post.page.author['name'],
-      author_link: post.page.author['url'],
-      author_icon: post.page.author['avatar']['url']
+      color: {
+        'new'     => '#fff300',
+        'yep'     => '#38ff7E',
+        'nope'    => '#ff0000',
+        'comment' => '#b01ecf'
+      }[event_fired]
     }
 
+    case event_fired
+    when 'new'
+      text = "✌ #{post.page.verb.capitalize}:"
+      body[:fallback] = "#{text} #{post.page.display_title} | #{post.wrapped_url}"
+    when 'yep', 'nope'
+      text = post.yn ? '👍 Yep' : '👎 Nope'
+      body[:fallback] = "#{text}: #{post.page.display_title} | #{post.wrapped_url}"
+    when 'comment'
+      text = obj.body
+      body[:fallback] = "#{obj.body}\n#{post.wrapped_url}"
+    end
+
+    if event_fired == 'new' || !events.include?('new')
+      body = body.merge({ text: post.page.display_description,
+                          image_url: post.page.primary_image,
+                          author_name: post.page.author['name'],
+                          author_link: post.page.author['url'],
+                          author_icon: post.page.author['avatar']['url'] })
+    end
+
     authorization.api.chat_postMessage channel: params['place']['id'],
+                                       text: text,
                                        attachments: [body],
                                        as_user: true
   end
@@ -239,5 +247,14 @@ EOF
     url = params['address']
     url = "http://#{url}" if url[0, 4] != 'http'
     Typhoeus.send method, url, amap[method] => { post: render_api(post) }
+  end
+
+  private
+
+  def parse_pinboard_token
+    if provider == 'pinboard' and !self.params['auth_token'].blank?
+      bits = self.params['auth_token'].split(':')
+      self.params = {user: bits[0], token: bits[1]}
+    end
   end
 end

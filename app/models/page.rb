@@ -224,4 +224,25 @@ class Page < ActiveRecord::Base
       "pages"
     ]
   end
+
+  def primary_image
+    return unless has_describe_data?
+
+    url = nil
+    thumbnails = describe_data['response']['thumbnails']
+
+    if thumbnails.present?
+      url = thumbnails[0]['url']
+    else
+      url = (describe_data['response']['media'] || []).select { |m| m['type'] == 'image' }.first.try(:[], 'url')
+    end
+
+    url
+  end
+
+  def author
+    author = {'avatar' => {}}
+    return author unless has_describe_data?
+    author.merge describe_data['response']['author']
+  end
 end

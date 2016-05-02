@@ -41,14 +41,14 @@ evernote: # this is a sandbox.evernote.com user
   user: greg
   provider: evernote
   uid: '210108'
-  created_at: '2013-03-23 17:26:40.647688'
-  updated_at: '2013-03-23 17:26:40.647688'
-  token: S=s1:U=334bc:E=152906628b1:C=14b38b4fbc0:P=81:A=reading-am:V=2:H=9687b24074ee291218aafc58dff973d8
-  secret: ''
+  created_at: 2016-05-02 15:01:51
+  updated_at: 2016-05-02 15:01:51
+  token: S=s1:U=334bc:E=15bc9ae8646:C=15471fd5748:P=81:A=reading-am:V=2:H=b74c8c586a91671a8aabe760c5a7df99
+  secret: ~
   permissions: ! '["read","write"]'
-  info: ! '{"id":210108,"username":"reading","privilege":1,"active":true,"shardId":"s1","accounting":{"uploadLimit":62914560,"uploadLimitEnd":1365922800000,"uploadLimitNextMonth":62914560,"premiumServiceStatus":0},"edam":{"noteStoreUrl":"https://sandbox.evernote.com/shard/s1/notestore","webApiUrlPrefix":"https://sandbox.evernote.com/shard/s1/"}}'
-  expires_at: 46194-08-30 12:19:41
-  refresh_token: 
+  info: ! '{"id":210108,"username":"reading","privilege":1,"active":true,"shardId":"s1","accounting":{"uploadLimit":62914560,"uploadLimitEnd":1463209200000,"uploadLimitNextMonth":62914560,"premiumServiceStatus":0},"edam":{"noteStoreUrl":"https://sandbox.evernote.com/shard/s1/notestore","webApiUrlPrefix":"https://sandbox.evernote.com/shard/s1/"}}'
+  expires_at: 2017-05-02 15:01:51
+  refresh_token: ~
 
 readability:
   provider: readability
@@ -107,3 +107,15 @@ flattr:
   info: ! '{"type":"user","resource":"https://api.flattr.com/rest/v2/users/reading","link":"https://flattr.com/profile/reading","username":"reading","firstname":"","lastname":"","about":"","city":null,"country":0,"url":null,"avatar":"https://secure.gravatar.com/avatar/35f6be1a71aceaafcc5bf453628b235a?s=40&d=https%3A%2F%2Fflattr.com%2F_img%2Faut11-user-placeholder-small.png&r=pg"}'
   created_at: 2013-02-11 03:27:32.511502
   updated_at: 2013-02-11 03:27:32.511502
+
+slack:
+  user: greg
+  provider: slack
+  uid: U14SBKQTS
+  token: xoxp-38908622914-38895670944-38993950020-ea7a18e97c
+  permissions: ! '["read","write"]'
+  info: ! '{"url": "https://readingam.slack.com/", "team": "Reading", "user": "greg", "team_id": "T14SQJASW", "user_id": "U14SBKQTS"}'
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2016-04-29 18:14:33
+  updated_at: 2016-04-29 18:14:33

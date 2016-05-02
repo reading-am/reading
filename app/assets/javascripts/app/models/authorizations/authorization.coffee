@@ -11,25 +11,22 @@ define [
 
   class Authorization extends Backbone.Model
     type: "Authorization"
+    default_perms: ["read","write"]
 
     initialize: (options) ->
       @uid = options.uid
-      @permissions = options.permissions || []
       @info = options.info
-
       @name = @uid
+
+      @permissions = options.permissions || []
+      # make sure you grab certain default permissions on a new authorization
+      @permissions = _.uniq(@permissions.concat(@default_perms)) if !@uid or @uid is "new"
 
       if @info?
         if @info.username?
           @name = @info.username
         else if @info.name?
           @name = @info.name
-
-      @set_default_perms @permissions
-
-    # make sure you grab certain default permissions on a new authorization
-    set_default_perms: (@permissions) ->
-      @permissions = _.uniq(@permissions.concat(["read","write"])) if !@uid or @uid is "new"
 
     can: (perm) ->
       @uid and @uid != "new" and @permissions and perm in @permissions

@@ -118,9 +118,9 @@ describe Hook do
       expect(response.code).to eq(200)
       # cleanup
       response = Typhoeus::Request.get 'https://api.pinboard.in/v1/posts/delete',
-        :params => {
-          :auth_token => "#{hook.params['user']}:#{hook.params['token']}",
-          :url => post.page.url
+        params: {
+          auth_token: "#{hook.params['user']}:#{hook.params['token']}",
+          url: post.page.url
         }
       expect(response.code).to eq(200)
     end
@@ -134,5 +134,17 @@ describe Hook do
     #   response = hook.flattr(post, 'new')
     #   expect(response).to be true
     # end
+
+    it "posts to Slack" do
+      # setup
+      hook = hooks(:slack)
+      post = posts(:one)
+      # test
+      response = hook.slack(post, 'new')
+      expect(response).to be_an_instance_of Slack::Messages::Message
+      expect(response['ok']).to be true
+      # cleanup
+      # NOTE - It's a chat client so there is no cleanup
+    end
   end
 end

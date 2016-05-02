@@ -243,6 +243,6 @@ class Page < ActiveRecord::Base
   def author
     author = {'avatar' => {}}
     return author unless has_describe_data?
-    author.merge describe_data['response']['author']
+    author.merge(describe_data['response']['author'] || {})
   end
 end

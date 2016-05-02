@@ -13,6 +13,8 @@ class AuthorizationsController < ApplicationController
         places = @auth.api.listNotebooks @auth.token
       when 'tssignals'
         places = @auth.api.rooms
+      when 'slack'
+        places = @auth.api.channels_list.channels
       end
     end
     respond_to do |format|

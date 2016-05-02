@@ -19,7 +19,8 @@ class Authorization < ActiveRecord::Base
     'evernote',
     'tssignals',
     'pocket',
-    'flattr'
+    'flattr',
+    'slack'
   ]
 
 private
@@ -44,6 +45,9 @@ public
       info = auth_hash[:extra][:raw_info]
 
       case auth_hash.provider
+      when 'slack'
+        info.delete("ok")
+        info.merge(auth_hash[:info].select { |k, v|  !v.nil? })
       when 'evernote'
         # store these per: http://discussion.evernote.com/topic/26173-is-it-safe-to-cache-the-shard-under-oauth/
         info = JSON.parse(info.to_json) # Seems to be the easiest way to make a hash of the Thrift response
@@ -55,13 +59,13 @@ public
     end
 
     {
-      :provider   => auth_hash[:provider],
-      :uid        => auth_hash[:uid],
-      :token      => auth_hash[:credentials][:token],
-      :refresh_token => auth_hash[:credentials][:refresh_token],
-      :secret     => auth_hash[:credentials][:secret],
-      :expires_at => expires_at,
-      :info       => info
+      provider:    auth_hash[:provider],
+      uid:         auth_hash[:uid],
+      token:       auth_hash[:credentials][:token],
+      refresh_token:  auth_hash[:credentials][:refresh_token],
+      secret:      auth_hash[:credentials][:secret],
+      expires_at:  expires_at,
+      info:        info
     }
   end
 
@@ -104,6 +108,8 @@ public
     case provider
     when 'tssignals'
       accounts.first["name"]
+    when 'slack'
+      "#{info['team']} / #{info['user']}"
     else
       i = info || {}
       i['username'] || i['screen_name'] || uid
@@ -160,6 +166,8 @@ public
         @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
       when 'flattr'
         @api_user = Flattr.new :access_token => token
+      when 'slack'
+        @api_user = Slack::Web::Client.new token: token
       end
     end
 

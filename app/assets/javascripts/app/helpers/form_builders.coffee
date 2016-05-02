@@ -26,7 +26,7 @@ define ["jquery"], ($) ->
 
     while i < param.options.length
       op = (if typeof param.options[i] is "string" then text: param.options[i] else param.options[i])
-      op.value = op.text.toLowerCase()  unless op.value
+      op.value = op.text.toLowerCase() unless op.value
       $select.append $("<option>").val(op.value).text((if op.text then op.text else op.value))
       i++
     $select.append $("<option>").val("new").text("+ connect new") if param.datatype is "account"

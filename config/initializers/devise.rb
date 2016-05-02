@@ -212,14 +212,15 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
   config.omniauth :twitter,     ENV['TWITTER_KEY'],     ENV['TWITTER_SECRET']
-  config.omniauth :facebook,    ENV['FACEBOOK_KEY'],    ENV['FACEBOOK_SECRET'], {:scope => 'email'}
-  config.omniauth :instapaper,  ENV['INSTAPAPER_KEY'],  ENV['INSTAPAPER_SECRET'], :form => OmniauthFormsController.action(:instapaper)
+  config.omniauth :facebook,    ENV['FACEBOOK_KEY'],    ENV['FACEBOOK_SECRET'], scope: 'email'
+  config.omniauth :instapaper,  ENV['INSTAPAPER_KEY'],  ENV['INSTAPAPER_SECRET'], form: OmniauthFormsController.action(:instapaper)
   config.omniauth :tumblr,      ENV['TUMBLR_KEY'],      ENV['TUMBLR_SECRET']
   config.omniauth :readability, ENV['READABILITY_KEY'], ENV['READABILITY_SECRET']
-  config.omniauth :evernote,    ENV['EVERNOTE_KEY'],    ENV['EVERNOTE_SECRET'], :client_options => { :site => "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
+  config.omniauth :evernote,    ENV['EVERNOTE_KEY'],    ENV['EVERNOTE_SECRET'], client_options: { site: "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
   config.omniauth "37signals",  ENV['SIGNALS37_KEY'],   ENV['SIGNALS37_SECRET']
   config.omniauth :pocket,      ENV['POCKET_KEY']
-  config.omniauth :flattr,      ENV['FLATTR_KEY'], ENV['FLATTR_SECRET'], scope: ['flattr']
+  config.omniauth :flattr,      ENV['FLATTR_KEY'],      ENV['FLATTR_SECRET'], scope: ['flattr']
+  config.omniauth :slack,       ENV["SLACK_KEY"],       ENV["SLACK_SECRET"], scope: ['identify', 'channels:read', 'chat:write:user'].join(' ')
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

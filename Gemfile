@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.2.2'
+ruby '2.2.4'
 
 #################
 # Core Services #
@@ -54,7 +54,7 @@ gem 'devise'
 gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
-gem 'omniauth-facebook', '1.4.0' # had trouble with v1.4.1
+gem 'omniauth-facebook'
 gem 'omniauth-37signals'
 gem 'omniauth-instapaper'
 gem 'omniauth-tumblr'
@@ -62,6 +62,7 @@ gem 'omniauth-readability', github: '29decibel/omniauth-readability'
 gem 'omniauth-evernote'
 gem 'omniauth-pocket'
 gem 'omniauth-flattr'
+gem 'omniauth-slack'
 gem 'doorkeeper'
 
 ####################
@@ -87,6 +88,7 @@ gem 'readit', github: '29decibel/readit'
 gem 'evernote-thrift'
 gem 'flattr', github: 'leppert/flattr'
 gem 'ruby-thumbor'
+gem 'slack-ruby-client'
 
 #################
 # Frontend HTML #

@@ -66,3 +66,9 @@ flattr:
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"permission":"write"}'
   authorization: flattr
+
+slack:
+  provider: slack
+  events: ! '["new","yep","nope","comment"]'
+  params: ! '{"permission": "write", "place": {"id": "C15BZLF08", "name": "testing"}}'
+  authorization: slack

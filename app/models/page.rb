@@ -226,6 +226,8 @@ class Page < ActiveRecord::Base
   end
 
   def primary_image
+    return unless has_describe_data?
+
     url = nil
     thumbnails = describe_data['response']['thumbnails']
 
@@ -239,8 +241,8 @@ class Page < ActiveRecord::Base
   end
 
   def author
-    author = describe_data['response']['author'] || {}
-    author['avatar'] ||= {}
-    author
+    author = {'avatar' => {}}
+    return author unless has_describe_data?
+    author.merge describe_data['response']['author']
   end
 end

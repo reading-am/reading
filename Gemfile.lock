@@ -18,12 +18,12 @@ GIT
 
 GIT
   remote: git://github.com/arsduo/koala.git
-  revision: 848f6cfea263f91bee69d776950623157bb2f0e0
+  revision: 27eed79db76d857bbae9306015f7c8389feb0a4c
   specs:
-    koala (1.7.0rc1)
+    koala (2.4.0rc1)
       addressable
       faraday
-      multi_json
+      multi_json (>= 1.3.0)
 
 GIT
   remote: git://github.com/joelmoss/bitmask_attributes.git

@@ -107,3 +107,15 @@ flattr:
   info: ! '{"type":"user","resource":"https://api.flattr.com/rest/v2/users/reading","link":"https://flattr.com/profile/reading","username":"reading","firstname":"","lastname":"","about":"","city":null,"country":0,"url":null,"avatar":"https://secure.gravatar.com/avatar/35f6be1a71aceaafcc5bf453628b235a?s=40&d=https%3A%2F%2Fflattr.com%2F_img%2Faut11-user-placeholder-small.png&r=pg"}'
   created_at: 2013-02-11 03:27:32.511502
   updated_at: 2013-02-11 03:27:32.511502
+
+slack:
+  user: greg
+  provider: slack
+  uid: U14SBKQTS
+  token: ***REMOVED***-38895670944-38993950020-ea7a18e97c
+  permissions: ! '["read","write"]'
+  info: ! '{"url": "https://readingam.slack.com/", "team": "Reading", "user": "greg", "team_id": "T14SQJASW", "user_id": "U14SBKQTS"}'
+  expires_at: ~
+  refresh_token: ~
+  created_at: 2016-04-29 18:14:33
+  updated_at: 2016-04-29 18:14:33

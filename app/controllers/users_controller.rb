@@ -37,7 +37,9 @@ class UsersController < ApplicationController
     collection = api::Relationships.index(params)
     @users = render_api('users/index', users: collection) if bot?
 
-    render locals: { collection: collection }
+    respond_to do |format|
+      format.html { render locals: { collection: collection } }
+    end
   end
 
   def recommended

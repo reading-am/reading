@@ -5,7 +5,7 @@ ruby '2.2.4'
 # Core Services #
 #################
 gem 'dotenv-rails', groups: [:development, :test]
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.6'
 gem 'sinatra', require: nil # for sidekiq web UI
 gem 'rails-observers'
 gem 'foreman'
@@ -119,6 +119,7 @@ gem 'fog'
 ##########
 # Assets #
 ##########
+gem 'sprockets-rails', '2.3.2' # Prevents "Asset was not declared to be precompiled in production" for current version of requirejs-rails. So also: https://github.com/rails/sprockets-rails/issues/297
 gem 'less-rails'
 gem 'therubyracer' # Required by less-rails
 gem 'coffee-rails'

@@ -55,8 +55,5 @@ module Reading
     config.requirejs.logical_path_patterns += [/\.mustache$/,/\.css$/]
 
     config.cache_store = :dalli_store
-
-    # Soon to be the default in Rails 5
-    config.active_record.raise_in_transactional_callbacks = true
   end
 end

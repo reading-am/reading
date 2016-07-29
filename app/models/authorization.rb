@@ -1,5 +1,5 @@
 # from: http://net.tutsplus.com/tutorials/ruby/how-to-use-omniauth-to-authenticate-your-users/
-class Authorization < ActiveRecord::Base
+class Authorization < ApplicationRecord
 
   serialize :info, JSON
   serialize :permissions, JSON

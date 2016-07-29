@@ -2,7 +2,7 @@ namespace :migrate do
 
   desc "Migrate the media_type for Describe integration"
   task :describe_media_type => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     pages = Page.where("head_tags IS NOT NULL")
     total = pages.count
@@ -21,7 +21,7 @@ namespace :migrate do
 
   desc "Migrate the description for Describe integration"
   task :describe_description => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     # we have two data sources
     pages = Page.where("r_excerpt IS NOT NULL OR head_tags IS NOT NULL")
@@ -41,7 +41,7 @@ namespace :migrate do
 
   desc "Migrate the embed for Describe integration"
   task :describe_embed => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     # we have two data sources
     pages = Page.where("embed IS NULL AND (oembed IS NOT NULL OR head_tags IS NOT NULL)")
@@ -61,7 +61,7 @@ namespace :migrate do
 
   desc "Migrate the title for Describe integration"
   task :describe_title => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     pages = Page.all
     total = pages.count
@@ -81,7 +81,7 @@ namespace :migrate do
   desc "Migrate all attributes for Describe integration"
   task :describe_full, [:start_id] => [:environment] do |t, args|
     args.with_defaults start_id: 1
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     pages = Page.where("id >= ?", args.start_id)
     total = pages.count
@@ -103,7 +103,7 @@ namespace :migrate do
 
   desc "Delete associations with foreign keys that point to deleted records"
   task :keys_missing_recs => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     puts "Fixing comments that should have a nil post_id"
     c = Comment.includes(:post).where("comments.post_id IS NOT NULL AND posts.id IS NULL")

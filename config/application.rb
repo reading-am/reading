@@ -28,6 +28,7 @@ module Reading
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
     config.active_record.observers = :authorization_observer, :relationship_observer, :blockage_observer, :comment_observer, :page_observer
 
+    config.active_job.queue_adapter = :sidekiq
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'

@@ -1,6 +1,6 @@
 # encoding: utf-8
 class PostsController < ApplicationController
-  before_filter :authenticate_user!, except: [:visit]
+  before_action :authenticate_user!, except: [:visit]
 
   # A note about schema
   # The original idea was that the referrer_post_id didn't

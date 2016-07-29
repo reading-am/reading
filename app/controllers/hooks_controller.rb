@@ -1,6 +1,6 @@
 # encoding: utf-8
 class HooksController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   private
 

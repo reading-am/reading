@@ -2,7 +2,7 @@
 # and: https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb#L39
 class RegistrationsController < Devise::RegistrationsController
 
-  before_filter :configure_permitted_parameters
+  before_action :configure_permitted_parameters
 
   protected
 

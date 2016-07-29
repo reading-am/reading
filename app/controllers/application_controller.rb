@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :protect_staging, :check_domain, :set_user_device,
+  before_action :protect_staging, :check_domain, :set_user_device,
                 :set_headers, :migrate_auth_token, :migrate_to_www,
                 :check_signed_in, :set_bot, :profiler, :set_default_params
 

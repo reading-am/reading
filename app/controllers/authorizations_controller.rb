@@ -1,6 +1,6 @@
 # encoding: utf-8
 class AuthorizationsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:loading]
+  before_action :authenticate_user!, :except => [:loading]
 
   def places
     @auth = Authorization.find_by_provider_and_uid(params[:provider], params[:uid])

@@ -1,7 +1,7 @@
 # encoding: utf-8
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
+  before_action :authenticate_user!, except: [:show, :followingers, :delete_cookies, :tagalong, :find_people, :suspended]
 
   def show
     if params[:username] && params[:username] != 'everybody'

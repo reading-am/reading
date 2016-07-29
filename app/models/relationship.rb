@@ -1,4 +1,4 @@
-class Relationship < ActiveRecord::Base
+class Relationship < ApplicationRecord
   # these counter_caches sound backward semantically but they're not
   belongs_to :follower, class_name: "User", counter_cache: :following_count
   belongs_to :followed, class_name: "User", counter_cache: :followers_count

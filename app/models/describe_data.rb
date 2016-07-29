@@ -1,4 +1,4 @@
-class DescribeData < ActiveRecord::Base
+class DescribeData < ApplicationRecord
   serialize :response, JSON
   belongs_to :page, counter_cache: :has_describe_data
 

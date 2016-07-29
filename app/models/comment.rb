@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   include Twitter::Extractor
   include Twitter::Autolink
 

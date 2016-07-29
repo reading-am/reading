@@ -1,4 +1,4 @@
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   belongs_to      :user, counter_cache: true
   belongs_to      :page, counter_cache: true
   has_one         :domain, through: :page

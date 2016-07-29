@@ -1,4 +1,4 @@
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
   belongs_to :domain, counter_cache: true
   has_one  :describe_data, dependent: :destroy # also handled by foreign key
   has_many :posts, dependent: :destroy # also handled by foreign key

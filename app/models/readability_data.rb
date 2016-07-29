@@ -1,4 +1,4 @@
-class ReadabilityData < ActiveRecord::Base
+class ReadabilityData < ApplicationRecord
   belongs_to :page
   before_create :populate_from_remote
 

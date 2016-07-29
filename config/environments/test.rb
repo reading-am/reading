@@ -46,4 +46,6 @@ Rails.application.configure do
 
   # Needed by Devise
   config.action_mailer.default_url_options = { :host => DOMAIN }
+
+  config.active_job.queue_adapter = :test
 end

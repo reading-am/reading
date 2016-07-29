@@ -2,6 +2,7 @@ Paperclip::Attachment.default_options.merge!(
   storage: :s3,
   s3_protocol: 'https',
   bucket: ENV['S3_BUCKET'],
+  s3_region: ENV['S3_REGION'],
   s3_host_alias: ENV['S3_BUCKET'],
   s3_credentials: {
     access_key_id: ENV['S3_KEY'],

@@ -1,6 +1,7 @@
 # encoding: utf-8
 class ExportController < ApplicationController
   include ActionController::Live
+  extend ActiveSupport::Concern
   before_action :authenticate_user!, :set_headers
 
   def posts

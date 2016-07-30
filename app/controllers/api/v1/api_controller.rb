@@ -10,7 +10,6 @@ module Api::V1
     include ActionController::Rendering
     include ActionController::Renderers::All
     include ActionController::ConditionalGet
-    include ActionController::RackDelegation
     # need this for responding to different types .json .xml etc...
     include ActionController::MimeResponds
     include AbstractController::Callbacks

@@ -42,28 +42,11 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  public
-
-  # This is taken directly from Devise 2.1.2: https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb#L39
-  # The only modifications are:
-  #   * Use update_without_password if email and password are unchanged
-  def update
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
-
-    if resource.send("update_with#{change_requires_password ? '' : 'out'}_password", account_update_params)
-      if is_navigational_format?
-        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
-          :update_needs_confirmation : :updated
-        set_flash_message :notice, flash_key
-      end
-      bypass_sign_in resource_name, resource
-      respond_with resource, :location => after_update_path_for(resource)
-    else
-      clean_up_passwords resource
-      respond_with resource
-    end
+  def update_resource(resource, params)
+    resource.send("update_with#{change_requires_password ? '' : 'out'}_password", params)
   end
+
+  public
 
   def almost_ready
     redirect_to root_url && return unless signed_in?
@@ -78,13 +61,13 @@ class RegistrationsController < Devise::RegistrationsController
     redirect_to root_url && return unless signed_in?
 
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    if resource.send("update_with#{change_requires_password ? '' : 'out'}_password", account_update_params)
-      bypass_sign_in resource_name, resource
+    resource_updated = update_resource(resource, account_update_params)
+    if resource_updated
+      bypass_sign_in resource, scope: resource_name
       redirect_to("/#{resource.username}/list", notice: 'User was successfully updated.')
     else
       clean_up_passwords resource
       render :almost_ready
     end
   end
-
 end

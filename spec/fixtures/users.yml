@@ -2,7 +2,6 @@ greg:
   name: Greg Leppert
   username: greg
   token: afjdsklafjdsaklf
-  auth_token: afjdsklfjdddddfd
   email: greg@reading.am
   location: NYC
   description: Design'n. Develop'n. Cofound'n Svpply.com. Weekend'n Reading.am.
@@ -30,7 +29,6 @@ howard:
   name: Howard
   username: howard
   token: fjdskalfjasdkl
-  auth_token: afjdskalfjdsaklfjdsakl
   email: greg@formasfunction.com
   location: Nowhere
   image: http://graph.facebook.com/517880926/picture?type=square

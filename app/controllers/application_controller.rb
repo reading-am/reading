@@ -1,14 +1,12 @@
 # encoding: utf-8
 class ApplicationController < ActionController::Base
-  # needed for migrate_auth_token
-  include Devise::Controllers::Rememberable
   include RenderApi
   include DefaultParams
 
   protect_from_forgery
 
   before_action :protect_staging, :check_domain, :set_user_device,
-                :set_headers, :migrate_auth_token, :migrate_to_www,
+                :set_headers, :migrate_to_www,
                 :check_signed_in, :set_bot, :profiler, :set_default_params
 
   helper_method :mobile_device?, :desktop_device?, :bot?, :render_api
@@ -42,14 +40,6 @@ class ApplicationController < ActionController::Base
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate, pre-check=0, post-check=0"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-  end
-
-  def migrate_auth_token
-    token = cookies.delete(:auth_token)
-    if !token.blank? and user = User.find_by_auth_token(token) rescue false
-      sign_in user
-      remember_me user
-    end
   end
 
   def migrate_to_www

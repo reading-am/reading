@@ -94,9 +94,7 @@ gem 'slack-ruby-client'
 #################
 # Frontend HTML #
 #################
-gem 'will_paginate'
 gem 'twitter-bootstrap-rails', '2.2.8'
-gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
 gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing

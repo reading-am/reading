@@ -21,9 +21,6 @@ class Post < ApplicationRecord
   # Used to check for duplicate entries
   scope :recent_by_user_and_page, lambda { |user, page, time=1.day.ago| where("user_id = ? and page_id = ? and created_at > ?", user, page, time) }
 
-  # for will_paginate
-  self.per_page = 100 if defined? self.per_page
-
   after_commit on: :create do
     user.hooks.each { |hook| hook.run(self, 'new') }
     PusherJob.perform_later 'create', self

@@ -166,7 +166,6 @@ ActiveRecord::Schema.define(version: 20160730201516) do
     t.text     "description"
     t.text     "embed"
     t.integer  "has_describe_data",             default: 0, null: false
-    t.integer  "tags_count"
     t.index ["medium"], name: "index_pages_on_medium", using: :btree
     t.index ["url"], name: "index_pages_on_url", unique: true, using: :btree
   end
@@ -213,19 +212,6 @@ ActiveRecord::Schema.define(version: 20160730201516) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   end
 
-  create_table "tags", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "page_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["name"], name: "index_tags_on_name", using: :btree
-    t.index ["page_id"], name: "index_tags_on_page_id", using: :btree
-    t.index ["user_id", "name"], name: "index_tags_on_user_id_and_name", using: :btree
-    t.index ["user_id", "page_id"], name: "index_tags_on_user_id_and_page_id", using: :btree
-    t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
     t.string   "username",               limit: 255
@@ -268,7 +254,6 @@ ActiveRecord::Schema.define(version: 20160730201516) do
     t.integer  "status"
     t.integer  "blocking_count",                     default: 0
     t.integer  "blockers_count",                     default: 0
-    t.integer  "tags_count"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["token"], name: "index_users_on_token", unique: true, using: :btree
@@ -293,6 +278,4 @@ ActiveRecord::Schema.define(version: 20160730201516) do
   add_foreign_key "readability_data", "pages", name: "readability_data_page_id_fk", on_delete: :cascade
   add_foreign_key "relationships", "users", column: "followed_id", name: "relationships_followed_id_fk", on_delete: :cascade
   add_foreign_key "relationships", "users", column: "follower_id", name: "relationships_follower_id_fk", on_delete: :cascade
-  add_foreign_key "tags", "pages", on_delete: :cascade
-  add_foreign_key "tags", "users", on_delete: :cascade
 end

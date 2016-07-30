@@ -131,7 +131,7 @@ class Page < ApplicationRecord
   end
 
   def content
-    has_describe_data && describe_data.response['content'].present? ?
+    has_describe_data? && describe_data.response['content'].present? ?
       describe_data.response['content'] :
       nil rescue nil
   end
@@ -175,7 +175,7 @@ class Page < ApplicationRecord
     verb.split(' ')[0][0..-4]
   end
 
-  def has_describe_data
+  def has_describe_data?
     # When DD is first saved, the counter cache won't have been
     # updated in the model in memory so use loaded as a sign
     (
@@ -184,7 +184,7 @@ class Page < ApplicationRecord
      !describe_data.new_record? and
      !describe_data.destroyed?
     ) or
-    read_attribute(:has_describe_data) > 0
+    has_describe_data > 0
   end
 
   def populate_describe_data html=nil

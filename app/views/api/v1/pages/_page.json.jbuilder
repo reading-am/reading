@@ -8,6 +8,6 @@ json.media_type         page.media_type
 json.description        page.display_description
 json.posts_count        page.posts_count
 json.comments_count     page.comments_count
-json.has_describe_data  page.has_describe_data
+json.has_describe_data  page.has_describe_data?
 json.created_at         page.created_at
 json.updated_at         page.updated_at

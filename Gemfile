@@ -44,7 +44,6 @@ gem 'mime-types'
 ##############
 # Monitoring #
 ##############
-gem 'rack-mini-profiler'
 gem 'newrelic_rpm'
 gem 'rollbar'
 
@@ -125,6 +124,7 @@ gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 
 group :development do
+  gem 'rack-mini-profiler'
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
   gem 'pry'

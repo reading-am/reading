@@ -1,3 +1,3 @@
-# See: http://progrium.viewdocs.io/dokku/checks-examples.md/
-
-/ Share what you're reading
+WAIT=10
+ATTEMPTS=6
+/check.txt  deploy_check

@@ -5,9 +5,10 @@ ruby '2.2.4'
 # Core Services #
 #################
 gem 'dotenv-rails', groups: [:development, :test]
-gem 'rails', '4.2.6'
-gem 'sinatra', require: nil # for sidekiq web UI
-gem 'rails-observers'
+gem 'rails', '5.0.0'
+gem 'sinatra', github: 'sinatra/sinatra', require: nil # for sidekiq web UI
+gem 'rack-protection', github: 'sinatra/rack-protection' # required by sinatra >= 2
+gem 'rails-observers', github: 'rails/rails-observers'
 gem 'foreman'
 gem 'puma' # server
 gem 'rack-cors', require: 'rack/cors'
@@ -43,7 +44,6 @@ gem 'mime-types'
 ##############
 # Monitoring #
 ##############
-gem 'rack-mini-profiler'
 gem 'newrelic_rpm'
 gem 'rollbar'
 
@@ -93,9 +93,7 @@ gem 'slack-ruby-client'
 #################
 # Frontend HTML #
 #################
-gem 'will_paginate', github: 'mislav/will_paginate'
 gem 'twitter-bootstrap-rails', '2.2.8'
-gem 'bootstrap-will_paginate'
 gem 'twitter_bootstrap_form_for', github: 'leppert/twitter_bootstrap_form_for'
 gem 'premailer-rails'
 gem 'twitter-text' # for comment parsing
@@ -106,7 +104,7 @@ gem 'tuml', github: 'leppert/tuml'
 # Frontend JS #
 ###############
 gem 'requirejs-rails'
-gem 'rails-backbone'
+gem 'rails-backbone', github: 'thegillis/backbone-rails', branch: 'upgrade-backbone-1.3.3'
 gem 'jquery-rails'
 
 ############
@@ -126,6 +124,7 @@ gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 
 group :development do
+  gem 'rack-mini-profiler'
   gem 'bullet'
   gem 'ruby-growl' # used by bullet
   gem 'pry'
@@ -143,7 +142,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'teaspoon'
+  gem 'teaspoon-mocha'
   gem 'tapout'
   gem 'rspec-rails'
   gem 'watchr'

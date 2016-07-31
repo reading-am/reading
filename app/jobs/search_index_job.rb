@@ -1,4 +1,4 @@
-class SearchIndexJob < ActiveJob::Base
+class SearchIndexJob < ApplicationJob
   def perform action, obj
     case action
     when /create/

@@ -10,7 +10,7 @@
     h1 { font-size:175px; margin:-40px 0 0; line-height:135px; font-weight:normal; }
     h2 { font-size:24px; line-height:10px; }
   </style>
-  <meta http-equiv="refresh" content="0;url=<%= user_omniauth_authorize_path params[:provider] %>">
+  <meta http-equiv="refresh" content="0;url=<%= send("user_#{params[:provider]}_omniauth_authorize_path") %>">
 </head>
 <body>
   <div id="t">

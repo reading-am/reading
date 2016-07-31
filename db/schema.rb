@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409145606) do
+ActiveRecord::Schema.define(version: 20160730201516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,29 +27,26 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.text     "info"
     t.datetime "expires_at"
     t.text     "refresh_token"
+    t.index ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", using: :btree
   end
-
-  add_index "authorizations", ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", using: :btree
 
   create_table "blockages", force: :cascade do |t|
     t.integer  "blocker_id"
     t.integer  "blocked_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["blocked_id"], name: "index_blockages_on_blocked_id", using: :btree
+    t.index ["blocker_id", "blocked_id"], name: "index_blockages_on_blocker_id_and_blocked_id", unique: true, using: :btree
+    t.index ["blocker_id"], name: "index_blockages_on_blocker_id", using: :btree
   end
-
-  add_index "blockages", ["blocked_id"], name: "index_blockages_on_blocked_id", using: :btree
-  add_index "blockages", ["blocker_id", "blocked_id"], name: "index_blockages_on_blocker_id_and_blocked_id", unique: true, using: :btree
-  add_index "blockages", ["blocker_id"], name: "index_blockages_on_blocker_id", using: :btree
 
   create_table "blogs", force: :cascade do |t|
     t.integer  "user_id"
     t.text     "template"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_blogs_on_user_id", using: :btree
   end
-
-  add_index "blogs", ["user_id"], name: "index_blogs_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
@@ -60,12 +56,11 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "page_id"
+    t.index ["comment_id"], name: "index_comments_on_comment_id", using: :btree
+    t.index ["page_id"], name: "index_comments_on_page_id", using: :btree
+    t.index ["post_id"], name: "index_comments_on_post_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
-
-  add_index "comments", ["comment_id"], name: "index_comments_on_comment_id", using: :btree
-  add_index "comments", ["page_id"], name: "index_comments_on_page_id", using: :btree
-  add_index "comments", ["post_id"], name: "index_comments_on_post_id", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",               default: 0
@@ -79,18 +74,16 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "queue",      limit: 255
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "describe_data", force: :cascade do |t|
     t.text     "response"
     t.integer  "page_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["page_id"], name: "index_describe_data_on_page_id", using: :btree
   end
-
-  add_index "describe_data", ["page_id"], name: "index_describe_data_on_page_id", using: :btree
 
   create_table "domains", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -98,9 +91,8 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.datetime "updated_at"
     t.string   "verb",        limit: 255
     t.integer  "pages_count",             default: 0
+    t.index ["name"], name: "index_domains_on_name", unique: true, using: :btree
   end
-
-  add_index "domains", ["name"], name: "index_domains_on_name", unique: true, using: :btree
 
   create_table "hooks", force: :cascade do |t|
     t.string   "provider",         limit: 255
@@ -110,9 +102,8 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.string   "params",           limit: 255
     t.string   "events",           limit: 255
     t.integer  "authorization_id"
+    t.index ["user_id", "provider"], name: "index_hooks_on_user_id_and_provider", using: :btree
   end
-
-  add_index "hooks", ["user_id", "provider"], name: "index_hooks_on_user_id_and_provider", using: :btree
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id",             null: false
@@ -123,9 +114,8 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.datetime "created_at",                    null: false
     t.datetime "revoked_at"
     t.string   "scopes",            limit: 255
+    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
   end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id"
@@ -136,11 +126,10 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.datetime "revoked_at"
     t.datetime "created_at",                    null: false
     t.string   "scopes",            limit: 255
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
   end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
     t.string   "name",              limit: 255,              null: false
@@ -160,10 +149,9 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.string   "app_store_url",     limit: 255
     t.string   "play_store_url",    limit: 255
     t.string   "scopes",                        default: "", null: false
+    t.index ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type", using: :btree
+    t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
   end
-
-  add_index "oauth_applications", ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type", using: :btree
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "pages", force: :cascade do |t|
     t.text     "url"
@@ -178,10 +166,9 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.text     "description"
     t.text     "embed"
     t.integer  "has_describe_data",             default: 0, null: false
+    t.index ["medium"], name: "index_pages_on_medium", using: :btree
+    t.index ["url"], name: "index_pages_on_url", unique: true, using: :btree
   end
-
-  add_index "pages", ["medium"], name: "index_pages_on_medium", using: :btree
-  add_index "pages", ["url"], name: "index_pages_on_url", unique: true, using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.integer  "user_id"
@@ -220,11 +207,10 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.integer  "followed_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
+    t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+    t.index ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   end
-
-  add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
-  add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
-  add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
@@ -232,7 +218,6 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "token",                  limit: 255
-    t.string   "auth_token",             limit: 255
     t.string   "email",                  limit: 255
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
@@ -269,13 +254,11 @@ ActiveRecord::Schema.define(version: 20150409145606) do
     t.integer  "status"
     t.integer  "blocking_count",                     default: 0
     t.integer  "blockers_count",                     default: 0
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["token"], name: "index_users_on_token", unique: true, using: :btree
+    t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
-
-  add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["token"], name: "index_users_on_token", unique: true, using: :btree
-  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "authorizations", "users", name: "authorizations_user_id_fk", on_delete: :cascade
   add_foreign_key "blockages", "users", column: "blocked_id", name: "blockages_blocked_id_fk", on_delete: :cascade

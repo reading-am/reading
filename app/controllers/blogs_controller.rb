@@ -1,5 +1,6 @@
 class BlogsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
+  LIMIT = 100
 
   private
 
@@ -13,9 +14,10 @@ class BlogsController < ApplicationController
     if !current_user.access?(:tumblr_templates) then not_found end
 
     @user = User.find_by_username!(params[:username])
+    page = params[:page] || 0
 
     @page_title = @user.name.blank? ? @user.username : "#{@user.name} (#{@user.username})"
-    @posts = @user.posts.order("created_at DESC").paginate(:page => params[:page]).map do |p|
+    @posts = @user.posts.order("created_at DESC").limit(LIMIT).offset(page * LIMIT).map do |p|
       data = {'type' => p.page.medium.to_s, 'title' => p.page.title, 'body' => p.page.excerpt, 'timestamp' => p.created_at.to_i}
       case p.page.medium
       when :text

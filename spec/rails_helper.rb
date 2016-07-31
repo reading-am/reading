@@ -6,8 +6,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
-# https://github.com/aws/aws-sdk-ruby#testing
-AWS.stub!
+Aws.config[:stub_responses] = true
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

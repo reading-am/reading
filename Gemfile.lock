@@ -710,9 +710,6 @@ GEM
     roauth (0.0.8)
     rollbar (2.12.0)
       multi_json
-    rspec-activejob (0.6.1)
-      activejob (>= 4.2)
-      rspec-mocks
     rspec-core (3.5.2)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -942,7 +939,6 @@ DEPENDENCIES
   readit!
   requirejs-rails
   rollbar
-  rspec-activejob
   rspec-rails
   rspec_junit_formatter (= 0.2.2)
   ruby-growl

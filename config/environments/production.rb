@@ -4,6 +4,10 @@ DOMAIN = "www.#{ROOT_DOMAIN}"
 PROTOCOL = 'https'
 
 Rails.application.configure do
+  # Rails >= 5 no longer autoloads in production
+  # This line ensures our API modules are accessible
+  config.eager_load_paths += %W{#{config.root}/lib}
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

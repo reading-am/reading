@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -201,6 +201,14 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
+  end
+
+  def authenticatable_salt
+    # Devise expects all users to have a password, but our users
+    # who have only authed through social media don't have one.
+    # See: https://github.com/plataformatec/devise/issues/1639
+    # Source: https://github.com/plataformatec/devise/blob/d293e00ef5f431129108c1cbebe942b32e6ba616/lib/devise/models/database_authenticatable.rb#L130
+    (encrypted_password.presence || token.presence || "")[0,29]
   end
 
   def first_name

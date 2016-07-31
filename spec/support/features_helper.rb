@@ -7,8 +7,12 @@ def using_webkit?
   Capybara.javascript_driver == :webkit
 end
 
-# Only take screenshots with webkit
+# Only take screenshots and debug with webkit
 if using_webkit?
+  Capybara::Webkit.configure do |config|
+    config.debug = false
+  end
+
   require 'capybara-screenshot/rspec'
   Capybara::Screenshot.prune_strategy = :keep_last_run
   if ENV['CIRCLE_ARTIFACTS'].present? # for circleci

@@ -1,7 +1,8 @@
 # encoding: utf-8
 class ExportController < ApplicationController
   include ActionController::Live
-  before_filter :authenticate_user!, :set_headers
+  extend ActiveSupport::Concern
+  before_action :authenticate_user!, :set_headers
 
   def posts
     user = current_user

@@ -3,7 +3,7 @@ namespace :cleanup do
 
   desc "Convert unserialized Ruby objects to JSON"
   task :fix_unserialized => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     User.where('urls LIKE ?', '--- %').find_each do |user|
       puts "### User #{user.id} | #{user.username}", "Before:", user.urls, "\n"
@@ -45,7 +45,7 @@ namespace :cleanup do
 
   desc "Populate the medium type for pages missing it"
   task :populate_medium => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     pages = Page.where(:medium => nil)
     total = pages.count
@@ -62,7 +62,7 @@ namespace :cleanup do
 
   desc "Populate remote oembed data for pages missing it"
   task :populate_remote_oembed => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     pages = Page.where(:oembed => nil).where("head_tags like ?", "%oembed%")
     total = pages.count
@@ -79,7 +79,7 @@ namespace :cleanup do
 
   desc "Populate remote page data for pages missing it, resolve the canonical url, and combine with duplicate urls"
   task :populate_remote_page_data => :environment do
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
     Page.crawl_timeout = timeout
 
     pages = Page.where(:head_tags => nil)
@@ -164,7 +164,7 @@ namespace :cleanup do
   desc "Populate DescribeData for pages missing it"
   task :populate_describe_data, [:modify, :hours] => [:environment] do |t, args|
     args.with_defaults modify: false, hours: 48
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
     
     modify = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.modify)
     hours = args.hours.to_i

@@ -1,4 +1,4 @@
-class TweetJob < ActiveJob::Base
+class TweetJob < ApplicationJob
   def perform(token, secret, tweet)
     client = Twitter::REST::Client.new do |config|
       config.consumer_key = ENV['TWITTER_KEY']

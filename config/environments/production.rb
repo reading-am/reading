@@ -4,6 +4,10 @@ DOMAIN = "www.#{ROOT_DOMAIN}"
 PROTOCOL = 'https'
 
 Rails.application.configure do
+  # Rails >= 5 no longer autoloads in production
+  # This line ensures our API modules are accessible
+  config.eager_load_paths += %W{#{config.root}/lib}
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -27,7 +31,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS
   # requirejs namespacing needs it to be false

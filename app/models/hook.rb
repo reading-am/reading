@@ -1,7 +1,7 @@
 # encoding: utf-8
 include ActionView::Helpers::TextHelper
 
-class Hook < ActiveRecord::Base
+class Hook < ApplicationRecord
   include RenderApi
 
   serialize :events, JSON

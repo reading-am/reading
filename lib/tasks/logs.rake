@@ -3,7 +3,7 @@ namespace :logs do
 
   desc 'Parse and post requests to mailgun routes'
   task :repost_emails, [:file] => [:environment] do |t, args|
-    ActiveRecord::Base.observers.disable :all
+    ApplicationRecord.observers.disable :all
 
     File.open(args.file, 'r') do |f|
       f.each_line do |line|

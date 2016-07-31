@@ -1,4 +1,4 @@
-class Domain < ActiveRecord::Base
+class Domain < ApplicationRecord
 
   has_many :pages, dependent: :destroy # also handled by foreign key
   has_many :posts, through: :pages

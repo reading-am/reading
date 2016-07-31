@@ -3,9 +3,9 @@ machine:
     PATH: ${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/elasticsearch-1.7.5/bin
 test:
   override:
-    - bundle exec rspec spec/models
-    - bundle exec rspec spec/mailers
-    - bundle exec rspec spec/features
+    - bin/rspec spec/models
+    - bin/rspec spec/mailers
+    - bin/rspec spec/features
 dependencies:
   cache_directories:
     - elasticsearch-1.7.5 # relative to the build directory

@@ -1,6 +1,9 @@
 medium_constraints = { medium: /#{Page::MEDIUMS.join('|')}/ }
 
 Reading::Application.routes.draw do
+  # For DOKKU deploy checks
+  get '/check.txt', to: proc {[200, {}, ['deploy_check']]}
+
   use_doorkeeper
   root to: "users#show"
 

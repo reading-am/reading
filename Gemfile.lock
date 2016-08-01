@@ -606,6 +606,8 @@ GEM
       pry (~> 0.9)
       yard (~> 0.8)
     puma (3.6.0)
+    puma-heroku (1.0.0)
+      puma (~> 3.0)
     pusher (0.14.5)
       httpclient (~> 2.5)
       multi_json (~> 1.0)
@@ -878,6 +880,7 @@ DEPENDENCIES
   pry-byebug
   pry-doc
   puma
+  puma-heroku
   pusher
   rack-cors
   rack-mini-profiler

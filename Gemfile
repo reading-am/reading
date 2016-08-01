@@ -11,6 +11,7 @@ gem 'rack-protection', github: 'sinatra/rack-protection' # required by sinatra >
 gem 'rails-observers', github: 'rails/rails-observers'
 gem 'foreman'
 gem 'puma' # server
+gem 'puma-heroku' # default puma config as recommended by heroku
 gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached

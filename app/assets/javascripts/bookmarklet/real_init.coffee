@@ -119,7 +119,7 @@ require [
         desc = get_desc()
 
       submit
-        url: get_url()
+        url: reading.url || get_url()
         title: title
         description: desc
         referrer_post_id: reading.referrer_post_id ? 0

@@ -1,6 +1,7 @@
 <script>
 if(typeof reading == "undefined") reading = {};
 reading.token = "<%= @token %>";
+reading.url = "<%= @url %>";
 reading.referrer_post_id = <%= @referrer_post_id %>;
 </script>
 
@@ -8,6 +9,6 @@ reading.referrer_post_id = <%= @referrer_post_id %>;
 
 <div id="visit" class="row">
   <div class="span6 offset1">
-    <h3>Loading <span><%= params[:url] %></span><% if signed_in? %> and adding it to your reading list<% end %>.</h3>
+    <h3>Loading <span><%= @url %></span><% if signed_in? %> and adding it to your reading list<% end %>.</h3>
   </div>
 </div>

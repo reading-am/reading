@@ -33,6 +33,7 @@ class PostsController < ApplicationController
       # Post through the classic JS method
       # Facebook hits this page to grab info
       # for the timeline
+      @url = @ref.page.url
       @page_title = "✌ #{@ref.page.display_title}"
       @og_props = {
         type: @ref.page.media_type,

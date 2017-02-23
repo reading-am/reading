@@ -69,14 +69,6 @@ define [
       {"text":"room", "placeholder":"My Room Name"},
       {"text":"token", "placeholder":"12345abcdefg67890abcdefg12345a"}
     ]},
-    {"text":"Campfire", "value":"tssignals", "params":[
-      {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":User::current.get("authorizations").tssignals.accounts(), "datatype":"account"}
-      {"scope":"place", "params":[
-        {"text":"room", "name":"id", "src":"account.places", "options":[{"text":"Loading...","value":""}]},
-        {"name":"name", "type":"hidden"}
-      ]}
-    ]},
     {"text":"Pocket", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":User::current.get("authorizations").pocket.accounts(), "datatype":"account"}

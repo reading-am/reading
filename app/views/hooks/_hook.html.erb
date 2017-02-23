@@ -6,7 +6,7 @@ hook.events.each_with_index do |event|
 end
 %>
 <div class="hook">
-  When I <em><%= events_text.join(', ') %></em> please post to the <em><%= hook.provider == 'tssignals' ? 'Campfire' : hook.provider.capitalize %></em>
+  When I <em><%= events_text.join(', ') %></em> please post to the <em><%= hook.provider.capitalize %></em>
 <% if !hook.authorization.blank? %>
   account <%= provider_span(hook.authorization) %>
   <% if hook.provider == "facebook" %>

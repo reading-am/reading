@@ -12,12 +12,6 @@ class OmniauthController < Devise::OmniauthCallbacksController
   def create
     auth_hash = request.env['omniauth.auth']
 
-    # mapped so as to avoid problems with variables starting with numbers
-    case auth_hash.provider
-    when '37signals'
-      auth_hash.provider = 'tssignals'
-    end
-
     # Log him in or sign him up
     if auth = Authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"].to_s)
       # fill in any changed info

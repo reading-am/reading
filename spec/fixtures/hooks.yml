@@ -50,12 +50,6 @@ hipchat:
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"room":"Test","token":"bf9fd02f553e79cddec44d205e2feb"}'
 
-tssignals:
-  provider: tssignals
-  events: ! '["new","yep","nope","comment"]'
-  params: ! '{"permission":"write","place":{"id":"452867","name":"Room 1"}}'
-  authorization: tssignals
-
 pinboard:
   provider: pinboard
   events: ! '["new","yep","nope","comment"]'

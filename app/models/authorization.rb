@@ -17,7 +17,6 @@ class Authorization < ApplicationRecord
     'readability',
     'tumblr',
     'evernote',
-    'tssignals',
     'pocket',
     'flattr',
     'slack'
@@ -106,20 +105,11 @@ public
 
   def display_name
     case provider
-    when 'tssignals'
-      accounts.first["name"]
     when 'slack'
       "#{info['team']} / #{info['user']}"
     else
       i = info || {}
       i['username'] || i['screen_name'] || uid
-    end
-  end
-
-  def accounts
-    case provider
-    when "tssignals"
-      info["accounts"].find_all{|a| a["product"] == "campfire"}
     end
   end
 
@@ -161,9 +151,6 @@ public
         noteStoreTransport = Thrift::HTTPClientTransport.new(info['edam']['noteStoreUrl'])
         noteStoreProtocol = Thrift::BinaryProtocol.new(noteStoreTransport)
         @api_user = Evernote::EDAM::NoteStore::NoteStore::Client.new(noteStoreProtocol)
-      when 'tssignals'
-        account = accounts.first
-        @api_user = Tinder::Campfire.new URI.parse(account['href']).host.split('.')[0], :token => account['api_auth_token']
       when 'flattr'
         @api_user = Flattr.new :access_token => token
       when 'slack'

@@ -97,18 +97,6 @@ describe Hook do
       # NOTE - It's a chat client so there is no cleanup
     end
 
-    it "posts to Campfire" do
-      # setup
-      hook = hooks(:tssignals)
-      post = posts(:one)
-      # test
-      response = hook.tssignals(post, 'new')
-      expect(response.message.type).to eq("TextMessage")
-      expect(response.message.id).to be_an_instance_of(Fixnum)
-      # cleanup
-      # NOTE - It's a chat client so there is no cleanup
-    end
-
     it "posts to Pinboard" do
       # setup
       hook = hooks(:pinboard)

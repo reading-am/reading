@@ -7,7 +7,7 @@ ruby '2.3.1'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'rails', '5.0.0'
 gem 'sinatra', github: 'sinatra/sinatra', require: nil # for sidekiq web UI
-gem 'rack-protection', github: 'sinatra/rack-protection' # required by sinatra >= 2
+gem 'rack-protection' # required by sinatra >= 2
 gem 'rails-observers', github: 'rails/rails-observers'
 gem 'foreman'
 gem 'puma' # server
@@ -78,7 +78,6 @@ gem 'sidekiq-limit_fetch'
 gem 'memcachier' # modifies Dalli to work with Heroku Memcachier add-on
 gem 'aws-sdk'
 gem 'hipchat'
-gem 'tinder', github: 'skirchmeier/tinder' # campfire. Only using this branch to bypass JSON dependency
 gem 'pusher'
 gem 'crack' # required by the hipchat gem
 gem 'twitter'

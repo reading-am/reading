@@ -21,7 +21,6 @@ class Hook < ApplicationRecord
 
   PLACE_TYPES = {
     'tumblr'  => 'blog',
-    'campfire'=> 'room',
     'evernote'=> 'notebook',
     'slack'   => 'room'
   }
@@ -142,14 +141,6 @@ class Hook < ApplicationRecord
     client[params['room']].send('Reading.am', output, color: colors[event_fired], notify: (event_fired == 'new')) # only notify if this is not a post update
   end
 
-  # For legacy support. If you finally remove this, also remove
-  # the room param from tssignals and the ||= assignment
-  def campfire(post, event_fired)
-    campfire = Tinder::Campfire.new self.params['subdomain'], token: self.params['token']
-    room = campfire.find_or_create_room_by_name(self.place[:id])
-    self.tssignals post, event_fired, room
-  end
-
   def evernote(post, event_fired)
     note = Evernote::EDAM::Type::Note.new
     note.notebookGuid = place[:id]
@@ -165,20 +156,6 @@ class Hook < ApplicationRecord
 </en-note>
 EOF
     authorization.api.createNote authorization.token, note
-  end
-
-  def tssignals(post, event_fired, room=nil)
-    post_link = "\"#{post.page.display_title}\" #{post.wrapped_url}"
-    case event_fired
-    when 'new'
-      output = "✌ #{post.page.verb.capitalize} #{post_link}"
-      output += " because of #{post.referrer_post.user.display_name} (#{ROOT_URL}/#{post.referrer_post.user.username})" if post.referrer_post and post.user != post.referrer_post.user
-    when 'yep', 'nope'
-      output = "#{post.yn ? '✓' : '×' } #{post.yn ? 'Yep' : 'Nope'} to #{post_link}"
-    end
-
-    room ||= authorization.api.find_room_by_id(self.params['place']['id'].to_i)
-    room.speak output if !room.nil?
   end
 
   def pocket(post, event_fired)

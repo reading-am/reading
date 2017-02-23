@@ -29,8 +29,6 @@ module ApplicationHelper
         output = content_tag :span, provider[0], :class => 'glyph icon'
       when 'tumblr'
         output = content_tag :span, 'k', :class => 'glyph icon'
-      when 'tssignals'
-        output = content_tag :span, '✣', :class => 'icon'
       when 'instapaper'
         output = content_tag :span, 'I', :class => 'icon'
       when 'readability'

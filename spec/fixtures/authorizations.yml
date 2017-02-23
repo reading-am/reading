@@ -86,18 +86,6 @@ pocket:
   created_at: 2012-11-19 19:43:56
   updated_at: 2012-11-19 19:43:56
 
-tssignals:
-  provider: tssignals
-  uid: 329528
-  token: BAhbByIB2nsiZXhwaXJlc19hdCI6IjIwMTItMDgtMDlUMDE6NTY6MTRaIiwidXNlcl9pZHMiOls1NTgyMDg5LDg1NzAwMjYsOTMxMDg1MiwxMDAzMjYxNiwxMzUxMjM4NSwxMzUxMjM5MV0sInZlcnNpb24iOjEsImNsaWVudF9pZCI6Ijg3MGZmODM4MDM3YTYyYTcwNThjMGZjOTNmNGNiMTQ2MzI2MjZiMGYiLCJhcGlfZGVhZGJvbHQiOiJhZmFmMTNkYjM5YmY1MzViNGVjMGExNDJkZDY1OTI3YSJ9dToJVGltZQ0hHRzA7bDu4A==--2989137789412f058f4153501939b2237241e29f
-  secret: ~
-  permissions: ! '["read","write"]'
-  info: ! '{"expires_at":"2012-08-09T01:56:14Z","identity":{"id":329528,"last_name":"Leppert","email_address":"greg@letsbequiet.com","first_name":"Greg"},"accounts":[{"href":"https://reading.campfirenow.com","name":"Reading","id":1648312,"product":"campfire","api_auth_token":"***REMOVED***"}]}'
-  expires_at: 2012-08-09 01:56:14
-  refresh_token: BAhbByIB2nsiZXhwaXJlc19hdCI6IjIwMjItMDctMjZUMDE6NTY6MTRaIiwidXNlcl9pZHMiOls1NTgyMDg5LDg1NzAwMjYsOTMxMDg1MiwxMDAzMjYxNiwxMzUxMjM4NSwxMzUxMjM5MV0sInZlcnNpb24iOjEsImNsaWVudF9pZCI6Ijg3MGZmODM4MDM3YTYyYTcwNThjMGZjOTNmNGNiMTQ2MzI2MjZiMGYiLCJhcGlfZGVhZGJvbHQiOiJhZmFmMTNkYjM5YmY1MzViNGVjMGExNDJkZDY1OTI3YSJ9dToJVGltZQ1Bmx7AVL7u4A==--35480f127cbf53f470447733fb91f107d641eb23
-  created_at: 2012-07-26 01:56:15.377963
-  updated_at: 2012-07-26 01:56:15.377963
-
 flattr:
   provider: flattr
   uid: reading

@@ -55,12 +55,6 @@ pinboard:
   events: ! '["new","yep","nope","comment"]'
   params: ! '{"user": "leppert", "token": "E30BBC4D815223801217"}'
 
-flattr:
-  provider: flattr
-  events: ! '["new","yep","nope","comment"]'
-  params: ! '{"permission":"write"}'
-  authorization: flattr
-
 slack:
   provider: slack
   events: ! '["new","yep","nope","comment"]'

@@ -37,8 +37,6 @@ module ApplicationHelper
         output = content_tag :span, 'E', :class => 'icon'
       when 'pocket'
         output = content_tag :span, '▾', :class => 'icon'
-      when 'flattr'
-        output = content_tag :span, '⧓', :class => 'icon'
       when 'slack'
         output = content_tag :span, '#', :class => 'icon'
       else

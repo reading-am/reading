@@ -219,7 +219,6 @@ Devise.setup do |config|
   config.omniauth :evernote,    ENV['EVERNOTE_KEY'],    ENV['EVERNOTE_SECRET'], client_options: { site: "https://#{Rails.env == 'development' ? 'sandbox' : 'www'}.evernote.com" }
   config.omniauth "37signals",  ENV['SIGNALS37_KEY'],   ENV['SIGNALS37_SECRET']
   config.omniauth :pocket,      ENV['POCKET_KEY']
-  config.omniauth :flattr,      ENV['FLATTR_KEY'],      ENV['FLATTR_SECRET'], scope: ['flattr']
   config.omniauth :slack,       ENV["SLACK_KEY"],       ENV["SLACK_SECRET"], scope: ['identify', 'channels:read', 'chat:write:user'].join(' ')
 
   # ==> Warden configuration

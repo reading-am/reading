@@ -18,7 +18,6 @@ class Authorization < ApplicationRecord
     'tumblr',
     'evernote',
     'pocket',
-    'flattr',
     'slack'
   ]
 
@@ -151,8 +150,6 @@ public
         noteStoreTransport = Thrift::HTTPClientTransport.new(info['edam']['noteStoreUrl'])
         noteStoreProtocol = Thrift::BinaryProtocol.new(noteStoreTransport)
         @api_user = Evernote::EDAM::NoteStore::NoteStore::Client.new(noteStoreProtocol)
-      when 'flattr'
-        @api_user = Flattr.new :access_token => token
       when 'slack'
         @api_user = Slack::Web::Client.new token: token
       end

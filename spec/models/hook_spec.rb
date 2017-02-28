@@ -113,16 +113,6 @@ describe Hook do
       expect(response.code).to eq(200)
     end
 
-    # The service is currently down
-    # it "posts to Flattr" do
-    #   # setup
-    #   hook = hooks(:flattr)
-    #   post = posts(:three)
-    #   # test
-    #   response = hook.flattr(post, 'new')
-    #   expect(response).to be true
-    # end
-
     it "posts to Slack" do
       # setup
       hook = hooks(:slack)

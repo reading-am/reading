@@ -72,11 +72,7 @@ define [
     {"text":"Pocket", "params":[
       {"name":"permission", "value":"write", "type":"hidden"},
       {"text":"account", "options":User::current.get("authorizations").pocket.accounts(), "datatype":"account"}
-    ]},
-    {"text":"Flattr", "params":[
-      {"name":"permission", "value":"write", "type":"hidden"},
-      {"text":"account", "options":User::current.get("authorizations").flattr.accounts(), "datatype":"account"}
-    ]},
+    ]}
     {"text":"URL", "params":[
       {"text":"address", "placeholder":"http://example.com"},
       {"text":"method", "options":["POST","GET"]}

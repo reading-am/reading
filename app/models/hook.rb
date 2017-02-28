@@ -32,8 +32,7 @@ class Hook < ApplicationRecord
     'tumblr',
     'pinboard',
     'evernote',
-    'pocket',
-    'flattr'
+    'pocket'
   ]
 
   def place
@@ -166,10 +165,6 @@ EOF
                              url: post.page.url,
                              tags: '✌ Reading'
                            }
-  end
-
-  def flattr(post, event_fired)
-    authorization.api.flattr post.page.url
   end
 
   def slack(obj, event_fired)

@@ -8,7 +8,6 @@ define [
   "app/models/providers/readability"
   "app/models/providers/evernote"
   "app/models/providers/pocket"
-  "app/models/providers/flattr"
   "app/models/providers/slack"
   "app/models/authorizations/twitter"
   "app/models/authorizations/facebook"
@@ -17,10 +16,9 @@ define [
   "app/models/authorizations/readability"
   "app/models/authorizations/evernote"
   "app/models/authorizations/pocket"
-  "app/models/authorizations/flattr"
   "app/models/authorizations/slack"
   "app/collections/users" # needed from within models/user
-], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, PocketProv, FlattrProv, SlackProv) ->
+], (User, Authorization, TwitterProv, FacebookProv, TumblrProv, InstapaperProv, ReadabilityProv, EvernoteProv, PocketProv, SlackProv) ->
 
   if window.current_user_seed?
     User::current = new User window.current_user_seed
@@ -36,7 +34,6 @@ define [
     readability:new ReadabilityProv
     evernote:   new EvernoteProv
     pocket:     new PocketProv
-    flattr:     new FlattrProv
     slack:      new SlackProv
 
   if window.authorizations_seed?

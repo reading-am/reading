@@ -2,11 +2,11 @@ class RenameProviderToTypeAddParamsAndDropTokenAndActionOnHooks < ActiveRecord::
   def self.up
     add_column :hooks, :params, :string
     Hook.reset_column_information # via: http://stackoverflow.com/questions/972562/rails-wont-let-me-change-records-during-migration
-    Hook.find_all_by_provider('url').each do |hook|
+    Hook.where(provider: 'url').each do |hook|
       hook.params = {:url => hook.token, :method => hook.action}.to_json
       hook.save
     end
-    Hook.find_all_by_provider('hipchat').each do |hook|
+    Hook.where(provider: 'hipchat').each do |hook|
       hook.params = {:token => hook.token, :room => hook.action}.to_json
       hook.save
     end

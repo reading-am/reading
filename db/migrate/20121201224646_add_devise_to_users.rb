@@ -34,7 +34,7 @@ class AddDeviseToUsers < ActiveRecord::Migration
     # add_column :users, :authentication_token, :string
 
     ## Add Indexes
-    User.update_all("email=NULL", "email=''") # otherwise the unique index will choke on empty strings
+    User.where(email: nil).update_all(email: '') # otherwise the unique index will choke on empty strings
     add_index :users, :email,                :unique => true
     add_index :users, :reset_password_token, :unique => true
     # add_index :users, :confirmation_token,   :unique => true

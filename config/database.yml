@@ -3,8 +3,6 @@ development:
   encoding: unicode
   database: reading_development
   pool: 5
-  username: myuser
-  password: '***REMOVED***'
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -14,8 +12,6 @@ test:
   encoding: unicode
   database: reading_test
   pool: 5
-  username: myuser
-  password: '***REMOVED***'
   min_messages: warning
 
 production:

@@ -42,6 +42,8 @@ dokku letsencrypt reading
 # Add additional domain names
 dokku domains:add reading reading.am www.reading.am mailman.reading.am direct.reading.am
 
+dokku ps:scale reading worker=1
+
 ############
 # DESCRIBE #
 ############

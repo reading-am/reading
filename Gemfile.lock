@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: https://github.com/leppert/musterb.git
-  revision: b823ceaef050ba027ebc93159e288ac7a3553138
+  revision: 5814f6b745404257b438a7b40402eafcd860ce7a
   specs:
     musterb (1.0.1)
       erubis

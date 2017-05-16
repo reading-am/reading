@@ -129,13 +129,12 @@ public
           config.access_token_secret = secret
         end
       when 'instapaper'
-        Instapaper.configure do |config|
-          config.consumer_key = ENV['INSTAPAPER_KEY']
-          config.consumer_secret = ENV['INSTAPAPER_SECRET']
-          config.oauth_token = token
-          config.oauth_token_secret = secret
+        @api_user = Instapaper::Client.new do |client|
+          client.consumer_key = ENV['INSTAPAPER_KEY']
+          client.consumer_secret = ENV['INSTAPAPER_SECRET']
+          client.oauth_token = token
+          client.oauth_token_secret = secret
         end
-        @api_user = Instapaper
       when 'tumblr'
         @api_user = Tumblr::Client.new do |client|
           client.consumer_key = ENV['TUMBLR_KEY']

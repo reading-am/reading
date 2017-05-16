@@ -71,7 +71,7 @@ class Hook < ApplicationRecord
   end
 
   def readability(post, event_fired)
-    authorization.api.bookmark :url => post.page.url
+    authorization.api.bookmark(post.page.url, {title: post.page.display_title, description: post.page.display_description})
   end
 
   def pinboard(post, event_fired)

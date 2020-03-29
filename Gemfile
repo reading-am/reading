@@ -17,7 +17,7 @@ gem 'rack-protection' # required by sinatra >= 2
 gem 'rails-observers', github: 'rails/rails-observers'
 gem 'foreman'
 gem 'rack-cors', require: 'rack/cors'
-gem 'pg' # PostgresSQL
+gem 'mysql2', '< 0.5' # version required by Rails 5
 gem 'dalli' # Memcached
 gem 'elasticsearch-model'
 gem 'rails_12factor', group: [:staging, :production] # needed by Heroku

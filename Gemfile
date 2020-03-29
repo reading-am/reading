@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
 end
 
 source 'http://rubygems.org'
-ruby '2.3.1'
+ruby '~> 2.5.0'
 
 #################
 # Core Services #
@@ -143,6 +143,8 @@ group :development do
   gem 'spring-watcher-listen'
   gem 'web-console'
   gem 'letter_opener'
+  gem "capistrano", "~> 3.10", require: false
+  gem "capistrano-rails", "~> 1.4", require: false
 end
 
 group :development, :test do
@@ -153,7 +155,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'capybara'
   gem 'selenium-webdriver'
-  gem 'capybara-webkit'
+  # gem 'capybara-webkit'
   gem 'capybara-screenshot'
   gem 'rspec_junit_formatter', '0.2.2' # needed by circleci
   gem 'spring-commands-rspec'

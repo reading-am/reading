@@ -149,6 +149,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
+    airbrussh (1.4.0)
+      sshkit (>= 1.6.1, != 1.7.0)
     ansi (1.5.0)
     arel (7.1.1)
     aws-sdk (2.4.4)
@@ -178,6 +180,16 @@ GEM
       uniform_notifier (~> 1.10.0)
     byebug (9.0.5)
     callsite (0.0.11)
+    capistrano (3.12.1)
+      airbrussh (>= 1.0.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 1.9.0)
+    capistrano-bundler (1.6.0)
+      capistrano (~> 3.1)
+    capistrano-rails (1.4.0)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
     capybara (2.7.1)
       addressable
       mime-types (>= 1.16)
@@ -188,9 +200,6 @@ GEM
     capybara-screenshot (1.0.13)
       capybara (>= 1.0, < 3)
       launchy
-    capybara-webkit (1.11.1)
-      capybara (>= 2.3.0, < 2.8.0)
-      json
     cd (1.0.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
@@ -219,7 +228,7 @@ GEM
       safe_yaml (~> 0.9.0)
     css_parser (1.4.5)
       addressable
-    curb (0.8.8)
+    curb (0.9.10)
     dalli (2.7.6)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -479,7 +488,7 @@ GEM
       tilt
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    libv8 (3.16.14.15)
+    libv8 (3.16.14.19)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -509,6 +518,9 @@ GEM
     multipart-post (2.0.0)
     mustermann (1.0.0.beta2)
     naught (1.1.0)
+    net-scp (2.0.0)
+      net-ssh (>= 2.6.5, < 6.0.0)
+    net-ssh (5.2.0)
     newrelic_rpm (3.16.0.318)
     nilify_blanks (1.0.1)
       activerecord (>= 3.0.0)
@@ -524,7 +536,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    oj (2.12.13)
+    oj (3.10.5)
     omniauth (1.6.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
@@ -644,7 +656,7 @@ GEM
       nokogiri (>= 1.4.1)
       trollop
     redis (3.3.1)
-    ref (1.0.5)
+    ref (2.0.0)
     requirejs-rails (1.0.0)
       railties (>= 3.1.1)
     responders (2.2.0)
@@ -720,6 +732,9 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    sshkit (1.21.0)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     systemu (2.6.5)
     tapout (0.4.5)
       ansi
@@ -730,8 +745,8 @@ GEM
       teaspoon (>= 1.0.0)
     terminal-notifier (1.6.3)
     text (1.2.1)
-    therubyracer (0.12.1)
-      libv8 (~> 3.16.14.0)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
       ref
     thor (0.19.1)
     thread_safe (0.3.6)
@@ -808,9 +823,10 @@ DEPENDENCIES
   bitmask_attributes!
   browser
   bullet
+  capistrano (~> 3.10)
+  capistrano-rails (~> 1.4)
   capybara
   capybara-screenshot
-  capybara-webkit
   coffee-rails
   crack
   curb
@@ -907,7 +923,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 2.3.1p112
+   ruby 2.5.7p206
 
 BUNDLED WITH
-   1.14.5
+   1.17.3

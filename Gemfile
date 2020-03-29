@@ -16,8 +16,6 @@ gem 'sinatra', github: 'sinatra/sinatra', require: nil # for sidekiq web UI
 gem 'rack-protection' # required by sinatra >= 2
 gem 'rails-observers', github: 'rails/rails-observers'
 gem 'foreman'
-gem 'puma' # server
-gem 'puma-heroku' # default puma config as recommended by heroku
 gem 'rack-cors', require: 'rack/cors'
 gem 'pg' # PostgresSQL
 gem 'dalli' # Memcached
@@ -127,6 +125,8 @@ gem 'coffee-rails'
 gem 'uglifier' # NOTE JS minification happens in requirejs-rails and is configured in requirejs.yml
 
 group :development do
+  gem 'puma' # server
+  gem 'puma-heroku' # default puma config as recommended by heroku
   gem 'rack-mini-profiler'
   gem 'bullet'
   gem 'ruby-growl' # used by bullet

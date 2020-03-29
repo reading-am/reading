@@ -51,7 +51,6 @@ gem 'mime-types'
 ##############
 # Monitoring #
 ##############
-gem 'newrelic_rpm'
 gem 'rollbar'
 
 ########

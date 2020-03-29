@@ -521,7 +521,6 @@ GEM
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
-    newrelic_rpm (3.16.0.318)
     nilify_blanks (1.0.1)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -855,7 +854,6 @@ DEPENDENCIES
   meta_request
   mime-types
   musterb!
-  newrelic_rpm
   nilify_blanks
   nokogiri
   oauth

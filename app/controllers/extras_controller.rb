@@ -6,7 +6,6 @@ class ExtrasController < ActionController::Metal
   include ActionController::Rendering
   include ActionController::Renderers::All
   include ActionController::ConditionalGet
-  include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
   append_view_path File.join('/')
   append_view_path File.join(Rails.root, "app", "views")

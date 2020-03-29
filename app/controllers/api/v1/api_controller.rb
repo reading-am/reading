@@ -24,8 +24,6 @@ module Api::V1
     # https://github.com/doorkeeper-gem/doorkeeper/blob/master/spec/dummy/app/controllers/metal_controller.rb
     include ActionController::Head
     include Doorkeeper::Rails::Helpers
-    # https://newrelic.com/docs/ruby/adding-instrumentation-to-actioncontroller-metal
-    include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
     # Concerns
     include DefaultParams

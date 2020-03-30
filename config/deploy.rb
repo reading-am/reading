@@ -1,10 +1,17 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.12.1"
 
-set :application, "my_app_name"
-set :repo_url, "git@example.com:me/my_repo.git"
+set :application, "reading"
+
+set :ssh_options, { :forward_agent => true }
+set :pty, true
+set :git_shallow_clone, 1
+
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
+append :linked_files, 'config/database.yml', 'config/secrets.yml'
 
 # Default branch is :master
+set :branch, "config-capistrano"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
@@ -16,9 +23,6 @@ set :repo_url, "git@example.com:me/my_repo.git"
 # You can configure the Airbrussh format using :format_options.
 # These are the defaults.
 # set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
-
-# Default value for :pty is false
-# set :pty, true
 
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml"

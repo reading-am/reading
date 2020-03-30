@@ -3,11 +3,13 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-# server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
+server "hoodriver.dreamhost.com", user: "readingam", roles: %w{app db web}, my_property: :reading
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-
+set :repo_url, "git@github.com:leppert/reading.git"
+set :deploy_to, "/home/readingam/dh.reading.am"
+set :tmp_dir, "/home/readingam/tmp/capistrano"
 
 # role-based syntax
 # ==================

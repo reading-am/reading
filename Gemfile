@@ -11,7 +11,7 @@ ruby '~> 2.5.0'
 # Core Services #
 #################
 gem 'dotenv-rails', groups: [:development, :test]
-gem 'rails', '5.0.0'
+gem 'rails', '5.0.7.2'
 gem 'sinatra', github: 'sinatra/sinatra', require: nil # for sidekiq web UI
 gem 'rack-protection' # required by sinatra >= 2
 gem 'rails-observers', github: 'rails/rails-observers'

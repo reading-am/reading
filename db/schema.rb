@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 20170419171521) do
     t.text     "embed"
     t.integer  "has_describe_data", default: 0, null: false
     t.index ["medium"], name: "index_pages_on_medium", using: :btree
-    t.index ["url"], name: "index_pages_on_url", unique: true, using: :btree
+    t.index ["url"], name: "index_pages_on_url", unique: true, length: 255, using: :btree
   end
 
   create_table "posts", force: :cascade do |t|

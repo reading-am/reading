@@ -8,7 +8,7 @@ set :pty, true
 set :git_shallow_clone, 1
 
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
-append :linked_files, 'config/database.yml', 'config/secrets.yml'
+append :linked_files, 'config/secrets.yml'
 
 # Default branch is :master
 set :branch, "config-capistrano"

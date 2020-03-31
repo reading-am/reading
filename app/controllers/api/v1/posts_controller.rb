@@ -15,13 +15,11 @@ module Api::V1
       render locals: { posts: posts }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
-
+    
     def show
       render locals: { post: Post.find(params[:id]) }
     end
     require_scope_for :show, :public
-    add_transaction_tracer :show
 
     def create
       url   = params[:model][:url]
@@ -42,7 +40,6 @@ module Api::V1
       end
     end
     require_scope_for :create, :write
-    add_transaction_tracer :create
 
     def update
       post = Post.find(params[:id])
@@ -60,7 +57,6 @@ module Api::V1
       end
     end
     require_scope_for :update, :write
-    add_transaction_tracer :update
 
     def destroy
       post = Post.find(params[:id])
@@ -73,13 +69,11 @@ module Api::V1
       end
     end
     require_scope_for :destroy, :write
-    add_transaction_tracer :destroy
 
     def stats
       render 'shared/stats', locals: { model: Post }
     end
     require_scope_for :stats, :admin
-    add_transaction_tracer :stats
 
     private
 

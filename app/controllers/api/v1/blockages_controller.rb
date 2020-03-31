@@ -15,8 +15,7 @@ module Api::V1
     end
     # only allow admins to see who is blocking someone
     before_action -> { authorize! params[:type] == 'blockers' ? :admin : :public }, only: :index
-    add_transaction_tracer :index
-
+    
     def create
       show_400 && return if params[:user_id].to_i != current_user.id
 
@@ -27,7 +26,6 @@ module Api::V1
       render 'users/show', locals: { user: blocked }
     end
     require_scope_for :create, :write
-    add_transaction_tracer :create
 
     def destroy
       show_400 && return if params[:user_id].to_i != current_user.id
@@ -38,6 +36,5 @@ module Api::V1
       render 'users/show', locals: { user: blocked }
     end
     require_scope_for :destroy, :write
-    add_transaction_tracer :destroy
   end
 end

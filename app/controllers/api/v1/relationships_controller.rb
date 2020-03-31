@@ -6,8 +6,7 @@ module Api::V1
       render 'users/index', locals: { users: Relationships.index(params) }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
-
+    
     def create
       show_400 && return if params[:user_id].to_i != current_user.id
 
@@ -18,7 +17,6 @@ module Api::V1
       render 'users/show', locals: { user: followed }
     end
     require_scope_for :create, :write
-    add_transaction_tracer :create
 
     def destroy
       show_400 and return if params[:user_id].to_i != current_user.id
@@ -29,7 +27,6 @@ module Api::V1
       render 'users/show', locals: { user: followed }
     end
     require_scope_for :destroy, :write
-    add_transaction_tracer :destroy
 
     private
 

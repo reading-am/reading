@@ -33,6 +33,5 @@ module Mailman
         head post.user.blank? ? :forbidden : :bad_request
       end
     end
-    add_transaction_tracer :create
   end
 end

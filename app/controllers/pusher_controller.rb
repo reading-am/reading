@@ -11,7 +11,6 @@ class PusherController < Api::V1::ApiController
       render text: 'Forbidden', status: 403
     end
   end
-  add_transaction_tracer :auth
 
   def existence
     webhook = Pusher.webhook(request)
@@ -27,5 +26,4 @@ class PusherController < Api::V1::ApiController
       render text: 'invalid', status: 401
     end
   end
-  add_transaction_tracer :existence
 end

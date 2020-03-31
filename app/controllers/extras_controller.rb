@@ -18,11 +18,9 @@ class ExtrasController < ActionController::Metal
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
     render "#{Rails.root}/app/assets/javascripts/bookmarklet/_loader.js.erb"
   end
-  add_transaction_tracer :bookmarklet_loader
 
   def safari_update
     render "#{Rails.root}/app/views/extras/safari_update.plist", :content_type => "application/plist", :layout => nil
   end
-  add_transaction_tracer :safari_update
 
 end

@@ -6,13 +6,11 @@ module Api::V1
       render locals: { oauth_applications: OauthApplications.index(params) }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
-
+    
     def show
       render locals: { oauth_application: Doorkeeper::Application.find_by_uid(params[:id]) }
     end
     require_scope_for :show, :public
-    add_transaction_tracer :show
 
     def create
       app = Doorkeeper::Application.new(app_params)
@@ -22,7 +20,6 @@ module Api::V1
       render locals: { oauth_application: app }
     end
     require_scope_for :create, :write
-    add_transaction_tracer :create
 
     def update
       app = Doorkeeper::Application.find_by(uid: params[:id], owner: current_user)
@@ -30,7 +27,6 @@ module Api::V1
       render :create, locals: { oauth_application: app }
     end
     require_scope_for :update, :write
-    add_transaction_tracer :update
 
     def destroy
       app = Doorkeeper::Application.by_uid(params[:id])
@@ -43,7 +39,6 @@ module Api::V1
       end
     end
     require_scope_for :destroy, :write
-    add_transaction_tracer :destroy
 
     private
 

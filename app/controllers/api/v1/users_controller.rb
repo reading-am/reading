@@ -13,8 +13,7 @@ module Api::V1
       render locals: { users: Users.index(params) }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
-
+    
     def show
       if params[:user_id]
         # check if a user is following or follows another user
@@ -35,33 +34,28 @@ module Api::V1
       end
     end
     require_scope_for :show, :public
-    add_transaction_tracer :show
 
     def expats
       params[:user_id] = params[:id]
       render :index, locals: { users: Users.expats(params) }
     end
     require_scope_for :expats, :public
-    add_transaction_tracer :expats
 
     def recommended
       params[:user_id] = current_user.id
       render :index, locals: { users: Users.recommended(params) }
     end
     require_scope_for :recommended, :public
-    add_transaction_tracer :recommended
 
     def search
       render :index, locals: { users: Users.search(params) }
     end
     require_scope_for :search, :public
-    add_transaction_tracer :search
 
     def count
       render_json total_users: User.count
     end
     require_scope_for :count, :admin
-    add_transaction_tracer :count
 
     private
 

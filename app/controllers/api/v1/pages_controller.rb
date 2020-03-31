@@ -19,13 +19,11 @@ module Api::V1
       render locals: { pages: pages }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
-
+    
     def show
       render locals: { page: Page.find(params[:id]) }
     end
     require_scope_for :show, :public
-    add_transaction_tracer :show
 
     def update
       page = Page.includes(:describe_data).find(params[:id])
@@ -40,12 +38,10 @@ module Api::V1
       render :show, locals: { page: page }
     end
     require_scope_for :update, :write
-    add_transaction_tracer :update
 
     def count
       render_json total_pages: Page.count
     end
     require_scope_for :count, :admin
-    add_transaction_tracer :count
   end
 end

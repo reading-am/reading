@@ -20,13 +20,11 @@ module Api::V1
       render locals: { comments: comments }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
 
     def show
       render locals: { comment: Comment.find(params[:id]) }
     end
     require_scope_for :show, :public
-    add_transaction_tracer :show
 
     def create
       comment = Comment.new
@@ -44,7 +42,6 @@ module Api::V1
       end
     end
     require_scope_for :create, :write
-    add_transaction_tracer :create
 
     def update
       comment = Comment.find(params[:id])
@@ -58,7 +55,6 @@ module Api::V1
       end
     end
     require_scope_for :update, :write
-    add_transaction_tracer :update
 
     def destroy
       comment = Comment.find(params[:id])
@@ -67,12 +63,10 @@ module Api::V1
       head :no_content
     end
     require_scope_for :destroy, :write
-    add_transaction_tracer :destroy
 
     def stats
       render 'shared/stats', locals: { model: Comment }
     end
     require_scope_for :stats, :admin
-    add_transaction_tracer :stats
   end
 end

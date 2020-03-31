@@ -6,13 +6,11 @@ module Api::V1
       render locals: { oauth_access_tokens: OauthAccessTokens.index(params) }
     end
     require_scope_for :index, :public
-    add_transaction_tracer :index
-
+    
     def show
       render locals: { oauth_access_token: Doorkeeper::AccessToken.find(params[:id]) }
     end
     require_scope_for :show, :public
-    add_transaction_tracer :show
 
     def destroy
       token = Doorkeeper::AccessToken.by_token(params[:id]) || Doorkeeper::AccessToken.by_refresh_token(params[:id])
@@ -33,6 +31,5 @@ module Api::V1
       end
     end
     require_scope_for :destroy, :write
-    add_transaction_tracer :destroy
   end
 end

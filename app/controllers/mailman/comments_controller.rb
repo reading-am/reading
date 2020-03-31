@@ -11,6 +11,5 @@ module Mailman
 
       head comment.save ? :created : :bad_request
     end
-    add_transaction_tracer :create
   end
 end

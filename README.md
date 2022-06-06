@@ -1,7 +1,5 @@
 [![build status badge](https://circleci.com/gh/leppert/reading.png?circle-token=3cdfe76f6db89bae21a76c6fb3ad2744a5c77ac4)](https://circleci.com/gh/leppert/reading)
 
-Dude, where's my web app?
-
 ## Prerequisites
 
 The following items must be installed and running:
